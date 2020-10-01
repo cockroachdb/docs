@@ -515,19 +515,19 @@ Now suppose you want to update a couple rows in the table, based on their conten
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (opt) UPDATE users SET name='Michael Brown (there are two)' WHERE name='Michael Brown';
+> EXPLAIN (opt) UPDATE users SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
 
 ~~~
-                                      text
----------------------------------------------------------------------------------
+                                        text
+------------------------------------------------------------------------------------
   update users
    └── project
         ├── index-join users
         │    └── scan users@users_name_city_idx
-        │         └── constraint: /8/7/6: [/'Michael Brown' - /'Michael Brown']
+        │         └── constraint: /10/9/8: [/'Patricia Smith' - /'Patricia Smith']
         └── projections
-             └── 'Michael Brown (there are two)'
+             └── 'Patricia Smith (there are two)'
 (7 rows)
 ~~~
 
@@ -537,21 +537,21 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (opt) UPDATE users@primary SET name='Michael Brown (there are two)' WHERE name='Michael Brown';
+> EXPLAIN (opt) UPDATE users@primary SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
 ~~~
 
 ~~~
                        text
---------------------------------------------------
+---------------------------------------------------
   update users
    └── project
         ├── select
         │    ├── scan users
         │    │    └── flags: force-index=primary
         │    └── filters
-        │         └── name = 'Michael Brown'
+        │         └── name = 'Patricia Smith'
         └── projections
-             └── 'Michael Brown (there are two)'
+             └── 'Patricia Smith (there are two)'
 (9 rows)
 ~~~
 

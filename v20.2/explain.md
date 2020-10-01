@@ -26,7 +26,9 @@ You can find out if your queries are performing entire table scans by using `EXP
 
 - Key values in the index are being scanned; shown as the **Description** value of rows with the **Field** value of `spans`
 
-For more information, see [Find the Indexes and Key Ranges a Query Uses](#find-the-indexes-and-key-ranges-a-query-uses).
+<span class="version-tag">New in v20.2</span>: You can also see the estimated number of rows that a scan will perform in the  **Description** of the `estimated row count` **Field**.
+
+For more information about indexing and table scans, see [Find the Indexes and Key Ranges a Query Uses](#find-the-indexes-and-key-ranges-a-query-uses).
 
 ## Synopsis
 
@@ -58,14 +60,28 @@ Successful `EXPLAIN` statements return tables with the following columns:
  Column | Description
 -----------|-------------
 **Tree** | A tree representation of the hierarchy of the query plan.
-**Field** | The name of a property for the query plan.<br><br>The `distributed` and `vectorized` properties apply to the entire query plan. All other properties apply to the query plan node in the **Tree** column.
+**Field** | The name of a property for the query plan.<br><br>The `distribution` and `vectorized` properties apply to the entire query plan. All other properties apply to the query plan node in the **Tree** column.
 **Description** | Additional information about the parameter in  **Field**.
 **Columns** | The columns provided to the processes at lower levels of the hierarchy. Included in `TYPES` and `VERBOSE` output.
 **Ordering** | The order in which results are presented to the processes at each level of the hierarchy, as well as other properties of the result set at each level. Included in `TYPES` and `VERBOSE` output.
 
 ## Examples
 
-The following examples use the [`startrek` example dataset](cockroach-demo.html#datasets). To follow along, you can use `cockroach demo startrek` to start a temporary, in-memory cluster with the `startrek` dataset preloaded.
+The following examples use the [`movr` example dataset](cockroach-demo.html#datasets). To follow along:
+
+1. Start a [single-node cluster](cockroach-start-single-node.html):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach start-single-node --insecure
+~~~
+
+2. Load the `movr` database and some [workload data](cockroach-workload.html) to the cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach workload init movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750
+~~~
 
 ### Default query plans
 
@@ -73,92 +89,93 @@ By default, `EXPLAIN` includes the least detail about the query plan but can be 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-    tree    |    field    |   description
-------------+-------------+-------------------
-            | distributed | true
-            | vectorized  | false
-  sort      |             |
-   │        | order       | +season
-   └── scan |             |
-            | table       | episodes@primary
-            | spans       | FULL SCAN
-            | filter      | season > 3
-(8 rows)
+       tree      |        field        |  description
+-----------------+---------------------+----------------
+                 | distribution        | full
+                 | vectorized          | true
+  sort           |                     |
+   │             | order               | +revenue
+   └── filter    |                     |
+        │        | filter              | revenue > 90
+        └── scan |                     |
+                 | estimated row count | 125000
+                 | table               | rides@primary
+                 | spans               | FULL SCAN
+(10 rows)
 ~~~
 
-The `tree` column of the output shows the tree structure of the query plan, in this case a `sort` and then a `scan`.
+The `tree` column of the output shows the tree structure of the query plan, in this case a `sort`, a `filter`, and then a `scan`.
 
-The `field` and `description` columns describe a set of properties, some global to the query, and some specific to an operation listed in the `tree` column (in this case, `sort` or `scan`):
+The `field` and `description` columns describe a set of properties, some global to the query, and some specific to an operation listed in the `tree` column (in this case, `sort`, `filter`, or `scan`):
 
-- `distributed`:`true`
-  <br>The query plan will be distributed to multiple nodes on the cluster.
+- `distribution`:`full`
+  <br>The query plan will be distributed across all nodes on a distributed cluster.
 - `vectorized`:`false`
-  <br>The plan will be executed with the row-oriented execution engine, and not the [vectorized engine](vectorized-execution.html).
-- `order`:`+season`
-  <br>The sort will be ordered ascending on the `season` column.
-- `table`:`episodes@primary`
+  <br>The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
+- `order`:`+revenue`
+  <br>The sort will be ordered ascending on the `revenue` column.
+- `filter`: `revenue > 90`
+  <br>The scan filters on the `revenue` column.
+- <span class="version-tag">New in v20.2:</span> `estimated row count`:`125000`
+  <br>The estimated number of rows scanned by the query, in this case, `125000` rows of data.
+- `table`:`rides@primary`
   <br>The table is scanned on the `primary` index.
 - `spans`:`FULL SCAN`
   <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
-- `filter`: `season > 3`
-  <br>The scan filters on the `season` column.
 
 If you run `EXPLAIN` on a [join](joins.html) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join](joins.html#hash-joins):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM quotes AS q
-JOIN episodes AS e ON q.episode = e.id;
+> EXPLAIN SELECT * FROM rides AS r
+JOIN users AS u ON r.rider_id = u.id;
 ~~~
 
 ~~~
-    tree    |       field        |   description
-------------+--------------------+-------------------
-            | distributed        | true
-            | vectorized         | false
-  hash-join |                    |
-   │        | type               | inner
-   │        | equality           | (episode) = (id)
-   │        | right cols are key |
-   ├── scan |                    |
-   │        | table              | quotes@primary
-   │        | spans              | FULL SCAN
-   └── scan |                    |
-            | table              | episodes@primary
-            | spans              | FULL SCAN
+    tree    |        field        |    description
+------------+---------------------+--------------------
+            | distribution        | full
+            | vectorized          | true
+  hash join |                     |
+   │        | equality            | (rider_id) = (id)
+   ├── scan |                     |
+   │        | estimated row count | 125000
+   │        | table               | rides@primary
+   │        | spans               | FULL SCAN
+   └── scan |                     |
+            | estimated row count | 12500
+            | table               | users@primary
+            | spans               | FULL SCAN
 (12 rows)
 ~~~
 
-And the following output shows that the query will perform a simple cross join:
+And the following output shows that the query will perform a cross join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM quotes AS q
-JOIN episodes AS e ON q.episode = '2';
+> EXPLAIN SELECT * FROM rides AS r
+JOIN users AS u ON r.city = 'new york';
 ~~~
 
 ~~~
-          tree         |    field    |        description
------------------------+-------------+----------------------------
-                       | distributed | true
-                       | vectorized  | false
-  render               |             |
-   └── cross-join      |             |
-        │              | type        | cross
-        ├── scan       |             |
-        │              | table       | episodes@primary
-        │              | spans       | FULL SCAN
-        └── index-join |             |
-             │         | table       | quotes@primary
-             │         | key columns | rowid
-             └── scan  |             |
-                       | table       | quotes@quotes_episode_idx
-                       | spans       | /2-/3
-(14 rows)
+     tree    |        field        |         description
+-------------+---------------------+------------------------------
+             | distribution        | full
+             | vectorized          | true
+  cross join |                     |
+   ├── scan  |                     |
+   │         | estimated row count | 14050
+   │         | table               | rides@primary
+   │         | spans               | [/'new york' - /'new york']
+   └── scan  |                     |
+             | estimated row count | 12500
+             | table               | users@primary
+             | spans               | FULL SCAN
+(11 rows)
 ~~~
 
 ### `VERBOSE` option
@@ -170,33 +187,32 @@ The `VERBOSE` option:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (VERBOSE) SELECT * FROM quotes AS q
-JOIN episodes AS e ON q.episode = e.id
-WHERE e.season = '1'
-ORDER BY e.stardate ASC;
+> EXPLAIN (VERBOSE) SELECT * FROM rides AS r
+JOIN users AS u ON r.rider_id = u.id
+WHERE r.city = 'new york'
+ORDER BY r.revenue ASC;
 ~~~
 
-The output of [`EXPLAIN`](explain.html#verbose-option) also shows whether `equality cols are key` for [lookup joins](joins.html#lookup-joins), which means that the lookup columns form a key in the target table such that each lookup has at most one result.
-
 ~~~
-       tree      |       field        |   description    |                                 columns                                  | ordering
------------------+--------------------+------------------+--------------------------------------------------------------------------+------------
-                 | distributed        | true             |                                                                          |
-                 | vectorized         | false            |                                                                          |
-  sort           |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) | +stardate
-   │             | order              | +stardate        |                                                                          |
-   └── hash-join |                    |                  | (quote, characters, stardate, episode, id, season, num, title, stardate) |
-        │        | type               | inner            |                                                                          |
-        │        | equality           | (episode) = (id) |                                                                          |
-        │        | right cols are key |                  |                                                                          |
-        ├── scan |                    |                  | (quote, characters, stardate, episode)                                   |
-        │        | table              | quotes@primary   |                                                                          |
-        │        | spans              | FULL SCAN        |                                                                          |
-        └── scan |                    |                  | (id, season, num, title, stardate)                                       |
-                 | table              | episodes@primary |                                                                          |
-                 | spans              | FULL SCAN        |                                                                          |
-                 | filter             | season = 1       |                                                                          |
-(15 rows)
+           tree          |        field        |            description            |                                                                     columns                                                                     | ordering
+-------------------------+---------------------+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+-----------
+                         | distribution        | full                              |                                                                                                                                                 |
+                         | vectorized          | true                              |                                                                                                                                                 |
+  sort                   |                     |                                   | (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue, id, city, name, address, credit_card) | +revenue
+   │                     | estimated row count | 14050                             |                                                                                                                                                 |
+   │                     | order               | +revenue                          |                                                                                                                                                 |
+   └── hash join (inner) |                     |                                   | (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue, id, city, name, address, credit_card) |
+        │                | estimated row count | 14050                             |                                                                                                                                                 |
+        │                | equality            | (rider_id) = (id)                 |                                                                                                                                                 |
+        ├── scan         |                     |                                   | (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue)                                       |
+        │                | estimated row count | 14050                             |                                                                                                                                                 |
+        │                | table               | rides@primary                     |                                                                                                                                                 |
+        │                | spans               | /"new york"-/"new york"/PrefixEnd |                                                                                                                                                 |
+        └── scan         |                     |                                   | (id, city, name, address, credit_card)                                                                                                          |
+                         | estimated row count | 12500                             |                                                                                                                                                 |
+                         | table               | users@primary                     |                                                                                                                                                 |
+                         | spans               | FULL SCAN                         |                                                                                                                                                 |
+(16 rows)
 ~~~
 
 ### `TYPES` option
@@ -205,21 +221,25 @@ The `TYPES` mode includes the types of the values used in the query plan. It als
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (TYPES) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN (TYPES) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-    tree    |    field    |           description            |                            columns                            | ordering
-------------+-------------+----------------------------------+---------------------------------------------------------------+-----------
-            | distributed | true                             |                                                               |
-            | vectorized  | false                            |                                                               |
-  sort      |             |                                  | (id int, season int, num int, title string, stardate decimal) | +season
-   │        | order       | +season                          |                                                               |
-   └── scan |             |                                  | (id int, season int, num int, title string, stardate decimal) |
-            | table       | episodes@primary                 |                                                               |
-            | spans       | FULL SCAN                        |                                                               |
-            | filter      | ((season)[int] > (3)[int])[bool] |                                                               |
-(8 rows)
+       tree      |        field        |                description                 |                                                                                       columns                                                                                        | ordering
+-----------------+---------------------+--------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------
+                 | distribution        | full                                       |                                                                                                                                                                                      |
+                 | vectorized          | true                                       |                                                                                                                                                                                      |
+  sort           |                     |                                            | (id uuid, city varchar, vehicle_city varchar, rider_id uuid, vehicle_id uuid, start_address varchar, end_address varchar, start_time timestamp, end_time timestamp, revenue decimal) | +revenue
+   │             | estimated row count | 12527                                      |                                                                                                                                                                                      |
+   │             | order               | +revenue                                   |                                                                                                                                                                                      |
+   └── filter    |                     |                                            | (id uuid, city varchar, vehicle_city varchar, rider_id uuid, vehicle_id uuid, start_address varchar, end_address varchar, start_time timestamp, end_time timestamp, revenue decimal) |
+        │        | estimated row count | 12527                                      |                                                                                                                                                                                      |
+        │        | filter              | ((revenue)[decimal] > (90)[decimal])[bool] |                                                                                                                                                                                      |
+        └── scan |                     |                                            | (id uuid, city varchar, vehicle_city varchar, rider_id uuid, vehicle_id uuid, start_address varchar, end_address varchar, start_time timestamp, end_time timestamp, revenue decimal) |
+                 | estimated row count | 125000                                     |                                                                                                                                                                                      |
+                 | table               | rides@primary                              |                                                                                                                                                                                      |
+                 | spans               | FULL SCAN                                  |                                                                                                                                                                                      |
+(12 rows)
 ~~~
 
 ### `OPT` option
@@ -228,17 +248,17 @@ The `OPT` option displays the query plan tree generated by the [cost-based optim
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN (OPT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-            text
------------------------------
+             text
+-------------------------------
   sort
    └── select
-        ├── scan episodes
+        ├── scan rides
         └── filters
-             └── season > 3
+             └── revenue > 90
 (5 rows)
 ~~~
 
@@ -248,42 +268,52 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT, VERBOSE) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN (OPT, VERBOSE) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-                                                                                                                                     text
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                                                                                                      text
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   sort
-   ├── columns: id:1 season:2 num:3 title:4 stardate:5
-   ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
-   ├── cost: 98.6419109
-   ├── key: (1)
-   ├── fd: (1)-->(2-5)
-   ├── ordering: +2
-   ├── prune: (1,3-5)
-   ├── interesting orderings: (+1)
+   ├── columns: id:1 city:2 vehicle_city:3 rider_id:4 vehicle_id:5 start_address:6 end_address:7 start_time:8 end_time:9 revenue:10
+   ├── immutable
+   ├── stats: [rows=12526.8275, distinct(10)=9.90909091, null(10)=0]
+   │   histogram(10)=  0  0   11115 1412
+   │                 <--- 90 ------- 99
+   ├── cost: 154915.074
+   ├── key: (1,2)
+   ├── fd: (1,2)-->(3-10)
+   ├── ordering: +10
+   ├── prune: (1-9)
+   ├── interesting orderings: (+2,+1) (+2,+4,+1) (+3,+5,+2,+1)
    └── select
-        ├── columns: id:1 season:2 num:3 title:4 stardate:5
-        ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
-        ├── cost: 95.62
-        ├── key: (1)
-        ├── fd: (1)-->(2-5)
-        ├── prune: (1,3-5)
-        ├── interesting orderings: (+1)
-        ├── scan episodes
-        │    ├── columns: id:1 season:2 num:3 title:4 stardate:5
-        │    ├── stats: [rows=79, distinct(1)=79, null(1)=0, distinct(2)=3, null(2)=0]
-        │    │   histogram(1)=  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1
-        │    │                <--- 1 --- 2 --- 3 --- 4 --- 5 --- 6 --- 7 --- 8 --- 9 --- 10 --- 11 --- 12 --- 13 --- 14 --- 15 --- 16 --- 17 --- 18 --- 19 --- 20 --- 21 --- 22 --- 23 --- 24 --- 25 --- 26 --- 27 --- 28 --- 29 --- 30 --- 31 --- 32 --- 33 --- 34 --- 35 --- 36 --- 37 --- 38 --- 39 --- 40 --- 41 --- 42 --- 43 --- 44 --- 45 --- 46 --- 47 --- 48 --- 49 --- 50 --- 51 --- 52 --- 53 --- 54 --- 55 --- 56 --- 57 --- 58 --- 59 --- 60 --- 61 --- 62 --- 63 --- 64 --- 65 --- 66 --- 67 --- 68 --- 69 --- 70 --- 71 --- 72 --- 73 --- 74 --- 75 --- 76 --- 77 --- 78 --- 79
-        │    ├── cost: 94.82
-        │    ├── key: (1)
-        │    ├── fd: (1)-->(2-5)
-        │    ├── prune: (1-5)
-        │    └── interesting orderings: (+1)
+        ├── columns: id:1 city:2 vehicle_city:3 rider_id:4 vehicle_id:5 start_address:6 end_address:7 start_time:8 end_time:9 revenue:10
+        ├── immutable
+        ├── stats: [rows=12526.8275, distinct(10)=9.90909091, null(10)=0]
+        │   histogram(10)=  0  0   11115 1412
+        │                 <--- 90 ------- 99
+        ├── cost: 151254.04
+        ├── key: (1,2)
+        ├── fd: (1,2)-->(3-10)
+        ├── prune: (1-9)
+        ├── interesting orderings: (+2,+1) (+2,+4,+1) (+3,+5,+2,+1)
+        ├── scan rides
+        │    ├── columns: id:1 city:2 vehicle_city:3 rider_id:4 vehicle_id:5 start_address:6 end_address:7 start_time:8 end_time:9 revenue:10
+        │    ├── stats: [rows=125000, distinct(1)=125000, null(1)=0, distinct(2)=9, null(2)=0, distinct(10)=100, null(10)=0]
+        │    │   histogram(1)=  0                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12
+        │    │                <--- '00000000-0000-4000-8000-000000000000' ----- '012d7731-8fc5-4480-8000-00000000023f' ----- '022f6a50-d6b2-48e0-8000-00000000042b' ----- '03a8e714-76af-49c0-8000-0000000006fb' ----- '04f97edc-7ef1-47c0-8000-00000000097d' ----- '06466b1e-5c0b-4980-8000-000000000bf8' ----- '07442c7f-bacb-4280-8000-000000000ddc' ----- '08a3f898-2cb2-4f80-8000-00000000107b' ----- '09a4df47-f993-4500-8000-000000001265' ----- '0b020c49-ba5e-4500-8000-0000000014ff' ----- '0c508b32-ce89-4580-8000-00000000177d' ----- '0db7281f-d9ba-4b00-8000-000000001a29' ----- '0f00ef13-48b2-4080-8000-000000001c9e' ----- '106e5cd4-ed2c-4f00-8000-000000001f57' ----- '1184c271-fff7-4d00-8000-00000000216a' ----- '1301eabb-cb1c-4900-8000-000000002441' ----- '144ed6fd-a836-4b00-8000-0000000026bc' ----- '15781c71-4fce-4400-8000-0000000028f3' ----- '16c3fc43-b2dd-4700-8000-000000002b6c' ----- '1810e885-8ff7-4900-8000-000000002de7' ----- '19274e22-a2c2-4700-8000-000000002ffa' ----- '1a4f8726-d04e-4200-8000-00000000322f' ----- '1bb83cf2-cf95-4500-8000-0000000034df' ----- '1d0f1f57-b41b-4c00-8000-00000000376d' ----- '1e6ab9b2-3dd5-4e00-8000-000000003a04' ----- '1fd04a2f-cefa-4400-8000-000000003cae' ----- '211ec918-e325-4400-8000-000000003f2c' ----- '226b2f23-033a-4800-8000-0000000041a6' ----- '23875925-3543-4e00-8000-0000000043c4' ----- '2516db0d-d82f-4800-8000-0000000046be' ----- '26634117-f844-4a00-8000-000000004938' ----- '279ee02a-77a2-4e00-8000-000000004b92' ----- '291fb3fa-6def-4800-8000-000000004e70' ----- '2a771c97-0f7b-4e00-8000-0000000050ff' ----- '2b66b617-7ea1-4600-8000-0000000052c8' ----- '2cd53048-9d27-4400-8000-000000005583' ----- '2e22a2c2-3747-4400-8000-0000000057ff' ----- '2f80dc33-721d-4400-8000-000000005a9b' ----- '313cee9d-d7ec-4c00-8000-000000005dea' ----- '32d234eb-9a17-4e00-8000-0000000060ef' ----- '349c6f36-ef80-4600-8000-000000006459' ----- '36188b11-409a-4400-8000-00000000672e' ----- '37a46173-b85e-4000-8000-000000006a21' ----- '38b47c73-eee5-4600-8000-000000006c28' ----- '3a11a975-afaf-4600-8000-000000006ec2' ----- '3bbf93ff-25e5-4c00-8000-0000000071f6' ----- '3d41fa76-5343-4400-8000-0000000074d7' ----- '3eb18116-ebd4-4000-8000-000000007794' ----- '3fed2029-6b33-4400-8000-0000000079ee' ----- '415a8deb-0fad-4400-8000-000000007ca7' ----- '428dc981-beb1-4000-8000-000000007ef1' ----- '43d89ce4-a7b4-4400-8000-000000008168' ----- '4522ea0f-d3b2-4c00-8000-0000000083de' ----- '4676a726-4a16-4400-8000-000000008666' ----- '47bc3c5b-d0e1-4000-8000-0000000088d3' ----- '49036438-8ebc-4800-8000-000000008b43' ----- '4a12f901-083d-4c00-8000-000000008d49' ----- '4b923a29-c779-4800-8000-000000009024' ----- '4d06fef7-c243-4c00-8000-0000000092eb' ----- '4e46cfc8-29cf-4c00-8000-00000000954d' ----- '4f922962-cfd8-4000-8000-0000000097c5' ----- '508dd1e5-3a81-4c00-8000-0000000099a5' ----- '51d041cc-532a-4800-8000-000000009c0c' ----- '52e83a10-9d06-4400-8000-000000009e22' ----- '53fe1975-f2cb-4400-8000-00000000a034' ----- '554195cc-857f-4000-8000-00000000a29d' ----- '5634549b-62c7-4400-8000-00000000a46c' ----- '5776c482-7b6f-4400-8000-00000000a6d3' ----- '58aa8650-e779-4000-8000-00000000a91e' ----- '59d2bf55-1505-4c00-8000-00000000ab53' ----- '5aecd078-52f7-4400-8000-00000000ad6d' ----- '5c23315d-701d-4000-8000-00000000afbd' ----- '5d4cfd08-d4ba-4800-8000-00000000b1f5' ----- '5ed84d33-8f79-4400-8000-00000000b4e7' ----- '60221426-fe71-4c00-8000-00000000b75c' ----- '615b9a5a-89b9-4000-8000-00000000b9b2' ----- '62b302f7-2b45-4800-8000-00000000bc41' ----- '63e29307-af20-4c00-8000-00000000be84' ----- '6539756c-93a7-4000-8000-00000000c112' ----- '664cb5bb-384f-4400-8000-00000000c31f' ----- '67653437-3f31-4000-8000-00000000c536' ----- '689d27c3-9368-4800-8000-00000000c789' ----- '69ce4a7b-4e54-4800-8000-00000000c9cf' ----- '6b324851-a869-4000-8000-00000000cc76' ----- '6c5436b8-f9b1-4000-8000-00000000ce9f' ----- '6d9d7774-aba3-4800-8000-00000000d113' ----- '6e99a62e-d352-4400-8000-00000000d2f4' ----- '6fb6dca0-7f66-4800-8000-00000000d514' ----- '711b60ae-9680-4000-8000-00000000d7bc' ----- '72a51e32-1a2e-4000-8000-00000000daab' ----- '7415b142-2ccb-4c00-8000-00000000dd6a' ----- '756b00ff-da40-4400-8000-00000000dff5' ----- '76da0168-b5cc-4000-8000-00000000e2b1' ----- '77d41743-e963-4c00-8000-00000000e48e' ----- '7938151a-4378-4400-8000-00000000e735' ----- '7aa71583-1f03-4000-8000-00000000e9f1' ----- '7c219eb6-390c-4000-8000-00000000ecc3' ----- '7d7cb2d9-05c0-4400-8000-00000000ef59' ----- '7ec7863b-eec3-4800-8000-00000000f1d0' ----- '7fd8adab-9f55-4c00-8000-00000000f3d9' ----- '81333b96-af03-4000-8000-00000000f66e' ----- '8270f388-2278-4000-8000-00000000f8cc' ----- '836b0963-5610-4000-8000-00000000faa9' ----- '849667b5-f1be-4800-8000-00000000fce4' ----- '85efe931-8761-4800-8000-00000000ff77' ----- '877ab324-851a-4800-8000-000000010268' ----- '88dd1e53-a81d-4000-8000-00000001050c' ----- '8a361997-80ba-4800-8000-00000001079e' ----- '8b81f969-e3c9-4800-8000-000000010a17' ----- '8cb20fb2-24aa-4800-8000-000000010c5b' ----- '8e264e48-626f-4000-8000-000000010f21' ----- '8f9b994e-1a3f-4800-8000-0000000111e9' ----- '90c026cc-1ca3-4800-8000-000000011417' ----- '91ab0856-e696-4000-8000-0000000115d7' ----- '92dfd694-ccab-4000-8000-000000011824' ----- '94794ea0-7703-4000-8000-000000011b31' ----- '957928e0-c9d9-4000-8000-000000011d19' ----- '96bb98c7-e282-4000-8000-000000011f80' ----- '97e1b8ed-1bf7-4000-8000-0000000121b1' ----- '993037d6-3022-4000-8000-00000001242f' ----- '9ac03ff6-9014-4800-8000-00000001272a' ----- '9c4e2f37-fbef-4000-8000-000000012a21' ----- '9d9d3458-cd20-4000-8000-000000012ca0' ----- '9ec2ce46-4990-4000-8000-000000012ed0' ----- 'a01d5c31-593e-4000-8000-000000013165' ----- 'a155d5f5-6a7a-4800-8000-0000000133b9' ----- 'a2df9378-ee28-4800-8000-0000000136a8' ----- 'a468448c-f7ca-4800-8000-000000013995' ----- 'a5931ca7-d673-4000-8000-000000013bcf' ----- 'a73b42cc-2d6a-4000-8000-000000013ef8' ----- 'a8e92d55-a3a0-4000-8000-00000001422c' ----- 'aa222d51-71e2-4800-8000-000000014481' ----- 'ab2fa93a-f74c-4000-8000-000000014683' ----- 'ac28b2a6-b0d9-4000-8000-00000001485e' ----- 'ad234eb9-a176-4000-8000-000000014a3c' ----- 'ae392e1e-f73c-4000-8000-000000014c4e' ----- 'af6be37d-e939-4800-8000-000000014e97' ----- 'b10d38cd-a6e7-4000-8000-0000000151b3' ----- 'b210be94-24e5-4000-8000-0000000153a2' ----- 'b34ce3de-6149-4800-8000-0000000155fd' ----- 'b48f53c5-79f2-4800-8000-000000015864' ----- 'b631b584-b1ab-4800-8000-000000015b82' ----- 'b76c4827-b6fe-4000-8000-000000015dda' ----- 'b8d716d2-aa5c-4000-8000-00000001608e' ----- 'ba240314-8776-4000-8000-000000016309' ----- 'bb70ef56-6490-4000-8000-000000016584' ----- 'bcb70ac3-a860-4000-8000-0000000167f2' ----- 'be0589ac-bc8c-4000-8000-000000016a70' ----- 'bf601797-cc3a-4000-8000-000000016d05' ----- 'c055fbb5-17a4-4000-8000-000000016eda' ----- 'c195cc85-7f30-4000-8000-00000001713c' ----- 'c2ef4e01-14d2-4800-8000-0000000173cf' ----- 'c44f1a19-86b9-4000-8000-00000001766e' ----- 'c576cce5-f740-4000-8000-0000000178a2' ----- 'c6dbd72b-cb5f-4800-8000-000000017b4b' ----- 'c835dedf-1e08-4800-8000-000000017ddf' ----- 'c9795b35-b0bb-4800-8000-000000018048' ----- 'caaeafab-53d6-4000-8000-000000018296' ----- 'cbc51548-66a1-4000-8000-0000000184a9' ----- 'cd0dcfcc-5b8d-4800-8000-00000001871c' ----- 'ce2089e3-4330-4800-8000-000000018928' ----- 'cf6e8294-9a56-4800-8000-000000018ba5' ----- 'd0b06c43-f5f9-4800-8000-000000018e0b' ----- 'd1c4b902-14ad-4800-8000-00000001901a' ----- 'd2f1a9fb-e76c-4800-8000-000000019258' ----- 'd40357a3-5504-4000-8000-000000019462' ----- 'd52220bc-382a-4000-8000-000000019685' ----- 'd65b20b8-066c-4800-8000-0000000198da' ----- 'd7aa25d8-d79d-4800-8000-000000019b59' ----- 'd8bef8ce-b356-4800-8000-000000019d69' ----- 'da06a6e3-2e38-4000-8000-000000019fda' ----- 'db4916ca-46e0-4000-8000-00000001a241' ----- 'dc6b0531-9828-4000-8000-00000001a46a' ----- 'dd7342ed-bb59-4000-8000-00000001a662' ----- 'deda6612-8390-4000-8000-00000001a90f' ----- 'e09aaa3a-d18d-4800-8000-00000001ac66' ----- 'e1f85d74-4f5d-4800-8000-00000001af01' ----- 'e30d306a-2b17-4800-8000-00000001b111' ----- 'e44d013a-92a3-4800-8000-00000001b373' ----- 'e5d63886-594a-4800-8000-00000001b661' ----- 'e6a44417-8705-4000-8000-00000001b7ea' ----- 'e82e87d2-c7b8-4000-8000-00000001bada' ----- 'e9717df1-9d66-4000-8000-00000001bd42' ----- 'eb04ab60-6b7a-4000-8000-00000001c043' ----- 'ec3c18b5-02ab-4800-8000-00000001c295' ----- 'ed8904f6-dfc5-4000-8000-00000001c510' ----- 'eef0281b-a7fc-4000-8000-00000001c7bd' ----- 'f0489d27-c393-4800-8000-00000001ca4e' ----- 'f19934ef-cbd5-4800-8000-00000001ccd0' ----- 'f352a843-8088-4000-8000-00000001d01a' ----- 'f4a66559-f6ec-4800-8000-00000001d2a2' ----- 'f595feda-6612-4000-8000-00000001d46b' ----- 'f6e696a2-6e54-4000-8000-00000001d6ed' ----- 'f8244e93-e1c9-4800-8000-00000001d94b' ----- 'f9b77c02-afdd-4800-8000-00000001dc4c' ----- 'fac57e23-f24d-4000-8000-00000001de4f' ----- 'fc0980b2-4207-4800-8000-00000001e0b9' ----- 'fd75e204-6c76-4800-8000-00000001e370' ----- 'feacc921-46a1-4800-8000-00000001e5c1' ----- 'fffe6d58-c8ee-4000-8000-00000001e845'
+        │    │   histogram(2)=  0     14225     0   12875    0      13362      0    14050     0   14900   0  13725   0       13475       0    14637    0       13750
+        │    │                <--- 'amsterdam' --- 'boston' --- 'los angeles' --- 'new york' --- 'paris' --- 'rome' --- 'san francisco' --- 'seattle' --- 'washington dc'
+        │    │   histogram(10)=  0 1325 1.2226e+05 1412
+        │    │                 <--- 0 ------------- 99
+        │    ├── cost: 150004.02
+        │    ├── key: (1,2)
+        │    ├── fd: (1,2)-->(3-10)
+        │    ├── prune: (1-10)
+        │    └── interesting orderings: (+2,+1) (+2,+4,+1) (+3,+5,+2,+1)
         └── filters
-             └── season:2 > 3 [outer=(2), constraints=(/2: [/4 - ]; tight)]
-(29 rows)
+             └── revenue:10 > 90 [outer=(10), immutable, constraints=(/10: (/90 - ]; tight)]
+(39 rows)
 ~~~
 
 <a name="opt-types-option"></a>
@@ -292,44 +322,54 @@ To include cost and type details, use `OPT, TYPES`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT, TYPES) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN (OPT, TYPES) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-                                                                                                                                     text
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                                                                                                      text
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   sort
-   ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
-   ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
-   ├── cost: 98.6419109
-   ├── key: (1)
-   ├── fd: (1)-->(2-5)
-   ├── ordering: +2
-   ├── prune: (1,3-5)
-   ├── interesting orderings: (+1)
+   ├── columns: id:1(uuid!null) city:2(varchar!null) vehicle_city:3(varchar) rider_id:4(uuid) vehicle_id:5(uuid) start_address:6(varchar) end_address:7(varchar) start_time:8(timestamp) end_time:9(timestamp) revenue:10(decimal!null)
+   ├── immutable
+   ├── stats: [rows=12526.8275, distinct(10)=9.90909091, null(10)=0]
+   │   histogram(10)=  0  0   11115 1412
+   │                 <--- 90 ------- 99
+   ├── cost: 154915.074
+   ├── key: (1,2)
+   ├── fd: (1,2)-->(3-10)
+   ├── ordering: +10
+   ├── prune: (1-9)
+   ├── interesting orderings: (+2,+1) (+2,+4,+1) (+3,+5,+2,+1)
    └── select
-        ├── columns: id:1(int!null) season:2(int!null) num:3(int) title:4(string) stardate:5(decimal)
-        ├── stats: [rows=26.3333333, distinct(2)=1, null(2)=0]
-        ├── cost: 95.62
-        ├── key: (1)
-        ├── fd: (1)-->(2-5)
-        ├── prune: (1,3-5)
-        ├── interesting orderings: (+1)
-        ├── scan episodes
-        │    ├── columns: id:1(int!null) season:2(int) num:3(int) title:4(string) stardate:5(decimal)
-        │    ├── stats: [rows=79, distinct(1)=79, null(1)=0, distinct(2)=3, null(2)=0]
-        │    │   histogram(1)=  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1  0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1
-        │    │                <--- 1 --- 2 --- 3 --- 4 --- 5 --- 6 --- 7 --- 8 --- 9 --- 10 --- 11 --- 12 --- 13 --- 14 --- 15 --- 16 --- 17 --- 18 --- 19 --- 20 --- 21 --- 22 --- 23 --- 24 --- 25 --- 26 --- 27 --- 28 --- 29 --- 30 --- 31 --- 32 --- 33 --- 34 --- 35 --- 36 --- 37 --- 38 --- 39 --- 40 --- 41 --- 42 --- 43 --- 44 --- 45 --- 46 --- 47 --- 48 --- 49 --- 50 --- 51 --- 52 --- 53 --- 54 --- 55 --- 56 --- 57 --- 58 --- 59 --- 60 --- 61 --- 62 --- 63 --- 64 --- 65 --- 66 --- 67 --- 68 --- 69 --- 70 --- 71 --- 72 --- 73 --- 74 --- 75 --- 76 --- 77 --- 78 --- 79
-        │    ├── cost: 94.82
-        │    ├── key: (1)
-        │    ├── fd: (1)-->(2-5)
-        │    ├── prune: (1-5)
-        │    └── interesting orderings: (+1)
+        ├── columns: id:1(uuid!null) city:2(varchar!null) vehicle_city:3(varchar) rider_id:4(uuid) vehicle_id:5(uuid) start_address:6(varchar) end_address:7(varchar) start_time:8(timestamp) end_time:9(timestamp) revenue:10(decimal!null)
+        ├── immutable
+        ├── stats: [rows=12526.8275, distinct(10)=9.90909091, null(10)=0]
+        │   histogram(10)=  0  0   11115 1412
+        │                 <--- 90 ------- 99
+        ├── cost: 151254.04
+        ├── key: (1,2)
+        ├── fd: (1,2)-->(3-10)
+        ├── prune: (1-9)
+        ├── interesting orderings: (+2,+1) (+2,+4,+1) (+3,+5,+2,+1)
+        ├── scan rides
+        │    ├── columns: id:1(uuid!null) city:2(varchar!null) vehicle_city:3(varchar) rider_id:4(uuid) vehicle_id:5(uuid) start_address:6(varchar) end_address:7(varchar) start_time:8(timestamp) end_time:9(timestamp) revenue:10(decimal)
+        │    ├── stats: [rows=125000, distinct(1)=125000, null(1)=0, distinct(2)=9, null(2)=0, distinct(10)=100, null(10)=0]
+        │    │   histogram(1)=  0                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12
+        │    │                <--- '00000000-0000-4000-8000-000000000000' ----- '012d7731-8fc5-4480-8000-00000000023f' ----- '022f6a50-d6b2-48e0-8000-00000000042b' ----- '03a8e714-76af-49c0-8000-0000000006fb' ----- '04f97edc-7ef1-47c0-8000-00000000097d' ----- '06466b1e-5c0b-4980-8000-000000000bf8' ----- '07442c7f-bacb-4280-8000-000000000ddc' ----- '08a3f898-2cb2-4f80-8000-00000000107b' ----- '09a4df47-f993-4500-8000-000000001265' ----- '0b020c49-ba5e-4500-8000-0000000014ff' ----- '0c508b32-ce89-4580-8000-00000000177d' ----- '0db7281f-d9ba-4b00-8000-000000001a29' ----- '0f00ef13-48b2-4080-8000-000000001c9e' ----- '106e5cd4-ed2c-4f00-8000-000000001f57' ----- '1184c271-fff7-4d00-8000-00000000216a' ----- '1301eabb-cb1c-4900-8000-000000002441' ----- '144ed6fd-a836-4b00-8000-0000000026bc' ----- '15781c71-4fce-4400-8000-0000000028f3' ----- '16c3fc43-b2dd-4700-8000-000000002b6c' ----- '1810e885-8ff7-4900-8000-000000002de7' ----- '19274e22-a2c2-4700-8000-000000002ffa' ----- '1a4f8726-d04e-4200-8000-00000000322f' ----- '1bb83cf2-cf95-4500-8000-0000000034df' ----- '1d0f1f57-b41b-4c00-8000-00000000376d' ----- '1e6ab9b2-3dd5-4e00-8000-000000003a04' ----- '1fd04a2f-cefa-4400-8000-000000003cae' ----- '211ec918-e325-4400-8000-000000003f2c' ----- '226b2f23-033a-4800-8000-0000000041a6' ----- '23875925-3543-4e00-8000-0000000043c4' ----- '2516db0d-d82f-4800-8000-0000000046be' ----- '26634117-f844-4a00-8000-000000004938' ----- '279ee02a-77a2-4e00-8000-000000004b92' ----- '291fb3fa-6def-4800-8000-000000004e70' ----- '2a771c97-0f7b-4e00-8000-0000000050ff' ----- '2b66b617-7ea1-4600-8000-0000000052c8' ----- '2cd53048-9d27-4400-8000-000000005583' ----- '2e22a2c2-3747-4400-8000-0000000057ff' ----- '2f80dc33-721d-4400-8000-000000005a9b' ----- '313cee9d-d7ec-4c00-8000-000000005dea' ----- '32d234eb-9a17-4e00-8000-0000000060ef' ----- '349c6f36-ef80-4600-8000-000000006459' ----- '36188b11-409a-4400-8000-00000000672e' ----- '37a46173-b85e-4000-8000-000000006a21' ----- '38b47c73-eee5-4600-8000-000000006c28' ----- '3a11a975-afaf-4600-8000-000000006ec2' ----- '3bbf93ff-25e5-4c00-8000-0000000071f6' ----- '3d41fa76-5343-4400-8000-0000000074d7' ----- '3eb18116-ebd4-4000-8000-000000007794' ----- '3fed2029-6b33-4400-8000-0000000079ee' ----- '415a8deb-0fad-4400-8000-000000007ca7' ----- '428dc981-beb1-4000-8000-000000007ef1' ----- '43d89ce4-a7b4-4400-8000-000000008168' ----- '4522ea0f-d3b2-4c00-8000-0000000083de' ----- '4676a726-4a16-4400-8000-000000008666' ----- '47bc3c5b-d0e1-4000-8000-0000000088d3' ----- '49036438-8ebc-4800-8000-000000008b43' ----- '4a12f901-083d-4c00-8000-000000008d49' ----- '4b923a29-c779-4800-8000-000000009024' ----- '4d06fef7-c243-4c00-8000-0000000092eb' ----- '4e46cfc8-29cf-4c00-8000-00000000954d' ----- '4f922962-cfd8-4000-8000-0000000097c5' ----- '508dd1e5-3a81-4c00-8000-0000000099a5' ----- '51d041cc-532a-4800-8000-000000009c0c' ----- '52e83a10-9d06-4400-8000-000000009e22' ----- '53fe1975-f2cb-4400-8000-00000000a034' ----- '554195cc-857f-4000-8000-00000000a29d' ----- '5634549b-62c7-4400-8000-00000000a46c' ----- '5776c482-7b6f-4400-8000-00000000a6d3' ----- '58aa8650-e779-4000-8000-00000000a91e' ----- '59d2bf55-1505-4c00-8000-00000000ab53' ----- '5aecd078-52f7-4400-8000-00000000ad6d' ----- '5c23315d-701d-4000-8000-00000000afbd' ----- '5d4cfd08-d4ba-4800-8000-00000000b1f5' ----- '5ed84d33-8f79-4400-8000-00000000b4e7' ----- '60221426-fe71-4c00-8000-00000000b75c' ----- '615b9a5a-89b9-4000-8000-00000000b9b2' ----- '62b302f7-2b45-4800-8000-00000000bc41' ----- '63e29307-af20-4c00-8000-00000000be84' ----- '6539756c-93a7-4000-8000-00000000c112' ----- '664cb5bb-384f-4400-8000-00000000c31f' ----- '67653437-3f31-4000-8000-00000000c536' ----- '689d27c3-9368-4800-8000-00000000c789' ----- '69ce4a7b-4e54-4800-8000-00000000c9cf' ----- '6b324851-a869-4000-8000-00000000cc76' ----- '6c5436b8-f9b1-4000-8000-00000000ce9f' ----- '6d9d7774-aba3-4800-8000-00000000d113' ----- '6e99a62e-d352-4400-8000-00000000d2f4' ----- '6fb6dca0-7f66-4800-8000-00000000d514' ----- '711b60ae-9680-4000-8000-00000000d7bc' ----- '72a51e32-1a2e-4000-8000-00000000daab' ----- '7415b142-2ccb-4c00-8000-00000000dd6a' ----- '756b00ff-da40-4400-8000-00000000dff5' ----- '76da0168-b5cc-4000-8000-00000000e2b1' ----- '77d41743-e963-4c00-8000-00000000e48e' ----- '7938151a-4378-4400-8000-00000000e735' ----- '7aa71583-1f03-4000-8000-00000000e9f1' ----- '7c219eb6-390c-4000-8000-00000000ecc3' ----- '7d7cb2d9-05c0-4400-8000-00000000ef59' ----- '7ec7863b-eec3-4800-8000-00000000f1d0' ----- '7fd8adab-9f55-4c00-8000-00000000f3d9' ----- '81333b96-af03-4000-8000-00000000f66e' ----- '8270f388-2278-4000-8000-00000000f8cc' ----- '836b0963-5610-4000-8000-00000000faa9' ----- '849667b5-f1be-4800-8000-00000000fce4' ----- '85efe931-8761-4800-8000-00000000ff77' ----- '877ab324-851a-4800-8000-000000010268' ----- '88dd1e53-a81d-4000-8000-00000001050c' ----- '8a361997-80ba-4800-8000-00000001079e' ----- '8b81f969-e3c9-4800-8000-000000010a17' ----- '8cb20fb2-24aa-4800-8000-000000010c5b' ----- '8e264e48-626f-4000-8000-000000010f21' ----- '8f9b994e-1a3f-4800-8000-0000000111e9' ----- '90c026cc-1ca3-4800-8000-000000011417' ----- '91ab0856-e696-4000-8000-0000000115d7' ----- '92dfd694-ccab-4000-8000-000000011824' ----- '94794ea0-7703-4000-8000-000000011b31' ----- '957928e0-c9d9-4000-8000-000000011d19' ----- '96bb98c7-e282-4000-8000-000000011f80' ----- '97e1b8ed-1bf7-4000-8000-0000000121b1' ----- '993037d6-3022-4000-8000-00000001242f' ----- '9ac03ff6-9014-4800-8000-00000001272a' ----- '9c4e2f37-fbef-4000-8000-000000012a21' ----- '9d9d3458-cd20-4000-8000-000000012ca0' ----- '9ec2ce46-4990-4000-8000-000000012ed0' ----- 'a01d5c31-593e-4000-8000-000000013165' ----- 'a155d5f5-6a7a-4800-8000-0000000133b9' ----- 'a2df9378-ee28-4800-8000-0000000136a8' ----- 'a468448c-f7ca-4800-8000-000000013995' ----- 'a5931ca7-d673-4000-8000-000000013bcf' ----- 'a73b42cc-2d6a-4000-8000-000000013ef8' ----- 'a8e92d55-a3a0-4000-8000-00000001422c' ----- 'aa222d51-71e2-4800-8000-000000014481' ----- 'ab2fa93a-f74c-4000-8000-000000014683' ----- 'ac28b2a6-b0d9-4000-8000-00000001485e' ----- 'ad234eb9-a176-4000-8000-000000014a3c' ----- 'ae392e1e-f73c-4000-8000-000000014c4e' ----- 'af6be37d-e939-4800-8000-000000014e97' ----- 'b10d38cd-a6e7-4000-8000-0000000151b3' ----- 'b210be94-24e5-4000-8000-0000000153a2' ----- 'b34ce3de-6149-4800-8000-0000000155fd' ----- 'b48f53c5-79f2-4800-8000-000000015864' ----- 'b631b584-b1ab-4800-8000-000000015b82' ----- 'b76c4827-b6fe-4000-8000-000000015dda' ----- 'b8d716d2-aa5c-4000-8000-00000001608e' ----- 'ba240314-8776-4000-8000-000000016309' ----- 'bb70ef56-6490-4000-8000-000000016584' ----- 'bcb70ac3-a860-4000-8000-0000000167f2' ----- 'be0589ac-bc8c-4000-8000-000000016a70' ----- 'bf601797-cc3a-4000-8000-000000016d05' ----- 'c055fbb5-17a4-4000-8000-000000016eda' ----- 'c195cc85-7f30-4000-8000-00000001713c' ----- 'c2ef4e01-14d2-4800-8000-0000000173cf' ----- 'c44f1a19-86b9-4000-8000-00000001766e' ----- 'c576cce5-f740-4000-8000-0000000178a2' ----- 'c6dbd72b-cb5f-4800-8000-000000017b4b' ----- 'c835dedf-1e08-4800-8000-000000017ddf' ----- 'c9795b35-b0bb-4800-8000-000000018048' ----- 'caaeafab-53d6-4000-8000-000000018296' ----- 'cbc51548-66a1-4000-8000-0000000184a9' ----- 'cd0dcfcc-5b8d-4800-8000-00000001871c' ----- 'ce2089e3-4330-4800-8000-000000018928' ----- 'cf6e8294-9a56-4800-8000-000000018ba5' ----- 'd0b06c43-f5f9-4800-8000-000000018e0b' ----- 'd1c4b902-14ad-4800-8000-00000001901a' ----- 'd2f1a9fb-e76c-4800-8000-000000019258' ----- 'd40357a3-5504-4000-8000-000000019462' ----- 'd52220bc-382a-4000-8000-000000019685' ----- 'd65b20b8-066c-4800-8000-0000000198da' ----- 'd7aa25d8-d79d-4800-8000-000000019b59' ----- 'd8bef8ce-b356-4800-8000-000000019d69' ----- 'da06a6e3-2e38-4000-8000-000000019fda' ----- 'db4916ca-46e0-4000-8000-00000001a241' ----- 'dc6b0531-9828-4000-8000-00000001a46a' ----- 'dd7342ed-bb59-4000-8000-00000001a662' ----- 'deda6612-8390-4000-8000-00000001a90f' ----- 'e09aaa3a-d18d-4800-8000-00000001ac66' ----- 'e1f85d74-4f5d-4800-8000-00000001af01' ----- 'e30d306a-2b17-4800-8000-00000001b111' ----- 'e44d013a-92a3-4800-8000-00000001b373' ----- 'e5d63886-594a-4800-8000-00000001b661' ----- 'e6a44417-8705-4000-8000-00000001b7ea' ----- 'e82e87d2-c7b8-4000-8000-00000001bada' ----- 'e9717df1-9d66-4000-8000-00000001bd42' ----- 'eb04ab60-6b7a-4000-8000-00000001c043' ----- 'ec3c18b5-02ab-4800-8000-00000001c295' ----- 'ed8904f6-dfc5-4000-8000-00000001c510' ----- 'eef0281b-a7fc-4000-8000-00000001c7bd' ----- 'f0489d27-c393-4800-8000-00000001ca4e' ----- 'f19934ef-cbd5-4800-8000-00000001ccd0' ----- 'f352a843-8088-4000-8000-00000001d01a' ----- 'f4a66559-f6ec-4800-8000-00000001d2a2' ----- 'f595feda-6612-4000-8000-00000001d46b' ----- 'f6e696a2-6e54-4000-8000-00000001d6ed' ----- 'f8244e93-e1c9-4800-8000-00000001d94b' ----- 'f9b77c02-afdd-4800-8000-00000001dc4c' ----- 'fac57e23-f24d-4000-8000-00000001de4f' ----- 'fc0980b2-4207-4800-8000-00000001e0b9' ----- 'fd75e204-6c76-4800-8000-00000001e370' ----- 'feacc921-46a1-4800-8000-00000001e5c1' ----- 'fffe6d58-c8ee-4000-8000-00000001e845'
+        │    │   histogram(2)=  0     14225     0   12875    0      13362      0    14050     0   14900   0  13725   0       13475       0    14637    0       13750
+        │    │                <--- 'amsterdam' --- 'boston' --- 'los angeles' --- 'new york' --- 'paris' --- 'rome' --- 'san francisco' --- 'seattle' --- 'washington dc'
+        │    │   histogram(10)=  0 1325 1.2226e+05 1412
+        │    │                 <--- 0 ------------- 99
+        │    ├── cost: 150004.02
+        │    ├── key: (1,2)
+        │    ├── fd: (1,2)-->(3-10)
+        │    ├── prune: (1-10)
+        │    └── interesting orderings: (+2,+1) (+2,+4,+1) (+3,+5,+2,+1)
         └── filters
-             └── gt [type=bool, outer=(2), constraints=(/2: [/4 - ]; tight)]
-                  ├── variable: season:2 [type=int]
-                  └── const: 3 [type=int]
-(31 rows)
+             └── gt [type=bool, outer=(10), immutable, constraints=(/10: (/90 - ]; tight)]
+                  ├── variable: revenue:10 [type=decimal]
+                  └── const: 90 [type=decimal]
+(41 rows)
 ~~~
 
 <a name="opt-env-option"></a>
@@ -338,104 +378,207 @@ To include all details used by the optimizer, including statistics, use `OPT, EN
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+> EXPLAIN (OPT, ENV) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-              text
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  https://cockroachdb.github.io/text/decode.html#eJzEVcFum0oUXWe-4opN7PeAgCFOTKQnEULe4xXjCGhaK4rQGCb2NMBYw5A0qSrlI7zs1_lLKhzbJYumXTQyCyTOuefOnTNzL4oCl4RXlJUWOCy95Qyns7NTcBwf7nqaqquaMiECq6bS03VlOtB7Az07xFiDzufjftI3FTyf50TJML-npT5QDVWTYVLTXEBP62kHmnFg6KD3Lb1vGYYMU6aruqGaXYQUBThhPCM8-cRoWSU5LaiAGa5AzAhk5AbXuYA7nNfEArOJJyWe5CR5pNNHPF2pfhbOyiaezQUt6CPhyQ3jhE7L5JY8VK9okBO6duxCbJ_6LpA5rVhGKuigPZqBF8THEIxiCN77voz2KoIrVq7hZ6isixffgoqcQBSHXvDvViYwz7AgcOY63tD2N7gzCqI4tL0gBmnOaYH5gwQXoTe0wzG8c8fQoRnYkdOV0d65PfT8cSuuQzMZnguSoawLGVZLy7BZrYu6JwjZfuyG6901jODkVp3Xk5ym6na3XvC_68QQxXbsRbHnRLB_hQAAvqzezSOlLK-LspIsuNqCK4Jm0ha4llsCTrAgWYKFZIHU3A1FMxVNB_3IMvuWcajqes8wj__WNEvTpJYyo5WgZSqSlNVloz4atNgZrQRLUpYn4mFOmtyN_219iYsVniS4FixJXnB1nm_zai2Cs_vWeiv8q_zbJjwfxJsbYbzqw449KOvizQ3ovX4TduzAqgN33Q277oT1-Hl7G_p_3gbzFzag6_0ThNyPF77tBdAZXcQyuMFlFyLXbyboX3AejoY_fiMf_nNDdz2l4R8wYBSeuSGcjjeYHTknSFEUBVWMCwTLxWK5eFounqAiOUnFupzl4tsGTnG5zb9lN6IbmgvCq_aJtDNuykDfAwAA__-U4RrF
+                      text
+-----------------------------------------------------
+  https://cockroachdb.github.io/text/decode.html#....
 (1 row)
 ~~~
 
-The output of `EXPLAIN (OPT,ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
+The output of `EXPLAIN (OPT, ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
 
 Note that the data is processed in the local browser session and is never sent out over the network. Keep in mind that if you are using any browser extensions, they may be able to access the data locally.
 
 When you visit the URL above you should see the following output in your browser.
 
 ~~~
--- Version: CockroachDB CCL v20.2.0 (x86_64-apple-darwin19.3.0, built 2020/05/31 16:16:33, go1.13.4)
 
--- reorder_joins_limit has the default value: 4
+-- Version: CockroachDB CCL v20.2.0 (x86_64-apple-darwin19.6.0, built 2020/09/17 16:03:34, go1.14.3)
+
+-- reorder_joins_limit has the default value: 8
 -- enable_zigzag_join has the default value: on
--- optimizer_foreign_keys has the default value: on
+-- optimizer_use_histograms has the default value: on
+-- optimizer_use_multicol_stats has the default value: on
 
-CREATE TABLE episodes (
-	id INT8 NOT NULL,
-	season INT8 NULL,
-	num INT8 NULL,
-	title STRING NULL,
-	stardate DECIMAL NULL,
-	CONSTRAINT "primary" PRIMARY KEY (id ASC),
-	FAMILY "primary" (id, season, num, title, stardate)
+CREATE TABLE public.rides (
+	id UUID NOT NULL,
+	city VARCHAR NOT NULL,
+	vehicle_city VARCHAR NULL,
+	rider_id UUID NULL,
+	vehicle_id UUID NULL,
+	start_address VARCHAR NULL,
+	end_address VARCHAR NULL,
+	start_time TIMESTAMP NULL,
+	end_time TIMESTAMP NULL,
+	revenue DECIMAL(10,2) NULL,
+	CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+	CONSTRAINT fk_city_ref_users FOREIGN KEY (city, rider_id) REFERENCES public.users(city, id),
+	CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (vehicle_city, vehicle_id) REFERENCES public.vehicles(city, id),
+	INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
+	INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
+	FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
+	CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
 );
 
-ALTER TABLE startrek.public.episodes INJECT STATISTICS '[
+ALTER TABLE movr.public.rides INJECT STATISTICS '[
+    {
+        "columns": [
+            "city"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 9,
+        "histo_col_type": "STRING",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
     {
         "columns": [
             "id"
         ],
-        "created_at": "2020-04-01 17:46:35.112348+00:00",
-        "distinct_count": 79,
-        "histo_col_type": "INT8",
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 125617,
+        "histo_col_type": "UUID",
         "name": "__auto__",
         "null_count": 0,
-        "row_count": 79
+        "row_count": 125000
     },
     {
         "columns": [
-            "season"
+            "city",
+            "id"
         ],
-        "created_at": "2020-04-01 17:46:35.112348+00:00",
-        "distinct_count": 3,
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 124937,
         "histo_col_type": "",
         "name": "__auto__",
         "null_count": 0,
-        "row_count": 79
+        "row_count": 125000
     },
     {
         "columns": [
-            "num"
+            "rider_id"
         ],
-        "created_at": "2020-04-01 17:46:35.112348+00:00",
-        "distinct_count": 29,
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 12552,
+        "histo_col_type": "UUID",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "city",
+            "rider_id"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 12444,
         "histo_col_type": "",
         "name": "__auto__",
         "null_count": 0,
-        "row_count": 79
+        "row_count": 125000
     },
     {
         "columns": [
-            "title"
+            "vehicle_city"
         ],
-        "created_at": "2020-04-01 17:46:35.112348+00:00",
-        "distinct_count": 79,
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 9,
+        "histo_col_type": "STRING",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "vehicle_id"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 3764,
+        "histo_col_type": "UUID",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "vehicle_city",
+            "vehicle_id"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 3717,
         "histo_col_type": "",
         "name": "__auto__",
         "null_count": 0,
-        "row_count": 79
+        "row_count": 125000
     },
     {
         "columns": [
-            "stardate"
+            "start_address"
         ],
-        "created_at": "2020-04-01 17:46:35.112348+00:00",
-        "distinct_count": 76,
-        "histo_col_type": "",
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 124678,
+        "histo_col_type": "STRING",
         "name": "__auto__",
-        "null_count": 4,
-        "row_count": 79
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "end_address"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 126337,
+        "histo_col_type": "STRING",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "start_time"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 30,
+        "histo_col_type": "TIMESTAMP",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "end_time"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 756,
+        "histo_col_type": "TIMESTAMP",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
+    },
+    {
+        "columns": [
+            "revenue"
+        ],
+        "created_at": "2020-09-17 16:27:05.231123",
+        "distinct_count": 100,
+        "histo_col_type": "DECIMAL",
+        "name": "__auto__",
+        "null_count": 0,
+        "row_count": 125000
     }
 ]';
 
-EXPLAIN (OPT, ENV) SELECT * FROM episodes WHERE season > 3 ORDER BY season ASC;
+EXPLAIN (OPT, ENV) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ----
 sort
  └── select
-      ├── scan episodes
+      ├── scan rides
       └── filters
-           └── season > 3
+           └── revenue > 90
 ~~~
 
 ### `VEC` option
@@ -444,17 +587,18 @@ The `VEC` option shows details about the [vectorized execution plan](vectorized-
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN (VEC) SELECT * FROM episodes WHERE season > 3;
+> EXPLAIN (VEC) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
-                 text
----------------------------------------
+                    text
+---------------------------------------------
   │
   └ Node 1
-    └ *colexec.selGTInt64Int64ConstOp
-      └ *colexec.colBatchScan
-(4 rows)
+    └ *colexec.sortOp
+      └ *colexec.selGTDecimalDecimalConstOp
+        └ *colfetcher.ColBatchScan
+(5 rows)
 ~~~
 
 The output shows the different internal functions that will be used to process each batch of column-oriented data.
@@ -519,15 +663,17 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 ~~~
 
 ~~~
-  tree |    field    |      description
--------+-------------+------------------------
-       | distributed | true
-       | vectorized  | false
-  scan |             |
-       | table       | kv@primary
-       | spans       | FULL SCAN
-       | filter      | (v >= 4) AND (v <= 5)
-(6 rows)
+    tree    |     field     |      description
+------------+---------------+------------------------
+            | distribution  | full
+            | vectorized    | false
+  filter    |               |
+   │        | filter        | (v >= 4) AND (v <= 5)
+   └── scan |               |
+            | missing stats |
+            | table         | kv@primary
+            | spans         | FULL SCAN
+(8 rows)
 ~~~
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
@@ -543,14 +689,15 @@ If there were an index on `v`, CockroachDB would be able to avoid scanning the e
 ~~~
 
 ~~~
-  tree |    field    | description
--------+-------------+--------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | kv@v
-       | spans       | /4-/6
-(5 rows)
+  tree |     field     | description
+-------+---------------+--------------
+       | distribution  | local
+       | vectorized    | false
+  scan |               |
+       | missing stats |
+       | table         | kv@v
+       | spans         | [/4 - /5]
+(6 rows)
 ~~~
 
 Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6. Also note that this query plan is not distributed across nodes on the cluster.
@@ -576,22 +723,21 @@ UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 ~~~
 
 ~~~
-         tree         |      field       | description
-----------------------+------------------+--------------
-                      | distributed      | false
-                      | vectorized       | false
-  count               |                  |
-   └── update         |                  |
-        │             | table            | kv
-        │             | set              | v
-        │             | strategy         | updater
-        │             | auto commit      |
-        └── render    |                  |
-             └── scan |                  |
-                      | table            | kv@primary
-                      | spans            | /1-/1/#
-                      | locking strength | for update
-(13 rows)
+       tree      |      field       | description
+-----------------+------------------+--------------
+                 | distribution     | local
+                 | vectorized       | false
+  update         |                  |
+   │             | table            | kv
+   │             | set              | v
+   │             | auto commit      |
+   └── render    |                  |
+        └── scan |                  |
+                 | missing stats    |
+                 | table            | kv@primary
+                 | spans            | [/1 - /1]
+                 | locking strength | for update
+(12 rows)
 ~~~
 
 By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` statements.  To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).

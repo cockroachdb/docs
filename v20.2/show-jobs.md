@@ -11,6 +11,7 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 - Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html)
 - The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`
+- <span class="version-tag">New in v20.2:</span> [Scheduled backups](manage-a-backup-schedule.html)
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
@@ -34,13 +35,13 @@ By default, only the `root` user can execute `SHOW JOBS`.
 {% include {{ page.version.version }}/sql/diagrams/show_jobs.html %}
 </div>
 
-
 ## Parameters
 
  Parameter | Description
 -----------|-------------
 `select_stmt` | A [selection query](selection-queries.html) that specifies the `job_id`(s) to view.
 `job_id` | The ID of the job you want to view.
+`for_schedules_clause` | <span class="version-tag">New in v20.2:</span> The schedule you want to view jobs for. You can view jobs for a specific schedule (`FOR SCHEDULE id`) or view jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#show-jobs-for-a-schedule) below.
 
 ## Response
 
@@ -155,6 +156,36 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
      job_id     | job_type  |               description                 |...
 +---------------+-----------+-------------------------------------------+...
  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+~~~
+
+### Show jobs for a schedule
+
+<span class="version-tag">New in v20.2:</span> To view jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW JOBS FOR SCHEDULE 590204387299262465;
+~~~
+~~~
+        job_id       | job_type |                                                                                                             description                                                                                   | statement | user_name | status  | running_status |             created              | started | finished |             modified             | fraction_completed | error | coordinator_id
+---------------------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+-----------+---------+----------------+----------------------------------+---------+----------+----------------------------------+--------------------+-------+-----------------
+  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:20:00+00:00' WITH revision_history, detached |           | root      | running | NULL           | 2020-09-15 16:20:18.347383+00:00 | NULL    | NULL     | 2020-09-15 16:20:18.347383+00:00 |                  0 |       |              0
+(1 row)
+~~~
+
+You can also view multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `SHOW JOBS` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+~~~
+
+~~~
+        job_id       | job_type |                                                                                                                 description                                                                                      | statement | user_name |  status   | running_status |             created              | started |             finished             |             modified             | fraction_completed | error | coordinator_id
+---------------------+----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+-----------+-----------+----------------+----------------------------------+---------+----------------------------------+----------------------------------+--------------------+-------+-----------------
+  590204496007299074 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:14:44.991631+00:00' WITH revision_history, detached |           | root      | succeeded | NULL           | 2020-09-15 16:15:17.720725+00:00 | NULL    | 2020-09-15 16:15:20.913789+00:00 | 2020-09-15 16:15:20.910594+00:00 |                  1 |       |              0
+  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:20:00+00:00' WITH revision_history, detached        |           | root      | succeeded | NULL           | 2020-09-15 16:20:18.347383+00:00 | NULL    | 2020-09-15 16:20:48.37873+00:00  | 2020-09-15 16:20:48.374256+00:00 |                  1 |       |              0
+(2 rows)
 ~~~
 
 ## See also

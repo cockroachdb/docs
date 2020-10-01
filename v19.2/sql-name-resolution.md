@@ -29,6 +29,10 @@ The schema name for all stored objects in any given database is always
 objects because CockroachDB only supports a two-level storage
 structure.
 
+{{site.data.alerts.callout_info}}
+CockroachDB versions < v20.2 do not support user-defined schemas.
+{{site.data.alerts.end}}
+
 In addition to `public`, CockroachDB also supports a fixed set of
 virtual schemas, available in every database, that provide ancillary, non-stored
 data to client applications. For example,

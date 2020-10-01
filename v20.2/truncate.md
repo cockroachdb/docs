@@ -6,10 +6,6 @@ toc: true
 
 The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.
 
-{{site.data.alerts.callout_info}}
-For smaller tables (with less than 1000 rows), using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
-{{site.data.alerts.end}}
-
 {% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis

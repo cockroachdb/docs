@@ -3349,6 +3349,12 @@ th {
 tbody tr:hover {
   background-color: #F3F3F3 !important; }
 
+tbody tr.eol {
+  background-color: #F3F3F3 !important; }
+
+tbody.nohover tr:hover {
+  background-color: inherit !important; }
+
 table > thead > tr > th,
 table > tbody > tr > th,
 table > tfoot > tr > th,
@@ -3688,5 +3694,23 @@ a.accordion-toggle {
 #search-pages .ais-Pagination-item.ais-Pagination-item--selected a {
   color: #497EDA;
   font-weight: 900; }
+
+.page-not-found {
+  width: 60%;
+  margin: 0 auto;
+  padding: 50px;
+  text-align: center; }
+
+#page-not-found-heading {
+  color: #212B36;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  line-height: 32px; }
+
+#page-not-found-body {
+  color: #637282;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 22px; }
 
 /*# sourceMappingURL=customstyles.css.map */

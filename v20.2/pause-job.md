@@ -4,7 +4,15 @@ summary: The PAUSE JOB statement lets you temporarily halt the process of potent
 toc: true
 ---
 
-The `PAUSE JOB` [statement](sql-statements.html) lets you pause [`IMPORT`](import.html) jobs, enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs, [user-created table statistics](create-statistics.html) jobs, [automatic table statistics](cost-based-optimizer.html#table-statistics) jobs, [`changefeeds`](stream-data-out-of-cockroachdb-using-changefeeds.html), and [schema change](online-schema-changes.html) jobs.
+The `PAUSE JOB` [statement](sql-statements.html) lets you pause the following types of jobs:
+
+- [`IMPORT`](import.html) jobs
+- [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
+- [User-created table statistics](create-statistics.html) jobs
+- [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
+- [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
+- [Schema change](online-schema-changes.html) jobs
+- <span class="version-tag">New in v20.2:</span> [Scheduled backup](manage-a-backup-schedule.html) jobs
 
 After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
@@ -24,6 +32,7 @@ Parameter | Description
 ----------|------------
 `job_id` | The ID of the job you want to pause, which can be found with [`SHOW JOBS`](show-jobs.html).
 `select_stmt` | A [selection query](selection-queries.html) that returns `job_id`(s) to pause.
+`for_schedules_clause` | <span class="version-tag">New in v20.2:</span> The schedule you want to pause jobs for. You can pause jobs for a specific schedule (`FOR SCHEDULE id`) or pause jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#pause-jobs-for-a-schedule) below.
 
 ## Examples
 
@@ -83,6 +92,30 @@ To permanently disable automatic table statistics jobs, disable the `sql.stats.a
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+~~~
+
+### Pause jobs for a schedule
+
+<span class="version-tag">New in v20.2:</span> To pause jobs for a specific [backup schedule](create-schedule-for-backup.html), use the schedule's `id`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> PAUSE JOBS FOR SCHEDULE 590204387299262465;
+~~~
+
+~~~
+PAUSE JOBS FOR SCHEDULES 1
+~~~
+
+You can also pause multiple schedules by nesting a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> PAUSE JOBS FOR SCHEDULES SELECT id FROM [SHOW SCHEDULES] WHERE label = 'test_schedule';
+~~~
+
+~~~
+PAUSE JOBS FOR SCHEDULES 2
 ~~~
 
 ## See also

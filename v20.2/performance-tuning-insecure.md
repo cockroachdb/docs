@@ -15,6 +15,8 @@ This tutorial shows you essential techniques for getting fast reads and writes i
 
 For a comprehensive list of tuning recommendations, only some of which are demonstrated here, see [SQL Performance Best Practices](performance-best-practices-overview.html).
 
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+
 ## Overview
 
 {% include {{ page.version.version }}/performance/overview.md %}

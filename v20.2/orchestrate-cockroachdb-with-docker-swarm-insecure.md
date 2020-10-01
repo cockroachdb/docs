@@ -11,8 +11,7 @@ toc: true
 
 This page shows you how to orchestrate the deployment and management of an insecure three-node CockroachDB cluster as a [swarm of Docker Engines](https://docs.docker.com/engine/swarm/).
 
-If you plan to use CockroachDB in production, we recommend using a secure cluster instead. Select **Secure** above for instructions.
-
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
 ## Before you begin
 

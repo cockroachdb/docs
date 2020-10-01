@@ -380,16 +380,17 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10000 ORDER BY em
 ~~~
 
 ~~~
-  emp_no |        birth_date         | first_name |  last_name  | gender |         hire_date          
-+--------+---------------------------+------------+-------------+--------+---------------------------+
-   10001 | 1953-09-02 00:00:00+00:00 | Georgi     | Facello     | M      | 1986-06-26 00:00:00+00:00  
-   10002 | 1964-06-02 00:00:00+00:00 | Bezalel    | Simmel      | F      | 1985-11-21 00:00:00+00:00  
-   10003 | 1959-12-03 00:00:00+00:00 | Parto      | Bamford     | M      | 1986-08-28 00:00:00+00:00  
-   ... snip
-
+emp_no |        birth_date         | first_name |  last_name  | gender |         hire_date
+---------+---------------------------+------------+-------------+--------+----------------------------
+ 10001 | 1953-09-02 00:00:00+00:00 | Georgi     | Facello     | M      | 1986-06-26 00:00:00+00:00
+ 10002 | 1964-06-02 00:00:00+00:00 | Bezalel    | Simmel      | F      | 1985-11-21 00:00:00+00:00
+ 10003 | 1959-12-03 00:00:00+00:00 | Parto      | Bamford     | M      | 1986-08-28 00:00:00+00:00
+ 10004 | 1954-05-01 00:00:00+00:00 | Chirstian  | Koblick     | M      | 1986-12-01 00:00:00+00:00
+...
 (25 rows)
 
-Time: 1.31ms
+Server Execution Time: 540µs
+Network Latency: 797µs
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -408,16 +409,17 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10025 ORDER BY em
 ~~~
 
 ~~~
-  emp_no |        birth_date         | first_name | last_name  | gender |         hire_date          
-+--------+---------------------------+------------+------------+--------+---------------------------+
-   10026 | 1953-04-03 00:00:00+00:00 | Yongqiao   | Berztiss   | M      | 1995-03-20 00:00:00+00:00  
-   10027 | 1962-07-10 00:00:00+00:00 | Divier     | Reistad    | F      | 1989-07-07 00:00:00+00:00  
-   10028 | 1963-11-26 00:00:00+00:00 | Domenick   | Tempesti   | M      | 1991-10-22 00:00:00+00:00  
-   ... snip!
-
+  emp_no |        birth_date         | first_name | last_name  | gender |         hire_date
+---------+---------------------------+------------+------------+--------+----------------------------
+   10026 | 1953-04-03 00:00:00+00:00 | Yongqiao   | Berztiss   | M      | 1995-03-20 00:00:00+00:00
+   10027 | 1962-07-10 00:00:00+00:00 | Divier     | Reistad    | F      | 1989-07-07 00:00:00+00:00
+   10028 | 1963-11-26 00:00:00+00:00 | Domenick   | Tempesti   | M      | 1991-10-22 00:00:00+00:00
+   10029 | 1956-12-13 00:00:00+00:00 | Otmar      | Herbst     | M      | 1985-11-20 00:00:00+00:00
+...
 (25 rows)
 
-Time: 1.473ms
+Server Execution Time: 545µs
+Network Latency: 529µs
 ~~~
 
 To get an arbitrary page of results showing employees whose IDs (`emp_no`) are in a much higher range, run the following query. Note that it takes about the same amount of time to run as the previous queries.
@@ -428,16 +430,18 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 300025 ORDER BY e
 ~~~
 
 ~~~
-  emp_no |        birth_date         | first_name |  last_name   | gender |         hire_date          
-+--------+---------------------------+------------+--------------+--------+---------------------------+
-  400000 | 1963-11-29 00:00:00+00:00 | Mitsuyuki  | Reinhart     | M      | 1985-08-27 00:00:00+00:00  
-  400001 | 1962-06-02 00:00:00+00:00 | Rosalie    | Chinin       | M      | 1986-11-28 00:00:00+00:00  
-  400002 | 1964-08-16 00:00:00+00:00 | Quingbo    | Birnbaum     | F      | 1986-04-23 00:00:00+00:00  
-  ... snip!
-
+  emp_no |        birth_date         | first_name |  last_name   | gender |         hire_date
+---------+---------------------------+------------+--------------+--------+----------------------------
+  400000 | 1963-11-29 00:00:00+00:00 | Mitsuyuki  | Reinhart     | M      | 1985-08-27 00:00:00+00:00
+  400001 | 1962-06-02 00:00:00+00:00 | Rosalie    | Chinin       | M      | 1986-11-28 00:00:00+00:00
+  400002 | 1964-08-16 00:00:00+00:00 | Quingbo    | Birnbaum     | F      | 1986-04-23 00:00:00+00:00
+  400003 | 1958-04-30 00:00:00+00:00 | Jianwen    | Sidhu        | M      | 1986-02-01 00:00:00+00:00
+  400004 | 1958-04-30 00:00:00+00:00 | Sedat      | Suppi        | M      | 1995-12-18 00:00:00+00:00
+....
 (25 rows)
 
-Time: 1.319ms
+Server Execution Time: 545µs
+Network Latency: 529µs
 ~~~
 
 Compare the execution speed of the previous keyset pagination queries with the query below that uses `LIMIT` / `OFFSET` to get the same page of results:
@@ -448,16 +452,17 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' LIMIT 25 OFFSET 200024;
 ~~~
 
 ~~~
-  emp_no |        birth_date         | first_name |  last_name   | gender |         hire_date          
-+--------+---------------------------+------------+--------------+--------+---------------------------+
-  400000 | 1963-11-29 00:00:00+00:00 | Mitsuyuki  | Reinhart     | M      | 1985-08-27 00:00:00+00:00  
-  400001 | 1962-06-02 00:00:00+00:00 | Rosalie    | Chinin       | M      | 1986-11-28 00:00:00+00:00  
-  400002 | 1964-08-16 00:00:00+00:00 | Quingbo    | Birnbaum     | F      | 1986-04-23 00:00:00+00:00  
-  ... snip!
-
+  emp_no |        birth_date         | first_name |  last_name   | gender |         hire_date
+---------+---------------------------+------------+--------------+--------+----------------------------
+  400000 | 1963-11-29 00:00:00+00:00 | Mitsuyuki  | Reinhart     | M      | 1985-08-27 00:00:00+00:00
+  400001 | 1962-06-02 00:00:00+00:00 | Rosalie    | Chinin       | M      | 1986-11-28 00:00:00+00:00
+  400002 | 1964-08-16 00:00:00+00:00 | Quingbo    | Birnbaum     | F      | 1986-04-23 00:00:00+00:00
+  400003 | 1958-04-30 00:00:00+00:00 | Jianwen    | Sidhu        | M      | 1986-02-01 00:00:00+00:00
+...
 (25 rows)
 
-Time: 118.114ms
+Server Execution Time: 141.314ms
+Network Latency: 498µs
 ~~~
 
 The query using `LIMIT`/`OFFSET` for pagination is almost 100 times slower. To see why, let's use [`EXPLAIN`](explain.html).
@@ -468,20 +473,21 @@ EXPLAIN SELECT * FROM employees LIMIT 25 OFFSET 200024;
 ~~~
 
 ~~~
-    tree    |    field    |         description
-------------+-------------+------------------------------
-            | distributed | true
-            | vectorized  | false
-  limit     |             |
-   │        | offset      | 200024
-   └── scan |             |
-            | table       | employees@idx_17110_primary
-            | spans       | LIMITED SCAN
-            | limit       | 200049
-(8 rows)
+    tree    |        field        |         description
+------------+---------------------+------------------------------
+            | distribution        | full
+            | vectorized          | true
+  limit     |                     |
+   │        | offset              | 200024
+   └── scan |                     |
+            | estimated row count | 200049
+            | table               | employees@idx_17110_primary
+            | spans               | LIMITED SCAN
+            | limit               | 200049
+(9 rows)
 ~~~
 
-The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limited scan of the entire table (see `spans` = `LIMITED SCAN` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049.
+The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limited scan of the entire table (see `spans` = `LIMITED SCAN` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049. The `estimated row count` row shows this.
 
 Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans` = `300026-` + 25 below). Because [there is an index on every column in the `WHERE` clause](indexes.html#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
 
@@ -491,16 +497,19 @@ EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~
 
 ~~~
-  tree |    field    |         description
--------+-------------+------------------------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | employees@idx_17110_primary
-       | spans       | /300026-
-       | limit       | 25
-(6 rows)
+  tree |        field        |         description
+-------+---------------------+------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 25
+       | table               | employees@idx_17110_primary
+       | spans               | [/300026 - ]
+       | limit               | 25
+(7 rows)
 ~~~
+
+As shown by the `estimated row count` row, this query scans only 25 rows, far fewer than the 200049 scanned by the `LIMIT`/`OFFSET` query.
 
 {{site.data.alerts.callout_danger}}
 Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots in the database for write-heavy workloads, since concurrent [`INSERT`](insert.html)s to the table will attempt to write to the same (or nearby) underlying [ranges](architecture/overview.html#architecture-range). This can be mitigated by designing your schema with [multi-column primary keys which include a monotonically increasing column](performance-best-practices-overview.html#use-multi-column-primary-keys).
