@@ -19,7 +19,7 @@ The workflow for MovR is as follows:
       VALUES ('66666666-6666-4400-8000-00000000000f', 'Mariah Lam', '88194 Angela Gardens Suite 60', 'amsterdam', '123245696');
     ~~~      
     
-    {{site.data.alerts.callout_info}}Usually for [Universally Unique Identifier (UUID)](uuid.html#create-a-table-with-auto-generated-unique-row-ids) you would need to generate it automatically but for the sake of this follow up we will use predetermined UUID to keep track of them in our examples.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}}Usually for <a href="uuid.html#create-a-table-with-auto-generated-unique-row-ids">Universally Unique Identifier (UUID)</a> you would need to generate it automatically but for the sake of this follow up we will use predetermined UUID to keep track of them in our examples.{{site.data.alerts.end}}
 
 3. In some cases, the user adds their own vehicle to share.
 
