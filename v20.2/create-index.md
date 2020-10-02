@@ -122,6 +122,10 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 > CREATE INDEX ON promo_codes USING GIN (rules);
 ~~~
 
+### Create spatial indexes
+
+For examples showing how to create spatial indexes, see [Spatial Indexes](spatial-indexes.html#examples).
+
 ### Store columns
 
 Storing a column improves the performance of queries that retrieve (but do not filter) its values.
