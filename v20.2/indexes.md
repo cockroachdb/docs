@@ -23,6 +23,8 @@ Each table automatically has an index created called `primary`, which indexes ei
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
 
+<a name="unique-secondary-indexes"></a>
+
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
 - By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
@@ -62,6 +64,12 @@ To create a hash-sharded index, set the `experimental_enable_hash_sharded_indexe
 {{site.data.alerts.callout_info}}
 Hash-sharded indexes cannot be [interleaved](interleave-in-parent.html).
 {{site.data.alerts.end}}
+
+## Spatial indexes
+
+{% include {{page.version.version}}/sql/spatial-support-new.md %}
+
+For more information about spatial indexes, see [Spatial Indexes](spatial-indexes.html).
 
 ## Best practices
 
@@ -145,6 +153,7 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 ## See also
 
 - [Inverted Indexes](inverted-indexes.html)
+- [Spatial Indexes](spatial-indexes.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`CREATE INDEX`](create-index.html)

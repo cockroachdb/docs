@@ -6,7 +6,8 @@ toc: true
 
 <a name="linux"></a>
 <a name="mac"></a>
-<span class="version-tag">New in v20.2</span>: CockroachDB has special support for efficiently storing and querying spatial data.
+
+{% include {{page.version.version}}/sql/spatial-support-new.md %}
 
 This page has instructions for installing CockroachDB Spatial on Mac and Linux.
 
@@ -258,6 +259,11 @@ If you are having difficulties installing CockroachDB Spatial, please see our [S
 ## See also
 
 - [Working with Spatial Data](spatial-data.html)
+- [Migrate from Shapefiles](migrate-from-shapefiles.html)
+- [Migrate from GeoJSON](migrate-from-geojson.html)
+- [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Spatial Features](spatial-features.html)
 - [Spatial & GIS Glossary of Terms](spatial-glossary.html)
 - [Geospatial functions](functions-and-operators.html#geospatial-functions)

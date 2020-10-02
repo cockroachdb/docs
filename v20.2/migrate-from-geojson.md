@@ -81,10 +81,12 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
