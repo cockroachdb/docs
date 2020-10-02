@@ -100,7 +100,9 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)

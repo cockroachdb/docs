@@ -4,7 +4,7 @@ summary: CockroachDB has special support for efficiently storing and querying sp
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: CockroachDB has special support for efficiently storing and querying spatial data. Supported spatial data types include:
+Supported [spatial](spatial-features.html) data types include:
 
 - Geometric objects such as points, lines, paths, and polygons in 2-dimensional space. These are projected onto the flat surface of a plane and are represented in SQL by the `GEOMETRY` data type.
 
@@ -237,7 +237,7 @@ SELECT ST_AsText(geom) FROM tornadoes WHERE yr = 1999 AND st = 'OK' AND mo = 5 A
 
 We can see that almost half of all of the tornadoes in this outbreak began in Oklahoma.
 
-It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the spatial index coverings for the polygon.
+It might be interesting to draw these points on a map. The image below shows the points from the query above drawn as a simple polygon on a map of Oklahoma. The boxes around the polygon show the [spatial index](spatial-indexes.html) coverings for the polygon.
 
 <img width="100%" src="{{ 'images/v20.2/geospatial/1999-oklahoma-tornado-outbreak-map.png' | relative_url }}" alt="1999 Oklahoma tornado outbreak map view">
 
@@ -286,7 +286,7 @@ cockroach sql --insecure --host=localhost --port=26257
 
 Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension.
 
-However, we do not yet implement the full list of PostGIS built-in functions and operators. Also, our indexing works differently (see the [Performance](#performance) section below). For a list of the spatial functions we support, see [Geospatial functions](functions-and-operators.html#spatial-functions).
+However, we do not yet implement the full list of PostGIS built-in functions and operators. Also, our [spatial indexing works differently](spatial-indexes.html) (see the [Performance](#performance) section below). For a list of the spatial functions we support, see [Geospatial functions](functions-and-operators.html#spatial-functions).
 
 If your application needs support for functions that are not yet implemented, please check out [our meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
 
@@ -298,7 +298,7 @@ If you need help troubleshooting an issue with our spatial support, please get i
 
 ## Performance
 
-In order to avoid full table scans, make sure to add indexes to any columns that are accessed as part of a predicate in the [`WHERE`](select-clause.html#filter-on-a-single-condition) clause. For geospatial columns, the index will only be used if the column is accessed using an index-accelerated geospatial function from the list below (all of these functions work on `GEOMETRY` data types; a `*` means that a function also works on `GEOGRAPHY` data types):
+In order to avoid full table scans, make sure to add [indexes](spatial-indexes.html) to any columns that are accessed as part of a predicate in the [`WHERE`](select-clause.html#filter-on-a-single-condition) clause. For geospatial columns, the index will only be used if the column is accessed using an index-accelerated geospatial function from the list below (all of these functions work on `GEOMETRY` data types; a `*` means that a function also works on `GEOGRAPHY` data types):
 
 - `st_covers` (*)
 - `st_coveredby` (*)
@@ -317,25 +317,29 @@ To use a version of a function from the list above that will explicitly *not* us
 
 You can check which queries are using which indexes using the [`EXPLAIN`](explain.html) statement. For more information about general query tuning (including index usage), see [Make queries fast](make-queries-fast.html).
 
-The syntax for adding an index to a geometry column is:
+The syntax for adding an [index](spatial-indexes.html) to a geometry column is:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX tornado_geom_idx ON tornadoes USING GIST (geom);
 ~~~
 
-This creates an inverted index on the `geom` column. For more information about how inverted indexes work, see [Inverted indexes](inverted-indexes.html).
+This creates a (spatial) [inverted index](inverted-indexes.html) on the `geom` column.
 
 Because CockroachDB is a scale-out, multi-node database, our spatial indexing strategy is based on a [space-filling curve](https://en.wikipedia.org/wiki/Space-filling_curve)/quad-tree design (also known as "divide the space"), rather than the [R-Tree](https://en.wikipedia.org/wiki/R-tree) data structure used by some other spatial databases (also known as "divide the objects"). Other databases that use a "divide the space" strategy include Microsoft SQL Server and MongoDB.
+
+For more detailed information about how CockroachDB's spatial indexes work, see [Spatial indexes](spatial-indexes.html).
 
 If you encounter behavior that you think is due to a performance issue, please get in touch using our [Support resources](support-resources.html).
 
 ## See also
 
+- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Troubleshooting overview](troubleshooting-overview.html)
