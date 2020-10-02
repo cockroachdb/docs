@@ -98,7 +98,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
+> IMPORT TABLE employees FROM MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
 ~~~
 
 ~~~
