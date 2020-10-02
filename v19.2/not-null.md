@@ -4,7 +4,7 @@ summary: The NOT NULL constraint specifies the column may not contain NULL value
 toc: true
 ---
 
-The `NOT NULL` [constraint](constraints.html) specifies a column may not contain [`NULL`](null-handling.md) values.
+The `NOT NULL` [constraint](constraints.html) specifies a column may not contain [`NULL`](null-handling.html) values.
 
 ## Details
 
@@ -78,4 +78,4 @@ pq: null value in column "cust_email" violates not-null constraint
 - [`PRIMARY KEY` constraint](primary-key.html)
 - [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
-- [`NULL HANDLING`](null-handling.md)
+- [`NULL HANDLING`](null-handling.html)
