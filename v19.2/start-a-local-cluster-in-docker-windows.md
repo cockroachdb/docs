@@ -26,9 +26,9 @@ Running multiple nodes on a single host is useful for testing CockroachDB, but i
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks.
 
-```powershell
+~~~ powershell
 PS C:\Users\username> docker network create -d bridge roachnet
-```
+~~~
 
 We've used `roachnet` as the network name here and in subsequent steps, but feel free to give your network any name you like.
 
@@ -38,7 +38,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
    {{site.data.alerts.callout_info}}Be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker run -d `
    --name=roach1 `
    --hostname=roach1 `
@@ -48,7 +48,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
    {{page.release_info.docker_image}}:{{page.release_info.version}} start `
    --insecure `
    --join=roach1,roach2,roach3
-   ```
+   ~~~ 
 
 2. This command creates a container and starts the first CockroachDB node inside it. Take a moment to understand each part:
 
@@ -65,7 +65,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
    {{site.data.alerts.callout_info}}Again, be sure to replace <code>&#60;username&#62;</code> in the <code>-v</code> flag with your actual username.{{site.data.alerts.end}}
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker run -d `
    --name=roach2 `
    --hostname=roach2 `
@@ -75,9 +75,9 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
    {{page.release_info.docker_image}}:{{page.release_info.version}} start `
    --insecure `
    --join=roach1,roach2,roach3
-   ```
+   ~~~ 
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker run -d `
    --name=roach3 `
    --hostname=roach3 `
@@ -87,19 +87,19 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
    {{page.release_info.docker_image}}:{{page.release_info.version}} start `
    --insecure `
    --join=roach1,roach2,roach3
-   ```
+   ~~~ 
 
 4. Perform a one-time initialization of the cluster:
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker exec -it roach1 ./cockroach init --insecure
-   ```
+   ~~~ 
 
    You'll see the following message:
 
-   ```
+   ~~~ 
    Cluster successfully initialized
-   ```
+   ~~~ 
 
 ## Step 3. Use the built-in SQL client
 
@@ -107,69 +107,69 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 1. Start the SQL shell in the first container:
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker exec -it roach1 ./cockroach sql --insecure
-   ```
+   ~~~ 
 
 2. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > CREATE DATABASE bank;
-   ```
+   ~~~ 
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-   ```
+   ~~~ 
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > INSERT INTO bank.accounts VALUES (1, 1000.50);
-   ```
+   ~~~ 
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > SELECT * FROM bank.accounts;
-   ```
+   ~~~ 
 
-   ```
+   ~~~ 
      id | balance
    +----+---------+
       1 | 1000.50
    (1 row)
-   ```
+   ~~~ 
 
 3. Now exit the SQL shell on node 1 and open a new shell on node 2:
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > \q
-   ```
+   ~~~ 
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker exec -it roach2 ./cockroach sql --insecure
-   ```
+   ~~~ 
 
 4. Run the same `SELECT` query as before:
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > SELECT * FROM bank.accounts;
-   ```
+   ~~~ 
 
-   ```
+   ~~~ 
      id | balance
    +----+---------+
       1 | 1000.50
    (1 row)
-   ```
+   ~~~ 
 
    As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
@@ -177,9 +177,9 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
    {% include copy-clipboard.html %}
 
-   ```sql
+   ~~~ sql
    > \q
-   ```
+   ~~~ 
 
 ## Step 4. Run a sample workload
 
@@ -187,18 +187,18 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
 
 1. Load the initial dataset:
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker exec -it roach1 ./cockroach workload init movr \
    'postgresql://root@roach1:26257?sslmode=disable'
-   ```
+   ~~~ 
 
 2. Run the workload for 5 minutes:
 
-   ```powershell
+   ~~~ powershell
    PS C:\Users\username> docker exec -it roach1 ./cockroach workload run movr \
    --duration=5m \
    'postgresql://root@roach1:26257?sslmode=disable'
-   ```
+   ~~~ 
 
 ## Step 5. Access the Admin UI
 
@@ -226,19 +226,19 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
 Use the `docker stop` and `docker rm` commands to stop and remove the containers (and therefore the cluster):
 
-```powershell
+~~~ powershell
 PS C:\Users\username> docker stop roach1 roach2 roach3
-```
+~~~ 
 
-```powershell
+~~~ powershell
 PS C:\Users\username> docker rm roach1 roach2 roach3
-```
+~~~ 
 
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
-```powershell
+~~~ powershell
 PS C:\Users\username> Remove-Item cockroach-data -recurse
-```
+~~~ 
 
 ## What's next?
 
