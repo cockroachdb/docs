@@ -799,14 +799,14 @@ a:not([href]) {
         padding-top: 30px; }
 
 section.footer {
-  background: #F7F7F7;
+  background: #b7df9a;
   padding: 0 0 20px;
   z-index: 1;
   position: relative; }
   @media screen and (min-width: 992px) {
     section.footer {
       border-top: 1px solid #DADADA;
-      background: #fff;
+     background: #b7df9a;
       padding: 0 0 40px; } }
   section.footer .container {
     width: 100%;
@@ -936,6 +936,7 @@ section.footer {
     color: #152849; }
     @media screen and (min-width: 992px) {
       section.footer .copyright {
+        background: #f3f3f3;
         text-align: left;
         width: 100%;
         margin-top: 15px;
