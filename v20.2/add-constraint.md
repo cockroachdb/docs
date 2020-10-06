@@ -159,6 +159,10 @@ Using `ON DELETE CASCADE` will ensure that when the referenced row is deleted, a
 > ALTER TABLE vehicles ADD CONSTRAINT users_fk FOREIGN KEY (city, owner_id) REFERENCES users (city, id) ON DELETE CASCADE;
 ~~~
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> By default, referenced columns must be in the same database as the referencing foreign-key column. To enable cross-database foreign-key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
+{{site.data.alerts.end}}
+
 ### Drop and add a primary key constraint
 
 Suppose that you want to add `name` to the composite primary key of the `users` table, [without creating a secondary index of the existing primary key](#changing-primary-keys-with-add-constraint-primary-key).
