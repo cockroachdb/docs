@@ -107,6 +107,18 @@
 
   <tr>
    <td>
+    <code>disallow_full_table_scans</code>
+   </td>
+   <td><span class="version-tag">New in v20.2</span>: If set to <code>on</code>, all queries that have planned a full table or full secondary index scan will return an error message. This setting does not apply to internal queries, which may plan full table or index scans without checking the session variable.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>distsql</code>
    </td>
    <td>The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node.</td>
@@ -123,6 +135,18 @@
     <code>enable_implicit_select_for_update</code>
    </td>
    <td> Indicates whether <a href="update.html"><code>UPDATE</code></a> statements acquire locks using the <code>FOR UPDATE</code> locking mode during their initial row scan, which improves performance for contended workloads.  For more information about how <code>FOR UPDATE</code> locking works, see the documentation for <a href="select-for-update.html"><code>SELECT FOR UPDATE</code></a>.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_insert_fast_path</code>
+   </td>
+   <td>Indicates whether CockroachDB will use a specialized execution operator for inserting into a table. We recommend leaving this setting <code>on</code>.</td>
    <td>
     <code>on</code>
    </td>
@@ -165,8 +189,30 @@
   </tr>
 
   <tr>
+   <td><code>foreign_key_cascades_limit</code></td>
+   <td><span class="version-tag">New in v20.2</span>: Limits the number of <a href="foreign-key.html">cascading operations</a> that run as part of a single query.</td>
+   <td>
+    <code>10000</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
    <td><code>idle_in_session_timeout</code></td>
    <td>Automatically terminates sessions that idle past the specified threshold. When set to <code>0</code>, the session will not timeout.</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>idle_in_transaction_session_timeout</code>
+   </td>
+   <td><span class="version-tag">New in v20.2</span>: Automatically terminates sessions that are idle in a transaction past the specified threshold. When set to <code>0</code>, the session will not timeout.</td>
    <td>
     <code>0</code>
    </td>
@@ -211,7 +257,7 @@
 
   <tr>
    <td>
-    <code>prefer_lookup_joins_for_fk</code>
+    <code>prefer_lookup_joins_for_fks</code>
    </td>
    <td><span class="version-tag">New in v20.2</span>: If <code>on</code>, the optimizer prefers <a href="joins.html#lookup-joins"><code>lookup joins</code></a> to <a href="joins.html#merge-joins"><code>merge joins</code></a> when performing <a href="foreign-key.html"><code>foreign key</code></a> checks.</td>
    <td>
@@ -489,6 +535,30 @@
 
   <tr>
    <td>
+    <code>default_tablespace</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code></code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_seqscan</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>integer_datetimes</code>
    </td>
    <td>(Reserved; exposed only for ORM compatibility.)</td>
@@ -506,6 +576,18 @@
    <td>(Reserved; exposed only for ORM compatibility.)</td>
    <td>
     <code>postgres</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>lock_timeout</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>0</code>
    </td>
    <td>No</td>
    <td>Yes</td>
@@ -537,6 +619,18 @@
 
   <tr>
    <td>
+    <code>row_security</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>standard_conforming_strings</code>
    </td>
    <td>(Reserved; exposed only for ORM compatibility.)</td>
@@ -554,6 +648,30 @@
    <td>(Reserved; exposed only for ORM compatibility.)</td>
    <td>
     <code>UTF8</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>synchronize_seqscans</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>synchronous_commit</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
