@@ -4,7 +4,12 @@ summary: Use the ALTER SEQUENCE statement to change the name, increment values, 
 toc: true
 ---
 
-The `ALTER SEQUENCE` [statement](sql-statements.html) [changes the name](rename-sequence.html), increment values, and other settings of a sequence.
+The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](online-schema-changes.html) to a sequence.
+
+
+{{site.data.alerts.callout_info}}
+This page documents all supported sequence changes except for changing the name of a sequence and changing the schema of a sequence. For information about changing the name of a sequence, see [`RENAME SEQUENCE`](rename-sequence.html). For information about changing the schema of a sequence, see [`SET SCHEMA`](set-schema.html).
+{{site.data.alerts.end}}
 
 {% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -114,6 +119,7 @@ Let's add another record to the table to check that the new record adheres to th
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
+- [`SET SCHEMA`](set-schema.html)
 - [Functions and Operators](functions-and-operators.html)
 - [Other SQL Statements](sql-statements.html)
 - [Online Schema Changes](online-schema-changes.html)
