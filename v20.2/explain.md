@@ -18,6 +18,8 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
+    <span class="version-tag">New in v20.2</span>: You can disable query plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
+
 - By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
@@ -674,6 +676,26 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
             | table         | kv@primary
             | spans         | FULL SCAN
 (8 rows)
+~~~
+
+<span class="version-tag">New in v20.2</span>: You can disable query plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+
+When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET disallow_full_table_scans=on;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
+~~~
+
+~~~
+ERROR: query `SELECT * FROM kv WHERE v BETWEEN 4 AND 5` contains a full table/index scan which is explicitly disallowed
+SQLSTATE: P0003
+HINT: try overriding the `disallow_full_table_scans` cluster/session setting
 ~~~
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
