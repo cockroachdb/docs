@@ -14,7 +14,7 @@ This documentation is still being worked on for the 20.2 release. For now, see t
 
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
-- [Spatial functions](functions-and-operators.html#geospatial-functions)
+- [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)

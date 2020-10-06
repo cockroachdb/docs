@@ -209,7 +209,7 @@ This section has information about the representation of geometric and geographi
 ## See also
 
 - [Working with Spatial Data](spatial-data.html)
-- [Spatial functions](functions-and-operators.html#geospatial-functions)
+- [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Spatial Features Overview](spatial-features.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
