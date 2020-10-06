@@ -17,7 +17,7 @@ To declare a new `ENUM` data type, use [`CREATE TYPE`](create-type.html):
 where `<name>` is the name of the new type, and `<value1>, <value2>, ...` are string literals that make up the type's set of static values.
 
 {{site.data.alerts.callout_info}}
-You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`).
+You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`). After the type is created, it can only be referenced from the database that contains the type.
 {{site.data.alerts.end}}
 
 To show all `ENUM` types in the database, use [`SHOW ENUMS`](show-enums.html):
