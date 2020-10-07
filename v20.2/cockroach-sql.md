@@ -165,7 +165,7 @@ Client Options | Description
 <a name="sql-option-display-format"></a> `display_format` | How to display table rows printed within the interactive SQL shell. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise<br /><br />To change this option, run `\set display_format <format>`. For a demonstration, see the [example](#make-the-output-of-show-statements-selectable) below.
 `echo` | Reveal the SQL statements sent implicitly by the SQL shell.<br><br>**Default:** `false`<br><br>To enable this option, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
 <a name="sql-option-errexit"></a> `errexit` | Exit the SQL shell upon encountering an error.<br /><br />**Default:** `false` for [interactive sessions](#session-and-output-types); `true` otherwise<br><br>To enable this option, run `\set errexit`.
-`show_times` | Reveal the time a query takes to complete.<br><br>**Default:** `true`<br><br>To disable this option, run `\unset show_times`.
+`show_times` | Reveal the time a query takes to complete. `execution` time refers to the time taken by the SQL execution engine to execute the query. `network` time refers to the network latency on the query. `other` time refers to all other forms of latency affecting the total query completion time.<br><br>**Default:** `true`<br><br>To disable this option, run `\unset show_times`.
 
 ### Help
 
