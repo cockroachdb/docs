@@ -1483,6 +1483,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>SET SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/set-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>SET TRANSACTION</code>",
     		    "urls": [
     		      "/${VERSION}/set-transaction.html"

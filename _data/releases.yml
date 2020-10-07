@@ -183,17 +183,19 @@
       no_windows: true
 - title: Testing releases
   releases:
-    - date: September 30, 2020
+    - date: Oct 6, 2020
+      version: v20.2.0-beta.4
+    - date: Sep 30, 2020
       version: v20.2.0-beta.3
-    - date: September 25, 2020
+    - date: Sep 25, 2020
       version: v20.2.0-beta.2
-    - date: September 14, 2020
+    - date: Sep 14, 2020
       version: v20.2.0-beta.1
-    - date: August 25, 2020
+    - date: Aug 25, 2020
       version: v20.2.0-alpha.3
-    - date: July 27, 2020
+    - date: Jul 27, 2020
       version: v20.2.0-alpha.2
-    - date: June 17, 2020
+    - date: Jun 17, 2020
       version: v20.2.0-alpha.1
     - date: Apr 21, 2020
       version: v20.1.0-rc.2

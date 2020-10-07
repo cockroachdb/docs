@@ -1,10 +1,10 @@
 ---
-title: Not Null Constraint
+title: NOT NULL constraint
 summary: The NOT NULL constraint specifies the column may not contain NULL values.
 toc: true
 ---
 
-The `NOT NULL` [constraint](constraints.html) specifies a column may not contain `NULL` values.
+The `NOT NULL` [constraint](constraints.html) specifies a column may not contain [`NULL`](null-handling.html) values.
 
 ## Details
 
@@ -20,7 +20,7 @@ The `NOT NULL` [constraint](constraints.html) specifies a column may not contain
 
 - To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`](alter-column.html#set-not-null-constraint) statement.
 
-- For more information about `NULL`, see [Null Handling](null-handling.html).
+- For more information about `NULL`, see [NULL handling](null-handling.html).
 
 ## Syntax
 
@@ -78,3 +78,4 @@ pq: null value in column "cust_email" violates not-null constraint
 - [`PRIMARY KEY` constraint](primary-key.html)
 - [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
+- [`NULL HANDLING`](null-handling.html)
