@@ -38,6 +38,18 @@
 
   <tr>
    <td>
+    <code>client_min_messages</code>
+   </td>
+   <td>The severity level of notices displayed in the <a href="cockroach-sql.html">SQL shell</a>. Accepted values include <code>debug5</code>, <code>debug4</code>, <code>debug3</code>, <code>debug2</code>, <code>debug1</code>, <code>log</code>, <code>notice</code>, <code>warning</code>, and <code>error</code>.</td>
+   <td>
+    <code>notice</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>crdb_version</code>
    </td>
    <td>The version of CockroachDB.</td>
@@ -504,18 +516,6 @@
    <td>(Reserved; exposed only for ORM compatibility.)</td>
    <td>
     <code>UTF8</code>
-   </td>
-   <td>No</td>
-   <td>Yes</td>
-  </tr>
-
-  <tr>
-   <td>
-    <code>client_min_messages</code>
-   </td>
-   <td>(Reserved; exposed only for ORM compatibility.)</td>
-   <td>
-    <code>notice</code>
    </td>
    <td>No</td>
    <td>Yes</td>
