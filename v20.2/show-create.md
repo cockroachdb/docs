@@ -58,8 +58,8 @@ Field | Description
 
 ~~~
   table_name |                     create_statement
-+------------+----------------------------------------------------------+
-  drivers    | CREATE TABLE drivers (
+-------------+-----------------------------------------------------------
+  drivers    | CREATE TABLE public.drivers (
              |     id UUID NOT NULL,
              |     city STRING NOT NULL,
              |     name STRING NULL,
@@ -82,7 +82,7 @@ To return just the `create_statement` value:
 ~~~
                       create_statement
 ------------------------------------------------------------
-  CREATE TABLE drivers (
+  CREATE TABLE public.drivers (
       id UUID NOT NULL,
       city STRING NOT NULL,
       name STRING NULL,
@@ -112,9 +112,9 @@ To return just the `create_statement` value:
 ~~~
 
 ~~~
-  table_name |                                create_statement
-+------------+--------------------------------------------------------------------------------+
-  user_view  | CREATE VIEW user_view (city, name) AS SELECT city, name FROM movr.public.users
+  table_name |                                   create_statement
+-------------+----------------------------------------------------------------------------------------
+  user_view  | CREATE VIEW public.user_view (city, name) AS SELECT city, name FROM movr.public.users
 (1 row)
 ~~~
 
@@ -126,9 +126,9 @@ To return just the `create_statement` value:
 ~~~
 
 ~~~
-                                 create_statement
-----------------------------------------------------------------------------------
-  CREATE VIEW user_view (city, name) AS SELECT city, name FROM movr.public.users
+                                    create_statement
+-----------------------------------------------------------------------------------------
+  CREATE VIEW public.user_view (city, name) AS SELECT city, name FROM movr.public.users
 (1 row)
 ~~~
 
@@ -145,7 +145,7 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 
 ~~~
               view_definition
-+------------------------------------------+
+--------------------------------------------
   SELECT city, name FROM movr.public.users
 (1 row)
 ~~~
@@ -163,9 +163,9 @@ To get just a view's `SELECT` statement, you can query the `views` table in the 
 ~~~
 
 ~~~
-      table_name     |                                          create_statement
-+--------------------+----------------------------------------------------------------------------------------------------+
-  desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
+      table_name     |                                             create_statement
+---------------------+------------------------------------------------------------------------------------------------------------
+  desc_customer_list | CREATE SEQUENCE public.desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
 (1 row)
 ~~~
 
@@ -177,9 +177,9 @@ To return just the `create_statement` value:
 ~~~
 
 ~~~
-                                           create_statement
-------------------------------------------------------------------------------------------------------
-  CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
+                                              create_statement
+-------------------------------------------------------------------------------------------------------------
+  CREATE SEQUENCE public.desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
 (1 row)
 ~~~
 
@@ -198,9 +198,9 @@ To return just the `create_statement` value:
 ~~~
 
 ~~~
-  table_name |                             create_statement
--------------+---------------------------------------------------------------------------
-  users      | CREATE TABLE users (
+  table_name |                                create_statement
+-------------+----------------------------------------------------------------------------------
+  users      | CREATE TABLE public.users (
              |     id UUID NOT NULL,
              |     city VARCHAR NOT NULL,
              |     name VARCHAR NULL,
@@ -209,7 +209,7 @@ To return just the `create_statement` value:
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
              |     FAMILY "primary" (id, city, name, address, credit_card)
              | );
-             | COMMENT ON TABLE users IS 'This table contains information about users.'
+             | COMMENT ON TABLE public.users IS 'This table contains information about users.'
 (1 row)
 ~~~
 
@@ -221,9 +221,9 @@ To return just the `create_statement` value:
 ~~~
 
 ~~~
-                              create_statement
-----------------------------------------------------------------------------
-  CREATE TABLE users (
+                                 create_statement
+-----------------------------------------------------------------------------------
+  CREATE TABLE public.users (
       id UUID NOT NULL,
       city VARCHAR NOT NULL,
       name VARCHAR NULL,
@@ -232,7 +232,7 @@ To return just the `create_statement` value:
       CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
       FAMILY "primary" (id, city, name, address, credit_card)
   );
-  COMMENT ON TABLE users IS 'This table contains information about users.'
+  COMMENT ON TABLE public.users IS 'This table contains information about users.'
 (1 row)
 ~~~
 
