@@ -24,6 +24,8 @@ Parameter | Description
 
 ## Example
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Show schemas in the current database
 
 {% include copy-clipboard.html %}
@@ -37,39 +39,14 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  crdb_internal
-  information_schema
-  org_one
-  pg_catalog
-  pg_extension
-  public
-(6 rows)
-~~~
-
-### Show ownership of schemas
-
-To show ownership of schemas, you need to query tables in the `pg_catalog` schema:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT
-  nspname, usename
-FROM
-  pg_catalog.pg_namespace
-  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid;
-~~~
-
-~~~
-       nspname       | usename
----------------------+----------
+     schema_name     | owner
+---------------------+--------
   crdb_internal      | NULL
   information_schema | NULL
+  org_one            | demo
   pg_catalog         | NULL
   pg_extension       | NULL
-  public             | NULL
-  org_one            | root
+  public             | admin
 (6 rows)
 ~~~
 

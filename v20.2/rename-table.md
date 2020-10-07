@@ -48,48 +48,54 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Rename a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db1;
+> SHOW TABLES;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-| t1         |
-| t2         |
-+------------+
-(2 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE db1.t1 RENAME TO db1.t3
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db1;
+> ALTER TABLE users RENAME TO riders;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-| t2         |
-| t3         |
-+------------+
-(2 rows)
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | riders                     | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
+(6 rows)
 ~~~
 
 To avoid an error in case the table does not exist, you can include `IF EXISTS`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE IF EXISTS db1.table1 RENAME TO db1.table2;
+> ALTER TABLE IF EXISTS customers RENAME TO clients;
 ~~~
 
 ### Move a table
@@ -98,61 +104,62 @@ To move a table from one database to another, use the above syntax but specify t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db1;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-| t2         |
-| t3         |
-+------------+
-(2 rows)
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | riders                     | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db2;
+> SHOW TABLES FROM defaultdb;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-+------------+
+  schema_name | table_name | type | owner | estimated_row_count
+--------------+------------+------+-------+----------------------
 (0 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE db1.t3 RENAME TO db2.t3;
+> ALTER TABLE movr.promo_codes RENAME TO defaultdb.promos;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db1;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+--------+
-| Table  |
-+--------+
-| table2 |
-+--------+
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | riders                     | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
+(5 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db2;
+> SHOW TABLES FROM defaultdb;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-| t3         |
-+------------+
+  schema_name | table_name | type  | owner | estimated_row_count
+--------------+------------+-------+-------+----------------------
+  public      | promos     | table | demo  |                1000
 (1 row)
 ~~~
 
