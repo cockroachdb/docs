@@ -16,7 +16,7 @@ Follower reads are a mechanism to let any replica of a range serve a read reques
 
 In widely distributed deployments, using follower reads can reduce the latency of read operations (which can also increase throughput) by letting the replica closest to the gateway serve the request, instead of forcing the gateway to communicate with the leaseholder, which could be geographically distant.
 
-To make it easier to know when it's safe for your application to make follower reads, we've included a convenience function (`experimental_follower_read_timestamp()`) that runs your queries at a time as close as possible to the present time.
+To make it easier to know when it's safe for your application to make follower reads, we've also included a convenience function (`experimental_follower_read_timestamp()`) that runs your queries at a time as close as possible to the present time.
 
 ## Settings
 
