@@ -50,14 +50,14 @@ By default, tables are stored in the `public` schema:
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |                1000
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | users                      | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (6 rows)
 ~~~
 
@@ -90,14 +90,14 @@ Convert the `movr` database to a schema, with `cockroach_labs` as its parent dat
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  crdb_internal
-  information_schema
-  movr
-  pg_catalog
-  pg_extension
-  public
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  movr               | demo
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
 (6 rows)
 ~~~
 
@@ -107,14 +107,14 @@ Convert the `movr` database to a schema, with `cockroach_labs` as its parent dat
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  movr        | promo_codes                | table |                1000
-  movr        | rides                      | table |                 500
-  movr        | user_promo_codes           | table |                   0
-  movr        | users                      | table |                  50
-  movr        | vehicle_location_histories | table |                1000
-  movr        | vehicles                   | table |                  15
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  movr        | promo_codes                | table | demo  |                1000
+  movr        | rides                      | table | demo  |                 500
+  movr        | user_promo_codes           | table | demo  |                   0
+  movr        | users                      | table | demo  |                  50
+  movr        | vehicle_location_histories | table | demo  |                1000
+  movr        | vehicles                   | table | demo  |                  15
 (6 rows)
 ~~~
 
@@ -124,8 +124,8 @@ Convert the `movr` database to a schema, with `cockroach_labs` as its parent dat
 ~~~
 
 ~~~
-  schema_name | table_name | type | estimated_row_count
---------------+------------+------+----------------------
+  schema_name | table_name | type | owner | estimated_row_count
+--------------+------------+------+-------+----------------------
 (0 rows)
 ~~~
 

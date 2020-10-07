@@ -86,11 +86,11 @@ The view is then represented as a virtual table alongside other tables in the da
 ~~~
 
 ~~~
-  schema_name |    table_name     | type
---------------+-------------------+--------
-  public      | episodes          | table
-  public      | quotes            | table
-  public      | quotes_per_season | view
+  schema_name |    table_name     | type  | owner | estimated_row_count
+--------------+-------------------+-------+-------+----------------------
+  public      | episodes          | table | demo  |                  79
+  public      | quotes            | table | demo  |                 200
+  public      | quotes_per_season | view  | demo  |                   3
 (3 rows)
 ~~~
 

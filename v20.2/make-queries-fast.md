@@ -61,14 +61,14 @@ SHOW TABLES;
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |              250000
-  public      | rides                      | table |              125000
-  public      | user_promo_codes           | table |                   0
-  public      | users                      | table |               12500
-  public      | vehicle_location_histories | table |              250000
-  public      | vehicles                   | table |                3750
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |              250000  
+  public      | rides                      | table | demo  |              125000
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |               12500
+  public      | vehicle_location_histories | table | demo  |              250000
+  public      | vehicles                   | table | demo  |                3750
 (6 rows)
 ~~~
 

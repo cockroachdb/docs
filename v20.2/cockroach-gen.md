@@ -175,9 +175,18 @@ You can also use the [`cockroach workload`](cockroach-workload.html) command to 
 
 To test out CockroachDB, you can generate an example `startrek` database, which contains 2 tables, `episodes` and `quotes`.
 
+First, start up [a demo cluster](cockroach-demo.html):
+
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data startrek | cockroach sql --insecure
+$ cockroach demo
+~~~
+
+Then, pipe the output from `cockroach gen` to [the URL to the demo cluster](cockroach-demo.html#url-connection-parameters):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach gen example-data startrek | cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
 ~~~
 
 ~~~
@@ -186,16 +195,18 @@ SET
 DROP TABLE
 DROP TABLE
 CREATE TABLE
-INSERT 79
+INSERT 1
+...
 CREATE TABLE
-INSERT 200
+INSERT 1
+...
 ~~~
 
-Launch the built-in SQL client to view it:
+Open a [SQL shell](cockroach-sql.html) to view it:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure
+$ cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
 ~~~
 
 {% include copy-clipboard.html %}
@@ -203,12 +214,10 @@ $ cockroach sql --insecure
 > SHOW TABLES FROM startrek;
 ~~~
 ~~~
-+------------+
-| table_name |
-+------------+
-| episodes   |
-| quotes     |
-+------------+
+  schema_name | table_name | type  | owner | estimated_row_count
+--------------+------------+-------+-------+----------------------
+  public      | episodes   | table | demo  |                  79
+  public      | quotes     | table | demo  |                 200
 (2 rows)
 ~~~
 
@@ -216,7 +225,7 @@ You can also generate an example `intro` database, which contains 1 table, `myta
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data intro | cockroach sql --insecure
+$ cockroach gen example-data intro | cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
 ~~~
 
 ~~~
@@ -234,7 +243,7 @@ INSERT 1
 {% include copy-clipboard.html %}
 ~~~ shell
 # Launch the built-in SQL client to view it:
-$ cockroach sql --insecure
+$ cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
 ~~~
 
 {% include copy-clipboard.html %}
@@ -243,11 +252,9 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+-------------+
-| table_name  |
-+-------------+
-| mytable     |
-+-------------+
+  schema_name | table_name | type  | owner | estimated_row_count
+--------------+------------+-------+-------+----------------------
+  public      | mytable    | table | demo  |                  42
 (1 row)
 ~~~
 
@@ -257,31 +264,29 @@ $ cockroach sql --insecure
 ~~~
 
 ~~~
-+----+------------------------------------------------------+
-| l  |                          v                           |
-+----+------------------------------------------------------+
-|  0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,  |
-|  2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^  |
-|  4 | !                    "?##mW##?"-                     |
-|  6 | !  C O N G R A T S  _am#Z??A#ma,           Y         |
-|  8 | !                 _ummY"    "9#ma,       A           |
-| 10 | !                vm#Z(        )Xmms    Y             |
-| 12 | !              .j####mmm#####mm#m##6.                |
-| 14 | !   W O W !    jmm###mm######m#mmm##6                |
-| 16 | !             ]#me*Xm#m#mm##m#m##SX##c               |
-| 18 | !             dm#||+*$##m#mm#m#Svvn##m               |
-| 20 | !            :mmE=|+||S##m##m#1nvnnX##;     A        |
-| 22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M        |
-| 24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A        |
-| 26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z        |
-| 28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E        |
-| 30 | !       I       4#ma+|++]mmhvnnvq##P`       !        |
-| 32 | !        D I     ?$#q%+|dmmmvnnm##!                  |
-| 34 | !           T     -4##wu#mm#pw##7'                   |
-| 36 | !                   -?$##m####Y'                     |
-| 38 | !             !!       "Y##Y"-                       |
-| 40 | !                                                    |
-+----+------------------------------------------------------+
+  l  |                          v
+-----+-------------------------------------------------------
+   0 | !__aaawwmqmqmwwwaas,,_        .__aaawwwmqmqmwwaaa,,
+   2 | !"VT?!"""^~~^"""??T$Wmqaa,_auqmWBT?!"""^~~^^""??YV^
+   4 | !                    "?##mW##?"-
+   6 | !  C O N G R A T S  _am#Z??A#ma,           Y
+   8 | !                 _ummY"    "9#ma,       A
+  10 | !                vm#Z(        )Xmms    Y
+  12 | !              .j####mmm#####mm#m##6.
+  14 | !   W O W !    jmm###mm######m#mmm##6
+  16 | !             ]#me*Xm#m#mm##m#m##SX##c
+  18 | !             dm#||+*$##m#mm#m#Svvn##m
+  20 | !            :mmE=|+||S##m##m#1nvnnX##;     A
+  22 | !            :m#h+|+++=Xmm#m#1nvnnvdmm;     M
+  24 | ! Y           $#m>+|+|||##m#1nvnnnnmm#      A
+  26 | !  O          ]##z+|+|+|3#mEnnnnvnd##f      Z
+  28 | !   U  D       4##c|+|+|]m#kvnvnno##P       E
+  30 | !       I       4#ma+|++]mmhvnnvq##P`       !
+  32 | !        D I     ?$#q%+|dmmmvnnm##!
+  34 | !           T     -4##wu#mm#pw##7'
+  36 | !                   -?$##m####Y'
+  38 | !             !!       "Y##Y"-
+  40 | !
 (21 rows)
 ~~~
 

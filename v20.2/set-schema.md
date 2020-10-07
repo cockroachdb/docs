@@ -59,14 +59,14 @@ By default, [unqualified tables](sql-name-resolution.html#lookup-with-unqualifie
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |                1000
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | users                      | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (6 rows)
 ~~~
 
@@ -90,14 +90,14 @@ Then, change the table's schema:
 ~~~
 
 ~~~
-   schema_name   |         table_name         | type  | estimated_row_count
------------------+----------------------------+-------+----------------------
-  cockroach_labs | promo_codes                | table |                1000
-  public         | rides                      | table |                 500
-  public         | user_promo_codes           | table |                   0
-  public         | users                      | table |                  50
-  public         | vehicle_location_histories | table |                1000
-  public         | vehicles                   | table |                  15
+   schema_name   |         table_name         | type  | owner | estimated_row_count
+-----------------+----------------------------+-------+-------+----------------------
+  cockroach_labs | promo_codes                | table | demo  |                1000
+  public         | rides                      | table | demo  |                 500
+  public         | user_promo_codes           | table | demo  |                   0
+  public         | users                      | table | demo  |                  50
+  public         | vehicle_location_histories | table | demo  |                1000
+  public         | vehicles                   | table | demo  |                  15
 (6 rows)
 ~~~
 

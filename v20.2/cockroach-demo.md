@@ -232,14 +232,14 @@ $ cockroach demo movr --nodes=3 --demo-locality=region=us-east1:region=us-centra
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  promo_codes
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (6 rows)
 ~~~
 
