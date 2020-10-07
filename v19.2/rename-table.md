@@ -1,12 +1,14 @@
 ---
-title: RENAME TABLE
-summary: The RENAME TABLE statement changes the name of a table.
+title: ALTER TABLE ... RENAME TO
+summary: The ALTER TABLE ... RENAME TO statement changes the name of a table.
 toc: true
 ---
 
-The `RENAME TABLE` [statement](sql-statements.html) changes the name of a table. It can also be used to move a table from one database to another.
+The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table. It can also be used to move a table from one database to another.
 
-{{site.data.alerts.callout_info}}It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+It is not possible to rename a table referenced by a view. For more details, see <a href="views.html#view-dependencies">View Dependencies</a>.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
 Table renames **are not transactional**. For more information, see [Table renaming considerations](#table-renaming-considerations).
