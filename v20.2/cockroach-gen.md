@@ -182,7 +182,7 @@ First, start up [a demo cluster](cockroach-demo.html):
 $ cockroach demo
 ~~~
 
-Then, pipe the output from `cockroach gen` to [the URL to the demo cluster](cockroach-demo.html#url-connection-parameters):
+Then, pipe the output from `cockroach gen` to [the URL to the demo cluster](cockroach-demo.html#connection-parameters):
 
 {% include copy-clipboard.html %}
 ~~~ shell
