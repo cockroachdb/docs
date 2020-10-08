@@ -1645,6 +1645,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>SHOW TRANSACTIONS</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-transactions.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>SHOW TYPES</code>",
     		    "urls": [
     		      "/${VERSION}/show-types.html"
