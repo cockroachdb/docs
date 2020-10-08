@@ -266,7 +266,7 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 ### View dependencies
 
-A view depends on the objects targeted by its underlying query. Attempting to rename an object referenced in a view's stored query therefore results in an error:
+A view depends on the objects targeted by its underlying query. Attempting to [rename an object](rename-table.html) referenced in a view's stored query therefore results in an error:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -279,7 +279,7 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
-Likewise, attempting to drop an object referenced in a view's stored query results in an error:
+Likewise, attempting to [drop an object](drop-table.html) referenced in a view's stored query results in an error:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -303,7 +303,41 @@ SQLSTATE: 2BP01
 HINT: you can drop quotes_per_season instead.
 ~~~
 
-There is an exception to the rule above, however: When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), you can use the `CASCADE` keyword to drop all dependent objects as well:
+<span class="version-tag">New in v20.2:</span> You can [drop](drop-column.html) or [rename columns](rename-column.html) from a table on which a view is dependent, as long as the view does not depend on that column of the table. For example, because there is no view that depends on the `num` column of the `episodes` table, you can rename it to `number`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE startrek.episodes RENAME COLUMN num TO number;
+~~~
+
+Similarly, because no view depends on the `title` column of the `episodes` table, you can drop it. Note that to drop a column with data in it, you must first set `sql_safe_updates = false`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET sql_safe_updates = false;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE startrek.episodes DROP COLUMN title;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM startrek.episodes;
+~~~
+
+~~~
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  id          | INT8      |    false    | NULL           |                       | {primary} |   false
+  season      | INT8      |    true     | NULL           |                       | {}        |   false
+  number      | INT8      |    true     | NULL           |                       | {}        |   false
+  stardate    | DECIMAL   |    true     | NULL           |                       | {}        |   false
+(4 rows)
+~~~
+
+When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), you can use the `CASCADE` keyword to drop all dependent objects as well:
 
 {% include copy-clipboard.html %}
 ~~~ sql
