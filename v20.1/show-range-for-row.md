@@ -82,5 +82,4 @@ Field | Description
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)
 - [Partitioning tables](partitioning.html)
-+ [Follow-the-Workload](demo-follow-the-workload.html)
-+ [Architecture Overview](architecture/overview.html)
+- [Architecture Overview](architecture/overview.html)

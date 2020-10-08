@@ -5,5 +5,4 @@ You might also be interested in the following pages:
 - [Fault Tolerance & Recovery](../stable/demo-fault-tolerance-and-recovery.html)
 - [Automatic Rebalancing](../stable/demo-automatic-rebalancing.html)
 - [Cross-Cloud Migration](../stable/demo-automatic-cloud-migration.html)
-- [Follow-the-Workload](../stable/demo-follow-the-workload.html)
 - [Automated Operations](../stable/orchestrate-a-local-cluster-with-kubernetes-insecure.html)
