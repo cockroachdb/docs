@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v20.2:</span> User-defined `ENUM` [data types](data-types.html) consist of a set of enumerated, static values.
 
+{{site.data.alerts.callout_danger}}
+Clusters with `ENUM` types that are running [alpha testing releases](../releases/#testing-releases) of v20.2 will not be able to upgrade to beta testing releases or [production releases](../releases/#production-releases) of v20.2 due to internal representation changes.
+{{site.data.alerts.end}}
+
 ## Syntax
 
 To declare a new `ENUM` data type, use [`CREATE TYPE`](create-type.html):
