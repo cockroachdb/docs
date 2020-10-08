@@ -19,12 +19,15 @@ No [privileges](authorization.html#assign-privileges) are required to view privi
 
 ## Parameters
 
-Parameter | Description
-----------|------------
-`role_name` | A comma-separated list of role names.
-`table_name` | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
-`database_name` | A comma-separated list of database names.
-`user_name` | An optional, comma-separated list of grantees.
+Parameter        | Description
+-----------------|-----------------------------------------------------------------------------------------------------
+`role_name`      | A comma-separated list of role names.
+`table_name`     | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
+`database_name`  | A comma-separated list of database names.
+`user_name`      | An optional, comma-separated list of grantees.
+`grantee`        | Name of the user or role that was granted the privilege.
+`schema_name`    | A comma-separated list of schemas names.
+`privilege_type` | Name of the  [privilege](https://www.cockroachlabs.com/docs/v20.1/authorization#assign-privileges) .
 
 ## Examples
 
