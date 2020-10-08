@@ -301,7 +301,7 @@ This command starts a demo cluster with the `movr` database preloaded and then i
 
 <span class="version-tag">New in v20.1:</span> When running a multi-node demo cluster, load is balanced across all nodes.
 
-### Run `cockroach demo` with geo-partitioned replicas
+### Start a multi-region demo cluster with automatic geo-partitioning
 
 {% include copy-clipboard.html %}
 ~~~ shell
