@@ -4,7 +4,7 @@ summary: The ALTER ROLE statement can be used to add or change a role's password
 toc: true
 ---
 
- The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
+ The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or remove a [role's](create-role.html) password and to change the privileges for a role.
 
 {{site.data.alerts.callout_info}}
 Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
@@ -32,11 +32,18 @@ table td:first-child {
 
 Parameter | Description
 ----------|-------------
-`name` | The name of the role whose password you want to create or add.
+`name` | The name of the role whose role options you want to alter.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
+`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `NOLOGIN`](#change-login-privileges-for-a-role) prevents the role from logging in using any authentication method.
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier). <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
 `VALID UNTIL` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `NOLOGIN`](#change-login-privileges-for-a-role) prevents the role from logging in using any authentication method.
-`CREATEROLE`/`NOCREATEROLE` | Allow or disallow the role to create, alter, and drop other roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin and non-root roles.
+`CREATEROLE`/`NOCREATEROLE` | Allow or disallow the role to create, alter, and drop other roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin roles.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the role to create or rename a database. The role is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin roles.
+`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the role to pause, resume, and cancel jobs. Non-admin roles cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin roles.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel queries and sessions of other roles. Without this privilege, roles can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin roles.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' queries and sessions using `SHOW QUERIES`, `SHOW SESSIONS`, and the Statements and Transactions pages in the Admin UI. Without this privilege, the `SHOW` commands only show the role's own data and the Admin UI pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin roles.
+`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the role to run `CREATE CHANGEFEED` on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin roles.
+`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the role to to modify the cluster settings with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin roles.
 
 ## Examples
 
