@@ -233,7 +233,7 @@ Type | Details
 `TIME` | Converts to the time portion (HH:MM:SS) of the timestamp.
 `INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `DATE` | --
-`STRING` | --
+`STRING` | <span class="version-tag">New in v20.2:</span> Converts to the date and time portion (YYYY-MM-DD HH:MM:SS) of the timestamp and omits the time zone offset.
 
 ## See also
 
