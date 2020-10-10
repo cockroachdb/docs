@@ -511,6 +511,5 @@ Clusters using this configuration with client certificate authentication may als
 - [Initialize a Cluster](cockroach-init.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

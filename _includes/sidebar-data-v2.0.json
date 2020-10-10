@@ -1053,12 +1053,6 @@
 	    ]
 	  },
 	  {
-	    "title": "Test Deployment",
-	    "urls": [
-	      "/${VERSION}/deploy-a-test-cluster.html"
-	    ]
-	  },
-	  {
 	    "title": "Manual Deployment",
 	    "items": [
 	      {

@@ -21,5 +21,4 @@ Use the following guides to run CockroachDB with popular open-source orchestrati
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)
