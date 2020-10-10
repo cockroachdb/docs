@@ -40,11 +40,11 @@ table td:first-child {
  Parameter | Description
 -----------|-------------
 `user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
-`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `NOLOGIN`](#change-login-privileges-for-a-role) prevents the user from logging in using any authentication method.
 `password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#create-a-user-with-a-password-using-an-identifier). <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
 `VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new user to create, alter, and drop other users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
+`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new user to create, alter, and drop other non-admin users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
 `CREATEDB`/`NOCREATEDB` | Allow or disallow the user to create or rename a database. The user is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin users.
 `CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the user to pause, resume, and cancel jobs. Non-admin users cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin users.
 `CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the user to cancel queries and sessions of other users. Without this privilege, users can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the user can view other users' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin users.
@@ -67,6 +67,276 @@ Secure clusters require users to authenticate their access to databases and tabl
 - [GSSAPI authentication](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
 ## Examples
+
+To run the following examples, [start a secure single-node cluster](/cockroach-start-single-node.html) and use the built-in SQL shell:
+
+~~~ shell
+$ cockroach sql --certs-dir=certs
+~~~
+
+~~~ sql
+> SHOW USERS;
+~~~
+
+~~~
+username | options | member_of
+---------+---------+------------
+admin    |         | {}
+root     |         | {admin}
+(2 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+{{site.data.alerts.end}}
+
+### Create a user
+
+Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER no_options;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+ username  | options | member_of
+-------------+---------+------------
+admin      |         | {}
+no_options |         | {}
+root       |         | {admin}
+(3 rows)
+~~~
+
+After creating users, you must:
+
+- [Grant them privileges to databases](grant.html).
+- For secure clusters, you must also [create their client certificates](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client).
+
+### Create a user with a password
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER with_password WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+  username    |                options                | member_of
+--------------+---------------------------------------+------------
+admin         |                                       | {}
+no_options    |                                       | {}
+root          |                                       | {admin}
+with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(4 rows)
+~~~
+
+### Prevent a user from using password authentication
+
+The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
+
+{% include copy-clipboard.html %}
+~~~ sql
+root@:26257/defaultdb> CREATE USER no_password WITH PASSWORD NULL;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+  username    |                options                | member_of
+--------------+---------------------------------------+------------
+admin         |                                       | {}
+no_options    |                                       | {}
+no_password   |                                       | {}
+root          |                                       | {admin}
+with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(5 rows)
+~~~
+
+### Create a user that can create other users and manage authentication methods for the new users
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_create_users WITH CREATEROLE;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+    username     |                options                | member_of
+-----------------+---------------------------------------+------------
+admin            |                                       | {}
+can_create_users | CREATEROLE                            | {}
+no_options       |                                       | {}
+no_password      |                                       | {}
+root             |                                       | {admin}
+with_password    | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(6 rows)
+~~~
+
+### Create a user that can only manage authentication for other users
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER manage_auth_for_users WITH CREATELOGIN;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_create_users      | CREATEROLE                            | {}
+manage_auth_for_users | CREATELOGIN                           | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(7 rows)
+~~~
+
+### Create a user that can create and rename databases
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_create_db WITH CREATEDB;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATEROLE                            | {}
+manage_auth_for_users | CREATELOGIN                           | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(8 rows)
+~~~
+
+### Create a user that can pause, resume, and cancel non-admin jobs
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_control_job WITH CONTROLJOB;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB                            | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATEROLE                            | {}
+manage_auth_for_users | CREATELOGIN                           | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(9 rows)
+~~~
+
+### Create a user that can see and cancel non-admin queries and sessions
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB                            | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATEROLE                            | {}
+can_manage_queries    | CANCELQUERY, VIEWACTIVITY             | {}
+manage_auth_for_users | CREATELOGIN                           | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(10 rows)
+~~~
+
+### Create a user that can control changefeeds
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_control_changefeed WITH CONTROLCHANGEFEED;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+       username        |                options                | member_of
+-----------------------+---------------------------------------+------------
+admin                  |                                       | {}
+can_control_changefeed | CONTROLCHANGEFEED                     | {}
+can_control_job        | CONTROLJOB                            | {}
+can_create_db          | CREATEDB                              | {}
+can_create_users       | CREATEROLE                            | {}
+can_manage_queries     | CANCELQUERY, VIEWACTIVITY             | {}
+manage_auth_for_users  | CREATELOGIN                           | {}
+no_options             |                                       | {}
+no_password            |                                       | {}
+root                   |                                       | {admin}
+with_password          | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(11 rows)
+~~~
+
+### Create a user that can modify cluster settings
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+         username          |                options                | member_of
+---------------------------+---------------------------------------+------------
+admin                      |                                       | {}
+can_control_changefeed     | CONTROLCHANGEFEED                     | {}
+can_control_job            | CONTROLJOB                            | {}
+can_create_db              | CREATEDB                              | {}
+can_create_users           | CREATEROLE                            | {}
+can_manage_queries         | CANCELQUERY, VIEWACTIVITY             | {}
+can_modify_cluster_setting | MODIFYCLUSTERSETTING                  | {}
+manage_auth_for_users      | CREATELOGIN                           | {}
+no_options                 |                                       | {}
+no_password                |                                       | {}
+root                       |                                       | {admin}
+with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(12 rows)
+~~~
+
+
+<!--
 
 ### Create a user
 
@@ -227,6 +497,8 @@ To allow the user to log in using one of the user authentication methods, use th
   root     | CREATEROLE | {admin}
 (3 rows)
 ~~~
+
+-->
 
 ## See also
 

@@ -33,11 +33,11 @@ table td:first-child {
 Parameter | Description
 ----------|-------------
 `name` | The name of the role whose role options you want to alter.
-`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `NOLOGIN`](#change-login-privileges-for-a-role) prevents the role from logging in using any authentication method.
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier). <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
 `VALID UNTIL` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`CREATEROLE`/`NOCREATEROLE` | Allow or disallow the role to create, alter, and drop other roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin roles.
+`CREATEROLE`/`NOCREATEROLE` | Allow or disallow the role to create, alter, and drop other non-admin roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin roles.
 `CREATEDB`/`NOCREATEDB` | Allow or disallow the role to create or rename a database. The role is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin roles.
 `CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the role to pause, resume, and cancel jobs. Non-admin roles cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin roles.
 `CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel queries and sessions of other roles. Without this privilege, roles can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin roles.
@@ -46,6 +46,70 @@ Parameter | Description
 `MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the role to to modify the cluster settings with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin roles.
 
 ## Examples
+
+{{site.data.alerts.callout_info}}
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+{{site.data.alerts.end}}
+
+### Allow a role to log in to the database password
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+~~~
+
+### Prevent a role from using password authentication
+
+The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
+
+{% include copy-clipboard.html %}
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH PASSWORD NULL;
+~~~
+
+### Allow a role to create other roles and manage authentication methods for the new roles
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH CREATEROLE;
+~~~
+
+### Allow a role to only manage authentication for other roles
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH CREATELOGIN;
+~~~
+
+### Allow a role to create and rename databases
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH CREATEDB;
+~~~
+
+### Allow a role to pause, resume, and cancel non-admin jobs
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH CONTROLJOB;
+~~~
+
+### Allow a role to see and cancel non-admin queries and sessions
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH CANCELQUERY VIEWACTIVITY;
+~~~
+
+### Allow a role to control changefeeds
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH CONTROLCHANGEFEED;
+~~~
+
+### Allow a role to modify cluster settings
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
+~~~
+
+
+<!--
 
 ### Change password using a string literal
 
@@ -175,6 +239,8 @@ The following statement allows the role to log in with one of the client authent
   root     | CREATEROLE | {admin}
 (3 rows)
 ~~~
+
+-->
 
 
 ## See also
