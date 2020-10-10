@@ -20,7 +20,7 @@ When an enterprise [`RESTORE`](restore.html) is canceled, partially restored dat
 
 ## Required privileges
 
-Only members of the `admin` role can cancel a job. By default, the `root` user belongs to the `admin` role.
+To cancel a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set.
 
 ## Synopsis
 

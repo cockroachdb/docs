@@ -16,7 +16,7 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or
 
 ## Required privileges
 
- To alter other users, the user must have the [`CREATEROLE`](create-user.html#allow-the-user-to-create-other-users) parameter set.
+ To alter other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-user.html#allow-the-user-to-create-other-users) parameter set.
 
 ## Synopsis
 

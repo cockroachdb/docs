@@ -27,7 +27,7 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 
 ## Required privileges
 
- To create other roles, the role must have the [`CREATEROLE`](#allow-the-role-to-create-other-roles) parameter set. To allow the role to manage authentication for other roles, the role must have the [`CREATELOGIN`](#allow-the-role-to manage-authentication-for-other-roles) parameter set.
+ To create other roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](#allow-the-role-to-create-other-roles) parameter set.
 
 ## Synopsis
 

@@ -21,7 +21,7 @@ Schema changes and [`BACKUP`](backup.html)/[`RESTORE`](restore.html) statements 
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active queries, whereas the `admin` users see all users' currently active queries.
+All users can see their own currently active queries. All users belonging to the `admin` role can view see all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set. 
 
 ## Synopsis
 

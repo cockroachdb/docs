@@ -23,7 +23,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 ## Required privileges
 
- To create other users, the user must have the [`CREATEROLE`](#allow-the-user-to-create-other-users) parameter set.
+ To create other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](#allow-the-user-to-create-other-users) parameter set.
 
 ## Synopsis
 
