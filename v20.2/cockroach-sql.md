@@ -728,7 +728,7 @@ In this example, the statement is executed every minute. We let the process run 
 
 ### Connect to a cluster listening for Unix domain socket connections
 
- To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
+To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
 
 For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
 
@@ -738,19 +738,19 @@ $ cockroach start-single-node --insecure --socket-dir=/tmp
 ~~~
 
 ~~~
-CockroachDB node starting at 2020-04-22 15:07:17.232326 +0000 UTC (took 0.9s)
-build:               CCL v20.2.0 @ 2020/06/02 13:54:06 (go1.13.4)
-webui:               http://localhost:8080
-sql:                 postgresql://root@localhost:26257?sslmode=disable
-RPC client flags:    ./cockroach <client cmd> --host=localhost:26257 --insecure
+CockroachDB node starting at 2020-10-12 04:02:54.971369 +0000 UTC (took 1.3s)
+build:               CCL v20.2.0 @ 2020/10/06 17:15:06 (go1.13.14)
+webui:               http://Jesses-MBP-2:8080
+sql:                 postgresql://root@Jesses-MBP-2:26257?sslmode=disable
+RPC client flags:    ./cockroach <client cmd> --host=Jesses-MBP-2:26257 --insecure
 socket:              /tmp/.s.PGSQL.26257
-logs:                /path/cockroach/cockroach-data/logs
-temp dir:            /path/cockroach/cockroach-data/cockroach-temp919020614
-external I/O path:   /path/cockroach/cockroach-data/extern
-store[0]:            path=/path/cockroach/cockroach-data
-storage engine:      rocksdb
-status:              restarted pre-existing node
-clusterID:           9ce204b4-4b79-4809-83b5-2dc54c190cb2
+logs:                /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/logs
+temp dir:            /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/cockroach-temp805054895
+external I/O path:   /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/extern
+store[0]:            path=/Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data
+storage engine:      pebble
+status:              initialized new cluster
+clusterID:           455ad71d-21d4-424a-87ad-8097b6b5b99f
 nodeID:              1
 ~~~
 
@@ -758,7 +758,7 @@ To connect to this cluster with a socket:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --url='postgres://@?host=/tmp&port=26257'
+$ cockroach sql --url='postgres://root@?host=/tmp&port=26257'
 ~~~
 
 ## See also

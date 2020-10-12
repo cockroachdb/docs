@@ -43,7 +43,7 @@ A connection URL has the following format:
 postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 ~~~
 
- `cockroach` client commands also support [UNIX domain socket URIs](https://en.wikipedia.org/wiki/Unix_domain_socket) of the following form:
+`cockroach` client commands also support [UNIX domain socket URIs](https://en.wikipedia.org/wiki/Unix_domain_socket) of the following form:
 
 ~~~
 postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
@@ -144,7 +144,7 @@ For details about how to create and manage SSL/TLS certificates, see
 
 ### Example URI for a Unix domain socket
 
- The following URI is suitable to connect to a CockroachDB cluster listening for Unix domain socket connections at `/path/to/client`:
+The following URI is suitable to connect to a CockroachDB cluster listening for Unix domain socket connections at `/path/to/client`:
 
 ~~~
 postgres://root@?host=/path/to/client&port=26257
