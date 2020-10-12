@@ -17,7 +17,7 @@ This doc provides information about how to take and restore encrypted backups in
 
 ## Use AWS Key Management Service
 
-<span class="version-tag">New in v20.2:</span> You can encrypt full or incremental backups with AWS Key Management Service (KMS) by using the [`kms` option](backup.html#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided AWS KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed up data.
+<span class="version-tag">New in v20.2:</span> You can encrypt full or incremental backups with AWS Key Management Service (KMS) by using the [`kms` option](backup.html#options). Files written by the backup (`BACKUP` manifest and data files) are encrypted using a 256-bit crypto-random generated data key. This data key is encrypted with the provided AWS KMS URI(s) and stored alongside the `BACKUP` data in an `ENCRYPTION_INFO` file, which is used when restoring the backed-up data.
 
 On [`RESTORE`](#restore-from-an-encrypted-backup-with-aws-kms), CockroachDB reads the `ENCRYPTION_INFO` file and attempts to decrypt the encrypted data key using the KMS URI provided in the `RESTORE` statement. Once CockroachDB successfully obtains the unencrypted data key, the `BACKUP` manifest and data files will be decrypted and the restoration will proceed. Similarly, the same KMS URI is needed to decrypt the file to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html#show-an-encrypted-backup).
 
