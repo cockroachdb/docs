@@ -26,11 +26,17 @@ $cl_gray_footer: #F7F7F7;
 $cl_warning: #D9534F;
 $cl_warning_light: #FCF4F3;
 
+$blue-100: #E0EEFB;
+$blue-200: #74BDFD;
+$blue-300: #0788FF;
+$blue-400: #0788FF;
+$blue-500: #00294D;
+
 // syntax highlighting colors
 $cl_syntax_gray: #A2A2A2;
 $cl_syntax_gray_light: #F7F7F7;
-$cl_syntax_purple: #A0247A;
-$cl_syntax_blue: #3C80E1;
+$cl_syntax_purple: #CEC0F2;
+$cl_syntax_blue: $blue-200;
 $cl_syntax_green: #26A5A5;
 $cl_syntax_green_link: #54B30E;
 
@@ -81,12 +87,6 @@ $grays: (
   "900": $neutral-900
 );
 
-$blue-100: #E0EEFB;
-$blue-200: #74BDFD;
-$blue-300: #0788FF;
-$blue-400: #0788FF;
-$blue-500: #00294D;
-
 $purple-300: #542ABD;
 
 $theme-colors: (
@@ -97,6 +97,7 @@ $theme-colors: (
 $secondary: $neutral-400;
 $body-color: #242A35;
 $green-new: #B4F1AA;
+$green-3: #37A806;
 $border-color: $neutral-300;
 $border-radius: 3px;
 $border-radius-lg: 5px;
@@ -117,3 +118,4 @@ $link-hover-color: $blue-300;
 
 $box-shadow:  0px 7px 13px rgba($neutral-600, 0.301);
 $box-shadow-lg: 0px 12px 24px rgba($neutral-600, 0.54);
+

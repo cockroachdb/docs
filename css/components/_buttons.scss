@@ -239,6 +239,9 @@
 		@include at-query($min, 571px) {
 			margin-left: 3px;
 		}
+		&:after {
+			display:none;
+		}
 	}
 
 	.dropdown-menu {

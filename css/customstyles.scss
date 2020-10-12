@@ -41,7 +41,7 @@ html {
 body {
   height: 100%;
   @include paragraph-type;
-  // color: $cl_blue;
+  color: $neutral-800;
 }
 
 p {
@@ -74,13 +74,11 @@ h3, h4, h5, h6 {
 h1 {
   @include sourcesanspro_r(28px);
   line-height: 64px;
-  color: $cl_blue;
 }
 
 h2 {
   @include sourcesanspro_m(28px);
   line-height: 40px;
-  color: $cl_blue;
 
   &.clickable-header {
     cursor: pointer;
@@ -95,7 +93,6 @@ h2 {
 h3 {
   @include sourcesanspro_r(20px);
   line-height: 32px;
-  color: $cl_blue;
 
   &.clickable-header {
     cursor: pointer;
@@ -126,18 +123,25 @@ h5, .h5 {
   }
 }
 
-pre { overflow: auto; }
+pre { 
+  overflow: auto; 
+  // background-color: $neutral-800;
+  code {
+    background-color: $neutral-800;
+    color: $neutral-100;
+  }
+}
 
 code {
   @include code-type;
+  background-color: $neutral-100;
+  color: $neutral-600;
  }
 
 pre, code {
   @include code-type;
-  background-color: $cl_syntax_gray_light;
   font-size: 14px;
   line-height: 25px;
-  color: $cl_blue;
   hyphens: none;
 }
 

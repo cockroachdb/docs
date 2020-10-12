@@ -4,7 +4,7 @@
   border-left: 5px solid #eee;
   border-radius: $border-radius-lg;
   @include paragraph-type;
-  color: $cl_blue;
+  // color: $cl_blue;
 
   h4 {
     margin-top: 0;
@@ -33,29 +33,29 @@
   }
 
   &--success {
-    background-color: $cl_green_light;
-    border-left-color: $cl_green;
+    background-color: rgba($green-new, 30%);
+    border-left-color: $green-3;
 
-    h4, .bs-callout__label {
-      color: $cl_green;
-    }    
+    // h4, .bs-callout__label {
+    //   color: $cl_green;
+    // }    
   }
 
   &--danger {
     background-color: $cl_warning_light;
     border-left-color: $cl_warning;
 
-    h4, .bs-callout__label {
-      color: $cl_warning;
-    }
+    // h4, .bs-callout__label {
+    //   color: $cl_warning;
+    // }
   }
 
   &--info {
     background-color: $cl_blue_pale;
     border-left-color: $cl_blue_note;
 
-    h4, .bs-callout__label {
-      // color: $cl_blue_note;
-    }
+    // h4, .bs-callout__label {
+    //   color: $cl_blue_note;
+    // }
   }
 }

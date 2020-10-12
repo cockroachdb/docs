@@ -6974,8 +6974,7 @@ section.footer {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px;
-  color: #152849; }
+  line-height: 25px; }
   @media screen and (min-width: 992px) {
     .bs-callout {
       font-size: 14px;
@@ -6998,15 +6997,11 @@ section.footer {
     line-height: 24px;
     letter-spacing: .02em; }
   .bs-callout--success {
-    background-color: #F0FFE8;
-    border-left-color: #54B30E; }
-    .bs-callout--success h4, .bs-callout--success .bs-callout__label {
-      color: #54B30E; }
+    background-color: rgba(180, 241, 170, 0.3);
+    border-left-color: #37A806; }
   .bs-callout--danger {
     background-color: #FCF4F3;
     border-left-color: #D9534F; }
-    .bs-callout--danger h4, .bs-callout--danger .bs-callout__label {
-      color: #D9534F; }
   .bs-callout--info {
     background-color: #E0EEFB;
     border-left-color: #0788FF; }
@@ -7638,7 +7633,8 @@ polygon.regexp {
   stroke: #262626; }
 
 .highlight {
-  background: #F7F7F7;
+  background: #242A35;
+  border-radius: 4px;
   /* Error */
   /* Keyword */
   /* Comment */
@@ -7704,7 +7700,7 @@ polygon.regexp {
     color: #a61717;
     background-color: #e3d2d2; }
   .highlight .k {
-    color: #A0247A; }
+    color: #CEC0F2; }
   .highlight .c {
     color: #A2A2A2; }
   .highlight .cm {
@@ -7761,11 +7757,11 @@ polygon.regexp {
   .highlight .m {
     color: #009999; }
   .highlight .s {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .na {
     color: #008080; }
   .highlight .nb {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .nc {
     color: #445588;
     font-weight: bold; }
@@ -7783,17 +7779,17 @@ polygon.regexp {
   .highlight .nt {
     color: #000080; }
   .highlight .nv {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .w {
     color: #bbbbbb; }
   .highlight .mf {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .mh {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .mi {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .mo {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .sb {
     color: #d14; }
   .highlight .sc {
@@ -7813,7 +7809,7 @@ polygon.regexp {
   .highlight .sr {
     color: #009926; }
   .highlight .s1 {
-    color: #3C80E1; }
+    color: #74BDFD; }
   .highlight .ss {
     color: #990073; }
   .highlight .bp {
@@ -8670,6 +8666,8 @@ img.mfp-img {
   @media screen and (min-width: 571px) {
     .contribute .btn-contribute {
       margin-left: 3px; } }
+  .contribute .btn-contribute:after {
+    display: none; }
 .contribute .dropdown-menu {
   border: none;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1); }
@@ -9102,7 +9100,8 @@ body {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px; }
+  line-height: 25px;
+  color: #242A35; }
   @media screen and (min-width: 992px) {
     body {
       font-size: 14px;
@@ -9151,8 +9150,7 @@ h1 {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 64px;
-  color: #152849; }
+  line-height: 64px; }
 
 h2 {
   font-family: 'SourceSansPro-SemiBold', sans-serif;
@@ -9160,8 +9158,7 @@ h2 {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 40px;
-  color: #152849; }
+  line-height: 40px; }
   h2.clickable-header {
     cursor: pointer; }
   h2 code {
@@ -9173,8 +9170,7 @@ h3 {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 32px;
-  color: #152849; }
+  line-height: 32px; }
   h3.clickable-header {
     cursor: pointer; }
   h3 strong, h3 b {
@@ -9208,6 +9204,9 @@ h5, .h5 {
 
 pre {
   overflow: auto; }
+  pre code {
+    background-color: #242A35;
+    color: #F5F7FA; }
 
 code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
@@ -9216,10 +9215,10 @@ code {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 24px;
-  background-color: #F5F7FA;
   border-radius: 3px;
-  color: #475872;
-  padding: 2px 8px; }
+  padding: 2px 8px;
+  background-color: #F5F7FA;
+  color: #475872; }
 
 pre, code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
@@ -9228,14 +9227,10 @@ pre, code {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 24px;
-  background-color: #F5F7FA;
   border-radius: 3px;
-  color: #475872;
   padding: 2px 8px;
-  background-color: #F7F7F7;
   font-size: 14px;
   line-height: 25px;
-  color: #152849;
   hyphens: none; }
 
 ul {
