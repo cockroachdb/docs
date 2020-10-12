@@ -7106,39 +7106,42 @@ section.footer {
   line-height: inherit;
   padding: 0px; }
 
-#os-tabs button {
-  border: 1px solid #dddddd;
-  background-color: #ffffff;
-  color: #152849;
-  font-family: 'AvenirLTStd-Heavy', serif;
-  font-size: 16px;
-  font-weight: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  outline: 0;
-  width: 90px;
-  padding: 17px 0 11px;
-  position: relative;
-  bottom: -2px;
-  float: left;
-  line-height: 25px;
-  margin: 0 2% 2% 0; }
-  #os-tabs button:before {
-    display: inline-block;
-    margin-top: -8px;
-    vertical-align: middle; }
-  #os-tabs button:hover {
-    border: 1px solid #54B30E; }
-  #os-tabs button.current {
-    border: 1px solid #54B30E;
-    background-color: #F0FFE8; }
+#os-tabs {
+  border-bottom: 1px solid #E7ECF3; }
+  #os-tabs button {
+    border: none;
+    background-color: #ffffff;
+    color: #475872;
+    font-family: 'SourceSansPro-Regular', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    outline: 0;
+    width: 90px;
+    padding: 17px 0 11px;
+    position: relative;
+    float: left;
+    line-height: 25px;
+    margin: 0 0 2% 0;
+    border-bottom: 3px solid transparent; }
+    #os-tabs button:before {
+      display: inline-block;
+      margin-top: -8px;
+      vertical-align: middle; }
+    #os-tabs button:hover {
+      color: #242A35;
+      border-bottom-color: #0788FF; }
+    #os-tabs button.current {
+      color: #242A35;
+      border-bottom-color: #0788FF; }
 
 .install-button {
   display: inline-block;
   background-color: #ffffff;
   text-align: center;
-  font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 12px;
+  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-size: 14px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -7181,7 +7184,7 @@ section.footer {
       left: 0;
       background: #fff; }
   .install-button .c2a {
-    font-family: 'AvenirLTStd-Heavy', serif;
+    font-family: 'SourceSansPro-Regular', sans-serif;
     font-size: 12px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -7211,28 +7214,31 @@ section.footer {
 
 /* Generic Filter Button */
 .filters {
-  font-size: 0; }
+  font-size: 0;
+  border-bottom: 1px solid #E7ECF3; }
   .filters .filter-button {
     display: inline-block;
-    border: 1px solid #dddddd;
+    border: none;
+    border-bottom: 3px solid transparent;
     background-color: #ffffff;
     text-align: center;
-    font-family: 'AvenirLTStd-Roman', serif;
-    font-size: 12px;
+    font-family: 'SourceSansPro-Regular', sans-serif;
+    font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 15px;
-    color: #152849 !important;
+    color: #475872;
     text-decoration: none !important;
     padding: 15px;
-    margin: 15px 15px 15px 0px;
+    margin: 0;
     outline: none; }
     .filters .filter-button:hover {
-      border: 1px solid #54B30E; }
+      color: #242A35;
+      border-bottom-color: #0788FF; }
     .filters .filter-button.current {
-      border: 1px solid #54B30E;
-      background-color: #F0FFE8; }
+      color: #242A35;
+      border-bottom-color: #0788FF; }
     .filters .filter-button.page-level {
       margin: 15px 15px 0px 0px; }
   .filters a:hover {
@@ -7246,7 +7252,7 @@ section.footer {
 @media (min-width: 700px) {
   #os-tabs button {
     width: 140px;
-    margin: 0 10px 15px 0; }
+    margin: 0; }
     #os-tabs button:before {
       font-family: 'FontAwesome';
       content: "\f078";
@@ -7271,7 +7277,7 @@ section.footer {
       margin-right: 0; }
 
   .filters .filter-button {
-    font-family: 'AvenirLTStd-Roman', serif;
+    font-family: 'SourceSansPro-Regular', sans-serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -7279,7 +7285,7 @@ section.footer {
     line-height: 20px; } }
 .filters-big .filter-button {
   height: 55px;
-  margin: 15px 15px 10px 0px;
+  margin: 0;
   padding-left: 20px;
   padding-right: 20px;
   width: 20%; }

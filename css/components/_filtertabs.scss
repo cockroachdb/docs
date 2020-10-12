@@ -1,19 +1,19 @@
 #os-tabs {
-
+	border-bottom: 1px solid $neutral-200;
 	button {
-		border: 1px solid #dddddd;
+		border: none;
 		background-color: #ffffff;
-		color: $cl_blue;
-		@include avenir_h(16px);
+		color: $neutral-600;
+		@include sourcesanspro_r(14px);
 		outline: 0;
 		width: 90px;
 		padding: 17px 0 11px;
 		position: relative;
-		bottom: -2px;
+		// bottom: -2px;
 		float: left;
 		line-height: 25px;
-		margin: 0 2% 2% 0;
-
+		margin: 0 0 2% 0;
+		border-bottom: 3px solid transparent;
 		&:before {
 			display: inline-block;
 			margin-top: -8px;
@@ -21,12 +21,13 @@
 		}
 
 		&:hover {
-			border: 1px solid $cl_green;
+			color: $neutral-800;
+			border-bottom-color: $blue-300;
 		}
 
 		&.current {
-			border: 1px solid $cl_green;
-			background-color: #F0FFE8;
+			color: $neutral-800;
+			border-bottom-color: $blue-300;
 		}
 	}
 }
@@ -35,7 +36,7 @@
 	display: inline-block;
 	background-color: #ffffff;
 	text-align: center;
-	@include avenir_r(12px);
+	@include sourcesanspro_r(14px);
 	line-height: 15px;
 	color: $cl_blue !important;
 	text-decoration: none !important;
@@ -89,7 +90,7 @@
 	}
 
 	.c2a {
-		@include avenir_h(12px);
+		@include sourcesanspro_r(12px);
 
 		@media (min-width: 700px) {
 			display: inline-block;
@@ -136,27 +137,29 @@
 
 .filters {
 	font-size: 0;
-
+	border-bottom: 1px solid $neutral-200;
 	.filter-button {
 		display: inline-block;
-		border: 1px solid #dddddd;
+		border: none;
+		border-bottom: 3px solid transparent;
 		background-color: #ffffff;
 		text-align: center;
-		@include avenir_r(12px);
+		@include sourcesanspro_r(14px);
 		line-height: 15px;
-		color: $cl_blue !important;
+		color: $neutral-600;
 		text-decoration: none !important;
 		padding: 15px;
-		margin: 15px 15px 15px 0px;
+		margin: 0;
 		outline: none;
 
 		&:hover {
-			border: 1px solid $cl_green;
+			color: $neutral-800;
+			border-bottom-color: $blue-300;
 		}
 
 		&.current {
-			border: 1px solid $cl_green;
-			background-color: #F0FFE8;
+			color: $neutral-800;
+			border-bottom-color: $blue-300;
 		}
 
 		&.page-level {
@@ -182,7 +185,7 @@
 
 		button {
 			width: 140px;
-			margin: 0 10px 15px 0;
+			margin: 0;
 
 			&:before {
 				font-family: 'FontAwesome';
@@ -242,7 +245,7 @@
 
 	.filters {
 		.filter-button {
-			@include avenir_r(16px);
+			@include sourcesanspro_r(16px);
 			line-height: 20px;
 		}
 	}
@@ -251,7 +254,7 @@
 .filters-big {
 	.filter-button {
 		height: 55px;
-		margin: 15px 15px 10px 0px;
+		margin: 0;
 		padding-left: 20px;
 		padding-right: 20px;
 		width: 20%;
