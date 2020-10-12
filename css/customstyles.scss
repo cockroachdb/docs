@@ -130,7 +130,6 @@ pre { overflow: auto; }
 
 code {
   @include code-type;
-  border: 1px solid $cl_gray_medium;
  }
 
 pre, code {

@@ -169,8 +169,12 @@
 }
 
 @mixin code-type {
-  @include source_code_r(14px);
-  line-height: 25px;
+  @include source_code_r(15px);
+  line-height: 24px;
+  background-color: $neutral-100;
+  border-radius: 3px;
+  color: $neutral-600;
+  padding: 2px 8px;
 }
 
 

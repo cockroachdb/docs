@@ -6987,9 +6987,6 @@ section.footer {
     margin-top: 0.25rem; }
   .bs-callout p:last-child {
     margin-bottom: 0; }
-  .bs-callout code {
-    border-radius: 2px;
-    border: 1px solid #DADADA; }
   .bs-callout + .bs-callout {
     margin-top: -5px; }
   .bs-callout__label {
@@ -9214,20 +9211,27 @@ pre {
 
 code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px;
-  border: 1px solid #DADADA; }
+  line-height: 24px;
+  background-color: #F5F7FA;
+  border-radius: 3px;
+  color: #475872;
+  padding: 2px 8px; }
 
 pre, code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 25px;
+  line-height: 24px;
+  background-color: #F5F7FA;
+  border-radius: 3px;
+  color: #475872;
+  padding: 2px 8px;
   background-color: #F7F7F7;
   font-size: 14px;
   line-height: 25px;
