@@ -81,7 +81,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
         > \q
         ~~~
 
-1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the `updateStrategy` defined in the StatefulSet. For a cluster with 3 pods, the partition value should be 2:
+1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the `updateStrategy` defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -247,7 +247,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     > \q
     ~~~
 
-1. Decrement the partition value by 1:
+1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -270,8 +270,6 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     --set statefulset.updateStrategy.rollingUpdate.partition=1 \
     ~~~
     </section>
-
-    This allows the next pod in the cluster to update. 
 
 1. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
 

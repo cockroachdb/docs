@@ -81,8 +81,6 @@ For each node in your cluster, complete the following steps. Be sure to upgrade 
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
 
-1. [Access the Admin UI](admin-ui-overview.html#admin-ui-access) and note the [memory usage](admin-ui-cluster-overview-page.html#node-details) of the node. The node should have a similar value after it rejoins the cluster.
-  
 1. Drain and stop the node using one of the following methods:
     
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
@@ -185,8 +183,6 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [Admin UI](admin-ui-cluster-overview-page.html#node-status). 
 
-    The node should have at least 70% of the [memory usage](admin-ui-cluster-overview-page.html#node-details) you observed before stopping the node.
-
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
     {% include copy-clipboard.html %}
@@ -205,7 +201,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     cockroach sql -e 'select 1'
     ~~~
 
-    The command should complete. If it hangs, the node is not yet ready.
+    The command will automatically wait to complete until the node is ready.
 
 1. Repeat these steps for the next node.
 
