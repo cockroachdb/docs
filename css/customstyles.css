@@ -9202,11 +9202,31 @@ h5, .h5 {
   h5 code, .h5 code {
     font-size: 17px; }
 
+pre.prettyprint {
+  margin-bottom: 20px; }
+
+.pre-scrollable {
+  max-height: 340px;
+  overflow-y: scroll; }
+
 pre {
-  overflow: auto; }
+  overflow: auto;
+  display: block;
+  padding: 20px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.428571429;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap; }
   pre code {
     background-color: #242A35;
-    color: #F5F7FA; }
+    color: #F5F7FA;
+    padding: 0;
+    font-size: inherit;
+    white-space: pre;
+    word-wrap: normal;
+    border: 0; }
 
 code {
   font-family: 'SourceCodePro-Regular', Arial, Helvetica, sans-serif;

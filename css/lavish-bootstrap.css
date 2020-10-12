@@ -622,7 +622,7 @@ a code {
   color: #54B30E;
 }
 
-pre {
+/* pre {
   display: block;
   padding: 20px;
   margin: 0 0 10px;
@@ -632,13 +632,13 @@ pre {
   word-wrap: break-word;
   white-space: pre-wrap;
   background-color: #f5f5f5;
-}
+} */
 
-pre.prettyprint {
+/* pre.prettyprint {
   margin-bottom: 20px;
-}
+} */
 
-pre code {
+/* pre code {
   padding: 0;
   font-size: inherit;
   color: inherit;
@@ -650,7 +650,7 @@ pre code {
 .pre-scrollable {
   max-height: 340px;
   overflow-y: scroll;
-}
+} */
 .container {
   margin-right: auto;
   margin-left: auto;
