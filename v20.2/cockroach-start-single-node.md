@@ -135,7 +135,6 @@ Field | Description
 `status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
 `clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see the [troubleshooting](common-errors.html#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) docs.
 `nodeID` | The ID of the node.
-`socket` |  If the `--socket-dir` flag specifies a directory on which to listen for Unix domain socket connections, this field lists the name of the socket file.
 
 ## Examples
 
