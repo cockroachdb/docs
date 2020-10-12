@@ -2,6 +2,7 @@
 - Triggers
 - Events
 - User-defined functions
+- User-defined schemas
 - FULLTEXT functions and indexes
 - GEOSPATIAL functions and indexes
 - Drop primary key

@@ -4,18 +4,13 @@ summary: Table and function names can exist in multiple places. Resolution decid
 toc: true
 ---
 
-A query can specify a table name without a database or schema name (e.g., `SELECT * FROM orders`). How does CockroachDB know which `orders` table is being considered and in which schema?
+This page documents how CockroachDB performs **name resolution**.
 
-This page details how CockroachDB performs **name resolution** to answer this question.
+To reference an object (e.g., a table) in a query, you can specify a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following [a set of rules outlined below](#how-name-resolution-works).
 
-## Logical schemas and namespaces
+## Naming hierarchy
 
-A CockroachDB cluster can store multiple databases, and each database can store multiple tables/views/sequences. This **two-level structure for stored data** is commonly called the "logical schema" in relational database management systems.
-
-CockroachDB aims to provide compatibility with PostgreSQL
-client applications and thus supports PostgreSQL's semantics for SQL
-queries. To achieve this, CockroachDB supports a **three-level
-structure for names**. This is called the "naming hierarchy".
+For compatibility with PostgreSQL, CockroachDB supports a **three-level structure for names**. This is called the "naming hierarchy".
 
 In the naming hierarchy, the path to a stored object has three components:
 
@@ -23,11 +18,13 @@ In the naming hierarchy, the path to a stored object has three components:
 - schema name
 - object name
 
-The default schema name for all stored objects in any given database is `public`. In addition to `public`, CockroachDB supports a fixed set of virtual schemas, available in every database, that provide ancillary, non-stored data to client applications. For example, [`information_schema`](information-schema.html) is provided for compatibility with the SQL standard.
+A CockroachDB cluster can store multiple databases. Each database can store multiple schemas, and each schema can store multiple tables/views/sequences.
 
-<span class="version-tag">New in v20.2</span>: CockroachDB also supports user-defined schemas with the [`CREATE SCHEMA` statement](create-schema.html).
+When you first [start a cluster](start-a-local-cluster.html), a number of [preloaded databases](show-databases.html#preloaded-databases) and schemas are included, including the `defaultdb` database and the `public` schema. By default, objects (e.g., tables) are stored in the preloaded `public` schema, in the [current database](#current-database) (`defaultdb`, by default).
 
-The list of all databases can be obtained with [`SHOW DATABASES`](show-databases.html). The list of all schemas for a given database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The list of all objects for a given schema can be obtained with other `SHOW` statements.
+In addition to the `public` schema, CockroachDB supports a fixed set of virtual schemas, available in every database, that provide ancillary, non-stored data to client applications. For example, [`information_schema`](information-schema.html) is provided for compatibility with the SQL standard.
+
+To create a new database, use a [`CREATE DATABASE`](create-database.html) statement. To create a new schema, use a [`CREATE SCHEMA`](create-schema.html) statement. The list of all databases can be obtained with [`SHOW DATABASES`](show-databases.html). The list of all schemas for a given database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The list of all objects for a given schema can be obtained with other `SHOW` statements.
 
 ## How name resolution works
 
