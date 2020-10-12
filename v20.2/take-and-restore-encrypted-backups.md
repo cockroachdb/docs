@@ -48,7 +48,7 @@ The AWS URI **requires** the following:
 `AUTH=<auth_type>`          | The user-specified credentials.<ul><li>If the `AUTH` parameter is not provided, the AWS connections default to `specified` and the access keys must be provided in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`).</li><li>If `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/).</li></ul>
 `REGION=<region>`           | The region of the CMK.
 
-See below for an [examples](#examples).
+See below for [examples](#examples).
 
 ### Examples
 
@@ -62,7 +62,7 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO 's3:///test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
+> BACKUP TO 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH kms = 'aws:///<host>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
@@ -101,7 +101,7 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 's3:///test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
+> RESTORE FROM 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH kms = 'aws:///<host>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
