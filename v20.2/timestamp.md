@@ -62,6 +62,8 @@ Note that the fractional portion is optional and is rounded to
 microseconds (6 digits after decimal) for compatibility with the
 PostgreSQL wire protocol.
 
+<span class="version-tag">New in v20.2:</span> For PostgreSQL compatibility, CockroachDB bounds `TIMESTAMP` values by the lowest and highest `TIMESTAMP` values supported by PostgreSQL. The minimum allowable `TIMESTAMP` value is `4714-11-24 00:00:00+00 BC`, and the highest allowable `TIMESTAMP` value is `294276-12-31 23:59:59.999999`.
+
 {{site.data.alerts.callout_info}}
 A time zone offset of `+00:00` is displayed for all [`TIME`](time.html) and `TIMESTAMP` values, but is not stored in the database.
 {{site.data.alerts.end}}
@@ -234,6 +236,14 @@ Type | Details
 `INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `DATE` | --
 `STRING` | <span class="version-tag">New in v20.2:</span> Converts to the date and time portion (YYYY-MM-DD HH:MM:SS) of the timestamp and omits the time zone offset.
+
+### Infinity `TIMESTAMP` casts
+
+CockroachDB currently does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported, and `-infinity::TIMESTAMP` evaluates to `-4713-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported.
+
+Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4713-11-24 00:00:00+00:00`).
+
+For more details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/41564).
 
 ## See also
 
