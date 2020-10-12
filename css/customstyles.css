@@ -7051,10 +7051,10 @@ section.footer {
   padding: 0 0 0 10px; }
   #toc > ul li,
   #toc-right > ul li {
-    margin: 6px 0 7px;
     list-style: none;
     line-height: 22px;
-    white-space: nowrap; }
+    white-space: nowrap;
+    margin: 0; }
     #toc > ul li a,
     #toc-right > ul li a {
       font-family: 'Source Sans Pro', sans-serif;
@@ -7063,7 +7063,8 @@ section.footer {
       line-height: 22px;
       display: inline-flex;
       letter-spacing: 0.1px;
-      padding: 0 0 0 20px; }
+      padding: 6px 0 7px 20px;
+      border-left: 2px solid #E7ECF3; }
       #toc > ul li a:hover,
       #toc-right > ul li a:hover {
         font-weight: bold;

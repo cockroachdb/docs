@@ -55,11 +55,10 @@
     padding: 0 0 0 10px;
 
     li {
-      margin: 6px 0 7px;
       list-style: none;
       line-height: 22px;
       white-space: nowrap; // prevent anchor JS link from ending up on next line
-
+      margin: 0;
       a {
         font-family: 'Source Sans Pro', sans-serif;
         font-size: 14px;
@@ -67,8 +66,8 @@
         line-height: 22px;
         display: inline-flex;
         letter-spacing: 0.1px;
-        padding: 0 0 0 20px;
-
+        padding: 6px 0 7px 20px;
+        border-left: 2px solid $neutral-200;
         &:hover {
           font-weight: bold;
           text-decoration: none;
@@ -76,7 +75,7 @@
         }
 
         &.active--scroll {
-          border-left: 2px solid #0788FF;
+          border-left: 2px solid $blue-300;
           font-weight: bold;
         }
 
