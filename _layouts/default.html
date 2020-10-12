@@ -25,11 +25,18 @@
 
           </div>
         </nav>
+        {% if page.toc == true %}
+        <!-- Smaller column col-xl-8 -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-9 col-xl-8 px-lg-5 px-sm-0">
+        {% else %}
+        <!-- larger column col-xl-10 -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-9 col-xl-10 px-lg-5 px-sm-0">
+        {% endif %}
+        
             {{content}}
         </main>
         {% if page.toc == true %}
-        <div class="toc-col">
+        <div class="toc-col col-xl-2">
             <div class="toc-col-contents">  <!-- lets all elements scroll -->
               <div id="toc-right"></div>
               <div class="cf-5329-area-16738"></div>
