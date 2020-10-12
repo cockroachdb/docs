@@ -33,12 +33,12 @@ For more information about the different options available when creating a backu
 
 We recommend that you monitor your backup schedule and alert on metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect. For more information, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
 
-## View scheduled backups details
+## View scheduled backup details
 
 <span class="version-tag">New in v20.2:</span> When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
 
 - `SHOW BACKUPS IN y` statement to [view a list of the full backup's subdirectories](#view-a-list-of-the-full-backups-subdirectories).
-- `SHOW BACKUP x IN y` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specifc-full-backup-subdirectory).
+- `SHOW BACKUP x IN y` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 For more details, see [`SHOW BACKUP`](show-backup.html).
 
@@ -237,7 +237,7 @@ To restore from a scheduled backup, use the [`RESTORE`](restore.html) statement:
     AS OF SYSTEM TIME '2020-08-19 03:50:00+00:00';
 ~~~
 
-To view the backups stored within a collection, use the [`SHOW BACKUP`](#view-scheduled-backups-details) statement.
+To view the backups stored within a collection, use the [`SHOW BACKUP`](#view-scheduled-backup-details) statement.
 
 ## See also
 
