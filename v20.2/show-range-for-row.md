@@ -1,22 +1,23 @@
 ---
 title: SHOW RANGE FOR ROW
-summary: The SHOW RANGE FOR ROW statement shows information about the range for a particular row.
+summary: The SHOW RANGE FOR ROW statement shows information about the range for a single row.
 toc: true
 ---
 
-The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a particular row of data. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
+The `SHOW RANGE ... FOR ROW` [statement](sql-statements.html) shows information about a [range](architecture/overview.html#glossary) for a single row in a table or index. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for a range are located.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 {{site.data.alerts.callout_info}}
-To show information about the ranges that comprise the data for a table, index, or entire database, use the [`SHOW RANGES`](show-ranges.html) statement.
+To show information about the ranges for all data in a table, index, or database, use the [`SHOW RANGES`](show-ranges.html) statement.
 {{site.data.alerts.end}}
 
-## Synopsis
+## Syntax
 
-<div>
-  {% include {{ page.version.version }}/sql/diagrams/show_range_for_row.html %}
-</div>
+~~~
+SHOW RANGE FROM TABLE <tablename> FOR ROW (row, value, ...)
+SHOW RANGE FROM INDEX [ <tablename> @ ] <indexname> FOR ROW (row, value, ...)
+~~~
 
 ## Required privileges
 
@@ -26,9 +27,9 @@ The user must have the `SELECT` [privilege](authorization.html#assign-privileges
 
 Parameter | Description
 ----------|------------
-[`table_name`](sql-grammar.html#table_name) | The name of the table that contains the row that you want range information about.
-[`table_index_name`](sql-grammar.html#table_index_name) | The name of the index for the row that you want range information about.
-`row_vals` | The values of the row whose range information you want to show.
+`tablename` | The name of the table that contains the row that you want range information about.
+`indexname` | The name of the index that contains the row that you want range information about.
+`(row, value, ...)` | <span class="version-tag">New in v20.2</span>: The values of the indexed columns of the row that you want range information about, as a tuple. In previous releases, this statement required the values of all columns of a row.
 
 ## Response
 
@@ -46,32 +47,108 @@ Field | Description
 
 ## Examples
 
-{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Show range information for a row in a table
 
+To show information about a row in a table, you must know the values of the columns in the row's primary key:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGE FROM TABLE users FOR ROW ('ae147ae1-47ae-4800-8000-000000000022', 'amsterdam', 'Tyler Dalton', '88194 Angela Gardens Suite 94', '4443538758')];
+> SHOW INDEX FROM vehicles;
 ~~~
+
 ~~~
-   start_key   |        end_key         | range_id | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
-+--------------+------------------------+----------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+
-  /"amsterdam" | /"amsterdam"/PrefixEnd |       47 |            9 | region=europe-west1,az=d | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+---------------------------------------+------------+--------------+-------------+-----------+---------+-----------
+  vehicles   | primary                               |   false    |            1 | city        | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            2 | id          | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city        | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id    | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id          | ASC       |  false  |   true
+(5 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT city, id FROM vehicles LIMIT 5;
+~~~
+
+~~~
+     city     |                  id
+--------------+---------------------------------------
+  amsterdam   | bbbbbbbb-bbbb-4800-8000-00000000000b
+  amsterdam   | aaaaaaaa-aaaa-4800-8000-00000000000a
+  boston      | 22222222-2222-4200-8000-000000000002
+  boston      | 33333333-3333-4400-8000-000000000003
+  los angeles | 99999999-9999-4800-8000-000000000009
+(5 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW RANGE FROM TABLE vehicles FOR ROW (
+    'boston',
+    '22222222-2222-4200-8000-000000000002'
+  );
+~~~
+
+~~~
+                            start_key                           |                         end_key                         | range_id | lease_holder | lease_holder_locality | replicas |    replica_localities
+----------------------------------------------------------------+---------------------------------------------------------+----------+--------------+-----------------------+----------+---------------------------
+  /"boston"/"\"\"\"\"\"\"B\x00\x80\x00\x00\x00\x00\x00\x00\x02" | /"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\x03" |       57 |            1 | region=us-east1,az=b  | {1}      | {"region=us-east1,az=b"}
 (1 row)
 ~~~
 
 ### Show range information for a row by a secondary index
 
+To show information about a row in a secondary index, you must know the values of the indexed columns:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW RANGE FROM INDEX vehicles_auto_index_fk_city_ref_users FOR ROW ('aaaaaaaa-aaaa-4800-8000-00000000000a', 'amsterdam', 'scooter', 'c28f5c28-f5c2-4000-8000-000000000026', '2019-01-02 03:04:05+00:00', 'in_use', '62609 Stephanie Route', '{"color": "red"}')];
+> SHOW INDEX FROM vehicles;
 ~~~
+
 ~~~
-   start_key   |        end_key         | range_id | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
-+--------------+------------------------+----------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+
-  /"amsterdam" | /"amsterdam"/PrefixEnd |       94 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
-(1 row)
+  table_name |              index_name               | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+---------------------------------------+------------+--------------+-------------+-----------+---------+-----------
+  vehicles   | primary                               |   false    |            1 | city        | ASC       |  false  |  false
+  vehicles   | primary                               |   false    |            2 | id          | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            1 | city        | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            2 | owner_id    | ASC       |  false  |  false
+  vehicles   | vehicles_auto_index_fk_city_ref_users |    true    |            3 | id          | ASC       |  false  |   true
+(5 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT city, owner_id, id FROM vehicles@vehicles_auto_index_fk_city_ref_users LIMIT 5;
+~~~
+
+~~~
+     city     |               owner_id               |                  id
+--------------+--------------------------------------+---------------------------------------
+  amsterdam   | bd70a3d7-0a3d-4000-8000-000000000025 | bbbbbbbb-bbbb-4800-8000-00000000000b
+  amsterdam   | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a
+  boston      | 2e147ae1-47ae-4400-8000-000000000009 | 22222222-2222-4200-8000-000000000002
+  boston      | 33333333-3333-4400-8000-00000000000a | 33333333-3333-4400-8000-000000000003
+  los angeles | 9eb851eb-851e-4800-8000-00000000001f | 99999999-9999-4800-8000-000000000009
+(5 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW RANGE FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users FOR ROW (
+    'boston',
+    '2e147ae1-47ae-4400-8000-000000000009',
+    '22222222-2222-4200-8000-000000000002'
+  );
+~~~
+
+~~~
+  start_key | end_key | range_id | lease_holder | lease_holder_locality | replicas |    replica_localities
+------------+---------+----------+--------------+-----------------------+----------+---------------------------
+  NULL      | NULL    |       53 |            1 | region=us-east1,az=b  | {1}      | {"region=us-east1,az=b"}
 ~~~
 
 ## See also
