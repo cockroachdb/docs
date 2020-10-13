@@ -642,6 +642,12 @@
                 "urls": [
                   "/${VERSION}/gssapi_authentication.html"
                 ]
+              },
+              {
+                "title": "Single Sign-on",
+                "urls": [
+                  "/${VERSION}/sso.html"
+                ]
               }
             ]
           },
