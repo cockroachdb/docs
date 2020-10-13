@@ -7,16 +7,16 @@ toc: true
 On a secure cluster, this area of the Admin UI can only be accessed by a user with [`VIEWACTIVITY`](authorization.html#assign-privileges) privileges. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
 {{site.data.alerts.end}}
 
-The **Sessions** page of the Admin UI provides details of all open sessions on the cluster.
+The **Sessions** page of the Admin UI provides details of all open sessions in the cluster.
 
 To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Sessions** in the left-hand navigation.
 
 ## Sessions list
 
-Use the **Sessions** list to see the open sessions on the cluster. This includes active and idle sessions. 
+Use the **Sessions** list to see the open sessions in the cluster. This includes active and idle sessions. 
 
 {{site.data.alerts.callout_info}}
-An session is *active* if it has an open transaction, and *idle* if it has no open transaction. Active sessions consume [hardware resources](recommended-production-settings.html#hardware).
+A session is *active* if it has an open transaction (including implicit transactions, which are individual SQL statements), and *idle* if it has no open transaction. Active sessions consume [hardware resources](recommended-production-settings.html#hardware).
 {{site.data.alerts.end}}
 
 - If an active session also has an open transaction, the most recent SQL statement will be displayed in the **Statement** column.
@@ -33,7 +33,7 @@ Txn Duration | Amount of time the transaction has been active, if there is an op
 Statement Age | Amount of time the SQL statement has been active, if there is an active statement.
 Memory Usage | Amount of memory currently allocated to this session / maximum amount of memory this session has ever allocated.
 Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.<br><br>
-Actions | Options to terminate the active query and/or terminate the session. These require [`CANCELQUERY` permissions](authorization.html#assign-privileges).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "conenction terminated" event.
+Actions | Options to terminate the active query and/or terminate the session. These require [`CANCELQUERY` permissions](authorization.html#assign-privileges).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
 
 {{site.data.alerts.callout_success}}
 Sort by **Txn Duration** to display all active sessions at the top.
