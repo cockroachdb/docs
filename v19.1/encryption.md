@@ -227,5 +227,4 @@ Enabling Encryption at Rest might result in a higher CPU utilization. We estimat
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](secure-a-cluster.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -55,7 +55,7 @@ To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
         city STRING,
         name STRING,
         address STRING,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
 );
 ~~~
 

@@ -17,7 +17,8 @@ However, CockroachDB does not support some of the PostgreSQL features or behaves
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-##Features that differ from PostgreSQL
+## Features that differ from PostgreSQL
+
 Note, some of these differences below only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
 
 ### Overflow of `float`
@@ -117,6 +118,14 @@ SELECT 1::int << (x % 64)
 
 For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
 
+### Schema namespaces
 
-###SQL Compatibility
+For compatibility with PostgreSQL, CockroachDB supports a [three-level structure for names](sql-name-resolution.html#naming-hierarchy): databases, schemas, and objects.
+
+However, in CockroachDB versions < v20.2, user-defined schemas are not supported, and the only schema available for stored objects is the preloaded `public` schema. As a result, CockroachDB effectively supports a two-level storage structure: databases and objects. To provide a multi-level structure for stored objects, we recommend using database namespaces in the same way as [schema namespaces are used in PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+
+For more details, see [Name Resolution](sql-name-resolution.html).
+
+### SQL Compatibility
+
 Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html).

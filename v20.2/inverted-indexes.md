@@ -92,9 +92,9 @@ Indexes create a trade-off: they greatly improve the speed of queries, but sligh
 
 Inverted indexes on `JSONB` columns support the following comparison operators:
 
-- "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
-- "contains": [`@>`](functions-and-operators.html#operator-contains)
-- "equals": [`=`](functions-and-operators.html#operator-equals), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#operator-get-object-field) operator.  For example:
+- "is contained by": [`<@`](functions-and-operators.html#supported-operations)
+- "contains": [`@>`](functions-and-operators.html#supported-operations)
+- "equals": [`=`](functions-and-operators.html#supported-operations), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator.  For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -108,27 +108,27 @@ Inverted indexes on `JSONB` columns support the following comparison operators:
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
 
-If you require comparisons using [`<`](functions-and-operators.html#operator-less-than)), [`<=`](functions-and-operators.html#operator-less-than-or-equal), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+If you require comparisons using [`<`](functions-and-operators.html#supported-operations)), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
 
-1. Create your table with a computed column: 
+1. Create your table with a computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
-        id INT, 
-        data JSONB, 
+        id INT,
+        data JSONB,
         foo INT AS ((data->>'foo')::INT) STORED
         );
     ~~~
 
-2. Create an index on your computed column: 
+2. Create an index on your computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
-3. Execute your query with your comparison: 
+3. Execute your query with your comparison:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -139,8 +139,8 @@ If you require comparisons using [`<`](functions-and-operators.html#operator-les
 
  Inverted indexes on [`ARRAY`](array.html) columns support the following comparison operators:
 
-- "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
-- "contains": [`@>`](functions-and-operators.html#operator-contains)
+- "is contained by": [`<@`](functions-and-operators.html#supported-operations)
+- "contains": [`@>`](functions-and-operators.html#supported-operations)
 
 ## Example
 

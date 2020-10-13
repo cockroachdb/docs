@@ -1,3 +1,11 @@
+"""This module performs the following steps sequentially:
+    1. Reads in existing account IDs (if any) from the bank database.
+    2. Creates additional accounts with randomly generated IDs. 
+       Then, it adds a bit of money to each new account.
+    3. Chooses two accounts at random and takes half of the money from the first 
+       and deposits it into the second.
+"""
+
 import random
 from math import floor
 from sqlalchemy import create_engine, Column, Integer
@@ -8,8 +16,9 @@ from cockroachdb.sqlalchemy import run_transaction
 Base = declarative_base()
 
 
-# The Account class corresponds to the "accounts" database table.
 class Account(Base):
+    """The Account class corresponds to the "accounts" database table.
+    """
     __tablename__ = 'accounts'
     id = Column(Integer, primary_key=True)
     balance = Column(Integer)
@@ -21,10 +30,10 @@ class Account(Base):
 # For more information, see
 # https://github.com/cockroachdb/sqlalchemy-cockroachdb.
 
-secure_cluster = True           # Set to False for insecure clusters
+SECURE_CLUSTER = True           # Set to False for insecure clusters
 connect_args = {}
 
-if secure_cluster:
+if SECURE_CLUSTER:
     connect_args = {
         'sslmode': 'require',
         'sslrootcert': 'certs/ca.crt',
@@ -51,15 +60,14 @@ seen_account_ids = set()
 
 # The code below generates random IDs for new accounts.
 
-def create_random_accounts(sess, n):
+def create_random_accounts(sess, num):
     """Create N new accounts with random IDs and random account balances.
 
     Note that since this is a demo, we don't do any work to ensure the
     new IDs don't collide with existing IDs.
     """
     new_accounts = []
-    elems = iter(range(n))
-    for i in elems:
+    while num > 0:
         billion = 1000000000
         new_id = floor(random.random()*billion)
         seen_account_ids.add(new_id)
@@ -69,6 +77,7 @@ def create_random_accounts(sess, n):
                 balance=floor(random.random()*1000000)
             )
         )
+        num = num - 1
     sess.add_all(new_accounts)
 
 
@@ -76,11 +85,12 @@ run_transaction(sessionmaker(bind=engine),
                 lambda s: create_random_accounts(s, 100))
 
 
-# Helper for getting random existing account IDs.
 
 def get_random_account_id():
-    id = random.choice(tuple(seen_account_ids))
-    return id
+    """ Helper function for getting random existing account IDs.
+    """
+    random_id = random.choice(tuple(seen_account_ids))
+    return random_id
 
 
 def transfer_funds_randomly(session):

@@ -36,15 +36,18 @@ $ cockroach sql <flags> < file-containing-statements.sql
 
 Exit the interactive SQL shell:
 
-~~~ shell
-$ \q
+~~~ sql
+> \q
 ~~~
-~~~ shell
-$ quit
+
+~~~ sql
+> quit
 ~~~
-~~~ shell
-$ exit
+
+~~~ sql
+> exit
 ~~~
+
 ~~~ shell
 ctrl-d
 ~~~
@@ -133,91 +136,19 @@ The **Version** and **Cluster ID** details are particularly noteworthy:
 
 ### Commands
 
-The following commands can be used within the interactive SQL shell:
-
-Command | Usage
---------|------------
-`\?`<br>`help` | View this help within the shell.
-`\q`<br>`quit`<br>`exit`<br>`ctrl-d` | Exit the shell.<br><br>When no text follows the prompt, `ctrl-c` exits the shell as well; otherwise, `ctrl-c` clears the line.
-`\!` | Run an external command and print its results to `stdout`. See the [example](#run-external-commands-from-the-sql-shell) below.
-<code>&#92;&#124;</code> | Run the output of an external command as SQL statements. See the [example](#run-external-commands-from-the-sql-shell) below.
-`\set <option>`<br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br><br>You can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
-`\show` | During a multi-line statement or transaction, show the SQL entered so far.
-`\h <statement>`<br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
-`\l` | List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).
-`\dt`<br>`d` | Show the tables of the current schema in the current database. These commands are equivalent to [`SHOW TABLES`](show-tables.html).
-`\dT` | <span class="version-tag">New in v20.2:</span> Show the [user-defined types](enum.html) in the current database. This command is equivalent to [`SHOW TYPES`](show-types.html).
-`\du` | List the users for all databases. This command is equivalent to [`SHOW USERS`](show-users.html).
-`\d <table>` | Show details about columns in the specified table. This command is equivalent to [`SHOW COLUMNS`](show-columns.html).
+{% include {{ page.version.version }}/sql/shell-commands.md %}
 
 ### Client-side options
 
-- To view option descriptions and how they are currently set, use `\set` without any options.
-- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. You can also use the form `<option>=<value>`.
-- If an option accepts a boolean value:
-    - `\set <option>` without `<value>` is equivalent to `\set <option> true`, and `\unset <option>` without `<value>` is equivalent to `\set <option> false`.
-    - `on` and `0` are aliases for `true`, and `off` and `1` are aliases for `false`.
-
-Client Options | Description
----------------|------------
-<a name="sql-option-auto-trace"></a> `auto_trace` | For every statement executed, the shell also produces the trace for that statement in a separate result below. A trace is also produced in case the statement produces a SQL error.<br><br>**Default:** `off`<br><br>To enable this option, run `\set auto_trace on`.
-<a name="sql-option-check-syntax"></a> `check_syntax` | Validate SQL syntax. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br /><br />**Default:** `true` for [interactive sessions](#session-and-output-types); `false` otherwise.<br><br>To disable this option, run `\unset check_syntax`.
-<a name="sql-option-display-format"></a> `display_format` | How to display table rows printed within the interactive SQL shell. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise<br /><br />To change this option, run `\set display_format <format>`. For a demonstration, see the [example](#make-the-output-of-show-statements-selectable) below.
-`echo` | Reveal the SQL statements sent implicitly by the SQL shell.<br><br>**Default:** `false`<br><br>To enable this option, run `\set echo`. For a demonstration, see the [example](#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility) below.
-<a name="sql-option-errexit"></a> `errexit` | Exit the SQL shell upon encountering an error.<br /><br />**Default:** `false` for [interactive sessions](#session-and-output-types); `true` otherwise<br><br>To enable this option, run `\set errexit`.
-`show_times` | Reveal the time a query takes to complete.<br><br>**Default:** `true`<br><br>To disable this option, run `\unset show_times`.
+{% include {{ page.version.version }}/sql/shell-options.md %}
 
 ### Help
 
-Within the SQL shell, you can get interactive help about statements and functions:
-
-Command | Usage
---------|------
-`\h`<br>`??` | List all available SQL statements, by category.
-`\hf` | List all available SQL functions, in alphabetical order.
-`\h <statement>`<br>or `<statement> ?` | View help for a specific SQL statement.
-`\hf <function>`<br>or `<function> ?` | View help for a specific SQL function.
-
-#### Examples
-
-~~~ sql
-> \h UPDATE
-~~~
-
-~~~
-Command:     UPDATE
-Description: update rows of a table
-Category:    data manipulation
-Syntax:
-UPDATE <tablename> [[AS] <name>] SET ... [WHERE <expr>] [RETURNING <exprs...>]
-
-See also:
-  SHOW TABLES
-  INSERT
-  UPSERT
-  DELETE
-  https://www.cockroachlabs.com/docs/v2.1/update.html
-~~~
-
-~~~ sql
-> \hf uuid_v4
-~~~
-
-~~~
-Function:    uuid_v4
-Category:    built-in functions
-Returns a UUID.
-
-Signature          Category
-uuid_v4() -> bytes [ID Generation]
-
-See also:
-  https://www.cockroachlabs.com/docs/v2.1/functions-and-operators.html
-~~~
+{% include {{ page.version.version }}/sql/shell-help.md %}
 
 ### Shortcuts
 
-The SQL shell supports many shortcuts, such as `ctrl-r` for searching the shell history. For full details, see this [Readline Shortcut](https://github.com/chzyer/readline/blob/master/doc/shortcut.md) reference.
+{% include {{ page.version.version }}/sql/shell-shortcuts.md %}
 
 ### Error messages and `SQLSTATE` codes
 
@@ -797,7 +728,7 @@ In this example, the statement is executed every minute. We let the process run 
 
 ### Connect to a cluster listening for Unix domain socket connections
 
- To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
+To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://en.wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](connection-parameters.html#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
 
 For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](cockroach-start-single-node.html) command:
 
@@ -807,19 +738,19 @@ $ cockroach start-single-node --insecure --socket-dir=/tmp
 ~~~
 
 ~~~
-CockroachDB node starting at 2020-04-22 15:07:17.232326 +0000 UTC (took 0.9s)
-build:               CCL v20.2.0 @ 2020/06/02 13:54:06 (go1.13.4)
-webui:               http://localhost:8080
-sql:                 postgresql://root@localhost:26257?sslmode=disable
-RPC client flags:    ./cockroach <client cmd> --host=localhost:26257 --insecure
+CockroachDB node starting at 2020-10-12 04:02:54.971369 +0000 UTC (took 1.3s)
+build:               CCL v20.2.0 @ 2020/10/06 17:15:06 (go1.13.14)
+webui:               http://Jesses-MBP-2:8080
+sql:                 postgresql://root@Jesses-MBP-2:26257?sslmode=disable
+RPC client flags:    ./cockroach <client cmd> --host=Jesses-MBP-2:26257 --insecure
 socket:              /tmp/.s.PGSQL.26257
-logs:                /path/cockroach/cockroach-data/logs
-temp dir:            /path/cockroach/cockroach-data/cockroach-temp919020614
-external I/O path:   /path/cockroach/cockroach-data/extern
-store[0]:            path=/path/cockroach/cockroach-data
-storage engine:      rocksdb
-status:              restarted pre-existing node
-clusterID:           9ce204b4-4b79-4809-83b5-2dc54c190cb2
+logs:                /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/logs
+temp dir:            /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/cockroach-temp805054895
+external I/O path:   /Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data/extern
+store[0]:            path=/Users/jesseseldess/Downloads/cockroach-v20.2.0-beta.4.darwin-10.9-amd64/cockroach-data
+storage engine:      pebble
+status:              initialized new cluster
+clusterID:           455ad71d-21d4-424a-87ad-8097b6b5b99f
 nodeID:              1
 ~~~
 
@@ -827,7 +758,7 @@ To connect to this cluster with a socket:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --url='postgres://@?host=/tmp&port=26257'
+$ cockroach sql --url='postgres://root@?host=/tmp&port=26257'
 ~~~
 
 ## See also

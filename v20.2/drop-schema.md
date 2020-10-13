@@ -4,7 +4,7 @@ summary: The DROP SCHEMA statement removes a schema and all its objects from a C
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#logical-schemas-and-namespaces) from the current database.
+<span class="version-tag">New in v20.2:</span> The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy) from the current database.
 
 ## Required privileges
 
@@ -27,6 +27,8 @@ Parameter | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Drop a schema
 
 {% include copy-clipboard.html %}
@@ -40,14 +42,14 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  crdb_internal
-  information_schema
-  org_one
-  pg_catalog
-  pg_extension
-  public
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  org_one            | demo
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
 (6 rows)
 ~~~
 
@@ -62,13 +64,13 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  crdb_internal
-  information_schema
-  pg_catalog
-  pg_extension
-  public
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
 (5 rows)
 ~~~
 
@@ -87,14 +89,14 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  crdb_internal
-  information_schema
-  org_two
-  pg_catalog
-  pg_extension
-  public
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  org_two            | demo
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
 (6 rows)
 ~~~
 
@@ -114,9 +116,9 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 ~~~
 
 ~~~
-  schema_name | table_name | type  | estimated_row_count
---------------+------------+-------+----------------------
-  org_two     | users      | table |                   0
+  schema_name | table_name | type  | owner | estimated_row_count
+--------------+------------+-------+-------+----------------------
+  org_two     | users      | table | demo  |                   0
 (1 row)
 ~~~
 
@@ -141,13 +143,13 @@ SQLSTATE: 2BP01
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  crdb_internal
-  information_schema
-  pg_catalog
-  pg_extension
-  public
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
 (5 rows)
 ~~~
 

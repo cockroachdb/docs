@@ -442,12 +442,6 @@
             ]
           },
           {
-            "title": "Test Deployment",
-            "urls": [
-              "/${VERSION}/deploy-a-test-cluster.html"
-            ]
-          },
-          {
             "title": "Manual Deployment",
             "items": [
               {
@@ -1642,6 +1636,12 @@
     		    "title": "<code>SHOW TRACE FOR SESSION</code>",
     		    "urls": [
     		      "/${VERSION}/show-trace.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW TRANSACTIONS</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-transactions.html"
     		    ]
     		  },
     		  {

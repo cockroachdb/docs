@@ -18,6 +18,8 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 - Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
+    <span class="version-tag">New in v20.2</span>: You can disable query plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
+
 - By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
@@ -177,6 +179,71 @@ JOIN users AS u ON r.city = 'new york';
              | spans               | FULL SCAN
 (11 rows)
 ~~~
+
+`EXPLAIN` output for [`INSERT`](insert.html) queries is similar to the output for standard `SELECT` queries. For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN INSERT INTO users(id, city, name) VALUES ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee');
+~~~
+
+~~~
+     tree     |    field     |                 description
+--------------+--------------+----------------------------------------------
+              | distribution | local
+              | vectorized   | false
+  insert      |              |
+   │          | into         | users(id, city, name, address, credit_card)
+   │          | auto commit  |
+   └── values |              |
+              | size         | 4 columns, 1 row
+(7 rows)
+~~~
+
+The output for this `INSERT` lists the primary operation under `tree` (i.e., `insert`), and the table and columns affected by the operation under the `description` of the `into` field (i.e., the `id`, `city`, `name`, `address`, and `credit_card` columns of the `users` table). The output also includes the size of the `INSERT` in the `description` of the `size` field (i.e., a single row).
+
+`EXPLAIN` output can include more information, for more complex types of `INSERT` queries. For example, suppose that you create a `UNIQUE` index on the `users` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE UNIQUE INDEX ON users(city, id, name);
+~~~
+
+And then you want the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](insert.html#on-conflict-clause) that inserts some data that might conflict with the `UNIQUE` constraint imposed on the `name`, `city`, and `id` columns:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPLAIN INSERT INTO users(id, city, name) VALUES ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee') ON CONFLICT DO NOTHING;
+~~~
+
+~~~
+                     tree                     |         field         |                                                description
+----------------------------------------------+-----------------------+------------------------------------------------------------------------------------------------------------
+                                              | distribution          | local
+                                              | vectorized            | false
+  insert                                      |                       |
+   │                                          | into                  | users(id, city, name, address, credit_card)
+   │                                          | auto commit           |
+   │                                          | arbiter indexes       | primary, users_city_id_name_key
+   └── filter                                 |                       |
+        │                                     | filter                | city IS NULL
+        └── lookup join (left outer)          |                       |
+             │                                | table                 | users@users_name_idx
+             │                                | equality              | (column3, column2, column1) = (name,city,id)
+             │                                | equality cols are key |
+             └── filter                       |                       |
+                  │                           | filter                | city IS NULL
+                  └── cross join (left outer) |                       |
+                       ├── values             |                       |
+                       │                      | size                  | 4 columns, 1 row
+                       └── scan               |                       |
+                                              | estimated row count   | 1
+                                              | table                 | users@users_city_id_name_key
+                                              | spans                 | [/'new york'/'c28f5c28-f5c2-4000-8000-000000000026' - /'new york'/'c28f5c28-f5c2-4000-8000-000000000026']
+(21 rows)
+~~~
+
+Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more than a simple `insert` operation. CockroachDB must check the provided values against the values in the database, to ensure that the `UNIQUE` constraint on `name`, `city`, and `id` is not violated. Note that the output also lists the indexes available to detect conflicts (i.e., the `arbiter indexes`), including the `users_city_id_name_key` index.
 
 ### `VERBOSE` option
 
@@ -674,6 +741,26 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
             | table         | kv@primary
             | spans         | FULL SCAN
 (8 rows)
+~~~
+
+<span class="version-tag">New in v20.2</span>: You can disable query plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+
+When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET disallow_full_table_scans=on;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
+~~~
+
+~~~
+ERROR: query `SELECT * FROM kv WHERE v BETWEEN 4 AND 5` contains a full table/index scan which is explicitly disallowed
+SQLSTATE: P0003
+HINT: try overriding the `disallow_full_table_scans` cluster/session setting
 ~~~
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
