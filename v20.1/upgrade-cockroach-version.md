@@ -234,7 +234,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. After the node has rejoined the cluster, ensure that the node is ready to accept a SQL connection.
 
-    Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait at least one minute. To be certain that the node is ready, run the following command:
+    Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell

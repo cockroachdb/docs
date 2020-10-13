@@ -81,7 +81,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
         > \q
         ~~~
 
-1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the `updateStrategy` defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -105,7 +105,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     ~~~
     </section>
 
-1. Kick off the upgrade process by changing the desired Docker image:
+1. Kick off the upgrade process by changing the Docker image used in the CockroachDB StatefulSet:
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
