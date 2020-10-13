@@ -17,7 +17,7 @@ These details let you monitor the overall state of transactions and identify tho
 
 No [privileges](authorization.html#assign-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active transactions, whereas the `admin` users see all users' currently active transactions.
 
-## Synopsis
+## Syntax
 
 ~~~
 SHOW [ALL] [CLUSTER | LOCAL] TRANSACTIONS
