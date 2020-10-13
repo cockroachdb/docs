@@ -1,6 +1,6 @@
 ---
 title: SHOW TRANSACTIONS
-summary: The SHOW TRANSACTIONS statement lists all currently active transactions across the cluster or on the local node.
+summary: The SHOW TRANSACTIONS statement lists all currently active transactions across the cluster or on the gateway node.
 toc: true
 ---
 
@@ -24,7 +24,8 @@ SHOW [ALL] [CLUSTER | LOCAL] TRANSACTIONS
 ~~~
 
 - To list the active transactions across all nodes of the cluster, use `SHOW TRANSACTIONS` or `SHOW CLUSTER TRANSACTIONS`.
-- To list the active transactions just on the local node, use `SHOW LOCAL TRANSACTIONS`.
+- To list the active transactions just on the gateway node, use `SHOW LOCAL TRANSACTIONS`.
+- To list internal transactions (that are issued by the database itself), use `SHOW ALL .. TRANSACTIONS`.
 
 ## Response
 
@@ -58,7 +59,7 @@ The following fields are returned for each transaction:
 
 Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
 
-### List active transactions on the local node
+### List active transactions on the gateway node
 
 {% include copy-clipboard.html %}
 ~~~ sql
