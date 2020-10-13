@@ -4,7 +4,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the Admin UI can only be accessed by a user with [`VIEWACTIVITY`](authorization.html#assign-privileges) privileges. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
+On a secure cluster, this area of the Admin UI can only be accessed by a SQL user with the [`VIEWACTIVITY`](authorization.html#create-and-manage-users) role option. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
 {{site.data.alerts.end}}
 
 The **Sessions** page of the Admin UI provides details of all open sessions in the cluster.
@@ -31,9 +31,9 @@ Parameter | Description
 Session Age | Amount of time the session has been open.
 Txn Duration | Amount of time the transaction has been active, if there is an open transaction.
 Statement Age | Amount of time the SQL statement has been active, if there is an active statement.
-Memory Usage | Amount of memory currently allocated to this session / maximum amount of memory this session has ever allocated.
-Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.<br><br>
-Actions | Options to terminate the active query and/or terminate the session. These require [`CANCELQUERY` permissions](authorization.html#assign-privileges).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
+Memory Usage | Amount of memory currently allocated to this session / maximum amount of memory this session has ever been allocated.
+Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.
+Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY` role option](authorization.html#create-and-manage-users).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
 
 {{site.data.alerts.callout_success}}
 Sort by **Txn Duration** to display all active sessions at the top.
