@@ -29,7 +29,7 @@ This SSO implementation uses the [authorization code grant type](https://tools.i
 1. The authorization code in the callback query is exchanged for an [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 1. CockroachDB matches the ID Token to a registered SQL user.
 1. CockroachDB creates a web session for the SQL user.
-1. The user is redirected to the [Admin UI Cluster Overview](admin-ui-cluster-overview-page).
+1. The user is redirected to the [Admin UI Cluster Overview](admin-ui-cluster-overview-page.html).
 
 ## Cluster settings
 
