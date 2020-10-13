@@ -827,7 +827,7 @@ UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 (12 rows)
 ~~~
 
-By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` statements.  To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
+By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` and `UPSERT` statements.  To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
 
 ## See also
 
