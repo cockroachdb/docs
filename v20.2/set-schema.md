@@ -4,7 +4,7 @@ summary: The SET SCHEMA statement changes the schema of a table, sequence, or vi
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html#logical-schemas-and-namespaces) of a [table](create-table.html), [sequence](create-sequence.html), or [view](create-view.html).
+<span class="version-tag">New in v20.2</span>: The `SET SCHEMA` [statement](sql-statements.html) changes the [schema](sql-name-resolution.html) of a [table](create-table.html), [sequence](create-sequence.html), or [view](create-view.html).
 
 {{site.data.alerts.callout_info}}
 `SET SCHEMA` is a subcommand of [`ALTER TABLE`](alter-table.html), [`ALTER SEQUENCE`](alter-sequence.html), and [`ALTER VIEW`](alter-view.html).

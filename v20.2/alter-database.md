@@ -13,7 +13,7 @@ The `ALTER DATABASE` [statement](sql-statements.html) applies a schema change to
 Subcommand | Description
 -----------|------------
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a database.
-[`CONVERT TO SCHEMA`](convert-to-schema.html) | <span class="version-tag">New in v20.2</span>: Convert a [database](create-database.html) to a [schema](sql-name-resolution.html#logical-schemas-and-namespaces).
+[`CONVERT TO SCHEMA`](convert-to-schema.html) | <span class="version-tag">New in v20.2</span>: Convert a [database](create-database.html) to a [schema](sql-name-resolution.html).
 [`RENAME`](rename-database.html) | Change the name of a database.
 
 ## Viewing schema changes
