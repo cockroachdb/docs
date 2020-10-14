@@ -24,4 +24,17 @@ See the links below for more information about how to use CockroachDB for spatia
 
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
-- [Spatial functions](functions-and-operators.html#spatial-functions)
+
+In addition to the [generated reference documentation for spatial functions](functions-and-operators.html#spatial-functions), we have written additional documentation for the following functions, including examples:
+
+- [`ST_Contains`](st_contains.html)
+- [`ST_ConvexHull`](st_convexhull.html)
+- [`ST_CoveredBy`](st_coveredby.html)
+- [`ST_Covers`](st_covers.html)
+- [`ST_Disjoint`](st_disjoint.html)
+- [`ST_Equals`](st_equals.html)
+- [`ST_Intersects`](st_intersects.html)
+- [`ST_Overlaps`](st_overlaps.html)
+- [`ST_Touches`](st_touches.html)
+- [`ST_Union`](st_union.html)
+- [`ST_Within`](st_within.html)
