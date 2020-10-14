@@ -100,46 +100,6 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### Filtering by `now()` results in a full table scan
-
-When filtering a query by `now()`, the [cost-based optimizer](cost-based-optimizer.html) currently cannot constrain an index on the filtered timestamp column. This results in a full table scan. For example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE bydate (a TIMESTAMP NOT NULL, INDEX (a));
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXPLAIN SELECT * FROM bydate WHERE a > (now() - '1h'::interval);
-~~~
-
-~~~
-  tree |     field     |            description
--------+---------------+-------------------------------------
-       | distribution  | local
-       | vectorized    | false
-  scan |               |
-       | missing stats |
-       | table         | bydate@bydate_a_idx
-       | spans         | [/'2020-09-17 13:40:49.493119' - ]
-(6 rows)
-~~~
-
-As a workaround, pass the correct date into the query as a parameter to a prepared query with a placeholder, which will allow the optimizer to constrain the index correctly:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> PREPARE q AS SELECT * FROM bydate WHERE a > ($1::timestamp - '1h'::interval);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> EXECUTE q ('2020-05-12 00:00:00');
-~~~
-
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/18836)
-
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).

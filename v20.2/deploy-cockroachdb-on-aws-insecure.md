@@ -13,8 +13,6 @@ ssh-link: http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
 
-If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select **Secure** above for instructions.
-
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}

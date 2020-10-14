@@ -1,6 +1,4 @@
-{{site.data.alerts.callout_info}}
-This is an [enterprise-only](enterprise-licensing.html) feature.
-{{site.data.alerts.end}}
+{% include enterprise-feature.md %}
 
 Once [partitions have been defined for a table or a secondary index](partition-by.html), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
 

@@ -4,11 +4,7 @@ summary: The DROP TYPE statement drops an enumerated data type from the database
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated data type](enum.html) from the database.
-
-{{site.data.alerts.callout_info}}
-You cannot drop a type or view that is in use by a table.
-{{site.data.alerts.end}}
+<span class="version-tag">New in v20.2:</span> The `DROP TYPE` [statement](sql-statements.html) drops a specified [enumerated data type](enum.html) from the current database.
 
 ## Synopsis
 
@@ -26,6 +22,11 @@ Parameter | Description
 ## Required privileges
 
 The user must be the owner of the type.
+
+## Details
+
+- You cannot drop a type or view that is in use by a table.
+- You can only drop a user-defined type from the database that contains the type.
 
 ## Example
 

@@ -16,7 +16,8 @@ However, CockroachDB does not support some of the PostgreSQL features or behaves
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-##Features that differ from PostgreSQL
+## Features that differ from PostgreSQL
+
 Note, some of these differences below only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
 
 ### Overflow of `float`
@@ -116,5 +117,14 @@ SELECT 1::int << (x % 64)
 
 CockroachDB uses a [lightweight latch](architecture/transaction-layer.html#latch-manager) to serialize access to common keys across concurrent transactions. As CockroachDB does not allow serializable anomalies, [transactions](begin-transaction.html) may experience deadlocks or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](transactions.html#automatic-retries) or [client-side intervention techniques](transactions.html#client-side-intervention).
 
-###SQL Compatibility
+### Schema namespaces
+
+For compatibility with PostgreSQL, CockroachDB supports a [three-level structure for names](sql-name-resolution.html#naming-hierarchy): databases, schemas, and objects.
+
+However, in CockroachDB versions < v20.2, user-defined schemas are not supported, and the only schema available for stored objects is the preloaded `public` schema. As a result, CockroachDB effectively supports a two-level storage structure: databases and objects. To provide a multi-level structure for stored objects, we recommend using database namespaces in the same way as [schema namespaces are used in PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+
+For more details, see [Name Resolution](sql-name-resolution.html).
+
+### SQL Compatibility
+
 Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html).

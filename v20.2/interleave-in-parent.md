@@ -99,8 +99,10 @@ For an example showing how to create tables that meet these criteria, see [Inter
  Parameter | Description
 -----------|-------------
  `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
+ `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
  `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into.
  `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix).
+ `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
 
 ## Requirements
 

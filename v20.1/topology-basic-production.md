@@ -21,8 +21,7 @@ If you haven't already, [review the full range of topology patterns](topology-pa
 1. Provision hardware as follows:
     - 1 region with 3 AZs
     - 3+ VMs evenly distributed across AZs; add more VMs to increase throughput
-    - App and load balancer in same region as VMs for CockroachDB
-        - The load balancer redirects to CockroachDB nodes in the region
+    - App and load balancer in the same region as VMs for CockroachDB (The load balancer redirects to CockroachDB nodes in the region)
 
 2. Start each node on a separate VM, setting the [`--locality`](cockroach-start.html#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
 

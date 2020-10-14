@@ -4,7 +4,7 @@ summary: The SHOW ENUMS statement lists the enumerated data types in a database.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in a database.
+<span class="version-tag">New in v20.2:</span> The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in the current database.
 
 ## Synopsis
 

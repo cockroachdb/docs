@@ -53,8 +53,8 @@ Command | Usage
 
 There are two ways to increase the concurrency of a workload:
 
-- **Increase the concurrency of a single workload instance** by running `cockroach workload run <workload>` with the `--concurrency` flag set to a value higher than the default.
-- **Run multiple instances of a workload in parallel** by running `cockroach workload run <workload>` multiple times from different machines.  
+- **Increase the concurrency of a single workload instance** by running `cockroach workload run <workload>` with the `--concurrency` flag set to a value higher than the default. Note that not all workloads support this flag.
+- **Run multiple instances of a workload in parallel** by running `cockroach workload run <workload>` multiple times from different terminals/machines.  
 
 ## Workloads
 
@@ -140,7 +140,6 @@ Flag | Description
 
 Flag | Description
 -----|------------
-`--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `16`
 `--data-loader` | How to load initial table data. Valid options are `INSERT` and `IMPORT`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `INSERT`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `movr`
 `--display-every` | The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`

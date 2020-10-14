@@ -32,7 +32,7 @@ This hardware guidance is meant to be platform agnostic and can apply to bare-me
 | Value | Recommendation | Reference
 |-------|----------------|----------
 | RAM per vCPU | 4 GiB | [CPU and memory](#cpu-and-memory)
-| Capacity per vCPU | 60 GiB | [Storage](#storage)
+| Capacity per vCPU | 150 GiB | [Storage](#storage)
 | IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
 | MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
 

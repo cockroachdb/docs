@@ -70,7 +70,6 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --name=roach2 `
     --hostname=roach2 `
     --net=roachnet `
-    -p 26257:26257 -p 8080:8080  `
     -v "//c/Users/<username>/cockroach-data/roach2:/cockroach/cockroach-data"  `
     {{page.release_info.docker_image}}:{{page.release_info.version}} start `
     --insecure `
@@ -82,7 +81,6 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --name=roach3 `
     --hostname=roach3 `
     --net=roachnet `
-    -p 26257:26257 -p 8080:8080  `
     -v "//c/Users/<username>/cockroach-data/roach3:/cockroach/cockroach-data"  `
     {{page.release_info.docker_image}}:{{page.release_info.version}} start `
     --insecure `
@@ -230,7 +228,7 @@ PS C:\Users\username> docker rm roach1 roach2 roach3
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ powershell
-Remove-Item C:\Users\username> cockroach-data -recurse
+PS C:\Users\username> Remove-Item cockroach-data -recurse
 ~~~
 
 ## What's next?

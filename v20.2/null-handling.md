@@ -15,7 +15,7 @@ When using the built-in client, `NULL` values are displayed using the word `NULL
 ## NULLs and simple comparisons
 
 Any simple comparison between a value and `NULL` results in
-`NULL`. The remaining cases are described in the next question.
+`NULL`. The remaining cases are described in the next section.
 
 This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 
