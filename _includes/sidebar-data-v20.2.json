@@ -94,12 +94,6 @@
                 ]
               },
               {
-                "title": "Follow-the-Workload",
-                "urls": [
-                  "/${VERSION}/demo-follow-the-workload.html"
-                ]
-              },
-              {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
                   "/${VERSION}/orchestration-with-kubernetes.html"
