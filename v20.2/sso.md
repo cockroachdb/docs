@@ -144,7 +144,7 @@ These steps demonstrate how to enable SSO authentication for the Admin UI on a [
 
 	When the user [accesses the Admin UI](admin-ui-overview.html#admin-ui-access), they will be able to log in with their Google account.
 
-	<UI screenshot TK>
+	<img src="{{ 'images/v20.2/admin_ui_login_sso.png' | relative_url }}" alt="CockroachDB Admin UI Single Sign-on" style="border:1px solid #eee;max-width:50%" />
 
 {{site.data.alerts.callout_info}}
 You can optionally enable the [`server.oidc_authentication.autologin` cluster setting](#cluster-settings) to automatically log in an authenticated user who visits the Admin UI.
