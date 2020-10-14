@@ -2015,27 +2015,93 @@
     		]
       },
       {
-          "title": "Spatial Features",
-          "items": [
-              {
-                  "title": "Overview",
-                  "urls": [
-                      "/${VERSION}/spatial-features.html"
-                  ]
-              },
-              {
-                  "title": "Spatial and GIS Glossary of Terms",
-                  "urls": [
-                      "/${VERSION}/spatial-glossary.html"
-                  ]
-              },
-              {
-                  "title": "Spatial Indexes",
-                  "urls": [
-                      "/${VERSION}/spatial-indexes.html"
-                  ]
-              }
-          ]
+    		"title": "Spatial Features",
+    		  "items": [
+    		      {
+    			  "title": "Overview",
+    			  "urls": [
+    			      "/${VERSION}/spatial-features.html"
+    			  ]
+	      },
+	      {
+  			  "title": "Spatial and GIS Glossary of Terms",
+  			  "urls": [
+  			      "/${VERSION}/spatial-glossary.html"
+  			  ]
+	      },
+          {
+              "title": "Spatial Indexes",
+              "urls": [
+                  "/${VERSION}/spatial-indexes.html"
+              ]
+          },
+          { 
+            "title": "ST_Contains",
+            "urls": [
+                "/${VERSION}/st_contains.html"
+            ]
+          },
+          { 
+            "title": "ST_Within",
+            "urls": [
+                "/${VERSION}/st_within.html"
+            ]
+          },
+          { 
+            "title": "ST_Intersects",
+            "urls": [
+                "/${VERSION}/st_intersects.html"
+            ]
+          },
+          { 
+            "title": "ST_CoveredBy",
+            "urls": [
+                "/${VERSION}/st_coveredby.html"
+            ]
+          },
+          { 
+            "title": "ST_Covers",
+            "urls": [
+                "/${VERSION}/st_covers.html"
+            ]
+          },
+          { 
+            "title": "ST_Disjoint",
+            "urls": [
+                "/${VERSION}/st_disjoint.html"
+            ]
+          },
+          { 
+            "title": "ST_Equals",
+            "urls": [
+                "/${VERSION}/st_equals.html"
+            ]
+          },
+          { 
+            "title": "ST_Overlaps",
+            "urls": [
+                "/${VERSION}/st_overlaps.html"
+            ]
+          },
+          { 
+            "title": "ST_Touches",
+            "urls": [
+                "/${VERSION}/st_touches.html"
+            ]
+          },
+          { 
+            "title": "ST_ConvexHull",
+            "urls": [
+                "/${VERSION}/st_convexhull.html"
+            ]
+          },
+          { 
+            "title": "ST_Union",
+            "urls": [
+                "/${VERSION}/st_union.html"
+            ]
+          }
+	]
       },
       {
     		"title": "Performance Optimization",
