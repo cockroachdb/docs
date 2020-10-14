@@ -14,7 +14,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
-- If you had [enabled VPC peering while creating your cluster](create-your-cluster.html#step-6-enable-vpc-peering-optional) for your GCP cluster, you can set up and authorize the peered network.
+- If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-6-enable-vpc-peering-optional).
 
 ### Add IP addresses to the allowlist
 
