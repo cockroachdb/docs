@@ -162,6 +162,7 @@ table tr td:nth-child(2) {
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
  Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)
  Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
+ User-defined Schemas | ✗ | Standard | Create, drop, and modify user-defined schemas.
  Views | ✓ | Standard | [Views documentation](views.html)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common Table Expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)

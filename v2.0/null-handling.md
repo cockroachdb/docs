@@ -14,7 +14,7 @@ client](use-the-built-in-sql-client.html).
 ## NULLs and Simple Comparisons
 
 Any simple comparison between a value and `NULL` results in
-`NULL`. The remaining cases are described in the next question.
+`NULL`. The remaining cases are described in the next section.
 
 This behavior is consistent with PostgreSQL as well as all other major RDBMS's.
 

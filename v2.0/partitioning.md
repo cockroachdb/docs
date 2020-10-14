@@ -115,12 +115,12 @@ Indexes can also be partitioned, but are not required to be. Each partition is r
 
 ~~~ sql
 CREATE TABLE foo (a STRING PRIMARY KEY, b STRING) PARTITION BY LIST (a) (
-    bar VALUES IN ('bar'),
-    default VALUES IN (DEFAULT)
+    PARTITION bar VALUES IN ('bar'),
+    PARTITION default VALUES IN (DEFAULT)
 );
 CREATE INDEX foo_b_idx ON foo (b) PARTITION BY LIST (b) (
-    baz VALUES IN ('baz'),
-    default VALUES IN (DEFAULT)
+    PARTITION baz VALUES IN ('baz'),
+    PARTITION default VALUES IN (DEFAULT)
 );
 ~~~
 

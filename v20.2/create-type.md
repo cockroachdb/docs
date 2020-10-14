@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v20.2:</span> The `CREATE TYPE` [statement](sql-statements.html) creates a new, [enumerated data type](enum.html) in a database.
 
+{{site.data.alerts.callout_info}}
+CockroachDB currently only supports [enumerated user-defined types](enum.html).
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
@@ -16,7 +20,7 @@ toc: true
 
 Parameter | Description
 ----------|------------
-`type_name` | The name of the type.
+`type_name` | The name of the type. You can qualify the name with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`), but after the type is created, it can only be referenced from the database that contains the type.
 `opt_enum_val_list` | A list of values that make up the type's enumerated set.
 
 ## Required privileges

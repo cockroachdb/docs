@@ -4,12 +4,6 @@ summary: Learn how to enable the node map in the Admin UI.
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
-
-The Node Map is an [enterprise-only](enterprise-licensing.html) feature. However, you can [request a trial license](https://www.cockroachlabs.com/get-cockroachdb/) to try it out. 
-{{site.data.alerts.end}}
-
 The **Node Map** is useful for:
 
 - Visualizing the geographic configuration of a multi-region cluster on a world map.
@@ -17,6 +11,12 @@ The **Node Map** is useful for:
 - Drilling down to individual nodes for monitoring health and performance.
 
 This page walks you through the process of setting up and enabling the Node Map.
+
+{{site.data.alerts.callout_info}}
+On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+{{site.data.alerts.end}}
+
+{% include enterprise-feature.md %}
 
 <img src="{{ 'images/v20.2/admin-ui-node-map-navigation3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
@@ -159,7 +159,7 @@ Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in
 
 ### Node Map not displayed
 
-The Node Map requires an [enterprise license](enterprise-licensing.html). 
+The Node Map requires an [enterprise license](enterprise-licensing.html).
 
 All nodes in the cluster must be assigned [localities](cockroach-start.html#locality). To be displayed on the world map, localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 
@@ -175,7 +175,7 @@ The Localities debug page displays the following:
 
 ### World Map not displayed for all locality levels
 
-The world map is displayed only when [localities are assigned latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities). 
+The world map is displayed only when [localities are assigned latitude/longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 
 If a locality (e.g., region) is not assigned latitude/longitude coordinates, it is displayed using the latitude/longitude of any lower-level localities it contains (e.g., datacenter). If no coordinates are available, localities are plotted in a circular layout.
 

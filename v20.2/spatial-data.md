@@ -32,14 +32,14 @@ Get the spatial build of CockroachDB:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-docker pull otanatcockroach/cockroachdb-geospatial
+docker pull cockroachdb/cockroach-unstable:v20.2.0-beta.2
 ~~~
 
 Start the server:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-docker run -d --name=geo --hostname=geo-host -p 26257:26257 -p 8080:8080  -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  otanatcockroach/cockroachdb-geospatial start-single-node --insecure
+docker run -d --name=geo --hostname=geo-host -p 26257:26257 -p 8080:8080  -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data"  cockroachdb/cockroach-unstable:v20.2.0-beta.2 start-single-node --insecure
 ~~~
 
 The example above uses some Docker networking and file location settings that map from the container to the host using CockroachDB's default network ports.
@@ -286,7 +286,7 @@ cockroach sql --insecure --host=localhost --port=26257
 
 Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension.
 
-However, we do not yet implement the full list of PostGIS built-in functions and operators. Also, our indexing works differently (see the [Performance](#performance) section below). For a list of the spatial functions we support, see [Geospatial functions](functions-and-operators.html#geospatial-functions).
+However, we do not yet implement the full list of PostGIS built-in functions and operators. Also, our indexing works differently (see the [Performance](#performance) section below). For a list of the spatial functions we support, see [Geospatial functions](functions-and-operators.html#spatial-functions).
 
 If your application needs support for functions that are not yet implemented, please check out [our meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
 
@@ -337,6 +337,6 @@ If you encounter behavior that you think is due to a performance issue, please g
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
-- [Spatial functions](functions-and-operators.html#geospatial-functions)
+- [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Troubleshooting overview](troubleshooting-overview.html)
 - [Support resources](support-resources.html)

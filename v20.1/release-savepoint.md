@@ -42,7 +42,7 @@ To completely remove the marker of a nested transaction after it encounters an e
 This example uses the [MovR data set](movr.html).
 {{site.data.alerts.end}}
 
-In the example below, we roll back the inner [nested transaction](transactions.html#nested-transactions) (marked by the savepoint `lower`) and release (commit) the outer savepoint `higher`, which raises the promo code discount to 15% using CockroachDB's [JSONB functions](jsonb.html#jsonb-functions).
+In the example below, we roll back the inner [nested transaction](transactions.html#nested-transactions) (marked by the savepoint `lower`) and release (commit) the outer savepoint `higher`, which raises the promo code discount to 15% using CockroachDB's [JSONB functions](jsonb.html#functions).
 
 {% include copy-clipboard.html %}
 ~~~ sql

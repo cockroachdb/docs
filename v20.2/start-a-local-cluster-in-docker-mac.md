@@ -16,8 +16,6 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
-{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
-
 ## Before you begin
 
 - Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).

@@ -85,7 +85,7 @@ Because CockroachDB serves reads from a range's leaseholder, it benefits your cl
 
 {{site.data.alerts.callout_info}}
 
-This feature is also called [Follow-the-Workload](../demo-follow-the-workload.html) in our documentation.
+This feature is also called [Follow-the-Workload](../topology-follow-the-workload.html) in our documentation.
 
 {{site.data.alerts.end}}
 

@@ -43,14 +43,14 @@ In this example, other objects do not depend on the table being dropped.
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  promo_codes
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (6 rows)
 ~~~
 
@@ -69,13 +69,13 @@ DROP TABLE
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (5 rows)
 ~~~
 
@@ -91,13 +91,13 @@ In this example, a [foreign key](foreign-key.html) from a different table refere
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (5 rows)
 ~~~
 
@@ -153,12 +153,12 @@ DROP TABLE
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  rides
-  user_promo_codes
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
 (4 rows)
 ~~~
 

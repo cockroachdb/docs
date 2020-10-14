@@ -50,7 +50,7 @@ Examples:
 
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
-## `JSONB` Functions
+## Functions
 
 Function | Description
 ---------|------------
@@ -62,7 +62,7 @@ Function | Description
 
 For the full list of supported `JSONB` functions, see [Functions and Operators](functions-and-operators.html#jsonb-functions).
 
-## `JSONB` Operators
+## Operators
 
 Operator | Description | Example |
 ---------|-------------|---------|

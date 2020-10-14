@@ -178,6 +178,50 @@ To view a list of which users and roles had which privileges on each database an
 
 {% include {{ page.version.version }}/backups/show-scheduled-backups.md %}
 
+### Show an encrypted backup
+
+Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the `encryption_passphrase` option and the same passphrase that was used to create the backup:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+      WITH encryption_passphrase = 'password123';
+~~~
+
+Or, use the `kms` option and the same KMS URI that was used to create the backup:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP 's3://test/backups/test_explicit_kms?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
+      WITH kms = 'aws:///arn:aws:kms:us-east-1:123456789:key/1234-abcd-5678-efgh-90ij?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
+~~~
+
+~~~
+  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+------------------
+  NULL          | NULL               | system                     | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
+  system        | public             | users                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        144 |    3 |      true
+  system        | public             | zones                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        201 |    7 |      true
+  system        | public             | settings                   | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        431 |    6 |      true
+  system        | public             | ui                         | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
+  system        | public             | jobs                       | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |     962415 |   97 |      true
+  system        | public             | locations                  | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        261 |    5 |      true
+  system        | public             | role_members               | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        184 |    2 |      true
+  system        | public             | comments                   | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
+  system        | public             | scheduled_jobs             | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |       1991 |    4 |      true
+  NULL          | NULL               | defaultdb                  | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | postgres                   | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | movr                       | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
+  movr          | public             | users                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |       4911 |   50 |      true
+  movr          | public             | vehicles                   | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |       3182 |   15 |      true
+  movr          | public             | rides                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |     156387 |  500 |      true
+  movr          | public             | vehicle_location_histories | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |      73918 | 1000 |      true
+  movr          | public             | promo_codes                | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |     216083 | 1000 |      true
+  movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
+  defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
+(20 rows)
+~~~
+
 ## See also
 
 - [`BACKUP`](backup.html)

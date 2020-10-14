@@ -402,6 +402,5 @@ $ cockroach start \
 - [Initialize a Cluster](initialize-a-cluster.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

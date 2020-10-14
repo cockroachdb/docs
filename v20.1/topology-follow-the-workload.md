@@ -27,7 +27,7 @@ If read performance is your main focus for a table, but you want low-latency rea
 
 ## Configuration
 
-Aside from [deploying a cluster across three regions](#cluster-setup) properly, with each node started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and AZ combination, this pattern requires no extra configuration. CockroachDB will balance the replicas for a table across the three regions and will assign the range lease to the replica in the region with the greatest demand at any given time (the [follow-the-workload](demo-follow-the-workload.html) feature). This means that read latency in the active region will be low while read latency in other regions will be higher due to having to leave the region to reach the leaseholder. Write latency will be higher as well due to always involving replicas in multiple regions.
+Aside from [deploying a cluster across three regions](#cluster-setup) properly, with each node started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and AZ combination, this pattern requires no extra configuration. CockroachDB will balance the replicas for a table across the three regions and will assign the range lease to the replica in the region with the greatest demand at any given time (the follow-the-workload feature). This means that read latency in the active region will be low while read latency in other regions will be higher due to having to leave the region to reach the leaseholder. Write latency will be higher as well due to always involving replicas in multiple regions.
 
 <img src="{{ 'images/v20.1/topology-patterns/topology_follower_reads1.png' | relative_url }}" alt="Follower reads topology" style="max-width:100%" />
 
