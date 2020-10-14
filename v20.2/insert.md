@@ -9,11 +9,16 @@ The `INSERT` [statement](sql-statements.html) inserts one or more rows into a ta
 
 ## Performance best practices
 
-- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows).
+- To bulk-insert data into an existing table, batch multiple rows in one [multi-row `INSERT`](#insert-multiple-rows-into-an-existing-table) statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include multi-row `INSERT` statements within an explicit transaction.
 
-    {{site.data.alerts.callout_info}}
+    {{site.data.alerts.callout_success}}
     You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
     {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_info}}
+    Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
+    {{site.data.alerts.end}}
+
 - To bulk-insert data into a new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 - In traditional SQL databases, generating and retrieving unique IDs involves using `INSERT` with `SELECT`. In CockroachDB, use `RETURNING` clause with `INSERT` instead. See [Insert and Return Values](#insert-and-return-values) for more details.
 
