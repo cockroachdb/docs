@@ -29,9 +29,8 @@ Parameter | Description
 `table_name` | The name of the table that contains the rows you want to update.
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `column_name` | The name of the column whose values you want to update.
-`a_expr` | The new value you want to use, the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [scalar expression](scalar-expressions.html) you want to use.
-`DEFAULT` | To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
-`column_name` | The name of a column to update.
+`a_expr` | The new value you want to use, the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [scalar expression](scalar-expressions.html) you want to use.<br><br>To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
+`FROM table_ref` | Specify a different table to reference in `UPDATE` expressions, or `RETURNING` and `WHERE` clauses. For an example, see [Update using values from a different table](#update-using-values-from-a-different-table).
 `select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column on the left side of `=`.
 `WHERE a_expr`| `a_expr` must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
 `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) and [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
@@ -206,6 +205,29 @@ For examples, see [Update with index hints](#update-with-index-hints).
   cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well   | 5130593761
   d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow   | 4059628542
   19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | NULL                  | 0303726947
+(5 rows)
+~~~
+
+### Update using values from a different table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE rides SET revenue = NULL FROM vehicles WHERE rides.rider_id=vehicles.owner_id AND rides.vehicle_id=vehicles.id;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM rides WHERE revenue IS NULL LIMIT 5;
+~~~
+
+~~~
+                   id                  |   city    | vehicle_city |               rider_id               |              vehicle_id              |         start_address          |         end_address         |        start_time         |         end_time          | revenue
+---------------------------------------+-----------+--------------+--------------------------------------+--------------------------------------+--------------------------------+-----------------------------+---------------------------+---------------------------+----------
+  ab020c49-ba5e-4800-8000-00000000014e | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a | 1905 Christopher Locks Apt. 77 | 66037 Belinda Plaza Apt. 93 | 2018-12-13 03:04:05+00:00 | 2018-12-14 08:04:05+00:00 | NULL
+  ac083126-e978-4800-8000-000000000150 | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a | 50217 Victoria Fields Apt. 44  | 56217 Wilson Spring         | 2018-12-07 03:04:05+00:00 | 2018-12-07 10:04:05+00:00 | NULL
+  af9db22d-0e56-4800-8000-000000000157 | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a | 20937 Gibson River             | 50480 Steven Row            | 2018-12-23 03:04:05+00:00 | 2018-12-25 11:04:05+00:00 | NULL
+  b22d0e56-0418-4000-8000-00000000015c | amsterdam | amsterdam    | bd70a3d7-0a3d-4000-8000-000000000025 | bbbbbbbb-bbbb-4800-8000-00000000000b | 36054 Ward Crescent Suite 35   | 7745 John Run               | 2018-12-09 03:04:05+00:00 | 2018-12-10 18:04:05+00:00 | NULL
+  b53f7ced-9168-4000-8000-000000000162 | amsterdam | amsterdam    | bd70a3d7-0a3d-4000-8000-000000000025 | bbbbbbbb-bbbb-4800-8000-00000000000b | 86091 Mcdonald Motorway        | 1652 Robert Ford            | 2018-12-05 03:04:05+00:00 | 2018-12-05 06:04:05+00:00 | NULL
 (5 rows)
 ~~~
 
