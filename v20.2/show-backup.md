@@ -40,7 +40,7 @@ The following fields are returned.
 Field | Description
 ------|------------
 `database_name` | The database name.
-`parent_schema_name` | <span class="version-tag">New in v20.2:</span> The name of the [parent schema]((sql-name-resolution.html#logical-schemas-and-namespaces)).
+`parent_schema_name` | <span class="version-tag">New in v20.2:</span> The name of the [parent schema](sql-name-resolution.html#logical-schemas-and-namespaces).
 `object_name` | <span class="version-tag">New in v20.2:</span> The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema. Note: This column was called `table_name` in previous versions of CockroachDB. **Note: This is a breaking change.**
 `object_type` | <span class="version-tag">New in v20.2:</span> The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
