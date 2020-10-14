@@ -48,6 +48,10 @@ Make sure there are no [bulk imports](import.html) or [schema changes](online-sc
 
 To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
+{{site.data.alerts.callout_danger}}
+If you started a schema change job in v19.2 that is ongoing at the time of the upgrade, the job must be migrated to run in v20.1. This migration is automatically run shortly *after* upgrading to v20.1. In case you are upgrading from v19.2 to v20.2 or later, we advise waiting for v19.2 schema change jobs to complete in v20.1 before upgrading further. Schema change jobs that were started but were not progressing in v19.2 (i.e., due to bugs) will be marked as `failed`.
+{{site.data.alerts.end}}
+
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
