@@ -1,7 +1,8 @@
 Flag | Description
 -----|------------
 `--log-dir` | Enable logging to files and write logs to the specified directory.<br/><br/>Setting `--log-dir` to a blank directory (`--log-dir=""`) disables logging to files.
-`--log-dir-max-size` | After the log directory reaches the specified size, delete the oldest log file. The flag's argument takes standard file sizes, such as `--log-dir-max-size=1GiB`.<br/><br/>**Default**: 100MiB
+`--log-dir-max-size` | **Deprecated.** Use `--log-group-max-size`.
+`--log-group-max-size` | After the logging group (i.e., `cockroach`, `cockroach-sql-audit`, `cockroach-auth`, `cockroach-sql-exec`, `cockroach-pebble`, `cockroach-rocksdb`) reaches the specified size, delete the oldest log file. The flag's argument takes standard file sizes, such as `--log-group-max-size=1GiB`.<br/><br/>**Default**: 100MiB
 `--log-file-max-size` | After logs reach the specified size, begin writing logs to a new file. The flag's argument takes standard file sizes, such as `--log-file-max-size=2MiB`.<br/><br/>**Default**: 10MiB
 `--log-file-verbosity` | Only writes messages to log files if they are at or above the specified [severity level](debug-and-error-logs.html#severity-levels), such as `--log-file-verbosity=WARNING`. **Requires** logging to files.<br/><br/>**Default**: `INFO`
 `--logtostderr` | Enable logging to `stderr` for messages at or above the specified [severity level](debug-and-error-logs.html#severity-levels), such as `--logtostderr=ERROR`<br/><br/>If you use this flag without specifying the severity level (e.g., `cockroach start --logtostderr`), it prints messages of *all* severities to `stderr`.<br/><br/>Setting `--logtostderr=NONE` disables logging to `stderr`.
