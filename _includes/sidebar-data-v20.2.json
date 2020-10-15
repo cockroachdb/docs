@@ -94,12 +94,6 @@
                 ]
               },
               {
-                "title": "Follow-the-Workload",
-                "urls": [
-                  "/${VERSION}/demo-follow-the-workload.html"
-                ]
-              },
-              {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
                   "/${VERSION}/orchestration-with-kubernetes.html"
@@ -439,12 +433,6 @@
                   "/${VERSION}/topology-follow-the-workload.html"
                 ]
               }
-            ]
-          },
-          {
-            "title": "Test Deployment",
-            "urls": [
-              "/${VERSION}/deploy-a-test-cluster.html"
             ]
           },
           {
@@ -1642,6 +1630,12 @@
     		    "title": "<code>SHOW TRACE FOR SESSION</code>",
     		    "urls": [
     		      "/${VERSION}/show-trace.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW TRANSACTIONS</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-transactions.html"
     		    ]
     		  },
     		  {

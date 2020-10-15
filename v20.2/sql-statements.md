@@ -88,7 +88,8 @@ Statement | Usage
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW TYPES`](show-types.html) |  <span class="version-tag">New in v20.2:</span> List user-defined [data types](data-types.html) in a database.
-[`SHOW RANGES`](show-ranges.html) | Show range information about a specific table or index.
+[`SHOW RANGES`](show-ranges.html) | Show range information for all data in a table or index.
+[`SHOW RANGE FOR ROW`](show-range-for-row.html) | Show range information for a single row in a table or index. 
 [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table or index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table or index.
@@ -106,6 +107,7 @@ Statement | Usage
 [`ROLLBACK`](rollback-transaction.html) | Roll back the current [transaction](transactions.html) and all of its [nested transaction](transactions.html#nested-transactions), discarding all transactional updates made by statements inside the transaction.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
+[`SHOW TRANSACTIONS`](show-transactions.html) | <span class="version-tag">New in v20.2</span>: View all currently active transactions across the cluster or on the local node.
 
 ## Access management statements
 

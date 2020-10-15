@@ -21,7 +21,49 @@ Collated strings are important because different languages have [different rules
 
 ## Supported collations
 
-CockroachDB supports the collations provided by Go's [language package](https://godoc.org/golang.org/x/text/language#Tag). The `<collation>` argument is the BCP 47 language tag at the end of each line, immediately preceded by `//`. For example, Afrikaans is supported as the `af` collation.
+CockroachDB supports collations identified by [Unicode locale identifiers](http://cldr.unicode.org/core-spec#Identifiers). For example, `en-US` identifies US English, `es` identifies Spanish, and `fr-CA` identifies Canadian French. Collation names are case-insensitive, and hyphens and underscores are interchangeable.
+
+{{site.data.alerts.callout_info}}
+If a hyphen is used in a SQL query, the collation name must be enclosed in double quotes, as single quotes are used for SQL string literals.
+{{site.data.alerts.end}}
+
+A list of supported collations can be found in the `pg_catalog.pg_collation` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT collname from pg_catalog.pg_collation;
+~~~
+
+~~~
+       collname
+-----------------------
+  und
+  aa
+  af
+  ar
+...
+(95 rows)
+~~~
+
+CockroachDB supports standard aliases for the collations listed in `pg_collation`. For example, `es-419` (Latin American Spanish) and `zh-Hans` (Simplified Chinese) are supported, but they do not appear in the `pg_collations` table because they are equivalent to the `es` and `zh` collations listed in the table.
+
+CockroachDB also supports the following Unicode locale extensions:
+
+- `co` (collation type)
+- `ks` (strength)
+- `kc` (case level)
+- `kb` (backwards second level weight)
+- `kn` (numeric)
+- `ks` (strength)
+- `ka` (alternate handling)
+
+To use a locale extension, append `-u-` to the base locale name, followed by the extension. For example, `en-US-u-ks-level2` is case-insensitive US English. The `ks` modifier changes the "strength" of the collation, causing it to treat certain classes of characters as equivalent (PostgreSQL calls these "non-deterministic collations"). Setting the `ks` to `level2` makes the collation case-insensitive (for languages that have this concept).
+
+For more details on locale extensions, see the [Unicode Collation Algorithm](https://unicode.org/reports/tr10/).
+
+## Collation versioning
+
+While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplifed and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column](computed-columns.html) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
 
 ## SQL syntax
 
@@ -76,6 +118,30 @@ The sort will now honor the `de` collation that treats *ä* as *a* in alphabetic
   Bär
   Baz
 (3 rows)
+~~~
+
+### Specify collations with locale extensions
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE nocase_strings (greeting STRING COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO nocase_strings VALUES ('Hello, friend.' COLLATE "en-US-u-ks-level2"), ('Hi. My name is Petee.' COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM nocase_strings WHERE greeting = ('hi. my name is petee.' COLLATE "en-US-u-ks-level2");
+~~~
+
+~~~
+        greeting
++-----------------------+
+  Hi. My name is Petee.
+(1 row)
 ~~~
 
 ### Order by non-default collation

@@ -260,5 +260,5 @@ If you are having difficulties installing CockroachDB Spatial, please see our [S
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial Features](spatial-features.html)
 - [Spatial & GIS Glossary of Terms](spatial-glossary.html)
-- [Geospatial functions](functions-and-operators.html#geospatial-functions)
+- [Geospatial functions](functions-and-operators.html#spatial-functions)
 - [Install CockroachDB](install-cockroachdb.html)

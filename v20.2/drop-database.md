@@ -31,40 +31,70 @@ Parameter | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### Drop a database and its objects (`CASCADE`)
 
 For non-interactive sessions (e.g., client applications), `DROP DATABASE` applies the `CASCADE` option by default, which drops all tables and views in the database as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM db2;
-~~~
-
-~~~
-+------------+
-| table_name |
-+------------+
-| t1         |
-| v1         |
-+------------+
-(2 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP DATABASE db2;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES FROM db2;
-~~~
-
-~~~
-pq: database "db2" does not exist
-~~~
-
 For interactive sessions from the [built-in SQL client](cockroach-sql.html), either the `CASCADE` option must be set explicitly or the `--unsafe-updates` flag must be set when starting the shell.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES FROM movr;
+~~~
+
+~~~
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
+(6 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP DATABASE movr;
+~~~
+
+~~~
+ERROR: rejected (sql_safe_updates = true): DROP DATABASE on current database
+SQLSTATE: 01000
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> USE defaultdb;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP DATABASE movr;
+~~~
+
+~~~
+ERROR: rejected (sql_safe_updates = true): DROP DATABASE on non-empty database without explicit CASCADE
+SQLSTATE: 01000
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP DATABASE movr CASCADE;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES FROM movr;
+~~~
+
+~~~
+ERROR: target database or schema does not exist
+SQLSTATE: 3F000
+~~~
 
 ### Prevent dropping a non-empty database (`RESTRICT`)
 
@@ -72,26 +102,34 @@ When a database is not empty, the `RESTRICT` option prevents the database from b
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM db2;
+> SHOW TABLES FROM movr;
 ~~~
 
 ~~~
-+------------+
-| table_name |
-+------------+
-| t1         |
-| v1         |
-+------------+
-(2 rows)
+  schema_name |         table_name         | type  | owner | estimated_row_count
+--------------+----------------------------+-------+-------+----------------------
+  public      | promo_codes                | table | demo  |                1000
+  public      | rides                      | table | demo  |                 500
+  public      | user_promo_codes           | table | demo  |                   0
+  public      | users                      | table | demo  |                  50
+  public      | vehicle_location_histories | table | demo  |                1000
+  public      | vehicles                   | table | demo  |                  15
+(6 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP DATABASE db2 RESTRICT;
+> USE defaultdb;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP DATABASE movr RESTRICT;
 ~~~
 
 ~~~
-pq: database "db2" is not empty and CASCADE was not specified
+ERROR: database "movr" is not empty and RESTRICT was specified
+SQLSTATE: 2BP01
 ~~~
 
 ## See also
