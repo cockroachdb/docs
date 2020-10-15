@@ -144,7 +144,7 @@ If you require comparisons using [`<`](functions-and-operators.html#operator-les
 
 ## Example
 
-### Create table with inverted index on a JSONB column
+### Create a table with inverted index on a JSONB column
 
 In this example, let's create a table with a `JSONB` column and an inverted index:
 
@@ -220,7 +220,7 @@ Now, run a query that filters on the `JSONB` column:
 (2 rows)
 ~~~
 
-### Add inverted index to a table with an array column
+### Add an inverted index to a table with an array column
 
 In this example, let's create a table with an `ARRAY` column first, and add the inverted index later:
 
