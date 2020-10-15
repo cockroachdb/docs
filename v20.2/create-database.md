@@ -25,6 +25,7 @@ Parameter | Description
 `IF NOT EXISTS` | Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error.
 `name` | The name of the database to create, which [must be unique](#create-fails-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
 `encoding` | The `CREATE DATABASE` statement accepts an optional `ENCODING` clause for compatibility with PostgreSQL, but `UTF-8` is the only supported encoding. The aliases `UTF8` and `UNICODE` are also accepted. Values should be enclosed in single quotes and are case-insensitive.<br><br>Example: `CREATE DATABASE bank ENCODING = 'UTF-8'`.
+`CONNECTION LIMIT` | <span class="version-tag">New in v20.2:</span> Supported for compatibility with PostgreSQL. A value of -1 indicates no connection limit. Values other than -1 are currently not supported. By default, `CONNECTION LIMIT = -1`. 
 
 ## Example
 
