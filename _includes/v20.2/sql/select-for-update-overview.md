@@ -6,6 +6,10 @@ Because this queueing happens during the read operation, the thrashing that woul
 
 As a result, using `SELECT FOR UPDATE` leads to increased throughput and decreased tail latency for contended operations.
 
+{{site.data.alerts.callout_info}}
+By default, CockroachDB uses the `SELECT FOR UPDATE` locking mechanism during the initial row scan performed in [`UPDATE`](update.html) and [`UPSERT`](upsert.html) statement execution. To turn off implicit `SELECT FOR UPDATE` locking for `UPDATE` and `UPSERT` statements, set `enable_implicit_select_for_update` to `false`.
+{{site.data.alerts.end}}
+
 <!-- Reference Links -->
 
 [retries]: transactions.html#transaction-retries
