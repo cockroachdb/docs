@@ -337,7 +337,7 @@ If you want to utilize a decommissioned node again, first [recommission](#recomm
 If you accidentally started decommissioning a node, or have a node with a hung decommissioning process, you can recommission the node. This cancels the process of transferring replicas on the node to other nodes.
 
 {{site.data.alerts.callout_info}}
-Recommissioning is intended to cancel an active decommissioning process. If all ranges have been removed from a node, start a new node instead of reusing the node.
+Recommissioning is intended to cancel an active decommissioning process. If all ranges have been removed from a node, you must start a new node. As of v20.2, a fully decommissioned node is permanently decommissioned, and cannot be recommissioned.
 {{site.data.alerts.end}}
 
 ### Step 1. Cancel the decommissioning process
