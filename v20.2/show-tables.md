@@ -46,14 +46,14 @@ When a `database_name` and `schema_name` are omitted, the tables of the [current
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                1000
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | users                      | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -65,14 +65,14 @@ Alternatively, within the built-in SQL shell, you can use the `\dt` [shell comma
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                1000
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | users                      | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -93,14 +93,13 @@ You can show the tables in schemas other than the current schema. You can also s
 Because `movr` is the current database, these statements return the same output:
 
 ~~~
-     schema_name     |            table_name             | type  | owner | estimated_row_count
----------------------+-----------------------------------+-------+-------+----------------------
-  information_schema | administrable_role_authorizations | table | NULL  |                NULL
-  information_schema | applicable_roles                  | table | NULL  |                NULL
-  information_schema | check_constraints                 | table | NULL  |                NULL
-  information_schema | column_privileges                 | table | NULL  |                NULL
-  information_schema | column_udt_usage                  | table | NULL  |                NULL
-...
+     schema_name     |            table_name             | type  | estimated_row_count
+---------------------+-----------------------------------+-------+----------------------
+  information_schema | administrable_role_authorizations | table |                NULL
+  information_schema | applicable_roles                  | table |                NULL
+  information_schema | check_constraints                 | table |                NULL
+  information_schema | column_privileges                 | table |                NULL
+  ...
 (23 rows)
 ~~~
 
@@ -122,14 +121,13 @@ You can also show tables from a different database.
 Because `public` is the current schema, these statements return the same output:
 
 ~~~
-  schema_name |           table_name            | type  | owner | estimated_row_count
---------------+---------------------------------+-------+-------+----------------------
-  public      | comments                        | table | NULL  |                NULL
-  public      | descriptor                      | table | NULL  |                NULL
-  public      | eventlog                        | table | NULL  |                NULL
-  public      | jobs                            | table | NULL  |                NULL
-  public      | lease                           | table | NULL  |                NULL
-...
+  schema_name |           table_name            | type  | estimated_row_count
+--------------+---------------------------------+-------+----------------------
+  public      | comments                        | table |                NULL
+  public      | descriptor                      | table |                NULL
+  public      | eventlog                        | table |                NULL
+  public      | jobs                            | table |                NULL
+  ...
 (29 rows)
 ~~~
 
@@ -150,14 +148,14 @@ To view a table's comments:
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count |                   comment
---------------+----------------------------+-------+-------+---------------------+-----------------------------------------------
-  public      | promo_codes                | table | demo  |                1000 |
-  public      | rides                      | table | demo  |                 500 |
-  public      | user_promo_codes           | table | demo  |                   0 |
-  public      | users                      | table | demo  |                  50 | This table contains information about users.
-  public      | vehicle_location_histories | table | demo  |                1000 |
-  public      | vehicles                   | table | demo  |                  15 |
+  schema_name |         table_name         | type  | estimated_row_count |                   comment
+--------------+----------------------------+-------+---------------------+-----------------------------------------------
+  public      | promo_codes                | table |                1000 |
+  public      | rides                      | table |                 500 |
+  public      | user_promo_codes           | table |                   0 |
+  public      | users                      | table |                  50 | This table contains information about users.
+  public      | vehicle_location_histories | table |                1000 |
+  public      | vehicles                   | table |                  15 |
 (6 rows)
 ~~~
 
@@ -198,17 +196,17 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
 ~~~
 
 ~~~
-     schema_name     |            table_name             | type  | owner | estimated_row_count |                                                              comment
----------------------+-----------------------------------+-------+-------+---------------------+-------------------------------------------------------------------------------------------------------------------------------------
-  information_schema | administrable_role_authorizations | table | NULL  |                NULL | roles for which the current user has admin option
-                     |                                   |       |       |                     | https://www.cockroachlabs.com/docs/v20.2/information-schema.html#administrable_role_authorizations
-                     |                                   |       |       |                     | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
-  information_schema | applicable_roles                  | table | NULL  |                NULL | roles available to the current user
-                     |                                   |       |       |                     | https://www.cockroachlabs.com/docs/v20.2/information-schema.html#applicable_roles
-                     |                                   |       |       |                     | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
-  information_schema | check_constraints                 | table | NULL  |                NULL | check constraints
-                     |                                   |       |       |                     | https://www.cockroachlabs.com/docs/v20.2/information-schema.html#check_constraints
-                     |                                   |       |       |                     | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
+     schema_name     |            table_name             | type  | estimated_row_count |                                                              comment
+---------------------+-----------------------------------+-------+---------------------+-------------------------------------------------------------------------------------------------------------------------------------
+  information_schema | administrable_role_authorizations | table |                NULL | roles for which the current user has admin option
+                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v20.2/information-schema.html#administrable_role_authorizations
+                     |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
+  information_schema | applicable_roles                  | table |                NULL | roles available to the current user
+                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v20.2/information-schema.html#applicable_roles
+                     |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
+  information_schema | check_constraints                 | table |                NULL | check constraints
+                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v20.2/information-schema.html#check_constraints
+                     |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
 ...
 (23 rows)
 ~~~
