@@ -51,7 +51,7 @@ Parameter | Description
 The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
 {{site.data.alerts.end}}
 
-### Allow a role to log in to the database password
+### Allow a role to log in to the database using a password
 
 ~~~ sql
 root@:26257/defaultdb> ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
