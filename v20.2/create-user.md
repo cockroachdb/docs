@@ -163,7 +163,7 @@ with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 ### Create a user that can create other users and manage authentication methods for the new users
 
 ~~~ sql
-root@:26257/defaultdb> CREATE USER can_create_users WITH CREATEROLE;
+root@:26257/defaultdb> CREATE USER can_create_users WITH CREATEROLE CREATELOGIN;
 ~~~
 
 ~~~ sql
@@ -174,35 +174,12 @@ root@:26257/defaultdb> SHOW USERS;
     username     |                options                | member_of
 -----------------+---------------------------------------+------------
 admin            |                                       | {}
-can_create_users | CREATEROLE                            | {}
+can_create_users | CREATELOGIN, CREATEROLE               | {}
 no_options       |                                       | {}
 no_password      |                                       | {}
 root             |                                       | {admin}
 with_password    | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 (6 rows)
-~~~
-
-### Create a user that can only manage authentication for other users
-
-~~~ sql
-root@:26257/defaultdb> CREATE USER manage_auth_for_users WITH CREATELOGIN;
-~~~
-
-~~~ sql
-root@:26257/defaultdb> SHOW USERS;
-~~~
-
-~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_create_users      | CREATEROLE                            | {}
-manage_auth_for_users | CREATELOGIN                           | {}
-no_options            |                                       | {}
-no_password           |                                       | {}
-root                  |                                       | {admin}
-with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-(7 rows)
 ~~~
 
 ### Create a user that can create and rename databases
@@ -220,13 +197,12 @@ root@:26257/defaultdb> SHOW USERS;
 ----------------------+---------------------------------------+------------
 admin                 |                                       | {}
 can_create_db         | CREATEDB                              | {}
-can_create_users      | CREATEROLE                            | {}
-manage_auth_for_users | CREATELOGIN                           | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
 no_options            |                                       | {}
 no_password           |                                       | {}
 root                  |                                       | {admin}
 with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-(8 rows)
+(7 rows)
 ~~~
 
 ### Create a user that can pause, resume, and cancel non-admin jobs
@@ -245,13 +221,12 @@ root@:26257/defaultdb> SHOW USERS;
 admin                 |                                       | {}
 can_control_job       | CONTROLJOB                            | {}
 can_create_db         | CREATEDB                              | {}
-can_create_users      | CREATEROLE                            | {}
-manage_auth_for_users | CREATELOGIN                           | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
 no_options            |                                       | {}
 no_password           |                                       | {}
 root                  |                                       | {admin}
 with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-(9 rows)
+(8 rows)
 ~~~
 
 ### Create a user that can see and cancel non-admin queries and sessions
@@ -270,14 +245,13 @@ root@:26257/defaultdb> SHOW USERS;
 admin                 |                                       | {}
 can_control_job       | CONTROLJOB                            | {}
 can_create_db         | CREATEDB                              | {}
-can_create_users      | CREATEROLE                            | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
 can_manage_queries    | CANCELQUERY, VIEWACTIVITY             | {}
-manage_auth_for_users | CREATELOGIN                           | {}
 no_options            |                                       | {}
 no_password           |                                       | {}
 root                  |                                       | {admin}
 with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-(10 rows)
+(9 rows)
 ~~~
 
 ### Create a user that can control changefeeds
@@ -297,14 +271,13 @@ admin                  |                                       | {}
 can_control_changefeed | CONTROLCHANGEFEED                     | {}
 can_control_job        | CONTROLJOB                            | {}
 can_create_db          | CREATEDB                              | {}
-can_create_users       | CREATEROLE                            | {}
+can_create_users       | CREATELOGIN, CREATEROLE               | {}
 can_manage_queries     | CANCELQUERY, VIEWACTIVITY             | {}
-manage_auth_for_users  | CREATELOGIN                           | {}
 no_options             |                                       | {}
 no_password            |                                       | {}
 root                   |                                       | {admin}
 with_password          | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-(11 rows)
+(10 rows)
 ~~~
 
 ### Create a user that can modify cluster settings
@@ -324,15 +297,14 @@ admin                      |                                       | {}
 can_control_changefeed     | CONTROLCHANGEFEED                     | {}
 can_control_job            | CONTROLJOB                            | {}
 can_create_db              | CREATEDB                              | {}
-can_create_users           | CREATEROLE                            | {}
+can_create_users           | CREATELOGIN, CREATEROLE               | {}
 can_manage_queries         | CANCELQUERY, VIEWACTIVITY             | {}
 can_modify_cluster_setting | MODIFYCLUSTERSETTING                  | {}
-manage_auth_for_users      | CREATELOGIN                           | {}
 no_options                 |                                       | {}
 no_password                |                                       | {}
 root                       |                                       | {admin}
 with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-(12 rows)
+(11 rows)
 ~~~
 
 

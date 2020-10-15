@@ -69,13 +69,7 @@ root@:26257/defaultdb> ALTER USER carl WITH PASSWORD NULL;
 ### Allow a user to create other users and manage authentication methods for the new users
 
 ~~~ sql
-root@:26257/defaultdb> ALTER USER carl WITH CREATEROLE;
-~~~
-
-### Allow a user to only manage authentication for other users
-
-~~~ sql
-root@:26257/defaultdb> ALTER USER carl WITH CREATELOGIN;
+root@:26257/defaultdb> ALTER USER carl WITH CREATEROLE CREATELOGIN;
 ~~~
 
 ### Allow a user to create and rename databases

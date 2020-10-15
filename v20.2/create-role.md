@@ -144,7 +144,7 @@ root       |                                       | {admin}
 ### Create a role that can create other roles and manage authentication methods for the new roles
 
 ~~~ sql
-root@:26257/defaultdb> CREATE ROLE can_create_role WITH CREATEROLE;
+root@:26257/defaultdb> CREATE ROLE can_create_role WITH CREATEROLE CREATELOGIN;
 ~~~
 
 ~~~ sql
@@ -155,35 +155,12 @@ root@:26257/defaultdb> SHOW ROLES;
    username     |                options                | member_of
 ----------------+---------------------------------------+------------
 admin           |                                       | {}
-can_create_role | CREATEROLE, NOLOGIN                   | {}
+can_create_role | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login       | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 no_options      | NOLOGIN                               | {}
 no_password     | NOLOGIN                               | {}
 root            |                                       | {admin}
 (6 rows)
-~~~
-
-### Create a role that can only manage authentication for other roles
-
-~~~ sql
-root@:26257/defaultdb> CREATE ROLE manage_auth_for_roles WITH CREATELOGIN;
-~~~
-
-~~~ sql
-root@:26257/defaultdb> SHOW ROLES;
-~~~
-
-~~~
-      username        |                options                | member_of
-----------------------+---------------------------------------+------------
-admin                 |                                       | {}
-can_create_role       | CREATEROLE, NOLOGIN                   | {}
-can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
-no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}
-root                  |                                       | {admin}
-(7 rows)
 ~~~
 
 ### Create a role that can create and rename databases
@@ -201,13 +178,12 @@ root@:26257/defaultdb> SHOW ROLES;
 ----------------------+---------------------------------------+------------
 admin                 |                                       | {}
 can_create_db         | CREATEDB, NOLOGIN                     | {}
-can_create_role       | CREATEROLE, NOLOGIN                   | {}
+can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
-manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
 no_options            | NOLOGIN                               | {}
 no_password           | NOLOGIN                               | {}
 root                  |                                       | {admin}
-(8 rows)
+(7 rows)
 ~~~
 
 ### Create a role that can pause, resume, and cancel non-admin jobs
@@ -226,13 +202,13 @@ root@:26257/defaultdb> SHOW ROLES;
 admin                 |                                       | {}
 can_control_job       | CONTROLJOB, NOLOGIN                   | {}
 can_create_db         | CREATEDB, NOLOGIN                     | {}
-can_create_role       | CREATEROLE, NOLOGIN                   | {}
+can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
 no_options            | NOLOGIN                               | {}
 no_password           | NOLOGIN                               | {}  
 root                  |                                       | {admin}
-(9 rows)
+(8 rows)
 ~~~
 
 ### Create a role that can see and cancel non-admin queries and sessions
@@ -251,14 +227,13 @@ root@:26257/defaultdb> SHOW ROLES;
 admin                 |                                       | {}
 can_control_job       | CONTROLJOB, NOLOGIN                   | {}
 can_create_db         | CREATEDB, NOLOGIN                     | {}
-can_create_role       | CREATEROLE, NOLOGIN                   | {}
+can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 can_manage_queries    | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
-manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
 no_options            | NOLOGIN                               | {}
 no_password           | NOLOGIN                               | {}
 root                  |                                       | {admin}
-(10 rows)
+(9 rows)
 ~~~
 
 ### Create a role that can control changefeeds
@@ -278,14 +253,13 @@ admin                  |                                       | {}
 can_control_changefeed | CONTROLCHANGEFEED, NOLOGIN            | {}
 can_control_job        | CONTROLJOB, NOLOGIN                   | {}
 can_create_db          | CREATEDB, NOLOGIN                     | {}
-can_create_role        | CREATEROLE, NOLOGIN                   | {}
+can_create_role        | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 can_manage_queries     | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
-manage_auth_for_roles  | CREATELOGIN, NOLOGIN                  | {}
 no_options             | NOLOGIN                               | {}
 no_password            | NOLOGIN                               | {}
 root                   |                                       | {admin}
-(11 rows)
+(10 rows)
 ~~~
 
 ### Create a role that can modify cluster settings
@@ -305,15 +279,14 @@ admin                      |                                       | {}
 can_control_changefeed     | CONTROLCHANGEFEED, NOLOGIN            | {}
 can_control_job            | CONTROLJOB, NOLOGIN                   | {}
 can_create_db              | CREATEDB, NOLOGIN                     | {}
-can_create_role            | CREATEROLE, NOLOGIN                   | {}
+can_create_role            | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login                  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 can_manage_queries         | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
 can_modify_cluster_setting | MODIFYCLUSTERSETTING, NOLOGIN         | {}
-manage_auth_for_roles      | CREATELOGIN, NOLOGIN                  | {}
 no_options                 | NOLOGIN                               | {}
 no_password                | NOLOGIN                               | {}
 root                       |                                       | {admin}
-(12 rows)
+(11 rows)
 ~~~
 
 <!--

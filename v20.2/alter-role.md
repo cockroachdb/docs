@@ -69,13 +69,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH PASSWORD NULL;
 ### Allow a role to create other roles and manage authentication methods for the new roles
 
 ~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CREATEROLE;
-~~~
-
-### Allow a role to only manage authentication for other roles
-
-~~~ sql
-root@:26257/defaultdb> ALTER ROLE carl WITH CREATELOGIN;
+root@:26257/defaultdb> ALTER ROLE carl WITH CREATEROLE CREATELOGIN;
 ~~~
 
 ### Allow a role to create and rename databases
