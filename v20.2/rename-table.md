@@ -64,14 +64,14 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                1000
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | users                      | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -86,14 +86,14 @@ This is a [known limitation](known-limitations.html#database-and-table-renames-a
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                1000
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | riders                     | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | riders                     | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -114,14 +114,14 @@ To move a table from one database to another, use the above syntax but specify t
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                1000
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | riders                     | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | riders                     | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -131,8 +131,8 @@ To move a table from one database to another, use the above syntax but specify t
 ~~~
 
 ~~~
-  schema_name | table_name | type | owner | estimated_row_count
---------------+------------+------+-------+----------------------
+  schema_name | table_name | type | estimated_row_count
+--------------+------------+------+----------------------
 (0 rows)
 ~~~
 
@@ -147,13 +147,13 @@ To move a table from one database to another, use the above syntax but specify t
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | riders                     | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | riders                     | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (5 rows)
 ~~~
 
@@ -163,9 +163,9 @@ To move a table from one database to another, use the above syntax but specify t
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  public      | promos     | table | demo  |                1000
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  public      | promos     | table |                1000
 (1 row)
 ~~~
 

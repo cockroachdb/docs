@@ -197,11 +197,12 @@ Once created, views are listed alongside regular tables in the database:
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  public      | episodes   | table | demo  |                  79
-  public      | quotes     | table | demo  |                 200
-(2 rows)
+  schema_name |    table_name     | type  | estimated_row_count
+--------------+-------------------+-------+----------------------
+  public      | episodes          | table |                  79
+  public      | quotes            | table |                 200
+  public      | quotes_per_season | view  |                   0
+(3 rows)
 ~~~
 
 To list just views, you can query the `views` table in the [Information Schema](information-schema.html):

@@ -266,14 +266,14 @@ By default, `cockroach demo` loads the `movr` dataset in to the demo cluster:
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                   0
-  public      | rides                      | table | demo  |                   0
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | users                      | table | demo  |                   0
-  public      | vehicle_location_histories | table | demo  |                   0
-  public      | vehicles                   | table | demo  |                   0
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 

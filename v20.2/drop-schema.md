@@ -42,14 +42,14 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_one            | demo
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
 (6 rows)
 ~~~
 
@@ -64,13 +64,13 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  pg_catalog
+  pg_extension
+  public
 (5 rows)
 ~~~
 
@@ -89,14 +89,14 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_two            | demo
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_two
+  pg_catalog
+  pg_extension
+  public
 (6 rows)
 ~~~
 
@@ -116,9 +116,9 @@ To drop a schema that contains tables, you need to use the `CASCADE` keyword.
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  org_two     | users      | table | demo  |                   0
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  org_two     | users      | table |                   0
 (1 row)
 ~~~
 
@@ -143,13 +143,13 @@ SQLSTATE: 2BP01
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  pg_catalog
+  pg_extension
+  public
 (5 rows)
 ~~~
 

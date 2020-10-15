@@ -39,14 +39,14 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_one            | demo
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
 (6 rows)
 ~~~
 

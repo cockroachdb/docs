@@ -214,10 +214,10 @@ $ cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
 > SHOW TABLES FROM startrek;
 ~~~
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  public      | episodes   | table | demo  |                  79
-  public      | quotes     | table | demo  |                 200
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  public      | episodes   | table |                  79
+  public      | quotes     | table |                 200
 (2 rows)
 ~~~
 
@@ -252,9 +252,9 @@ $ cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  public      | mytable    | table | demo  |                  42
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  public      | mytable    | table |                  42
 (1 row)
 ~~~
 

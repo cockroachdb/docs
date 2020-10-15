@@ -45,18 +45,18 @@ Parameter | Description
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_one            | demo
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
 (6 rows)
 ~~~
 
-By default, the user executing the `CREATE SCHEMA` statement is the owner of the schema. For example, suppose you created the schema as user `demo`. `demo` would be the owner of the schema.
+By default, the user executing the `CREATE SCHEMA` statement is the owner of the schema. For example, suppose you created the schema as user `root`. `root` would be the owner of the schema.
 
 ### Create a schema if one does not exist
 
@@ -82,14 +82,14 @@ SQL does not generate an error, even though a new schema wasn't created.
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_one            | demo
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
 (6 rows)
 ~~~
 
@@ -113,15 +113,15 @@ You can create tables of the same name in the same database if they are in separ
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_one            | demo
-  org_two            | demo
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  org_two
+  pg_catalog
+  pg_extension
+  public
 (7 rows)
 ~~~
 
@@ -145,14 +145,14 @@ You can create tables of the same name in the same database if they are in separ
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES;
+> SELECT * FROM [SHOW TABLES] WHERE table_name='employees';
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  org_one     | employees  | table | demo  |                   0
-  org_two     | employees  | table | demo  |                   0
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  org_one     | employees  | table |                   0
+  org_two     | employees  | table |                   0
 (2 rows)
 ~~~
 
@@ -176,14 +176,14 @@ To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE S
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  org_two            | max
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_two
+  pg_catalog
+  pg_extension
+  public
 (6 rows)
 ~~~
 
@@ -200,25 +200,25 @@ If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZA
 ~~~
 
 ~~~
-     schema_name     | owner
----------------------+--------
-  crdb_internal      | NULL
-  information_schema | NULL
-  max                | max
-  org_two            | max
-  pg_catalog         | NULL
-  pg_extension       | NULL
-  public             | admin
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  max
+  org_two
+  pg_catalog
+  pg_extension
+  public
 (7 rows)
 ~~~
 
 When you [use a table without specifying a schema](sql-name-resolution.html#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
 
-For example, suppose that you [grant the `demo` role](grant-roles.html) (i.e., the role of the current user `demo`) to the `max` user:
+For example, suppose that you [grant the `root` role](grant-roles.html) (i.e., the role of the current user `root`) to the `max` user:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT demo TO max;
+> GRANT root TO max;
 ~~~
 
 Then, `max` [accesses the cluster](cockroach-sql.html) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
@@ -252,10 +252,10 @@ $ cockroach sql --url 'postgres://max:roach@host:port/db?sslmode=require'
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  max         | accounts   | table | max   |                   0
-  public      | accounts   | table | max   |                   0
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+----------------------
+  max         | accounts   | table |                   0
+  public      | accounts   | table |                   0
 (2 rows)
 ~~~
 
