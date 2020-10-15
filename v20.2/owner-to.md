@@ -12,7 +12,7 @@ This page documents `ALTER DATABASE ... OWNER TO` and `ALTER TABLE ... OWNER TO`
 
 ## Required privileges
 
-- To change the owner of a database, the user must be the current owner of the database, and a member of the new owner [role](authorization.html#roles).
+- To change the owner of a database, the user must be the current owner of the database, and a member of the new owner [role](authorization.html#roles). The user must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
 - To change the owner of a table, the user must be the current owner of the table, and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
 
 ## Syntax
@@ -34,7 +34,7 @@ ALTER TABLE <name> OWNER TO <newowner>
 Parameter | Description
 ----------|------------
 `name` | The name of the table or database.
-`newowner` | The name of the new owner. You can specify the new owner by name or with the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).
+`newowner` | The name of the new owner.
 
 ## Examples
 
@@ -61,20 +61,18 @@ To change the owner of a database, the current owner (in this case, `demo`) must
 > ALTER DATABASE movr OWNER TO max;
 ~~~
 
-To verify that the owner is now `max`, [open a SQL shell](cockroach-sql.html) to the running cluster, as the user `max`:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --url postgres://max:roach@127.0.0.1:26257?sslmode=require
-~~~
+To verify that the owner is now `max`, query the [`pg_catalog.pg_database` and `pg_catalog.pg_roles` tables](sql-name-resolution.html#databases-with-special-names):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP DATABASE movr CASCADE;
+> SELECT rolname FROM pg_catalog.pg_database d JOIN pg_catalog.pg_roles r ON d.datdba = r.oid WHERE datname = 'movr';
 ~~~
 
 ~~~
-DROP TABLE
+  rolname
+-----------
+  max
+(1 row)
 ~~~
 
 ### Change a table's owner
@@ -98,25 +96,18 @@ To change the owner of a table, the current owner (in this case, `demo`) must be
 > ALTER TABLE promo_codes OWNER TO max;
 ~~~
 
-To verify that the owner is now `max`, [open a SQL shell](cockroach-sql.html) to the running cluster, as the user `max`:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --url postgres://max:roach@127.0.0.1:26257?sslmode=require
-~~~
+To verify that the owner is now `max`, query the [`pg_catalog.pg_tables` table](sql-name-resolution.html#databases-with-special-names):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> USE movr;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> DROP TABLE promo_codes;
+> SELECT tableowner FROM pg_catalog.pg_tables WHERE tablename = 'promo_codes';
 ~~~
 
 ~~~
-DROP TABLE
+  tableowner
+--------------
+  max
+(1 row)
 ~~~
 
 ## See also

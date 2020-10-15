@@ -17,7 +17,7 @@ Only members of the `admin` role can create new schemas. By default, the `root` 
 ## Syntax
 
 ~~~
-CREATE SCHEMA [IF NOT EXISTS] { <schemaname> | [<schemaname>] AUTHORIZATION {user_name | CURRENT_USER | SESSION_USER} }
+CREATE SCHEMA [IF NOT EXISTS] { <schemaname> | [<schemaname>] AUTHORIZATION <user_name> }
 ~~~
 
 ### Parameters
@@ -26,7 +26,7 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the current database. If one does exist, do not return an error.
 `schemaname` | The name of the schema to create, which must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema. You can specify the owner by name, or with the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
+`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
 

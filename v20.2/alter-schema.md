@@ -10,7 +10,7 @@ toc: true
 
 ~~~
 ALTER SCHEMA ... RENAME TO <newschemaname>
-ALTER SCHEMA ... OWNER TO {<newowner> | CURRENT_USER | SESSION_USER }
+ALTER SCHEMA ... OWNER TO <newowner>
 ~~~
 
 ### Parameters
@@ -18,7 +18,7 @@ ALTER SCHEMA ... OWNER TO {<newowner> | CURRENT_USER | SESSION_USER }
 Parameter | Description
 ----------|------------
 `RENAME TO ...` | Rename the schema. The new schema name must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`OWNER TO ...` | Change the owner of the schema. You can specify the new owner by name or with the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).
+`OWNER TO ...` | Change the owner of the schema.
 
 ## Required privileges
 
