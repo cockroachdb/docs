@@ -31,6 +31,7 @@ Flag | Description
 `--filter` | Limit the results to the specified regular expression
 `--from` | Start time for the time range filter.
 `--to` | End time for the time range filter.
+`--redact-logs` | Redact sensitive PII data from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed ablve) collected by the `debug zip` command may still contain sensitive information.
 
 ## Example
 

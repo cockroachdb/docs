@@ -77,6 +77,7 @@ Flag | Description
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+`--redact-logs` | Redact sensitive PII data from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed ablve) collected by the `debug zip` command may still contain sensitive information.
 
 ### Client connection
 
