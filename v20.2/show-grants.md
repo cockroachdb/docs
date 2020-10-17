@@ -25,11 +25,10 @@ Parameter        | Description
 `table_name`     | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
 `database_name`  | A comma-separated list of database names.
 `user_name`      | An optional, comma-separated list of grantees.
-`grantee`        | Name of the user or role that was granted the privilege.
-`schema_name`    | A comma-separated list of schemas names.
-`privilege_type` | Name of the  [privilege](https://www.cockroachlabs.com/docs/v20.1/authorization#assign-privileges) .
 
 ## Examples
+The `SHOW GRANTS` statement returns the following columns:`privilege_type` which is the name of the [privilege](https://www.cockroachlabs.com/docs/v20.1/authorization#assign-privileges), `grantee` that represents the name of the user or role that was granted the privilege, `table_name` is the table in which the user or role has the privilege, `schema_name` is the name of the schema that contains the table, and `database_name` is the name of the database that contains the schema.
+
 
 ### Show all grants
 
