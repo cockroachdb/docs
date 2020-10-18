@@ -109,6 +109,34 @@ Arrays in CockroachDB are 1-indexed.
 (1 row)
 ~~~
 
+### Accessing an array column using containment queries
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM c WHERE ARRAY[42,99] <@ d;
+~~~
+
+~~~
++------------+
+|     d      |
++------------+
+(0 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM c WHERE d @> ARRAY[10,20];
+~~~
+
+~~~
++------------+
+|     d      |
++------------+
+| {10,20,30} |
++------------+
+(1 row)
+~~~
+
 ### Appending an element to an array
 
 #### Using the `array_append` function
