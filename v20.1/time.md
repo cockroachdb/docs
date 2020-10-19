@@ -76,7 +76,7 @@ If you downgrade to a version of CockroachDB that does not support precision for
 {{site.data.alerts.end}}
 
 ## Functions
-For the list of supported `TIME` functions, see [Functions and Operators](functions-and-operators.html#date-and-time-functions). For the list of supported `TIMETZ` functions, see [Functions and Operators](functions-and-operators.html#timetz-functions).
+For the list of supported `TIME` functions, see [Date and Time Functions and Operators](functions-and-operators.html#date-and-time-functions). For the list of supported `TIMETZ` functions, see [TIMETZ Functions and Operators](functions-and-operators.html#timetz-functions).
 
 ## Examples
 
