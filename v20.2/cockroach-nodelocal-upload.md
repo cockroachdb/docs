@@ -12,6 +12,8 @@ This command takes in a source file to upload and a destination filename. It wil
 The source file is only uploaded to one node, not all of the nodes.
 {{site.data.alerts.end}}
 
+{% include {{ page.version.version }}/misc/userfile.md %}
+
 ## Required privileges
 
 Only members of the `admin` role can run `cockroach nodelocal upload`. By default, the `root` user belongs to the `admin` role.

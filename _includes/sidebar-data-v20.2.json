@@ -569,6 +569,12 @@
                 ]
               },
               {
+                "title": "User-scoped Storage",
+                "urls": [
+                  "/${VERSION}/use-user-scoped-storage-for-bulk-operations.html"
+                ]
+              },
+              {
                 "title": "Local File Server",
                 "urls": [
                   "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
@@ -2195,6 +2201,24 @@
     		"title": "<code>cockroach gen</code>",
     		"urls": [
     		  "/${VERSION}/cockroach-gen.html"
+    		]
+    	      },
+    	      {
+    		"title": "<code>cockroach userfile upload</code>",
+    		"urls": [
+    		  "/${VERSION}/cockroach-userfile-upload.html"
+    		]
+    	      },
+    	      {
+    		"title": "<code>cockroach userfile list</code>",
+    		"urls": [
+    		  "/${VERSION}/cockroach-userfile-list.html"
+    		]
+    	      },
+    	      {
+    		"title": "<code>cockroach userfile delete</code>",
+    		"urls": [
+    		  "/${VERSION}/cockroach-userfile-delete.html"
     		]
     	      },
     	      {
