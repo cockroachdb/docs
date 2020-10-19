@@ -116,9 +116,9 @@ Suppose you [create a sequence](create-sequence.html) that you would like to add
 ~~~
 
 ~~~
-  sequence_name
------------------
-  even_numbers
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | even_numbers
 (1 row)
 ~~~
 
@@ -158,6 +158,18 @@ Then, change the sequence's schema:
 ~~~
 ERROR: relation "public.even_numbers" does not exist
 SQLSTATE: 42P01
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SEQUENCES;
+~~~
+
+~~~
+  sequence_schema | sequence_name
+------------------+----------------
+  cockroach_labs  | even_numbers
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
