@@ -30,6 +30,9 @@ IPv6 | Standard [RFC8200](https://tools.ietf.org/html/rfc8200)-specified format 
 
 An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
+## Functions
+For the list of supported `INET` functions, see [Functions and Operators](functions-and-operators.html#inet-functions).
+
 ## Example
 
 {% include copy-clipboard.html %}
@@ -88,5 +91,4 @@ An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
 
 ## See also
 
-- [Data Types](data-types.html)
-- [Functions and Operators](functions-and-operators.html)
+[Data Types](data-types.html)
