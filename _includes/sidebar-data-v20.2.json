@@ -94,12 +94,6 @@
                 ]
               },
               {
-                "title": "Follow-the-Workload",
-                "urls": [
-                  "/${VERSION}/demo-follow-the-workload.html"
-                ]
-              },
-              {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
                   "/${VERSION}/orchestration-with-kubernetes.html"
@@ -1339,6 +1333,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>OWNER TO</code>",
+    		    "urls": [
+    		      "/${VERSION}/owner-to.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>PARTITION BY</code> (Enterprise)",
     		    "urls": [
     		      "/${VERSION}/partition-by.html"
@@ -1636,6 +1636,12 @@
     		    "title": "<code>SHOW TRACE FOR SESSION</code>",
     		    "urls": [
     		      "/${VERSION}/show-trace.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW TRANSACTIONS</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-transactions.html"
     		    ]
     		  },
     		  {

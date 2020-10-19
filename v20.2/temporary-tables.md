@@ -88,14 +88,14 @@ To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`](show-schemas.ht
 ~~~
 
 ~~~
-           schema_name          | owner
---------------------------------+--------
-  crdb_internal                 | NULL
-  information_schema            | NULL
-  pg_catalog                    | NULL
-  pg_extension                  | NULL
-  pg_temp_1602087923187609000_1 | NULL
-  public                        | admin
+           schema_name
+---------------------------------
+  crdb_internal
+  information_schema
+  pg_catalog
+  pg_extension
+  pg_temp_1602087923187609000_1
+  public
 (6 rows)
 ~~~
 
@@ -148,10 +148,10 @@ To show all temp tables in a session's temporary schema, use `SHOW TABLES FROM p
 ~~~
 
 ~~~
-           schema_name          | table_name | type  | owner | estimated_row_count
---------------------------------+------------+-------+-------+----------------------
-  pg_temp_1602087923187609000_1 | users      | table | demo  |                   0
-  pg_temp_1602087923187609000_1 | vehicles   | table | demo  |                   0
+           schema_name          | table_name | type  | estimated_row_count
+--------------------------------+------------+-------+----------------------
+  pg_temp_1602087923187609000_1 | users      | table |                   0
+  pg_temp_1602087923187609000_1 | vehicles   | table |                   0
 (2 rows)
 ~~~
 
@@ -169,8 +169,8 @@ For example, the [`information_schema.tables`](information-schema.html#tables) t
 ~~~
 
 ~~~
-  table_catalog |         table_schema          | table_name |   table_type    | is_insertable_into | version
-----------------+-------------------------------+------------+-----------------+--------------------+----------
+   table_catalog |         table_schema          | table_name |   table_type    | is_insertable_into | version
+-----------------+-------------------------------+------------+-----------------+--------------------+----------
   defaultdb      | pg_temp_1602087923187609000_1 | users      | LOCAL TEMPORARY | YES                |       2
   defaultdb      | pg_temp_1602087923187609000_1 | vehicles   | LOCAL TEMPORARY | YES                |       2
 (2 rows)

@@ -159,5 +159,4 @@ To show information about a row in a secondary index, you must know the values o
 - [`CREATE INDEX`](create-index.html)
 - [Indexes](indexes.html)
 - [Partitioning tables](partitioning.html)
-+ [Follow-the-Workload](demo-follow-the-workload.html)
-+ [Architecture Overview](architecture/overview.html)
+- [Architecture Overview](architecture/overview.html)

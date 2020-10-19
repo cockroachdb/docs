@@ -107,6 +107,7 @@ Statement | Usage
 [`ROLLBACK`](rollback-transaction.html) | Roll back the current [transaction](transactions.html) and all of its [nested transaction](transactions.html#nested-transactions), discarding all transactional updates made by statements inside the transaction.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
+[`SHOW TRANSACTIONS`](show-transactions.html) | <span class="version-tag">New in v20.2</span>: View all currently active transactions across the cluster or on the local node.
 
 ## Access management statements
 

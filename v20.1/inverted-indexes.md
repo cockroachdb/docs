@@ -144,6 +144,8 @@ If you require comparisons using [`<`](functions-and-operators.html#operator-les
 
 ## Example
 
+### Create a table with inverted index on a JSONB column
+
 In this example, let's create a table with a `JSONB` column and an inverted index:
 
 {% include copy-clipboard.html %}
@@ -197,6 +199,7 @@ Then, insert a few rows of data:
 |                                      |                                  |                                                                          |     "online": true                 |
 |                                      |                                  |                                                                          | }                                  |
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+(3 rows)
 ~~~
 
 Now, run a query that filters on the `JSONB` column:
@@ -214,6 +217,72 @@ Now, run a query that filters on the `JSONB` column:
 | ec0a4942-b0aa-4a04-80ae-591b3f57721e | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
 |                                      |                                  | "NYC", "online": true}                                                   |
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+(2 rows)
+~~~
+
+### Add an inverted index to a table with an array column
+
+In this example, let's create a table with an `ARRAY` column first, and add the inverted index later:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE students (
+    student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    marks INT ARRAY
+  );
+~~~
+
+Insert a few rows of data:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO students (marks) VALUES
+    (ARRAY[10,20,50]),
+    (ARRAY[20,40,100]),
+    (ARRAY[100,20,70]
+  );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM students;
+~~~
+
+~~~
++--------------------------------------+--------------+
+|              student_id              |    marks     |
++--------------------------------------+--------------+
+| 11cdc77c-2f12-48d4-8bb4-ddee7c705e00 | {10,20,50}   |
+|                                      |              |
+| 2526c746-0b32-4f6b-a2b4-7ce6d411c1c2 | {20,40,100}  |
+|                                      |              |
+| eefdc32e-4485-45ca-9df1-80c0f42d73c0 | {100,20,70}  |
+|                                      |              |
++--------------------------------------+--------------+
+(3 rows)
+~~~
+
+Now, let’s add an inverted index to the table and run a query that filters on the `ARRAY`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INVERTED INDEX student_marks ON students (marks);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM students where marks @> ARRAY[100];
+~~~
+
+~~~
++--------------------------------------+--------------+
+|              student_id              |    marks     |
++--------------------------------------+--------------+
+| 2526c746-0b32-4f6b-a2b4-7ce6d411c1c2 | {20,40,100}  |
+|                                      |              |
+| eefdc32e-4485-45ca-9df1-80c0f42d73c0 | {100,20,70}  |
+|                                      |              |
++--------------------------------------+--------------+
 (2 rows)
 ~~~
 

@@ -8,6 +8,10 @@ The **Overview** dashboard lets you monitor important SQL performance, replicati
 
 {% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
 
+{{site.data.alerts.callout_info}}
+All timestamps in the Admin UI are shown in Coordinated Universal Time (UTC).
+{{site.data.alerts.end}}
+
 The **Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries

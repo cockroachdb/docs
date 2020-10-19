@@ -184,15 +184,15 @@ If a value has been obtained from the sequence in the current session, you can a
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences;
+> SHOW SEQUENCES;
 ~~~
 
 ~~~
-  sequence_catalog |        sequence_schema        |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option
--------------------+-------------------------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+---------------
-  movr             | pg_temp_1585153897131110000_1 | temp_seq           | bigint    |                64 |                       2 |             0 | 1           | 1                    | 9223372036854775807 | 1         | NO
-  movr             | public                        | customer_seq       | bigint    |                64 |                       2 |             0 | 1           | 1                    | 9223372036854775807 | 1         | NO
-  movr             | public                        | desc_customer_list | bigint    |                64 |                       2 |             0 | -1          | -9223372036854775808 | -1                  | -2        | NO
+         sequence_schema        |   sequence_name
+--------------------------------+---------------------
+  public                        | customer_seq
+  public                        | desc_customer_list
+  pg_temp_1603124728816183000_1 | temp_seq
 (3 rows)
 ~~~
 

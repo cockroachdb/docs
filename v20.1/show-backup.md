@@ -38,8 +38,8 @@ Field | Description
 ------|------------
 `database_name` | The database name.
 `table_name` | The table name.
-`start_time` | The time at which the backup was started. For a full backup, this will be empty.
-`end_time` | The time at which the backup was completed.
+`start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
+`end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup, in bytes.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` | <span class="version-tag">New in v20.1:</span> Whether the backup is of a full cluster or not.
