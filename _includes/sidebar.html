@@ -15,15 +15,7 @@
         <div>Page title</div>
       {% endcomment %}
     </div>
-    <li class="search-wrap">
-      <div class="search">
-        <span class="fas fa-search"></span>
-        <form class="search-form" method="GET" action="{{ 'search.html' | relative_url }}">
-          <input type="text" id="search-input" name="query" placeholder="Search docs">
-          <span class="clear-search"></span>
-        </form>
-      </div>
-    </li>
+
     <script>
       (function () {
         var baseUrl = "{{ site.baseurl }}";
@@ -109,17 +101,14 @@
               .attr("href", urls[0] || "#")
               .html(item.title);
 
-            if (subitems.length > 0) {
-              if (item.is_top_level) {
+            if (subitems.length > 0 && !item.is_top_level) {
                 a.append(" ").append($("<div>").addClass("nav-expand"));
-              } else {
-                a.append(" ").append($("<div>").addClass("arrow-down"));
-              }
             }
 
             return $("<li>")
               .addClass("tier-" + (paths.length + 1))
               .toggleClass("active", active)
+              .toggleClass("visited", active)
               .append(a)
               .append(subitems);
           });
