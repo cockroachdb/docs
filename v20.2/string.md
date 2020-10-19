@@ -113,7 +113,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 Type | Details
 -----|--------
-`ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Limited to `ARRAY`s of type [`INT`](int.html) and [`DECIMAL`](decimal.html).
+`ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Note that string literals can be implicitly cast to any supported `ARRAY` data type except [`BYTES`](bytes.html), [`ENUM`](enum.html), [`JSONB`](jsonb.html), and [`SERIAL`](serial.html).
 `BIT` | Requires supported [`BIT`](bit.html) string format, e.g., `'101001'`.
 `BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
 `BYTES` | For more details, [see here](bytes.html#supported-conversions).
