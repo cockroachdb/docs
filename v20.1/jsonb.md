@@ -182,6 +182,20 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 +-----------------------------+---------------------------+
 ~~~
 
+You can use the `@>` operator to filter the values in key-value pairs to return `JSONB` field values:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
+~~~
+~~~
++-----------------------------+---------------------------+
+| user_profile->>'first_name' | user_profile->>'location' |
++-----------------------------+---------------------------+
+| Lola                        | NYC                       |
++-----------------------------+---------------------------+
+~~~
+
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
 ### Create a table with a `JSONB` column and a computed column
