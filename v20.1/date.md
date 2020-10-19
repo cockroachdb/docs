@@ -30,6 +30,10 @@ where a `DATE` value is otherwise expected.
 
 A `DATE` column supports values up to 16 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
+
+## Functions
+For the list of supported `DATE` functions, see [Functions and Operators](functions-and-operators.html#date-and-time-functions).
+
 ## Examples
 
 {% include copy-clipboard.html %}
