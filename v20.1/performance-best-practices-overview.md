@@ -348,6 +348,10 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Understanding and avoiding transaction contention
 
+{{site.data.alerts.callout_success}}
+You can use a [statement trace](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) to identify transaction contention on a running cluster.
+{{site.data.alerts.end}}
+
 Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by

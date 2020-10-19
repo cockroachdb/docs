@@ -63,6 +63,32 @@ High latency SQL statements are displayed on the [**Statements page**](admin-ui-
 
 You can also check the [service latency graph](admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](admin-ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
+## Visualize statement traces in Jaeger
+
+You can look more closely at the behavior of a statement by visualizing a statement trace in [Jaeger](https://www.jaegertracing.io/). A [statement trace](show-trace.html) contains messages and timing information from all nodes involved in the execution.
+
+1. Activate [statement diagnostics](admin-ui-statements-page.html#diagnostics) on the Admin UI Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option) to obtain a diagnostics bundle for the statement.
+
+1. [Access the Jaeger UI.](https://www.jaegertracing.io/docs/1.20/getting-started/)
+
+1. Click on **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right. 
+
+    <img src="{{ 'images/v20.2/jaeger-trace-json.png' | relative_url }}" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
+
+1. Click on the trace to view its details. It is visualized as a collection of spans with timestamps. These may include operations executed by different nodes.
+
+    <img src="{{ 'images/v20.2/jaeger-trace-spans.png' | relative_url }}" alt="Jaeger Trace Spans" style="border:1px solid #eee;max-width:100%" />
+
+    The full timeline displays the execution time and [execution phases](architecture/sql-layer.html#sql-parser-planner-executor) for the statement.
+
+1. Click on a span to view details for that span and log messages.
+
+    <img src="{{ 'images/v20.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
+
+    {{site.data.alerts.callout_info}}
+    You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by looking for a jump in latency before and after a transaction is committed in the log messages.
+    {{site.data.alerts.end}}
+    
 ## `SELECT` statement performance issues
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
