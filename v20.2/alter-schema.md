@@ -86,7 +86,7 @@ Because you are executing the `ALTER SCHEMA` command as a non-owner of the schem
 > CREATE SCHEMA org_one;
 ~~~
 
-To verify that the owner is now `root`, query the [`pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables](sql-name-resolution.html#databases-with-special-names):
+To verify that the owner is now `root`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -173,7 +173,7 @@ Now, suppose that you want to change the owner of the schema `org_one` to an exi
 > ALTER SCHEMA org_one OWNER TO max;
 ~~~
 
-To verify that the owner is now `max`, query the [`pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables](sql-name-resolution.html#databases-with-special-names):
+To verify that the owner is now `max`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql

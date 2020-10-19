@@ -61,7 +61,7 @@ To change the owner of a database, the current owner (in this case, `root`) must
 > ALTER DATABASE movr OWNER TO max;
 ~~~
 
-To verify that the owner is now `max`, query the [`pg_catalog.pg_database` and `pg_catalog.pg_roles` tables](sql-name-resolution.html#databases-with-special-names):
+To verify that the owner is now `max`, query the `pg_catalog.pg_database` and `pg_catalog.pg_roles` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -96,7 +96,7 @@ To change the owner of a table, the current owner (in this case, `root`) must be
 > ALTER TABLE promo_codes OWNER TO max;
 ~~~
 
-To verify that the owner is now `max`, query the [`pg_catalog.pg_tables` table](sql-name-resolution.html#databases-with-special-names):
+To verify that the owner is now `max`, query the `pg_catalog.pg_tables` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
