@@ -1,0 +1,60 @@
+{
+  "noindex": true,
+  "title": "Learn CockroachDB SQL",
+  "description": "Learn the most essential CockroachDB SQL statements using an interactive SQL shell connected to a temporary, single-node CockroachDB cluster",
+  "difficulty": "Beginner",
+  "time": "5 minutes",
+  "details": {
+    "intro": {
+        "text": "intro.md",
+        "foreground": "foreground.sh"
+    },
+    "steps": [
+      {
+        "title": "Show tables",
+        "text": "step1.md"
+      },
+      {
+        "title": "Create a table",
+        "text": "step2.md"
+      },
+      {
+        "title": "Insert rows into a table",
+        "text": "step3.md"
+      },
+      {
+        "title": "Create an index",
+        "text": "step4.md"
+      },
+      {
+        "title": "Show indexes on a table",
+        "text": "step5.md"
+      },
+      {
+        "title": "Query a table",
+        "text": "step6.md"
+      },
+      {
+        "title": "Update rows in a table",
+        "text": "step7.md"
+      },
+      {
+        "title": "Delete rows in a table",
+        "text": "step8.md"
+      },
+      {
+        "title": "Drop a table",
+        "text": "step9.md"
+      }
+    ],
+    "finish": {
+        "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "ubuntu:1804"
+  }
+}
