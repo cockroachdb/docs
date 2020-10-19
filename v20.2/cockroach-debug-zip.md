@@ -99,19 +99,40 @@ If you need to troubleshoot this command's behavior, you can also change its [lo
 
 ### Generate a debug zip file
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Generate the debug zip file for an insecure cluster:
-$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
-~~~
+Generate the debug zip file for an insecure cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Generate the debug zip file for a secure cluster:
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
+~~~
+
+Generate the debug zip file for a secure cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
 ~~~
 
 {{site.data.alerts.callout_info}}Secure examples assume you have the appropriate certificates in the default certificate directory, <code>${HOME}/.cockroach-certs/</code>.{{site.data.alerts.end}}
+
+### Redact sensitive information from the logs
+
+Example of a log string without redaction enabled:
+
+~~~
+server/server.go:1423 ⋮ password of user ‹admin› was set to ‹"s3cr34?!@x_"›
+~~~
+
+Enable log redaction:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip -- redact-logs --insecure --host=200.100.50.25
+~~~
+
+~~~
+server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
+~~~
 
 ## See also
 
