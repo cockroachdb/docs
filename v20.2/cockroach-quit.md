@@ -69,6 +69,8 @@ Flag | Description
 ### Client connection
 
 {% include {{ page.version.version }}/sql/connection-parameters.md %}
+`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, either this flag or `--disable-cluster-name-verification` must be included. For more information, see [`cockroach start`](cockroach-start.html#general).
+`--disable-cluster-name-verification` | Disables the cluster name check for this command. If the cluster has a cluster name, either this flag or `--cluster-name` must be included. For more information, see [`cockroach start`](cockroach-start.html#general).
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

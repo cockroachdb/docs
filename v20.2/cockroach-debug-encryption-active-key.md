@@ -14,13 +14,6 @@ The `cockroach debug encryption-active-key` [command](cockroach-commands.html) d
 $ cockroach debug encryption-active-key [path specified by the store flag]
 ~~~
 
-## Flags
-
-Flag | Description
------|-----------
-`--cluster-name` | The cluster name to connect to. If the cluster has a cluster name, either this flag or `--disable-cluster-name-verification` must be included. For more information, see [`cockroach start`](cockroach-start.html#general).
-`--disable-cluster-name-verification` | Disables the cluster name check for this command. If the cluster has a cluster name, either this flag or `--cluster-name` must be included. For more information, see [`cockroach start`](cockroach-start.html#general).
-
 ## Subcommands
 
 {% include {{ page.version.version }}/misc/debug-subcommands.md %}
