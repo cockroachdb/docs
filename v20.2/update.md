@@ -30,7 +30,7 @@ Parameter | Description
 `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `column_name` | The name of the column whose values you want to update.
 `a_expr` | The new value you want to use, the [aggregate function](functions-and-operators.html#aggregate-functions) you want to perform, or the [scalar expression](scalar-expressions.html) you want to use.<br><br>To fill columns with their [default values](default-value.html), use `DEFAULT VALUES` in place of `a_expr`. To fill a specific column with its default value, leave the value out of the `a_expr` or use `DEFAULT` at the appropriate position.
-`FROM table_ref` | Specify a different table to reference in `UPDATE` expressions, or `RETURNING` and `WHERE` clauses. For an example, see [Update using values from a different table](#update-using-values-from-a-different-table).
+`FROM table_ref` | Specify a table to reference, but not update, in `UPDATE` expressions, or in `RETURNING` and `WHERE` clauses. For more details, see [Reference other tables in an update](#reference-other-tables-in-an-update).
 `select_stmt` | A [selection query](selection-queries.html). Each value must match the [data type](data-types.html) of its column on the left side of `=`.
 `WHERE a_expr`| `a_expr` must be a [scalar expression](scalar-expressions.html) that returns Boolean values using columns (e.g., `<column> = <value>`). Update rows that return `TRUE`.<br><br/>**Without a `WHERE` clause in your statement, `UPDATE` updates all rows in the table.**
 `sort_clause` | An `ORDER BY` clause. See [Ordering Query Results](query-order.html) and [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
@@ -62,6 +62,14 @@ This is equivalent to the longer expression:
 To view how the index hint modifies the query plan that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`](explain.html#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
 
 For examples, see [Update with index hints](#update-with-index-hints).
+
+## Reference other tables in an update
+
+To reference values from a table other than the table being updated, add a `FROM` clause that specifies one or more tables in the cluster. Values from tables specified in a `FROM` clause can be used in `UPDATE` expressions, and in `RETURNING` and `WHERE` clauses.
+
+When executing an `UPDATE` query with a `FROM` clause, CockroachDB [joins](joins.html) the target table (i.e., the table being updated) to the tables referenced in the `FROM` clause. The output of this join should have the same number of rows as the rows being updated in the target table, as CockroachDB uses a single row from the join output to update a given row in the target table. If the join produces more rows than the rows being updated in the target table, there is no way to predict which row from the join output will be used to update a row in the target table.
+
+For an example, see [Update using values from a different table](#update-using-values-from-a-different-table).
 
 ## Examples
 
