@@ -75,6 +75,9 @@ You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement t
 If you downgrade to a version of CockroachDB that does not support precision for `TIME`/`TIMETZ` values, all `TIME`/`TIMETZ` values previously specified with precision will be stored with full precision.
 {{site.data.alerts.end}}
 
+## Functions
+For the list of supported `TIME` functions, see [Functions and Operators](functions-and-operators.html#date-and-time-functions). For the list of supported `TIMETZ` functions, see [Functions and Operators](functions-and-operators.html#timetz-functions).
+
 ## Examples
 
 ### Create a table with a `TIME`-typed column
