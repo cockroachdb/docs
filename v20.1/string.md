@@ -50,6 +50,9 @@ or the escaped format otherwise.
 
 The size of a `STRING` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
+## Functions
+For the list of supported `STRING` functions, see [Functions and Operators](functions-and-operators.html#string-and-byte-functions).
+
 ## Examples
 
 {% include copy-clipboard.html %}
