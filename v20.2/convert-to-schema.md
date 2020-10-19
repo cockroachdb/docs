@@ -34,7 +34,7 @@ Parameter | Description
 A database cannot be converted to a schema if:
 
 - The database is the [current database](sql-name-resolution.html#current-database).
-- The database has a child schema other than the [`public` schema](sql-name-resolution.html#databases-with-special-names).
+- The database has a child schema other than the `public` schema.
 
 ## Example
 
