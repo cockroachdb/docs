@@ -29,22 +29,11 @@ class Account(Base):
 # For more information, see
 # https://github.com/cockroachdb/sqlalchemy-cockroachdb.
 
-SECURE_CLUSTER = True           # Set to False for insecure clusters
-connect_args = {}
-
-if SECURE_CLUSTER:
-    connect_args = {
-        'sslmode': 'require',
-        'sslrootcert': 'certs/ca.crt',
-        'sslkey': 'certs/client.maxroach.key',
-        'sslcert': 'certs/client.maxroach.crt'
-    }
-else:
-    connect_args = {'sslmode': 'disable'}
-
 engine = create_engine(
-    'cockroachdb://maxroach@localhost:26257/bank',
-    connect_args=connect_args,
+    # For cockroach demo:
+    'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=require',
+    # For CockroachCloud:
+    # 'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>',
     echo=True                   # Log SQL queries to stdout
 )
 
@@ -61,7 +50,6 @@ seen_account_ids = set()
 
 def create_random_accounts(sess, num):
     """Create N new accounts with random IDs and random account balances.
-
     Note that since this is a demo, we don't do any work to ensure the
     new IDs don't collide with existing IDs.
     """
@@ -93,7 +81,6 @@ def get_random_account_id():
 
 def transfer_funds_randomly(session):
     """Transfer money randomly between accounts (during SESSION).
-
     Cuts a randomly selected account's balance in half, and gives the
     other half to some other randomly selected account.
     """
