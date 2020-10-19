@@ -79,3 +79,4 @@ Type | Details
 ## See also
 
 [Data Types](data-types.html)
+[Functions and Operators](https://www.cockroachlabs.com/docs/v20.1/functions-and-operators.html#bool-functions)
