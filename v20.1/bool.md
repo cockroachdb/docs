@@ -22,7 +22,10 @@ Alternately, a boolean value can be obtained by coercing a numeric value: zero i
 
 ## Size
 
-A `BOOL` value is 1 byte in width, but the total storage size is likely to be larger due to CockroachDB metadata.  
+A `BOOL` value is 1 byte in width, but the total storage size is likely to be larger due to CockroachDB metadata.
+
+## Functions
+For the list of supported `BOOL` functions, see [Functions and Operators](functions-and-operators.html#bool-functions).
 
 ## Examples
 
@@ -79,4 +82,3 @@ Type | Details
 ## See also
 
 * [Data Types](data-types.html)
-* [Functions and Operators](https://www.cockroachlabs.com/docs/v20.1/functions-and-operators.html#bool-functions)
