@@ -7,13 +7,41 @@ toc: true
 
 {% include {{page.version.version}}/sql/select-for-update-overview.md %}
 
-## Required privileges
+## Syntax
 
-The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the tables used as operands.
+The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/for_locking.html %}
+</div>
+
+For the full `SELECT` statement syntax documentation, see [Selection Queries](selection-queries.html).
 
 ## Parameters
 
-The same as for other [selection queries](selection-queries.html).
+### Locking strengths
+
+Locking strength dictates the row-level locking behavior on rows retrieved by a `SELECT` statement.
+
+Parameter | Description
+----------|------------
+`FOR SHARE`/`FOR KEY SHARE` | This syntax is a no-op, allowed for PostgreSQL compatibility. Specifying `FOR SHARE`/`FOR KEY SHARE` does not cause CockroachDB to use shared locks over the rows retrieved by a statement.<br><br>Note that CockroachDB always [ensures serializability](demo-serializable.html), regardless of the specified locking strength.
+`FOR UPDATE`/`FOR NO KEY UPDATE` | Lock the rows returned by the [`SELECT`](selection-queries.html) statement, such that other transactions trying to access the rows must wait for the transaction to finish.<br><br>Note that in CockroachDB, the `FOR NO KEY UPDATE` locking strength is identical to the `FOR UPDATE` locking strength.
+
+### Wait policies
+
+<span class="version-tag">New in v20.2:</span> Wait policies determine how a `SELECT FOR UPDATE` statement handles conflicts with locks held by other active transactions. By default, `SELECT FOR UPDATE` queries on rows that are already locked by an active transaction must wait for the transaction to finish.
+
+Parameter | Description
+----------|------------
+`SKIP LOCKED` | This syntax is not supported, as skipping locked rows is not yet supported by CockroachDB.
+`NOWAIT` | Return an error if a row cannot be locked immediately.
+
+For documentation on all other parameters of a `SELECT` statement, see [Selection Queries](selection-queries.html).
+
+## Required privileges
+
+The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the tables used as operands.
 
 ## Examples
 
