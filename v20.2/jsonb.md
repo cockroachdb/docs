@@ -70,6 +70,9 @@ Operator | Description | Example |
 
 For the full list of supported `JSONB` operators, see [Functions and Operators](functions-and-operators.html).
 
+## Functions
+For the list of supported `JSONB` functions, see [Functions and Operators](functions-and-operators#jsonb-functions).
+
 ## Examples
 
 ### Create a Table with a `JSONB` Column
@@ -198,4 +201,3 @@ For the full list of functions and operators we support, see [Functions and Oper
 - [Inverted Indexes](inverted-indexes.html)
 - [Computed Columns](computed-columns.html)
 - [Data Types](data-types.html)
-- [Functions and Operators](functions-and-operators.html)
