@@ -53,7 +53,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Allow a role to log in to the database using a password
 
-The following example allows a role to log in to the database with a [password](client authentication method):
+The following example allows a role to log in to the database with a [password](authentication.html#client-authentication):
 
 ~~~ sql
 root@:26257/defaultdb> ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
