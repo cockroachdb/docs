@@ -9,7 +9,7 @@ The `CANCEL SESSION` [statement](sql-statements.html) lets you stop long-running
 
 ## Required privileges
 
-Only members of the `admin` role and the user that the session belongs to can cancel a session. By default, the `root` user belongs to the `admin` role.
+To view and cancel a session, the user must be a member of the `admin` role or must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) and [`CANCELQUERY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameters set. Non-admin users can't cancel admin users' sessions.
 
 ## Synopsis
 

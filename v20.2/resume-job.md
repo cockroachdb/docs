@@ -5,7 +5,7 @@ toc: true
 ---
 
  The `RESUME JOB` [statement](sql-statements.html) lets you resume the following types of jobs:
- 
+
  - [`IMPORT`](import.html) jobs
  - [`BACKUP`](backup.html) and [`RESTORE`](restore.html) jobs
  - [User-created table statistics](create-statistics.html) jobs
@@ -16,7 +16,7 @@ toc: true
 
 ## Required privileges
 
-By default, only the `root` user can control a job.
+To resume a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set.
 
 ## Synopsis
 

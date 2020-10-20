@@ -4,7 +4,7 @@ summary: The ALTER USER statement can be used to add or change a user's password
 toc: true
 ---
 
-The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password and to change the login privileges for a user.
+The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or remove a [user's](create-user.html) password and to change the role options for a user.
 
 {{site.data.alerts.callout_info}}
  Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER USER` is now an alias for [`ALTER ROLE`](alter-role.html).
@@ -16,7 +16,7 @@ The `ALTER USER` [statement](sql-statements.html) can be used to add, change, or
 
 ## Required privileges
 
- To alter other users, the user must have the [`CREATEROLE`](create-user.html#allow-the-user-to-create-other-users) parameter set.
+ To alter other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-user.html#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 
 ## Synopsis
 
@@ -32,106 +32,86 @@ table td:first-child {
 
 Parameter | Description
 ----------|-------------
-`name` | The name of the user whose password you want to create or add.
-`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#change-password-using-an-identifier). <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
+`name` | The name of the user whose role options you want to alter.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
+`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the user from logging in using any authentication method.
+`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
 `VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`LOGIN`/`NOLOGIN` |  The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). [Setting the parameter to `NOLOGIN`](#change-login-privileges-for-a-user) prevents the user from logging in using any authentication method.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the user to create, alter, and drop other users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin and non-root users.
+`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the user to [create](create-user.html), alter, and [drop](drop-user.html) other non-admin users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the user to [create](create-database.html) or [rename](rename-database.html) a database. The user is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin users.
+`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-admin users cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin users.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other users. Without this privilege, users can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the user can view other users' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin users.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other users' [queries](show-queries.html) and [sessions](show-sessions.html) using `SHOW QUERIES`, `SHOW SESSIONS`, and the [**Statements**](admin-ui-statements-page.html) and **Transactions** pages in the Admin UI. Without this privilege, the `SHOW` commands only show the user's own data and the Admin UI pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin users.
+`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin users.
+`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the user to to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin users.
 
 ## Examples
 
-### Change password using a string literal
+{{site.data.alerts.callout_info}}
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+### Change a user's password
+
 ~~~ sql
-> ALTER USER carl WITH PASSWORD 'ilov3beefjerky';
-~~~
-
-### Change password using an identifier
-
-The following statement changes the password to `ilov3beefjerky`, as above:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER USER carl WITH PASSWORD ilov3beefjerky;
-~~~
-
-This is equivalent to the example in the previous section because the password contains only lowercase characters.
-
-In contrast, the following statement changes the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER USER carl WITH PASSWORD ThereIsNoTomorrow;
-~~~
-
-To preserve case in a password specified using identifier syntax, use double quotes:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER USER carl WITH PASSWORD "ThereIsNoTomorrow";
-~~~
-
-### Set password validity
-
-The following statement sets the date and time after which the password is not valid:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER USER carl VALID UNTIL '2021-01-01';
+root@:26257/defaultdb> ALTER USER carl WITH PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
 ~~~
 
 ### Prevent a user from using password authentication
 
-The following statement prevents the user from using password authentication and mandates certificate-based client authentication:
+The following statement prevents the user from using password authentication and mandates certificate-based [client authentication](authentication.html#client-authentication):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl WITH PASSWORD NULL;
+root@:26257/defaultdb> ALTER USER carl WITH PASSWORD NULL;
 ~~~
 
-### Change login privileges for a user
+### Allow a user to create other users and manage authentication methods for the new users
 
-The following statement prevents the user from logging in with any [client authentication method](authentication.html#client-authentication):
+The following example allows the user to [create other users](create-user.html) and [manage authentication methods](authentication.html#client-authentication) for them:
 
-{% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl NOLOGIN;
+root@:26257/defaultdb> ALTER USER carl WITH CREATEROLE CREATELOGIN;
 ~~~
 
-{% include copy-clipboard.html %}
+### Allow a user to create and rename databases
+
+The following example allows the user to [create](create-database.html) or [rename](rename-database.html) databases:
+
 ~~~ sql
-> SHOW USERS;
+root@:26257/defaultdb> ALTER USER carl WITH CREATEDB;
 ~~~
 
-~~~
-  username |  options   | member_of
------------+------------+------------
-  admin    | CREATEROLE | {}
-  carl     | NOLOGIN    | {}
-  root     | CREATEROLE | {admin}
-(3 rows)
-~~~
+### Allow a user to pause, resume, and cancel non-admin jobs
 
-The following statement allows the user to log in with one of the client authentication methods:
+The following example allows the user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs:
 
-{% include copy-clipboard.html %}
 ~~~ sql
-> ALTER USER carl LOGIN;
+root@:26257/defaultdb> ALTER USER carl WITH CONTROLJOB;
 ~~~
 
-{% include copy-clipboard.html %}
+### Allow a user to see and cancel non-admin queries and sessions
+
+The following example allows the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-admin roles:
+
 ~~~ sql
-> SHOW USERS;
+root@:26257/defaultdb> ALTER USER carl WITH CANCELQUERY VIEWACTIVITY;
 ~~~
 
+### Allow a user to control changefeeds
+
+The following example allows the user to run [`CREATE CHANGEFEED`](create-changefeed.html):
+
+~~~ sql
+root@:26257/defaultdb> ALTER USER carl WITH CONTROLCHANGEFEED;
 ~~~
-  username |  options   | member_of
------------+------------+------------
-  admin    | CREATEROLE | {}
-  carl     |            | {}
-  root     | CREATEROLE | {admin}
-(3 rows)
+
+### Allow a user to modify cluster settings
+
+The following example allows the user to modify [cluster settings](cluster-settings.html):
+
+~~~ sql
+root@:26257/defaultdb> ALTER USER carl WITH MODIFYCLUSTERSETTING;
 ~~~
 
 ## See also

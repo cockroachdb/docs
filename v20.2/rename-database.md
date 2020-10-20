@@ -18,7 +18,7 @@ Database renames **are not transactional**. For more information, see [Database 
 
 ## Required privileges
 
-Only members of the `admin` role can rename databases. By default, the `root` user belongs to the `admin` role.
+To rename a database, the user must be a member of the `admin` role or must have the [`CREATEDB`](create-role.html#create-a-role-that-can-create-and-rename-databases) parameter set.
 
 ## Parameters
 
