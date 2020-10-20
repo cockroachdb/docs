@@ -24,6 +24,9 @@ As `BYTES` | `UUID` value specified as bytes.<br><br>Example: `b'kafef00ddeadbee
 ## Size
 A `UUID` value is 128 bits in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
+## Functions
+For the list of supported `UUID` functions, see [Functions and Operators](functions-and-operators.html#id-generation-functions).
+
 ## Examples
 
 ### Create a table with manually-entered `UUID` values

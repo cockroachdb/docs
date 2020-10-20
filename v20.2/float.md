@@ -47,6 +47,9 @@ For example:
 
 A `FLOAT` column supports values up to 8 bytes in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
+## Functions
+For the list of supported `FLOAT` functions, see [Functions and Operators](functions-and-operators#float-functions).
+
 ## Examples
 
 {% include copy-clipboard.html %}

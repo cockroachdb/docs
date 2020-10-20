@@ -54,6 +54,9 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 - To [alter a type](alter-type.html), a user must be the owner of the type.
 - To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
 
+## Functions
+For the list of supported `ENUM` functions, see [Functions and Operators](functions-and-operators#enum-functions).
+
 ## Example
 
 {% include copy-clipboard.html %}
