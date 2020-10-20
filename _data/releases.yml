@@ -193,6 +193,8 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Oct 20, 2020
+      version: v20.2.0-rc.2
     - date: Oct 15, 2020
       version: v20.2.0-rc.1
     - date: Oct 6, 2020
