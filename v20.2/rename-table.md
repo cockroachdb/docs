@@ -46,7 +46,7 @@ Table renames are not transactional. There are two phases during a rename:
 
 This yields a surprising and undesirable behavior: when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. This violates A, C, and I in [ACID](https://en.wikipedia.org/wiki/ACID_(computer_science)). Only D is guaranteed: If the transaction commits successfully, the new name will persist after that.
 
-This is a [known limitation](known-limitations.html#database-and-table-renames-are-not-transactional). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+This is a [known limitation](known-limitations.html#table-renames-are-not-transactional). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
 ## Viewing schema changes
 

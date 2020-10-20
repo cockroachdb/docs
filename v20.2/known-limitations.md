@@ -176,11 +176,11 @@ Make sure to do this across all nodes in the cluster and to keep this time zone 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
 
-### Database and table renames are not transactional
+### Table renames are not transactional
 
-Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
+Table renames using [`ALTER TABLE ... RENAME TO`](rename-table.html) are not transactional.
 
-Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a table rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
 ### Change data capture
 
