@@ -41,14 +41,14 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 `CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the role from logging in using any authentication method.
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
-`VALID UNTIL` |   The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new role to create, alter, and drop other non-admin roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
-`CREATEDB`/`NOCREATEDB` | Allow or disallow the role to create or rename a database. The role is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin roles.
-`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the role to pause, resume, and cancel jobs. Non-admin roles cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin roles.
-`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel queries and sessions of other roles. Without this privilege, roles can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin roles.
-`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' queries and sessions using `SHOW QUERIES`, `SHOW SESSIONS`, and the Statements and Transactions pages in the Admin UI. Without this privilege, the `SHOW` commands only show the role's own data and the Admin UI pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin roles.
-`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the role to run `CREATE CHANGEFEED` on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin roles.
-`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the role to to modify the cluster settings with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin roles.
+`VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
+`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new role to create, [alter](alter-role.html), and [drop](drop-role.html) other non-admin roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the role to [create](create-database.html) or [rename](rename-database.html) a database. The role is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin roles.
+`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the role to [pause](pause-job.html), [resume](resume-job), and [cancel](cancel-job.html) jobs. Non-admin roles cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin roles.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other roles. Without this privilege, roles can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin roles.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' [queries](show-queries.html) and [sessions](show-sessions.html) using `SHOW QUERIES`, `SHOW SESSIONS`, and the [**Statements**](admin-ui-statements-page.html) and **Transactions** pages in the Admin UI. Without this privilege, the `SHOW` commands only show the role's own data and the Admin UI pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin roles.
+`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the role to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin roles.
+`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the role to to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin roles.
 
 ## Examples
 
@@ -143,6 +143,8 @@ root       |                                       | {admin}
 
 ### Create a role that can create other roles and manage authentication methods for the new roles
 
+The following example allows the role to [create other users](create-user.html) and [manage authentication methods](authentication.html#client-authentication) for them:
+
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_create_role WITH CREATEROLE CREATELOGIN;
 ~~~
@@ -164,6 +166,8 @@ root            |                                       | {admin}
 ~~~
 
 ### Create a role that can create and rename databases
+
+The following example allows the role to [create](create-database.html) or [rename](rename-database.html) databases:
 
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_create_db WITH CREATEDB;
@@ -187,6 +191,8 @@ root                  |                                       | {admin}
 ~~~
 
 ### Create a role that can pause, resume, and cancel non-admin jobs
+
+The following example allows the role to [pause](pause-job.html), [resume](resume-job), and [cancel](cancel-job.html) jobs:
 
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_control_job WITH CONTROLJOB;
@@ -213,6 +219,8 @@ root                  |                                       | {admin}
 
 ### Create a role that can see and cancel non-admin queries and sessions
 
+The following example allows the role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-admin roles:
+
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
 ~~~
@@ -237,6 +245,8 @@ root                  |                                       | {admin}
 ~~~
 
 ### Create a role that can control changefeeds
+
+The following example allows the role to run [`CREATE CHANGEFEED`](create-changefeed.html):
 
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_control_changefeed WITH CONTROLCHANGEFEED;
@@ -264,6 +274,8 @@ root                   |                                       | {admin}
 
 ### Create a role that can modify cluster settings
 
+The following example allows the role to modify [cluster settings](cluster-settings.html):
+
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
 ~~~
@@ -288,76 +300,6 @@ no_password                | NOLOGIN                               | {}
 root                       |                                       | {admin}
 (11 rows)
 ~~~
-
-<!--
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE dev_ops;
-~~~
-
-After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
-
-### Allow the role to create other roles
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl with CREATEROLE;
-~~~
-
-### Allow the role to manage authentication for other roles
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl with CREATELOGIN;
-~~~
-
-### Create a role with a password using a string literal
-
-Note: Make sure that the role running the following statement has the `CREATELOGIN` or `CREATEROLE` role option:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl WITH PASSWORD 'ilov3beefjerky';
-~~~
-
-### Create a role with a password using an identifier
-
-Note: Make sure that the role running the following statement has the `CREATELOGIN` or `CREATEROLE` role option.
-
-The following statement sets the password to `ilov3beefjerky`, as above:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl WITH PASSWORD ilov3beefjerky;
-~~~
-
-This is equivalent to the example in the previous section because the password contains only lowercase characters.
-
-In contrast, the following statement sets the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl WITH PASSWORD ThereIsNoTomorrow;
-~~~
-
-To preserve case in a password specified using identifier syntax, use double quotes:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl WITH PASSWORD "ThereIsNoTomorrow";
-~~~
-
-### Prevent a role from using password authentication
-
-The following statement prevents the role from using password authentication and mandates certificate-based client authentication:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl WITH PASSWORD NULL;
-~~~
-
--->
 
 ## See also
 
