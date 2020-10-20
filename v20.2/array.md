@@ -262,9 +262,17 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 (1 row)
 ~~~
 
-### Implicit casting to `INT` and `DECIMAL` `ARRAY`s
+### Implicit casting
 
- CockroachDB supports implicit casting from string literals to [`INT`](int.html) and [`DECIMAL`](decimal.html) `ARRAY`s, where appropriate.
+CockroachDB supports implicit casting from string literals to arrays of all data types except the following:
+
+- [`BYTES`](bytes.html)
+- [`ENUM`](enum.html)
+- [`JSONB`](jsonb.html)
+- [`SERIAL`](serial.html)
+- `Box2D` [(spatial type)](spatial-glossary.html#data-types)
+- `GEOGRAPHY` [(spatial type)](spatial-glossary.html#data-types)
+- `GEOMETRY` [(spatial type)](spatial-glossary.html#data-types)
 
 For example, if you create a table with a column of type `INT[]`:
 
