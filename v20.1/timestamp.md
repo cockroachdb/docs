@@ -76,10 +76,6 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
 
-{{site.data.alerts.callout_info}}
-If you downgrade to a version of CockroachDB that does not support precision for `TIMESTAMP`/`TIMESTAMPTZ` values, all `TIMESTAMP`/`TIMESTAMPTZ` values previously specified with precision will be stored with full precision.
-{{site.data.alerts.end}}
-
 ## Examples
 
 ### Create a table with a `TIMESTAMPTZ`-typed column
