@@ -2320,6 +2320,12 @@
     		  "/${VERSION}/admin-ui-statements-page.html"
     		]
     	      },
+            {
+        "title": "Transactions Page",
+        "urls": [
+          "/${VERSION}/admin-ui-transactions-page.html"
+        ]
+            },
     	      {
     		"title": "Network Latency Page",
     		"urls": [

@@ -279,4 +279,5 @@ Retry transaction _A_ as described in [client-side retry handling](transactions.
 - [Transactions](transactions.html)
 - [Client-side retry handling](transactions.html#client-side-intervention)
 - [Understanding and avoiding transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Admin UI Transactions Page](admin-ui-transactions-page.html)
 - [Architecture - Transaction Layer](architecture/transaction-layer.html)
