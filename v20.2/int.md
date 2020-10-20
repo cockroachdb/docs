@@ -50,6 +50,9 @@ If your application needs to use an integer size that is different than the Cock
 If your application requires arbitrary precision numbers, use the [`DECIMAL`](decimal.html) data type.
 {{site.data.alerts.end}}
 
+## Functions
+For the list of supported `INT` functions, see [Functions and Operators](functions-and-operators.html#int-functions).
+
 ## Examples
 
 {% include copy-clipboard.html %}
