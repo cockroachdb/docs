@@ -7,13 +7,32 @@ toc: true
 
 {% include {{page.version.version}}/sql/select-for-update-overview.md %}
 
-## Required privileges
+## Syntax
 
-The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the tables used as operands.
+The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/for_locking.html %}
+</div>
+
+For the full `SELECT` statement syntax documentation, see [Selection Queries](selection-queries.html).
 
 ## Parameters
 
-The same as for other [selection queries](selection-queries.html).
+Parameter | Description
+----------|------------
+`FOR SHARE` | CockroachDB currently does not support the `FOR SHARE` locking mode. This syntax is a no-op, allowed for PostgreSQL compatibility.
+`FOR KEY SHARE` | CockroachDB currently does not support the `FOR KEY SHARE` locking mode. This syntax is a no-op, allowed for PostgreSQL compatibility.
+`FOR UPDATE` | Lock the rows returned by the [`SELECT`](selection-queries.html) statement, such that other transactions trying to access those rows must wait for the transaction to finish.
+`FOR NO KEY UPDATE` | CockroachDB currently does not support the `FOR NO KEY UPDATE` locking mode. This syntax is a no-op, allowed for PostgreSQL compatibility.
+`SKIP LOCKED` | Skipping locked rows is not yet supported by CockroachDB. `SELECT` statements with `SKIP LOCKED` will return an `"unimplemented"` error.
+`NOWAIT` | Return an error if a row cannot be locked immediately.
+
+For documentation on all other parameters of a `SELECT` statement, see [Selection Queries](selection-queries.html).
+
+## Required privileges
+
+The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#assign-privileges) on the tables used as operands.
 
 ## Examples
 
