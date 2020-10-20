@@ -130,6 +130,42 @@ File name | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`). <br><br> Must be signed by `ca-client.crt`.
 `client.<user>.key` | Client key corresponding to `client.<user>.crt`.
 
+## Certificate revocation with OCSP
+
+<span class="version-tag">New in v20.2</span> CockroachDB now supports certificate revocation for custom CA certificate setups running an [OCSP](https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol) server.
+
+To enable certificate revocation:
+
+1. Ensure that your Certificate Authority sets the OCSP server address in the `authorityInfoAccess` field in the certificate.
+2. [Set the cluster setting](set-cluster-setting.html) `security.ocsp.mode` to `lax` (by default, the cluster setting is set to `off`).
+
+      {% include copy-clipboard.html %}
+      ~~~ sql
+      > SHOW CLUSTER SETTING security.ocsp.mode;
+      ~~~
+
+      ~~~
+      security.ocsp.mode
+      ----------------------
+      off
+      (1 row)
+
+      Server Execution Time: 56µs
+      Network Latency: 181µs
+      ~~~
+
+      {% include copy-clipboard.html %}
+      ~~~ sql
+      > SET CLUSTER SETTING security.ocsp.mode = lax;
+      ~~~
+
+      For production clusters, you might want to set the setting to `strict`.
+
+      {{site.data.alerts.callout_info}}
+      In the `strict` mode, all certificates are presumed to be invalid if the OCSP server is not reachable. Setting the cluster setting `security.ocsp.mode` to `strict` will lock you out of your CockroachDB database if your OCSP server goes down.
+      {{site.data.alerts.end}}
+
+
 ## See also
 
 - [Manual Deployment](manual-deployment.html): Learn about starting a multi-node secure cluster and accessing it from a client.
