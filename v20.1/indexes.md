@@ -57,6 +57,8 @@ If you are working with a table that must be indexed on sequential keys, you sho
 
 To create a hash-sharded index, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. Then, add the optional [`USING HASH WITH BUCKET_COUNT = n_buckets` clause](sql-grammar.html#opt_hash_sharded) to a [`CREATE INDEX`](create-index.html) statement, to an [`INDEX` definition](sql-grammar.html#index_def) in a [`CREATE TABLE`](create-table.html) statement, or to an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement. When this clause is used, CockroachDB creates `n_buckets` computed columns, shards the index into `n_buckets` shards, and then stores each index shard in the underlying key-value store with one of the computed column's hash as its prefix.
 
+To change the bucket size of an existing hash-sharded primary key index, use an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement with a [`USING HASH WITH BUCKET_COUNT = n_buckets` clause](sql-grammar.html#opt_hash_sharded) that specifies the new bucket size.
+
 {{site.data.alerts.callout_info}}
 Hash-sharded indexes cannot be [interleaved](interleave-in-parent.html).
 {{site.data.alerts.end}}
