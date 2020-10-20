@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-`BACKUP` is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. For non-enterprise backups, see [`cockroach dump`](cockroach-dump.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html#perform-enterprise-backup-and-restore) of your cluster's schema and data that are consistent as of a given timestamp.
@@ -93,7 +93,7 @@ CockroachDB offers two types of backups: [full](#full-backups) and [incremental]
 
 #### Full backups
 
-Full backups contain an unreplicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+Full backups contain an un-replicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
 #### Incremental backups
 
@@ -193,7 +193,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Create incremental backups
 
- If you backup to a destination already containing a full backup, an incremental backup will be produced in a subdirectory with a date-based name (e.g., `destination/day/time_1`, `destination/day/time_2`):
+If you backup to a destination already containing a full backup, an incremental backup will be produced in a subdirectory with a date-based name (e.g., `destination/day/time_1`, `destination/day/time_2`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -205,6 +205,27 @@ AS OF SYSTEM TIME '-10s';
 {{site.data.alerts.callout_info}}
 This incremental backup syntax does not work for backups using HTTP storage; you must [explicitly control where your incremental backups go](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) by using the [`INCREMENTAL FROM` syntax](#synopsis).
 {{site.data.alerts.end}}
+
+### Run a backup asynchronously
+
+<span class="version-tag">New in v20.2:</span> Use the `detached` [option](#options) to execute the backup job asynchronously:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP TO \
+'gs://acme-co-backup/test-cluster' \
+AS OF SYSTEM TIME '-10s'
+WITH detached;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
 
 ### Advanced examples
 

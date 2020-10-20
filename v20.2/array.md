@@ -8,7 +8,7 @@ The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of a
 
 The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
 
- CockroachDB supports indexing array columns with [inverted indexes](inverted-indexes.html). This permits accelerating containment queries ([`@>`](functions-and-operators.html#operator-contains) and [`<@`](functions-and-operators.html#operator-is-contained-by)) on array columns by adding an index to them.
+ CockroachDB supports indexing array columns with [inverted indexes](inverted-indexes.html). This permits accelerating containment queries ([`@>`](functions-and-operators.html#supported-operations) and [`<@`](functions-and-operators.html#supported-operations)) on array columns by adding an index to them.
 
 {{site.data.alerts.callout_info}}
 CockroachDB does not support nested arrays.
@@ -25,11 +25,11 @@ A value of data type `ARRAY` can be expressed in the following ways:
 
 The size of an `ARRAY` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.  
 
-## Examples
+## Functions
 
-{{site.data.alerts.callout_success}}
-For a complete list of array functions built into CockroachDB, see the [documentation on array functions](functions-and-operators.html#array-functions).
-{{site.data.alerts.end}}
+For the list of supported `ARRAY` functions, see [Functions and Operators](functions-and-operators.html#array-functions).
+
+## Examples
 
 ### Creating an array column by appending square brackets
 
@@ -262,9 +262,17 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 (1 row)
 ~~~
 
-### Implicit casting to `INT` and `DECIMAL` `ARRAY`s
+### Implicit casting
 
- CockroachDB supports implicit casting from string literals to [`INT`](int.html) and [`DECIMAL`](decimal.html) `ARRAY`s, where appropriate.
+CockroachDB supports implicit casting from string literals to arrays of all data types except the following:
+
+- [`BYTES`](bytes.html)
+- [`ENUM`](enum.html)
+- [`JSONB`](jsonb.html)
+- [`SERIAL`](serial.html)
+- `Box2D` [(spatial type)](spatial-glossary.html#data-types)
+- `GEOGRAPHY` [(spatial type)](spatial-glossary.html#data-types)
+- `GEOMETRY` [(spatial type)](spatial-glossary.html#data-types)
 
 For example, if you create a table with a column of type `INT[]`:
 

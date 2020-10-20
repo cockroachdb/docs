@@ -4,5 +4,4 @@
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [Performance Benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html)
 - [Performance Tuning](performance-tuning.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)

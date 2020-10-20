@@ -6,6 +6,10 @@ toc: true
 
 The `CREATE VIEW` statement creates a new [view](views.html), which is a stored query represented as a virtual table.
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting](cluster-settings.html) to `true`.
+{{site.data.alerts.end}}
+
 {% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
@@ -20,6 +24,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 Parameter | Description
 ----------|------------
+`MATERIALIZED` | <span class="version-tag">New in v20.2:</span> Create a [materialized view](views.html#materialized-views).
 `IF NOT EXISTS` |  Create a new view only if a view of the same name does not already exist. If one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the view name only. It does not check if an existing view has the same columns as the new view.
 `OR REPLACE`  |  <span class="version-tag">New in v20.2:</span> Create a new view if a view of the same name does not already exist. If a view of the same name already exists, replace that view.<br><br>In order to replace an existing view, the new view must have the same columns as the existing view, or more. If the new view has additional columns, the old columns must be a prefix of the new columns. For example, if the existing view has columns `a, b`, the new view can have an additional column `c`, but must have columns `a, b` as a prefix. In this case, `CREATE OR REPLACE VIEW myview (a, b, c)` would be allowed, but `CREATE OR REPLACE VIEW myview (b, a, c)` would not.
 `view_name` | The name of the view to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.
@@ -86,11 +91,11 @@ The view is then represented as a virtual table alongside other tables in the da
 ~~~
 
 ~~~
-  schema_name |    table_name     | type
---------------+-------------------+--------
-  public      | episodes          | table
-  public      | quotes            | table
-  public      | quotes_per_season | view
+  schema_name |    table_name     | type  | estimated_row_count
+--------------+-------------------+-------+----------------------
+  public      | episodes          | table |                  79
+  public      | quotes            | table |                 200
+  public      | quotes_per_season | view  |                   3
 (3 rows)
 ~~~
 

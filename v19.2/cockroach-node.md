@@ -117,7 +117,7 @@ Flag | Description
 `--stats` | Show node disk usage details.
 `--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
-The `node decommission` subcommand also supports the following general flag:
+The `node decommission` subcommand also supports the following general flags:
 
 Flag | Description
 -----|------------

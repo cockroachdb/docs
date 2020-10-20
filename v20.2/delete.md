@@ -37,6 +37,7 @@ table td:first-child {
  `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
+ `ONLY ... *` | <span class="version-tag">New in v20.2:</span> Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
 ## Success responses
 
@@ -108,6 +109,9 @@ To delete a large number of rows (i.e., tens of thousands of rows or more), we r
 
 In the sections below, we provide guidance on batch deleting with the `DELETE` query filter [on an indexed column](#batch-delete-on-an-indexed-column) and [on a non-indexed column](#batch-delete-on-a-non-indexed-column). Filtering on an indexed column is both simpler to implement and more efficient, but adding an index to a table can slow down insertions to the table and may cause bottlenecks. Queries that filter on a non-indexed column must perform at least one full-table scan, a process that takes time proportional to the size of the entire table.
 
+{{site.data.alerts.callout_danger}}
+Exercise caution when batch deleting rows from tables with foreign key constraints and explicit [`ON DELETE` foreign key actions](foreign-key.html#foreign-key-actions). To preserve `DELETE` performance on tables with foreign key actions, we recommend using smaller batch sizes, as additional rows updated or deleted due to `ON DELETE` actions can make batch loops significantly slower.
+{{site.data.alerts.end}}
 ### Batch delete on an indexed column
 
 For high-performance batch deletes, we recommending filtering the `DELETE` query on an [indexed column](indexes.html).

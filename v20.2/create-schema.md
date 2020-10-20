@@ -4,7 +4,11 @@ summary: The CREATE SCHEMA statement creates a new user-defined schema.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#logical-schemas-and-namespaces) in the current database.
+<span class="version-tag">New in v20.2</span>: The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy) in the current database.
+
+{{site.data.alerts.callout_info}}
+You can also create a user-defined schema by converting an existing database to a schema using [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html).
+{{site.data.alerts.end}}
 
 ## Required privileges
 
@@ -13,7 +17,7 @@ Only members of the `admin` role can create new schemas. By default, the `root` 
 ## Syntax
 
 ~~~
-CREATE SCHEMA [IF NOT EXISTS] { <schemaname> | [<schemaname>] AUTHORIZATION {user_name | CURRENT_USER | SESSION_USER} }
+CREATE SCHEMA [IF NOT EXISTS] { <schemaname> | [<schemaname>] AUTHORIZATION <user_name> }
 ~~~
 
 ### Parameters
@@ -22,9 +26,11 @@ Parameter | Description
 ----------|------------
 `IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the current database. If one does exist, do not return an error.
 `schemaname` | The name of the schema to create, which must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema. You can specify the owner by name, or with the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
+`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
+
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Create a schema
 
@@ -50,25 +56,7 @@ Parameter | Description
 (6 rows)
 ~~~
 
-By default, the user executing the `CREATE SCHEMA` statement is the owner of the schema. For example, suppose you created the schema as `root`. `root` would be the owner of the schema:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT
-  nspname, usename
-FROM
-  pg_catalog.pg_namespace
-  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
-WHERE
-  nspname LIKE 'org_one';
-~~~
-
-~~~
-  nspname | usename
-----------+----------
-  org_one | root
-(1 row)
-~~~
+By default, the user executing the `CREATE SCHEMA` statement is the owner of the schema. For example, suppose you created the schema as user `root`. `root` would be the owner of the schema.
 
 ### Create a schema if one does not exist
 
@@ -157,7 +145,7 @@ You can create tables of the same name in the same database if they are in separ
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES;
+> SELECT * FROM [SHOW TABLES] WHERE table_name='employees';
 ~~~
 
 ~~~
@@ -184,20 +172,19 @@ To specify the owner of a schema, add an `AUTHORIZATION` clause to the `CREATE S
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT
-  nspname, usename
-FROM
-  pg_catalog.pg_namespace
-  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
-WHERE
-  nspname LIKE 'org_two';
+> SHOW SCHEMAS;
 ~~~
 
 ~~~
-  nspname | usename
-----------+----------
-  org_two | max
-(1 row)
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
 ~~~
 
 If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZATION` clause, the schema will be named after the user specified:
@@ -209,29 +196,29 @@ If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZA
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT
-  nspname, usename
-FROM
-  pg_catalog.pg_namespace
-  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
-WHERE
-  nspname LIKE 'max';
+> SHOW SCHEMAS;
 ~~~
 
 ~~~
-  nspname | usename
-----------+----------
-  max     | max
-(1 row)
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  max
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(7 rows)
 ~~~
 
 When you [use a table without specifying a schema](sql-name-resolution.html#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
 
-For example, suppose that you [grant the `admin` role](grant-roles.html) to the `max` user:
+For example, suppose that you [grant the `root` role](grant-roles.html) (i.e., the role of the current user `root`) to the `max` user:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT admin TO max;
+> GRANT root TO max;
 ~~~
 
 Then, `max` [accesses the cluster](cockroach-sql.html) and creates two tables of the same name, in the same database, one in the `max` schema, and one in the `public` schema:
@@ -308,7 +295,7 @@ Because `max` is the current user, all unqualified `accounts` table names resolv
 ## See also
 
 - [`SHOW SCHEMAS`](show-schemas.html)
-- [`SET SCHEMA`](set-vars.html)
+- [`SET SCHEMA`](set-schema.html)
 - [`DROP SCHEMA`](drop-schema.html)
 - [`ALTER SCHEMA`](alter-schema.html)
 - [Other SQL Statements](sql-statements.html)

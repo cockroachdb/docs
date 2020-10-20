@@ -2,7 +2,6 @@
 title: Learn CockroachDB SQL
 summary: Learn some of the most essential CockroachDB SQL statements on a local cluster.
 toc: true
-build_for: [cockroachdb]
 ---
 
 {% unless site.cockroachcloud %}
@@ -29,14 +28,14 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  promo_codes
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -480,9 +479,9 @@ To see all tables in the active database, use the [`SHOW TABLES`](show-tables.ht
 ~~~
 
 ~~~
-  table_name
-+------------+
-  accounts
+  schema_name | table_name | type  | estimated_row_count
+--------------+------------+-------+---------------------
+  public      | accounts   | table |                  0
 (1 row)
 ~~~
 

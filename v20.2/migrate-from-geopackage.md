@@ -2,7 +2,6 @@
 title: Migrate from GeoPackages
 summary: Learn how to migrate data from GeoPackages into a CockroachDB cluster.
 toc: true
-build_for: [cockroachdb]
 ---
 
 <span class="version-tag">New in v20.2</span>: CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).

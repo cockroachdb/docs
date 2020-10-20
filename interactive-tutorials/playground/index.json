@@ -1,0 +1,21 @@
+{
+  "noindex": true,
+  "title": "CockroachDB Playground",
+  "description": "Use CockroachDB in a sandboxed playground environment",
+  "details": {
+    "steps": [
+      {
+        "text": "step1.md",
+        "code": "foreground.sh"
+      }
+    ]
+  },
+  "environment": {
+    "hideintro": true,
+    "hidefinish": true,
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "ubuntu:1804"
+  }
+}

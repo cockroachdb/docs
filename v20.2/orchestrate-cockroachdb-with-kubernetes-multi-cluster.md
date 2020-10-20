@@ -1134,6 +1134,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 <section class="filter-content" markdown="1" data-scope="gke">
 1. To delete all of the resources created in your clusters, copy the `contexts` map from `setup.py` into `teardown.py`, and then run `teardown.py`:
 
+    {% include copy-clipboard.html %}
     ~~~ shell
     $ python teardown.py
     ~~~

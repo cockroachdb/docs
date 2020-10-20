@@ -2,9 +2,7 @@
 The [Cost-based Optimizer](cost-based-optimizer.html) can take advantage of replication zones for secondary indexes when optimizing queries. For more information, see [Cost-based optimizer - preferring the nearest index](cost-based-optimizer.html#preferring-the-nearest-index).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-This is an [enterprise-only](enterprise-licensing.html) feature.
-{{site.data.alerts.end}}
+{% include enterprise-feature.md %}
 
 The [secondary indexes](indexes.html) on a table will automatically use the replication zone for the table. However, with an enterprise license, you can add distinct replication zones for secondary indexes.
 

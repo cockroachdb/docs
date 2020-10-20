@@ -1,0 +1,13 @@
+  {
+    "title": "Explore CockroachDB",
+    "description": "",
+    "icon": "cockroachlabs.png",
+    "courses":
+    [
+      {
+        "course_id": "json-support",
+        "title": "Store and Query JSONB Data",
+        "description": "Work with unstructured JSONB data from a third-party API, and use an inverted index to optimize performance"
+      }
+    ]
+  }

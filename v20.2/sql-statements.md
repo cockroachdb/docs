@@ -46,9 +46,10 @@ Statement | Usage
 [`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v20.2:</span> Modify a user-defined, [enumerated data type](enum.html).
 [`ALTER USER`](alter-user.html) | add, change, or remove a user's password and to change the login privileges for a role.
 [`ALTER ROLE`](alter-role.html) | Add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
-[`ALTER VIEW`](alter-view.html) | Rename a view.
+[`ALTER VIEW`](alter-view.html) | Apply a schema change to a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
+[`CONVERT TO SCHEMA`](convert-to-schema.html) | <span class="version-tag">New in v20.2</span>: Convert a database to a schema.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
 [`CREATE SCHEMA`](create-schema.html) | <span class="version-tag">New in v20.2</span>: Create a user-defined schema.
@@ -68,24 +69,28 @@ Statement | Usage
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
 [`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`REFRESH`](refresh.html) | <span class="version-tag">New in v20.2:</span> Refresh the stored query results of a [materialized view](views.html#materialized-views).
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
+[`SET SCHEMA`](set-schema.html) | <span class="version-tag">New in v20.2</span>: Change the schema of a table, sequence, or view.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
-[`SHOW ENUMS`](show-enums.html) |  <span class="version-tag">New in v20.2:</span> List user-defined, [enumerated data types](enum.html) in the cluster.
+[`SHOW ENUMS`](show-enums.html) |  <span class="version-tag">New in v20.2:</span> List user-defined, [enumerated data types](enum.html) in a database.
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
-[`SHOW RANGES`](show-ranges.html) | Show range information about a specific table or index.
+[`SHOW TYPES`](show-types.html) |  <span class="version-tag">New in v20.2:</span> List user-defined [data types](data-types.html) in a database.
+[`SHOW RANGES`](show-ranges.html) | Show range information for all data in a table or index.
+[`SHOW RANGE FOR ROW`](show-range-for-row.html) | Show range information for a single row in a table or index. 
 [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table or index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table or index.
@@ -103,6 +108,7 @@ Statement | Usage
 [`ROLLBACK`](rollback-transaction.html) | Roll back the current [transaction](transactions.html) and all of its [nested transaction](transactions.html#nested-transactions), discarding all transactional updates made by statements inside the transaction.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
+[`SHOW TRANSACTIONS`](show-transactions.html) | <span class="version-tag">New in v20.2</span>: View all currently active transactions across the cluster or on the local node.
 
 ## Access management statements
 

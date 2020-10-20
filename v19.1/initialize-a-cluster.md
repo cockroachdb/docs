@@ -120,7 +120,6 @@ These examples assume that nodes have already been started with [`cockroach star
 
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [`cockroach start`](start-a-node.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -57,7 +57,7 @@ CockroachDB offers three methods for client authentication:
    ~~~ shell
    $ cockroach sql --certs-dir=certs --user=jpointsman
    ~~~
-   
+
    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
@@ -272,5 +272,4 @@ Let's see how the digital certificate is used in client-server communication: Th
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](secure-a-cluster.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

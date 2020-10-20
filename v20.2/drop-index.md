@@ -33,103 +33,139 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Examples
 
-### Remove an index (no dependencies)
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
+### Remove an index with no dependencies
+
+Suppose you create an index on the `name` and `city` columns of the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM tl;
-~~~
-
-~~~
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name  | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-| t1         | primary     |   false    |            1 | id          | ASC       |  false  |  false   |
-| t1         | t1_name_idx |    true    |            1 | name        | ASC       |  false  |  false   |
-| t1         | t1_name_idx |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+-------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+> CREATE INDEX ON users (name, city);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP INDEX t1@t1_name_idx;
+> SHOW INDEXES FROM users;
+~~~
+
+~~~
+  table_name |     index_name      | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+---------------------+------------+--------------+-------------+-----------+---------+-----------
+  users      | primary             |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary             |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_name_city_idx |    true    |            1 | name        | ASC       |  false  |  false
+  users      | users_name_city_idx |    true    |            2 | city        | ASC       |  false  |  false
+  users      | users_name_city_idx |    true    |            3 | id          | ASC       |  false  |   true
+(5 rows)
+~~~
+
+You can drop this index with the `DROP INDEX` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP INDEX users@users_name_city_idx;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM tbl;
+> SHOW INDEXES FROM users;
 ~~~
 
 ~~~
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-| t1         | primary    |   false    |            1 | id          | ASC       |  false  |  false   |
-+------------+------------+------------+--------------+-------------+-----------+---------+----------+
-(1 row)
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+------------+------------+--------------+-------------+-----------+---------+-----------
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
+(2 rows)
 ~~~
 
 ### Remove an index and dependent objects with `CASCADE`
 
-{{site.data.alerts.callout_danger}}<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+<code>CASCADE</code> drops <em>all</em> dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.
+{{site.data.alerts.end}}
+
+Suppose you create a [`UNIQUE`](unique.html) constraint on the `id` and `name` columns of the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW INDEX FROM orders;
-~~~
-
-~~~
-+------------+---------------------------------------------+------------+--------------+-------------+-----------+---------+----------+
-| table_name |                 index_name                  | non_unique | seq_in_index | column_name | direction | storing | implicit |
-+------------+---------------------------------------------+------------+--------------+-------------+-----------+---------+----------+
-| orders     | primary                                     |   false    |            1 | id          | ASC       |  false  |  false   |
-| orders     | orders_auto_index_fk_customer_ref_customers |    true    |            1 | customer    | ASC       |  false  |  false   |
-| orders     | orders_auto_index_fk_customer_ref_customers |    true    |            2 | id          | ASC       |  false  |   true   |
-+------------+---------------------------------------------+------------+--------------+-------------+-----------+---------+----------+
-(3 rows)
+> ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP INDEX orders_auto_index_fk_customer_ref_customers;
+> SHOW CONSTRAINTS from users;
 ~~~
 
 ~~~
-pq: index "orders_auto_index_fk_customer_ref_customers" is in use as a foreign key constraint
+  table_name | constraint_name | constraint_type |            details             | validated
+-------------+-----------------+-----------------+--------------------------------+------------
+  users      | id_name_unique  | UNIQUE          | UNIQUE (id ASC, name ASC)      |   true
+  users      | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+(2 rows)
+~~~
+
+If no index exists on `id` and `name`, CockroachDB automatically creates an index:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEXES from users;
+~~~
+
+~~~
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+----------------+------------+--------------+-------------+-----------+---------+-----------
+  users      | primary        |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary        |   false    |            2 | id          | ASC       |  false  |  false
+  users      | id_name_unique |   false    |            1 | id          | ASC       |  false  |  false
+  users      | id_name_unique |   false    |            2 | name        | ASC       |  false  |  false
+  users      | id_name_unique |   false    |            3 | city        | ASC       |  false  |   true
+(5 rows)
+~~~
+
+The `UNIQUE` constraint is dependent on the `id_name_unique` index, so you cannot drop the index with a simple `DROP INDEX` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP INDEX id_name_unique;
+~~~
+
+~~~
+ERROR: index "id_name_unique" is in use as unique constraint
+SQLSTATE: 2BP01
+HINT: use CASCADE if you really want to drop it.
+~~~
+
+To drop an index and its dependent objects, you can use `CASCADE`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP INDEX id_name_unique CASCADE;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CONSTRAINTS FROM orders;
+> SHOW INDEXES from users;
 ~~~
 
 ~~~
-+------------+---------------------------+-----------------+--------------------------------------------------+-----------+
-| table_name |      constraint_name      | constraint_type |                     details                      | validated |
-+------------+---------------------------+-----------------+--------------------------------------------------+-----------+
-| orders     | fk_customer_ref_customers | FOREIGN KEY     | FOREIGN KEY (customer) REFERENCES customers (id) |   true    |
-| orders     | primary                   | PRIMARY KEY     | PRIMARY KEY (id ASC)                             |   true    |
-+------------+---------------------------+-----------------+--------------------------------------------------+-----------+
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+------------+------------+--------------+-------------+-----------+---------+-----------
+  users      | primary    |   false    |            1 | city        | ASC       |  false  |  false
+  users      | primary    |   false    |            2 | id          | ASC       |  false  |  false
 (2 rows)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP INDEX orders_auto_index_fk_customer_ref_customers CASCADE;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CONSTRAINTS FROM orders;
+> SHOW CONSTRAINTS from users;
 ~~~
 
 ~~~
-+------------+-----------------+-----------------+----------------------+-----------+
-| table_name | constraint_name | constraint_type |       details        | validated |
-+------------+-----------------+-----------------+----------------------+-----------+
-| orders     | primary         | PRIMARY KEY     | PRIMARY KEY (id ASC) |   true    |
-+------------+-----------------+-----------------+----------------------+-----------+
+  table_name | constraint_name | constraint_type |            details             | validated
+-------------+-----------------+-----------------+--------------------------------+------------
+  users      | primary         | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
 (1 row)
 ~~~
 

@@ -94,12 +94,6 @@
                 ]
               },
               {
-                "title": "Follow-the-Workload",
-                "urls": [
-                  "/${VERSION}/demo-follow-the-workload.html"
-                ]
-              },
-              {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
                   "/${VERSION}/orchestration-with-kubernetes.html"
@@ -439,12 +433,6 @@
                   "/${VERSION}/topology-follow-the-workload.html"
                 ]
               }
-            ]
-          },
-          {
-            "title": "Test Deployment",
-            "urls": [
-              "/${VERSION}/deploy-a-test-cluster.html"
             ]
           },
           {
@@ -1129,6 +1117,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>CONVERT TO SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/convert-to-schema.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
     		    "urls": [
     		      "/${VERSION}/create-changefeed.html"
@@ -1339,6 +1333,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>OWNER TO</code>",
+    		    "urls": [
+    		      "/${VERSION}/owner-to.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>PARTITION BY</code> (Enterprise)",
     		    "urls": [
     		      "/${VERSION}/partition-by.html"
@@ -1354,6 +1354,12 @@
     		    "title": "<code>PAUSE SCHEDULES</code>",
     		    "urls": [
     		      "/${VERSION}/pause-schedules.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>REFRESH</code>",
+    		    "urls": [
+    		      "/${VERSION}/refresh.html"
     		    ]
     		  },
     		  {
@@ -1474,6 +1480,12 @@
     		    "title": "<code>SET CLUSTER SETTING</code>",
     		    "urls": [
     		      "/${VERSION}/set-cluster-setting.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SET SCHEMA</code>",
+    		    "urls": [
+    		      "/${VERSION}/set-schema.html"
     		    ]
     		  },
     		  {
@@ -1630,6 +1642,18 @@
     		    "title": "<code>SHOW TRACE FOR SESSION</code>",
     		    "urls": [
     		      "/${VERSION}/show-trace.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW TRANSACTIONS</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-transactions.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>SHOW TYPES</code>",
+    		    "urls": [
+    		      "/${VERSION}/show-types.html"
     		    ]
     		  },
     		  {
