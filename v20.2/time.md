@@ -69,10 +69,6 @@ A `TIMETZ` column supports values up to 12 bytes in width, but the total storage
 
 You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIME`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIME`-typed column, with precision](#create-a-table-with-a-time-typed-column-with-precision).
 
-{{site.data.alerts.callout_info}}
-If you downgrade to a version of CockroachDB that does not support precision for `TIME`/`TIMETZ` values, all `TIME`/`TIMETZ` values previously specified with precision will be stored with full precision.
-{{site.data.alerts.end}}
-
 ## Examples
 
 ### Create a table with a `TIME`-typed column
