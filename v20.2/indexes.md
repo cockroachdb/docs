@@ -17,11 +17,15 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
 <span class="version-tag">New in v20.2:</span> You can also create an index on a subset of rows. This type of index is called a partial index. For more information, see [Partial indexes](partial-indexes.html).
 
+<span class="version-tag">New in v20.2</span>: To index [spatial data](spatial-data.html), CockroachDB uses *spatial indexes*. For more information about spatial indexes, see [Spatial Indexes](spatial-indexes.html).
+
 ### Creation
 
 Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
+
+<a name="unique-secondary-indexes"></a>
 
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
@@ -145,6 +149,7 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 ## See also
 
 - [Inverted Indexes](inverted-indexes.html)
+- [Spatial Indexes](spatial-indexes.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`CREATE INDEX`](create-index.html)
