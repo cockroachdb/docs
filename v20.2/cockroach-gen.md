@@ -81,7 +81,7 @@ $ cockroach gen haproxy --help
 
 ## Flags
 
-The `gen` subcommands supports the following [general-use](#general) and [logging](#logging) flags.
+The `gen` subcommands supports the following [general-use](#general), [logging](#logging), and [client connection](#client-connection) flags.
 
 ### General
 
@@ -118,6 +118,15 @@ Flag | Description
 By default, the `gen` command logs errors to `stderr`.
 
 If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+
+### Client Connection
+
+#### `haproxy`
+
+Flag | Description
+-----|------------
+`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see [`cockroach start`](cockroach-start.html#general).
+`--disable-cluster-name-verification` | Disables the cluster name check for this command. This flag must be paired with `--cluster-name`. For more information, see [`cockroach start`](cockroach-start.html#general).
 
 ## Examples
 
