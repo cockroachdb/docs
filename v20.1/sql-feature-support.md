@@ -98,6 +98,7 @@ table tr td:nth-child(2) {
  Index renames | ✓ | Standard | [`RENAME INDEX` documentation](rename-index.html)
  Adding indexes | ✓ | Standard | [`CREATE INDEX` documentation](create-index.html)
  Removing indexes | ✓ | Standard | [`DROP INDEX` documentation](drop-index.html)
+ Altering a primary key | ✓ | Standard | <span class="version-tag">New in v20.1:</span> [`ALTER PRIMARY KEY` documentation](alter-primary-key.html)
 
 ### Statements
 
