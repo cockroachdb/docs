@@ -5,8 +5,8 @@
 
   @include at-query($min, 1072px) {
     padding: 34px 0;
-    min-width: 260px;
-    max-width: 260px;
+    // min-width: 260px;
+    // max-width: 260px;
     display: inline-block;
     background: #ffffff;
   }

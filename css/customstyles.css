@@ -7011,8 +7011,6 @@ section.footer {
   @media screen and (min-width: 1072px) {
     .toc-col {
       padding: 34px 0;
-      min-width: 260px;
-      max-width: 260px;
       display: inline-block;
       background: #ffffff; } }
 
@@ -7351,11 +7349,11 @@ section.footer {
         -moz-border-bottom-left-radius: 20px;
         border-bottom-left-radius: 20px;
         padding: 0 15px 0 25px;
-        width: 250px; }
+        width: 224px; }
       #newsletter-popout #hubspot-popup-form .popout-form .inputs-list {
         display: none !important; }
       #newsletter-popout #hubspot-popup-form .popout-form .hs-button {
-        background-color: #152849;
+        background-color: #37A806;
         color: #FFFFFF;
         border: none;
         outline: none;
@@ -7380,6 +7378,7 @@ section.footer {
   position: fixed;
   z-index: 1999;
   bottom: 0;
+  left: 0;
   width: 100%;
   -webkit-transform: translate(0, 100%);
   -ms-transform: translate(0, 100%);
@@ -7441,7 +7440,7 @@ section.footer {
       line-height: 1.725;
       letter-spacing: 0.1px;
       font-weight: 600;
-      text-transform: uppercase; }
+      text-transform: capitalize; }
     #newsletter-footer-popout .popout-form .hs-error-msgs, #newsletter-footer-popout .popout-form .hs-form-required {
       display: none !important; }
     #newsletter-footer-popout .popout-form .submitted-message {
@@ -7465,68 +7464,55 @@ section.footer {
     transform: translate(0, 0); }
 
 .hubspot-install-form .install-form {
-  float: left; }
+  float: left;
+  border: 1px solid #C0C6D9;
+  border-radius: 3px;
+  padding: 4px; }
   .hubspot-install-form .install-form > div {
     float: left; }
   .hubspot-install-form .install-form .hs_email label {
     display: none; }
   .hubspot-install-form .install-form .hs_email input {
     height: 40px;
-    font-family: 'AvenirLTStd-Roman', serif;
+    font-family: 'SourceSansPro-SemiBold', sans-serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 40px;
-    color: #152849;
-    border: 1px solid #DADADA;
-    border-right: none;
+    border: 1px solid transparent;
     outline: none;
-    -webkit-border-top-left-radius: 20px;
-    -moz-border-top-left-radius: 20px;
-    border-top-left-radius: 20px;
-    -webkit-border-bottom-left-radius: 20px;
-    -moz-border-bottom-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    padding: 0 15px 0 25px;
+    padding: 0 15px;
     width: 150px; }
     .hubspot-install-form .install-form .hs_email input::-webkit-input-placeholder {
-      color: #A2A2A2; }
+      color: #475872; }
     .hubspot-install-form .install-form .hs_email input:-moz-placeholder {
-      color: #A2A2A2; }
+      color: #475872; }
     .hubspot-install-form .install-form .hs_email input::-moz-placeholder {
-      color: #A2A2A2; }
+      color: #475872; }
     .hubspot-install-form .install-form .hs_email input:-ms-input-placeholder {
-      color: #A2A2A2; }
+      color: #475872; }
     .hubspot-install-form .install-form .hs_email input:placeholder-shown {
-      color: #A2A2A2; }
+      color: #475872; }
     .hubspot-install-form .install-form .hs_email input:focus {
-      border-color: #69CC00; }
+      border-color: transparent; }
   .hubspot-install-form .install-form .inputs-list {
     display: none !important; }
   .hubspot-install-form .install-form .hs-button {
-    background-color: #152849;
+    background-color: #37A806;
     color: #FFFFFF;
     border: none;
     outline: none;
     height: 40px;
-    -webkit-border-top-right-radius: 20px;
-    -moz-border-top-right-radius: 20px;
-    border-top-right-radius: 20px;
-    -webkit-border-bottom-right-radius: 20px;
-    -moz-border-bottom-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 0 25px 0 20px;
-    font-family: 'SourceSansPro-Regular', sans-serif;
+    padding: 0 16px;
+    font-family: 'SourceSansPro-SemiBold', sans-serif;
     font-size: 14px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.725;
-    letter-spacing: 0.1px;
-    font-weight: 600;
     line-height: 42px;
-    text-transform: uppercase; }
+    text-transform: capitalize;
+    border-radius: 3px; }
   .hubspot-install-form .install-form .hs-error-msgs, .hubspot-install-form .install-form .hs-form-required {
     display: none !important; }
   .hubspot-install-form .install-form .submitted-message {
@@ -7554,10 +7540,10 @@ section.footer {
       margin-top: 15px;
       float: left; }
       #newsletter-footer-popout .popout-form .hs_email input {
-        width: 250px; }
+        width: 140px; }
 
   .hubspot-install-form .install-form .hs_email input {
-    width: 250px; } }
+    width: 140px; } }
 /* Designed to make items marked as terminal prompts with Rouge syntax highlighter unselectable*/
 .noselect {
   -webkit-user-select: none;
@@ -7834,28 +7820,23 @@ polygon.regexp {
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: #F0FFE8;
   font-size: 17px;
   line-height: 1; }
   #feedback-prompt form {
     display: inline-block;
     vertical-align: bottom; }
 
-#feedback-prompt p {
-  margin-bottom: 18px;
-  line-height: 0; }
-
 .feedback-question {
   display: block;
   line-height: 0;
   margin-right: 15px;
   vertical-align: bottom;
-  font-family: 'AvenirLTStd-Roman', serif;
-  font-size: 17px;
+  font-family: 'SourceSansPro-SemiBold', sans-serif;
+  font-size: 24px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 30px; }
+  line-height: 48px; }
   @media screen and (min-width: 544px) {
     .feedback-question {
       display: inline-block; } }
@@ -7870,14 +7851,12 @@ polygon.regexp {
 #yes-button,
 #no-button,
 #feedback-prompt input[type="submit"] {
-  width: 70px;
-  height: 40px;
+  width: 88px;
+  height: 48px;
   margin: 0 5px;
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: #F0FFE8;
-  color: #152849 !important;
   font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 14px;
   font-weight: normal;
@@ -7886,23 +7865,20 @@ polygon.regexp {
   line-height: 1.725;
   letter-spacing: 0.1px;
   font-weight: 600;
-  line-height: 40px;
+  line-height: 48px;
   text-transform: uppercase;
   text-align: center;
   text-decoration: none !important;
-  border: 2px solid #152849;
   border-radius: 5px;
-  outline: none;
-  -webkit-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  -o-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
-  transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
-  #yes-button:hover,
-  #no-button:hover,
-  #feedback-prompt input[type="submit"]:hover {
-    background-color: #152849;
-    color: #fff !important;
-    border-bottom: none; }
+  outline: none; }
+
+.yes-button {
+  background-color: rgba(180, 241, 170, 0.3);
+  color: #237300; }
+
+.no-button {
+  background-color: #FFE5E8;
+  color: #C32534; }
 
 form[class*="hs-form"] {
   margin-bottom: 0; }
@@ -7919,7 +7895,7 @@ form[class*="hs-form"] {
     text-shadow: none;
     box-sizing: border-box; }
     form[class*="hs-form"] input[type="submit"]:hover:not(.inactive) {
-      border: 1px solid #152849;
+      border: none;
       box-shadow: none; }
   form[class*="hs-form"] textarea:focus,
   form[class*="hs-form"] input[type="email"]:focus {
