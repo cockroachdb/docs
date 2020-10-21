@@ -103,6 +103,8 @@ For an example showing how to create tables that meet these criteria, see [Inter
  `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into.
  `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix).
  `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+ `WITH storage_parameter` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. Allowed parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`.
+ `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped temp tables, and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temp tables in PostgreSQL.
 
 ## Requirements
 
