@@ -19,7 +19,7 @@ Make sure you have already:
 
 ## Simple selects
 
-<div class="filters filters__code clearfix">
+<div class="filters filters__code filters__code clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>

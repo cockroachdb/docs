@@ -17,7 +17,7 @@ Make sure you have already:
 
 ## Connect
 
-<div class="filters clearfix">
+<div class="filters filters__code clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
