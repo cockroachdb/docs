@@ -223,15 +223,25 @@ caption {
   text-align: left;
 }
 
+thead,
+tbody,
+tfoot,
+tr,
+td,
 th {
-  @include avenir_h(17px);
-  text-align: left;
-  padding: 15px 8px 15px 8px;
+  @include sourcesanspro_r(14px);
+  border-color: $neutral-300;
+  border-style: solid;
+  border-width: 0;
 }
-
+th,
+td {
+  padding: map-get($spacers, 1) map-get($spacers, 2);
+}
+// @debug map-get($spacers, 2); 
 tbody tr:hover {
   // what is theme-blue.css? overwriting requires important
-  background-color: $cl_gray_light !important;
+  // background-color: $cl_gray_light !important;
 }
 
 
@@ -239,14 +249,50 @@ tbody tr.eol {
   background-color: #fffaea !important;
 }
 
+.table-bordered {
+  > :not(caption) > * {
+    border-width: $table-border-width 0;
+
+    // stylelint-disable-next-line selector-max-universal
+    > * {
+      border-width: 0 $table-border-width;
+    }
+  }
+}
+
+table {
+  border-color: inherit;
+  border-style: solid;
+  border-width: $table-border-width;
+  width: 100%;
+  border-color: $table-border-color;
+
+
+  > tbody {
+    vertical-align: inherit;
+  }
+
+  > thead {
+    vertical-align: bottom;
+  }
+
+  @extend .table-bordered;
+
+}
+
+th {
+  font-weight: 600;
+  // text-align: left;
+  // padding: 15px 8px 15px 8px;
+}
 table > thead > tr > th,
 table > tbody > tr > th,
 table > tfoot > tr > th,
 table > thead > tr > td,
 table > tbody > tr > td,
 table > tfoot > tr > td {
-  vertical-align: top;
-  border-top: 1px solid #ddd;
+  // vertical-align: top;
+  // border-top: 1px solid #ddd;
 }
 
 
@@ -256,7 +302,7 @@ table > thead:first-child > tr:first-child > th,
 table > caption + thead > tr:first-child > td,
 table > colgroup + thead > tr:first-child > td,
 table > thead:first-child > tr:first-child > td {
-  border-top: 0;
+  // border-top: 0;
 }
 
 table col[class*="col-"] {
@@ -273,7 +319,7 @@ table th[class*="col-"] {
 
 
 table td:first-child {
-  min-width: 200px;
+  // min-width: 200px;
 }
 
 

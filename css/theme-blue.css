@@ -8,23 +8,23 @@ table {
 }
 
 table thead tr {
-    border-bottom: 2px solid #46a417 !important;
-    border: none;
+    /* border-bottom: 2px solid #46a417 !important; */
+    /* border: none; */
     background: #ffffff;
-    color: #46a417;
+    /* color: #46a417; */
 }
 
 table td {
     /*border-right: 0px solid #FFFFFF;*/
-    border-bottom: 1px solid #e8e7e5;
+    /* border-bottom: 1px solid #e8e7e5; */
     /*border-left: 0px solid #FFFFFF;*/
     /*background: white;*/
-    color: #142848;
-    padding: 10px 8px;
+    /* color: #142848; */
+    /* padding: 10px 8px; */
 }
 
 tbody tr:hover {
-    background-color: #e8e7e5;
+    /* background-color: #e8e7e5; */
 }
 
 .summary {

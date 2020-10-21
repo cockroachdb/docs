@@ -170,6 +170,39 @@
 	a:hover {
 		border-bottom: none;
 	}
+
+	// Code tabs
+	&__code {
+		background: #1B1E25; //  TODO: Move to color variable
+		border: 0;
+		padding-top: 5px;
+		padding-left: 5px;
+		padding-right: 5px;
+		border-top-left-radius: $border-radius;
+		border-top-right-radius: $border-radius;
+		.filter-button {
+			@include sourcesanspro_r(16px);
+			border-bottom: none;
+			background: #1B1E25; 
+			color: $white;
+			&.current {
+				@include sourcesanspro_b(16px);
+				background: $neutral-800;
+				color: $white;
+			}
+			&:hover{
+				background: $neutral-800;
+				color: $white;
+			}
+		}
+
+		& ~ .filter-content {
+			.highlight {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+			}
+		}
+	}
 }
 
 .filter-content {
