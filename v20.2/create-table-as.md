@@ -59,6 +59,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/create_as_constraint_def.html %}
 </div>
 
+**opt_with_storage_parameter_list ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
+</div>
+
 </div>
 
 ## Parameters
@@ -79,6 +85,8 @@ table td:first-child {
  `create_as_constraint_def` | An optional [primary key constraint](primary-key.html).
  `select_stmt` | A [selection query](selection-queries.html) to provide the data.
  `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
+ `opt_with_storage_parameter_list` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. Allowed parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`.
+ `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped temp tables, and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temp tables in PostgreSQL.
 
 ## Limitations
 
