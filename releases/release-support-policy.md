@@ -35,6 +35,12 @@ As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Pr
 		</tr>
 	</thead>
 	<tr>
+		<td><a href="v20.2.0.html">v20.2</a></td>
+		<td>11/10/20</td>
+		<td>11/10/21</td>
+		<td>5/10/22</td>
+	</tr>
+	<tr>
 		<td><a href="v20.1.0.html">v20.1</a></td>
 		<td>5/12/20</td>
 		<td>5/12/21</td>
@@ -50,7 +56,7 @@ As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Pr
 		<td><a href="v19.1.0.html">v19.1</a></td>
 		<td>4/30/19</td>
 		<td>4/30/20</td>
-		<td>11/1/20</td>
+		<td>11/1/20*</td>
 	</tr>
 	<tr class=eol>
 		<td><a href="v2.1.0.html">v2.1</a></td>
