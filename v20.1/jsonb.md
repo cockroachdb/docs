@@ -203,14 +203,12 @@ For this example, we will add a few more records to the existing table. This wil
 ~~~
 
 ~~~
-+----------------------------+--------------------------+
-| first_name                 |location                  |
-+----------------------------+--------------------------+
-| Ernie                      | Brooklyn                 |
-| Lola                       | NYC                      |
-| Parvati                    | London                   |
-| Lola                       | Seoul                    |
-+----------------------------+--------------------------+
+  first_name | location
+-------------+-----------
+  Ernie      | Brooklyn
+  Lola       | NYC
+  Parvati    | London
+  Lola       | Seoul
 ~~~
 
 Now let’s group and order the data.
@@ -219,14 +217,13 @@ Now let’s group and order the data.
 ~~~ sql
 > SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
 ~~~
+
 ~~~
-+----------------------------+--------------------------+
-| first_name                 | total                    |
-+----------------------------+--------------------------+
-| Erine                      | 1                        |
-| Parvati                    | 1                        |
-| Lola                       | 2                        |
-+----------------------------+--------------------------+
+  first_name | total
+-------------+-------
+  Ernie      | 1
+  Parvati    | 1
+  Lola       | 2
 ~~~
 
 The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, cast the resulting data to `FLOAT`.
