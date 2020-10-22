@@ -209,25 +209,11 @@ When CockroachDB is run in a containerized environment (e.g., Kubernetes), the A
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
 
-### `GROUP BY` referring to `SELECT` aliases
-
-Applications developed for PostgreSQL that use `GROUP BY` to refer to column aliases _produced_ in the same `SELECT` clause must be changed to use the full underlying expression instead. For example, `SELECT x+y AS z ... GROUP BY z` must be changed to `SELECT x+y AS z ... GROUP BY x+y`. Otherwise, CockroachDB will produce either a planning error or, in some cases, invalid results.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28059)
-
 ### `TRUNCATE` does not behave like `DELETE`
 
 `TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes: Limitations](online-schema-changes.html#limitations)
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
-
-### Using columns in `SELECT` not listed in `GROUP BY`
-
-Applications developed for PostgreSQL can exploit the fact that PostgreSQL allows a `SELECT` clause to name a column that is not also listed in `GROUP BY` in some cases, for example `SELECT a GROUP BY b`. This is not yet supported by CockroachDB.
-
-To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list (e.g., `SELECT a GROUP BY b, a`), or `DISTINCT` should also be used (e.g., `SELECT DISTINCT a GROUP BY b`).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/26709)
 
 ### Cannot `DELETE` multiple rows with self-referencing FKs
 
