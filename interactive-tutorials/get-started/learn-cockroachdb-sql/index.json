@@ -11,40 +11,44 @@
     },
     "steps": [
       {
-        "title": "Show tables",
+        "title": "Start CockroachDB",
         "text": "step1.md"
       },
       {
-        "title": "Create a table",
+        "title": "Show tables",
         "text": "step2.md"
       },
       {
-        "title": "Insert rows into a table",
+        "title": "Create a table",
         "text": "step3.md"
       },
       {
-        "title": "Create an index",
+        "title": "Insert rows into a table",
         "text": "step4.md"
       },
       {
-        "title": "Show indexes on a table",
+        "title": "Create an index",
         "text": "step5.md"
       },
       {
-        "title": "Query a table",
+        "title": "Show indexes on a table",
         "text": "step6.md"
       },
       {
-        "title": "Update rows in a table",
+        "title": "Query a table",
         "text": "step7.md"
       },
       {
-        "title": "Delete rows in a table",
+        "title": "Update rows in a table",
         "text": "step8.md"
       },
       {
-        "title": "Drop a table",
+        "title": "Delete rows in a table",
         "text": "step9.md"
+      },
+      {
+        "title": "Drop a table",
+        "text": "step10.md"
       }
     ],
     "finish": {
@@ -52,6 +56,7 @@
     }
   },
   "environment": {
+    "hideintro": true,
     "uilayout": "terminal"
   },
   "backend": {

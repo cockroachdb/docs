@@ -1,13 +1,24 @@
-To update rows in a table, use [`UPDATE`](https://www.cockroachlabs.com/docs/stable/update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To query a table, use [`SELECT`](https://www.cockroachlabs.com/docs/stable/select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data. You can also use the [`LIMIT`](https://www.cockroachlabs.com/docs/stable/limit-offset.html) clause to restrict the number of rows retrieved:
 
 ```sql
-UPDATE promo_codes
-  SET (description, rules) = ('EXPIRED', '{"type": "percent_discount", "value": "0%"}')
-  WHERE expiration_time < '2019-01-22 03:04:05+00:00';
+SELECT name FROM users LIMIT 10;
 ```{{execute}}
+
+To retrieve all columns, use the `*` wildcard:
 
 ```sql
-SELECT code, description, rules FROM promo_codes LIMIT 10;
+SELECT * FROM users LIMIT 10;
 ```{{execute}}
 
-If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated.
+To filter the results, add a `WHERE` clause identifying the columns and values to filter on:
+
+```sql
+SELECT id, name FROM users WHERE city = 'san francisco';
+```{{execute}}
+
+
+To sort the results, add an `ORDER BY` clause identifying the columns to sort by. For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
+
+```sql
+SELECT city, type, current_location FROM vehicles ORDER BY city, type DESC;
+```{{execute}}
