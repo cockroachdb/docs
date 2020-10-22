@@ -1,11 +1,5 @@
-Your CockroachB cluster is pre-loaded with a database called `movr`.
+This tutorial walks you through some of the most essential CockroachDB SQL statements using an interactive SQL shell connected to a temporary, single-node CockroachDB cluster.
 
-To see all table in this database, use the [`SHOW TABLES`](https://www.cockroachlabs.com/docs/stable/show-tables.html) statement or the `\dt` [shell command](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html#commands) shell command:
+Your cluster is starting pre-loaded with a database called `movr`.
 
-```sql
-SHOW TABLES;
-```{{execute}}
-
-```
-\dt
-```{{execute}}
+For a complete list of supported SQL statements and related details, see [SQL Statements](../stable/sql-statements.html).
