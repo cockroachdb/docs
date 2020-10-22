@@ -99,7 +99,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 4. From the **Region** dropdown, select the region closest to where your client or application is running.
 5. From the **Database** dropdown, select the database you want to connect to.
 
-    The default database is `defaultdb`. For more information, see [Default databases](../v20.1/show-databases.html#preloaded-databases).
+    The default database is `defaultdb`. For more information, see [Default databases](../stable/show-databases.html#preloaded-databases).
 
 6. Click **Continue**.
 
@@ -190,7 +190,7 @@ For more details about the built-in SQL client, and many examples of how to use 
 
 You can use the connection string or parameters to connect to the cluster using a PostgreSQL-compatible driver or ORM. The following language-specific versions assume that you have installed the relevant [client drivers](../stable/install-client-drivers.html).
 
-For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/docs/v20.1/build-an-app-with-cockroachdb.html).
+For code samples in other languages, see [Build an App with CockroachDB](https://www.cockroachlabs.com/do../stable/build-an-app-with-cockroachdb.html).
 
 <div class="filters clearfix">
   <button style="width: 15%" class="filter-button" data-scope="python">Python</button>

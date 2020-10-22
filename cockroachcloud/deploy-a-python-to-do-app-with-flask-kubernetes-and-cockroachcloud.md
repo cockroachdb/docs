@@ -157,7 +157,7 @@ On your local workstation's terminal:
 
       The **Connect** modal displays.
 
-        <img src="{{ 'images/v20.1/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
+        <img src="{{ 'imag../stable/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
 
   2. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
   3. Select a **Region** to connect to.

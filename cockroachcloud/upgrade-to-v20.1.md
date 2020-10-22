@@ -6,7 +6,7 @@ redirect_from:
 - ../stable/cockroachcloud-upgrade-to-v20.1.html
 ---
 
-Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
+Now that [CockroachDB v20.1](../releases/v20.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PKpCcAtXxjo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -66,7 +66,7 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.</span>
 
-To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
+To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/do../stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
 
 {{site.data.alerts.callout_info}}
 Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../stable/show-jobs.html) and the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../stable/pause-job.html)/[`RESUME JOB`](../stable/resume-job.html)/[`CANCEL JOB`](../stable/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
@@ -126,19 +126,19 @@ Before your upgrade has been finalized, remember to prevent new schema changes a
 
 Also, most v20.1 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../stable/alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](https://www.cockroachlabs.com/docs/v20.1/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
+- **Primary key changes:** After finalization, it will be possible to change the primary key of an existing table using the [`ALTER TABLE ... ALTER PRIMARY KEY`](../stable/alter-primary-key.html) statement, or using [`DROP CONSTRAINT` and then `ADD CONSTRAINT`](https://www.cockroachlabs.com/do../stable/add-constraint.html#drop-and-add-a-primary-key-constraint) in the same transaction.
 
-- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](https://www.cockroachlabs.com/docs/v20.1/foreign-key.html#rules-for-creating-foreign-keys).
+- **Dropping indexes used by foreign keys:** After finalization, it will be possible to drop an index used by a foreign key constraint if another index exists that fulfills the [indexing requirements](https://www.cockroachlabs.com/do../stable/foreign-key.html#rules-for-creating-foreign-keys).
 
-- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes](https://www.cockroachlabs.com/docs/v20.1/create-index.html#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
+- **Hash-sharded indexes:** After finalization, it will be possible to use [hash-sharded indexes](https://www.cockroachlabs.com/do../stable/create-index.html#create-a-hash-sharded-secondary-index) to distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes. This is an experimental feature that must be enabled by setting the `experimental_enable_hash_sharded_indexes` session variable to `on`.
 
-- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles](https://www.cockroachlabs.com/docs/v20.1/create-user.html#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
+- **`CREATEROLE` and `NOCREATEROLE` privileges:** After finalization, it will be possible to [allow or disallow a user or role to create, alter, or drop other roles](https://www.cockroachlabs.com/do../stable/create-user.html#allow-the-user-to-create-other-users) via the `CREATEROLE` or `NOCREATEROLE` privilege.
 
-- **Nested transactions:** After finalization, it will be possible to create [nested transactions](https://www.cockroachlabs.com/docs/v20.1/transactions.html#nested-transactions) using [`SAVEPOINT`s](../stable/savepoint.html).
+- **Nested transactions:** After finalization, it will be possible to create [nested transactions](https://www.cockroachlabs.com/do../stable/transactions.html#nested-transactions) using [`SAVEPOINT`s](../stable/savepoint.html).
 
-- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](https://www.cockroachlabs.com/docs/v20.1/time.html#timetz) data type to store a time of day with a time zone offset from UTC.
+- **`TIMETZ` data type:** After finalization, it will be possible to use the [`TIMETZ`](https://www.cockroachlabs.com/do../stable/time.html#timetz) data type to store a time of day with a time zone offset from UTC.
 
-- **`TIME`/`TIMETZ` and `INTERVAL` precision:** After finalization, it will be possible to specify precision levels from 0 (seconds) to 6 (microseconds) for [`TIME`/`TIMETZ`](https://www.cockroachlabs.com/docs/v20.1/time.html#precision) and [`INTERVAL`](https://www.cockroachlabs.com/docs/v20.1/interval.html#precision) values.
+- **`TIME`/`TIMETZ` and `INTERVAL` precision:** After finalization, it will be possible to specify precision levels from 0 (seconds) to 6 (microseconds) for [`TIME`/`TIMETZ`](https://www.cockroachlabs.com/do../stable/time.html#precision) and [`INTERVAL`](https://www.cockroachlabs.com/do../stable/interval.html#precision) values.
 
 ## Step 6. Finish the upgrade
 
@@ -165,4 +165,4 @@ Because your cluster contains a single node, the cluster will be briefly unavail
 ## See also
 
 - [Upgrade Policy](upgrade-policy.html)
-- [CockroachDB v20.1 Release Notes](https://www.cockroachlabs.com/docs/releases/v20.1.0.html)
+- [CockroachDB v20.1 Release Notes](../releases/v20.1.0.html)

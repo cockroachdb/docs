@@ -148,7 +148,7 @@ Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/t
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
 
-Importantly, the file defines a [transaction retry loop](../v20.1/transactions.html#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](../v20.1/transactions.html).
+Importantly, the file defines a [transaction retry loop](../stable/transactions.html#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](../stable/transactions.html).
 
 ### URL routes
 
@@ -185,7 +185,7 @@ Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/t
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
 
-Importantly, the file defines a [transaction retry loop](../v20.1/transactions.html#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](../stable/transactions.html).
+Importantly, the file defines a [transaction retry loop](../stable/transactions.html#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](../stable/transactions.html).
 
 ### URL routes
 

@@ -56,7 +56,7 @@ Failed running "sql"
 
 ### Issue with CockroachDB workloads
 
-The following error is displayed while trying to a run [CockroachDB workload](https://www.cockroachlabs.com/docs/stable/cockroach-workload.html) with `sslmode=verify-full`:
+The following error is displayed while trying to a run [CockroachDB workload](../stable/cockroach-workload.html) with `sslmode=verify-full`:
 
 ~~~ shell
 Error: x509: certificate signed by unknown authority

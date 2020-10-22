@@ -68,7 +68,7 @@ Additionally, you can [backup and restore](../stable/backup-and-restore.html) da
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
-Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location](../v20.1/backup.html#backup-file-urls) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
+Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location](../stable/backup.html#backup-file-urls) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
