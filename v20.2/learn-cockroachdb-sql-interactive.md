@@ -8,4 +8,10 @@ layout: tutorial
   data-katacoda-id="cockroachlabs/courses/get-started/learn-cockroachdb-sql"
   style="height: 91vh; width: 100%;">
 </div>
+
+<script>
+  if(window.location.href.indexOf('/learn-cockroachdb-sql-interactive') > 0){
+    document.querySelector('#content').style.paddingTop = 0;
+  }
+</script>
 <script src="//katacoda.com/embed.js"></script>
