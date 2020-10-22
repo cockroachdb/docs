@@ -1,39 +1,15 @@
-Now suppose that you want MovR to offer ride-sharing services, in addition to vehicle-sharing services. You'll need to add a table for drivers to the `movr` database.
+This tutorial walks you through some of the most essential CockroachDB SQL statements using an interactive SQL shell connected to a temporary, single-node CockroachDB cluster.
 
-To create a table, use [`CREATE TABLE`](https://www.cockroachlabs.com/docs/stable/create-table.html) followed by a table name, the column names, and the [data type](https://www.cockroachlabs.com/docs/stable/data-types.html) and [constraint](https://www.cockroachlabs.com/docs/stable/constraints.html), if any, for each column:
+For a complete list of supported SQL statements and related details, see [SQL Statements](../stable/sql-statements.html).
+
+Your CockroachB cluster is pre-loaded with a database called `movr`.
+
+To see all table in this database, use the [`SHOW TABLES`](https://www.cockroachlabs.com/docs/stable/show-tables.html) statement or the `\dt` [shell command](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html#commands) shell command:
 
 ```sql
-CREATE TABLE drivers (
-  id UUID NOT NULL,
-  city STRING NOT NULL,
-  name STRING,
-  dl STRING UNIQUE,
-  address STRING,
-  CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
-);
+SHOW TABLES;
 ```{{execute}}
 
-Table and column names must follow [these rules](https://www.cockroachlabs.com/docs/stable/keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](https://www.cockroachlabs.com/docs/stable/primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
-
-To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
-
-```sql
-CREATE TABLE IF NOT EXISTS drivers (
-  id UUID NOT NULL,
-  city STRING NOT NULL,
-  name STRING,
-  dl STRING UNIQUE,
-  address STRING,
-  CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
-);
-```{{execute}}
-
-To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](https://www.cockroachlabs.com/docs/stable/show-columns.html) statement or the `\d <table>` [shell command](https://www.cockroachlabs.com/docs/stable/cockroach-sql.html#commands):
-
-```sql
-SHOW COLUMNS FROM drivers;
-```{{execute}}
-
-```sql
-\d drivers
+```
+\dt
 ```{{execute}}
