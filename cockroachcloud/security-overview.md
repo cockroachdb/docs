@@ -14,5 +14,6 @@ Security feature | Description
 -------------|------------
 [Authentication](authentication.html) | <ul><li>Inter-node and node identity authentication using TLS 1.2</li><li>Client identity authentication using TLS 1.2 or username/password</li></ul>
 Encryption | <ul><li>Encryption in flight using TLS 1.2</li><li>The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys) </li></ul>
-[Authorization](authorization.html) | <ul><li>User Authorization: <ul><li>Users and privileges</li><li> Role-based access control</li></ul><li>Network authorization</li></ul>
+[User Authorization](user-authorization.html) | <ul><li>Users and privileges</li><li> Role-based access control</li></ul>
+[Network Authorization](network-authorization.html) | <ul><li>IP allowlisting</li><li> VPC Peering for GCP clusters</li></ul>
 [Audit logging](sql-audit-logging.html) | `ALTER TABLE...EXPERIMENTAL AUDIT` to get detailed information about queries being executed against your system
