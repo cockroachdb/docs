@@ -5,14 +5,11 @@
   "difficulty": "Beginner",
   "time": "5 minutes",
   "details": {
-    "intro": {
-        "text": "intro.md",
-        "foreground": "foreground.sh"
-    },
     "steps": [
       {
         "title": "Start CockroachDB",
-        "text": "step1.md"
+        "text": "step1.md",
+        "foreground": "foreground.sh"
       },
       {
         "title": "Show tables",
