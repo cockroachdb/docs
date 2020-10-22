@@ -5,6 +5,12 @@
       "title": "Production Releases",
       "items": [
         {
+          "title": "Latest v20.2",
+          "urls": [
+            "/releases/v20.2.0.html"
+          ]
+        },
+        {
           "title": "Latest v20.1",
           "urls": [
             "/releases/v20.1.8.html"
@@ -14,12 +20,6 @@
           "title": "Latest v19.2",
           "urls": [
             "/releases/v19.2.11.html"
-          ]
-        },
-        {
-          "title": "Latest v19.1",
-          "urls": [
-            "/releases/v19.1.11.html"
           ]
         },
         {
