@@ -320,7 +320,7 @@ The `@Mapper` annotation declares the interface a mapper for MyBatis to scan. Th
 
 #### Batch account mapper
 
-`src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java` defines a mapper interface for [batch writes](https://www.cockroachlabs.com/docs/stable/insert.html#performance-best-practices):
+`src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java` defines a mapper interface for [batch writes](insert.html#performance-best-practices):
 
 {% include copy-clipboard.html %}
 ~~~ java

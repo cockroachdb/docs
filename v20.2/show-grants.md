@@ -27,7 +27,7 @@ Parameter        | Description
 `user_name`      | An optional, comma-separated list of grantees.
 
 ## Examples
-The `SHOW GRANTS` statement returns the following columns:`privilege_type` which is the name of the [privilege](https://www.cockroachlabs.com/docs/v20.1/authorization#assign-privileges), `grantee` that represents the name of the user or role that was granted the privilege, `table_name` is the table in which the user or role has the privilege, `schema_name` is the name of the schema that contains the table, and `database_name` is the name of the database that contains the schema.
+The `SHOW GRANTS` statement returns the following columns:`privilege_type` which is the name of the [privilege](authorization.html#assign-privileges), `grantee` that represents the name of the user or role that was granted the privilege, `table_name` is the table in which the user or role has the privilege, `schema_name` is the name of the schema that contains the table, and `database_name` is the name of the database that contains the schema.
 
 
 ### Show all grants
