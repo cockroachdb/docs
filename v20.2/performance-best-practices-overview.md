@@ -35,11 +35,18 @@ The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropp
 
 ### Use multi-row `INSERT` statements for bulk inserts into existing tables
 
-To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
+To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include bulk `INSERT` statements within an explicit transaction.
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
 You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
 {{site.data.alerts.end}}
+
+For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
+
+{{site.data.alerts.callout_info}}
+Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
+{{site.data.alerts.end}}
+
 
 ### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
 
