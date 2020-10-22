@@ -92,7 +92,9 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 
     <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />    
 
-2. **IP Allowlist** is selected by default as the **Network Security** option. If you had [enabled VPC peering while creating your cluster](create-your-cluster.html#step-6-enable-vpc-peering-optional) for your GCP cluster and [establish a VPC Peering connection](#establish-a-vpc-peering-connection), select **VPC Peering** instead.
+2. **IP Allowlist** is selected by default as the **Network Security** option. Select **VPC Peering** if you have already:
+      - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-6-enable-vpc-peering-optional) for your GCP cluster and
+      - [Established a VPC Peering connection](#establish-a-vpc-peering-connection)
 3. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 4. From the **Region** dropdown, select the region closest to where your client or application is running.
 5. From the **Database** dropdown, select the database you want to connect to.
@@ -119,7 +121,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 
 8. Click the name of the **ca.crt** file to download the CA certificate.
 
-9. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect to the cluster and must be referenced in connection string.
+9. Create a `certs` directory and move the `ca.crt` file to the `certs` directory. The `ca.crt` file must be available on every machine from which you want to connect to the cluster and must be referenced in the connection string.
 
     You will need to replace the `<certs_dir>` placeholders with the path to your certs directory in the CockroachDB client command or the connection string.
 

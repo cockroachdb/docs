@@ -29,8 +29,8 @@ If you select GCP as your Cloud provider while [creating your CockroachCloud clu
 
 Setting up a VPC peering connection between your CockroachCloud cluster and GCP application is a two-part process:
 
-- Configure the IP range and size while creating the CockroachCloud cluster
-- Configure a peering connection after creating the cluster
+1. [Configure the IP range and size while creating the CockroachCloud cluster](#configure-the-ip-range-and-size-while-creating-your-cockroachcloud-cluster)
+2. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachcloud-cluster)
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is available only while creating a new CockroachCloud cluster. To set up VPC peering for existing clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
