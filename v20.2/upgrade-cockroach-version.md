@@ -28,7 +28,7 @@ Make sure your cluster is behind a [load balancer](recommended-production-settin
 
 ### Check cluster health
 
-Verify the overall health of your cluster using the [Admin UI](admin-ui-overview.html). On the **Cluster Overview**:
+Verify the overall health of your cluster using the [Admin UI](admin-ui-overview.html). On the **Overview**:
 
   - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
@@ -40,7 +40,7 @@ Verify the overall health of your cluster using the [Admin UI](admin-ui-overview
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.2](../releases/v20.2.0-alpha.1.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
 
 ### Let ongoing bulk operations finish
 
@@ -49,9 +49,9 @@ Make sure there are no [bulk imports](import.html) or [schema changes](online-sc
 To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
 {{site.data.alerts.callout_danger}}
-If you started a schema change job in v19.2 that is ongoing at the time of the upgrade, the job must be migrated to run in v20.1. This migration is automatically run shortly *after* upgrading to v20.1. In case you are upgrading from v19.2 to v20.2 or later, we advise waiting for v19.2 schema change jobs to complete in v20.1 before upgrading further.
+If there are any ongoing schema changes that were started when the cluster was running v19.2 or earlier and that have not reached a terminal state (`succeeded`, `failed`, or `canceled`) after the upgrade to v20.1, wait for them to finish running before upgrading to v20.2. Otherwise, they will be marked as `failed` during the upgrade to v20.2.
 
-Schema change jobs that were started in v19.2 but did not undergo the migration in v20.1 will be marked as `failed` when upgrading to v20.2. This includes jobs that were stuck on `running` or `pending` status but had either finished or failed to complete (due to bugs).
+Also, schema changes that have not reached a terminal state due to bugs in prior versions will be marked as `failed` during the upgrade to v20.2.
 {{site.data.alerts.end}}
 
 ## Step 3. Decide how the upgrade will be finalized
@@ -70,14 +70,30 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.2';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.1';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
 
 ### Features that require upgrade finalization
 
-This information is TBD pending further development of CockroachDB v20.2.
+When upgrading from v20.1 to v20.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
+
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+
+- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
+
+- **Altering column data types:** After finalization, it will be possible to [alter column data types](../v20.2/alter-column.html#altering-column-data-types) where column data must be rewritten.
+
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../v20.2/create-schema.html), as well [alter user-defined schemas](../v20.2/alter-schema.html), [drop user-defined schemas](../v20.2/drop-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html).
+
+- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foreign-key.html) constraint.
+
+- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) to set a minimum length for passwords.
+
+- **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
+
+- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
 
 ## Step 4. Perform the rolling upgrade
 
@@ -88,7 +104,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 {{site.data.alerts.end}}
 
 1. Drain and stop the node using one of the following methods:
-    
+
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
     Verify that the process has stopped:
@@ -165,7 +181,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     </div>
 
 1. Start the node to have it rejoin the cluster.
-    
+
     {{site.data.alerts.callout_danger}}
     For maximum availability, do not wait more than a few minutes before restarting the node with the new binary. See [this open issue](https://github.com/cockroachdb/cockroach/issues/37906) for context.
     {{site.data.alerts.end}}
@@ -187,7 +203,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     $ systemctl start <systemd config filename>
     ~~~
 
-1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [Admin UI](admin-ui-cluster-overview-page.html#node-status). 
+1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [Admin UI](admin-ui-cluster-overview-page.html#node-status).
 
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
