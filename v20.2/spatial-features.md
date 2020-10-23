@@ -24,6 +24,21 @@ See the links below for more information about how to use CockroachDB for spatia
 
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Spatial functions](functions-and-operators.html#spatial-functions)
+
+<a name="spatial-objects"></a>
+
+Spatial objects:
+
+- [POINT](point.html)
+- [LINESTRING](linestring.html)
+- [POLYGON](polygon.html)
+- [MULTIPOINT](multipoint.html)
+- [MULTILINESTRING](multilinestring.html)
+- [MULTIPOLYGON](multipolygon.html)
+- [GEOMETRYCOLLECTION](geometrycollection.html)
+
+<a name="spatial-functions"></a>
 
 In addition to the [generated reference documentation for spatial functions](functions-and-operators.html#spatial-functions), we have written additional documentation for the following functions, including examples:
 

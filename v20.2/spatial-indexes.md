@@ -137,7 +137,7 @@ VALUES (1, st_geomfromtext('LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5
 
 INSERT INTO tmp_viz (id, geom) VALUES (2, st_s2covering(st_geomfromtext('LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'), 's2_max_cells=20,s2_max_level=12,s2_level_mod=3,geometry_min_x=-180,geometry_max_x=180,geometry_min_y=-180,geometry_max_y=180'));
 
-SELECT st_asgeojson(st_collect(geom)) FROM tmp_viz;
+SELECT ST_AsGeoJSON(st_collect(geom)) FROM tmp_viz;
 ~~~
 
 {% include copy-clipboard.html %}
