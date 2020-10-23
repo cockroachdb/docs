@@ -2034,6 +2034,48 @@
                   "urls": [
                       "/${VERSION}/spatial-indexes.html"
                   ]
+              },
+              {
+                  "title": "POINT",
+                  "urls": [
+                      "/${VERSION}/point.html"
+                  ]
+              },
+              {
+                  "title": "LINESTRING",
+                  "urls": [
+                      "/${VERSION}/linestring.html"
+                  ]
+              },
+              {
+                  "title": "POLYGON",
+                  "urls": [
+                      "/${VERSION}/polygon.html"
+                  ]
+              },
+              {
+                  "title": "MULTIPOINT",
+                  "urls": [
+                      "/${VERSION}/multipoint.html"
+                  ]
+              },
+              {
+                  "title": "MULTILINESTRING",
+                  "urls": [
+                      "/${VERSION}/multilinestring.html"
+                  ]
+              },
+              {
+                  "title": "MULTIPOLYGON",
+                  "urls": [
+                      "/${VERSION}/multipolygon.html"
+                  ]
+              },
+              {
+                  "title": "GEOMETRYCOLLECTION",
+                  "urls": [
+                      "/${VERSION}/geometrycollection.html"
+                  ]
               }
           ]
       },
