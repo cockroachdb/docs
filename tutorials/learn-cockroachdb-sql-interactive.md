@@ -5,7 +5,7 @@ layout: tutorial
 ---
 
 <div
-  data-katacoda-id="cockroachlabs/courses/get-started/learn-cockroachdb-sql"
+  data-katacoda-id="cockroachlabs/scenarios/learn-cockroachdb-sql"
   style="height: 91vh; width: 100%;">
 </div>
 
