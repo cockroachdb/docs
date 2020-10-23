@@ -11,7 +11,7 @@ This tutorial walks you through some of the most essential CockroachDB SQL state
 Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster. Alternatively, you can [use a local demo cluster](../stable/learn-cockroachdb-sql.html) or click below to run through the tutorial entirely in your browser.
 
 <div class="filters clearfix">
-  <a href="learn-cockroachdb-sql-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+  <a href="../stable/learn-cockroachdb-sql-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
 </div>
 
 ## Create a database
