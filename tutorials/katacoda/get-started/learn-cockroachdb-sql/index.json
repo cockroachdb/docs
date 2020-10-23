@@ -20,7 +20,7 @@
         "text": "step3.md"
       },
       {
-        "title": "Insert rows into a table",
+        "title": "Insert rows",
         "text": "step4.md"
       },
       {
@@ -28,7 +28,7 @@
         "text": "step5.md"
       },
       {
-        "title": "Show indexes on a table",
+        "title": "Show indexes",
         "text": "step6.md"
       },
       {
@@ -36,11 +36,11 @@
         "text": "step7.md"
       },
       {
-        "title": "Update rows in a table",
+        "title": "Update rows",
         "text": "step8.md"
       },
       {
-        "title": "Delete rows in a table",
+        "title": "Delete rows",
         "text": "step9.md"
       },
       {
