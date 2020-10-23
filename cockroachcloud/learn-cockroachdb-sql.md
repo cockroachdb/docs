@@ -4,11 +4,15 @@ summary: Learn some of the most essential CockroachDB SQL statements on a local 
 toc: true
 ---
 
-This page walks you through some of the most essential CockroachDB SQL statements. For a complete list and related details, see [SQL Statements](../v20.1/sql-statements.html).
+This tutorial walks you through some of the most essential CockroachDB SQL statements. For a complete list of supported SQL statements and related details, see [SQL Statements](../v20.1/sql-statements.html).
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster.
+Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to your cluster. Alternatively, you can [use a local demo cluster](../stable/learn-cockroachdb-sql.html) or click below to run through the tutorial entirely in your browser.
+
+<div class="filters clearfix">
+  <a href="learn-cockroachdb-sql-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+</div>
 
 ## Create a database
 
@@ -139,7 +143,7 @@ To see all tables in the active database, use the [`SHOW TABLES`](../v20.1/show-
 (1 row)
 ~~~
 
-## Insert rows into a table
+## Insert rows
 
 To insert a row into a table, use [`INSERT INTO`](../v20.1/insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
@@ -214,7 +218,7 @@ You can create indexes during table creation as well; just include the `INDEX` k
 );
 ~~~
 
-## Show indexes on a table
+## Show indexes
 
 To show the indexes on a table, use [`SHOW INDEX FROM`](../v20.1/show-index.html) followed by the name of the table:
 
@@ -307,7 +311,7 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 (6 rows)
 ~~~
 
-## Update rows in a table
+## Update rows
 
 To update rows in a table, use [`UPDATE`](../v20.1/update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
@@ -335,7 +339,7 @@ To update rows in a table, use [`UPDATE`](../v20.1/update.html) followed by the 
 
 If a table has a primary key, you can use that in the `WHERE` clause to reliably update specific rows; otherwise, each row matching the `WHERE` clause is updated. When there's no `WHERE` clause, all rows in the table are updated.
 
-## Delete rows in a table
+## Delete rows
 
 To delete rows from a table, use [`DELETE FROM`](../v20.1/delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
