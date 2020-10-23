@@ -9,7 +9,7 @@ This tutorial walks you through some of the most essential CockroachDB SQL state
 For a complete list of supported SQL statements and related details, see [SQL Statements](sql-statements.html).
 
 <div class="filters clearfix">
-  <a href="learn-cockroachdb-sql-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+  <a href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
 </div>
 
 ## Start CockroachDB
