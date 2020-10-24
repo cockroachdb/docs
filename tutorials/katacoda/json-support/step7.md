@@ -1,5 +1,20 @@
-To optimize the performance of queries that filter on the `JSONB` column, let's create an [inverted index](https://www.cockroachlabs.com/docs/stable/inverted-indexes.html) on the column:
+Back in the terminal where the SQL shell is running, verify that rows of data are being inserted into your table:
 
 ```sql
-CREATE INVERTED INDEX ON programming(posts);
+SELECT count(*) FROM programming;
 ```{{execute T2}}
+
+```sql
+SELECT count(*) FROM programming;
+```{{execute T2}}
+
+You should see the count increasing. Keep checking until you see 1000 rows.
+
+Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
+
+```sql
+SELECT id FROM programming
+WHERE posts @> '{"data": {"domain": "github.com"}}';
+```{{execute T2}}
+
+Note the `TIME` this query takes.

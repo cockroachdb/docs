@@ -1,8 +1,5 @@
-Now that there is an inverted index, the same query will run much faster:
+To optimize the performance of queries that filter on the `JSONB` column, let's create an [inverted index](https://www.cockroachlabs.com/docs/stable/inverted-indexes.html) on the column:
 
 ```sql
-SELECT id FROM programming
-WHERE posts @> '{"data": {"domain": "github.com"}}';
+CREATE INVERTED INDEX ON programming(posts);
 ```{{execute T2}}
-
-Compare the `TIME` before and after this inverted index was created.
