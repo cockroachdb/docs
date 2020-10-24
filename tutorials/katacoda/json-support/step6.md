@@ -1,20 +1,12 @@
-Back in the terminal where the SQL shell is running, verify that rows of data are being inserted into your table:
+In a new terminal, run the Python code you downloaded earlier to insert rows into your table:
 
-```sql
-SELECT count(*) FROM programming;
-```{{execute T2}}
+`python3 json-sample.py`{{execute T3}}
 
-```sql
-SELECT count(*) FROM programming;
-```{{execute T2}}
+The code queries the [Reddit API](https://www.reddit.com/dev/api/) for posts in [/r/programming](https://www.reddit.com/r/programming/). The Reddit API only returns 25 results per page; however, each page returns an `"after"` string that tells you how to get the next page. Therefore, the program does the following in a loop:
 
-You should see the count increasing. Keep checking until you see 1000 rows.
+1. Makes a request to the API.
+2. Grabs the `"after"` string.
+3. Inserts the results into the table.
+4. Uses the new `"after"` string as the basis for the next request.
 
-Now, retrieve all the current entries where the link is pointing to somewhere on GitHub:
-
-```sql
-SELECT id FROM programming
-WHERE posts @> '{"data": {"domain": "github.com"}}';
-```{{execute T2}}
-
-Note the `TIME` this query takes.
+The program will loop through that 40 times, but you can start querying the data right away.
