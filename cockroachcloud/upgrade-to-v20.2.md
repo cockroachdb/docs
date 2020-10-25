@@ -55,7 +55,11 @@ Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#bac
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.</span>
 
-To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
+To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
+
+{{site.data.alerts.callout_danger}}
+If any ongoing schema changes started when the cluster was running v19.2 or earlier have not reached a terminal state (i.e., `succeeded`, `failed`, or `canceled`) and have not finished undergoing an automatic internal migration during the upgrade to v20.1, wait for them to finish running on v20.1 before upgrading to v20.2. Otherwise, such schema changes will be marked as `failed` during the upgrade to v20.2.
+{{site.data.alerts.end}}
 
 ## Step 4. Start the upgrade
 
@@ -91,9 +95,7 @@ Use the [Admin UI](monitoring-page.html) or your own tooling to monitor your app
 
 ### Respect temporary limitations
 
-Before your upgrade has been finalized, remember to prevent new schema changes and changes to user privileges as mention [earlier](#review-temporary-limitations).
-
-Also, most v20.2 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
+Most v20.2 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
 - **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators#spatial-functions), as well as the ability to migrating spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles), [GeoJSON](../v20.2/migrate-from-geojson), [GeoPackages](../v20.2/migrate-from-geopackage), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap).
 
@@ -113,13 +115,13 @@ Also, most v20.2 features can be used right way, but there are some that will be
 
 ## Step 6. Finish the upgrade
 
-During the 24-hour window before the upgrade is automatically finalized, if you see unexpected behavior, you can trigger a rollback to v20.1. If everything looks good, you also have the choice to finalize the upgrade more quickly so as to lift the [temporary limitations](#review-temporary-limitations) in place during the upgrade.
+During the 24-hour window before the upgrade is automatically finalized, if you see unexpected behavior, you can trigger a rollback to v20.1. If everything looks good, you also have the choice to finalize the upgrade more quickly so as to lift the [temporary limitations](#respect-temporary-limitations) in place during the upgrade.
 
 ### Finalize the upgrade
 
 To finalize the upgrade, click **Finalize** in the banner at the top of the CockroachCloud Console, and then click **Finalize upgrade**.
 
-At this point, all [temporary limitations](#review-temporary-limitations) are lifted, and all v20.2 features are available for use. However, it's no longer possible to roll back to v20.1. If you see unexpected behavior, [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+At this point, all [temporary limitations](#respect-temporary-limitations) are lifted, and all v20.2 features are available for use. However, it's no longer possible to roll back to v20.1. If you see unexpected behavior, [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ### Roll back the upgrade
 
