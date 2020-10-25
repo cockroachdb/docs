@@ -48,6 +48,10 @@ Make sure there are no [bulk imports](import.html) or [schema changes](online-sc
 
 To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
+{{site.data.alerts.callout_danger}}
+If any ongoing schema changes started when the cluster was running v19.2 or earlier have not reached a terminal state (i.e., `succeeded`, `failed`, or `canceled`) and have not finished undergoing an automatic internal migration during the upgrade to v20.1, wait for them to finish running on v20.1 before upgrading to v20.2. Otherwise, such schema changes will be marked as `failed` during the upgrade to v20.2.
+{{site.data.alerts.end}}
+
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
