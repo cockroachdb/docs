@@ -199,6 +199,52 @@ You can use the `@>` operator to filter the values in key-value pairs to return 
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
+### Group and order `JSONB` values
+
+To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses with the `->>` operator. For example, organize the `first_name` values from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
+
+For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users (user_profile) VALUES 
+    ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'), 
+    ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
+~~~
+
+{% include copy-clipboard.html %}
+~~~sql
+> SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
+~~~
+
+~~~
+  first_name | location
+-------------+-----------
+  Ernie      | Brooklyn
+  Lola       | NYC
+  Parvati    | London
+  Lola       | Seoul
+~~~
+
+Now let’s group and order the data.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
+~~~
+
+~~~
+  first_name | total
+-------------+-------
+  Ernie      | 1
+  Parvati    | 1
+  Lola       | 2
+~~~
+
+The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, cast the resulting data to `FLOAT`.
+
+For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
+
 ### Create a table with a `JSONB` column and a computed column
 
 {% include {{ page.version.version }}/computed-columns/jsonb.md %}
