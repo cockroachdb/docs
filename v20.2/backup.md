@@ -111,13 +111,19 @@ For an example of an incremental backup, see the [Create incremental backups](#c
 
 The `BACKUP` process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes; more details about this architectural concept forthcoming), with no two nodes backing up the same data.
 
-For best performance, we also recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
+`BACKUP`, like any read, cannot export a range if it contains an unresolved intent. If CockroachDB hits an intent during iteration, CockroachDB will typically return a `WriteIntentError` and let the store resolve it and retry the request before replying to the sender.
+
+However, blocking intent resolution can mean a single transaction left open can cause backups to hang, sometimes for hours or even days in some observed cases. While you typically want bulk, background jobs like `BACKUP` to have as little impact on your foreground traffic as possible, it's more important for backups to actually complete (which maintains your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)). So while you typically would not want a `BACKUP` to immediately run at high priority and abort any transactions from OLTP foreground traffic as soon as it starts, you do, eventually, want it to do whatever it needs to do to finish.
+
+We recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
 
 ~~~ sql
 > BACKUP...AS OF SYSTEM TIME '-10s';
 ~~~
 
-This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
+This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, but an abandoned or very long-running transaction can still hang your a backup.
+
+<span class="version-tag">New in v20.2:</span> `BACKUP` will initially start asking individual ranges to backup but to skip if they encounter an intent, rather than attempt to resolve the intent and hold up the whole backup while doing so. If any range replies that it skipped, it is put at the back of the queue to come back to later. `BACKUP` will continue to work on other ranges, in the hopes that by the time it is done, the intent may have already resolved itself. When `BACKUP` revisits a range that it has reached the time limit for attempted backups (default 1 minute), it instead asks the range to backup but to _not_ skip if it hits an intent, and to try to resolve it instead. Additionally, the backup's transaction priority then is set to high, so that during the intent resolution, other transactions will be aborted in order for the backup to finish.
 
 ## Viewing and controlling backups jobs
 
