@@ -77,7 +77,7 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v20.1 to v20.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators#spatial-functions), as well as the ability to migrating spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles), [GeoJSON](../v20.2/migrate-from-geojson), [GeoPackages](../v20.2/migrate-from-geopackage), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles), [GeoJSON](../v20.2/migrate-from-geojson), [GeoPackages](../v20.2/migrate-from-geopackage), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap).
 
 - **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
 

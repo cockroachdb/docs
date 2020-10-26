@@ -24,14 +24,14 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../stable/multi-active-availability.html) design.
 
-Approximately 72 hours after all nodes are running v20.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
+Approximately 72 hours after all nodes are running v20.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 72-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
 
 </section>
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with v20.2.
 
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 72-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
 
 </section>
 
@@ -91,13 +91,13 @@ Use the [Admin UI](monitoring-page.html) or your own tooling to monitor your app
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
-- If you see unexpected behavior, you can [rollback to v19.2](#roll-back-the-upgrade). This option is available only during the 24-hour window. If you see unexpected behavior after the upgrade has been finalized, you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+- If you see unexpected behavior, you can [rollback to v20.1](#roll-back-the-upgrade). This option is available only during the 72-hour window. If you see unexpected behavior after the upgrade has been finalized, you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ### Respect temporary limitations
 
-Most v20.2 features can be used right way, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
+Most v20.2 features can be used right away, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators#spatial-functions), as well as the ability to migrating spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles), [GeoJSON](../v20.2/migrate-from-geojson), [GeoPackages](../v20.2/migrate-from-geopackage), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles), [GeoJSON](../v20.2/migrate-from-geojson), [GeoPackages](../v20.2/migrate-from-geopackage), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap).
 
 - **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
 
@@ -115,7 +115,7 @@ Most v20.2 features can be used right way, but there are some that will be enabl
 
 ## Step 6. Finish the upgrade
 
-During the 24-hour window before the upgrade is automatically finalized, if you see unexpected behavior, you can trigger a rollback to v20.1. If everything looks good, you also have the choice to finalize the upgrade more quickly so as to lift the [temporary limitations](#respect-temporary-limitations) in place during the upgrade.
+During the 72-hour window before the upgrade is automatically finalized, if you see unexpected behavior, you can trigger a rollback to v20.1. If everything looks good, you also have the choice to finalize the upgrade more quickly so as to lift the [temporary limitations](#respect-temporary-limitations) in place during the upgrade.
 
 ### Finalize the upgrade
 
