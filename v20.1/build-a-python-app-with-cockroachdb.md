@@ -13,11 +13,7 @@ twitter: false
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver.
-
-## Before you begin
-
-{% include {{page.version.version}}/app/before-you-begin.md %}
+This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use either a temporary local cluster or a free cluster on CockroachCloud.
 
 ## Step 1. Install the psycopg2 driver
 
@@ -25,112 +21,84 @@ To install the Python psycopg2 driver, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install psycopg2
+$ pip install psycopg2-binary
 ~~~
 
 For other ways to install psycopg2, see the [official documentation](http://initd.org/psycopg/docs/install.html).
 
-<section class="filter-content" markdown="1" data-scope="secure">
+## Step 2. Start CockroachDB
 
-## Step 2. Create the `maxroach` user and `bank` database
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+## Step 3. Create a database
 
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 4. Run the Python code
 
-Now that you have a database and a user, you'll run the code shown below to:
+Now that you have a database, you'll run the code shown below to:
 
 - Create an `accounts` table and insert some rows.
-- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that we [handle transaction retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
-- Finally, we delete the accounts from the table before exiting so we can re-run the example code.
+- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that you [handle transaction retry errors](transactions.html#client-side-intervention), you'll use an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
+- Finally, you'll delete the accounts from the table before exiting so you can re-run the example code.
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+### Get the code
 
-`git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/`
-{{site.data.alerts.end}}
+Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/psycopg2/example.py" download><code>example.py</code></a> file, or create the file yourself and copy the code into it.
 
-Copy the code or <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/basic-sample.py" download>download it directly</a>.
-
-{% include copy-clipboard.html %}
-~~~ python
-{% include {{page.version.version}}/app/basic-sample.py %}
-~~~
-
-Then run the code:
+If you prefer, you can also clone a version of the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python basic-sample.py
-~~~
-
-The output should show the account balances before and after the funds transfer:
-
-~~~
-Balances at Wed Aug  7 12:11:23 2019
-['1', '1000']
-['2', '250']
-Balances at Wed Aug  7 12:11:23 2019
-['1', '900']
-['2', '350']
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Run the Python code
-
-Now that you have a database and a user, you'll run the code shown below to:
-
-- Create an `accounts` table and insert some rows.
-- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that we [handle transaction retry errors](transactions.html#client-side-intervention), we write an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
-- Finally, we delete the accounts from the table before exiting so we can re-run the example code.
-
-To get the code below, clone the `hello-world-python-psycopg2` repo to your machine:
-
-{% include copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
+$ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/insecure/basic-sample.py %}
+{% include {{page.version.version}}/app/python/psycopg2/example.py %}
 ~~~
 
-Change to the directory where you cloned the repo and run the code:
+### Run the code
+
+The Python code is a command-line utility that accepts the connection string to CockroachDB as the `--dsn` flag. Before running the the code, update the connection string as follows:
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python example.py
+$ python3 example.py \
+--dsn='postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+- Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
+- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the CockroachCloud Console.
+- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python3 example.py \
+--dns='postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'
+~~~
+
+</section>
 
 The output should show the account balances before and after the funds transfer:
 
 ~~~
-Balances at Wed Jul 24 15:58:40 2019
+Balances at Sun Oct 11 14:32:18 2020
 ['1', '1000']
 ['2', '250']
-Balances at Wed Jul 24 15:58:40 2019
+Balances at Sun Oct 11 14:32:18 2020
 ['1', '900']
 ['2', '350']
 ~~~
-
-</section>
 
 ## What's next?
 

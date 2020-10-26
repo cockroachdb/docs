@@ -1,0 +1,58 @@
+{
+  "noindex": true,
+  "title": "Store and Query JSONB Data",
+  "description": "Work with unstructured JSONB data from a third-party API, and use an inverted index to optimize performance",
+  "difficulty": "Beginner",
+  "time": "10 minutes",
+  "details": {
+    "steps": [
+      {
+        "title": "Start CockroachDB",
+        "text": "step1.md",
+        "foreground": "foreground.sh"
+      },
+      {
+        "title": "Install prerequisites",
+        "text": "step2.md"
+      },
+      {
+        "title": "Create a user",
+        "text": "step3.md"
+      },
+      {
+        "title": "Create a database and grant privileges",
+        "text": "step4.md"
+      },
+      {
+        "title": "Create a table",
+        "text": "step5.md"
+      },
+      {
+        "title": "Run the code",
+        "text": "step6.md"
+      },
+      {
+        "title": "Query the data",
+        "text": "step7.md"
+      },
+      {
+        "title": "Create an inverted index",
+        "text": "step8.md"
+      },
+      {
+        "title": "Query the data again",
+        "text": "step9.md"
+      }
+    ],
+    "finish": {
+        "text": "finish.md"
+    }
+  },
+    "environment": {
+      "hideintro": true,
+      "uilayout": "editor-terminal"
+    },
+    "backend": {
+      "imageid": "ubuntu:1804-4gb"
+    }
+  }

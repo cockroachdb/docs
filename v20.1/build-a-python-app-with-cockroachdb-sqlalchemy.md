@@ -13,11 +13,7 @@ twitter: false
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
-
-## Before you begin
-
-{% include {{page.version.version}}/app/before-you-begin.md %}
+This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM. For the CockroachDB back-end, you'll use either a temporary local cluster or a free cluster on CockroachCloud.
 
 {{site.data.alerts.callout_info}}
 The example code on this page uses Python 3.
@@ -42,20 +38,13 @@ You can substitute psycopg2 for other alternatives that include the psycopg pyth
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-<section class="filter-content" markdown="1" data-scope="secure">
+## Step 2. Start CockroachDB
 
-## Step 2. Create the `maxroach` user and `bank` database
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+## Step 3. Create a database
 
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 4. Run the Python code
 
@@ -75,78 +64,102 @@ It does all of the above using the practices we recommend for using SQLAlchemy w
 You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
+### Get the code
+
 Copy the code below or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/sqlalchemy-basic-sample.py">download it directly</a>.
+<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/sqlalchemy/example.py">download it directly</a>.
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
-
-`git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/`
-{{site.data.alerts.end}}
-
-{% include copy-clipboard.html %}
-~~~ python
-{% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
-~~~
-
-Then run the code:
+If you prefer, you can also clone a version of the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python sqlalchemy-basic-sample.py
+$ git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/
+~~~
+
+{% include copy-clipboard.html %}
+~~~ python
+{% include {{page.version.version}}/app/python/sqlalchemy/example.py %}
+~~~
+
+### Update the connection parameters
+
+In the `create_engine()` function, update the connection string as follows:
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+- Comment out the connection string for `cockroach demo`, and uncomment the connection string for CockroachCloud.
+- Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
+- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the CockroachCloud Console.
+- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
+
+</section>
+
+### Run the code
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python3 example.py
 ~~~
 
 The output should look something like the following:
 
-~~~ shell
-2018-12-06 15:59:58,999 INFO sqlalchemy.engine.base.Engine select current_schema()
-2018-12-06 15:59:58,999 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS VARCHAR(60)) AS anon_1
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,002 INFO sqlalchemy.engine.base.Engine select version()
-2018-12-06 15:59:59,002 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,003 INFO sqlalchemy.engine.base.Engine SELECT table_name FROM information_schema.tables WHERE table_schema=%s
-2018-12-06 15:59:59,004 INFO sqlalchemy.engine.base.Engine ('public',)
-2018-12-06 15:59:59,005 INFO sqlalchemy.engine.base.Engine SELECT id from accounts;
-2018-12-06 15:59:59,005 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,008 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
-2018-12-06 15:59:59,008 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,008 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,083 INFO sqlalchemy.engine.base.Engine INSERT INTO accounts (id, balance) VALUES (%(id)s, %(balance)s)
-2018-12-06 15:59:59,083 INFO sqlalchemy.engine.base.Engine ({'id': 298865, 'balance': 208217}, {'id': 506738, 'balance': 962549}, {'id': 514698, 'balance': 986327}, {'id': 587747, 'balance': 210406}, {'id': 50148, 'balance': 347976}, {'id': 854295, 'balance': 420086}, {'id': 785757, 'balance': 364836}, {'id': 406247, 'balance': 787016}  ... displaying 10 of 100 total bound parameter sets ...  {'id': 591336, 'balance': 542066}, {'id': 33728, 'balance': 526531})
-2018-12-06 15:59:59,201 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,201 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,205 INFO sqlalchemy.engine.base.Engine COMMIT
-2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
-2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
+~~~
+2020-10-11 16:49:48,048 INFO sqlalchemy.engine.base.Engine select current_schema()
+2020-10-11 16:49:48,048 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,076 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
+2020-10-11 16:49:48,076 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,077 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS VARCHAR(60)) AS anon_1
+2020-10-11 16:49:48,077 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,078 INFO sqlalchemy.engine.base.Engine select version()
+2020-10-11 16:49:48,078 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,079 INFO sqlalchemy.engine.base.Engine SELECT table_name FROM information_schema.tables WHERE table_schema=%s
+2020-10-11 16:49:48,079 INFO sqlalchemy.engine.base.Engine ('public',)
+2020-10-11 16:49:48,096 INFO sqlalchemy.engine.base.Engine
+CREATE TABLE accounts (
+	id SERIAL NOT NULL,
+	balance INTEGER,
+	PRIMARY KEY (id)
+)
+
+
+2020-10-11 16:49:48,096 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,135 INFO sqlalchemy.engine.base.Engine COMMIT
+2020-10-11 16:49:48,137 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2020-10-11 16:49:48,138 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
+2020-10-11 16:49:48,138 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,145 INFO sqlalchemy.engine.base.Engine INSERT INTO accounts (id, balance) VALUES (%(id)s, %(balance)s)
+2020-10-11 16:49:48,145 INFO sqlalchemy.engine.base.Engine ({'id': 114550846, 'balance': 521920}, {'id': 959765825, 'balance': 107843}, {'id': 992234225, 'balance': 743056}, {'id': 524035239, 'balance': 883288}, {'id': 338833325, 'balance': 390589}, {'id': 298479318, 'balance': 878646}, {'id': 173609938, 'balance': 262413}, {'id': 678216195, 'balance': 791789}  ... displaying 10 of 100 total bound parameter sets ...  {'id': 531287362, 'balance': 589865}, {'id': 521940595, 'balance': 103451})
+2020-10-11 16:49:48,266 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
+2020-10-11 16:49:48,266 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,268 INFO sqlalchemy.engine.base.Engine COMMIT
+2020-10-11 16:49:48,269 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
+2020-10-11 16:49:48,269 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
+2020-10-11 16:49:48,269 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,271 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
 FROM accounts
 WHERE accounts.id = %(id_1)s
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine {'id_1': 769626}
-2018-12-06 15:59:59,209 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=%(balance)s WHERE accounts.id = %(accounts_id)s
-2018-12-06 15:59:59,209 INFO sqlalchemy.engine.base.Engine {'balance': 470580, 'accounts_id': 769626}
-2018-12-06 15:59:59,212 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=(accounts.balance + %(balance_1)s) WHERE accounts.id = %(id_1)s
-2018-12-06 15:59:59,247 INFO sqlalchemy.engine.base.Engine {'balance_1': 470580, 'id_1': 158447}
-2018-12-06 15:59:59,249 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,250 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,251 INFO sqlalchemy.engine.base.Engine COMMIT
+2020-10-11 16:49:48,271 INFO sqlalchemy.engine.base.Engine {'id_1': 721940623}
+2020-10-11 16:49:48,273 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=%(balance)s WHERE accounts.id = %(accounts_id)s
+2020-10-11 16:49:48,273 INFO sqlalchemy.engine.base.Engine {'balance': 50080, 'accounts_id': 721940623}
+2020-10-11 16:49:48,275 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=(accounts.balance + %(balance_1)s) WHERE accounts.id = %(id_1)s
+2020-10-11 16:49:48,275 INFO sqlalchemy.engine.base.Engine {'balance_1': 50080, 'id_1': 984244739}
+2020-10-11 16:49:48,294 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
+2020-10-11 16:49:48,294 INFO sqlalchemy.engine.base.Engine {}
+2020-10-11 16:49:48,295 INFO sqlalchemy.engine.base.Engine COMMIT
 ~~~
 
-To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank
-~~~
-
-Then, issue the following statement:
+Back in the terminal where the SQL shell is running, verify that the table and rows were created successfully:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT COUNT(*) FROM accounts;
+> SELECT COUNT(*) FROM bank.accounts;
 ~~~
 
 ~~~
@@ -155,113 +168,6 @@ Then, issue the following statement:
    100
 (1 row)
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Run the Python code
-
-The code below uses [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) to map Python objects and methods to SQL operations.
-
-You can run this script as many times as you want; on each run, it will create some new accounts and shuffle money around between randomly selected accounts.
-
-Specifically, it:
-
-1. Reads in existing account IDs (if any) from the `bank` database.
-2. Creates additional accounts with randomly generated IDs. Then, it adds a bit of money to each new account.
-3. Chooses two accounts at random and takes half of the money from the first and deposits it into the second.
-
-It does all of the above using the practices we recommend for using SQLAlchemy with CockroachDB, which are listed in the [Best practices](#best-practices) section below.
-
-{{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
-{{site.data.alerts.end}}
-
-To get the code below, clone the `hello-world-python-sqlalchemy` repo to your machine:
-
-{% include copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/
-~~~
-
-{% include copy-clipboard.html %}
-~~~ python
-{% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
-~~~
-
-Change to the directory where you cloned the repo and run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ python example.py
-~~~
-
-The output should look something like the following:
-
-~~~ shell
-2018-12-06 15:59:58,999 INFO sqlalchemy.engine.base.Engine select current_schema()
-2018-12-06 15:59:58,999 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS VARCHAR(60)) AS anon_1
-2018-12-06 15:59:59,001 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,002 INFO sqlalchemy.engine.base.Engine select version()
-2018-12-06 15:59:59,002 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,003 INFO sqlalchemy.engine.base.Engine SELECT table_name FROM information_schema.tables WHERE table_schema=%s
-2018-12-06 15:59:59,004 INFO sqlalchemy.engine.base.Engine ('public',)
-2018-12-06 15:59:59,005 INFO sqlalchemy.engine.base.Engine SELECT id from accounts;
-2018-12-06 15:59:59,005 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,008 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
-2018-12-06 15:59:59,008 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,008 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,083 INFO sqlalchemy.engine.base.Engine INSERT INTO accounts (id, balance) VALUES (%(id)s, %(balance)s)
-2018-12-06 15:59:59,083 INFO sqlalchemy.engine.base.Engine ({'id': 298865, 'balance': 208217}, {'id': 506738, 'balance': 962549}, {'id': 514698, 'balance': 986327}, {'id': 587747, 'balance': 210406}, {'id': 50148, 'balance': 347976}, {'id': 854295, 'balance': 420086}, {'id': 785757, 'balance': 364836}, {'id': 406247, 'balance': 787016}  ... displaying 10 of 100 total bound parameter sets ...  {'id': 591336, 'balance': 542066}, {'id': 33728, 'balance': 526531})
-2018-12-06 15:59:59,201 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,201 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,205 INFO sqlalchemy.engine.base.Engine COMMIT
-2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
-2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,206 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
-FROM accounts
-WHERE accounts.id = %(id_1)s
-2018-12-06 15:59:59,207 INFO sqlalchemy.engine.base.Engine {'id_1': 769626}
-2018-12-06 15:59:59,209 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=%(balance)s WHERE accounts.id = %(accounts_id)s
-2018-12-06 15:59:59,209 INFO sqlalchemy.engine.base.Engine {'balance': 470580, 'accounts_id': 769626}
-2018-12-06 15:59:59,212 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=(accounts.balance + %(balance_1)s) WHERE accounts.id = %(id_1)s
-2018-12-06 15:59:59,247 INFO sqlalchemy.engine.base.Engine {'balance_1': 470580, 'id_1': 158447}
-2018-12-06 15:59:59,249 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
-2018-12-06 15:59:59,250 INFO sqlalchemy.engine.base.Engine {}
-2018-12-06 15:59:59,251 INFO sqlalchemy.engine.base.Engine COMMIT
-~~~
-
-To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --database=bank
-~~~
-
-Then, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT COUNT(*) FROM accounts;
-~~~
-
-~~~
- count
--------
-   100
-(1 row)
-~~~
-
-</section>
 
 ## Best practices
 
@@ -273,7 +179,6 @@ In addition to the above, using `run_transaction` has the following benefits:
 
 - Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/en/latest/orm/session_api.html#session-and-sessionmaker) object (*not* a [session][session]), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
 - It abstracts away the [client-side transaction retry logic](transactions.html#client-side-intervention) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against Postgres (modulo changes to the prefix and port number in the connection string).
-
 
 For more information about how transactions (and retries) work, see [Transactions](transactions.html).
 
@@ -300,7 +205,7 @@ If you see an error message like `transaction is too large to complete; try spli
 Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
 
 ~~~ python
-{% include {{page.version.version}}/app/sqlalchemy-large-txns.py %}
+{% include {{page.version.version}}/app/python/sqlalchemy/sqlalchemy-large-txns.py %}
 ~~~
 
 ### Use `IMPORT` to read in large data sets

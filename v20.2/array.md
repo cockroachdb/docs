@@ -109,6 +109,34 @@ Arrays in CockroachDB are 1-indexed.
 (1 row)
 ~~~
 
+### Accessing an array column using containment queries
+
+You can use the [operators](functions-and-operators.html#supported-operations) `<@` ("is contained by") and `@>` ("contains") to run containment queries on `ARRAY` columns.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM c WHERE d <@ ARRAY[10,20,30,40,50];
+~~~
+
+~~~
+      d
+--------------
+  {10,20,30}
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM c WHERE d @> ARRAY[10,20];
+~~~
+
+~~~
+      d
+--------------
+  {10,20,30}
+(1 row)
+~~~
+
 ### Appending an element to an array
 
 #### Using the `array_append` function
@@ -222,7 +250,7 @@ Arrays in CockroachDB are 1-indexed.
 
 ~~~
    array
-+---------+
+-----------
   {1,0,1}
 (1 row)
 ~~~
@@ -245,7 +273,7 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 
 ~~~
     array
-+------------+
+--------------
   {1,NULL,3}
 (1 row)
 ~~~
@@ -257,14 +285,22 @@ You can cast an array to a `STRING` value, for compatibility with PostgreSQL:
 
 ~~~
                array
-+----------------------------------+
+------------------------------------
   {"(1,\"a b\")","(2,\"c\"\"d\")"}
 (1 row)
 ~~~
 
-### Implicit casting to `INT` and `DECIMAL` `ARRAY`s
+### Implicit casting
 
- CockroachDB supports implicit casting from string literals to [`INT`](int.html) and [`DECIMAL`](decimal.html) `ARRAY`s, where appropriate.
+CockroachDB supports implicit casting from string literals to arrays of all data types except the following:
+
+- [`BYTES`](bytes.html)
+- [`ENUM`](enum.html)
+- [`JSONB`](jsonb.html)
+- [`SERIAL`](serial.html)
+- `Box2D` [(spatial type)](spatial-glossary.html#data-types)
+- `GEOGRAPHY` [(spatial type)](spatial-glossary.html#data-types)
+- `GEOMETRY` [(spatial type)](spatial-glossary.html#data-types)
 
 For example, if you create a table with a column of type `INT[]`:
 

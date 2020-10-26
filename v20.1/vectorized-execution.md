@@ -60,7 +60,7 @@ By default, vectorized execution is disabled for the following memory-intensive 
 
 - Global [sorts](query-order.html)
 - [Window functions](window-functions.html)
-- [Unordered aggregations](query-order.html#processing-order-during-aggregations)
+- [Unordered aggregations](query-order.html)
 - [Hash joins](joins.html#hash-joins)
 - [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", can execute entirely in-memory.
 

@@ -94,6 +94,9 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
+- [Working with Spatial Data](spatial-data.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migration Overview](migration-overview.html)

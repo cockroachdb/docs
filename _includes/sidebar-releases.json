@@ -7,7 +7,7 @@
         {
           "title": "Latest v20.1",
           "urls": [
-            "/releases/v20.1.7.html"
+            "/releases/v20.1.8.html"
           ]
         },
         {
@@ -34,9 +34,9 @@
       "title": "Testing Releases",
       "items": [
         {
-          "title": "Latest v20.2 Beta",
+          "title": "Latest v20.2",
           "urls": [
-            "/releases/v20.2.0-rc.1.html"
+            "/releases/v20.2.0-rc.2.html"
           ]
         },
         {

@@ -44,17 +44,17 @@ release_info:
     build_time: 2020/10/12 11:00:26 (go1.12.12)
     start_time: 2020-10-12 11:01:26.34274101 +0000 UTC
   v20.1:
-    name: v20.1.7
-    version: v20.1.7
+    name: v20.1.8
+    version: v20.1.8
     docker_image: cockroachdb/cockroach
-    build_time: 2020/10/12 11:00:26 (go1.13.4)
-    start_time: 2020-10-12 11:01:26.34274101 +0000 UTC
+    build_time: 2020/10/21 11:00:26 (go1.13.4)
+    start_time: 2020-10-21 11:01:26.34274101 +0000 UTC
   v20.2:
     name: v20.2.0
-    version: v20.2.0-rc.1
+    version: v20.2.0-rc.2
     docker_image: cockroachdb/cockroach-unstable
-    build_time: 2020/10/15 11:00:26 (go1.13.4)
-    start_time: 2020-10-15 11:01:26.34274101 +0000 UTC
+    build_time: 2020/10/20 11:00:26 (go1.13.4)
+    start_time: 2020-10-20 11:01:26.34274101 +0000 UTC
 
 
 include: ["_redirects"]

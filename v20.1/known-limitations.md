@@ -352,11 +352,9 @@ When CockroachDB is run in a containerized environment (e.g., Kubernetes), the A
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
 
-### `DISTINCT` operations cannot operate over JSON values
+### Ordering tables by `JSONB`/`JSON`-typed columns
 
-CockroachDB does not currently key-encode JSON values, which prevents `DISTINCT` filters from working on them.
-
-As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g., `SELECT DISTINCT col->>'field'...`.
+CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](query-order.html) [`JSONB`/`JSON`](jsonb.html)-typed columns.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 

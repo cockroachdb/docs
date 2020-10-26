@@ -17,11 +17,15 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
 <span class="version-tag">New in v20.2:</span> You can also create an index on a subset of rows. This type of index is called a partial index. For more information, see [Partial indexes](partial-indexes.html).
 
+<span class="version-tag">New in v20.2</span>: To index [spatial data](spatial-data.html), CockroachDB uses *spatial indexes*. For more information about spatial indexes, see [Spatial Indexes](spatial-indexes.html).
+
 ### Creation
 
 Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
 
 The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. However, you can use secondary indexes to improve the performance of queries using columns not in a table's primary key. You can create them:
+
+<a name="unique-secondary-indexes"></a>
 
 - At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
 - For existing tables with [`CREATE INDEX`](create-index.html).
@@ -58,6 +62,8 @@ To maximize your indexes' performance, we recommend following a few [best practi
 If you are working with a table that must be indexed on sequential keys, you should use **hash-sharded indexes**. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
 To create a hash-sharded index, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. Then, add the optional [`USING HASH WITH BUCKET_COUNT = n_buckets` clause](sql-grammar.html#opt_hash_sharded) to a [`CREATE INDEX`](create-index.html) statement, to an [`INDEX` definition](sql-grammar.html#index_def) in a [`CREATE TABLE`](create-table.html) statement, or to an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement. When this clause is used, CockroachDB creates `n_buckets` computed columns, shards the index into `n_buckets` shards, and then stores each index shard in the underlying key-value store with one of the computed column's hash as its prefix.
+
+To change the bucket size of an existing hash-sharded primary key index, use an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement with a [`USING HASH WITH BUCKET_COUNT = n_buckets` clause](sql-grammar.html#opt_hash_sharded) that specifies the new bucket size and the existing primary key columns.
 
 {{site.data.alerts.callout_info}}
 Hash-sharded indexes cannot be [interleaved](interleave-in-parent.html).
@@ -145,6 +151,7 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 ## See also
 
 - [Inverted Indexes](inverted-indexes.html)
+- [Spatial Indexes](spatial-indexes.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`CREATE INDEX`](create-index.html)

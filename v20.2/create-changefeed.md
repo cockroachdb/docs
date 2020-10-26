@@ -14,7 +14,7 @@ For more information, see [Stream Data Out of CockroachDB Using Changefeeds](str
 
 ## Required privileges
 
-Changefeeds can only be created by superusers, i.e., [members of the `admin` role](authorization.html#create-and-manage-roles). The admin role exists by default with `root` as the member.
+To create a changefeed, the user must be a member of the `admin` role or have the [`CREATECHANGEFEED`](create-user.html#create-a-user-that-can-control-changefeeds) parameter set.
 
 ## Synopsis
 

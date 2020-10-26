@@ -4,7 +4,9 @@ summary:
 toc: true
 ---
 
-A view is a stored [selection query](selection-queries.html) and provides a shorthand name for it. CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
+A view is a stored and named [selection query](selection-queries.html). By default, CockroachDB's views are **dematerialized**: they do not store the results of the underlying queries. Instead, the underlying query is executed anew every time the view is used.
+
+<span class="version-tag">New in v20.2:</span> CockroachDB also supports [**materialized views**](#materialized-views). Materialized views are views that store their selection query results.
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.2:</span> By default, views created in a database cannot reference objects in a different database. To enable cross-database references for views, set the `sql.cross_db_views.enabled` [cluster setting](cluster-settings.html) to `true`.
@@ -23,15 +25,22 @@ When you have a complex query that, for example, joins several tables, or perfor
 
 #### Example
 
-Let's say you're using our [sample `startrek` database](cockroach-gen.html#generate-example-data), which contains two tables, `episodes` and `quotes`. There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
+Let's say you're using our [sample `startrek` database](cockroach-gen.html#generate-example-data), which contains two tables, `episodes` and `quotes`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+> USE startrek;
+~~~
+
+There's a foreign key constraint between the `episodes.id` column and the `quotes.episode` column. To count the number of famous quotes per season, you could run the following join:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT episodes.season, count(*)
+  FROM quotes
+  JOIN episodes
+  ON quotes.episode = episodes.id
+  GROUP BY episodes.season;
 ~~~
 
 ~~~
@@ -47,24 +56,20 @@ Alternatively, to make it much easier to run this complex query, you could creat
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW startrek.quotes_per_season (season, quotes)
-  AS SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season
-  ORDER BY startrek.episodes.season;
-~~~
-
-~~~
-CREATE VIEW
+> CREATE VIEW quotes_per_season (season, quotes)
+  AS SELECT episodes.season, count(*)
+  FROM quotes
+  JOIN episodes
+  ON quotes.episode = episodes.id
+  GROUP BY episodes.season
+  ORDER BY episodes.season;
 ~~~
 
 Then, executing the query is as easy as `SELECT`ing from the view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.quotes_per_season;
+> SELECT * FROM quotes_per_season;
 ~~~
 
 ~~~
@@ -86,7 +91,12 @@ Let's say you have a `bank` database containing an `accounts` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM bank.accounts;
+> USE bank;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM accounts;
 ~~~
 
 ~~~
@@ -104,20 +114,16 @@ You want a particular user, `bob`, to be able to see the types of accounts each 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW bank.user_accounts
+> CREATE VIEW user_accounts
   AS SELECT type, email
-  FROM bank.accounts;
+  FROM accounts;
 ~~~
 
-~~~
-CREATE VIEW
-~~~
-
-You then make sure `bob` does not have privileges on the underlying `bank.accounts` table:
+You then make sure `bob` does not have privileges on the underlying `accounts` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON bank.accounts;
+> SHOW GRANTS ON accounts;
 ~~~
 
 ~~~
@@ -128,18 +134,18 @@ You then make sure `bob` does not have privileges on the underlying `bank.accoun
 (2 rows)
 ~~~
 
-Finally, you grant `bob` privileges on the `bank.user_accounts` view:
+Finally, you grant `bob` privileges on the `user_accounts` view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT SELECT ON bank.user_accounts TO bob;
+> GRANT SELECT ON user_accounts TO bob;
 ~~~
 
-Now, `bob` will get a permissions error when trying to access the underlying `bank.accounts` table but will be allowed to query the `bank.user_accounts` view:
+Now, `bob` will get a permissions error when trying to access the underlying `accounts` table but will be allowed to query the `user_accounts` view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM bank.accounts;
+> SELECT * FROM accounts;
 ~~~
 
 ~~~
@@ -148,7 +154,7 @@ pq: user bob does not have SELECT privilege on table accounts
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM bank.user_accounts;
+> SELECT * FROM user_accounts;
 ~~~
 
 ~~~
@@ -170,17 +176,13 @@ To create a view, use the [`CREATE VIEW`](create-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE VIEW startrek.quotes_per_season (season, quotes)
-  AS SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season
-  ORDER BY startrek.episodes.season;
-~~~
-
-~~~
-CREATE VIEW
+> CREATE VIEW quotes_per_season (season, quotes)
+  AS SELECT episodes.season, count(*)
+  FROM quotes
+  JOIN episodes
+  ON quotes.episode = episodes.id
+  GROUP BY episodes.season
+  ORDER BY episodes.season;
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -197,24 +199,25 @@ Once created, views are listed alongside regular tables in the database:
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  public      | episodes   | table | demo  |                  79
-  public      | quotes     | table | demo  |                 200
-(2 rows)
+  schema_name |    table_name     | type  | estimated_row_count
+--------------+-------------------+-------+----------------------
+  public      | episodes          | table |                  79
+  public      | quotes            | table |                 200
+  public      | quotes_per_season | view  |                   0
+(3 rows)
 ~~~
 
 To list just views, you can query the `views` table in the [Information Schema](information-schema.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.information_schema.views;
+> SELECT * FROM information_schema.views;
 ~~~
 
 ~~~
-  table_catalog | table_schema |    table_name     |                                                                                                      view_definition                                                                                                      | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into
-----------------+--------------+-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+-----------------------------
-  startrek      | public       | quotes_per_season | SELECT startrek.episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season ORDER BY startrek.episodes.season | NULL         | NO           | NO                 | NO                   | NO                   | NO
+  table_catalog | table_schema |    table_name     |                                                                               view_definition                                                                                | check_option | is_updatable | is_insertable_into | is_trigger_updatable | is_trigger_deletable | is_trigger_insertable_into
+----------------+--------------+-------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+--------------------+----------------------+----------------------+-----------------------------
+  startrek      | public       | quotes_per_season | SELECT episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON quotes.episode = episodes.id GROUP BY episodes.season ORDER BY episodes.season | NULL         | NO           | NO                 | NO                   | NO                   | NO
 (1 row)
 ~~~
 
@@ -224,7 +227,7 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.quotes_per_season;
+> SELECT * FROM quotes_per_season;
 ~~~
 
 ~~~
@@ -240,13 +243,13 @@ To query a view, target it with a [table expression](table-expressions.html#tabl
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE startrek.quotes_per_season;
+> SHOW CREATE quotes_per_season;
 ~~~
 
 ~~~
-             table_name             |                                                                                                                              create_statement
-------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  startrek.public.quotes_per_season | CREATE VIEW quotes_per_season (season, quotes) AS SELECT startrek.episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season ORDER BY startrek.episodes.season
+     table_name     |                                                                                                           create_statement
+--------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  quotes_per_season | CREATE VIEW public.quotes_per_season (season, quotes) AS SELECT episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON quotes.episode = episodes.id GROUP BY episodes.season ORDER BY episodes.season
 (1 row)
 ~~~
 
@@ -254,13 +257,13 @@ You can also inspect the `SELECT` statement executed by a view by querying the `
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT view_definition FROM startrek.information_schema.views WHERE table_name = 'quotes_per_season';
+> SELECT view_definition FROM information_schema.views WHERE table_name = 'quotes_per_season';
 ~~~
 
 ~~~
-                              view_definition
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  SELECT startrek.episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON startrek.quotes.episode = startrek.episodes.id GROUP BY startrek.episodes.season ORDER BY startrek.episodes.season
+                                                                                view_definition
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  SELECT episodes.season, count(*) FROM startrek.public.quotes JOIN startrek.public.episodes ON quotes.episode = episodes.id GROUP BY episodes.season ORDER BY episodes.season
 (1 row)
 ~~~
 
@@ -270,7 +273,7 @@ A view depends on the objects targeted by its underlying query. Attempting to [r
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE startrek.quotes RENAME TO startrek.sayings;
+> ALTER TABLE quotes RENAME TO sayings;
 ~~~
 
 ~~~
@@ -283,7 +286,7 @@ Likewise, attempting to [drop an object](drop-table.html) referenced in a view's
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE startrek.quotes;
+> DROP TABLE quotes;
 ~~~
 
 ~~~
@@ -294,7 +297,7 @@ HINT: you can drop quotes_per_season instead.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE startrek.episodes DROP COLUMN season;
+> ALTER TABLE episodes DROP COLUMN season;
 ~~~
 
 ~~~
@@ -341,7 +344,7 @@ When [dropping a table](drop-table.html) or [dropping a view](drop-view.html), y
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP TABLE startrek.quotes CASCADE;
+> DROP TABLE quotes CASCADE;
 ~~~
 
 ~~~
@@ -358,7 +361,7 @@ To rename a view, use the [`ALTER VIEW`](alter-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER VIEW startrek.quotes_per_season RENAME TO startrek.quotes_count;
+> ALTER VIEW quotes_per_season RENAME TO quotes_count;
 ~~~
 
 ~~~
@@ -373,32 +376,32 @@ It is not possible to change the stored query executed by the view. Instead, you
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE OR REPLACE VIEW startrek.quotes_count (season, quotes, stardate)
-  AS SELECT startrek.episodes.season, count(*), startrek.episodes.stardate
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season, startrek.episodes.stardate;
+> CREATE OR REPLACE VIEW quotes_count (season, quotes, stardate)
+  AS SELECT episodes.season, count(*), episodes.stardate
+  FROM quotes
+  JOIN episodes
+  ON quotes.episode = episodes.id
+  GROUP BY episodes.season, episodes.stardate;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM startrek.quotes_count LIMIT 10;
+> SELECT * FROM quotes_count LIMIT 10;
 ~~~
 
 ~~~
   season | quotes | stardate
 ---------+--------+-----------
-       2 |      1 |   3715.3
-       2 |      2 |   4523.3
-       3 |      1 |   4385.3
-       3 |      1 |   5423.4
-       1 |      1 |   1672.1
-       1 |      2 |   2817.6
-       1 |      3 |   2124.5
-       1 |      1 |   3045.6
-       2 |      2 |   3018.2
-       2 |      1 |   3619.2
+       1 |      5 |   1709.2
+       1 |      7 |   2821.5
+       1 |      2 |   3113.2
+       1 |      6 |     3134
+       1 |      3 |   2715.1
+       1 |      7 |   3012.4
+       1 |      2 |   3196.1
+       2 |      4 |   3468.1
+       2 |      1 |   3541.9
+       2 |      5 |   4211.4
 (10 rows)
 ~~~
 
@@ -408,7 +411,144 @@ To remove a view, use the [`DROP VIEW`](drop-view.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DROP VIEW startrek.quotes_count;
+> DROP VIEW quotes_count;
+~~~
+
+~~~
+DROP VIEW
+~~~
+
+## Materialized views
+
+<span class="version-tag">New in v20.2:</span> CockroachDB supports [materialized views](https://en.wikipedia.org/wiki/Materialized_view). Materialized views are views that store the results of their underlying queries.
+
+When you [select](selection-queries.html) from a materialized view, the stored query data that is returned might be out-of-date. This contrasts with a standard (i.e., "dematerialized") view, which runs its underlying query every time it is used, returning the latest results. In order to get the latest results from a materialized view, you must [refresh the view](refresh.html), and then select from it.
+
+Because materialized views store query results, they offer better performance than standard views, at the expense of the additional storage required to store query results and the guarantee that the results are up-to-date.
+
+### Usage
+
+Materialized views and standard views share similar syntax for [creating](create-view.html), [showing](show-tables.html), [renaming](alter-view.html), and [dropping](drop-view.html).
+
+To create a materialized view, use a [`CREATE MATERIALIZED VIEW`](create-view.html) statement.
+
+For example, suppose that you have the [sample `bank` database](cockroach-workload.html#bank-workload) loaded to a CockroachDB cluster, and populated with some workload values:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM overdrawn_accounts;
+~~~
+
+~~~
+  id  | balance
+------+----------
+    1 |  -17643
+    3 |   -5928
+   13 |   -3700
+...
+(402 rows)
+~~~
+
+To show existing materialized views, use a [`SHOW TABLES`](show-tables.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW TABLES;
+~~~
+
+~~~
+  schema_name |     table_name     |       type        | estimated_row_count
+--------------+--------------------+-------------------+----------------------
+  public      | bank               | table             |                1000
+  public      | overdrawn_accounts | materialized view |                   0
+(2 rows)
+~~~
+
+Now suppose you update the `balance` values of the `bank` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE bank SET balance = 0 WHERE balance < 0;
+~~~
+
+~~~
+UPDATE 402
+~~~
+
+The changes can be seen in the table with a simple `SELECT` statement against the table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, balance
+FROM bank
+WHERE balance < 0;
+~~~
+
+~~~
+  id | balance
+-----+----------
+(0 rows)
+~~~
+
+Recall that materialized views do not automatically update their stored results. Selecting from `overdrawn_accounts` returns stored results, which are outdated:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM overdrawn_accounts;
+~~~
+
+~~~
+  id  | balance
+------+----------
+    1 |  -17643
+    3 |   -5928
+   13 |   -3700
+...
+(402 rows)
+~~~
+
+To update the materialized view's results, use a [`REFRESH`](refresh.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> REFRESH MATERIALIZED VIEW overdrawn_accounts;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM overdrawn_accounts;
+~~~
+
+~~~
+  id | balance
+-----+----------
+(0 rows)
+~~~
+
+To rename the materialized view, use [`ALTER MATERIALIZED VIEW`](alter-view.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER MATERIALIZED VIEW overdrawn_accounts RENAME TO forgiven_accounts;
+~~~
+
+~~~
+RENAME VIEW
+~~~
+
+To remove the materialized view, use [`DROP MATERIALIZED VIEW`](drop-view.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP MATERIALIZED VIEW forgiven_accounts;
 ~~~
 
 ~~~
@@ -417,7 +557,7 @@ DROP VIEW
 
 ## Temporary views
 
- CockroachDB supports session-scoped temporary views. Unlike persistent views, temporary views can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary views on both persistent tables and [temporary tables](temporary-tables.html).
+CockroachDB supports session-scoped temporary views. Unlike persistent views, temporary views can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary views on both persistent tables and [temporary tables](temporary-tables.html).
 
 {{site.data.alerts.callout_danger}}
 **This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
@@ -449,11 +589,11 @@ For example:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TEMP VIEW temp_view (season, quotes)
-  AS SELECT startrek.episodes.season, count(*)
-  FROM startrek.quotes
-  JOIN startrek.episodes
-  ON startrek.quotes.episode = startrek.episodes.id
-  GROUP BY startrek.episodes.season;
+  AS SELECT episodes.season, count(*)
+  FROM quotes
+  JOIN episodes
+  ON quotes.episode = episodes.id
+  GROUP BY episodes.season;
 ~~~
 
 {% include copy-clipboard.html %}

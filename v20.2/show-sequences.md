@@ -35,9 +35,9 @@ Parameter | Description
 ~~~
 
 ~~~
- sequence_name
----------------
- sequence_test
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | sequence_test
 (1 row)
 ~~~
 

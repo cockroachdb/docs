@@ -37,6 +37,7 @@ table td:first-child {
  `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
+ `ONLY ... *` | <span class="version-tag">New in v20.2:</span> Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
 
 ## Success responses
 

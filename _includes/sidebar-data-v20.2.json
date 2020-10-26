@@ -112,10 +112,10 @@
                 ]
               },
               {
-              		"title": "Working with Spatial Data",
-              		"urls": [
-              		  "/${VERSION}/spatial-data.html"
-              		]
+                "title": "Working with Spatial Data",
+                "urls": [
+                    "/${VERSION}/spatial-data.html"
+                ]
               }
             ]
           }
@@ -1333,6 +1333,12 @@
     		    ]
     		  },
     		  {
+    		    "title": "<code>OWNER TO</code>",
+    		    "urls": [
+    		      "/${VERSION}/owner-to.html"
+    		    ]
+    		  },
+    		  {
     		    "title": "<code>PARTITION BY</code> (Enterprise)",
     		    "urls": [
     		      "/${VERSION}/partition-by.html"
@@ -1348,6 +1354,12 @@
     		    "title": "<code>PAUSE SCHEDULES</code>",
     		    "urls": [
     		      "/${VERSION}/pause-schedules.html"
+    		    ]
+    		  },
+    		  {
+    		    "title": "<code>REFRESH</code>",
+    		    "urls": [
+    		      "/${VERSION}/refresh.html"
     		    ]
     		  },
     		  {
@@ -2003,21 +2015,27 @@
     		]
       },
       {
-    		"title": "Spatial Features",
-    		  "items": [
-    		      {
-    			  "title": "Overview",
-    			  "urls": [
-    			      "/${VERSION}/spatial-features.html"
-    			  ]
-	      },
-	      {
-  			  "title": "Spatial and GIS Glossary of Terms",
-  			  "urls": [
-  			      "/${VERSION}/spatial-glossary.html"
-  			  ]
-	      }
-	]
+          "title": "Spatial Features",
+          "items": [
+              {
+                  "title": "Overview",
+                  "urls": [
+                      "/${VERSION}/spatial-features.html"
+                  ]
+              },
+              {
+                  "title": "Spatial and GIS Glossary of Terms",
+                  "urls": [
+                      "/${VERSION}/spatial-glossary.html"
+                  ]
+              },
+              {
+                  "title": "Spatial Indexes",
+                  "urls": [
+                      "/${VERSION}/spatial-indexes.html"
+                  ]
+              }
+          ]
       },
       {
     		"title": "Performance Optimization",

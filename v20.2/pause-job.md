@@ -18,7 +18,7 @@ After pausing jobs, you can resume them with [`RESUME JOB`](resume-job.html).
 
 ## Required privileges
 
-By default, only the `root` user can control a job.
+To pause a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](create-user.html#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) parameter set.
 
 ## Synopsis
 

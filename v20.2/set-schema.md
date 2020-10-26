@@ -59,14 +59,14 @@ By default, [unqualified tables](sql-name-resolution.html#lookup-with-unqualifie
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | owner | estimated_row_count
---------------+----------------------------+-------+-------+----------------------
-  public      | promo_codes                | table | demo  |                1000
-  public      | rides                      | table | demo  |                 500
-  public      | user_promo_codes           | table | demo  |                   0
-  public      | users                      | table | demo  |                  50
-  public      | vehicle_location_histories | table | demo  |                1000
-  public      | vehicles                   | table | demo  |                  15
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -90,14 +90,14 @@ Then, change the table's schema:
 ~~~
 
 ~~~
-   schema_name   |         table_name         | type  | owner | estimated_row_count
------------------+----------------------------+-------+-------+----------------------
-  cockroach_labs | promo_codes                | table | demo  |                1000
-  public         | rides                      | table | demo  |                 500
-  public         | user_promo_codes           | table | demo  |                   0
-  public         | users                      | table | demo  |                  50
-  public         | vehicle_location_histories | table | demo  |                1000
-  public         | vehicles                   | table | demo  |                  15
+   schema_name   |         table_name         | type  | estimated_row_count
+-----------------+----------------------------+-------+----------------------
+  cockroach_labs | promo_codes                | table |                1000
+  public         | rides                      | table |                 500
+  public         | user_promo_codes           | table |                   0
+  public         | users                      | table |                  50
+  public         | vehicle_location_histories | table |                1000
+  public         | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -116,9 +116,9 @@ Suppose you [create a sequence](create-sequence.html) that you would like to add
 ~~~
 
 ~~~
-  sequence_name
------------------
-  even_numbers
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | even_numbers
 (1 row)
 ~~~
 
@@ -158,6 +158,18 @@ Then, change the sequence's schema:
 ~~~
 ERROR: relation "public.even_numbers" does not exist
 SQLSTATE: 42P01
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SEQUENCES;
+~~~
+
+~~~
+  sequence_schema | sequence_name
+------------------+----------------
+  cockroach_labs  | even_numbers
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
