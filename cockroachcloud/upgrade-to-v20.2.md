@@ -107,7 +107,7 @@ Most v20.2 features can be used right away, but there are some that will be enab
 
 - **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foriegn-key.html) constraint.
 
-- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) to set a minimum length for passwords.
+- **Minimum password length:** After finalization, the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) will be respected as the minimum length for passwords.
 
 - **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
 
