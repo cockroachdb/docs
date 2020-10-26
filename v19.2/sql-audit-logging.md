@@ -16,6 +16,9 @@ For reference material, including a detailed description of the audit log file f
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
+{{site.data.alerts.callout_success}}
+To learn about other SQL query logging options, see [SQL logging](query-behavior-troubleshooting.html#sql-logging).
+{{site.data.alerts.end}}
 
 ## Step 1. Create sample tables
 
@@ -184,3 +187,4 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 - [SQL FAQ - generating unique row IDs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [SQL Feature Support](sql-feature-support.html)
+- [SQL logging](query-behavior-troubleshooting.html#sql-logging)
