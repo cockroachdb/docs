@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+image=cockroachdb/offline-docs
+
+root=$(cd "$(dirname "$0")" && pwd)
+repo_root=$root/..
+
+usage_and_exit() {
+  echo "usage: $0 <run|build|push>" >&2
+  exit 1
+}
+
+command=${1:-} && shift
+[[ "$command" ]] || usage_and_exit
+
+case "$command" in
+  build)
+    docker build -t "$image" --file="$root/Dockerfile" "$repo_root"
+    ;;
+  push)
+    tag=$(date +%Y%m%d-%H%M%S)
+    docker tag "$image" "$image:$tag"
+    docker push "$image:$tag"
+    ;;
+  run)
+    [[ -t 0 ]] && tty=--tty
+    docker run --rm --interactive ${tty:-} \
+      -p 4000:4000 \
+      --user "$(id -u):$(id -g)" \
+      "$image" "$@"
+    ;;
+  *)
+    usage_and_exit
+    ;;
+esac
