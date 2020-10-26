@@ -9,16 +9,19 @@ CockroachDB supports the PostgreSQL wire protocol and the majority of its syntax
 
 CockroachDB is compatible with PostgreSQL 9.5 and works with majority of PostgreSQL database tools such as [Dbeaver](dbeaver.html), [Intellij](intellij-idea.html), pgdump and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](build-an-app-with-cockroachdb.html).
 
-However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because these features cannot be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
+However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 
-{{site.data.alerts.callout_info}}This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+This document currently only covers unsupported SQL and how to rewrite SQL expressions. It does not discuss strategies for porting applications that use <a href="sql-feature-support.html">SQL features CockroachDB does not currently support</a>.
+{{site.data.alerts.end}}
 
 ## Unsupported Features
 
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
 
-##Features that differ from PostgreSQL
-Note, some of these differences below only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
+## Features that differ from PostgreSQL
+
+Note, some of the differences below only apply to rare inputs, and so no change will be needed, even if the listed feature is being used. In these cases, it is safe to ignore the porting instructions.
 
 ### Overflow of `float`
 
@@ -39,11 +42,10 @@ SELECT 1e300::float * 1e10::float;
 ~~~
 
 ~~~
-+----------------------------+
-| 1e300::FLOAT * 1e10::FLOAT |
-+----------------------------+
-| +Inf                       |
-+----------------------------+
+  ?column?
+------------
+  +Inf
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -52,11 +54,10 @@ SELECT pow(0::float, -1::float);
 ~~~
 
 ~~~
-+---------------------------+
-| pow(0::FLOAT, - 1::FLOAT) |
-+---------------------------+
-| +Inf                      |
-+---------------------------+
+  pow
+--------
+  +Inf
+(1 row)
 ~~~
 
 ### Precedence of unary `~`
@@ -65,7 +66,14 @@ In PostgreSQL, the unary `~` (bitwise not) operator has a low precedence. For ex
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT ~1 + 2
+SELECT ~1 + 2;
+~~~
+
+~~~
+  ?column?
+------------
+         0
+(1 row)
 ~~~
 
 In CockroachDB, unary `~` has the same (high) precedence as unary `-`, so the above expression will be parsed as `(~1) + 2`.
@@ -86,7 +94,14 @@ In PostgreSQL, division of integers results in an integer. For example, the foll
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 1 + 1 / 2
+SELECT 1 + 1 / 2;
+~~~
+
+~~~
+  ?column?
+------------
+       1.5
+(1 row)
 ~~~
 
 In CockroachDB, integer division results in a `decimal`. CockroachDB instead provides the `//` operator to perform floor division.
@@ -99,7 +114,14 @@ In PostgreSQL, the shift operators (`<<`, `>>`) sometimes modulo their second ar
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 1::int << 32
+SELECT 1::int << 32;
+~~~
+
+~~~
+   ?column?
+--------------
+  4294967296
+(1 row)
 ~~~
 
 In CockroachDB, no such modulo is performed.
@@ -108,15 +130,16 @@ In CockroachDB, no such modulo is performed.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT 1::int << (x % 64)
+SELECT 1::int << (x % 64);
 ~~~
 
 ### Locking and `FOR UPDATE`
 
-: CockroachDB supports the `SELECT FOR UPDATE` statement, which is used to order transactions by controlling concurrent access to one or more rows of a table.
+CockroachDB supports the `SELECT FOR UPDATE` statement, which is used to order transactions by controlling concurrent access to one or more rows of a table.
 
 For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
 
 
-###SQL Compatibility
+### SQL Compatibility
+
 Click the following link to find a full list of [CockroachDB supported SQL Features](sql-feature-support.html).
