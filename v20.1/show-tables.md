@@ -19,7 +19,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list the tables in a schema or database.
+The `SELECT` [privilege](authorization.html#assign-privileges) on a table is required to list it with `SHOW TABLES`.
 
 ## Parameters
 
