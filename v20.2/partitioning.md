@@ -30,7 +30,7 @@ Table partitioning involves a combination of CockroachDB features:
 
 To store partitions in specific locations (e.g., geo-partitioning), or on machines with specific attributes (e.g., archival-partitioning), the nodes of your cluster must be [started](cockroach-start.html) with the relevant flags:
 
-- Use the `--locality` flag to assign key-value pairs that describe the location of a node, for example, `--locality=region=east,datacenter=us-east-1`.
+- Use the `--locality` flag to assign key-value pairs that describe the location of a node, for example, `--locality=region=east,az=us-east-1`.
 - Use the `--attrs` flag to specify node capability, which might include specialized hardware or number of cores, for example, `--attrs=ram:64gb`.
 - Use the `attrs` field of the `--store` flag to specify disk type or capability, for example,`--store=path=/mnt/ssd01,attrs=ssd`.
 
@@ -132,19 +132,19 @@ CockroachDB uses the most granular zone config available. Zone configs that targ
 
 ### Define table partitions by list
 
-Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have three datacenters: one in the United States, one in Germany, and another in Australia. To reduce latency, we want to keep the students' data closer to their locations:
+Consider a global online learning portal, RoachLearn, that has a database containing a table of students across the world. Suppose we have three availability zone: one in the United States, one in Germany, and another in Australia. To reduce latency, we want to keep the students' data closer to their locations:
 
-- We want to keep the data of the students located in the United States and Canada in the United States datacenter.
-- We want to keep the data of students located in Germany and Switzerland in the German datacenter.
-- We want to keep the data of students located in Australia and New Zealand in the Australian datacenter.
+- We want to keep the data of the students located in the United States and Canada in the United States availability zone.
+- We want to keep the data of students located in Germany and Switzerland in the German availability zone.
+- We want to keep the data of students located in Australia and New Zealand in the Australian availability zone.
 
 #### Step 1. Identify the partitioning method
 
 We want to geo-partition the table to keep the students' data closer to their locations. We can achieve this by partitioning on `country` and using the `PARTITION BY LIST` syntax.
 
-#### Step 2. Start each node with its datacenter location specified in the `--locality` flag
+#### Step 2. Start each node with its availability zone location specified in the `--locality` flag
 
-1. Start 3 nodes in the US datacenter:
+1. Start 3 nodes in the US availability zone:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -194,7 +194,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --host=localhost:26257
     ~~~
 
-3. Add 3 nodes in the German datacenter:
+3. Add 3 nodes in the German availability zone:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -235,7 +235,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-3. Add 3 nodes in the Australian datacenter:
+3. Add 3 nodes in the Australian availability zone:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -349,7 +349,7 @@ See [Set the Trial or Enterprise License Key](enterprise-licensing.html#set-a-li
 
 To create replication zone and apply them to corresponding partitions, use the [`ALTER PARTITION ... CONFIGURE ZONE`](configure-zone.html) statement:
 
-1. Create a replication zone for the `north_america` partition and constrain its data to the US datacenter:
+1. Create a replication zone for the `north_america` partition and constrain its data to the US availability zone:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -357,7 +357,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=us]';
     ~~~
 
-2. Create a replication zone for the `europe` partition and constrain its data to the German datacenter:
+2. Create a replication zone for the `europe` partition and constrain its data to the German availability zone:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -365,7 +365,7 @@ To create replication zone and apply them to corresponding partitions, use the [
         CONFIGURE ZONE USING constraints='[+region=de]';
     ~~~
 
-3. Create a replication zone for the `australia` partition and constrain its data to the Australian datacenter:
+3. Create a replication zone for the `australia` partition and constrain its data to the Australian availability zone:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -558,27 +558,27 @@ We want to geo-partition as well as archival-partition the table. We can achieve
 
 #### Step 2. Start each node with the appropriate storage device specified in the `--store` flag
 
-Start a node in the US datacenter:
+Start a node in the US availability zone:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
 --advertise-addr=<node1 hostname> \
---locality=datacenter=us1 \
+--locality=az=us1 \
 --store=path=/mnt/1,attrs=ssd \
 --store=path=/mnt/2,attrs=hdd \
 --join=<node1 hostname>,<node2 hostname>
 ~~~
 
-Start a node in the AUS datacenter:
+Start a node in the AUS availability zone:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach start \
 --insecure \
 --advertise-addr=<node2 hostname> \
---locality=datacenter=aus1 \
+--locality=az=aus1 \
 --store=path=/mnt/3,attrs=ssd \
 --store=path=/mnt/4,attrs=hdd \
 --join=<node1 hostname>,<node2 hostname>
@@ -621,25 +621,25 @@ To create zone configurations and apply them to corresponding partitions, use th
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION current_us OF TABLE students
-    CONFIGURE ZONE USING constraints='[+ssd,+datacenter=us1]';
+    CONFIGURE ZONE USING constraints='[+ssd,+az=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION graduated_us OF TABLE students CONFIGURE ZONE
-    USING constraints='[+hdd,+datacenter=us1]';
+    USING constraints='[+hdd,+az=us1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION current_au OF TABLE students
-    CONFIGURE ZONE USING constraints='[+ssd,+datacenter=aus1]';
+    CONFIGURE ZONE USING constraints='[+ssd,+az=aus1]';
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > ALTER PARTITION graduated_au OF TABLE students CONFIGURE ZONE
-    USING constraints='[+hdd,+datacenter=aus1]';
+    USING constraints='[+hdd,+az=aus1]';
 ~~~
 
 #### Step 6. Verify table partitions
@@ -702,9 +702,9 @@ To view the replication zone for a partition, use the [`SHOW ZONE CONFIGURATION`
 
 There is a tradeoff between making reads/writes fast and surviving failures. Consider a partition with three replicas of `roachlearn.students` for Australian students.
 
-- If only one replica is pinned to an Australian datacenter, then reads may be fast (via leases follow the workload) but writes will be slow.
-- If two replicas are pinned to an Australian datacenter, then reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same datacenter, then the loss of one datacenter can lead to data unavailability, so some deployments may want two separate Australian datacenters.
-- If all three replicas are in Australian datacenters, then three Australian datacenters are needed to be resilient to a datacenter loss.
+- If only one replica is pinned to an Australian availability zone, then reads may be fast (via leases follow the workload) but writes will be slow.
+- If two replicas are pinned to an Australian availability zone, then reads and writes will be fast (as long as the cross-ocean link has enough bandwidth that the third replica doesn’t fall behind). If those two replicas are in the same availability zone, then the loss of one availability zone can lead to data unavailability, so some deployments may want two separate Australian availability zones.
+- If all three replicas are in Australian availability zones, then three Australian availability zones are needed to be resilient to an availability zone loss.
 
 ## How CockroachDB's partitioning differs from other databases
 

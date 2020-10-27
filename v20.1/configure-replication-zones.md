@@ -16,7 +16,7 @@ Replication zones give you the power to control what data goes where in your Coc
 For each of the above objects you can control:
 
 - How many copies of each range to spread through the cluster.
-- Which constraints are applied to which data, e.g., "table X's data can only be stored in the German datacenters".
+- Which constraints are applied to which data, e.g., "table X's data can only be stored in the German availability zones".
 - The maximum size of ranges (how big ranges get before they are split).
 - How long old data is kept before being garbage collected.
 - Where you would like the leaseholders for certain ranges to be located, e.g., "for ranges that are already constrained to have at least one replica in `region=us-west`, also try to put their leaseholders in `region=us-west`".
@@ -38,7 +38,7 @@ When a cluster starts, there are two categories of replication zone:
 
 You can adjust these pre-configured zones as well as add zones for individual databases, tables, rows, and secondary indexes as needed.  Note that adding zones for rows and secondary indexes is [enterprise-only](enterprise-licensing.html).
 
-For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your datacenters, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain datacenters and/or geographies.
+For example, you might rely on the [default zone](#view-the-default-replication-zone) to spread most of a cluster's data across all of your availability zones, but [create a custom replication zone for a specific database](#create-a-replication-zone-for-a-database) to make sure its data is only stored in certain availability zones and/or geographies.
 
 ## Replication zone levels
 
@@ -98,7 +98,7 @@ When starting a node with the [`cockroach start`](cockroach-start.html) command,
 
 Attribute Type | Description
 ---------------|------------
-**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](cockroach-start.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, datacenter, rack, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,datacenter=us-east-1`<br>`--locality=region=east,datacenter=us-east-2`<br>`--locality=region=west,datacenter=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](topology-follow-the-workload.html) for more details.
+**Node Locality** | <a name="zone-config-node-locality"></a> Using the [`--locality`](cockroach-start.html#locality) flag, you can assign arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, rack, etc. The key-value pairs should be ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,az=paris`), and the keys and the order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer. For example:<br><br>`--locality=region=east,az=us-east-1`<br>`--locality=region=east,az=us-east-2`<br>`--locality=region=west,az=us-west-1`<br><br>CockroachDB attempts to spread replicas evenly across the cluster based on locality, with the order of locality tiers determining the priority. Locality can also be used to influence the location of data replicas in various ways using replication zones.<br><br>When there is high latency between nodes, CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance. See [Follow-the-workload](topology-follow-the-workload.html) for more details.
 **Node Capability** | Using the `--attrs` flag, you can specify node capability, which might include specialized hardware or number of cores, for example:<br><br>`--attrs=ram:64gb`
 **Store Type/Capability** | Using the `attrs` field of the `--store` flag, you can specify disk type or capability, for example:<br><br>`--store=path=/mnt/ssd01,attrs=ssd`<br>`--store=path=/mnt/hda1,attrs=hdd:7200rpm`
 
@@ -124,7 +124,7 @@ Constraints can be specified such that they apply to all replicas in a zone or s
 Constraint Scope | Description | Syntax
 -----------------|-------------|-------
 **All Replicas** | Constraints specified using JSON array syntax apply to all replicas in every range that's part of the replication zone. | `constraints = '[+ssd, -region=west]'`
-**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores.<br><br>Note that per-replica constraints must be "required" (e.g., `'{"+region=west": 1}'`); they cannot be "prohibited" (e.g., `'{"-region=west": 1}'`). Also, when defining per-replica constraints on a database or table, `num_replicas` must be specified as well, but not when defining per-replica constraints on an index or partition.<br><br>See the [Per-replica constraints](#per-replica-constraints-to-specific-datacenters) example for more details. | `constraints = '{"+ssd,+region=west": 2, "+region=east": 1}', num_replicas = 3`
+**Per-Replica** | Multiple lists of constraints can be provided in a JSON object, mapping each list of constraints to an integer number of replicas in each range that the constraints should apply to.<br><br>The total number of replicas constrained cannot be greater than the total number of replicas for the zone (`num_replicas`). However, if the total number of replicas constrained is less than the total number of replicas for the zone, the non-constrained replicas will be allowed on any nodes/stores.<br><br>Note that per-replica constraints must be "required" (e.g., `'{"+region=west": 1}'`); they cannot be "prohibited" (e.g., `'{"-region=west": 1}'`). Also, when defining per-replica constraints on a database or table, `num_replicas` must be specified as well, but not when defining per-replica constraints on an index or partition.<br><br>See the [Per-replica constraints](#per-replica-constraints-to-specific-availability zones) example for more details. | `constraints = '{"+ssd,+region=west": 2, "+region=east": 1}', num_replicas = 3`
 
 ### Node/replica recommendations
 
@@ -210,7 +210,7 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
-### Constrain leaseholders to specific datacenters
+### Constrain leaseholders to specific availability zones
 
 {% include {{ page.version.version }}/zone-configs/constrain-leaseholders-to-specific-datacenters.md %}
 
@@ -218,41 +218,41 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 ## Scenario-based examples
 
-### Even replication across datacenters
+### Even replication across availability zones
 
 **Scenario:**
 
-- You have 6 nodes across 3 datacenters, 2 nodes in each datacenter.
-- You want data replicated 3 times, with replicas balanced evenly across all three datacenters.
+- You have 6 nodes across 3 availability zones, 2 nodes in each availability zone.
+- You want data replicated 3 times, with replicas balanced evenly across all three availability zones.
 
 **Approach:**
 
-1. Start each node with its datacenter location specified in the [`--locality`](cockroach-start.html#locality) flag:
+1. Start each node with its availability zone location specified in the [`--locality`](cockroach-start.html#locality) flag:
 
-    Datacenter 1:
+    Availability zone 1:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
     --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-1 \
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-1 \
     --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
     ~~~
 
-    Datacenter 2:
+    Availability zone 2:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=datacenter=us-2 \
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=datacenter=us-2 \
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
     ~~~
 
-    Datacenter 3:
+    Availability zone 3:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=datacenter=us-3 \
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=az=us-3 \
     --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=datacenter=us-3 \
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=az=us-3 \
     --join=<node1 hostname>,<node3 hostname>,<node5 hostname>
     ~~~
 
@@ -264,29 +264,29 @@ For more information, see [`CONFIGURE ZONE`](configure-zone.html).
 
 There's no need to make zone configuration changes; by default, the cluster is configured to replicate data three times, and even without explicit constraints, the cluster will aim to diversify replicas across node localities.
 
-### Per-replica constraints to specific datacenters
+### Per-replica constraints to specific availability zones
 
 **Scenario:**
 
-- You have 5 nodes across 5 datacenters in 3 regions, 1 node in each datacenter.
+- You have 5 nodes across 5 availability zones in 3 regions, 1 node in each availability zone.
 - You want data replicated 3 times, with a quorum of replicas for a database holding West Coast data centered on the West Coast and a database for nation-wide data replicated across the entire country.
 
 **Approach:**
 
-1. Start each node with its region and datacenter location specified in the [`--locality`](cockroach-start.html#locality) flag:
+1. Start each node with its region and availability zone location specified in the [`--locality`](cockroach-start.html#locality) flag:
 
     Start the five nodes:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=region=us-west1,datacenter=us-west1-a \
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=region=us-west1,az=us-west1-a \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=region=us-west1,datacenter=us-west1-b \
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=region=us-west1,az=us-west1-b \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=region=us-central1,datacenter=us-central1-a \
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=region=us-central1,az=us-central1-a \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=region=us-east1,datacenter=us-east1-a \
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=region=us-east1,az=us-east1-a \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
-    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=region=us-east1,datacenter=us-east1-b \
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=region=us-east1,az=us-east1-b \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>
     ~~~
 
@@ -342,7 +342,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     (1 row)
     ~~~
 
-    Two of the database's three replicas will be put in `region=us-west1` and its remaining replica will be put in `region=us-central1`. This gives the application the resilience to survive the total failure of any one datacenter while providing low-latency reads and writes on the West Coast because a quorum of replicas are located there.
+    Two of the database's three replicas will be put in `region=us-west1` and its remaining replica will be put in `region=us-central1`. This gives the application the resilience to survive the total failure of any one availability zone while providing low-latency reads and writes on the West Coast because a quorum of replicas are located there.
 
 6. No configuration is needed for the nation-wide database. The cluster is configured to replicate data 3 times and spread them as widely as possible by default. Because the first key-value pair specified in each node's locality is considered the most significant part of each node's locality, spreading data as widely as possible means putting one replica in each of the three different regions.
 
@@ -351,33 +351,33 @@ There's no need to make zone configuration changes; by default, the cluster is c
 **Scenario:**
 
 - You have 2 independent applications connected to the same CockroachDB cluster, each application using a distinct database.
-- You have 6 nodes across 2 datacenters, 3 nodes in each datacenter.
-- You want the data for application 1 to be replicated 5 times, with replicas evenly balanced across both datacenters.
-- You want the data for application 2 to be replicated 3 times, with all replicas in a single datacenter.
+- You have 6 nodes across 2 availability zone, 3 nodes in each availability zone.
+- You want the data for application 1 to be replicated 5 times, with replicas evenly balanced across both availability zones.
+- You want the data for application 2 to be replicated 3 times, with all replicas in a single availability zone.
 
 **Approach:**
 
-1. Start each node with its datacenter location specified in the [`--locality`](cockroach-start.html#locality) flag:
+1. Start each node with its availability zone location specified in the [`--locality`](cockroach-start.html#locality) flag:
 
-    Datacenter 1:
+    Availability zone 1:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
-    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-1 \
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
-    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=datacenter=us-1 \
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
     ~~~
 
-    Datacenter 2:
+    Availability zone 2:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=datacenter=us-2 \
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
-    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=datacenter=us-2 \
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
-    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=datacenter=us-2 \
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>,<node4 hostname>,<node5 hostname>,<node6 hostname>
     ~~~
 
@@ -432,7 +432,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     (1 row)
     ~~~
 
-    Nothing else is necessary for application 1's data. Since all nodes specify their datacenter locality, the cluster will aim to balance the data in the database used by application 1 between datacenters 1 and 2.
+    Nothing else is necessary for application 1's data. Since all nodes specify their availability zone locality, the cluster will aim to balance the data in the database used by application 1 between availability zones 1 and 2.
 
 6. Still in the SQL client, create a database for application 2:
 
@@ -445,7 +445,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+datacenter=us-2]';
+    > ALTER DATABASE app2_db CONFIGURE ZONE USING constraints = '[+az=us-2]';
     ~~~
 
 8. View the replication zone:
@@ -463,12 +463,12 @@ There's no need to make zone configuration changes; by default, the cluster is c
                        |     range_max_bytes = 536870912,
                        |     gc.ttlseconds = 90000,
                        |     num_replicas = 3,
-                       |     constraints = '[+datacenter=us-2]',
+                       |     constraints = '[+az=us-2]',
                        |     lease_preferences = '[]'
     (1 row)
     ~~~
 
-    The required constraint will force application 2's data to be replicated only within the `us-2` datacenter.
+    The required constraint will force application 2's data to be replicated only within the `us-2` availability zone.
 
 ### Stricter replication for a table and its secondary indexes
 
@@ -564,9 +564,9 @@ There's no need to make zone configuration changes; by default, the cluster is c
 
 **Scenario:**
 
-- You have nodes spread across 7 datacenters.
+- You have nodes spread across 7 availability zones.
 - You want data replicated 5 times by default.
-- For better performance, you want a copy of the meta ranges in all of the datacenters.
+- For better performance, you want a copy of the meta ranges in all of the availability zones.
 - To save disk space, you only want the internal timeseries data replicated 3 times by default.
 
 **Approach:**
@@ -574,19 +574,19 @@ There's no need to make zone configuration changes; by default, the cluster is c
 1. Start each node with a different [locality](cockroach-start.html#locality) attribute:
 
     ~~~ shell
-    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=datacenter=us-1 \
+    $ cockroach start --insecure --advertise-addr=<node1 hostname> --locality=az=us-1 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>   
-    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=datacenter=us-2 \
+    $ cockroach start --insecure --advertise-addr=<node2 hostname> --locality=az=us-2 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
-    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=datacenter=us-3 \
+    $ cockroach start --insecure --advertise-addr=<node3 hostname> --locality=az=us-3 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
-    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=datacenter=us-4 \
+    $ cockroach start --insecure --advertise-addr=<node4 hostname> --locality=az=us-4 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
-    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=datacenter=us-5 \
+    $ cockroach start --insecure --advertise-addr=<node5 hostname> --locality=az=us-5 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
-    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=datacenter=us-6 \
+    $ cockroach start --insecure --advertise-addr=<node6 hostname> --locality=az=us-6 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
-    $ cockroach start --insecure --advertise-addr=<node7 hostname> --locality=datacenter=us-7 \
+    $ cockroach start --insecure --advertise-addr=<node7 hostname> --locality=az=us-7 \
     --join=<node1 hostname>,<node2 hostname>,<node3 hostname>
     ~~~
 
@@ -655,7 +655,7 @@ There's no need to make zone configuration changes; by default, the cluster is c
     (1 row)
     ~~~
 
-    The `meta` addressing ranges will be replicated such that one copy is in all 7 datacenters, while all other data will be replicated 5 times.
+    The `meta` addressing ranges will be replicated such that one copy is in all 7 availability zones, while all other data will be replicated 5 times.
 
 6. Configure the `timeseries` replication zone:
 
