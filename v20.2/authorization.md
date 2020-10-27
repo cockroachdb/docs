@@ -97,6 +97,16 @@ A user or role that is a member of the role by association.
 
 Example: A is a member of C ... is a member of B where "..." is an arbitrary number of memberships.
 
+## Object ownership
+
+<span class="version-tag">New in v20.2</span> All CockroachDB objects must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
+
+All objects that do not have owners have `admin` set as the default owner except system objects. System objects without owners have `node` as their owner.  
+
+To allow another user to use the object, the owner needs to [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
+
+Users that [own objects](authorization.html#privileges) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
+
 ## Privileges
 
 When a user connects to a database, either via the built-in SQL client or a client driver, CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
