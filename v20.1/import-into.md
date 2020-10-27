@@ -4,7 +4,7 @@ summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-The `IMPORT INTO` [statement](sql-statements.html) imports CSV data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
+The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
 
 ## Considerations
 
@@ -244,6 +244,7 @@ For more detailed information about importing data from Avro and examples, see [
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~
+- `IMPORT INTO` cannot be used on a table with a [`DEFAULT`](default.html) expression for any of its columns.
 
 ## See also
 

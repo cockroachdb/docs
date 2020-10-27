@@ -4,7 +4,7 @@ summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-The `IMPORT INTO` [statement](sql-statements.html) imports CSV data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
+The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
 
 ## Considerations
 
@@ -70,9 +70,37 @@ For instructions and working examples showing how to migrate data from other dat
 Before using `IMPORT INTO`, you should have:
 
 - An existing table to import into (use [`CREATE TABLE`](create-table.html)).
+
+    <span class="version-tag">New in v20.2:</span> `IMPORT INTO` supports [computed columns](computed-columns.html) and the [`DEFAULT` expressions listed below](#supported-default-expressions).
+
 - The CSV or Avro data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster. For more information, see the [Import file location](#import-file-location) section below.
 
-{% include {{ page.version.version }}/sql/import-into-default-value.md %}
+#### Supported `DEFAULT` expressions
+
+<span class="version-tag">New in v20.2:</span> `IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
+
+- Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
+
+    - Literals (booleans, strings, integers, decimals, dates)
+    - Functions where each argument is a constant expression and the functions themselves depend solely on their arguments (e.g., arithmetic operations, boolean logical operations, string operations).
+
+- Current [`TIMESTAMP`](timestamp.html) functions that record the transcation timestamp, which include:
+
+    - `current_date()`
+    - `current_timestamp()`
+    - `localtimestamp()`
+    - `now()`
+    - `statement_timestamp()`
+    - `timeofday()`
+    - `transaction_timestamp()`
+
+- `random()`
+- `gen_random_uuid`
+- `unique_rowid()`
+
+{{site.data.alerts.callout_info}}
+Non-targeted columns with constant default expressions are not required to be nullable.
+{{site.data.alerts.end}}
 
 ### Available storage
 
