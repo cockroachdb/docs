@@ -8,79 +8,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### Primary key changes and zone configs
-
-When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
-
-As a workaround, recreate the zone configurations after changing the table's primary key.
-
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/48254)
-
-### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
-
-Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
-
-~~~ sql
-> BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
-~~~
-
-~~~
-ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
-SQLSTATE: 0A000
-HINT: You have attempted to use a feature that is not yet implemented.
-See: https://github.com/cockroachdb/cockroach/issues/46414
-~~~
-
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/46414)
-
-### Column name from an outer column inside a subquery differs from PostgreSQL
-
-CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
-
-~~~ sql
-> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
-~~~
-
-CockroachDB:
-
-~~~
-  ?column?
-------------
-         1
-~~~
-
-PostgreSQL:
-
-~~~
- x
----
- 1
-~~~
-
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/46563)
-
-### Privileges required to access to certain virtual tables differs from PostgreSQL
-
-Access to certain virtual tables in the `pg_catalog` and `information_schema` schemas require more privileges than in PostgreSQL. For example, in CockroachDB, access to `pg_catalog.pg_types` requires the `SELECT` privilege on the current database, whereas this privilege is not required in PostgreSQL.
-
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/43177)
-
-### Concurrent SQL shells overwrite each other's history
-
-The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine, therefore, each shell's command history can get overwritten in unexpected ways.
-
-As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
-~~~
-
 ## Unresolved limitations
 
 ### Subqueries in `SET` statements
@@ -98,7 +25,7 @@ SQLSTATE: 22023
 DETAIL: subqueries are not allowed in SET
 ~~~
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/42896)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
@@ -106,11 +33,7 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 
 As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](cockroach-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Adding stores to a node
-
-{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
 ### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
 
@@ -133,7 +56,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ### Cold starts of large clusters may require manual intervention
 
@@ -147,7 +70,7 @@ To exit this state, you should:
 
 Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](admin-ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
 ### Requests to restarted node in need of snapshots may hang
 
@@ -174,7 +97,7 @@ To resolve this issue on Windows, download Go's official [zoneinfo.zip](https://
 
 Make sure to do this across all nodes in the cluster and to keep this time zone data up-to-date.
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/36864)
 
 ### Change data capture
 
@@ -211,16 +134,6 @@ The Statements page does not correctly report "mean latency" or "latency by phas
 CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
-
-### Using SQLAlchemy with CockroachDB
-
-Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB {{ page.version.version }}.
-
-### Admin UI: CPU percentage calculation
-
-For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have _n_ cores, then the user CPU percent can range from 0% (indicating an idle system) to (_n_*100)% (indicating full utilization).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
 
 ### Admin UI: CPU count in containerized environments
 
@@ -260,25 +173,15 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
-### Dumping a table with no user-visible columns
-
-{% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
-
-### Dumping a table with collations
-
-{% include {{page.version.version}}/known-limitations/dump-table-with-collations.md %}
-
 ### Import with a high amount of disk contention
 
 {% include {{ page.version.version }}/known-limitations/import-high-disk-contention.md %}
 
-### Assigning latitude/longitude for the Node Map
-
-{% include {{ page.version.version }}/known-limitations/node-map.md %}
-
 ### Placeholders in `PARTITION BY`
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+[GitHub Tracking Issue](https://github.com/cockroachdb/cockroach/issues/19464)
 
 ### Adding a column with sequence-based `DEFAULT` values
 
@@ -372,11 +275,9 @@ Many string operations are not properly overloaded for [collated strings](collat
 ~~~
 
 ~~~
-+------------------------+
-| 'string1' || 'string2' |
-+------------------------+
-| string1string2         |
-+------------------------+
+     ?column?
+------------------
+  string1string2
 (1 row)
 ~~~
 
@@ -403,10 +304,6 @@ When a node has both a high number of client connections and running queries, th
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
 
-### SQL subexpressions and memory usage
-
-Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP BY`, subqueries) accumulate intermediate results in RAM on the node processing the query. If the operator attempts to process more rows than can fit into RAM, the node will either crash or report a memory capacity error. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
-
 ### Query planning for `OR` expressions
 
 Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
@@ -416,3 +313,64 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
 {% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
+
+Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
+
+~~~ sql
+> BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
+~~~
+
+~~~
+ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
+SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://github.com/cockroachdb/cockroach/issues/46414
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46414)
+
+### Column name from an outer column inside a subquery differs from PostgreSQL
+
+CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
+
+~~~ sql
+> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
+~~~
+
+CockroachDB:
+
+~~~
+  ?column?
+------------
+         1
+~~~
+
+PostgreSQL:
+
+~~~
+ x
+---
+ 1
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
+
+### Concurrent SQL shells overwrite each other's history
+
+The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine, therefore, each shell's command history can get overwritten in unexpected ways.
+
+As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42027)
