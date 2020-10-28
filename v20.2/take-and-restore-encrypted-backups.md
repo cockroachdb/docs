@@ -36,7 +36,7 @@ Before you can use AWS KMS to encrypt a CockroachDB backup, you must first gener
 The AWS KMS URI must use the following format:
 
 ~~~
-aws:///<host>?AUTH=<auth_type>&REGION=<region>
+aws:///<cmk>?AUTH=<auth_type>&REGION=<region>
 ~~~
 
 The AWS URI **requires** the following:
@@ -44,7 +44,7 @@ The AWS URI **requires** the following:
  Component                  | Description
 ----------------------------+------------------------------------------------------------------------
 `aws:///`                   | The AWS scheme. Note the triple slash (`///`).
-`<host>`                    | The key identifiers used to reference the CMK that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
+`<cmk>`                     | The key identifiers used to reference the CMK that should be used to encrypt or decrypt. For information about the supported formats, see the [AWS KMS docs](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-id).
 `AUTH=<auth_type>`          | The user-specified credentials.<ul><li>If the `AUTH` parameter is not provided, the AWS connections default to `specified` and the access keys must be provided in the URI parameters (e.g., `AWS_ACCESS_KEY_ID=<key_id>&AWS_SECRET_ACCESS_KEY=<secret_key>`).</li><li>If `AUTH=implicit`, the access keys can be omitted and the [credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/).</li></ul>
 `REGION=<region>`           | The region of the CMK.
 
@@ -63,7 +63,7 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
-    WITH kms = 'aws:///<host>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
+    WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
 ~~~
@@ -81,8 +81,8 @@ To take a backup with [multi-region encryption](#multi-region), use the `kms` op
 ~~~ sql
 > BACKUP TO 's3://test/backups/test_explicit_kms_2?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH KMS=(
-      'aws:///<host>?AUTH=implicit&REGION=us-east-1',
-      'aws:///<host>?AUTH=implict&REGION=us-west-1'
+      'aws:///<cmk>?AUTH=implicit&REGION=us-east-1',
+      'aws:///<cmk>?AUTH=implict&REGION=us-west-1'
     );
 ~~~
 
@@ -102,7 +102,7 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
-    WITH kms = 'aws:///<host>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
+    WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
 ~~~
