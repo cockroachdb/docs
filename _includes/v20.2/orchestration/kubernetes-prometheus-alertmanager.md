@@ -12,6 +12,19 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
+    <section class="filter-content" markdown="1" data-scope="operator">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl label svc cockroachdb prometheus=cockroachdb
+    ~~~
+
+    ~~~
+    service/cockroachdb labeled
+    ~~~
+
+    This ensures that there is a Prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
+    </section>
+
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -38,19 +51,31 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     This ensures that there is a Prometheus job and monitoring data only for the `my-release-cockroachdb` service, not for the `my-release-cockroach-public` service.
     </section>
 
-2. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml):
+2. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml):
+    
+    {{site.data.alerts.callout_info}}
+    If you run into an error when installing the Prometheus Operator, first try updating the [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) specified in the below command and reapplying the manifest. If this doesn't work, please [file an issue](file-an-issue.html).
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.20/bundle.yaml
+    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml
     ~~~
 
     ~~~
-    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator created
-    clusterrole.rbac.authorization.k8s.io/prometheus-operator created
-    serviceaccount/prometheus-operator created
+    customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created
+    customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created
+    customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created
+    customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created
+    customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created
+    customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created
+    customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created
+    clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator configured
+    clusterrole.rbac.authorization.k8s.io/prometheus-operator configured
     deployment.apps/prometheus-operator created
+    serviceaccount/prometheus-operator configured
+    service/prometheus-operator created
     ~~~
 3. Confirm that the `prometheus-operator` has started:
 

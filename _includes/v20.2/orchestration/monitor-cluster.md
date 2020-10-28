@@ -6,6 +6,16 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 
     Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
+    <section class="filter-content" markdown="1" data-scope="operator">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl exec -it cockroachdb-2 \
+    -- ./cockroach sql \
+    --certs-dir cockroach-certs
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
@@ -13,6 +23,14 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
     --certs-dir=/cockroach-certs \
     --host=cockroachdb-public
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="helm">
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    </section>
 
 1.  Assign `roach` to the `admin` role (you only need to do this once):
 
@@ -31,6 +49,13 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 {% endif %}
 
 1. In a new terminal window, port-forward from your local machine to one of the pods:
+
+    <section class="filter-content" markdown="1" data-scope="operator">
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl port-forward cockroachdb-0 8080
+    ~~~
+    </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -65,5 +90,5 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
 {% endif %}
 
 1. In the UI, verify that the cluster is running as expected:
-    - Click **View nodes list** on the right to ensure that all nodes successfully joined the cluster.
+    - View the [Node List](admin-ui-cluster-overview-page.html#node-list) to ensure that all nodes successfully joined the cluster.
     - Click the **Databases** tab on the left to verify that `bank` is listed.

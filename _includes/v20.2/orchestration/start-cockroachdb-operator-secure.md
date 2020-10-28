@@ -2,7 +2,7 @@
 The Operator is currently supported for **GKE** only.
 {{site.data.alerts.end}}
 
-#### Install the Operator
+### Install the Operator
 
 1. Locate the latest [release tag](https://github.com/cockroachdb/cockroach-operator/tags) for the Operator.
 
@@ -50,7 +50,9 @@ The Operator is currently supported for **GKE** only.
 	cockroach-operator-6f7b86ffc4-9ppkv   1/1     Running   0          54s
 	~~~
 
-#### Configure the cluster
+### Configure the cluster
+
+On a production cluster, you will need to modify the StatefulSet configuration with values that are appropriate for your workload.
 
 1. Open and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
 
@@ -89,133 +91,20 @@ The Operator is currently supported for **GKE** only.
         storage: "60Gi"
     ~~~
 
-    {{site.data.alerts.callout_info}}
-    You can also [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
-    {{site.data.alerts.end}}
+### Initialize the cluster
 
-1. By default, the Operator uses the built-in Kubernetes CA to generate and approve 1 client and 1 node certificate for the cluster. You can optionally use a [non-Kubernetes CA](#using-a-non-kubernetes-ca-optional) instead.
-
-	{{site.data.alerts.callout_info}}
-	This differs from how CockroachDB handles [node authentication](authentication.html#using-digital-certificates-with-cockroachdb), in which a separate node certificate is used for each CockroachDB node. The Operator currently uses a single node certificate to authenticate the cluster.
-	{{site.data.alerts.end}}
-
-##### Using a non-Kubernetes CA (optional)
-
-To authenticate using a CA other than the one that Kubernetes provides:
-
-1. Enable the following lines in `example.yaml`:
-
-	~~~
-	nodeTLSSecret: <node-secret>
-	clientTLSSecret: <client-secret>
-	~~~
-
-	The corresponding secret names will depend on your method of generating certificates. Below, we use [`cockroach cert`](cockroach-cert.html).
-
-1. Create two directories:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs my-safe-directory
-    ~~~
-
-    Directory | Description
-    ----------|------------
-    `certs` | You'll generate your CA certificate and all node and client certificates and keys in this directory.
-    `my-safe-directory` | You'll generate your CA key in this directory and then reference the key when generating node and client certificates.
-
-1. Create the CA certificate and key pair:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach cert create-ca \
-    --certs-dir=certs \
-    --ca-key=my-safe-directory/ca.key
-    ~~~
-
-1. Create a client certificate and key pair for the root user:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach cert create-client \
-    root \
-    --certs-dir=certs \
-    --ca-key=my-safe-directory/ca.key
-    ~~~
-
-1. Upload the client certificate and key to the Kubernetes cluster as a secret:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl create secret \
-    generic cockroachdb.client.root \
-    --from-file=certs
-    ~~~
-
-    ~~~
-    secret/cockroachdb.client.root created
-    ~~~
-
-1. Create the certificate and key pair for your CockroachDB nodes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach cert create-node \
-    localhost 127.0.0.1 \
-    cockroachdb-public \
-    cockroachdb-public.default \
-    cockroachdb-public.default.svc.cluster.local \
-    *.cockroachdb \
-    *.cockroachdb.default \
-    *.cockroachdb.default.svc.cluster.local \
-    --certs-dir=certs \
-    --ca-key=my-safe-directory/ca.key
-    ~~~
-
-1. Upload the node certificate and key to the Kubernetes cluster as a secret:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl create secret \
-    generic cockroachdb.node \
-    --from-file=certs
-    ~~~
-
-    ~~~
-    secret/cockroachdb.node created
-    ~~~
-
-1. Check that the secrets were created on the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get secrets
-    ~~~
-
-    ~~~
-    NAME                      TYPE                                  DATA   AGE
-    cockroachdb.client.root   Opaque                                3      41m
-    cockroachdb.node          Opaque                                5      14s
-    default-token-6qjdb       kubernetes.io/service-account-token   3      4m
-    ~~~
-
-1. In `example.yaml`, fill in the names of the node and client secrets you created:
-
-	~~~
-	nodeTLSSecret: cockroachdb.node
-	clientTLSSecret: cockroachdb.client.root
-	~~~
-
-#### Initialize the cluster
+{{site.data.alerts.callout_info}}
+By default, the Operator uses the built-in Kubernetes CA to generate and approve 1 client and 1 node certificate for the cluster. This differs from how CockroachDB handles [node authentication](authentication.html#using-digital-certificates-with-cockroachdb), in which a separate node certificate is used for each CockroachDB node.
+{{site.data.alerts.end}}
 
 1. Apply `example.yaml`:
 
     {% include copy-clipboard.html %}
 	~~~
-	kubectl create -f cockroach-operator/examples/example.yaml
+	kubectl apply -f cockroach-operator/examples/example.yaml
 	~~~
 
-    The Operator will create, authenticate, and initialize the nodes as a cluster.
+    The Operator will create a StatefulSet and initialize the nodes as a cluster.
 
     ~~~
     crdbcluster.crdb.cockroachlabs.com/cockroachdb created

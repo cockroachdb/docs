@@ -16,17 +16,23 @@
     $ helm repo update
     ~~~
 
-3. Modify our Helm chart's [`values.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml) parameters for your deployment scenario.
+3. On a production cluster, you will need to modify the StatefulSet configuration with values that are appropriate for your workload. Modify our Helm chart's [`values.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml) parameters:
 
     Create a `my-values.yaml` file to override the defaults in `values.yaml`, substituting your own values in this example based on the guidelines below.
+
+    {{site.data.alerts.callout_success}}
+    Resource `requests` and `limits` should have identical values. 
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~
     statefulset:
       resources:
         limits:
+          cpu: "16"
           memory: "8Gi"
         requests:
+          cpu: "16"
           memory: "8Gi"
     conf:
       cache: "2Gi"
@@ -42,10 +48,6 @@
         {{site.data.alerts.end}}
 
     2. You may want to modify `storage.persistentVolume.size` and `storage.persistentVolume.storageClass` for your use case. This chart defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
-
-        {{site.data.alerts.callout_info}}
-        If necessary, you can [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
-        {{site.data.alerts.end}}
 
     3. For a secure deployment, set `tls.enabled` to true.
 

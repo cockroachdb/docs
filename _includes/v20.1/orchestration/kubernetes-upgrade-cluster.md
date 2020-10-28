@@ -68,7 +68,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% endif %}
 
-    2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+    2. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from:
 
         {% include copy-clipboard.html %}
         ~~~ sql

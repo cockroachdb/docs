@@ -23,19 +23,28 @@ To orchestrate a physically distributed cluster in production, see [Orchestrated
 
 ## Step 2. Start CockroachDB
 
-To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
+Choose a way to deploy and maintain the CockroachDB cluster:
+
+- [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) (recommended)
+- [Helm](https://helm.sh/) package manager
+- Manually apply our StatefulSet configuration and related files
 
 <div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="operator">Use Operator</button>
     <button class="filter-button" data-scope="helm">Use Helm</button>
     <button class="filter-button" data-scope="manual">Use Configs</button>
 </div>
 
+<section class="filter-content" markdown="1" data-scope="operator">
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-operator-secure.md %}
+</section>
+
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-secure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-secure.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/start-cockroachdb-local-helm-secure.md %}
+{% include {{ page.version.version }}/orchestration/start-cockroachdb-helm-secure.md %}
 </section>
 
 ## Step 3. Use the built-in SQL client
@@ -52,115 +61,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 ## Step 6. Add nodes
 
-1. Add a pod for another CockroachDB node:
-
-    <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl scale statefulset cockroachdb --replicas=4
-    ~~~
-
-    ~~~
-    statefulset.apps/cockroachdb scaled
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ helm upgrade \
-    my-release \
-    cockroachdb/cockroachdb \
-    --set statefulset.replicas=4 \
-    --reuse-values
-    ~~~
-
-    ~~~
-    statefulset "my-release-cockroachdb" scaled
-    ~~~
-    </section>
-
-2. Get the name of the `Pending` CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get csr
-    ~~~
-
-    <section class="filter-content" markdown="1" data-scope="manual">
-    ~~~
-    NAME                         AGE       REQUESTOR                                   CONDITION
-    default.client.root          8m        system:serviceaccount:default:cockroachdb   Approved,Issued
-    default.node.cockroachdb-0   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
-    default.node.cockroachdb-1   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
-    default.node.cockroachdb-2   22m       system:serviceaccount:default:cockroachdb   Approved,Issued
-    default.node.cockroachdb-3   2m        system:serviceaccount:default:cockroachdb   Pending
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    ~~~
-    NAME                                    AGE   REQUESTOR                                              CONDITION
-    default.client.root                     8m    system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
-    default.node.my-release-cockroachdb-0   22m   system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
-    default.node.my-release-cockroachdb-1   22m   system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
-    default.node.my-release-cockroachdb-2   22m   system:serviceaccount:default:my-release-cockroachdb   Approved,Issued
-    default.node.my-release-cockroachdb-3   2m    system:serviceaccount:default:my-release-cockroachdb   Pending
-    ~~~
-    </section>
-
-3. Approve the CSR for the new pod:
-
-    <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl certificate approve default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl certificate approve default.node.my-release-cockroachdb-3
-    ~~~
-
-    ~~~
-    certificatesigningrequest.certificates.k8s.io/default.node.my-release-cockroachdb-3 approved
-    ~~~
-    </section>
-
-4. Confirm that pod for the fourth node, `cockroachdb-3`, is `Running` successfully:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get pods
-    ~~~
-
-    <section class="filter-content" markdown="1" data-scope="manual">
-    ~~~
-    NAME                         READY     STATUS    RESTARTS   AGE
-    cockroachdb-0                1/1       Running   0          28m
-    cockroachdb-1                1/1       Running   0          27m
-    cockroachdb-2                1/1       Running   0          10m
-    cockroachdb-3                1/1       Running   0          5s
-    cockroachdb-client-secure    1/1       Running   0          25m
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    ~~~
-    NAME                                 READY     STATUS    RESTARTS   AGE
-    my-release-cockroachdb-0             1/1       Running   0          28m
-    my-release-cockroachdb-1             1/1       Running   0          27m
-    my-release-cockroachdb-2             1/1       Running   0          10m
-    my-release-cockroachdb-3             1/1       Running   0          5s
-    example-545f866f5-2gsrs              1/1       Running   0          25m
-    ~~~
-    </section>
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
 ## Step 7. Remove nodes
 
