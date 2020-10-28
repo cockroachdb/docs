@@ -26,9 +26,7 @@ See the links below for more information about how to use CockroachDB for spatia
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 
-<a name="spatial-objects"></a>
-
-Spatial objects:
+### Spatial objects
 
 - [POINT](point.html)
 - [LINESTRING](linestring.html)
@@ -38,7 +36,14 @@ Spatial objects:
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
 
-<a name="spatial-functions"></a>
+### Data representations
+
+- [Well known text](well-known-text.html)
+- [Well known binary](well-known-binary.html)
+- [GeoJSON](geojson.html)
+- [SRID 4326 - longitude and latitude](srid-4326.html)
+
+### Spatial functions
 
 In addition to the [generated reference documentation for spatial functions](functions-and-operators.html#spatial-functions), we have written additional documentation for the following functions, including examples:
 
