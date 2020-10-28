@@ -39,7 +39,7 @@ Only members of the `admin` role can enable audit logs on a table. By default, t
  `OFF`        | Turn off audit logging.                                  
 
 {{site.data.alerts.callout_info}}
-As of version 2.0, this command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below). In a future release, this should change to allow logging only reads, only writes, or both.
+This command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below). In a future release, this should change to allow logging only reads, only writes, or both.
 {{site.data.alerts.end}}
 
 ## Audit log file format
@@ -51,7 +51,7 @@ The audit log file format is as shown below.  The numbers above each column are 
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=root, n1]   13   exec "cockroach" {"ab"[53]:READ} "SELECT nonexistent FROM ab" {}    0.123 12   ERROR 0
 ~~~
 
-1. Date
+1. Log level (`INFO`, `WARN`, `ERROR`, or `FATAL`) and date (in yymmdd format)
 2. Time (in UTC)
 3. Goroutine ID. This column is used for troubleshooting CockroachDB and may change its meaning at any time.
 4. Where the log line was generated
@@ -87,6 +87,26 @@ If your deployment requires particular lifecycle and access policies for audit l
 ## Viewing schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
+## Performance considerations
+
+Enabling SQL audit logs will impact performance, as every query that causes a logging event must access the disk of the node on which audit logging is enabled.
+
+For production clusters, the most performant way to log all queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING sql.trace.log_statement_execute = true;
+~~~
+
+With this setting on, each node of the cluster writes all SQL queries it executes to a secondary `cockroach-sql-exec` log file. Use the symlink `cockroach-sql-exec.log` to open the most recent log. When you no longer need to log queries, you can turn the setting back off:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING sql.trace.log_statement_execute = false;
+~~~
+
+These log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
 ## Examples
 
