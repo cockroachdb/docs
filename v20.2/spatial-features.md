@@ -25,3 +25,7 @@ See the links below for more information about how to use CockroachDB for spatia
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
+- [Well known text](well-known-text.html)
+- [Well known binary](well-known-binary.html)
+- [GeoJSON](geojson.html)
+- [SRID 4326 - longitude and latitude](srid-4326.html)

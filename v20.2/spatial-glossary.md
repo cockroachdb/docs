@@ -38,7 +38,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="srid"></a>
 
-- _SRID_: The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. The most common SRID is 4326, which represents spatial data using latitude and longitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
+- _SRID_: The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. The [most common SRID is 4326](srid-4326.html), which represents spatial data using latitude and longitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
 
 <a name="spatial-reference-system"></a>
 
@@ -61,18 +61,18 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="wkt"></a>
 
-- _WKT_: The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see [Well-known text representation of geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry).
+- _WKT_: The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see the [Well Known Text](well-known-text.html) documentation.
 
-- _EWKT_: The "Extended Well Known Text" data format is a [PostGIS](#postgis)-specific format that extends [WKT](#wkt). For more information about this format, see [the PostGIS documentation](http://postgis.org/docs/ST_GeomFromEWKT.html).
+- _EWKT_: The "Extended Well Known Text" data format extends [WKT](#wkt) by prepending an [SRID](#srid) to the shape's description.  For more information, see the [Well Known Text](well-known-text.html#ewkt) documentation.
 
 <a name="ewkb"></a>
 
 
 <a name="wkb"></a>
 
-- _WKB_: The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc).
+- _WKB_: The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc).  For more information, see [Well Known Binary](well-known-binary.html).
 
-- _EWKB_: The "Extended Well Known Binary" data format is a [PostGIS](#postgis)-specific format that extends [WKB](#wkb). For more information about this format, see [the PostGIS documentation](http://postgis.org/docs/ST_GeomFromEWKB.html).
+- _EWKB_: The "Extended Well Known Binary" data format extends [WKB](#wkb) by prepending [SRID](#srid) information to the shape's description.  For more information, see [Well Known Binary](well-known-binary.html#ewkb).
 
 ## Organizations
 
@@ -122,7 +122,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="geojson"></a>
 
-- _GeoJSON_: A format for encoding geometric and geographic data as [JSON](https://www.json.org). For more information, see the GeoJSON specification at <https://geojson.org>.
+- _GeoJSON_: A format for encoding geometric and geographic data as [JSON](https://www.json.org). For more information, see [GeoJSON](geojson.html).
 
 ## Software and Code Libraries
 
@@ -223,3 +223,7 @@ This section has information about the representation of geometric and geographi
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Well known text](well-known-text.html)
+- [Well known binary](well-known-binary.html)
+- [GeoJSON](geojson.html)
+- [SRID 4326 - longitude and latitude](srid-4326.html)
