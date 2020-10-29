@@ -222,6 +222,7 @@ For more detailed information about importing data from Avro and examples, see [
 
 ## Known limitations
 
+- You cannot import into a table with [partial indexes](partial-indexes.html).
 - While importing into an existing table, the table is taken offline.
 - After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
 - Imported rows must not conflict with existing rows in the table or any unique secondary indexes.

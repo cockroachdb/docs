@@ -8,6 +8,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Limited vectorized support for changefeeds
+
+[Changefeeds](changefeed-for.html) are incompatible wit the v20.1 `vectorize=on` [cluster setting](cluster-settings.html) due to the buffering behavior of the `Columnarizer` operator. This issue is resolved in v20.2.
+
 ### Dropping and renaming objects during an upgrade to v20.1.0
 
 {{site.data.alerts.callout_info}}
@@ -533,4 +537,52 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
+### Correlated common table expressions
+
 {% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42540)
+
+### Passwords with special characters cannot be passed in connection parameter
+
+CockroachDB does not allow passwords with special characters to be passed as a [connection parameter](connection-parameters.html) to [`cockroach` commands](cockroach-commands.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
+
+### CockroachDB does not test for all connection failure scenarios
+
+CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a "`Connection refused`" error.
+
+However, if there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests. To work around this kind of scenario, we recommend the following:
+
+- When migrating a node to a new machine, keep the server listening at the previous IP address until the cluster has completed the migration.
+- Configure any active network firewalls to allow node-to-node traffic.
+- Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53410)
+
+### Some column-dropping schema changes do not roll back properly
+
+Some [schema changes](online-schema-changes.html) which [drop columns](drop-column.html) can't be [rolled back](rollback-transaction.html) properly.
+
+In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46541)
+
+In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/47712)
+
+If you have performed a rollback of a column-dropping schema change, check the [jobs table entry](show-jobs.html) for schema changes with an error prefaced by "`cannot be reverted, manual cleanup may be required`".
+
+### Disk-spilling on joins with `JSON` columns
+
+If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
+
+### Inverted indexes cannot be partitioned
+
+CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)

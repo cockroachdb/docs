@@ -55,7 +55,7 @@ Leave this shell open for use in the examples below.
 
 ### Example 1. Load NWS Tornado data
 
-In this example we will import a specific data set that is available as a [Shapefile](https://en.wikipedia.org/wiki/Shapefile). 
+In this example we will import a specific data set that is available as a [Shapefile](https://en.wikipedia.org/wiki/Shapefile).
 
 #### Step 1. Convert the shapefile to SQL
 
@@ -289,6 +289,8 @@ Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibilit
 However, we do not yet implement the full list of PostGIS built-in functions and operators. Also, our [spatial indexing works differently](spatial-indexes.html) (see the [Performance](#performance) section below). For a list of the spatial functions we support, see [Geospatial functions](functions-and-operators.html#spatial-functions).
 
 If your application needs support for functions that are not yet implemented, please check out [our meta-issue for built-in function support on GitHub](https://github.com/cockroachdb/cockroach/issues/49203), which describes how to find an issue for the built-in function(s) you need.
+
+For a list of other known limitations, see [Known Limitations](known-limitations.html#spatial-support-limitations).
 
 ## Troubleshooting
 
