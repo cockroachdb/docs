@@ -1,16 +1,16 @@
 Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods. A CockroachDB node runs in each pod. As recommended in our [production best practices](recommended-production-settings.html#topology), you should ensure that two pods are not placed on the same worker node. 
 
 <section class="filter-content" markdown="1" data-scope="operator">
-1. Open and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
+1. Open and edit `example.yaml`.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    vi cockroach-operator/examples/example.yaml
+    $ vi cockroach-operator/examples/example.yaml
     ~~~
 
 1. In `example.yaml`, update the number of `nodes`:
 
-    ~~~ shell
+    ~~~
     nodes: 4
     ~~~
 
@@ -21,8 +21,8 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 1. Apply `example.yaml` with the new configuration:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl apply -f cockroach-operator/examples/example.yaml
+    ~~~ shell
+    $ kubectl apply -f cockroach-operator/examples/example.yaml
     ~~~
 
 1. Verify that the new pod started successfully:

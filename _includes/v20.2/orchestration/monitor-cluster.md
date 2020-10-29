@@ -48,26 +48,26 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
     
 {% endif %}
 
-1. In a new terminal window, port-forward from your local machine to one of the pods:
+1. In a new terminal window, port-forward from your local machine to the `cockroachdb-public` service:
 
     <section class="filter-content" markdown="1" data-scope="operator">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl port-forward cockroachdb-0 8080
+    $ kubectl port-forward service/cockroachdb-public 8080
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl port-forward cockroachdb-0 8080
+    $ kubectl port-forward service/cockroachdb-public 8080
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl port-forward my-release-cockroachdb-0 8080
+    $ kubectl port-forward service/my-release-cockroachdb-public 8080
     ~~~
     </section>
 

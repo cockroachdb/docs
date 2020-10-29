@@ -35,11 +35,11 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
         > \q
         ~~~
 
-1. Open and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
+1. Open and edit `example.yaml`.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    vi cockroach-operator/examples/example.yaml
+    $ vi cockroach-operator/examples/example.yaml
     ~~~
 
 1. Change the desired Docker image:
@@ -52,8 +52,8 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 1. Apply `example.yaml` with the new image:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl apply -f cockroach-operator/examples/example.yaml
+    ~~~ shell
+    $ kubectl apply -f cockroach-operator/examples/example.yaml
     ~~~
 
     The Operator will perform the staged update.

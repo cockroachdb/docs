@@ -1,4 +1,4 @@
-{{site.data.alerts.callout_success}}
+{{site.data.alerts.callout_info}}
 The Operator is currently supported for **GKE** only.
 {{site.data.alerts.end}}
 
@@ -9,15 +9,15 @@ The Operator is currently supported for **GKE** only.
 1. Clone the latest Operator release:
 
     {% include copy-clipboard.html %}
-    ~~~
-    git clone --depth 1 --branch <tag_name> https://github.com/cockroachdb/cockroach-operator
+    ~~~ shell
+    $ git clone --depth 1 --branch <tag_name> https://github.com/cockroachdb/cockroach-operator
     ~~~
 
 1. Apply the [CustomResourceDefinition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl apply -f cockroach-operator/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
+    ~~~ shell
+    $ kubectl apply -f cockroach-operator/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
     ~~~
 
     ~~~
@@ -27,8 +27,8 @@ The Operator is currently supported for **GKE** only.
 1. Apply the Operator manifest:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl apply -f cockroach-operator/manifests/operator.yaml
+    ~~~ shell
+    $ kubectl apply -f cockroach-operator/manifests/operator.yaml
     ~~~
 
     ~~~
@@ -41,8 +41,8 @@ The Operator is currently supported for **GKE** only.
 1. Validate that the Operator is running:
 
     {% include copy-clipboard.html %}
-	~~~
-	kubectl get pods
+	~~~ shell
+	$ kubectl get pods
     ~~~
 
     ~~~
@@ -58,7 +58,7 @@ On a production cluster, you will need to modify the StatefulSet configuration w
 
     {% include copy-clipboard.html %}
     ~~~ shell
-	vi cockroach-operator/examples/example.yaml
+	$ vi cockroach-operator/examples/example.yaml
 	~~~
 
 1. Allocate CPU and memory resources to CockroachDB on each pod. Enable the commented-out lines in `example.yaml` and substitute values that are appropriate for your workload. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
@@ -100,8 +100,8 @@ By default, the Operator uses the built-in Kubernetes CA to generate and approve
 1. Apply `example.yaml`:
 
     {% include copy-clipboard.html %}
-	~~~
-	kubectl apply -f cockroach-operator/examples/example.yaml
+	~~~ shell
+	$ kubectl apply -f cockroach-operator/examples/example.yaml
 	~~~
 
     The Operator will create a StatefulSet and initialize the nodes as a cluster.
@@ -113,8 +113,8 @@ By default, the Operator uses the built-in Kubernetes CA to generate and approve
 1. Check that the pods were created:
 
     {% include copy-clipboard.html %}
-	~~~
-	kubectl get pods
+	~~~ shell
+	$ kubectl get pods
 	~~~
 
 	~~~

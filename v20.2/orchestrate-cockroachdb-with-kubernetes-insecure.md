@@ -87,13 +87,6 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 {% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
-3. Verify that a fourth pod was added successfully:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get pods
-    ~~~
-
 ### Remove nodes
 
 {% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}

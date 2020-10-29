@@ -49,14 +49,14 @@ CSR names contain the StatefulSet or Helm chart `name`, so if you customize that
 
 ## Step 2. Start CockroachDB
 
-Choose a way to deploy and maintain the CockroachDB cluster:
+Choose how you want to deploy and maintain the CockroachDB cluster:
 
 - [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) (recommended)
 - [Helm](https://helm.sh/) package manager
 - Manually apply our StatefulSet configuration and related files
 
-{{site.data.alerts.callout_info}}
-Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](https://github.com/cockroachdb/cockroach/issues/38847). In the meantime, use a StatefulSet configuration to deploy on EKS.
+{{site.data.alerts.callout_success}}
+<span class="version-tag">New in v20.2:</span> The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) is the recommended method of deploying and maintaining secure CockroachDB clusters on Kubernetes. The Operator eases the creation of StatefulSets, pod authentication, cluster scaling, and rolling upgrades. 
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">

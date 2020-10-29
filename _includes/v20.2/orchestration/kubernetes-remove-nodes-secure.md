@@ -4,6 +4,10 @@ Before removing a node from your cluster, you must first decommission the node. 
 If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors.
+{{site.data.alerts.end}}
+
 <section class="filter-content" markdown="1" data-scope="operator">
 1. Get a shell into one of the pods and use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes:
 
@@ -74,24 +78,24 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="operator">
-1. Open and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
+1. Open and edit `example.yaml`.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    vi cockroach-operator/examples/example.yaml
+    $ vi cockroach-operator/examples/example.yaml
     ~~~
 
 1. In `example.yaml`, update the number of `nodes`:
 
-    ~~~ shell
+    ~~~
     nodes: 3
     ~~~
 
 1. Apply `example.yaml` with the new configuration:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl apply -f cockroach-operator/examples/example.yaml
+    ~~~ shell
+    $ kubectl apply -f cockroach-operator/examples/example.yaml
     ~~~
 
     The Operator will decommission the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and then remove it from the cluster.

@@ -4,15 +4,15 @@ To shut down the CockroachDB cluster:
 1. Delete the StatefulSet:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl delete -f cockroach-operator/examples/example.yaml
+    ~~~ shell
+    $ kubectl delete -f cockroach-operator/examples/example.yaml
     ~~~
 
 1. Remove the Operator:
 
     {% include copy-clipboard.html %}
-    ~~~
-    kubectl delete -f cockroach-operator/manifests/operator.yaml
+    ~~~ shell
+    $ kubectl delete -f cockroach-operator/manifests/operator.yaml
     ~~~
 
 1. Get the names of any CSRs for the cluster:
