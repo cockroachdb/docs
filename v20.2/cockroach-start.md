@@ -59,7 +59,7 @@ Flag | Description
 `--disable-cluster-name-verification` | On clusters for which a cluster name has been set, this flag paired with `--cluster-name` disables the cluster name check for the command. This is necessary on existing clusters, when setting a cluster name or changing the cluster name: Perform a rolling restart of all nodes and include both the new `--cluster-name` value and `--disable-cluster-name-verification`, then a second rolling restart with `--cluster-name` and without `--disable-cluster-name-verification`.
 `--external-io-dir` | The path of the external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives. If set to `disabled`, backups and restores using local node directories and NFS drives, as well as [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html), are disabled.<br><br>**Default:** `extern` subdirectory of the first configured [`store`](#store).<br><br>To set the `--external-io-dir` flag to the locations you want to use without needing to restart nodes, create symlinks to the desired locations from within the `extern` directory.
 `--listening-url-file` | The file to which the node's SQL connection URL will be written as soon as the node is ready to accept connections, in addition to being printed to the [standard output](#standard-output). When `--background` is used, this happens before the process detaches from the terminal.<br><br>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (`--port=0`).
-`--locality` | Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, datacenter, rack, etc. For more details, see [Locality](#locality) below.
+`--locality` | Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, availability zone, etc. For more details, see [Locality](#locality) below.
 `--max-disk-temp-storage` | The maximum on-disk storage capacity available to store temporary data for SQL queries that exceed the memory budget (see `--max-sql-memory`). This ensures that JOINs, sorts, and other memory-intensive SQL operations are able to spill intermediate results to disk. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit (e.g., `.25`, `25%`, `500GB`, `1TB`, `1TiB`).<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead. Also, if expressed as a percentage, this value is interpreted relative to the size of the first store. However, the temporary space usage is never counted towards any store usage; therefore, when setting this value, it's important to ensure that the size of this temporary storage plus the size of the first store doesn't exceed the capacity of the storage device.<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br>**Default:** `32GiB`
 <a name="flags-max-offset"></a>`--max-offset` | The maximum allowed clock offset for the cluster. If observed clock offsets exceed this limit, servers will crash to minimize the likelihood of reading inconsistent data. Increasing this value will increase the time to recovery of failures as well as the frequency of uncertainty-based read restarts.<br><br>Note that this value must be the same on all nodes in the cluster and cannot be changed with a [rolling upgrade](upgrade-cockroach-version.html). In order to change it, first stop every node in the cluster. Then once the entire cluster is offline, restart each node with the new value.<br><br>**Default:** `500ms`
 `--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `25%` <br><br>The default SQL memory size is suitable for production deployments but can be raised to increase the number of simultaneous client connections the node allows as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. For local development clusters with memory-intensive workloads, reduce this value to, for example, `128MiB` to prevent out of memory errors.
@@ -98,25 +98,25 @@ Flag | Description
 
 ### Locality
 
-The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality might include region, country, datacenter, rack, etc. The key-value pairs should be ordered into _locality tiers_ from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`), and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
+The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality might include region, country, availability zone, etc. The key-value pairs should be ordered into _locality tiers_ from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu,zone=paris`), and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
 
 - CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. Locality can also be used to influence the location of data replicas in various ways using [replication zones](configure-replication-zones.html#replication-constraints).
 
-- When there is high latency between nodes (e.g., cross-datacenter deployments), CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](topology-follow-the-workload.html). In a deployment across more than 3 datacenters, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of datacenters.
+- When there is high latency between nodes (e.g., cross-availability zone deployments), CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](topology-follow-the-workload.html). In a deployment across more than 3 availability zones, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of availability zones.
 
 - Locality is also a prerequisite for using the [table partitioning](partitioning.html) and [**Node Map**](enable-node-map.html) enterprise features.        
 
 #### Example
 
 ~~~ shell
-# Locality flag for nodes in US East datacenter:
---locality=region=us,datacenter=us-east
+# Locality flag for nodes in US East availability zone:
+--locality=region=us,zone=us-east
 
-# Locality flag for nodes in US Central datacenter:
---locality=region=us,datacenter=us-central
+# Locality flag for nodes in US Central availability zone:
+--locality=region=us,zone=us-central
 
-# Locality flag for nodes in US West datacenter:
---locality=region=us,datacenter=us-west
+# Locality flag for nodes in US West availability zone:
+--locality=region=us,zone=us-west
 ~~~
 
 ### Storage
