@@ -8,6 +8,65 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Partitioning on `ENUM` values
+
+[Partitions](partitioning.html) cannot be created on columns of type [`ENUM`](enum.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55342)
+
+### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
+
+CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`](insert.html#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53170)
+
+### `IMPORT` into a table with partial indexes
+
+CockroachDB does not currently support [`IMPORT`s](import.html) into tables with partial indexes.
+
+To work around this limitation:
+
+1. Drop any partial indexes defined on the table.
+2. Perform the `IMPORT`.
+3. Recreate the partial indexes.
+
+If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) with partial indexes:
+
+1. Drop the partial indexes on the PostgreSQL server.
+2. Recreate the `PGDUMP`.
+3. `IMPORT` the `PGDUMP`.
+4. Add partial indexes on the CockroachDB server.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
+
+### Spatial support limitations
+
+CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
+
+- Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49203)
+
+- The `AddGeometryColumn` [spatial function](functions-and-operators.html#spatial-functions) only allows constant arguments.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49402)
+
+- The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49448)
+
+- CockroachDB does not support the `@` operator for [spatial features](spatial-features.html). Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56124)
+
+- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](spatial-glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
+
+- CockroachDB does not yet support `DECLARE CURSOR`, which prevents the `ogr2ogr` conversion tool from exporting from CockroachDB to certain formats. To work around this limitation, export data first to CSV or GeoJSON format.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41412)
+
 ## Unresolved limitations
 
 ### Subqueries in `SET` statements
@@ -191,7 +250,7 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
-[GitHub Tracking Issue](https://github.com/cockroachdb/cockroach/issues/19464)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/19464)
 
 ### Adding a column with sequence-based `DEFAULT` values
 
@@ -322,7 +381,11 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
+### Correlated common table expressions
+
 {% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42540)
 
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
@@ -384,3 +447,47 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42027)
+
+### Passwords with special characters cannot be passed in connection parameter
+
+CockroachDB does not allow passwords with special characters to be passed as a [connection parameter](connection-parameters.html) to [`cockroach` commands](cockroach-commands.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
+
+### CockroachDB does not test for all connection failure scenarios
+
+CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a "`Connection refused`" error.
+
+However, if there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests. To work around this kind of scenario, we recommend the following:
+
+- When migrating a node to a new machine, keep the server listening at the previous IP address until the cluster has completed the migration.
+- Configure any active network firewalls to allow node-to-node traffic.
+- Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53410)
+
+### Some column-dropping schema changes do not roll back properly
+
+Some [schema changes](online-schema-changes.html) which [drop columns](drop-column.html) can't be [rolled back](rollback-transaction.html) properly.
+
+In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46541)
+
+In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/47712)
+
+If you have performed a rollback of a column-dropping schema change, check the [jobs table entry](show-jobs.html) for schema changes with an error prefaced by "`cannot be reverted, manual cleanup may be required`".
+
+### Disk-spilling on joins with `JSON` columns
+
+If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
+
+### Inverted indexes cannot be partitioned
+
+CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)

@@ -73,6 +73,12 @@ Operator | Description | Example |
 
 For the full list of supported `JSONB` operators, see [Functions and Operators](functions-and-operators.html).
 
+## Known limitations
+
+If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+
+For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
+
 ## Examples
 
 ### Create a Table with a `JSONB` Column
@@ -207,8 +213,8 @@ For this example, we will add a few more records to the existing table. This wil
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users (user_profile) VALUES 
-    ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'), 
+> INSERT INTO users (user_profile) VALUES
+    ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
     ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
 ~~~
 
