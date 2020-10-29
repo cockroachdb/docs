@@ -119,13 +119,7 @@ Expansion of persistent volumes with the Operator is forthcoming. See the [GitHu
 {{site.data.alerts.end}}
 </section>
 
-<section class="filter-content" markdown="1" data-scope="manual">
 {% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-</section>
 
 ### Upgrade the cluster
 
