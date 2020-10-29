@@ -4,15 +4,17 @@ summary: List the files stored in the user-scoped file storage.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `cockroach userfile list` [command](cockroach-commands.html) lists the files stored in the [user-scoped file storage](use-user-scoped-storage-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be listed.
+<span class="version-tag">New in v20.2:</span> The `cockroach userfile list` [command](cockroach-commands.html) lists the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be listed.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachD will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables. Each user can only access the subdirectory with the name matching their username.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachD will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+
+A user can only access their user-scoped storage, which can be reference through the [userfile URI](cockroach-userfile-upload.html#file-destination) provided during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
 ## Synopsis
 
-Upload a file:
+View files:
 
 ~~~ shell
 $ cockroach userfile list <file | dir> [flags]
@@ -70,7 +72,7 @@ To list all files that match a pattern, use `*`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach userfile list *.csv --certs-dir=certs
+$ cockroach userfile list '*.csv' --certs-dir=certs
 ~~~
 
 ~~~
@@ -98,7 +100,7 @@ cockroach userfile list userfile://testdb.public.uploads
 
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
-- [Use `userfile` for Bulk Operations](use-userfile-storage-for-bulk-operations.html)
+- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)

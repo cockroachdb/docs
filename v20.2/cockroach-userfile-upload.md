@@ -4,7 +4,7 @@ summary: Upload a file to the user-scoped file storage.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `cockroach userfile upload` [command](cockroach-commands.html) uploads a file to the [user-scoped file storage](use-user-scoped-storage-for-bulk-operations.html) using a SQL connection.
+<span class="version-tag">New in v20.2:</span> The `cockroach userfile upload` [command](cockroach-commands.html) uploads a file to the [user-scoped file storage](use-userfile-for-bulk-operations.html) using a SQL connection.
 
 This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the [destination](#file-destination)
 
@@ -14,7 +14,9 @@ Userfile uses storage space in the cluster, and is replicated with the rest of t
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachD will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables. Each user can only access the subdirectory with the name matching their username.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachD will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+
+A user can only upload their user-scoped storage, which can be reference through the [userfile URI](#file-destination) provided. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
 ## Synopsis
 
@@ -36,24 +38,16 @@ $ cockroach userfile upload --help
 
 ## File destination
 
-When an file is uploaded to userfile, there are two tables created: `files` and `payload`. The default URI is `userfile://defaultdb.public.userfiles_$user/`.
+Userfile operations are backed by two tables: `files` (which holds file metadata) and `payload` (which holds the file payloads). To reference these tables, you can:
 
-- If you do not specify a destination URI/path, then CockroachDB will use the default URI scheme and host, and the basename from the source argument as the path.
+- Use the default URI: `userfile://defaultdb.public.userfiles_$user/`.
+- Provide a fully qualified userfile URI that specifies the database, schema, and table name prefix you want to use.
 
-    For example, if the `root` user runs `cockroach userfile upload /path/to/local`, CockroachDB will write a file named `/local` in the `userfile` tables created in the `defaultdb` database, `public` schema, and with a table with the default prefix: `userfile://defaultdb.public.userfiles_root/local`
+    - If you do not specify a destination URI/path, then CockroachDB will use the default URI scheme and host, and the basename from the source argument as the path. For example: `userfile://defaultdb.public.userfiles_root/local`
+    - If the destination is a well-formed userfile URI (i.e., `userfile://db.schema.tablename_prefix/path/to/file`), then CockroachDB use use that as the final URI. For example: `userfile://foo.bar.baz_root/destination/path`
+    - If destination is not a well-formed userfile URI, then CockroachDB will use the default userfile URI schema and host (`userfile://defaultdb.public.userfiles_$user/`), and the destination as the path. For example: `userfile://defaultdb.public.userfiles_root/destination/path`
 
-- If the destination is a well-formed userfile URI (i.e., `userfile://db.schema.tablename_prefix/path/to/file`), then CockroachDB use use that as the final URI.
-
-    For example, if the `root` user runs `cockroach userfile upload /path/to/local  userfile://foo.bar.baz/destination/path`, CockroachDB will write a file named `/destination/path` in the `userfile` tables created in the `foo` database, `bar` schema, and with table prefix `baz` + `root`: `userfile://foo.bar.baz_root/destination/path`
-
-- If destination is not a well-formed userfile URI, then CockroachDB will use the default userfile URI schema and host (`userfile://defaultdb.public.userfiles_$user/`), and the destination as the path.
-
-    For example, if the `root` user runs `cockroach userfile upload /path/to/local /destination/path` will write a file named `/destination/path` in the `userfile` tables created in the `defaultdb` database, `public` schema, and with a table with the default prefix: `userfile://defaultdb.public.userfiles_root/destination/path`
-
-Note that:
-
-- All destination paths must start with `/`.
-- Destination paths cannot contain `..`.
+The destination file path must be the same after normalization (i.e., if you pass any path that results in a different path, it will be rejected).
 
 {{site.data.alerts.callout_danger}}
 Userfile is **not** a filesystem and does not support filesystem semantics. The destination string is taken as-is, and CockroachDB will use that as a file name.
@@ -131,7 +125,7 @@ successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 
 - [`cockroach userfile list`](cockroach-userfile-list.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
-- [Use `userfile` for Bulk Operations](use-user-scoped-storage-for-bulk-operations.html)
+- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)

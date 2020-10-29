@@ -569,9 +569,9 @@
                 ]
               },
               {
-                "title": "User-scoped Storage",
+                "title": "Userfile Storage",
                 "urls": [
-                  "/${VERSION}/use-user-scoped-storage-for-bulk-operations.html"
+                  "/${VERSION}/use-userfile-for-bulk-operations.html"
                 ]
               },
               {

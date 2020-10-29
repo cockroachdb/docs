@@ -4,15 +4,17 @@ summary: Delete a file to the user-scoped file storage.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-user-scoped-storage-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If passed the pattern `'*'`, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
+<span class="version-tag">New in v20.2:</span> The `cockroach userfile delete` [command](cockroach-commands.html) deletes the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If passed the pattern `'*'`, all files in the specified (or default, if unspecified) user-scoped file storage will be deleted. Deletions are not atomic, and all deletions prior to the first failure will occur.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachD will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables. Each user can only access the subdirectory with the name matching their username.
+The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+
+A user can only delete from their user-scoped storage, which can be reference through the [userfile URI](cockroach-userfile-upload.html#file-destination) provided during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
 ## Synopsis
 
-Upload a file:
+Delete a file:
 
 ~~~ shell
 $ cockroach userfile list <file | dir> [flags]
@@ -51,7 +53,7 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 deleted userfile://defaultdb.public.userfiles_root/test-upload/test-data.csv
 ~~~
 
-Note that because the directory was not specified, files in the default user-scoped storage (`userfile://defaultdb.public.userfiles_$user/`) were deleted.
+Note that because a fully qualified userfile URI was not specified, files in the default user-scoped storage (`userfile://defaultdb.public.userfiles_$user/`) were deleted.
 
 ### Delete a specific file
 
@@ -72,7 +74,7 @@ To delete all files that match a pattern, use `*`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach userfile delete *.csv --certs-dir=certs
+$ cockroach userfile delete '*.csv' --certs-dir=certs
 ~~~
 
 ~~~
@@ -80,11 +82,27 @@ deleted userfile://defaultdb.public.userfiles_root/test-data-2.csv
 deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 ~~~
 
+### Delete files from a non-default userfile URI
+
+If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-t-a=non-defaul-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
+~~~
+
+Use the same URI to delete it:
+
+{% include copy-clipboard.html %}
+~~~ shell
+cockroach userfile delete userfile://testdb.public.uploads
+~~~
+
 ## See also
 
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile list`](cockroach-userfile-list.html)
-- [Use `userfile` for Bulk Operations](use-userfile-storage-for-bulk-operations.html)
+- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)

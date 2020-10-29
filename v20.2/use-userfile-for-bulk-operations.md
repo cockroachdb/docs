@@ -29,7 +29,7 @@ For more information, see [`cockroach userfile upload`](cockroach-userfile-uploa
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach userfile list *.csv --certs-dir=certs
+$ cockroach userfile list '*.csv' --certs-dir=certs
 ~~~
 
 ~~~
