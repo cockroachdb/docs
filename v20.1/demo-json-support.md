@@ -6,11 +6,15 @@ toc: true
 
 This page walks you through a simple demonstration of how CockroachDB can store and query unstructured [`JSONB`](jsonb.html) data from a third-party API, as well as how an [inverted index](inverted-indexes.html) can optimize your queries.
 
+<div class="filters clearfix">
+  <a href="../tutorials/demo-json-support-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+</div>
+
 ## Step 1. Install prerequisites
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="go">Go</button>
-    <button class="filter-button" data-scope="python">Python</button>
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="python">Python</button>
+    <button class="filter-button page-level " data-scope="go">Go</button>
 </div>
 
 <div class="filter-content" markdown="1" data-scope="go">
@@ -109,9 +113,9 @@ Still in the SQL shell, create a table called `programming`:
 
 Now that you have a database, user, and a table, let's run code to insert rows into the table.
 
-<div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="go">Go</button>
-    <button class="filter-button" data-scope="python">Python</button>
+<div class="filters clearfix">
+    <button class="filter-button page-level" data-scope="python">Python</button>
+    <button class="filter-button page-level " data-scope="go">Go</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="go">

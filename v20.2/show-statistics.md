@@ -5,6 +5,12 @@ toc: true
 ---
 The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](create-statistics.html) used by the [cost-based optimizer](cost-based-optimizer.html).
 
+{{site.data.alerts.callout_info}}
+[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns.
+
+<span class="version-tag">New in v20.2:</span> CockroachDB also automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on the columns that prefix each index.
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
@@ -23,27 +29,32 @@ Parameter      | Description
 
 ## Examples
 
+{% include {{page.version.version}}/sql/movr-statements.md %}
+
 ### List table statistics
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE STATISTICS students ON id FROM students_by_list;
+> SHOW STATISTICS FOR TABLE rides;
 ~~~
 
 ~~~
-CREATE STATISTICS
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW STATISTICS FOR TABLE students_by_list;
-~~~
-
-~~~
-  statistics_name | column_names |             created              | row_count | distinct_count | null_count | histogram_id
-+-----------------+--------------+----------------------------------+-----------+----------------+------------+--------------+
-  students        | {"id"}       | 2018-10-26 15:06:34.320165+00:00 |         0 |              0 |          0 |         NULL
-(1 row)
+  statistics_name |       column_names        |             created              | row_count | distinct_count | null_count |    histogram_id
+------------------+---------------------------+----------------------------------+-----------+----------------+------------+---------------------
+  __auto__        | {city}                    | 2020-08-26 16:55:24.725089+00:00 |       500 |              9 |          0 | 584550071425531905
+  __auto__        | {id}                      | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 | 584550071432740865
+  __auto__        | {city,id}                 | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 |               NULL
+  __auto__        | {rider_id}                | 2020-08-26 16:55:24.725089+00:00 |       500 |             50 |          0 | 584550071446732801
+  __auto__        | {city,rider_id}           | 2020-08-26 16:55:24.725089+00:00 |       500 |             50 |          0 |               NULL
+  __auto__        | {vehicle_city}            | 2020-08-26 16:55:24.725089+00:00 |       500 |              9 |          0 | 584550071461019649
+  __auto__        | {vehicle_id}              | 2020-08-26 16:55:24.725089+00:00 |       500 |             15 |          0 | 584550071467966465
+  __auto__        | {vehicle_city,vehicle_id} | 2020-08-26 16:55:24.725089+00:00 |       500 |             15 |          0 |               NULL
+  __auto__        | {start_address}           | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 | 584550071482122241
+  __auto__        | {end_address}             | 2020-08-26 16:55:24.725089+00:00 |       500 |            500 |          0 | 584550071489167361
+  __auto__        | {start_time}              | 2020-08-26 16:55:24.725089+00:00 |       500 |             30 |          0 | 584550071496671233
+  __auto__        | {end_time}                | 2020-08-26 16:55:24.725089+00:00 |       500 |            367 |          0 | 584550071504437249
+  __auto__        | {revenue}                 | 2020-08-26 16:55:24.725089+00:00 |       500 |            100 |          0 | 584550071512137729
+(13 rows)
 ~~~
 
 ### Delete statistics

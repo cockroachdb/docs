@@ -34,52 +34,63 @@ Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
-[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html) or [`NOT NULL` constraint](not-null.html).
+[`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
 [`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
+[`ALTER SCHEMA`](alter-schema.html) | <span class="version-tag">New in v20.2</span>: Alter a user-defined schema.
 [`ALTER SEQUENCE`](alter-sequence.html) | Apply a schema change to a sequence.
 [`ALTER TABLE`](alter-table.html) | Apply a schema change to a table.
-[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html).
+[`ALTER TYPE`](alter-type.html) | <span class="version-tag">New in v20.2:</span> Modify a user-defined, [enumerated data type](enum.html).
 [`ALTER USER`](alter-user.html) | add, change, or remove a user's password and to change the login privileges for a role.
 [`ALTER ROLE`](alter-role.html) | Add, change, or remove a [role's](create-role.html) password and to change the login privileges for a role.
-[`ALTER VIEW`](alter-view.html) | Rename a view.
+[`ALTER VIEW`](alter-view.html) | Apply a schema change to a view.
 [`COMMENT ON`](comment-on.html) | Associate a comment to a database, table, or column.
 [`CONFIGURE ZONE`](configure-zone.html) | Add, modify, reset, or remove a [replication zone](configure-replication-zones.html) for a database, table, index, partition, or system range.
+[`CONVERT TO SCHEMA`](convert-to-schema.html) | <span class="version-tag">New in v20.2</span>: Convert a database to a schema.
 [`CREATE DATABASE`](create-database.html) | Create a new database.
 [`CREATE INDEX`](create-index.html) | Create an index for a table.
+[`CREATE SCHEMA`](create-schema.html) | <span class="version-tag">New in v20.2</span>: Create a user-defined schema.
 [`CREATE SEQUENCE`](create-sequence.html) | Create a new sequence.
 [`CREATE TABLE`](create-table.html) | Create a new table in a database.
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
+[`CREATE TYPE`](create-type.html) | <span class="version-tag">New in v20.2:</span> Create a user-defined, [enumerated data type](enum.html).
 [`CREATE VIEW`](create-view.html) | Create a new [view](views.html) in a database.
 [`DROP COLUMN`](drop-column.html) | Remove columns from a table.
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP SCHEMA`](drop-schema.html) | <span class="version-tag">New in v20.2</span>: Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
+[`DROP TYPE`](drop-type.html) | <span class="version-tag">New in v20.2:</span> Remove a user-defined, [enumerated data type](enum.html).
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
 [`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`REFRESH`](refresh.html) | <span class="version-tag">New in v20.2:</span> Refresh the stored query results of a [materialized view](views.html#materialized-views).
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
+[`SET SCHEMA`](set-schema.html) | <span class="version-tag">New in v20.2</span>: Change the schema of a table, sequence, or view.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
+[`SHOW ENUMS`](show-enums.html) |  <span class="version-tag">New in v20.2:</span> List user-defined, [enumerated data types](enum.html) in a database.
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
-[`SHOW RANGES`](show-ranges.html) | Show range information about a specific table or index.
+[`SHOW TYPES`](show-types.html) |  <span class="version-tag">New in v20.2:</span> List user-defined [data types](data-types.html) in a database.
+[`SHOW RANGES`](show-ranges.html) | Show range information for all data in a table or index.
+[`SHOW RANGE FOR ROW`](show-range-for-row.html) | Show range information for a single row in a table or index. 
 [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table or index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table or index.
@@ -97,6 +108,7 @@ Statement | Usage
 [`ROLLBACK`](rollback-transaction.html) | Roll back the current [transaction](transactions.html) and all of its [nested transaction](transactions.html#nested-transactions), discarding all transactional updates made by statements inside the transaction.
 [`SET TRANSACTION`](set-transaction.html) | Set the priority for the session or for an individual [transaction](transactions.html).
 [`SHOW`](show-vars.html) | View the current [transaction settings](transactions.html).
+[`SHOW TRANSACTIONS`](show-transactions.html) | <span class="version-tag">New in v20.2</span>: View all currently active transactions across the cluster or on the local node.
 
 ## Access management statements
 
@@ -162,23 +174,23 @@ Statement | Usage
 [`RESUME JOB`](resume-job.html) | Resume a paused `BACKUP`, `RESTORE`, `IMPORT`, or `CHANGEFEED` job.
 [`SHOW JOBS`](show-jobs.html) | View information on jobs.
 
-## Backup and restore statements (Enterprise)
-
-The following statements require an [enterprise license](enterprise-licensing.html).
-
-{{site.data.alerts.callout_info}}
-For non-enterprise users, see [Back up Data](backup.html) and [Restore Data](restore.html).
-{{site.data.alerts.end}}
+## Backup and restore statements
 
 Statement | Usage
 ----------|------------
 [`BACKUP`](backup.html) | Create disaster recovery backups of databases and tables.
 [`RESTORE`](restore.html) | Restore databases and tables using your backups.
 [`SHOW BACKUP`](show-backup.html) | List the contents of a backup.
+[`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html) | <span class="version-tag">New in v20.2:</span> Create a schedule for periodic backups.
+[`SHOW SCHEDULES`](show-schedules.html) | <span class="version-tag">New in v20.2:</span> View information on backup schedules.
+[`PAUSE SCHEDULES`](pause-schedules.html) | <span class="version-tag">New in v20.2:</span> Pause backup schedules.
+[`RESUME SCHEDULES`](resume-schedules.html) | <span class="version-tag">New in v20.2:</span> Resume paused backup schedules.
+[`DROP SCHEDULES`](drop-schedules.html) | <span class="version-tag">New in v20.2:</span> Drop backup schedules.
+
 
 ## Changefeed statements (Enterprise)
 
-[Change data capture](change-data-capture.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
+[Change data capture](stream-data-out-of-cockroachdb-using-changefeeds.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------

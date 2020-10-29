@@ -271,21 +271,6 @@ of deletes](#sorting-the-output-of-deletes).
 
 {% include {{page.version.version}}/misc/sorting-delete-output.md %}
 
-## Processing order during aggregations
-
-CockroachDB currently processes aggregations (e.g., `SELECT ... GROUP BY`)
-in non-deterministic order.
-
-For most aggregation functions, like `MIN`, `MAX`,
-`COUNT`, the order does not matter anyway because the functions are commutative
-and produce the same result regardless. However, for the few aggregation
-functions that are not commutative (e.g., `array_agg()`, `json_agg()`,
-and `concat_agg()`), this implies the result of the aggregation will not be
-deterministic.
-
-This is a [known limitation](https://github.com/cockroachdb/cockroach/issues/23620)
-that may be lifted in the future.
-
 ## See also
 
 - [Selection Queries](selection-queries.html)

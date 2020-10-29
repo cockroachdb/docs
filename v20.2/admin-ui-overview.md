@@ -2,7 +2,7 @@
 title: Admin UI Overview
 summary: Use the Admin UI to monitor and optimize cluster performance.
 toc: true
-redirect_from: 
+redirect_from:
 - explore-the-admin-ui.html
 - admin-ui-access-and-navigate.html
 key: explore-the-admin-ui.html
@@ -22,7 +22,7 @@ Area | Description
 [SQL Dashboard](admin-ui-sql-dashboard.html) | Metrics about SQL connections, byte traffic, queries, transactions, and service latency.
 [Storage Dashboard](admin-ui-storage-dashboard.html) | Metrics about storage capacity and file descriptors.
 [Replication Dashboard](admin-ui-replication-dashboard.html) | Metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
-[Changefeeds Dashboard](admin-ui-cdc-dashboard.html) | Metrics about the [changefeeds](change-data-capture.html) created across your cluster.
+[Changefeeds Dashboard](admin-ui-cdc-dashboard.html) | Metrics about the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster.
 [Databases](admin-ui-databases-page.html) | Details about the system and user databases in the cluster.
 [Statements](admin-ui-statements-page.html) | Frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement diagnostics.
 [Network Latency](admin-ui-network-latency-page.html) | Latencies and lost connections between all nodes in your cluster.
@@ -48,14 +48,14 @@ On insecure clusters, all areas of the Admin UI are accessible to all users.
 On secure clusters, for each user who should have access to the Admin UI, you must [create a user with a password](create-user.html#create-a-user-with-a-password) and optionally [grant the user membership to the `admin` role](grant-roles.html).
 
 {{site.data.alerts.callout_info}}
-The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant-roles.html): 
+The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant-roles.html):
 
 <code style="white-space:pre-wrap">GRANT admin TO \<sql_user\>;</code>
 {{site.data.alerts.end}}
 
 For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables, jobs, and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
 
-The following areas of the Admin UI can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege. 
+The following areas of the Admin UI can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege.
 
 Secure area | Privileged information
 -----|-----

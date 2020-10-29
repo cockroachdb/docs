@@ -8,15 +8,21 @@
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you must set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. Specify this amount by adjusting `resources.requests.memory` and `resources.limits.memory` in `cockroachdb-statefulset.yaml`. Their values should be identical.
+    To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes instance, you *must* set `resources.requests.memory` and `resources.limits.memory` to explicit values in the CockroachDB `containers` spec. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. 
 
-    We recommend setting `cache` and `max-sql-memory` each to 1/4 of your memory allocation. For example, if you are allocating 8Gi of memory to each CockroachDB node, substitute the following values in [this line](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml#L146):
-    {{site.data.alerts.end}}
+    For example, to allocate 8Gi of memory to CockroachDB in each pod: 
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    --cache 2Gi --max-sql-memory 2Gi
     ~~~
+    containers:
+      - name: cockroachdb
+        ...
+          resources:
+            requests:
+              memory: "8Gi"
+            limits:
+              memory: "8Gi"
+    ~~~
+    {{site.data.alerts.end}}
 
     Use the file to create the StatefulSet and start the cluster:
 

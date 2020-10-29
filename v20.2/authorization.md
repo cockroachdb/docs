@@ -118,16 +118,7 @@ Take the following points into consideration while granting privileges to roles 
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-You can manage the following privileges for databases and tables:
-
-- `ALL`
-- `CREATE`
-- `DROP`
-- `GRANT`  
-- `SELECT`  
-- `INSERT`  
-- `DELETE`  
-- `UPDATE`  
+{% include {{ page.version.version }}/sql/privileges.md %}
 
 ## Authorization best practices
 
@@ -189,7 +180,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name |    schema_name     |         table_name         | grantee  | privilege_type  
+      database_name |    schema_name     |         table_name         | grantee  | privilege_type  
     +---------------+--------------------+----------------------------+----------+----------------+
       movr          | crdb_internal      | NULL                       | db_admin | ALL             
       movr          | information_schema | NULL                       | db_admin | ALL             
@@ -222,7 +213,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name | grantee  | privilege_type  
+      database_name | schema_name | table_name | grantee  | privilege_type  
     +---------------+-------------+------------+----------+----------------+
       movr          | public      | vehicles   | app_user | DELETE          
       movr          | public      | vehicles   | app_user | INSERT          
@@ -287,7 +278,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-            username    |  options   | member_of
+        username    |  options   | member_of
     ----------------+------------+------------
       admin         | CREATEROLE | {}
       db_admin_role | NOLOGIN    | {}
@@ -311,7 +302,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name |    schema_name     |    grantee    | privilege_type
+      database_name |    schema_name     |    grantee    | privilege_type
     ----------------+--------------------+---------------+-----------------
       movr          | crdb_internal      | admin         | ALL
       movr          | crdb_internal      | db_admin_role | ALL
@@ -358,7 +349,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-            username    |  options   |    member_of
+        username    |  options   |    member_of
     ----------------+------------+------------------
       admin         | CREATEROLE | {}
       app_user_role | NOLOGIN    | {}
@@ -380,7 +371,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |    grantee    | privilege_type
+      database_name | schema_name | table_name |    grantee    | privilege_type
     ----------------+-------------+------------+---------------+-----------------
       movr          | public      | vehicles   | admin         | ALL
       movr          | public      | vehicles   | app_user_role | DELETE
@@ -427,7 +418,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-              username     |  options   |    member_of
+          username     |  options   |    member_of
     -------------------+------------+------------------
       admin            | CREATEROLE | {}
       app_user_1       |            | {app_user_role}
@@ -453,7 +444,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |     grantee      | privilege_type
+      database_name | schema_name | table_name |     grantee      | privilege_type
     ----------------+-------------+------------+------------------+-----------------
       movr          | public      | vehicles   | admin            | ALL
       movr          | public      | vehicles   | app_user_role    | DELETE

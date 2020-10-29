@@ -9,7 +9,8 @@ Inverted indexes store mappings from values within a container column (such as a
 CockroachDB stores the contents of the following data types in inverted indexes:
 
 - [JSONB](jsonb.html)
--  [Arrays](array.html)
+- [Arrays](array.html)
+- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](spatial-indexes.html)
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of using an inverted index to improve query performance on a <code>JSONB</code> column, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
@@ -92,9 +93,9 @@ Indexes create a trade-off: they greatly improve the speed of queries, but sligh
 
 Inverted indexes on `JSONB` columns support the following comparison operators:
 
-- "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
-- "contains": [`@>`](functions-and-operators.html#operator-contains)
-- "equals": [`=`](functions-and-operators.html#operator-equals), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#operator-get-object-field) operator.  For example:
+- "is contained by": [`<@`](functions-and-operators.html#supported-operations)
+- "contains": [`@>`](functions-and-operators.html#supported-operations)
+- "equals": [`=`](functions-and-operators.html#supported-operations), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator.  For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -108,27 +109,27 @@ Inverted indexes on `JSONB` columns support the following comparison operators:
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
 
-If you require comparisons using [`<`](functions-and-operators.html#operator-less-than)), [`<=`](functions-and-operators.html#operator-less-than-or-equal), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+If you require comparisons using [`<`](functions-and-operators.html#supported-operations)), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
 
-1. Create your table with a computed column: 
+1. Create your table with a computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
-        id INT, 
-        data JSONB, 
+        id INT,
+        data JSONB,
         foo INT AS ((data->>'foo')::INT) STORED
         );
     ~~~
 
-2. Create an index on your computed column: 
+2. Create an index on your computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
-3. Execute your query with your comparison: 
+3. Execute your query with your comparison:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -139,10 +140,12 @@ If you require comparisons using [`<`](functions-and-operators.html#operator-les
 
  Inverted indexes on [`ARRAY`](array.html) columns support the following comparison operators:
 
-- "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
-- "contains": [`@>`](functions-and-operators.html#operator-contains)
+- "is contained by": [`<@`](functions-and-operators.html#supported-operations)
+- "contains": [`@>`](functions-and-operators.html#supported-operations)
 
 ## Example
+
+### Create a table with inverted index on a JSONB column
 
 In this example, let's create a table with a `JSONB` column and an inverted index:
 
@@ -197,6 +200,7 @@ Then, insert a few rows of data:
 |                                      |                                  |                                                                          |     "online": true                 |
 |                                      |                                  |                                                                          | }                                  |
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+(3 rows)
 ~~~
 
 Now, run a query that filters on the `JSONB` column:
@@ -214,6 +218,72 @@ Now, run a query that filters on the `JSONB` column:
 | ec0a4942-b0aa-4a04-80ae-591b3f57721e | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
 |                                      |                                  | "NYC", "online": true}                                                   |
 +--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+(2 rows)
+~~~
+
+### Add an inverted index to a table with an array column
+
+In this example, let's create a table with an `ARRAY` column first, and add the inverted index later:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE students (
+    student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    marks INT ARRAY
+  );
+~~~
+
+Insert a few rows of data:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO students (marks) VALUES
+    (ARRAY[10,20,50]),
+    (ARRAY[20,40,100]),
+    (ARRAY[100,20,70]
+  );
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM students;
+~~~
+
+~~~
++--------------------------------------+--------------+
+|              student_id              |    marks     |
++--------------------------------------+--------------+
+| 11cdc77c-2f12-48d4-8bb4-ddee7c705e00 | {10,20,50}   |
+|                                      |              |
+| 2526c746-0b32-4f6b-a2b4-7ce6d411c1c2 | {20,40,100}  |
+|                                      |              |
+| eefdc32e-4485-45ca-9df1-80c0f42d73c0 | {100,20,70}  |
+|                                      |              |
++--------------------------------------+--------------+
+(3 rows)
+~~~
+
+Now, let’s add an inverted index to the table and run a query that filters on the `ARRAY`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE INVERTED INDEX student_marks ON students (marks);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM students where marks @> ARRAY[100];
+~~~
+
+~~~
++--------------------------------------+--------------+
+|              student_id              |    marks     |
++--------------------------------------+--------------+
+| 2526c746-0b32-4f6b-a2b4-7ce6d411c1c2 | {20,40,100}  |
+|                                      |              |
+| eefdc32e-4485-45ca-9df1-80c0f42d73c0 | {100,20,70}  |
+|                                      |              |
++--------------------------------------+--------------+
 (2 rows)
 ~~~
 

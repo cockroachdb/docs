@@ -106,6 +106,10 @@ You can delete multiple rows from a table in several ways:
 
 - Using [`TRUNCATE`](truncate.html) instead of [`DELETE`](delete.html) to delete all of the rows from a table, as recommended in our [performance best practices](performance-best-practices-overview.html#use-truncate-instead-of-delete-to-delete-all-rows-in-a-table).
 
+{{site.data.alerts.callout_success}}
+We recommend [deleting large amounts of data in batches](delete.html#batch-deletes).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
 Before deleting large amounts of data, see [Performance considerations](#performance-considerations).
 {{site.data.alerts.end}}
@@ -117,7 +121,7 @@ Because of the way CockroachDB works under the hood, deleting data from the data
 The practical implications of the above are:
 
 - Deleting data will not immediately decrease disk usage.
-- If you issue multiple [`DELETE`](delete.html) statements in sequence that each delete large amounts of data, each subsequent `DELETE` statement will run more slowly, for reasons [explained in this FAQ entry](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
+- If you issue multiple [`DELETE`](delete.html) statements in sequence that each delete large amounts of data, each subsequent `DELETE` statement will run more slowly. For details, see [Preserving `DELETE` performance over time](delete.html#preserving-delete-performance-over-time).
 - To delete all of the rows in a table, [it's faster to use `TRUNCATE` instead of `DELETE`](performance-best-practices-overview.html#use-truncate-instead-of-delete-to-delete-all-rows-in-a-table).
 
 For more information about how the storage layer of CockroachDB works, see the [storage layer reference documentation](architecture/storage-layer.html).
@@ -128,11 +132,9 @@ Reference information related to this task:
 
 - [`DELETE`](delete.html)
 - [Disk space usage after deletes](delete.html#disk-space-usage-after-deletes)
-- [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time)
 - [`TRUNCATE`](truncate.html)
 - [`DROP TABLE`](drop-table.html)
 - [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
-- [Delete Multiple Rows](delete.html#delete-specific-rows)
 
 Other common tasks:
 

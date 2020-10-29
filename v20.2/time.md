@@ -8,8 +8,6 @@ The `TIME` [data type](data-types.html) stores the time of day in UTC.
 
  The `TIMETZ` data type stores a time of day with a time zone offset from UTC.
 
-{% include {{page.version.version}}/sql/vectorized-support.md %}
-
 ## Variants
 
 `TIME` has two variants:
@@ -70,10 +68,6 @@ A `TIMETZ` column supports values up to 12 bytes in width, but the total storage
  CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIME`/`TIMETZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. For example, specifying a `TIME` value as `TIME(3)` truncates the time precision to milliseconds. By default, `TIME`/`TIMETZ` values have a precision of 6 (microseconds).
 
 You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIME`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIME`-typed column, with precision](#create-a-table-with-a-time-typed-column-with-precision).
-
-{{site.data.alerts.callout_info}}
-If you downgrade to a version of CockroachDB that does not support precision for `TIME`/`TIMETZ` values, all `TIME`/`TIMETZ` values previously specified with precision will be stored with full precision.
-{{site.data.alerts.end}}
 
 ## Examples
 

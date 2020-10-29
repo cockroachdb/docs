@@ -13,7 +13,9 @@ ssh-link: https://cloud.google.com/compute/docs/instances/connecting-to-instance
 
 This page shows you how to manually deploy an insecure multi-node CockroachDB cluster on Google Cloud Platform's Compute Engine (GCE), using Google's TCP Proxy Load Balancing service to distribute client traffic.
 
-{{site.data.alerts.callout_danger}}If you plan to use CockroachDB in production, we strongly recommend using a secure cluster instead. Select <strong>Secure</strong> above for instructions.{{site.data.alerts.end}}
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

@@ -205,7 +205,7 @@ File name | File usage
 
 ## Authentication for cloud storage
 
-See [Backup file URLs](backup.html#backup-file-urls)
+See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Authentication best practice
 
@@ -272,5 +272,4 @@ Let's see how the digital certificate is used in client-server communication: Th
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](secure-a-cluster.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

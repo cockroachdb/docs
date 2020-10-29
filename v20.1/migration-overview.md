@@ -3,7 +3,6 @@ title: Migration Overview
 summary: Learn how to migrate data into a CockroachDB cluster.
 redirect_from: import-data.html
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 CockroachDB supports importing data from the following databases:
@@ -15,6 +14,7 @@ CockroachDB supports importing data from the following databases:
 and from the following data formats:
 
 - CSV/TSV
+- Avro
 
 This page lists general considerations to be aware of as you plan your migration to CockroachDB.
 
@@ -24,6 +24,9 @@ In addition to the information listed below, see the following pages for specifi
 - [Migrate from Postgres][postgres]
 - [Migrate from MySQL][mysql]
 - [Migrate from CSV][csv]
+- [Migrate from Avro][avro]
+
+{% include {{ page.version.version }}/misc/import-perf.md %}
 
 ## File storage during import
 
@@ -61,6 +64,7 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 ## See also
 
 - [`IMPORT`][import]
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from Oracle][oracle]
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
@@ -74,6 +78,7 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 
 <!-- Links -->
 
+[avro]: migrate-from-avro.html
 [oracle]: migrate-from-oracle.html
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html

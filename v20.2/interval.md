@@ -60,10 +60,6 @@ An `INTERVAL` column supports values up to 24 bytes in width, but the total stor
 
 For example, specifying an `INTERVAL` value as `INTERVAL(3)` truncates the time precision to milliseconds.
 
-{{site.data.alerts.callout_info}}
-All `INTERVAL` values specified with precision will retain their precision in the event of a downgrade to a version of CockroachDB that does not fully support `INTERVAL` precision. All `INTERVAL` values inserted after the downgrade will be stored with full precision (microseconds).
-{{site.data.alerts.end}}
-
 ## Duration fields
 
  CockroachDB supports duration fields for `INTERVAL` values. You can specify `SECOND`, `MINUTE`, `HOUR`, or `DAY` units of duration in the form `INTERVAL ... <unit>` or `INTERVAL ... <unit> TO <unit>`.

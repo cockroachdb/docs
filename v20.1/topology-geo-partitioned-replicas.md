@@ -211,7 +211,7 @@ Because each partition is constrained to the relevant region and balanced across
 
 <img src="{{ 'images/v20.1/topology-patterns/topology_geo-partitioning_resiliency1.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
-However, if an entire region fails, the partitions in that region become unavailable for reads and writes, even if your load balancer can redirect requests to different region:
+However, if an entire region fails, the partitions in that region become unavailable for reads and writes, even if your load balancer can redirect requests to a different region:
 
 <img src="{{ 'images/v20.1/topology-patterns/topology_geo-partitioning_resiliency2.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 

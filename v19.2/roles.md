@@ -32,7 +32,7 @@ Indirect member | A user or role that is a member of the role by association. <b
 
 ## Example
 
-For the purpose of this example, you need an [enterprise license](enterprise-licensing.html) and one CockroachDB node running in insecure mode:
+For the purpose of this example, you need one CockroachDB node running in insecure mode:
 
 {% include copy-clipboard.html %}
 ~~~ shell

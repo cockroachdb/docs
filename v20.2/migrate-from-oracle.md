@@ -2,7 +2,6 @@
 title: Migrate from Oracle
 summary: Learn how to migrate data from Oracle into a CockroachDB cluster.
 toc: true
-build_for: [cockroachdb]
 ---
 
 This page has instructions for migrating data from Oracle into CockroachDB by [importing](import.html) CSV files. Note that `IMPORT` only works for creating new tables. For information on how to add CSV data to existing tables, see [`IMPORT INTO`](import-into.html).
@@ -12,6 +11,8 @@ To illustrate this process, we use the following sample data and tools:
 - [Swingbench OrderEntry data set](http://www.dominicgiles.com/swingbench.html), which is based on the `oe` schema that ships with Oracle Database 11g and Oracle Database 12c.
 - [Oracle Data Pump](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump.html), which enables the movement of data and metadata from one database to another, and comes with all Oracle installations.
 - [SQL*Plus](https://docs.oracle.com/database/121/SQPUG/ch_three.htm), the interactive and batch query tool that comes with every Oracle Database installation.
+
+{% include {{ page.version.version }}/misc/import-perf.md %}
 
 ## Step 1. Export the Oracle schema
 
@@ -171,7 +172,10 @@ These compressed CSV files will be used to import your data into CockroachDB.
 
 ## Step 6. Host the files where the cluster can access them
 
-Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`](import.html) can pull from, see [Import File URLs](import.html#import-file-urls).
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT`](import.html) can pull from, see the following:
+
+- [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 {{site.data.alerts.callout_success}}
 We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
@@ -372,15 +376,12 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
     > SELECT now();
     ~~~
 
-- [Views](views.html)
-
-    CockroachDB does not have a materialized view implementation.
-
 - [Window functions](window-functions.html)
 
 ## See also
 
 - [`IMPORT`](import.html)
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from CSV](migrate-from-csv.html)
 - [Migrate from MySQL](migrate-from-mysql.html)
 - [Migrate from Postgres](migrate-from-postgres.html)

@@ -3,18 +3,22 @@ title: Migration Overview
 summary: Learn how to migrate data into a CockroachDB cluster.
 redirect_from: import-data.html
 toc: true
-build_for: [cockroachdb]
 ---
 
-CockroachDB supports importing data from the following databases:
+CockroachDB supports [importing](import.html) data from the following databases:
 
 - MySQL
 - Oracle (using CSV)
-- Postgres
+- Postgres (and <span class="version-tag">New in v20.2</span>: PostGIS)
 
 and from the following data formats:
 
 - CSV/TSV
+- Avro
+- <span class="version-tag">New in v20.2</span>: ESRI Shapefiles (`.shp`) (using `shp2pgsql`)
+- <span class="version-tag">New in v20.2</span>: OpenStreetMap data files (`.pbf`) (using `osm2pgsql`)
+- <span class="version-tag">New in v20.2</span>: GeoPackage data files (`.gpkg`) (using `ogr2ogr`)
+- <span class="version-tag">New in v20.2</span>: GeoJSON data files (`.geojson`) (using `ogr2ogr`)
 
 This page lists general considerations to be aware of as you plan your migration to CockroachDB.
 
@@ -24,6 +28,13 @@ In addition to the information listed below, see the following pages for specifi
 - [Migrate from Postgres][postgres]
 - [Migrate from MySQL][mysql]
 - [Migrate from CSV][csv]
+- [Migrate from Avro][avro]
+- [Migrate from Shapefiles][shp]
+- [Migrate from OpenStreetMap][pbf]
+- [Migrate from GeoPackage][gpkg]
+- [Migrate from GeoPackage][geojson]
+
+{% include {{ page.version.version }}/misc/import-perf.md %}
 
 ## File storage during import
 
@@ -40,31 +51,15 @@ In general, you are likely to have to make changes to your schema, and how your 
 
 Above a certain size, many data types such as [`STRING`](string.html)s, [`DECIMAL`](decimal.html)s, [`ARRAY`](array.html), [`BYTES`](bytes.html), and [`JSONB`](jsonb.html) may run into performance issues due to [write amplification](https://en.wikipedia.org/wiki/Write_amplification).  See each data type's documentation for its recommended size limits.
 
-## Unsupported data types
-
-CockroachDB does not provide `ENUM` or `SET` data types.
-
-In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.html) as shown below.  For MySQL, we perform this conversion automatically during the import.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE orders (
-    id UUID PRIMARY KEY,
-    -- ...
-    status STRING check (
-      status='processing' or status='in-transit' or status='delivered'
-    ) NOT NULL,
-    -- ...
-  );
-~~~
-
 ## See also
 
 - [`IMPORT`][import]
+- [Import Performance Best Practices](import-performance-best-practices.html)
 - [Migrate from Oracle][oracle]
 - [Migrate from CSV][csv]
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
+- [Migrate from Avro][avro]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [SQL Dump (Export)](cockroach-dump.html)
@@ -79,3 +74,8 @@ In Postgres, you can emulate an `ENUM` type using a [`CHECK` constraint](check.h
 [mysql]: migrate-from-mysql.html
 [csv]: migrate-from-csv.html
 [import]: import.html
+[avro]: migrate-from-avro.html
+[shp]: migrate-from-shapefiles.html
+[pbf]: migrate-from-openstreetmap.html
+[gpkg]: migrate-from-geopackage.html
+[geojson]: migrate-from-geojson.html

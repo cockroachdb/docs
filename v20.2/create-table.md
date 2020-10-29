@@ -29,10 +29,10 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
-**opt_temp_create_table ::=**
+**opt_persistence_temp_table ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_temp_create_table.html %}
+  {% include {{ page.version.version }}/sql/diagrams/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
@@ -65,10 +65,22 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 </div>
 
+**like_table_option_list::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/like_table_option_list.html %}
+</div>
+
 **opt_interleave ::=**
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
+</div>
+
+**opt_with_storage_parameter_list ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
 </div>
 
 </div>
@@ -80,15 +92,19 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 Parameter | Description
 ----------|------------
+`opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
 `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 `column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) or other column qualification (e.g., [computed columns](computed-columns.html)) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
 `index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and Inverted Indexes](#create-a-table-with-secondary-and-inverted-indexes) example below.<br><br> To enable [hash-sharded indexes](indexes.html#hash-sharded-indexes), set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
+`LIKE table_name like_table_option_list` | <span class="version-tag">New in v20.2:</span> Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
-`opt_temp_create_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
+`opt_where_clause` | <span class="version-tag">New in v20.2:</span> An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
+`opt_with_storage_parameter_list` | <span class="version-tag">New in v20.2:</span> A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+`ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
 ## Table-level replication
 
@@ -100,11 +116,46 @@ CockroachDB allows [enterprise users](enterprise-licensing.html) to [define tabl
 
 {{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
 
+## Create a table like an existing table
+
+<span class="version-tag">New in v20.2:</span> CockroachDB supports the `CREATE TABLE LIKE` syntax for creating a new table based on the schema of an existing table.
+
+The following options are supported:
+
+- `INCLUDING CONSTRAINTS` adds all [`CHECK`](check.html) constraints from the source table.
+- `INCLUDING DEFAULTS` adds all [`DEFAULT`](default-value.html) column expressions from the source table.
+- `INCLUDING GENERATED` adds all [computed column](computed-columns.html) expressions from the source table.
+- `INCLUDING INDEXES` adds all [indexes](indexes.html) from the source table.
+- `INCLUDING ALL` includes all of the specifiers above.
+
+To exclude specifiers, use the `EXCLUDING` keyword. Excluding specifiers can be useful if you want to use `INCLUDING ALL`, and exclude just one or two specifiers. The last `INCLUDING`/`EXCLUDING` keyword for a given specifier takes priority.
+
+{{site.data.alerts.callout_info}}
+Column families, interleavings, partitioning, and foreign key constraints
+cannot be preserved from the old table and will have to be recreated
+manually in the new table if the user wishes.
+{{site.data.alerts.end}}
+
+Supported `LIKE` specifiers can also be mixed with ordinary `CREATE TABLE` specifiers. For example:
+
+~~~ sql
+CREATE TABLE table1 (a INT PRIMARY KEY, b INT NOT NULL DEFAULT 3 CHECK (b > 0), INDEX(b));
+
+CREATE TABLE table2 (LIKE table1 INCLUDING ALL EXCLUDING CONSTRAINTS, c INT, INDEX(b,c));
+~~~
+
+In this example, `table2` is created with the indexes and default values of `table1`, but not the `CHECK` constraints, because `EXCLUDING CONSTRAINTS` was
+specified after `INCLUDING ALL`. `table2` also includes an additional column and index.
+
+For additional examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
+
 ## Examples
 
 ### Create a table
 
 In this example, we create the `users` table with a single [primary key](primary-key.html) column defined. In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
+
+For performance recommendations on primary keys, see the [Primary Key Constraint](primary-key.html#performance-considerations) page and the [SQL Performance Best Practices](performance-best-practices-overview.html#use-multi-column-primary-keys) page.
 
 {{site.data.alerts.callout_info}}
   If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) or [`ALTER PRIMARY KEY`](alter-primary-key.html). If the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement, and is part of the same transaction, no default primary key will be created. If the table has already been created and the transaction committed, the `ADD` or `ALTER` statements replace the default primary key.
@@ -207,11 +258,7 @@ We also have other resources on indexes:
 
 [Foreign key constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
-There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
-
-- Foreign key columns must be [indexed](indexes.html). If no index is defined in the `CREATE TABLE` statement using `INDEX`, `PRIMARY KEY`, or `UNIQUE`, a secondary index is automatically created on the foreign key columns.
-
-- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
+There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the most important rule is that referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
 
 You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
 
@@ -621,6 +668,106 @@ To show the definition of a table, use the [`SHOW CREATE`](show-create.html) sta
   data                     | JSONB     |    true     | NULL           |                                   | {}                                               |   false
   crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(CAST(ts AS STRING)), 8) | {events_crdb_internal_ts_shard_8_ts_idx}         |   true
 (7 rows)
+~~~
+
+### Create a new table from an existing one
+
+#### Create a table including all supported source specifiers
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles;
+~~~
+
+~~~
+  table_name |                                              create_statement
+-------------+-------------------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE public.vehicles (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE,
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles2 (
+        LIKE vehicles INCLUDING ALL
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles2;
+~~~
+
+~~~
+  table_name |                                       create_statement
+-------------+------------------------------------------------------------------------------------------------
+  vehicles2  | CREATE TABLE public.vehicles2 (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row)
+~~~
+
+Note that the foreign key constraint `fk_owner_id_ref_users` in the source table is not included in the new table.
+
+#### Create a table with some source specifiers and a foreign key constraint
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles3 (
+        LIKE vehicles INCLUDING DEFAULTS INCLUDING INDEXES,
+        CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE vehicles3;
+~~~
+
+~~~
+  table_name |                                              create_statement
+-------------+-------------------------------------------------------------------------------------------------------------
+  vehicles3  | CREATE TABLE public.vehicles3 (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     city STRING NOT NULL,
+             |     type STRING NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status STRING NULL,
+             |     current_location STRING NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_owner_id_ref_users FOREIGN KEY (owner_id) REFERENCES public.users(id) ON DELETE CASCADE,
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     INVERTED INDEX ix_vehicle_ext (ext),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | )
+(1 row)
 ~~~
 
 ## See also

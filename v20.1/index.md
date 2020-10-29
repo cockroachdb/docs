@@ -4,7 +4,6 @@ summary: CockroachDB is the SQL database for building global, scalable cloud ser
 toc: true
 homepage: true
 contribute: false
-build_for: [cockroachdb, cockroachcloud]
 cta: false
 ---
 

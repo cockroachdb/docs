@@ -12,7 +12,7 @@ The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new
 
 {% include {{ page.version.version }}/cdc/core-url.md %}
 
-For more information, see [Change Data Capture](change-data-capture.html).
+For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
@@ -26,7 +26,7 @@ Changefeeds can only be created by superusers, i.e., [members of the `admin` rol
 
     This cancelation behavior (i.e., close the underlying connection to cancel the changefeed) also extends to client driver usage; in particular, when a client driver calls `Rows.Close()` after encountering errors for a stream of rows. The pgwire protocol requires that the rows be consumed before the connection is again usable, but in the case of a core changefeed, the rows are never consumed. It is therefore critical that you close the connection, otherwise the application will be blocked forever on `Rows.Close()`.
 
-- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](change-data-capture.html#ordering-guarantees).
+- In most cases, each version of a row will be emitted once. However, some infrequent conditions (e.g., node failures, network partitions) will cause them to be repeated. This gives our changefeeds an at-least-once delivery guarantee. For more information, see [Change Data Capture - Ordering Guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
 
 ## Synopsis
 
@@ -84,5 +84,5 @@ You can pause a changefeed by -->
 
 ## See also
 
-- [Change Data Capture](change-data-capture.html)
+- [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
 - [Other SQL Statements](sql-statements.html)

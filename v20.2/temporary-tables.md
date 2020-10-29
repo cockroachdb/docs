@@ -6,7 +6,7 @@ toc: true
 
  CockroachDB supports session-scoped temporary tables (also called "temp tables"). Unlike [persistent tables](create-table.html), temp tables can only be accessed from the session in which they were created, and they are dropped at the end of the session.
 
-To create a temp table, add [`TEMP`/`TEMPORARY`](sql-grammar.html#opt_temp_create_table) to a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement. For full syntax details, see the [`CREATE TABLE`](create-table.html#synopsis) and [`CREATE TABLE AS`](create-table-as.html#synopsis) pages. For example usage, see [Examples](#examples).
+To create a temp table, add `TEMP`/`TEMPORARY` to a [`CREATE TABLE`](create-table.html) or [`CREATE TABLE AS`](create-table-as.html) statement. For full syntax details, see the [`CREATE TABLE`](create-table.html#synopsis) and [`CREATE TABLE AS`](create-table-as.html#synopsis) pages. For example usage, see [Examples](#examples).
 
 {{site.data.alerts.callout_danger}}
 **This is an experimental feature**. The interface and output are subject to change. For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
@@ -55,7 +55,7 @@ To use temp tables, you need to set `experimental_enable_temp_tables` to `on`:
         city STRING,
         name STRING,
         address STRING,
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC)
 );
 ~~~
 
@@ -93,8 +93,10 @@ To show the newly created `pg_temp` schema, use [`SHOW SCHEMAS`](show-schemas.ht
   crdb_internal
   information_schema
   pg_catalog
-  pg_temp_1584540651942455000_1
+  pg_extension
+  pg_temp_1602087923187609000_1
   public
+(6 rows)
 ~~~
 
 ### Create a temp table that references another temp table
@@ -146,14 +148,14 @@ To show all temp tables in a session's temporary schema, use `SHOW TABLES FROM p
 ~~~
 
 ~~~
-  table_name
---------------
-  users
-  vehicles
+           schema_name          | table_name | type  | estimated_row_count
+--------------------------------+------------+-------+----------------------
+  pg_temp_1602087923187609000_1 | users      | table |                   0
+  pg_temp_1602087923187609000_1 | vehicles   | table |                   0
 (2 rows)
 ~~~
 
-You can also use the full name of the temporary schema in the `SHOW` statement (e.g., `SHOW TABLES FROM pg_temp_1584540651942455000_1`).
+You can also use the full name of the temporary schema in the `SHOW` statement (e.g., `SHOW TABLES FROM pg_temp_1602087923187609000_1`).
 
 ### Show temp tables in `information_schema`
 
@@ -163,14 +165,14 @@ For example, the [`information_schema.tables`](information-schema.html#tables) t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.tables WHERE table_schema='pg_temp_1584540651942455000_1';
+> SELECT * FROM information_schema.tables WHERE table_schema='pg_temp_1602087923187609000_1';
 ~~~
 
 ~~~
-  table_catalog |         table_schema          | table_name |   table_type    | is_insertable_into | version
-----------------+-------------------------------+------------+-----------------+--------------------+----------
-  defaultdb     | pg_temp_1584540651942455000_1 | users      | LOCAL TEMPORARY | YES                |       1
-  defaultdb     | pg_temp_1584540651942455000_1 | vehicles   | LOCAL TEMPORARY | YES                |       1
+   table_catalog |         table_schema          | table_name |   table_type    | is_insertable_into | version
+-----------------+-------------------------------+------------+-----------------+--------------------+----------
+  defaultdb      | pg_temp_1602087923187609000_1 | users      | LOCAL TEMPORARY | YES                |       2
+  defaultdb      | pg_temp_1602087923187609000_1 | vehicles   | LOCAL TEMPORARY | YES                |       2
 (2 rows)
 ~~~
 

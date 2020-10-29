@@ -43,8 +43,9 @@ table tr td:nth-child(2) {
  `TIME` | ✓ | Standard | [`TIME` documentation](time.html)
  XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing.
  `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we do not plan to support it.
- `SET`, `ENUM` | ✗ | MySQL, PostgreSQL Extension | Only allow rows to contain values from a defined set of terms.
+ `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.
  `INET` | ✓ | PostgreSQL Extension | [`INET` documentation](inet.html)
+ `ENUM` | ✓ | PostgreSQL Extension | <span class="version-tag">New in v20.2:</span> [`ENUM` documentation](enum.html)
 
 ### Constraints
 
@@ -71,16 +72,16 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Indexes | ✓ | Common Extension | [Indexes documentation](https://www.cockroachlabs.com/docs/indexes.html)
+ Indexes | ✓ | Common Extension | [Indexes documentation](indexes.html)
  Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
  Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)
- Multiple indexes per query | Planned | Common Extension | Use multiple indexes to filter the table's values for a single query
+ Partial indexes | ✓ | Common Extension | <span class="version-tag">New in v20.2:</span> [Partial indexes documentation](partial-indexes.html)
+ Spatial indexes | ✓ | Common Extension | <span class="version-tag">New in v20.2:</span> [Spatial indexes documentation](spatial-indexes.html)
+ Multiple indexes per query | Partial | Common Extension | [Use multiple indexes for a single query](https://github.com/cockroachdb/cockroach/issues/2142)
  Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
  Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them
- Geospatial indexes | Potential | Common Extension | Improves performance of queries calculating geospatial data
  Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values
- Partial indexes | ✗ | Common Extension | Only index specific rows from indexed columns
 
 ### Schema changes
 
@@ -90,6 +91,7 @@ table tr td:nth-child(2) {
  Database renames | ✓ | Standard | [`RENAME DATABASE` documentation](rename-database.html)
  Table renames | ✓ | Standard | [`RENAME TABLE` documentation](rename-table.html)
  Column renames | ✓ | Standard | [`RENAME COLUMN` documentation](rename-column.html)
+ Altering a column's data type | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER COLUMN` documentation](alter-column.html#altering-column-data-types)
  Adding columns | ✓ | Standard | [`ADD COLUMN` documentation](add-column.html)
  Removing columns | ✓ | Standard | [`DROP COLUMN` documentation](drop-column.html)
  Adding constraints | ✓ | Standard | [`ADD CONSTRAINT` documentation](add-constraint.html)
@@ -97,6 +99,11 @@ table tr td:nth-child(2) {
  Index renames | ✓ | Standard | [`RENAME INDEX` documentation](rename-index.html)
  Adding indexes | ✓ | Standard | [`CREATE INDEX` documentation](create-index.html)
  Removing indexes | ✓ | Standard | [`DROP INDEX` documentation](drop-index.html)
+ Altering a primary key | ✓ | Standard | [`ALTER PRIMARY KEY` documentation](alter-primary-key.html)
+ Adding user-defined schemas | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`CREATE SCHEMA` documentation](create-schema.html)
+ Removing user-defined schemas | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`DROP SCHEMA` documentation](drop-schema.html)
+ Altering user-defined schemas | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER SCHEMA` documentation](create-schema.html)
+ Converting a database to a user-defined schema | ✓ | CockroachDB Extension | <span class="version-tag">New in v20.2:</span> [`CONVERT TO SCHEMA` documentation](convert-to-schema.html)
 
 ### Statements
 
@@ -163,6 +170,7 @@ table tr td:nth-child(2) {
  Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)
  Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
  Views | ✓ | Standard | [Views documentation](views.html)
+ Materialized views | ✓ | Common Extension | <span class="version-tag">New in v20.2:</span> [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common Table Expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
  Stored Procedures | Planned | Common Extension | Execute a procedure explicitly.

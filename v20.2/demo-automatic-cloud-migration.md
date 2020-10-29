@@ -268,7 +268,7 @@ Explore other core CockroachDB benefits and features:
 
 You may also want to learn other ways to control the location and number of replicas in a cluster:
 
-- [Even Replication Across Datacenters](configure-replication-zones.html#even-replication-across-datacenters)
+- [Even Replication Across Datacenters](configure-replication-zones.html#even-replication-across-availability-zones)
 - [Multiple Applications Writing to Different Databases](configure-replication-zones.html#multiple-applications-writing-to-different-databases)
 - [Stricter Replication for a Table and Its Indexes](configure-replication-zones.html#stricter-replication-for-a-table-and-its-secondary-indexes)
 - [Tweaking the Replication of System Ranges](configure-replication-zones.html#tweaking-the-replication-of-system-ranges)

@@ -16,7 +16,7 @@ redirect_from:
 
 ## What is CockroachDB?
 
-CockroachDB is a distributed SQL database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
+CockroachDB is a [distributed SQL](https://www.cockroachlabs.com/blog/what-is-distributed-sql/) database built on a transactional and strongly-consistent key-value store. It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention; supports **strongly-consistent** ACID transactions; and provides a familiar **SQL** API for structuring, manipulating, and querying data.
 
 CockroachDB is inspired by Google's [Spanner](http://research.google.com/archive/spanner.html) and [F1](http://research.google.com/pubs/pub38125.html) technologies, and the [source code](https://github.com/cockroachdb/cockroach) is freely available.
 
@@ -173,7 +173,7 @@ Yes. The CockroachCloud offering is currently in Limited Availability and accept
 - Upgrades to the latest stable release of CockroachDB
 - Monitoring to provide SLA-level support
 
-For more details, see the [CockroachCloud](../cockroachcloud/stable/) docs.
+For more details, see the [CockroachCloud](../cockroachcloud/quickstart.html) docs.
 
 ## Why did Cockroach Labs change the license for CockroachDB?
 

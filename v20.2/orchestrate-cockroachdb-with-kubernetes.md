@@ -15,6 +15,8 @@ This page shows you how to orchestrate the deployment, management, and monitorin
 
 To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
+
 ## Before you begin
 
 Before getting started, it's helpful to review some Kubernetes-specific terminology and current limitations.

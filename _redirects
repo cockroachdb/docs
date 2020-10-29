@@ -1,6 +1,5 @@
 ---
 layout: null
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 {%- if site.baseurl == "/docs" %}
@@ -12,6 +11,13 @@ build_for: [cockroachdb, cockroachcloud]
 /docs/releases/ /docs/releases/index.html 200!
 /docs/advisories/ /docs/advisories/index.html 200!
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!
+/docs/*/deploy-a-test-cluster.html /docs/cockroachcloud/quickstart.html 301!
+
+# Removed pages
+/docs/v20.1/demo-follow-the-workload.html /docs/v20.1/topology-follow-the-workload.html 301!
+/docs/v20.2/demo-follow-the-workload.html /docs/v20.2/topology-follow-the-workload.html 301!
+/docs/stable/demo-follow-the-workload.html /docs/stable/topology-follow-the-workload.html 301!
+/docs/dev/demo-follow-the-workload.html /docs/dev/topology-follow-the-workload.html 301!
 
 # Old training pages redirect to Cockroach University
 /docs/*/training/* https://university.cockroachlabs.com 301!

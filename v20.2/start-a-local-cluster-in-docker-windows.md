@@ -13,14 +13,15 @@ asciicast: true
 
 Once you've [installed the official CockroachDB Docker image](install-cockroachdb.html), it's simple to run an insecure multi-node cluster across multiple Docker containers on a single host, using Docker volumes to persist node data.
 
-{{site.data.alerts.callout_danger}}
-Running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
-{{site.data.alerts.end}}
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
+
+{% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
 ## Before you begin
 
 - Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
+- Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
 
 ## Step 1. Create a bridge network
 
@@ -69,7 +70,6 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --name=roach2 `
     --hostname=roach2 `
     --net=roachnet `
-    -p 26257:26257 -p 8080:8080  `
     -v "//c/Users/<username>/cockroach-data/roach2:/cockroach/cockroach-data"  `
     {{page.release_info.docker_image}}:{{page.release_info.version}} start `
     --insecure `
@@ -81,7 +81,6 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
     --name=roach3 `
     --hostname=roach3 `
     --net=roachnet `
-    -p 26257:26257 -p 8080:8080  `
     -v "//c/Users/<username>/cockroach-data/roach3:/cockroach/cockroach-data"  `
     {{page.release_info.docker_image}}:{{page.release_info.version}} start `
     --insecure `
@@ -229,7 +228,7 @@ PS C:\Users\username> docker rm roach1 roach2 roach3
 If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
 
 ~~~ powershell
-Remove-Item C:\Users\username> cockroach-data -recurse
+PS C:\Users\username> Remove-Item cockroach-data -recurse
 ~~~
 
 ## What's next?

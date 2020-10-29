@@ -30,17 +30,7 @@ Roles and users can be granted the following privileges. Some privileges are app
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
-Privilege | Levels
-----------|------------
-`ALL` | Database, Table
-`CREATE` | Database, Table
-`DROP` | Database, Table
-`GRANT` | Database, Table
-`SELECT` | Table
-`INSERT` | Table
-`DELETE` | Table
-`UPDATE` | Table
- `ZONECONFIG` | Database, Table
+{% include {{ page.version.version }}/sql/privileges.md %}
 
 ## Parameters
 

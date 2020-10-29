@@ -178,5 +178,4 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 - [Production Checklist](recommended-production-settings.html)
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)

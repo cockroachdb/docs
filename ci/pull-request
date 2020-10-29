@@ -22,18 +22,10 @@ destination: _site/$baseurl
 EOF
 run make cockroachdb-build JEKYLLCONFIG=_config_prod_cockroachdb.yml
 
-# Step 2. Build the CockroachCloud docs.
-cat > _config_prod_cockroachcloud.yml <<EOF
-url: http://cockroach-docs-review.s3-website-us-east-1.amazonaws.com
-baseurl: /$baseurl/cockroachcloud
-destination: _site/$baseurl/cockroachcloud
-EOF
-run make cockroachcloud-build JEKYLLCONFIG=_config_prod_cockroachcloud.yml
-
-# Step 3. Upload the docs to S3.
+# Step 2. Upload the docs to S3.
 run aws s3 cp --recursive --quiet --region=us-east-1 ./_site s3://cockroach-docs-review
 
-# Step 4a. Determine which Markdown files have changed and generate deeplinks
+# Step 3. Determine which Markdown files have changed and generate deeplinks
 # to post as a comment on the pull request.
 git fetch origin master
 COMMENT_BODY=$(

@@ -23,7 +23,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 ## Required privileges
 
- To create other users, the user must have the [`CREATEROLE`](#allow-the-user-to-create-other-users) parameter set.
+ To create other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 
 ## Synopsis
 
@@ -40,18 +40,25 @@ table td:first-child {
  Parameter | Description
 -----------|-------------
 `user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
-`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#create-a-user-with-a-password-using-an-identifier). <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
+`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the user from logging in using any authentication method.
+`password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
 `VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`LOGIN`/`NOLOGIN` |  The `LOGIN` parameter allows a user to login with one of the [user authentication methods](#user-authentication). [Setting the parameter to `NOLOGIN`](#set-login-privileges-for-a-user) prevents the user from logging in using any authentication method. <br><br>By default, the parameter is set to `LOGIN` for the `CREATE USER` statement.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new user to create, alter, and drop other users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin and non-root users.
+`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new user to create, [alter](alter-user.html), and [drop](drop-user.html) other non-admin users. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the user to [create](create-database.html) or [rename](rename-database.html) a database. The user is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin users.
+`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-admin users cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin users.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other users. Without this privilege, users can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the user can view other users' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin users.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other users' [queries](show-queries.html) and [sessions](show-sessions.html) using `SHOW QUERIES`, `SHOW SESSIONS`, and the [**Statements**](admin-ui-statements-page.html) and **Transactions** pages in the Admin UI. Without this privilege, the `SHOW` commands only show the user's own data and the Admin UI pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin users.
+`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin users.
+`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the user to to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin users.
 
 ## User authentication
 
 Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers three methods for this:
 
-- [Client certificate and key authentication](#secure-clusters-with-client-certificates), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
+- [Client certificate and key authentication](authentication.html#client-authentication), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
-- [Password authentication](#secure-clusters-with-passwords), which is available to users and roles who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
+- [Password authentication](#create-a-user-with-a-password), which is available to users and roles who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
 
     Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
 
@@ -61,13 +68,47 @@ Secure clusters require users to authenticate their access to databases and tabl
 
 ## Examples
 
+To run the following examples, [start a secure single-node cluster](cockroach-start-single-node.html) and use the built-in SQL shell:
+
+~~~ shell
+$ cockroach sql --certs-dir=certs
+~~~
+
+~~~ sql
+> SHOW USERS;
+~~~
+
+~~~
+username | options | member_of
+---------+---------+------------
+admin    |         | {}
+root     |         | {admin}
+(2 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+{{site.data.alerts.end}}
+
 ### Create a user
 
 Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
 
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER carl;
+root@:26257/defaultdb> CREATE USER no_options;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+ username  | options | member_of
+-------------+---------+------------
+admin      |         | {}
+no_options |         | {}
+root       |         | {admin}
+(3 rows)
 ~~~
 
 After creating users, you must:
@@ -75,47 +116,24 @@ After creating users, you must:
 - [Grant them privileges to databases](grant.html).
 - For secure clusters, you must also [create their client certificates](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client).
 
-### Allow the user to create other users
+### Create a user with a password
 
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER carl with CREATEROLE;
+root@:26257/defaultdb> CREATE USER with_password WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
 ~~~
 
-### Create a user with a password 
-
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER carl WITH PASSWORD 'ilov3beefjerky';
+root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-CREATE USER 1
-~~~
-
-### Create a user with a password using an identifier
-
-The following statement changes the password to `ilov3beefjerky`, as above:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER carl WITH PASSWORD ilov3beefjerky;
-~~~
-
-This is equivalent to the example in the previous section because the password contains only lowercase characters.
-
-In contrast, the following statement changes the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER carl WITH PASSWORD ThereIsNoTomorrow;
-~~~
-
-To preserve case in a password specified using identifier syntax, use double quotes:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER carl WITH PASSWORD "ThereIsNoTomorrow";
+  username    |                options                | member_of
+--------------+---------------------------------------+------------
+admin         |                                       | {}
+no_options    |                                       | {}
+root          |                                       | {admin}
+with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(4 rows)
 ~~~
 
 ### Prevent a user from using password authentication
@@ -124,105 +142,183 @@ The following statement prevents the user from using password authentication and
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER carl WITH PASSWORD NULL;
+root@:26257/defaultdb> CREATE USER no_password WITH PASSWORD NULL;
 ~~~
 
-### Set password validity
-
-The following statement sets the date and time after which the password is not valid:
-
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER carl VALID UNTIL '2021-01-01';
+root@:26257/defaultdb> SHOW USERS;
 ~~~
 
-### Manage users
-
-After creating a user, you can use the [`ALTER USER`](alter-user.html) statement to add or change the user's password, update role options, and the [`DROP USER`](drop-user.html) statement to the remove users.
-
-### Authenticate as a specific user
-
-<div class="filters clearfix">
-  <button style="width: 15%" class="filter-button" data-scope="secure">Secure</button>
-  <button style="width: 15%" class="filter-button" data-scope="insecure">Insecure</button>
-</div>
-<p></p>
-
-<div class="filter-content" markdown="1" data-scope="secure">
-
-#### Secure clusters with client certificates
-
-All users can authenticate their access to a secure cluster using [a client certificate](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) issued to their username.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --user=carl
+~~~
+  username    |                options                | member_of
+--------------+---------------------------------------+------------
+admin         |                                       | {}
+no_options    |                                       | {}
+no_password   |                                       | {}
+root          |                                       | {admin}
+with_password | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(5 rows)
 ~~~
 
-#### Secure clusters with passwords
+### Create a user that can create other users and manage authentication methods for the new users
 
-[Users with passwords](#create-a-user) can authenticate their access by entering their password at the command prompt instead of using their client certificate and key.
+The following example allows the user to [create other users](create-user.html) and [manage authentication methods](authentication.html#client-authentication) for them:
 
-If we cannot find client certificate and key files matching the user, we fall back on password authentication.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --user=carl
-~~~
-
-</div>
-
-<div class="filter-content" markdown="1" data-scope="insecure">
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --user=carl
-~~~
-
-</div>
-
-### Set login privileges for a user
-
-The following statement prevents the user from logging in using any [user authentication method](#user-authentication):
-
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER carl NOLOGIN;
+root@:26257/defaultdb> CREATE USER can_create_users WITH CREATEROLE CREATELOGIN;
 ~~~
 
-{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW USERS;
+root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-  username |  options   | member_of
------------+------------+------------
-  admin    | CREATEROLE | {}
-  carl     | NOLOGIN    | {}
-  root     | CREATEROLE | {admin}
-(3 rows)
+    username     |                options                | member_of
+-----------------+---------------------------------------+------------
+admin            |                                       | {}
+can_create_users | CREATELOGIN, CREATEROLE               | {}
+no_options       |                                       | {}
+no_password      |                                       | {}
+root             |                                       | {admin}
+with_password    | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(6 rows)
 ~~~
 
-To allow the user to log in using one of the user authentication methods, use the `ALTER USER` statement:
+### Create a user that can create and rename databases
 
-{% include copy-clipboard.html %}
+The following example allows the user to [create](create-database.html) or [rename](rename-database.html) databases:
+
 ~~~ sql
-> ALTER USER carl LOGIN;
+root@:26257/defaultdb> CREATE USER can_create_db WITH CREATEDB;
 ~~~
 
-{% include copy-clipboard.html %}
 ~~~ sql
-> SHOW USERS;
+root@:26257/defaultdb> SHOW USERS;
 ~~~
 
 ~~~
-  username |  options   | member_of
------------+------------+------------
-  admin    | CREATEROLE | {}
-  carl     |            | {}
-  root     | CREATEROLE | {admin}
-(3 rows)
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(7 rows)
+~~~
+
+### Create a user that can pause, resume, and cancel non-admin jobs
+
+The following example allows the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-admin roles:
+
+The following example allows the user to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs:
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_control_job WITH CONTROLJOB;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB                            | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(8 rows)
+~~~
+
+### Create a user that can see and cancel non-admin queries and sessions
+
+The following example allows the user to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-admin roles:
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB                            | {}
+can_create_db         | CREATEDB                              | {}
+can_create_users      | CREATELOGIN, CREATEROLE               | {}
+can_manage_queries    | CANCELQUERY, VIEWACTIVITY             | {}
+no_options            |                                       | {}
+no_password           |                                       | {}
+root                  |                                       | {admin}
+with_password         | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(9 rows)
+~~~
+
+### Create a user that can control changefeeds
+
+The following example allows the user to run [`CREATE CHANGEFEED`](create-changefeed.html):
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_control_changefeed WITH CONTROLCHANGEFEED;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+       username        |                options                | member_of
+-----------------------+---------------------------------------+------------
+admin                  |                                       | {}
+can_control_changefeed | CONTROLCHANGEFEED                     | {}
+can_control_job        | CONTROLJOB                            | {}
+can_create_db          | CREATEDB                              | {}
+can_create_users       | CREATELOGIN, CREATEROLE               | {}
+can_manage_queries     | CANCELQUERY, VIEWACTIVITY             | {}
+no_options             |                                       | {}
+no_password            |                                       | {}
+root                   |                                       | {admin}
+with_password          | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(10 rows)
+~~~
+
+### Create a user that can modify cluster settings
+
+The following example allows the user to modify [cluster settings](cluster-settings.html):
+
+~~~ sql
+root@:26257/defaultdb> CREATE USER can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW USERS;
+~~~
+
+~~~
+         username          |                options                | member_of
+---------------------------+---------------------------------------+------------
+admin                      |                                       | {}
+can_control_changefeed     | CONTROLCHANGEFEED                     | {}
+can_control_job            | CONTROLJOB                            | {}
+can_create_db              | CREATEDB                              | {}
+can_create_users           | CREATELOGIN, CREATEROLE               | {}
+can_manage_queries         | CANCELQUERY, VIEWACTIVITY             | {}
+can_modify_cluster_setting | MODIFYCLUSTERSETTING                  | {}
+no_options                 |                                       | {}
+no_password                |                                       | {}
+root                       |                                       | {admin}
+with_password              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+(11 rows)
 ~~~
 
 ## See also

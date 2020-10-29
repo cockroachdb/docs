@@ -64,12 +64,13 @@ The `quit` command supports the following [general-use](#general), [client conne
 
 Flag | Description
 -----|------------
-`--decommission` | If specified, the node will be removed from the cluster instead of temporarily stopped. <br><br>The `--decommission` flag is deprecated. If you want to remove a node from the cluster, start with the [`cockroach node decommission`](cockroach-node.html) command. See [Decommission Nodes](remove-nodes.html) for more details.
 `--drain-wait` | Amount of time to wait for the node to drain before stopping the node. See [`cockroach node drain`](cockroach-node.html) for more details.<br><br>**Default:** `10m`
 
 ### Client connection
 
 {% include {{ page.version.version }}/sql/connection-parameters.md %}
+`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see [`cockroach start`](cockroach-start.html#general).
+`--disable-cluster-name-verification` | Disables the cluster name check for this command. This flag must be paired with `--cluster-name`. For more information, see [`cockroach start`](cockroach-start.html#general).
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

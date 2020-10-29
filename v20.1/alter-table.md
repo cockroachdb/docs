@@ -20,7 +20,6 @@ Subcommand | Description | Can combine with other subcommands?
 [`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns. | Yes
 [`ALTER COLUMN`](alter-column.html) | Change or drop a column's [`DEFAULT` constraint](default-value.html) or [`NOT NULL` constraint](not-null.html). | Yes
 [`ALTER PRIMARY KEY`](alter-primary-key.html) | <span class="version-tag">New in v20.1:</span> Change the [primary key](primary-key.html) of a table. | Yes
-[`ALTER TYPE`](alter-type.html) | Change a column's [data type](data-types.html). | Yes
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a table. | No
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
@@ -28,7 +27,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([Enterprise-only](enterprise-licensing.html)). | Yes
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
-[`RENAME TABLE`](rename-table.html) | Change the names of tables. | No
+[`RENAME TO`](rename-table.html) | Change the names of tables. | No
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table. | No
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table. | No
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes

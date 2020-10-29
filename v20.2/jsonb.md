@@ -8,8 +8,6 @@ The `JSONB` [data type](data-types.html) stores JSON (JavaScript Object Notation
 
 {{site.data.alerts.callout_success}}For a hands-on demonstration of storing and querying JSON data from a third-party API, see the <a href="demo-json-support.html">JSON tutorial</a>.{{site.data.alerts.end}}
 
-{% include {{page.version.version}}/sql/vectorized-support.md %}
-
 ## Alias
 
 In CockroachDB, `JSON` is an alias for `JSONB`.
@@ -21,6 +19,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 - The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
 - A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
+- CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](query-order.html) `JSONB`/`JSON`-typed columns. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
 
 ## Syntax
 
@@ -50,7 +49,7 @@ Examples:
 
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
-## `JSONB` Functions
+## Functions
 
 Function | Description
 ---------|------------
@@ -62,7 +61,7 @@ Function | Description
 
 For the full list of supported `JSONB` functions, see [Functions and Operators](functions-and-operators.html#jsonb-functions).
 
-## `JSONB` Operators
+## Operators
 
 Operator | Description | Example |
 ---------|-------------|---------|
@@ -182,7 +181,68 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 +-----------------------------+---------------------------+
 ~~~
 
+You can use the `@>` operator to filter the values in key-value pairs to return `JSONB` field values:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
+~~~
+~~~
++-----------------------------+---------------------------+
+| user_profile->>'first_name' | user_profile->>'location' |
++-----------------------------+---------------------------+
+| Lola                        | NYC                       |
++-----------------------------+---------------------------+
+~~~
+
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
+
+### Group and order `JSONB` values
+
+To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses with the `->>` operator. For example, organize the `first_name` values from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
+
+For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users (user_profile) VALUES 
+    ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'), 
+    ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
+~~~
+
+~~~
+  first_name | location
+-------------+-----------
+  Ernie      | Brooklyn
+  Lola       | NYC
+  Parvati    | London
+  Lola       | Seoul
+~~~
+
+Now let’s group and order the data.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
+~~~
+
+~~~
+  first_name | total
+-------------+-------
+  Ernie      | 1
+  Parvati    | 1
+  Lola       | 2
+~~~
+
+The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, cast the resulting data to `FLOAT`.
+
+For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
+
 
 ### Create a table with a `JSONB` column and a computed column
 

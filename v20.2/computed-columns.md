@@ -41,6 +41,8 @@ Parameter | Description
 `<expr>` | The pure [scalar expression](scalar-expressions.html) used to compute column values. Any functions marked as `impure`, such as `now()` or `nextval()` cannot be used.
 `STORED` | _(Required)_ The computed column is stored alongside other columns.
 
+<span class="version-tag">New in v20.2</span>: For compatibility with PostgresSQL, CockroachDB also supports creating computed columns with the syntax `column_name <type> GENERATED ALWAYS AS (<expr>) STORED`.
+
 ## Examples
 
 ### Create a table with a computed column

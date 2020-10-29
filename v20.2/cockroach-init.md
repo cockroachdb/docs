@@ -35,6 +35,8 @@ The `cockroach init` command supports the following [client connection](#client-
 ### Client connection
 
 {% include {{ page.version.version }}/sql/connection-parameters.md %}
+`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see [`cockroach start`](cockroach-start.html#general).
+`--disable-cluster-name-verification` | Disables the cluster name check for this command. This flag must be paired with `--cluster-name`. For more information, see [`cockroach start`](cockroach-start.html#general).
 
 See [Client Connection Parameters](connection-parameters.html) for details.
 
@@ -122,7 +124,6 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Local Deployment](start-a-local-cluster.html)
 - [`cockroach start`](cockroach-start.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -117,11 +117,12 @@ Flag | Description
 `--stats` | Show node disk usage details.
 `--timeout` | Set the duration of time that the subcommand is allowed to run before it returns an error and prints partial information. The timeout is specified with a suffix of `s` for seconds, `m` for minutes, and `h` for hours. If this flag is not set, the subcommand may hang.
 
-The `node decommission` subcommand also supports the following general flag:
+The `node decommission` subcommand also supports the following general flags:
 
 Flag | Description
 -----|------------
 `--wait` | When to return to the client. Possible values: `all`, `none`.<br><br>If `all`, the command returns to the client only after all replicas on all specified nodes have been transferred to other nodes. If any specified nodes are offline, the command will not return to the client until those nodes are back online.<br><br>If `none`, the command does not wait for the decommissioning process to complete; it returns to the client after starting the decommissioning process on all specified nodes that are online. Any specified nodes that are offline will automatically be marked as decommissioning; if they come back online, the cluster will recognize this status and will not rebalance data to the nodes.<br><br>**Default:** `all`
+`--self` | Applies the operation to the node against which the command was run (e.g., via `--host`).
 
 The `node drain` subcommand also supports the following general flag:
 
@@ -129,9 +130,22 @@ Flag | Description
 -----|------------
 `--drain-wait` | Amount of time to wait for the node to drain before returning to the client. <br><br>**Default:** `10m`
 
+The `node recommission` subcommand also supports the following general flag:
+
+Flag | Description
+-----|------------
+`--self` | Applies the operation to the node against which the command was run (e.g., via `--host`).
+
 ### Client connection
 
 {% include {{ page.version.version }}/sql/connection-parameters.md %}
+
+The `node decommission`, `node recommission`, and `node drain` subcommands also support the following client connection flags:
+
+Flag | Description
+-----|------------
+`--cluster-name` | The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see [`cockroach start`](cockroach-start.html#general).
+`--disable-cluster-name-verification` | Disables the cluster name check for this command. This flag must be paired with `--cluster-name`. For more information, see [`cockroach start`](cockroach-start.html#general).
 
 See [Client Connection Parameters](connection-parameters.html) for more details.
 

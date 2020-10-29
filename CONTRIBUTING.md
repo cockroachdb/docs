@@ -6,21 +6,20 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 This section helps you set up the tools you'll need to write the docs and use CockroachDB.
 
-1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations:
+1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations. If you use Linux, then default package manager will work fine as well:
 
-    ```
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    ``` 
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     ```
 
 2. Install Ruby, the language required by Jekyll, our website generator, and the latest version of Git, the source control tool we use:
 
     ```
     brew update
-    ```
-
-    ```
-    brew install ruby git
+    brew install ruby ruby-dev git
     ````
+
+You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions. 
 
 3. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
 
@@ -31,9 +30,11 @@ This section helps you set up the tools you'll need to write the docs and use Co
     ```
     gem install jekyll bundler
     ```
+If you get a permissions error, then try re-running the command with `sudo`.    
+    
 6. Learn the essentials of our [Docs Structure](#docs-structure).
 
-7. Review our simple [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md).
+7. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
 
 ## Get Started
 
@@ -105,11 +106,9 @@ Once you've installed Jekyll and have a local clone of the docs repository, you 
 
 1. From the root directory of your clone, :
 
-    - To build the CockroachDB docs, run `make cockroachdb`.
+    - To build the CockroachDB and CockroachCloud docs, run `make cockroachdb`.
 
-    - To build the CockroachCloud docs, run `make cockroachcloud`.
-
-2.  Point your browser to `http://127.0.0.1:4000/docs/` for CockroachDB docs or `http://127.0.0.1:40001` for CockroachCloud docs, and manually check your changes.
+2.  Point your browser to `http://127.0.0.1:4000/docs/` and manually check your changes.
 
     - If the page you want to test isn't listed in the sidebar, just point to it directly, for example, `http://127.0.0.1:4000/docs/new-page.html`.
 
@@ -152,7 +151,6 @@ Field | Description | Default
 ------|-------------|--------
 `toc` | Adds an auto-generated table of contents to the right of the page body (on standard screens) or at the top of the page (on smaller screens). | `true`
 `toc_not_nested` | Limits a page's TOC to h2 headers only. | `false`
-`build_for` | Whether to include a page only in CockroachDB docs (`[cockroachdb]`), only in CockroachCloud docs (`[cockroachcloud]`), or in both outputs (`[cockroachdb, cockroachcloud]`). | `[cockroachdb]`
 `allowed_hashes` | Specifies a list of allowed hashes that do not correspond to a section heading on the page. | Nothing
 `asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
@@ -233,7 +231,7 @@ allowed_hashes: [os-mac, os-linux, os-windows]
   ```
 #### Images
 
-For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/blob/master/STYLE.md#images) in our [Style Guide](https://github.com/cockroachdb/docs/blob/master/STYLE.md).
+For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
 
 #### Feedback Widget
 
@@ -261,7 +259,7 @@ This ensures that if `v1.1` is also the `stable` or `dev` version, the correspon
 
 ### Sidebar
 
-For each documented version of CockroachDB, a JSON file in the `_includes` directory defines the pages that appear in the docs sidebar. For example, the sidebar for CockroachDB v1.0 is defined by [`_includes/sidebar-data-v1.0.json`](_includes/sidebar_data-v1.0.json).
+For each documented version of CockroachDB, a JSON file in the `_includes` directory defines the pages that appear in the docs sidebar. For example, the sidebar for CockroachDB v1.0 is defined by [`_includes/sidebar-data-v1.0.json`](https://github.com/cockroachdb/docs/blob/master/_includes/sidebar-data-v1.0.json).
 
 If you're adding a page that you think should appear in the sidebar, please mention this in your pull request.
 

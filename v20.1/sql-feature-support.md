@@ -98,6 +98,7 @@ table tr td:nth-child(2) {
  Index renames | ✓ | Standard | [`RENAME INDEX` documentation](rename-index.html)
  Adding indexes | ✓ | Standard | [`CREATE INDEX` documentation](create-index.html)
  Removing indexes | ✓ | Standard | [`DROP INDEX` documentation](drop-index.html)
+ Altering a primary key | ✓ | Standard | <span class="version-tag">New in v20.1:</span> [`ALTER PRIMARY KEY` documentation](alter-primary-key.html)
 
 ### Statements
 
@@ -163,6 +164,7 @@ table tr td:nth-child(2) {
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
  Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)
  Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
+ User-defined Schemas | Planned | Standard | Create, drop, and modify user-defined schemas.
  Views | ✓ | Standard | [Views documentation](views.html)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common Table Expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)

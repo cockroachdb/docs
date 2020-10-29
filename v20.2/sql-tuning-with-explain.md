@@ -20,12 +20,13 @@ You'll get generally poor performance when retrieving a single row based on a co
 ~~~
 
 ~~~
-                   id                  | city  |      name      |      address      | credit_card  
-+--------------------------------------+-------+----------------+-------------------+-------------+
-  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739   
+                   id                  | city  |      name      |      address      | credit_card
+---------------------------------------+-------+----------------+-------------------+--------------
+  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Time: 4.059ms
+Server Execution Time: 928µs
+Network Latency: 315µs
 ~~~
 
 To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
@@ -36,15 +37,17 @@ To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
 ~~~
 
 ~~~
-  tree |    field    |       description
--------+-------------+--------------------------
-       | distributed | true
-       | vectorized  | false
-  scan |             |
-       | table       | users@primary
-       | spans       | FULL SCAN
-       | filter      | name = 'Cheyenne Smith'
-(6 rows)
+    tree    |        field        |       description
+------------+---------------------+--------------------------
+            | distribution        | full
+            | vectorized          | false
+  filter    |                     |
+   │        | filter              | name = 'Cheyenne Smith'
+   └── scan |                     |
+            | estimated row count | 279
+            | table               | users@primary
+            | spans               | FULL SCAN
+(8 rows)
 ~~~
 
 The row with `table | users@primary` indicates the index used (`primary`) to scan the table (`users`). The row with `spans | FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
@@ -66,12 +69,13 @@ The query will now return much faster:
 ~~~
 
 ~~~
-                   id                  | city  |      name      |      address      | credit_card  
-+--------------------------------------+-------+----------------+-------------------+-------------+
-  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739   
+                   id                  | city  |      name      |      address      | credit_card
+---------------------------------------+-------+----------------+-------------------+--------------
+  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Time: 1.457ms
+Server Execution Time: 304µs
+Network Latency: 251µs
 ~~~
 
 To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -82,16 +86,16 @@ To understand why the performance improved, use [`EXPLAIN`](explain.html) to see
 ~~~
 
 ~~~
-     tree    |    field    |                  description
--------------+-------------+------------------------------------------------
-             | distributed | false
-             | vectorized  | false
-  index-join |             |
-   │         | table       | users@primary
-   │         | key columns | city, id
-   └── scan  |             |
-             | table       | users@users_name_idx
-             | spans       | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
+     tree    |        field        |               description
+-------------+---------------------+------------------------------------------
+             | distribution        | local
+             | vectorized          | false
+  index join |                     |
+   │         | table               | users@primary
+   └── scan  |                     |
+             | estimated row count | 1
+             | table               | users@users_name_idx
+             | spans               | [/'Cheyenne Smith' - /'Cheyenne Smith']
 (8 rows)
 ~~~
 
@@ -111,12 +115,13 @@ For example, let's say you frequently retrieve a user's name and credit card num
 ~~~
 
 ~~~
-       name      | credit_card  
-+----------------+-------------+
-  Cheyenne Smith | 4374468739   
+       name      | credit_card
+-----------------+--------------
+  Cheyenne Smith | 4374468739
 (1 row)
 
-Time: 1.302ms
+Server Execution Time: 379µs
+Network Latency: 189µs
 ~~~
 
 With the current secondary index on `name`, CockroachDB still needs to scan the primary index to get the credit card number:
@@ -128,16 +133,16 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 
 
 ~~~
-     tree    |    field    |                  description
--------------+-------------+------------------------------------------------
-             | distributed | false
-             | vectorized  | false
-  index-join |             |
-   │         | table       | users@primary
-   │         | key columns | city, id
-   └── scan  |             |
-             | table       | users@users_name_idx
-             | spans       | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
+     tree    |        field        |               description
+-------------+---------------------+------------------------------------------
+             | distribution        | local
+             | vectorized          | false
+  index join |                     |
+   │         | table               | users@primary
+   └── scan  |                     |
+             | estimated row count | 1
+             | table               | users@users_name_idx
+             | spans               | [/'Cheyenne Smith' - /'Cheyenne Smith']
 (8 rows)
 ~~~
 
@@ -161,14 +166,15 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 ~~~
 
 ~~~
-  tree |    field    |                  description
--------+-------------+------------------------------------------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | users@users_name_idx
-       | spans       | /"Cheyenne Smith"-/"Cheyenne Smith"/PrefixEnd
-(5 rows)
+  tree |        field        |               description
+-------+---------------------+------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | users@users_name_idx
+       | spans               | [/'Cheyenne Smith' - /'Cheyenne Smith']
+(6 rows)
 ~~~
 
 This results in even faster performance:
@@ -179,12 +185,13 @@ This results in even faster performance:
 ~~~
 
 ~~~
-       name      | credit_card  
-+----------------+-------------+
-  Cheyenne Smith | 4374468739   
+       name      | credit_card
+-----------------+--------------
+  Cheyenne Smith | 4374468739
 (1 row)
 
-Time: 906µs
+Server Execution Time: 217µs
+Network Latency: 274µs
 ~~~
 
 To reset the database for following examples, let's drop the index on `name`:
@@ -202,48 +209,53 @@ For example, let's say you want to count the number of users who started rides o
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-20 00:00:00' AND '2018-12-21 00:00:00';
+> SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
 ~~~
 
 ~~~
-  count  
-+-------+
-     13  
+  count
+---------
+    149
 (1 row)
 
-Time: 3.625ms
+Server Execution Time: 2.431ms
+Network Latency: 302µs
 ~~~
 
 To understand what's happening, use [`EXPLAIN`](explain.html) to see the query plan:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';
+> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
 ~~~
 
 ~~~
-         tree         |    field    |                                         description
-----------------------+-------------+----------------------------------------------------------------------------------------------
-                      | distributed | true
-                      | vectorized  | false
-  group               |             |
-   │                  | aggregate 0 | count(DISTINCT id)
-   │                  | scalar      |
-   └── render         |             |
-        └── hash-join |             |
-             │        | type        | inner
-             │        | equality    | (rider_id) = (id)
-             ├── scan |             |
-             │        | table       | rides@primary
-             │        | spans       | FULL SCAN
-             │        | filter      | (start_time >= '2018-07-20 00:00:00+00:00') AND (start_time <= '2018-07-21 00:00:00+00:00')
-             └── scan |             |
-                      | table       | users@users_name_idx
-                      | spans       | FULL SCAN
-(16 rows)
+            tree           |        field        |                                   description
+---------------------------+---------------------+----------------------------------------------------------------------------------
+                           | distribution        | full
+                           | vectorized          | false
+  group (scalar)           |                     |
+   └── distinct            |                     |
+        │                  | distinct on         | id
+        └── hash join      |                     |
+             │             | equality            | (rider_id) = (id)
+             ├── filter    |                     |
+             │    │        | filter              | (start_time >= '2020-09-16 00:00:00') AND (start_time <= '2020-09-17 00:00:00')
+             │    └── scan |                     |
+             │             | estimated row count | 817
+             │             | table               | rides@primary
+             │             | spans               | FULL SCAN
+             └── scan      |                     |
+                           | estimated row count | 279
+                           | table               | users@primary
+                           | spans               | FULL SCAN
+(17 rows)
+
+Server Execution Time: 202µs
+Network Latency: 296µs
 ~~~
 
-Reading from bottom up, you can see that CockroachDB does a full table scan first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
+CockroachDB does a full table scan first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
 
 Given the `WHERE` condition of the join, the full table scan of `rides` is particularly wasteful.
 
@@ -260,43 +272,44 @@ Adding the secondary index reduced the query time:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-20 00:00:00' AND '2018-12-21 00:00:00';
+> SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
 ~~~
 
 ~~~
-  count  
-+-------+
-     13  
+  count
+---------
+    149
 (1 row)
 
-Time: 2.367ms
+Server Execution Time: 1.562ms
+Network Latency: 311µs
 ~~~
 
 To understand why performance improved, again use [`EXPLAIN`](explain.html) to see the new query plan:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-20 00:00:00' AND '2018-12-21 00:00:00';
+> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
 ~~~
 
 ~~~
-         tree         |    field    |                      description
-----------------------+-------------+--------------------------------------------------------
-                      | distributed | true
-                      | vectorized  | false
-  group               |             |
-   │                  | aggregate 0 | count(DISTINCT id)
-   │                  | scalar      |
-   └── render         |             |
-        └── hash-join |             |
-             │        | type        | inner
-             │        | equality    | (rider_id) = (id)
-             ├── scan |             |
-             │        | table       | rides@rides_start_time_idx
-             │        | spans       | /2018-12-20T00:00:00Z-/2018-12-21T00:00:00.000000001Z
-             └── scan |             |
-                      | table       | users@users_name_idx
-                      | spans       | FULL SCAN
+         tree         |        field        |                    description
+----------------------+---------------------+----------------------------------------------------
+                      | distribution        | full
+                      | vectorized          | false
+  group (scalar)      |                     |
+   └── distinct       |                     |
+        │             | distinct on         | id
+        └── hash join |                     |
+             │        | equality            | (id) = (rider_id)
+             ├── scan |                     |
+             │        | estimated row count | 279
+             │        | table               | users@primary
+             │        | spans               | FULL SCAN
+             └── scan |                     |
+                      | estimated row count | 2
+                      | table               | rides@rides_start_time_idx
+                      | spans               | [/'2020-09-16 00:00:00' - /'2020-09-17 00:00:00']
 (15 rows)
 ~~~
 
@@ -314,22 +327,22 @@ For the following query, the cost-based optimizer can’t perform a lookup join 
 ~~~
 
 ~~~
-         tree         |    field    |     description
-----------------------+-------------+----------------------
-                      | distributed | true
-                      | vectorized  | false
-  render              |             |
-   └── limit          |             |
-        │             | count       | 1
-        └── hash-join |             |
-             │        | type        | inner
-             │        | equality    | (vehicle_id) = (id)
-             ├── scan |             |
-             │        | table       | rides@primary
-             │        | spans       | FULL SCAN
-             └── scan |             |
-                      | table       | vehicles@primary
-                      | spans       | FULL SCAN
+       tree      |        field        |     description
+-----------------+---------------------+----------------------
+                 | distribution        | full
+                 | vectorized          | false
+  limit          |                     |
+   │             | count               | 1
+   └── hash join |                     |
+        │        | equality            | (vehicle_id) = (id)
+        ├── scan |                     |
+        │        | estimated row count | 817
+        │        | table               | rides@primary
+        │        | spans               | FULL SCAN
+        └── scan |                     |
+                 | estimated row count | 15
+                 | table               | vehicles@primary
+                 | spans               | FULL SCAN
 (14 rows)
 ~~~
 
@@ -343,24 +356,21 @@ To speed up the query, you can provide the primary key to allow the cost-based o
 ~~~
 
 ~~~
-         tree         |       field        |           description
-----------------------+--------------------+----------------------------------
-                      | distributed        | true
-                      | vectorized         | false
-  render              |                    |
-   └── limit          |                    |
-        │             | count              | 1
-        └── hash-join |                    |
-             │        | type               | inner
-             │        | equality           | (vehicle_id, city) = (id, city)
-             │        | right cols are key |
-             ├── scan |                    |
-             │        | table              | rides@primary
-             │        | spans              | FULL SCAN
-             └── scan |                    |
-                      | table              | vehicles@primary
-                      | spans              | FULL SCAN
-(15 rows)
+        tree       |         field         |          description
+-------------------+-----------------------+---------------------------------
+                   | distribution          | full
+                   | vectorized            | false
+  limit            |                       |
+   │               | count                 | 1
+   └── lookup join |                       |
+        │          | table                 | vehicles@primary
+        │          | equality              | (city, vehicle_id) = (city,id)
+        │          | equality cols are key |
+        └── scan   |                       |
+                   | estimated row count   | 817
+                   | table                 | rides@primary
+                   | spans                 | FULL SCAN
+(12 rows)
 ~~~
 
 ## See also

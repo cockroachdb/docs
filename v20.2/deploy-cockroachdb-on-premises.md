@@ -7,13 +7,15 @@ ssh-link: https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-key
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="deploy-cockroachdb-on-premises.html"><button class="filter-button current">Secure</button></a>
-  <a href="deploy-cockroachdb-on-premises-insecure.html"><button class="filter-button"><strong>Insecure</strong></button></a>
+  <a href="deploy-cockroachdb-on-premises.html"><button class="filter-button current"><strong>Secure</strong></button></a>
+  <a href="deploy-cockroachdb-on-premises-insecure.html"><button class="filter-button">Insecure</button></a>
 </div>
 
 This tutorial shows you how to manually deploy a secure multi-node CockroachDB cluster on multiple machines, using [HAProxy](http://www.haproxy.org/) load balancers to distribute client traffic.
 
 If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
+
+{% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
 

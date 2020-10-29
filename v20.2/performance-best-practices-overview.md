@@ -2,7 +2,6 @@
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
-build_for: [cockroachdb]
 ---
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
@@ -25,30 +24,43 @@ For more information, see:
 
 - [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
 - [Upsert Multiple Rows](upsert.html#upsert-multiple-rows)
-- [Delete Multiple Rows](delete.html#delete-specific-rows)
+- [Delete Multiple Rows](delete.html)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
 ### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
 
-The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows. For smaller tables (with less than 1000 rows), however, using a [`DELETE` statement without a `WHERE` clause](delete.html#delete-all-rows) will be more performant than using `TRUNCATE`.
+The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
 
 ## Bulk insert best practices
 
 ### Use multi-row `INSERT` statements for bulk inserts into existing tables
 
-To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement and do not include the `INSERT` statements within a transaction. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
+To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include bulk `INSERT` statements within an explicit transaction.
 
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.callout_success}}
 You can also use the [`IMPORT INTO`](import-into.html) statement to bulk-insert CSV data into an existing table.
 {{site.data.alerts.end}}
+
+For more information, see [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table).
+
+{{site.data.alerts.callout_info}}
+Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
+{{site.data.alerts.end}}
+
 
 ### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
-## Bulk deletion best practices
+## Bulk delete best practices
 
-To get the best performance when deleting large amounts of data, follow the instructions in [Why are my deletes getting slower over time?](sql-faqs.html#why-are-my-deletes-getting-slower-over-time).
+### Batch deletes
+
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Batch deletes](delete.html#batch-deletes).
+
+### Batch-delete "expired" data
+
+CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Batch-delete "expired" data](delete.html#batch-delete-expired-data).
 
 ## Assign column families
 
@@ -72,7 +84,7 @@ This happens because when data is interleaved, queries that work on the parent t
 The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
 
 1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
-2. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select.html)s, e.g. `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](change-data-capture.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
+2. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select.html)s, e.g. `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](stream-data-out-of-cockroachdb-using-changefeeds.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
 
 The approaches described above are likely to create hotspots for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
 
@@ -139,15 +151,16 @@ To see why, let's look at the [`EXPLAIN`](explain.html) output. It shows that th
 ~~~
 
 ~~~
-   tree   |    field    |          description          |                      columns                      |    ordering
-----------+-------------+-------------------------------+---------------------------------------------------+------------------
-          | distributed | false                         |                                                   |
-          | vectorized  | false                         |                                                   |
-  revscan |             |                               | (username, post_timestamp, post_id, post_content) | -post_timestamp
-          | table       | posts@posts_pk                |                                                   |
-          | spans       | /"alyssa"-/"alyssa"/PrefixEnd |                                                   |
-          | limit       | 10                            |                                                   |
-(6 rows)
+   tree   |        field        |          description          |                      columns                      |    ordering
+----------+---------------------+-------------------------------+---------------------------------------------------+------------------
+          | distribution        | local                         |                                                   |
+          | vectorized          | false                         |                                                   |
+  revscan |                     |                               | (username, post_timestamp, post_id, post_content) | -post_timestamp
+          | estimated row count | 10 (missing stats)            |                                                   |
+          | table               | posts@posts_pk                |                                                   |
+          | spans               | /"alyssa"-/"alyssa"/PrefixEnd |                                                   |
+          | limit               | 10                            |                                                   |
+(7 rows)
 ~~~
 
 Note that the above query also follows the [indexing best practice](indexes.html#best-practices) of indexing all columns in the `WHERE` clause.

@@ -131,7 +131,7 @@ Hash joins are performed on two tables as follows:
 
 ### Lookup joins
 
-The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table is indexed on the equality column.
+The [cost-based optimizer](cost-based-optimizer.html) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table be indexed on the equality column. A [partial index](partial-indexes.html) can only be used if it contains the subset of rows being looked up.
 
 Lookup joins are performed on two tables as follows:
 
@@ -139,6 +139,12 @@ Lookup joins are performed on two tables as follows:
 2. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
 
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
+
+{{site.data.alerts.callout_info}}
+With queries on [interleaved tables](interleave-in-parent.html), the [optimizer](cost-based-optimizer.html) might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
+
+<span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
+{{site.data.alerts.end}}
 
 The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
 
