@@ -76,6 +76,12 @@ Support for certain [window functions](window-functions.html) is limited in the 
 
 The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
 
+### Disk-spilling on joins with `JSON` columns
+
+If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+
+For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
+
 ## See also
 
 - [SQL Layer](architecture/sql-layer.html)

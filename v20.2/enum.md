@@ -54,6 +54,10 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 - To [alter a type](alter-type.html), a user must be the owner of the type.
 - To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
 
+## Known limitations
+
+[Partitions](partitioning.html) cannot be created on columns of type `ENUM`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/55342).
+
 ## Example
 
 {% include copy-clipboard.html %}

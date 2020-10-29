@@ -24,6 +24,7 @@ See the links below for more information about how to use CockroachDB for spatia
 
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Known Limitations](known-limitations.html#spatial-support-limitations)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
 
 <a name="spatial-objects"></a>

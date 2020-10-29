@@ -143,6 +143,10 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 - "is contained by": [`<@`](functions-and-operators.html#supported-operations)
 - "contains": [`@>`](functions-and-operators.html#supported-operations)
 
+## Known limitations
+
+CockroachDB does not support partitioning inverted indexes. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
+
 ## Example
 
 ### Create a table with inverted index on a JSONB column
