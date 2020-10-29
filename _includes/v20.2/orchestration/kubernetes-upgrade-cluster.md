@@ -101,7 +101,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     $ helm upgrade \
     my-release \
     cockroachdb/cockroachdb \
-    --set statefulset.updateStrategy.rollingUpdate.partition=2 \
+    --set statefulset.updateStrategy.rollingUpdate.partition=2
     ~~~
     </section>
 

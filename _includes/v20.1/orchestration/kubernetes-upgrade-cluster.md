@@ -101,7 +101,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
     $ helm upgrade \
     my-release \
     cockroachdb/cockroachdb \
-    --set statefulset.updateStrategy.rollingUpdate.partition=2 \
+    --set statefulset.updateStrategy.rollingUpdate.partition=2
     ~~~
     </section>
 
