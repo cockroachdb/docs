@@ -7,12 +7,12 @@ twitter: false
 
 {% unless site.cockroachcloud %}
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 22%" class="filter-button">Use <strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 22%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 22%" class="filter-button current">Use <strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
+<div class="filters clearfix">
+    <a href="build-a-python-app-with-cockroachdb.html"><button class="filter-button page-level"><strong>psycopg2</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button class="filter-button page-level"><strong>SQLAlchemy</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level current"><strong>Django</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
+    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
 </div>
 
 {% endunless %}
