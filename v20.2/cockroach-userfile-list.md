@@ -82,7 +82,7 @@ userfile://defaultdb.public.userfiles_root/test-data.csv
 
 ### List files from a non-default userfile URI
 
-If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
+If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
 
 {% include copy-clipboard.html %}
 ~~~ shell

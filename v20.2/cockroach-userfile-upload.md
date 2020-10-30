@@ -6,9 +6,9 @@ toc: true
 
 <span class="version-tag">New in v20.2:</span> The `cockroach userfile upload` [command](cockroach-commands.html) uploads a file to the [user-scoped file storage](use-userfile-for-bulk-operations.html) using a SQL connection.
 
-This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the [destination](#file-destination)
+This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the [destination](#file-destination).
 
-{{site.data.alerts.callout_note}}
+{{site.data.alerts.callout_info}}
 Userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommended using `cockroach userfile upload` for quick imports from your client (about 15MB or smaller).
 {{site.data.alerts.end}}
 
@@ -26,7 +26,7 @@ Upload a file:
 $ cockroach userfile upload <location/of/file> <destination/of/file> [flags]
 ~~~
 
-{{site.data.alerts.callout_note}}
+{{site.data.alerts.callout_info}}
 You must specify a source path.
 {{site.data.alerts.end}}
 
