@@ -1,12 +1,8 @@
-In a new terminal, install the Python psycopg2 driver:
-
-`pip install psycopg2-binary`{{execute T2}}
-
-Then download the Python code:
+In a new terminal, download the Python code:
 
 `curl -O https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v20.2/app/python/psycopg2/example.py`{{execute T2}}
 
-Now open the file: `example.py`{{open}}
+Open the file: `example.py`{{open}}
 
 You'll see that the Python code is a command-line utility that does the following:
 
