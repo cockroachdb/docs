@@ -60,7 +60,7 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 ### Run the code
 
-The Python code is a command-line utility that accepts the connection string to CockroachDB as the `--dsn` flag. Before running the the code, update the connection string as follows:
+The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the the code, update the connection string as follows:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -70,7 +70,7 @@ The Python code is a command-line utility that accepts the connection string to 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
---dsn='postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
+'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
 ~~~
 
 </section>
@@ -84,7 +84,7 @@ $ python3 example.py \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
---dns='postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'
+'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'
 ~~~
 
 </section>
