@@ -300,20 +300,20 @@ If you need help troubleshooting an issue with our spatial support, please get i
 
 In order to avoid full table scans, make sure to add [indexes](spatial-indexes.html) to any columns that are accessed as part of a predicate in the [`WHERE`](select-clause.html#filter-on-a-single-condition) clause. For geospatial columns, the index will only be used if the column is accessed using an index-accelerated geospatial function from the list below (all of these functions work on `GEOMETRY` data types; a `*` means that a function also works on `GEOGRAPHY` data types):
 
-- `st_covers` (*)
-- `st_coveredby` (*)
-- `st_contains`
-- `st_containsproperly`
-- `st_crosses`
-- `st_dwithin` (*)
-- `st_dfullywithin`
-- `st_equals`
-- `st_intersects` (*)
-- `st_overlaps`
-- `st_touches`
-- `st_within`
+- [`ST_Covers`](st_covers.html) (*)
+- [`ST_CoveredBy`](st_coveredby.html) (*)
+- [`ST_Contains`](st_contains.html)
+- `ST_ContainsProperly`
+- `ST_Crosses`
+- `ST_DWithin` (*)
+- `ST_DFullyWithin`
+- [`ST_Equals`](st_equals.html)
+- [`ST_Intersects`](st_intersects.html) (*)
+- [`ST_Overlaps`](st_overlaps.html)
+- [`ST_Touches`](st_touches.html)
+- [`ST_Within`](st_within.html)
 
-To use a version of a function from the list above that will explicitly *not* use the index, add an underscore (`_`) to the beginning of the function name, e.g., `_st_covers`.
+To use a version of a function from the list above that will explicitly *not* use the index, add an underscore (`_`) to the beginning of the function name, e.g., `_ST_Covers`.
 
 You can check which queries are using which indexes using the [`EXPLAIN`](explain.html) statement. For more information about general query tuning (including index usage), see [Make queries fast](make-queries-fast.html).
 
