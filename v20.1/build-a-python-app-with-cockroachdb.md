@@ -38,9 +38,11 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 Now that you have a database, you'll run the code shown below to:
 
-- Create an `accounts` table and insert some rows.
-- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that you [handle transaction retry errors](transactions.html#client-side-intervention), you'll use an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
-- Finally, you'll delete the accounts from the table before exiting so you can re-run the example code.
+- Create an accounts table and insert some rows.
+- Transfer funds between two accounts inside a [transaction](transactions.html).
+- Delete the accounts from the table before exiting so you can re-run the example code.
+
+To [handle transaction retry errors](error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
 ### Get the code
 
@@ -60,7 +62,7 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 ### Run the code
 
-The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the the code, update the connection string as follows:
+The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the code, update the connection string as follows:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -92,12 +94,12 @@ $ python3 example.py \
 The output should show the account balances before and after the funds transfer:
 
 ~~~
-Balances at Sun Oct 11 14:32:18 2020
-['1', '1000']
-['2', '250']
-Balances at Sun Oct 11 14:32:18 2020
-['1', '900']
-['2', '350']
+Balances at Fri Oct 30 18:27:00 2020:
+(1, 1000)
+(2, 250)
+Balances at Fri Oct 30 18:27:00 2020:
+(1, 900)
+(2, 350)
 ~~~
 
 ## What's next?

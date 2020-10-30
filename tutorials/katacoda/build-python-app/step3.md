@@ -4,19 +4,10 @@ In a new terminal, download the Python code:
 
 Open the file: `example.py`{{open}}
 
-You'll see that the Python code is a command-line utility that accepts the connection string to CockroachDB as the `--dsn` flag.
+You'll see that the Python code is a command-line utility that does the following:
 
-Run this command in the second terminal, replacing `<port>` with the port in you noted in step 1:
+- Creates an accounts table and inserts some rows.
+- Transfers funds between two accounts inside a [transaction](https://www.cockroachlabs.com/docs/stable/transactions.html).
+- Deletes the accounts from the table before exiting so you can re-run the example code.
 
-`python3 example.py --dsn='postgresql://python:test@127.0.0.1:<port>/bank?sslmode=require'`
-
-The output should show the account balances before and after the funds transfer:
-
-```
-Balances at Sun Oct 11 14:32:18 2020
-['1', '1000']
-['2', '250']
-Balances at Sun Oct 11 14:32:18 2020
-['1', '900']
-['2', '350']
-```
+To [handle transaction retry errors](https://www.cockroachlabs.com/docs/stable/error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).

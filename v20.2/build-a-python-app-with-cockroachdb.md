@@ -11,9 +11,13 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
-</div>
+</div></br>
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use either a temporary local cluster or a free cluster on CockroachCloud.
+
+<div class="filters clearfix">
+  <a href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+</div>
 
 ## Step 1. Install the psycopg2 driver
 
@@ -38,11 +42,13 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 Now that you have a database, you'll run the code shown below to:
 
-- Create an `accounts` table and insert some rows.
-- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that you [handle transaction retry errors](transactions.html#client-side-intervention), you'll use an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
-- Finally, you'll delete the accounts from the table before exiting so you can re-run the example code.
+- Create an accounts table and insert some rows.
+- Transfer funds between two accounts inside a [transaction](transactions.html).
+- Delete the accounts from the table before exiting so you can re-run the example code.
 
-### Get the code
+To [handle transaction retry errors](error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
+
+## Get the code
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/psycopg2/example.py" download><code>example.py</code></a> file, or create the file yourself and copy the code into it.
 
@@ -60,7 +66,7 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 ### Run the code
 
-The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the the code, update the connection string as follows:
+The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the code, update the connection string as follows:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -92,12 +98,12 @@ $ python3 example.py \
 The output should show the account balances before and after the funds transfer:
 
 ~~~
-Balances at Sun Oct 11 14:32:18 2020
-['1', '1000']
-['2', '250']
-Balances at Sun Oct 11 14:32:18 2020
-['1', '900']
-['2', '350']
+Balances at Fri Oct 30 18:27:00 2020:
+(1, 1000)
+(2, 250)
+Balances at Fri Oct 30 18:27:00 2020:
+(1, 900)
+(2, 350)
 ~~~
 
 ## What's next?

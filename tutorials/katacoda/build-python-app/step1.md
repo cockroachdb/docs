@@ -1,4 +1,4 @@
-This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver.
+This tutorial shows you how build a simple Python application with CockroachDB and the [psycopg2](https://www.psycopg.org/docs/) driver.
 
 To get you started, we're installing the Python psycopg2 driver, installing CockroachDB, and then starting a single-node demo cluster.
 

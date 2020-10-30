@@ -1,6 +1,6 @@
 {
   "noindex": true,
-  "title": "Connect a Python App to CockroachDB",
+  "title": "Build a Python App with CockroachDB",
   "description": "Learn how to use CockroachDB from a simple Python application with the psycopg2 driver",
   "difficulty": "Beginner",
   "time": "5 minutes",
@@ -16,8 +16,12 @@
         "text": "step2.md"
       },
       {
-        "title": "Run the Python code",
+        "title": "Get the Python code",
         "text": "step3.md"
+      },
+      {
+        "title": "Run the Python code",
+        "text": "step4.md"
       }
     ],
     "finish": {
