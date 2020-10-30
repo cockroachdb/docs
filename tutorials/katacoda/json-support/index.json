@@ -9,6 +9,7 @@
       {
         "title": "Start CockroachDB",
         "text": "step1.md",
+        "foreground": "foreground.sh"
       },
       {
         "title": "Install prerequisites",
