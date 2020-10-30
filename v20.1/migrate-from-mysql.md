@@ -24,8 +24,6 @@ For more information about the case sensitivity of strings in MySQL, see [Case S
 
 The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use the [`array_position`](functions-and-operators.html#array-functions) function, which returns the index of the first occurrence of element in the array.
 
-While MYSQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
-
 Example usage:
 
 {% include copy-clipboard.html %}
@@ -39,6 +37,8 @@ Example usage:
                2
 (1 row)
 ~~~
+
+While MYSQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
 
 {% include copy-clipboard.html %}
 ~~~ sql
