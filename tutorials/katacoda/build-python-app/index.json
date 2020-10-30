@@ -8,8 +8,7 @@
     "steps": [
       {
         "title": "Start CockroachDB",
-        "text": "step1.md",
-        "foreground": "foreground.sh"
+        "text": "step1.md"
       },
       {
         "title": "Create a database",
