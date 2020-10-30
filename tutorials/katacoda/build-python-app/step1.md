@@ -2,4 +2,6 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 To get you started, we're installing the Python psycopg2 driver, installing CockroachDB, and then starting a single-node demo cluster.
 
-Once CockroachDB is running, take note of the `(sql/tcp)` connection string in the SQL shell welcome text and then click **Continue**.
+Once you see a prompt like `root@127.0.0.1:38807/defaultdb>`, take note of the port number (the number following the colon). You will use it in your app's connection string later.
+
+Then click **Continue**.

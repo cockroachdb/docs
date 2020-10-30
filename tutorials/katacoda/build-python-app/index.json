@@ -1,6 +1,6 @@
 {
   "noindex": true,
-  "title": "Build a Python App with CockroachDB and psycopg2",
+  "title": "Connect a Python App to CockroachDB",
   "description": "Learn how to use CockroachDB from a simple Python application with the psycopg2 driver",
   "difficulty": "Beginner",
   "time": "5 minutes",
