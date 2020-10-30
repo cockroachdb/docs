@@ -48,7 +48,7 @@ Now that you have a database, you'll run the code shown below to:
 
 To [handle transaction retry errors](error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
-## Get the code
+### Get the code
 
 Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/psycopg2/example.py" download><code>example.py</code></a> file, or create the file yourself and copy the code into it.
 
