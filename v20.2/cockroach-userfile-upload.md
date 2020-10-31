@@ -16,7 +16,7 @@ Userfile uses storage space in the cluster, and is replicated with the rest of t
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachD will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
-A user can only upload their user-scoped storage, which can be reference through the [userfile URI](#file-destination) provided. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
+A user can only upload files to their own user-scoped storage, which is accessed through the [userfile URI](#file-destination). CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
 ## Synopsis
 
@@ -54,7 +54,7 @@ Userfile is **not** a filesystem and does not support filesystem semantics. The 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload transaction has committed (i.e, the process ends gracefully). Therefore, a file with a `.tmp` prefix indicates that the upload may have only partially succeeded, and that the upload should be retried.
+Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload transaction has committed (i.e, the process ends gracefully). Therefore, if a file you believed had finished uploading has a `.tmp` suffix, then the upload should be retried.
 {{site.data.alerts.end}}
 
 ## Flags

@@ -10,20 +10,20 @@ toc: true
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
-A user can only delete from their user-scoped storage, which can be reference through the [userfile URI](cockroach-userfile-upload.html#file-destination) provided during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
+A user can only delete files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
 
 ## Synopsis
 
 Delete a file:
 
 ~~~ shell
-$ cockroach userfile list <file | dir> [flags]
+$ cockroach userfile delete <file | dir> [flags]
 ~~~
 
 View help:
 
 ~~~ shell
-$ cockroach userfile list --help
+$ cockroach userfile delete --help
 ~~~
 
 ## Flags
