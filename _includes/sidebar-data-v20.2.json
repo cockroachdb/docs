@@ -2440,6 +2440,12 @@
     		  "/${VERSION}/admin-ui-databases-page.html"
     		]
     	      },
+            {
+        "title": "Sessions Page",
+        "urls": [
+          "/${VERSION}/admin-ui-sessions-page.html"
+        ]
+            },
     	      {
     		"title": "Statements Page",
     		"urls": [
