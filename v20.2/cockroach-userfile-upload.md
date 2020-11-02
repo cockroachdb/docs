@@ -47,10 +47,10 @@ Userfile operations are backed by two tables: `files` (which holds file metadata
     - If the destination is a well-formed userfile URI (i.e., `userfile://db.schema.tablename_prefix/path/to/file`), then CockroachDB use use that as the final URI. For example: `userfile://foo.bar.baz_root/destination/path`
     - If destination is not a well-formed userfile URI, then CockroachDB will use the default userfile URI schema and host (`userfile://defaultdb.public.userfiles_$user/`), and the destination as the path. For example: `userfile://defaultdb.public.userfiles_root/destination/path`
 
-The destination file path must be the same after normalization (i.e., if you pass any path that results in a different path, it will be rejected).
+
 
 {{site.data.alerts.callout_danger}}
-Userfile is **not** a filesystem and does not support filesystem semantics. The destination string is taken as-is, and CockroachDB will use that as a file name.
+Userfile is **not** a filesystem and does not support filesystem semantics. The destination file path must be the same after normalization (i.e., if you pass any path that results in a different path after normalization, it will be rejected).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
