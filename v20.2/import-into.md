@@ -95,12 +95,8 @@ Before using `IMPORT INTO`, you should have:
     - `transaction_timestamp()`
 
 - `random()`
-- `gen_random_uuid`
+- `gen_random_uuid()`
 - `unique_rowid()`
-
-{{site.data.alerts.callout_info}}
-Non-targeted columns with constant default expressions are not required to be nullable.
-{{site.data.alerts.end}}
 
 ### Available storage
 
