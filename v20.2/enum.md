@@ -53,6 +53,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 - To [drop a type](drop-type.html), a user must be the owner of the type.
 - To [alter a type](alter-type.html), a user must be the owner of the type.
 - To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
+- To create an object that depends on a type, a user must have the `USAGE` privilege on the type.
 
 ## Example
 
