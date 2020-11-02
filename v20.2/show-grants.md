@@ -5,34 +5,73 @@ keywords: reflection
 toc: true
 ---
 
-The `SHOW GRANTS` [statement](sql-statements.html) lists the [privileges](authorization.html#assign-privileges) granted to users and roles.
+The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
-## Synopsis
+- The [roles](authorization.html#sql-users) granted to [users](authorization.html#sql-users) in a cluster.
+- The [privileges](authorization.html#assign-privileges) [granted](grant.html) to [users](authorization.html#sql-users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
-<div>
-  {% include {{ page.version.version }}/sql/diagrams/show_grants.html %}
-</div>
+## Syntax
 
-## Required privileges
+### Show privilege grants
 
-No [privileges](authorization.html#assign-privileges) are required to view privileges granted to users. For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
+Use the following syntax to show the privileges granted to users on database objects:
+
+~~~
+SHOW GRANTS [ON [DATABASE | SCHEMA | TABLE | TYPE] <targets...>] [FOR <users...>]
+~~~
+
+### Show role grants
+
+Use the following syntax to the show the role grants for users in a cluster.
+
+~~~
+SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
+~~~
 
 ## Parameters
 
-Parameter        | Description
+Parameter    | Description
+-------------|-----------------------------------------------------------------------------------------------------
+`targets`    | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.{{site.data.alerts.end}}
+`roles`      | A comma-separated list of the roles whose grants you want to show.
+`users`      | A comma-separated list of the [users](authorization.html#sql-users) whose privileges or roles you want to show.
+
+## Response
+
+### Privilege grants
+
+The `SHOW GRANTS ON [DATABASE | SCHEMA | TABLE | TYPE]` statement can return the following fields, depending on the target object specified:
+
+Field            | Description
 -----------------|-----------------------------------------------------------------------------------------------------
-`role_name`      | A comma-separated list of role names.
-`table_name`     | A comma-separated list of table names. Alternately, to list privileges for all tables, use `*`.
-`database_name`  | A comma-separated list of database names.
-`user_name`      | An optional, comma-separated list of grantees.
+`database_name`  | The name of the database.
+`schema_name`    | The name of the schema.
+`table_name`     | The name of the table.
+`type_name`      | The name of the user-defined type.
+`grantee`        | The name of the user or role that was granted the [privilege](authorization.html#assign-privileges).
+`privilege_type` | The name of the privilege.
+
+### Role grants
+
+The `SHOW GRANTS ON ROLE` statement returns the following fields:
+
+Field        |  Description
+-------------|-----------------------------------------------------------------------------------------------------
+`role_name`  | The name of the role.
+`member`     | The users in the role.
+`is_admin`   | If `true`, the role is an [admin](authorization.html#role-admin) role.
+
+## Required privileges
+
+- No [privileges](authorization.html#assign-privileges) are required to view privileges granted to users.
+
+- For `SHOW GRANTS ON ROLES`, the user must have the [`SELECT`](select-clause.html) [privilege](authorization.html#assign-privileges) on the system table.
 
 ## Examples
-The `SHOW GRANTS` statement returns the following columns:`privilege_type` which is the name of the [privilege](https://www.cockroachlabs.com/docs/v20.1/authorization#assign-privileges), `grantee` that represents the name of the user or role that was granted the privilege, `table_name` is the table in which the user or role has the privilege, `schema_name` is the name of the schema that contains the table, and `database_name` is the name of the database that contains the schema.
-
 
 ### Show all grants
 
-To list all grants for all users and roles on all databases and tables:
+To list all grants for all users and roles on all database objects:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -40,35 +79,42 @@ To list all grants for all users and roles on all databases and tables:
 ~~~
 
 ~~~
-+---------------+--------------------+-----------------------------------+---------+----------------+
-| database_name |    schema_name     |            table_name             | grantee | privilege_type |
-+---------------+--------------------+-----------------------------------+---------+----------------+
-| defaultdb     | crdb_internal      | NULL                              | admin   | ALL            |
-| defaultdb     | crdb_internal      | NULL                              | root    | ALL            |
-| defaultdb     | crdb_internal      | backward_dependencies             | public  | SELECT         |
-| defaultdb     | crdb_internal      | builtin_functions                 | public  | SELECT         |
-| defaultdb     | crdb_internal      | cluster_queries                   | public  | SELECT         |
+  database_name |    schema_name     |           relation_name           | grantee | privilege_type
+----------------+--------------------+-----------------------------------+---------+-----------------
+  movr          | crdb_internal      | NULL                              | admin   | ALL
+  movr          | crdb_internal      | NULL                              | root    | ALL
+  movr          | crdb_internal      | backward_dependencies             | public  | SELECT
+  movr          | crdb_internal      | builtin_functions                 | public  | SELECT
 ...
-+---------------+--------------------+-----------------------------------+---------+----------------+
-(167 rows)
+(365 rows)
 ~~~
 
 ### Show a specific user or role's grants
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS FOR maxroach;
+> CREATE USER max WITH PASSWORD roach;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON DATABASE movr TO max;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS FOR USER max;
 ~~~
 
 ~~~
-+---------------+--------------------+-----------------------------------+----------+----------------+
-| database_name |    schema_name     |            table_name             | grantee  | privilege_type |
-+---------------+--------------------+-----------------------------------+----------+----------------+
-| test_roles    | crdb_internal      | NULL                              | maxroach | DELETE         |
-| test_roles    | information_schema | NULL                              | maxroach | DELETE         |
-| test_roles    | pg_catalog         | NULL                              | maxroach | DELETE         |
-| test_roles    | public             | NULL                              | maxroach | DELETE         |
-+---------------+--------------------+-----------------------------------+----------+----------------+
+  database_name |    schema_name     | relation_name | grantee | privilege_type
+----------------+--------------------+---------------+---------+-----------------
+  movr          | crdb_internal      | NULL          | max     | ALL
+  movr          | information_schema | NULL          | max     | ALL
+  movr          | pg_catalog         | NULL          | max     | ALL
+  movr          | pg_extension       | NULL          | max     | ALL
+  movr          | public             | NULL          | max     | ALL
+(5 rows)
 ~~~
 
 ### Show grants on databases
@@ -77,81 +123,82 @@ To list all grants for all users and roles on all databases and tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE test;
+> SHOW GRANTS ON DATABASE movr;
 ~~~
 
 ~~~
-+---------------+--------------------+----------+----------------+
-| database_name |    schema_name     | grantee  | privilege_type |
-+---------------+--------------------+----------+----------------+
-| test          | crdb_internal      | admin    | ALL            |
-| test          | crdb_internal      | maxroach | CREATE         |
-| test          | crdb_internal      | root     | ALL            |
-| test          | information_schema | admin    | ALL            |
-| test          | information_schema | maxroach | CREATE         |
-| test          | information_schema | root     | ALL            |
-| test          | pg_catalog         | admin    | ALL            |
-| test          | pg_catalog         | maxroach | CREATE         |
-| test          | pg_catalog         | root     | ALL            |
-| test          | public             | admin    | ALL            |
-| test          | public             | maxroach | CREATE         |
-| test          | public             | root     | ALL            |
-+---------------+--------------------+----------+----------------+
-(12 rows)
+  database_name |    schema_name     | grantee | privilege_type
+----------------+--------------------+---------+-----------------
+  movr          | crdb_internal      | admin   | ALL
+  movr          | crdb_internal      | max     | ALL
+  movr          | crdb_internal      | root    | ALL
+  movr          | information_schema | admin   | ALL
+  movr          | information_schema | max     | ALL
+  movr          | information_schema | root    | ALL
+  movr          | pg_catalog         | admin   | ALL
+  movr          | pg_catalog         | max     | ALL
+  movr          | pg_catalog         | root    | ALL
+  movr          | pg_extension       | admin   | ALL
+  movr          | pg_extension       | max     | ALL
+  movr          | pg_extension       | root    | ALL
+  movr          | public             | admin   | ALL
+  movr          | public             | max     | ALL
+  movr          | public             | root    | ALL
+(15 rows)
 ~~~
 
 **Specific database, specific user or role:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON DATABASE test FOR maxroach;
+> SHOW GRANTS ON DATABASE movr FOR max;
 ~~~
 
 ~~~
-+---------------+--------------------+----------+----------------+
-| database_name |    schema_name     | grantee  | privilege_type |
-+---------------+--------------------+----------+----------------+
-| test          | crdb_internal      | maxroach | CREATE         |
-| test          | information_schema | maxroach | CREATE         |
-| test          | pg_catalog         | maxroach | CREATE         |
-| test          | public             | maxroach | CREATE         |
-+---------------+--------------------+----------+----------------+
-(4 rows)
+  database_name |    schema_name     | grantee | privilege_type
+----------------+--------------------+---------+-----------------
+  movr          | crdb_internal      | max     | ALL
+  movr          | information_schema | max     | ALL
+  movr          | pg_catalog         | max     | ALL
+  movr          | pg_extension       | max     | ALL
+  movr          | public             | max     | ALL
+(5 rows)
 ~~~
 
 ### Show grants on tables
 
-**Specific tables, all users and roles:**
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON TABLE users TO max;
+~~~
+
+**Specific table, all users and roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test.t1;
+> SHOW GRANTS ON TABLE users;
 ~~~
 
 ~~~
-+---------------+-------------+------------+----------+----------------+
-| database_name | schema_name | table_name | grantee  | privilege_type |
-+---------------+-------------+------------+----------+----------------+
-| test          | public      | t1         | admin    | ALL            |
-| test          | public      | t1         | maxroach | CREATE         |
-| test          | public      | t1         | root     | ALL            |
-+---------------+-------------+------------+----------+----------------+
+  database_name | schema_name | table_name | grantee | privilege_type
+----------------+-------------+------------+---------+-----------------
+  movr          | public      | users      | admin   | ALL
+  movr          | public      | users      | max     | ALL
+  movr          | public      | users      | root    | ALL
 (3 rows)
 ~~~
 
-**Specific tables, specific role or user:**
+**Specific table, specific role or user:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test.t1 FOR maxroach;
+> SHOW GRANTS ON TABLE users FOR max;
 ~~~
 
 ~~~
-+---------------+-------------+------------+----------+----------------+
-| database_name | schema_name | table_name | grantee  | privilege_type |
-+---------------+-------------+------------+----------+----------------+
-| test          | public      | t1         | maxroach | CREATE         |
-+---------------+-------------+------------+----------+----------------+
+  database_name | schema_name | table_name | grantee | privilege_type
+----------------+-------------+------------+---------+-----------------
+  movr          | public      | users      | max     | ALL
 (1 row)
 ~~~
 
@@ -159,90 +206,180 @@ To list all grants for all users and roles on all databases and tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test.*;
+> SHOW GRANTS ON TABLE *;
 ~~~
 
 ~~~
-+---------------+-------------+------------+----------+----------------+
-| database_name | schema_name | table_name | grantee  | privilege_type |
-+---------------+-------------+------------+----------+----------------+
-| test          | public      | t1         | admin    | ALL            |
-| test          | public      | t1         | maxroach | CREATE         |
-| test          | public      | t1         | root     | ALL            |
-+---------------+-------------+------------+----------+----------------+
-(3 rows)
+  database_name | schema_name |         table_name         | grantee | privilege_type
+----------------+-------------+----------------------------+---------+-----------------
+  movr          | public      | promo_codes                | admin   | ALL
+  movr          | public      | promo_codes                | root    | ALL
+  movr          | public      | rides                      | admin   | ALL
+  movr          | public      | rides                      | root    | ALL
+  movr          | public      | user_promo_codes           | admin   | ALL
+  movr          | public      | user_promo_codes           | root    | ALL
+  movr          | public      | users                      | admin   | ALL
+  movr          | public      | users                      | max     | ALL
+  movr          | public      | users                      | root    | ALL
+  movr          | public      | vehicle_location_histories | admin   | ALL
+  movr          | public      | vehicle_location_histories | root    | ALL
+  movr          | public      | vehicles                   | admin   | ALL
+  movr          | public      | vehicles                   | root    | ALL
+(13 rows)
 ~~~
 
 **All tables, specific users or roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS ON TABLE test.* FOR maxroach;
+> SHOW GRANTS ON TABLE * FOR max;
 ~~~
 
 ~~~
-+---------------+-------------+------------+----------+----------------+
-| database_name | schema_name | table_name | grantee  | privilege_type |
-+---------------+-------------+------------+----------+----------------+
-| test          | public      | t1         | maxroach | CREATE         |
-+---------------+-------------+------------+----------+----------------+
+  database_name | schema_name | table_name | grantee | privilege_type
+----------------+-------------+------------+---------+-----------------
+  movr          | public      | users      | max     | ALL
+(1 row)
+~~~
+
+### Show grants on schemas
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE SCHEMA cockroach_labs;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON SCHEMA cockroach_labs TO max;
+~~~
+
+**Specific schema, all users or roles:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON SCHEMA cockroach_labs;
+~~~
+
+~~~
+  database_name |  schema_name   | grantee | privilege_type
+----------------+----------------+---------+-----------------
+  movr          | cockroach_labs | admin   | ALL
+  movr          | cockroach_labs | max     | ALL
+  movr          | cockroach_labs | root    | ALL
+(3 rows)
+~~~
+
+**Specific schema, specific users or roles:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON SCHEMA cockroach_labs FOR max;
+~~~
+
+~~~
+  database_name |  schema_name   | grantee | privilege_type
+----------------+----------------+---------+-----------------
+  movr          | cockroach_labs | max     | ALL
+(1 row)
+~~~
+
+### Show grants on user-defined types
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TYPE status AS ENUM ('available', 'unavailable');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT ALL ON TYPE status TO max;
+~~~
+
+**Specific type, all users or roles:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TYPE status;
+~~~
+
+~~~
+  database_name | schema_name | type_name | grantee | privilege_type
+----------------+-------------+-----------+---------+-----------------
+  movr          | public      | status    | admin   | ALL
+  movr          | public      | status    | max     | ALL
+  movr          | public      | status    | public  | USAGE
+  movr          | public      | status    | root    | ALL
+(4 rows)
+~~~
+
+**Specific type, specific users or roles:**
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON TYPE status FOR max;
+~~~
+
+~~~
+  database_name | schema_name | type_name | grantee | privilege_type
+----------------+-------------+-----------+---------+-----------------
+  movr          | public      | status    | max     | ALL
 (1 row)
 ~~~
 
 ### Show role memberships
 
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE ROLE moderator;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT moderator TO max;
+~~~
+
 **All members of all roles:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW GRANTS ON ROLE;
+> SHOW GRANTS ON ROLE;
 ~~~
 
 ~~~
-+------------+---------+----------+
-| role_name  | member  | is_admin |
-+------------+---------+----------+
-| admin      | root    | true     |
-| design     | ernie   | false    |
-| design     | lola    | false    |
-| dev        | barkley | false    |
-| dev        | carl    | false    |
-| docs       | carl    | false    |
-| hr         | finance | false    |
-| hr         | lucky   | false    |
-+------------+---------+----------+
+  role_name | member | is_admin
+------------+--------+-----------
+  admin     | root   |   true
+  moderator | max    |  false
+(2 rows)
 ~~~
 
 **Members of a specific role:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW GRANTS ON ROLE design;
+> SHOW GRANTS ON ROLE moderator;
 ~~~
 
 ~~~
-+------------+---------+----------+
-| role_name  | member  | is_admin |
-+------------+---------+----------+
-| design     | ernie   | false    |
-| design     | lola    | false    |
-+------------+---------+----------+
+  role_name | member | is_admin
+------------+--------+-----------
+  moderator | max    |  false
+(1 row)
 ~~~
 
 **Roles of a specific user or role:**
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SHOW GRANTS ON ROLE FOR carl;
+> SHOW GRANTS ON ROLE FOR max;
 ~~~
 
 ~~~
-+------------+---------+----------+
-| role_name  | member  | is_admin |
-+------------+---------+----------+
-| dev        | carl    | false    |
-| docs       | carl    | false    |
-+------------+---------+----------+
+  role_name | member | is_admin
+------------+--------+-----------
+  moderator | max    |  false
+(1 row)
 ~~~
 
 ## See also
