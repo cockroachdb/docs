@@ -13,7 +13,7 @@ This page documents `ALTER DATABASE ... OWNER TO` and `ALTER TABLE ... OWNER TO`
 ## Required privileges
 
 - To change the owner of a database, the user must be an `admin` user or the current owner of the database, and a member of the new owner [role](authorization.html#roles). The user must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
-- To change the owner of a table, the user must be `admin` user or the current owner of the table, and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
+- To change the owner of a table, the user must be `admin` user, or the current owner of the table and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
 
 ## Syntax
 
