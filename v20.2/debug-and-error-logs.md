@@ -114,7 +114,7 @@ These logging flags are used with [`cockroach` commands](cockroach-commands.html
 
 ## Redacted logs
 
-If you contact CockroachDB Support for troubleshooting help, you might be asked to run [`cockroach debug zip`](cockroach-debug-zip.html) and share the resulting file with the CockroachDB team. The log files created by `cockroach debug zip` may contain highly sensitive, unanonymized information, such as usernames, hashed passwords, and possibly your table's data.
+If you contact CockroachDB Support for troubleshooting help, you might be asked to run [`cockroach debug zip`](cockroach-debug-zip.html) and share the resulting file with the CockroachDB team. The log files created by `cockroach debug zip` may contain highly sensitive, identifiable information, such as usernames, hashed passwords, and possibly your table's data.
 
 <span class="version-tag">New in v20.2</span> You can run `cockroach debug zip` with the [`redact-logs` flag](cockroach-debug-zip.html#redact-sensitive-information-from-the-logs) to redact the sensitive data out of log files and crash reports before sharing them with Cockroach Labs. Redactable sensitive data includes but is not limited to:
 
