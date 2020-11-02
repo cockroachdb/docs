@@ -355,7 +355,7 @@ $(function() {
 
   // footer
   $('.footer-nav .header').on('click', function() {
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 992) {
       $(this).siblings('.footer-sub-nav').slideToggle(200);
       flipArrow($(this));
     }

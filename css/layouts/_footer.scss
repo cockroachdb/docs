@@ -1,12 +1,10 @@
 section.footer {
-	background: $cl_gray_footer;
+	background: $neutral-100;
 	padding: 0 0 20px;
 	z-index: 1;
 	position: relative; // needed for z-index
 
 	@include at-query($min, $screen-md) {
-		border-top: 1px solid $cl_gray_medium;
-		background: #fff;
 		padding: 0 0 40px;
 	}
 
@@ -47,10 +45,16 @@ section.footer {
 
 		&__right {
 			display: flex;
-			border-bottom: solid 1px $cl_gray_medium;
-
+			flex-direction: column;
+			border-top: solid 1px #DADADA;
+    		padding: 10px 20px;
+			.desc {
+				@include sourcesanspro_m(12px);
+				color: $neutral-500;
+				margin: 5px 0;
+			}		
 			@include at-query($min, $screen-md) {
-				border-bottom: none;
+				border-top: none;
 				border-left: solid 1px $cl_gray_medium;
 				width: 25%;
 				padding-top: 0;
@@ -69,7 +73,7 @@ section.footer {
 		// mobile only
 		@include at-query($max, $screen-md) {
 			border-top: 1px solid $cl_gray_medium;
-			padding: 20px;
+			padding: 15px 20px;
 		}
 
 		@include at-query($min, $screen-md) {
@@ -104,13 +108,12 @@ section.footer {
 			}
 
 			a {
-				color: $cl_blue_dark;
-				@include type-caption;
+				@include sourcesanspro_r(14px);
+				color: $neutral-700;
 				// vertical spacing
 				line-height: 40px;
 				text-transform: none;
 				display: block;
-				@include groovy(color);
 
 				@include at-query($min, $screen-md) {
 					// back to normal
@@ -124,21 +127,22 @@ section.footer {
 			}
 		}
 
-		li.header {
-			@include button-text--heavy--medium;
-			line-height: 5px;
-			text-transform: uppercase;
-
-			@include at-query($min, $screen-md) {
-				margin-bottom: 15px;
-			}
-		}
-
 		li:before {
 		  content: "";
 			display:none;
 			left:auto;
 			top:auto;
+		}
+	}
+
+
+	.header {
+		@include poppins_sb(14px);
+		color: $neutral-800;
+		text-transform: uppercase;
+
+		@include at-query($min, $screen-md) {
+			margin-bottom: 15px;
 		}
 	}
 
@@ -149,19 +153,6 @@ section.footer {
 
 		@include at-query($min, $screen-md) {
 			display: block;
-		}
-	}
-
-	.copyright {
-		margin: 20px 0 0 20px;
-		@include type-caption;
-		color: $cl_blue;
-
-		@include at-query($min, $screen-md) {
-			text-align: left;
-			width: 100%;
-			margin-top: 15px;
-			margin-left: 0;
 		}
 	}
 

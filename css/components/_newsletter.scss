@@ -197,6 +197,7 @@
 		border: 1px solid $neutral-400;
 		border-radius: $border-radius;
 		padding: 4px;
+		background-color: $white;
 
 		> div {
 			float: left;
@@ -250,7 +251,7 @@
 		}
 
 		.hs-button {
-			background-color: $green-3;
+			background-color: $purple-200;
 			color: #FFFFFF;
 			// border: 2px solid #DDDDDD;
 			// border-left: none;
@@ -264,7 +265,7 @@
 			// -moz-border-bottom-right-radius: 20px;
 			// border-bottom-right-radius: 20px;
 			padding: 0 16px;
-			@include sourcesanspro_m(14px);
+			@include poppins_sb(14px);
 			line-height: 42px;
 			text-transform: capitalize;
 			border-radius: $border-radius;
