@@ -47,7 +47,7 @@ Click the **Session Age** of any session to display details and possible actions
 
 - **Session** shows the ID of the connected session.
 	- **Session Start Time** shows the timestamp at which the session started.
-	- **Gateway Node** shows the node ID and IP address/port of the [gateway](life-of-a-distributed-transaction.html#gateway) node handling the client connection.
+	- **Gateway Node** shows the node ID and IP address/port of the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) node handling the client connection.
 	- **Client Address** shows the IP address/port of the client that opened the session.
 	- **Memory Usage** shows the amount of memory currently allocated to this session / maximum amount of memory this session has ever allocated.
 	- The **Terminate Session** button ends the session. The client that holds this session will receive a "conenction terminated" event.
@@ -57,9 +57,9 @@ Click the **Session Age** of any session to display details and possible actions
 	- **Number of Statements Executed** shows the total number of SQL statements executed by the transaction.
 	- **Number of Retries** shows the total number of [retries](transactions.html#transaction-retries) for the transaction.
 	- **Number of Automatic Retries** shows the total number of [automatic retries](transactions.html#automatic-retries) run by CockroachDB for the transaction.
-	- **Priority** shows the [priority](transactions#transaction-priorities) for the transaction.
+	- **Priority** shows the [priority](transactions.html#transaction-priorities) for the transaction.
 	- **Read Only?** shows whether the transaction is read-only.
-	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`](performance-best-practices-overview#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
+	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
 	- **Memory Usage** shows the amount of memory currently allocated to this transaction / maximum amount of memory this transaction has ever allocated.
 - **Statement** will display the following information for an active statement.
 	- The SQL statement is shown.
