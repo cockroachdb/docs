@@ -55,7 +55,7 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49448)
 
-- CockroachDB does not support the `@` operator for [spatial features](spatial-features.html). Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`.
+- CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56124)
 
@@ -63,9 +63,27 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
 
-- CockroachDB does not yet support `DECLARE CURSOR`, which prevents the `ogr2ogr` conversion tool from exporting from CockroachDB to certain formats. To work around this limitation, export data first to CSV or GeoJSON format.
+- CockroachDB does not yet support `DECLARE CURSOR`, which prevents the `ogr2ogr` conversion tool from exporting from CockroachDB to certain formats and prevents [QGIS](https://qgis.org/en/site/) from working with CockroachDB. To work around this limitation, export data first to CSV or GeoJSON format.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41412)
+
+- CockroachDB does not yet support storing spatial objects of more than two dimensions.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53091)
+
+- CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
+
+- CockroachDB does not yet support Curve, MultiCurve, or CircularString spatial shapes.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56199)
+
+- CockroachDB does not yet support [k-nearest neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm).
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
+
+
 
 ## Unresolved limitations
 
@@ -468,7 +486,7 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 
 ### Some column-dropping schema changes do not roll back properly
 
-Some [schema changes](online-schema-changes.html) which [drop columns](drop-column.html) can't be [rolled back](rollback-transaction.html) properly.
+Some [schema changes](online-schema-changes.html) that [drop columns](drop-column.html) can't be [rolled back](rollback-transaction.html) properly.
 
 In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
 
@@ -478,11 +496,19 @@ In other cases, the rollback will fail in such a way that will never be cleaned 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/47712)
 
-If you have performed a rollback of a column-dropping schema change, check the [jobs table entry](show-jobs.html) for schema changes with an error prefaced by "`cannot be reverted, manual cleanup may be required`".
+To reduce the chance that a column drop will roll back incorrectly:
+
+- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures won't cause the column drop to be rolled back.
+
+- Drop all [constraints](constraints.html) (including [unique indexes](unique.html)) on the column in a separate transaction, before dropping the column.
+
+- Drop any [default values](default-value.html) or [computed expressions](computed-columns.html) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
+
+If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](show-jobs.html). Schema changes with an error prefaced by "`cannot be reverted, manual cleanup may be required`" might require manual intervention.
 
 ### Disk-spilling on joins with `JSON` columns
 
-If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
