@@ -33,7 +33,7 @@ Any new file created by the store uses the currently-active data key. All data k
 
 After startup, if the active data key is too old, CockroachDB generates a new data key and marks it as active, using it for all further encryption.
 
-CockroachDB does not currently force re-encryption of older files but instead relies on normal RocksDB churn to slowly rewrite all data with the desired encryption.
+CockroachDB does not currently force re-encryption of older files but instead relies on normal [storage engine](architecture/storage-layer.html) churn to slowly rewrite all data with the desired encryption.
 
 ### Rotating keys
 
@@ -171,7 +171,7 @@ The report shows encryption status for all stores on the selected node, includin
 * Active data key information.
 * The fraction of files/bytes encrypted using the active data key.
 
-CockroachDB relies on RocksDB compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force RocksDB compaction with the `cockroach debug compact` command (the node must first be [stopped](cockroach-quit.html)).
+CockroachDB relies on [storage layer](architecture/storage-layer.html) compactions to write new files using the latest encryption key. It may take several days for all files to be replaced. Some files are only rewritten at startup, and some keep older copies around, requiring multiple restarts. You can force storage compaction with the `cockroach debug compact` command (the node must first be [stopped](cockroach-quit.html)).
 
 Information about keys is written to [the logs](debug-and-error-logs.html), including:
 
