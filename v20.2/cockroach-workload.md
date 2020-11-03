@@ -658,4 +658,4 @@ To customize the frequency of per-operation statistics, use the `--display-every
 
 - [`cockroach demo`](cockroach-demo.html)
 - [Other Cockroach Commands](cockroach-commands.html)
-- [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html)
+- [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-small.html)
