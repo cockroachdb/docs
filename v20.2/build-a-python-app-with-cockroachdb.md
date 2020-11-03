@@ -79,9 +79,9 @@ $ python3 example.py \
 'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
 ~~~
 
-{% comment %}
 </section>
 
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.

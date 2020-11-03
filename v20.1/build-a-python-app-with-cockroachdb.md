@@ -13,7 +13,7 @@ twitter: false
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use either a temporary local cluster or a free cluster on CockroachCloud.
+This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
 
 ## Step 1. Install the psycopg2 driver
 
@@ -77,6 +77,7 @@ $ python3 example.py \
 
 </section>
 
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
@@ -90,6 +91,7 @@ $ python3 example.py \
 ~~~
 
 </section>
+{% endcomment %}
 
 The output should show the account balances before and after the funds transfer:
 
