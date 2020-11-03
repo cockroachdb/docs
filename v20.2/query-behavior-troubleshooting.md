@@ -98,9 +98,11 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
     <img src="{{ 'images/v20.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
-    {{site.data.alerts.callout_info}}
-    You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by looking for a jump in latency before and after a transaction is committed in the log messages.
-    {{site.data.alerts.end}}
+1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by gathering [diagnostics](admin-ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
+
+  In the below example, the trace shows that there is significant latency between the transaction being pushed (56.85ms) and the transaction being committed (131.37ms).
+
+    <img src="{{ 'images/v20.2/jaeger-trace-transaction-contention.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
 ## `SELECT` statement performance issues
 
