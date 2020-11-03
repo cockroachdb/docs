@@ -16,8 +16,6 @@ There are two main types of backups:
 - [Full backups](#full-backups)
 - [Incremental backups](#incremental-backups)
 
-Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: [Enterprise](#perform-enterprise-backup-and-restore) and [Core](#perform-core-backup-and-restore).
-
 ## Watch the demo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/RGuya_SYfY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
