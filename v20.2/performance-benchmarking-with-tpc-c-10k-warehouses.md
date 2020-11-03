@@ -1,6 +1,6 @@
 ---
 title: Performance Benchmarking with TPC-C
-summary: Benchmark CockroachDB against TPC-C 10k on AWS
+summary: Benchmark CockroachDB against TPC-C 13k on AWS
 toc: true
 toc_not_nested: true
 ---
@@ -10,16 +10,22 @@ This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarki
 <div class="filters filters-big clearfix">
   <a href="performance-benchmarking-with-tpc-c-10-warehouses.html"><button class="filter-button">10</button></a>
   <a href="performance-benchmarking-with-tpc-c-1k-warehouses.html"><button class="filter-button">1000</button></a>
-  <button class="filter-button current"><strong>10,000</strong></button>
-  <a href="performance-benchmarking-with-tpc-c-100k-warehouses.html"><button class="filter-button">100,000</button></a>
+  <button class="filter-button current"><strong>13,000</strong></button>
+  <a href="performance-benchmarking-with-tpc-c-100k-warehouses.html"><button class="filter-button">140,000</button></a>
 </div>
 
-Warehouses | Data size | Cluster size
------------|-----------|-------------
-10 | 2GB | 3 nodes on your laptop
-1000 | 80GB | 3 nodes on `c5d.4xlarge` machines
-10,000 | 800GB | 15 nodes on `c5d.4xlarge` machines
-100,000 | 8TB | 81 nodes on `c5d.9xlarge` machines
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update data size column in table below
+
+| Cluster size                       | Data size | Warehouses |
+|------------------------------------+-----------+------------|
+| 3 nodes on your laptop             | 2GB       | 10         |
+| 3 nodes on `c5d.4xlarge` machines  | 80GB      | 1000       |
+| 15 nodes on `c5d.4xlarge` machines | 800GB     | 13,000     |
+| 81 nodes on `c5d.9xlarge` machines | 8TB       | 140,000    |
+
+<span class="version-tag">New in v20.2</span>: CockroachDB can achieve a TPC-C run of 13k warehouses on the same cluster size used for 10k in version 19.2, a 30% improvement:
+
+<img src="{{ 'images/v20.2/tpcc13k.png' | relative_url }}" alt="TPC-C 13,000" style="max-width:100%" />
 
 ## Before you begin
 
@@ -32,7 +38,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 ### Request a trial license
 
-Reproducing CockroachDB's 10,000 warehouse TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
+Reproducing CockroachDB's 13,000 warehouse TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
 
 The partitioning feature requires an enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
 
@@ -144,14 +150,14 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
-3. Disable replication:
+3. Disable replication: (<strong><font style="size:xx-large" color="red">FIXME</font></strong>: are these still the right cluster settings?)
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 1;
     ~~~
 
-4. Adjust some [cluster settings](cluster-settings.html):
+4. Adjust some [cluster settings](cluster-settings.html): (<strong><font style="size:xx-large" color="red">FIXME</font></strong>: are these still the right cluster settings?)
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -194,16 +200,16 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
     $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST -O workload; chmod 755 workload
     ~~~
 
-3. Import the TPC-C dataset:
+3. Import the TPC-C dataset: (<strong><font style="size:xx-large" color="red">FIXME</font></strong>: is this still the right command?)
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./workload fixtures import tpcc \
-    --warehouses 10000 \
+    --warehouses 13000 \
     "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
     ~~~
 
-    This will load 800GB of data for 10,000 "warehouses". This can take around 2 hours to complete.
+    This will load data for 13,000 "warehouses". This can take around 2 hours to complete.
 
     You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
@@ -236,13 +242,13 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
         > \q
         ~~~
 
-2. On the VM with the `workload` binary, briefly run TPC-C to set up partitioning:
+2. On the VM with the `workload` binary, briefly run TPC-C to set up partitioning: (<strong><font style="size:xx-large" color="red">FIXME</font></strong>: is this still the right command?)
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ulimit -n 20500 && ./workload run tpcc \
     --partitions 5 \
-    --warehouses 10000 \
+    --warehouses 13000 \
     --duration 1m \
     --ramp 1ms \
     "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
@@ -260,13 +266,13 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
     postgres://root@<node 1 internal address>:26257?sslmode=disable postgres://root@<node 2 internal address>:26257?sslmode=disable postgres://root@<node 3 internal address>:26257?sslmode=disable postgres://root@<node 4 internal address>:26257?sslmode=disable ...
     ~~~
 
-2. Run TPC-C for 30 minutes:
+2. Run TPC-C for 30 minutes:  (<strong><font style="size:xx-large" color="red">FIXME</font></strong>: is this still the right command?)
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ulimit -n 20500 && ./workload run tpcc \
     --partitions 5 \
-    --warehouses 10000 \
+    --warehouses 13000 \
     --ramp 1m \
     --duration 30m \
     $(cat addrs)
@@ -275,6 +281,8 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 ## Step 7. Interpret the results
 
 Once the `workload` has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
+
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update these results
 
 ~~~
 _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)

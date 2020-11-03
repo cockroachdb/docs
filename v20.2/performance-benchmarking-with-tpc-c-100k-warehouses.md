@@ -1,6 +1,6 @@
 ---
 title: Performance Benchmarking with TPC-C
-summary: Learn how to benchmark CockroachDB against TPC-C 100k.
+summary: Learn how to benchmark CockroachDB against TPC-C 140k.
 toc: true
 toc_not_nested: true
 redirect_from: performance-benchmarking-with-tpc-c.html
@@ -11,16 +11,22 @@ This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarki
 <div class="filters filters-big clearfix">
   <a href="performance-benchmarking-with-tpc-c-10-warehouses.html"><button class="filter-button">10</button></a>
   <a href="performance-benchmarking-with-tpc-c-1k-warehouses.html"><button class="filter-button">1000</button></a>
-  <a href="performance-benchmarking-with-tpc-c-10k-warehouses.html"><button class="filter-button">10,000</button></a>
-  <button class="filter-button current"><strong>100,000</strong></button>
+  <a href="performance-benchmarking-with-tpc-c-10k-warehouses.html"><button class="filter-button">13,000</button></a>
+  <button class="filter-button current"><strong>140,000</strong></button>
 </div>
 
-Warehouses | Data size | Cluster size
------------|-----------|-------------
-10 | 2GB | 3 nodes on your laptop
-1000 | 80GB | 3 nodes on `c5d.4xlarge` machines
-10,000 | 800GB | 15 nodes on `c5d.4xlarge` machines
-100,000 | 8TB | 81 nodes on `c5d.9xlarge` machines
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update data size column in table below
+
+| Cluster size                       | Data size | Warehouses |
+|------------------------------------+-----------+------------|
+| 3 nodes on your laptop             | 2GB       | 10         |
+| 3 nodes on `c5d.4xlarge` machines  | 80GB      | 1000       |
+| 15 nodes on `c5d.4xlarge` machines | 800GB     | 13,000     |
+| 81 nodes on `c5d.9xlarge` machines | 8TB       | 140,000    |
+
+<span class="version-tag">New in v20.2</span>: CockroachDB can achieve a TPC-C run of 140k warehouses on the same cluster size used for 100k in version 19.2, a 42% improvement:
+
+<img src="{{ 'images/v20.2/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="max-width:100%" />
 
 ## Before you begin
 
@@ -114,12 +120,11 @@ CockroachDB requires TCP communication on two ports:
     --advertise-addr=<node1 internal address> \
     --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
     --cache=.25 \
-    --max-sql-memory=.25 \
     --locality=rack=0 \
     --background
     ~~~
 
-    Each node will start with a [locality](cockroach-start.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 27 racks for 81 nodes so that 3 nodes will be assigned to each rack.
+    Each node will start with a [locality](cockroach-start.html#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 81 racks for 81 nodes so that 1 node will be assigned to each rack.
 
 4. Repeat steps 1 - 3 for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
     - Adjust the `--advertise-addr` flag.
@@ -145,22 +150,24 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     $ cockroach sql --insecure --host=<address of any node>
     ~~~
 
-3. Disable replication:
+3. Adjust some [cluster settings](cluster-settings.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 1;
+    SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
+    SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
+    SET CLUSTER SETTING kv.snapshot_recovery.max_rate = '256 MiB';
+    SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+    SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
+    SET CLUSTER SETTING rocksdb.min_wal_sync_interval = '500us';
+    SET CLUSTER SETTING rocksdb.ingest_backpressure.l0_file_count_threshold = 50;
     ~~~
 
-4. Adjust some [cluster settings](cluster-settings.html):
+4. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to 5 minutes:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING rocksdb.ingest_backpressure.l0_file_count_threshold = 100;
-    SET CLUSTER SETTING rocksdb.ingest_backpressure.pending_compaction_threshold = '5 GiB';
-    SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
-    SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '128 MiB';
-    SET CLUSTER SETTING rocksdb.min_wal_sync_interval = '500us';
+    ALTER RANGE default CONFIGURE ZONE USING gc.ttlseconds = 600;
     ~~~
 
 5. Enable the trial license you requested earlier:
@@ -191,7 +198,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 2. Download the `workload` binary for Linux and make it executable:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+     ~~~ shell
     $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST -O workload; chmod 755 workload
     ~~~
 
@@ -202,11 +209,13 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
     {% include copy-clipboard.html %}
     ~~~ shell
     $ ./workload fixtures import tpcc \
-    --warehouses 100000 \
+    --warehouses 150000 \
+    --partitions 81 \
+    --partition-strategy=leases
     "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
     ~~~
 
-    This will load 8TB of data for 100,000 "warehouses". This can take around 6 hours to complete.
+    This will load the data for 150,000 warehouses. This can take several hours to complete.
 
     You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
@@ -214,96 +223,10 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
 Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into 27 partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
 
-1. Re-enable 3-way replication:
+1. Wait for up-replication and partitioning to finish.  You will know when they have finished because both the number of *lease transfers* and *Raft snapshots* will go down to `0` and stay there.  Note that this will likely take 10s of minutes.
 
-    1. SSH to any VM with the `cockroach` binary.
-
-    2. Launch the [built-in SQL shell](cockroach-sql.html):
-
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cockroach sql --insecure --host=<address of any node>
-        ~~~
-
-    3. Enable replication:
-
-        {% include copy-clipboard.html %}
-        ~~~ sql
-        > ALTER RANGE default CONFIGURE ZONE USING num_replicas = 3;
-        ~~~
-
-    4. Exit the SQL shell:
-
-        {% include copy-clipboard.html %}
-        ~~~ sql
-        > \q
-        ~~~
-
-2. On one of the VMs with the `workload` binary, briefly run TPC-C to set up partitioning:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ulimit -n 200500 && ./workload run tpcc \
-    --partitions 27 \
-    --warehouses 100000 \
-    --duration 1m \
-    --ramp 1ms \
-    "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
-    ~~~
-
-3. Wait for up-replication and partitioning to finish.
-
-    This will likely take 10s of minutes. To watch the progress, go to the **Metrics > Queues > Replication Queue** graph in the Admin UI. Once the **Replication Queue** gets to `0` for all actions and stays there, you can move on to the next step.
-
-## Step 6. Re-start CockroachDB
-
-At the moment, running TPC-C against CockroachDB at this scale requires customizations that are not in the latest official release, so you'll need to stop the cluster, put a new binary with [these patches](https://github.com/cockroachdb/cockroach/commit/8af8c9e4a6399ee7672cac1e65b70a211cd63172) on the 81 VMs for CockroachDB, and then restart the cluster.
-
-1. SSH to the first VM where CockroachDB is running.
-
-2. Stop the `cockroach` process:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach quit --insecure
-    ~~~
-
-3. Rename the old binary:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ i="$(which cockroach)"; mv "$i" "$i"_old
-    ~~~
-
-4. Download the new binary, rename it, and copy it into the `PATH`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ wget https://edge-binaries.cockroachdb.com/cockroach/cockroach.linux-gnu-amd64.9582884c143639d3acc85a7ba1a829fb5a5ae9dd ; chmod 755 cockroach.linux-gnu-amd64.9582884c143639d3acc85a7ba1a829fb5a5ae9dd
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach.linux-gnu-amd64.9582884c143639d3acc85a7ba1a829fb5a5ae9dd /usr/local/bin/cockroach
-    ~~~
-
-    If you get a permissions error, prefix the command with `sudo`.
-
-5. Re-start the node, using the same [`cockroach start`](cockroach-start.html) command you used the first time you started the node:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start \
-    --insecure \
-    --advertise-addr=<node1 internal address> \
-    --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
-    --cache=.25 \
-    --max-sql-memory=.25 \
-    --locality=rack=0 \
-    --background
-    ~~~
-
-6. Repeat steps 1 - 5 for the other 80 VMs for CockroachDB nodes. Each time, be sure to use the `cockroach start` command you used the first time you started the node.
+    To monitor the number of Lease transfers, open the [Admin UI](admin-ui-overview.html), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point.
+    To check the number of Raft snapshots, open the [Admin UI](admin-ui-overview.html), select the **Queues** dashboard, hover over the **Raft Snapshot Queue** graph, and check the **Pending Actions** data point.
 
 ## Step 7. Allocate partitions
 
@@ -346,57 +269,42 @@ Before running the benchmark, it's important to allocate partitions to workload 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 200500 && ./workload run tpcc \
-    --partitions 27 \
-    --warehouses 100000 \
-    --partition-affinity 0,5,10,15,20,25 \
-    --ramp 30m \
-    --duration 1ms \
-    $(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 \
+    --ramp 30m --duration 1ms --histograms workload1.histogram.ndjson $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 200500 && ./workload run tpcc \
-    --partitions 27 \
-    --warehouses 100000 \
-    --partition-affinity 1,6,11,16,21,26 \
-    --ramp 30m \
-    --duration 1ms \
-    $(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 \
+    --ramp 30m --duration 1ms --histograms workload2.histogram.ndjson $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 200500 && ./workload run tpcc \
-    --partitions 27 \
-    --warehouses 100000 \
-    --partition-affinity 2,7,12,17,22 \
-    --ramp 30m \
-    --duration 1ms \
-    $(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 \
+    --ramp 30m --duration 1ms --histograms workload3.histogram.ndjson $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 200500 && ./workload run tpcc \
-    --partitions 27 \
-    --warehouses 100000 \
-    --partition-affinity 3,8,13,18,23 \
-    --ramp 30m \
-    --duration 1ms \
-    $(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 \
+    --ramp 30m --duration 1ms --histograms workload4.histogram.ndjson $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 200500 && ./workload run tpcc \
-    --partitions 27 \
-    --warehouses 100000 \
-    --partition-affinity 4,9,14,19,24 \
-    --ramp 30m \
-    --duration 1ms \
-    $(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE
+    --partition-affinity 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 \
+    --ramp 30m --duration 1ms --histograms workload5.histogram.ndjson $(cat addrs)
     ~~~
 
 ## Step 8. Run the benchmark
@@ -409,62 +317,42 @@ It is critical to run the benchmark from the workload nodes in parallel, so star
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ulimit -n 200500 && ./workload run tpcc \
---partitions 27 \
---warehouses 100000 \
---partition-affinity 0,5,10,15,20,25 \
---ramp 1m \
---duration 30m \
---histograms workload1.histogram.ndjson \
-$(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 \
+    --ramp 4m --duration 30m --histograms workload1.histogram.ndjson $(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ulimit -n 200500 && ./workload run tpcc \
---partitions 27 \
---warehouses 100000 \
---partition-affinity 1,6,11,16,21,26 \
---ramp 1m \
---duration 30m \
---histograms workload2.histogram.ndjson \
-$(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 \
+    --ramp 4m --duration 30m --histograms workload2.histogram.ndjson $(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ulimit -n 200500 && ./workload run tpcc \
---partitions 27 \
---warehouses 100000 \
---partition-affinity 2,7,12,17,22 \
---ramp 1m \
---duration 30m \
---histograms workload3.histogram.ndjson \
-$(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 \
+    --ramp 4m --duration 30m --histograms workload3.histogram.ndjson $(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ulimit -n 200500 && ./workload run tpcc \
---partitions 27 \
---warehouses 100000 \
---partition-affinity 3,8,13,18,23 \
---ramp 1m \
---duration 30m \
---histograms workload4.histogram.ndjson \
-$(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE \
+    --partition-affinity 49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 \
+    --ramp 4m --duration 30m --histograms workload4.histogram.ndjson $(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ulimit -n 200500 && ./workload run tpcc \
---partitions 27 \
---warehouses 100000 \
---partition-affinity 4,9,14,19,24 \
---ramp 1m \
---duration 30m \
---histograms workload5.histogram.ndjson \
-$(cat addrs)
+    ulimit -n 500500 && ./workload run tpcc --partitions 81 \
+    --warehouses 150000 --active-warehouses $NUMWARE
+    --partition-affinity 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80\
+    --ramp 4m --duration 30m --histograms workload5.histogram.ndjson $(cat addrs)
 ~~~
 
 ## Step 9. Interpret the results
@@ -528,12 +416,12 @@ $(cat addrs)
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload debug tpcc-merge-results \
-    --warehouses 100000 \
-    workload*.histogram.ndjson
+    ./workload debug tpcc-merge-results --warehouses 150000  workload*.histogram.ndjson
     ~~~
 
     You'll should see results similar to the following, with **1.2M tpmC, a nearly perfect score**:
+
+    <strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update this with current results
 
     ~~~
     Duration: 1h0m0, Warehouses: 100000, Efficiency: 98.81, tpmC: 1245461.78

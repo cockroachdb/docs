@@ -1,6 +1,6 @@
 ---
 title: Performance Benchmarking with TPC-C
-summary: Learn how to benchmark CockroachDB against TPC-C 10k on a local cluster
+summary: Learn how to benchmark CockroachDB against TPC-C 13k on a local cluster
 toc: true
 toc_not_nested: true
 ---
@@ -10,16 +10,20 @@ This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarki
 <div class="filters filters-big clearfix">
   <button class="filter-button current"><strong>10</strong></button>
   <a href="performance-benchmarking-with-tpc-c-1k-warehouses.html"><button class="filter-button">1000</button></a>
-  <a href="performance-benchmarking-with-tpc-c-10k-warehouses.html"><button class="filter-button">10,000</button></a>
-  <a href="performance-benchmarking-with-tpc-c-100k-warehouses.html"><button class="filter-button">100,000</button></a>
+  <a href="performance-benchmarking-with-tpc-c-10k-warehouses.html"><button class="filter-button">13,000</button></a>
+  <a href="performance-benchmarking-with-tpc-c-100k-warehouses.html"><button class="filter-button">140,000</button></a>
 </div>
 
-Warehouses | Data size | Cluster size
------------|-----------|-------------
-10 | 2GB | 3 nodes on your laptop
-1000 | 80GB | 3 nodes on `c5d.4xlarge` machines
-10,000 | 800GB | 15 nodes on `c5d.4xlarge` machines
-100,000 | 8TB | 81 nodes on `c5d.9xlarge` machines
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update data size column in table below
+
+| Cluster size                       | Data size | Warehouses |
+|------------------------------------+-----------+------------|
+| 3 nodes on your laptop             | 2GB       | 10         |
+| 3 nodes on `c5d.4xlarge` machines  | 80GB      | 1000       |
+| 15 nodes on `c5d.4xlarge` machines | 800GB     | 13,000     |
+| 81 nodes on `c5d.9xlarge` machines | 8TB       | 140,000    |
+
+(<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Does anything on this page need to change?)
 
 ## Before you begin
 
