@@ -5,10 +5,10 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-`RESTORE` is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. For non-enterprise restores, see [Perform core backup and restore](take-full-and-incremental-backups.html#perform-core-backup-and-restore).
+<span class="version-tag">New in v20.2:</span> `RESTORE` no longer requires an enterprise license, regardless of the options passed to it or to the backup it is restoring.
 {{site.data.alerts.end}}
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [an enterprise `BACKUP`][backup] stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`][backup] stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -84,7 +84,8 @@ You can restore:
 - All [views](views.html)
 
 {{site.data.alerts.callout_info}}
-When you do a full cluster restore, it will restore the [enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](enterprise-licensing.html#set-a-license) _after_ the restore is complete.
+
+When you do a restore on a full cluster with an enterprise license, it will restore the [enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](enterprise-licensing.html#set-a-license) _after_ the restore is complete.
 {{site.data.alerts.end}}
 
 #### Databases

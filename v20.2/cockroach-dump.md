@@ -6,11 +6,11 @@ redirect_from: sql-dump.html
 key: sql-dump.html
 ---
 
-The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
-
-{{site.data.alerts.callout_success}}
-CockroachDB [enterprise license](https://www.cockroachlabs.com/pricing/) users can also back up their cluster's data using [`BACKUP`](backup.html).
+{{site.data.alerts.callout_danger}}
+`cockroach dump` is no longer recommended and has been deprecated in v20.2. We recommend taking a [full backup](take-full-and-incremental-backups.html) instead, which no longer requires an enterprise license.
 {{site.data.alerts.end}}
+
+The `cockroach dump` [command](cockroach-commands.html) outputs the SQL statements required to recreate tables, views, and sequences. This command can be used to back up or export each database in a cluster. The output should also be suitable for importing into other relational databases, with minimal adjustments.
 
 ## Considerations
 
