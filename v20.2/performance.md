@@ -1,13 +1,13 @@
 ---
 title: CockroachDB Performance
-summary: TBD
+summary: An overview of the performance profiles you can expect from CockroachDB.
 toc: true
 toc_not_nested: true
 ---
 
 CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Lab's extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
 
-For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpc-c-100k-warehouses.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design. Instructions to reproduce Sysbench and KV results are coming soon.
+For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-large.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design. Instructions to reproduce Sysbench and KV results are coming soon.
 
 {{site.data.alerts.callout_success}}
 This document is about CockroachDB’s performance on benchmarks. For guidance on tuning real workloads, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).  
@@ -15,44 +15,53 @@ This document is about CockroachDB’s performance on benchmarks. For guidance o
 
 ## Scale
 
-TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.2M tpmC with 100,000 warehouses, a nearly perfect score.** For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors, and CockroachDB can process **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%.** As shown in the chart below, this is a 40% improvement over the results from CockroachDB 19.2.
 
-<img src="{{ 'images/v20.2/tpcc100k.png' | relative_url }}" alt="TPC-C 100,000" style="max-width:100%" />
+For a refresher on what exactly TPC-C is and how it is measured, see [Benchmarks used](#benchmarks-used) below.
 
-Metric                             | CockroachDB Results       
------------------------------------|-------------------
-Max Throughput                     | 1,245,462 tpmC    
-Max Warehouses with Max Efficiency | 100,000 Warehouses
-Max Number of Rows                 | 49.8B             
-Max Unreplicated Data              | 8TB               
-Number of Nodes                    | 81
-Node Machine Type                  | c5d.9xlarge            
-
+(<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Replace this chart with the one provided by Design)
 
 CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-serializable.html), the strongest isolation level in the SQL standard.
+
+<img src="{{ 'images/v20.2/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="max-width:100%" />
+
+| Metric                                          | CockroachDB 19.2 | CockroachDB 20.2 |
+|-------------------------------------------------+------------------+------------------|
+| Max warehouses with max efficiency (warehouses) |          100,000 |          140,000 |
+| Max throughput (tpmC)                           |        1,245,462 |        1,684,437 |
+| Efficiency (%)                                  |            98.81 |            95.45 |
+| Max number of rows (billion)                    |             49.8 |             69.7 |
+| Max unreplicated data (TB)                      |                8 |               12 |
+| p95 latency for New Order transactions (ms)     |           486.50 |           2684.4 |
+| Number of nodes                                 |               81 |               81 |
+
 ### Linear scaling
 
 CockroachDB has **no theoretical scaling limit** and, in practice, can achieve near-linear performance at 256 nodes. Because the TPC-C results above reflect leaps in scale, to test linear scaling, Cockroach Labs ran a simple benchmark named KV 95 (95% point reads, 5% point writes, all uniformly distributed) on AWS `c5d.4xlarge` machines:
+
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update this chart with latest data - see <https://github.com/cockroachdb/docs/issues/8212>
 
 <img src="{{ 'images/v20.2/linearscale.png' | relative_url }}" alt="CRDB Linear Scale" style="max-width:100%" />
 
 This chart shows that adding nodes increases throughput linearly while holding p50 and p99 latency constant. The concurrency for each scale was chosen to optimize throughput while maintaining an acceptable latency and can be observed in the table below.
 
-| Number of Nodes | Workers | Concurrency
-|-----------------|---------|------------|
-|       16        |    2    |   512
-|       32        |    4    |   512
-|       64        |    4    |   1024
-|       128       |    8    |   1024
-|       256       |    8    |   2048
+| Number of Nodes | Workers | Concurrency |
+|-----------------+---------+-------------|
+|              16 |       2 |         512 |
+|              32 |       4 |         512 |
+|              64 |       4 |        1024 |
+|             128 |       8 |        1024 |
+|             256 |       8 |        2048 |
+
 ## Throughput
 
 As mentioned above, Cockroach Labs believes TPC-C provides the most realistic and objective measure for OLTP throughput. In the real world, applications generate transactional workloads that consist of a combination of reads and writes, possibly with concurrency and likely without all data being loaded into memory. If you see benchmark results quoted in QPS, take them with a grain of salt, because anything as simple as a “query” is unlikely to be representative of the workload you need to run in practice.
 
 With that in mind, however, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward throughput benchmarking. For example, on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve 118,000 inserts per second on the `oltp_insert` workload and 336,000 reads per second on the `oltp_point_select` workload. We used a concurrency of 480 on the `oltp_insert` workload and a concurrency of 216 on the `oltp_point_select` workload to generate these numbers.
 
-<img src="{{ 'images/v20.2/sysbench-throughput.png' | relative_url }}" alt="Sysbench Throughput" style="max-width:100%" />
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update this chart with latest data - see <https://github.com/cockroachdb/docs/issues/8212>
 
+<img src="{{ 'images/v20.2/sysbench-throughput.png' | relative_url }}" alt="Sysbench Throughput" style="max-width:100%" />
 
 ## Latency
 
@@ -61,6 +70,8 @@ CockroachDB returns single-row **reads in 1 ms** and processes single-row **writ
 For benchmarking latency, again, Cockroach Labs believes TPC-C provides the most realistic and objective measure, since it encompasses the latency distribution, including tail performance. However, you can use [Sysbench](https://github.com/akopytov/sysbench) for straight-forward latency benchmarking.
 
 For example, when running Sysbench on a 3-node cluster of AWS `c5d.9xlarge` machines across AWS’s `us-east-1` region (availability zones `a`, `b`, and `c`), CockroachDB can achieve an average of 4.3ms on the `oltp_insert` workload and 0.7ms on the `oltp_point_select` workload.
+
+<strong><font style="size:xx-large" color="red">FIXME</font></strong>: Update this chart with latest data - see <https://github.com/cockroachdb/docs/issues/8212>
 
 <img src="{{ 'images/v20.2/sysbench-latency.png' | relative_url }}" alt="Sysbench Latency" style="max-width:100%" />
 
@@ -102,4 +113,8 @@ CockroachDB has no theoretical limitations to scaling, throughput, latency, or c
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).  
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
+
+- TPC-C Replication Instructions
+
+    For instructions showing how to replicate the TPC-C results described above, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpcc-large.html)
