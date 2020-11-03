@@ -45,7 +45,7 @@ If you haven't yet run any transactions in the cluster as a user, this page will
 
 Parameter | Description
 -----|------------
-Transactions | Transaction.<br><br>To view the transaction [fingerprint](#transaction-fingerprints) and details, click this to open the [**Transaction Details** page](#transaction-details-page).
+Transactions | Transaction.<br><br>To view the transaction fingerprint and details, click this to open the [**Transaction Details** page](#transaction-details-page).
 Statements | Number of SQL statements in the transaction.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval).
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
