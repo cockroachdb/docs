@@ -43,13 +43,13 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 **col_qualification ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 </div>
 
@@ -61,7 +61,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 **table_constraint ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 </div>
 
