@@ -56,7 +56,7 @@ $ cockroach statement-diag cancel --all <flags>
 ## Flags
 
 - The `delete` and `cancel` subcommands support the following [general-use](#general) flag.
-- All `statement-diag` subcommands support the following [client connection](client-connection) and [logging](#logging) flags.
+- All `statement-diag` subcommands support the following [client connection](#client-connection) and [logging](#logging) flags.
 
 ### General
 
