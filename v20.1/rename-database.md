@@ -24,7 +24,7 @@ Parameter | Description
 
 ## Limitations
 
-If an `ALTER DATABASE ... RENAME` statement is issued on a single [gateway node](architecture/sql-layer.html#overview) and a successful result is returned, it is possible to observe the old database names in [transactions](transactions.html) on other gateway nodes for a short amount of time after the rename is executed. This issue is specific to databases, which have their metadata stored in an incoherent cache, unlike tables. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/41942). Note that this issue is [resolved in v20.2](https://github.com/cockroachdb/cockroach/pull/52975).
+If an `ALTER DATABASE ... RENAME` statement is issued on a single [gateway node](architecture/sql-layer.html#overview) and a successful result is returned, it is possible to observe the old database names in [transactions](transactions.html) on other gateway nodes for a short amount of time after the rename is executed. This issue is specific to databases, which have their metadata stored in an incoherent cache, unlike tables. Note that this issue is [resolved in v20.2](https://github.com/cockroachdb/cockroach/pull/52975).
 
 Additionally, it is not possible to rename a database if:
 
