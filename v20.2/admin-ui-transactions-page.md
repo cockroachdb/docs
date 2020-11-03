@@ -38,7 +38,7 @@ You can filter transactions in which a SQL statement fingerprint exceeds a speci
 Use this page to identify transactions that you may want to [troubleshoot](query-behavior-troubleshooting.html), such as transactions that are experiencing high latencies, multiple [retries](transactions.html#transaction-retries), or execution failures.
 
 {{site.data.alerts.callout_success}}
-If you haven't yet run any transactions in the cluster as a user, this page will initially be blank.
+If you haven't yet run any transactions in the cluster as a user, this page will display a blank table.
 {{site.data.alerts.end}}
 
 <img src="{{ 'images/v20.2/admin-ui-transactions-page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
@@ -50,7 +50,7 @@ Statements | Number of SQL statements in the transaction.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval).
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
 Rows Affected | Average number of rows returned while executing this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Latency | Average service latency of SQL statements in this transaction within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of this transaction within the last hour or specified [time interval](#time-interval). This includes the total time the transaction remains open, which can exceed the latency of the SQL statements in the transaction. To view the SQL statement latency for this transaction, see the [**Transaction Details**](#transaction-details-page) page. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 
 {{site.data.alerts.callout_info}}
 Significant transactions on your database are likely to have a high execution count or number of rows affected.
@@ -77,7 +77,7 @@ Txn Type | Type of transaction (implicit or explicit). Explicit transactions ref
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval).
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). This includes the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 
 ## See also
 
