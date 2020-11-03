@@ -76,4 +76,5 @@ For examples showing how to use [`SAVEPOINT`](savepoint.html) and the other stat
 - [`SAVEPOINT`](savepoint.html)
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
 - [`SHOW`](show-vars.html)
+- [Admin UI Transactions Page](admin-ui-transactions-page.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
