@@ -4,7 +4,7 @@ summary: Implement single sign-on (SSO) for Admin UI access.
 toc: true
 ---
 
-Single sign-on (SSO) allows a user to access the Admin UI in a secure cluster via an external identity provider. When SSO is configured and enabled, the [Admin UI login page](admin-ui-overview.html#admin-ui-access) will display an OAuth login button in addition to the password access option.
+Single sign-on (SSO) allows a CockroachDB user to access the Admin UI in a secure cluster via an external identity provider. When SSO is configured and enabled, the [Admin UI login page](admin-ui-overview.html#admin-ui-access) will display an OAuth login button in addition to the password access option.
 
 CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/), an authentication layer built on top of OAuth 2.0.
 
