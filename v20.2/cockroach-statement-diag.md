@@ -55,8 +55,8 @@ $ cockroach statement-diag cancel --all <flags>
 
 ## Flags
 
-- The `delete` and `cancel` subcommands support the following [general-use](#general) flag.
-- All `statement-diag` subcommands support the following [client connection](#client-connection) and [logging](#logging) flags.
+- The `delete` and `cancel` subcommands support one [general-use](#general) flag.
+- All `statement-diag` subcommands support several [client connection](#client-connection) and [logging](#logging) flags.
 
 ### General
 
@@ -94,11 +94,11 @@ $ cockroach statement-diag list --insecure
 ~~~
 Statement diagnostics bundles:
   ID                  Collection time          Statement
-  603820372518502401  2020-11-02 18:29:13 UTC  SELECT id, statement_fingerprint, collected_at FROM system.statement_diagnostics WHERE error IS NULL ORDER BY collected_at DESC
+  603820372518502401  2020-11-02 18:29:13 UTC  CREATE DATABASE bank
 
 Outstanding activation requests:
   ID                  Activation time          Statement
-  603811900498804737  2020-11-02 17:46:08 UTC  SELECT node_id FROM crdb_internal.gossip_liveness WHERE (membership = _) OR (split_part(expiration, _, _)::DECIMAL > now()::DECIMAL)
+  603811900498804737  2020-11-02 17:46:08 UTC  SELECT * FROM bank.accounts
 ~~~
 
 Download a statement diagnostics bundle to `bundle.zip`:
@@ -127,7 +127,7 @@ $ cockroach statement-diag list --insecure
 ~~~
 Outstanding activation requests:
   ID                  Activation time          Statement
-  603811900498804737  2020-11-02 17:46:08 UTC  SELECT node_id FROM crdb_internal.gossip_liveness WHERE (membership = _) OR (split_part(expiration, _, _)::DECIMAL > now()::DECIMAL)
+  603811900498804737  2020-11-02 17:46:08 UTC  SELECT * FROM bank.accounts
 ~~~
 
 Delete an activation request:
