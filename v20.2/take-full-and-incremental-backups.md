@@ -11,6 +11,11 @@ redirect_from:
 
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
 
+There are two main types of backups:
+
+- [Full backups](#full-backups)
+- [Incremental backups](#incremental-backups)
+
 Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: [Enterprise](#perform-enterprise-backup-and-restore) and [Core](#perform-core-backup-and-restore).
 
 ## Watch the demo
@@ -67,7 +72,7 @@ Or to restore your full cluster:
 A full cluster restore can only be run on a target cluster that has _never_ had user-created databases or tables.
 {{site.data.alerts.end}}
 
-### Full and incremental backups
+### Incremental backups
 
 If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
