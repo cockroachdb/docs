@@ -3,6 +3,7 @@ url: "https://www.cockroachlabs.com"
 
 plugins:
 - jekyll-sitemap
+- jekyll-remote-include
 
 markdown: Redcarpet
 
