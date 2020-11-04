@@ -36,13 +36,13 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **col_qualification ::=**
 
-<div id="horizontal-scroll">
+<div class="horizontal-scroll">
 {% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
-<div id="horizontal-scroll">
+<div class="horizontal-scroll">
 {% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 </div>
 
@@ -54,7 +54,7 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **table_constraint ::=**
 
-<div id="horizontal-scroll">
+<div class="horizontal-scroll">
 {% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 </div>
 
