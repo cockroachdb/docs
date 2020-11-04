@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v20.2:</span> The `cockroach statement-diag` [command](cockroach-commands.html) can be used to manage and download statement diagnostics bundles generated from the [Admin UI](admin-ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
 
+## Required privileges
+
+Only members of the `admin` role can run `cockroach statement-diag`. By default, the `root` user belongs to the `admin` role.
+
 ## Subcommands
 
 Subcommand | Usage
