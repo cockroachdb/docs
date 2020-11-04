@@ -101,7 +101,7 @@ Example: A is a member of C ... is a member of B where "..." is an arbitrary num
 
 <span class="version-tag">New in v20.2</span> All CockroachDB objects must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
 
-All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner except system objects. System objects without owners have `node` as their owner.  All
+All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner except system objects. System objects without owners have `node` as their owner.
 
 To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 
