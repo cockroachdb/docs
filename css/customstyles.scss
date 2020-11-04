@@ -600,6 +600,10 @@ dd {
   margin-bottom:6px;
 }
 
+.horizontal-scroll {
+  overflow-x:auto;
+}
+
 .note code, .alert code, .warning code, div#toc code {
   color: inherit;
   padding: 0px;

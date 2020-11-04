@@ -37,13 +37,13 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   <button style="width: 15%" class="filter-button" data-scope="expanded">Expanded</button>
 </div><p></p>
 
-<div class="filter-content" markdown="1" data-scope="basic">
+<div class="filter-content horizontal-scroll" markdown="1" data-scope="basic">
 {% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
 </div>
 
