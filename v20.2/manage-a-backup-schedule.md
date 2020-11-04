@@ -31,7 +31,7 @@ For more information about the different options available when creating a backu
 
 ## Set up monitoring for the backup schedule
 
-We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time&mdash; at which point, you can inspect scheduled by running [`SHOW SCHEDULES`](show-schedules.html).
+We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time&mdash; at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
 
 Metrics for scheduled backups fall into two categories:
 
