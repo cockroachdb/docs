@@ -6,13 +6,15 @@ toc: true
 
 SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
 
-This page has an example showing:
+This page provides an example of SQL audit logging in CockroachDB, including:
 
 - How to turn audit logging on and off.
 - Where the audit log files live.
 - What the audit log files look like.
 
-For reference material, including a detailed description of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+For a detailed description of the audit log file format, see [Audit log file format](experimental-audit.html#audit-log-file-format) on the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html) reference page.
+
+Note that enabling SQL audit logs can negatively impact performance. As a result, we recommend using SQL audit logs for security purposes only. For more details, see [Performance considerations](experimental-audit.html#performance-considerations), on the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html) reference page.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
