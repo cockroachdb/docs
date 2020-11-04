@@ -156,10 +156,7 @@ def parse_cmdline():
         help="database connection string\n\n"
              "For cockroach demo, use postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require,\n"
              "with the username and password created in the demo cluster, and the hostname and port listed in the\n"
-             "(sql/tcp) connection parameters of the demo cluster welcome message.\n\n"
-             "For CockroachCloud, use postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>,\n"
-             "with the username and password created in the CockroachCloud console, the hostname and port provided\n"
-             "in the console, and the certificates downloaded from the console."
+             "(sql/tcp) connection parameters of the demo cluster welcome message."
     )
 
     parser.add_argument("-v", "--verbose",
