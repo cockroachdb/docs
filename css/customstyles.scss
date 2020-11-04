@@ -173,6 +173,12 @@ ul {
   }
 }
 
+a.external:after{
+  display: inline-block;
+  content: url(../images/external.svg);
+  padding-left: 4px;
+}
+
 a code:hover {
   text-decoration: underline;
 }

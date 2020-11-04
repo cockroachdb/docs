@@ -366,4 +366,9 @@ $(function() {
     $(this).find('.mobile-subnav').slideToggle(200);
     flipArrow($(this));
   });
+
+  //external links
+  $("a").filter(function() {
+    return this.hostname && this.hostname !== location.hostname;
+  }).addClass('external');
 });
