@@ -2,7 +2,7 @@ Within a single [transaction](transactions.html):
 
 - DDL statements cannot be mixed with DML statements. As a workaround, you can split the statements into separate transactions. For more details, [see examples of unsupported statements](online-schema-changes.html#examples-of-statements-that-fail).
 - A [`CREATE TABLE`](create-table.html) statement containing [`FOREIGN KEY`](foreign-key.html) or [`INTERLEAVE`](interleave-in-parent.html) clauses cannot be followed by statements that reference the new table.
-- A table cannot be dropped and then recreated with the same name. This is not possible within a single transaction because `DROP TABLE` does not immediately drop the name of the table. As a workaround, split the [`DROP TABLE`](drop-table.html) and [`CREATE TABLE`](create-table.html) statements into separate transactions.
+- A table name cannot be reused. For example, you cannot drop a table named `a` and then create (or rename) a different table with the name `a`. Similarly, you cannot rename a table named `a` to `b` and then create (or rename) a different table with the name `a`. As a workaround, split [`ALTER TABLE ... RENAME TO`](rename-table.html), [`DROP TABLE`](drop-table.html), and [`CREATE TABLE`](create-table.html) statements that reuse table names into separate transactions.
 - [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed)
 
 {{site.data.alerts.callout_success}}
