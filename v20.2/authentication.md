@@ -68,6 +68,22 @@ CockroachDB offers four methods for client authentication:
 
    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
+   A less secure option is to set the experimental [`--accept-sql-without-tls` flag](cockroach-start.html#security) when starting the cluster. Setting the flag allows you to connect to the cluster without validating the nodes' certificates.
+
+   Example:
+   {% include copy-clipboard.html %}
+   ~~~ shell
+   $ cockroach sql --user=jpointsman --insecure
+   ~~~
+
+   ~~~
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    Enter password:
+  ~~~
+
 - [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the Admin UI.
 
 - [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
