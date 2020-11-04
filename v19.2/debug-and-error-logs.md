@@ -6,11 +6,6 @@ toc: true
 
 If you need to [troubleshoot](troubleshooting-overview.html) issues with your cluster, you can check a node's logs, which include details about certain node-level and range-level events, such as errors. For example, if CockroachDB crashes, it normally logs a stack trace to what caused the problem.
 
-{{site.data.alerts.callout_success}}
-For detailed information about queries being executed against your system, see [SQL Audit Logging](sql-audit-logging.html).
-{{site.data.alerts.end}}
-
-
 ## Details
 
 When a node processes a [`cockroach` command](cockroach-commands.html), it produces a stream of messages about the command's activities. Each message's body describes the activity, and its envelope contains metadata such as the message's severity level.
