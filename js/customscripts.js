@@ -370,5 +370,5 @@ $(function() {
   //external links
   $("a").filter(function() {
     return this.hostname && this.hostname !== location.hostname;
-  }).addClass('external');
+  }).addClass('external').attr("target","_blank");
 });
