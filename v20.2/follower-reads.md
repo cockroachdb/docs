@@ -65,14 +65,12 @@ To verify that your cluster is performing follower reads:
 
 ### Run queries that use follower reads
 
-<a name="experimental-follower-read-timestamp"></a>
-
 Any [`SELECT` statement](select-clause.html) with an [`AS OF SYSTEM TIME`](as-of-system-time.html) value at least 4.8 seconds in the past can be a follower read (i.e., served by any replica).
 
-To simplify this calculation, we've added a convenience function that will always set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads, `experimental_follower_read_timestamp()`:
+To simplify this calculation, we've added a convenience function that will always set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads, `follower_read_timestamp()`:
 
 ``` sql
-SELECT ... FROM ... AS OF SYSTEM TIME experimental_follower_read_timestamp();
+SELECT ... FROM ... AS OF SYSTEM TIME follower_read_timestamp();
 ```
 
 ### Run read-only transactions that use follower reads
@@ -82,7 +80,7 @@ You can set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value for all oper
 ```sql
 BEGIN;
 
-SET TRANSACTION AS OF SYSTEM TIME experimental_follower_read_timestamp();
+SET TRANSACTION AS OF SYSTEM TIME follower_read_timestamp();
 SELECT ...
 SELECT ...
 
@@ -102,7 +100,7 @@ Long-running write transactions will create write intents with a timestamp near 
 To counteract this, you can issue all follower reads in explicit transactions set with `HIGH` priority:
 
 ```sql
-BEGIN PRIORITY HIGH AS OF SYSTEM TIME experimental_follower_read_timestamp();
+BEGIN PRIORITY HIGH AS OF SYSTEM TIME follower_read_timestamp();
 SELECT ...
 SELECT ...
 COMMIT;
