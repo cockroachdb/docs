@@ -21,11 +21,11 @@ layout: default
       <div id="toc"></div>
    {% endif %}
 
-   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' %}
+   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
       {% include unsupported-version.md %}
    {% endif %}
 
-   {% if page.url contains 'v19.1' %}
+   {% if page.url contains 'v19.2' %}
       {% include unsupported-version-soon.md %}
    {% endif %}
 
