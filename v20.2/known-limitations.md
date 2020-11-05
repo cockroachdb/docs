@@ -102,9 +102,9 @@ DETAIL: subqueries are not allowed in SET
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
-The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
+The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
-As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](cockroach-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
+As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 

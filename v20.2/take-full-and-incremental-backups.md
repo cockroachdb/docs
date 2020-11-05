@@ -16,10 +16,6 @@ There are two main types of backups:
 - [Full backups](#full-backups)
 - [Incremental backups](#incremental-backups)
 
-## Watch the demo
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RGuya_SYfY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 ## Perform backup and restore
 
 You can use the [`BACKUP`][backup] statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`][restore] statement to efficiently restore schema and data as necessary.
