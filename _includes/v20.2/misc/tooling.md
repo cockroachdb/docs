@@ -44,14 +44,21 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | GUI | Recommended version | Support level |
 |-----+---------------------+---------------|
-| [DBeaver](dbeaver.html) | [5.2.3](https://dbeaver.io/download/) or higher | Full |
-| [Beekeeper Studio](https://beekeeperstudio.io) | [1.6.10](https://beekeeperstudio.io) or higher | Full |
+| [Beekeeper Studio](https://beekeeperstudio.io) | [1.6.10 or higher](https://www.beekeeperstudio.io/get) | Full |
+| [DBeaver](https://dbeaver.com/) | [5.2.3 or higher](https://dbeaver.com/download/) | Full |
+| [TablePlus](https://tableplus.com/) | [Build 222 or higher](https://tableplus.com/download) | Full |
+| [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html) | [1.3.9 or higher](https://www.vaultproject.io/docs/install) | Full |
+| [DbVisualizer](https://www.dbvis.com/) | [10.0.22 or higher](https://www.dbvis.com/download/) | Beta |
+| [Navicat for PostgreSQL](https://www.navicat.com/en/products/navicat-for-postgresql)/[Navicat Premium](https://www.navicat.com/en/products/navicat-premium) | [12.1.25 or higher](https://www.navicat.com/en/download/navicat-for-postgresql) | Beta |
+| [Pgweb](http://sosedoff.github.io/pgweb/) | [0.9.12 or higher](https://github.com/sosedoff/pgweb/releases/latest) | Beta |
+| [Postico](https://eggerapps.at/postico/) | 1.5.8 or higher | Beta |
 
 ## Integrated development environments (IDEs)
 
 | IDE | Recommended version | Support level |
 |-----+---------------------+---------------|
-| [IntelliJ IDEA](intellij-idea.html) | [2018.1](https://www.jetbrains.com/idea/download/other.html) | Beta |
+| [DataGrip](https://www.jetbrains.com/datagrip/) | [2019.1 or higher](https://www.jetbrains.com/datagrip/download) | Beta |
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2018.1 or higher](https://www.jetbrains.com/idea/download) | Beta |
 
 ## Schema migration tools
 
