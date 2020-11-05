@@ -71,7 +71,7 @@ A full cluster restore can only be run on a target cluster that has _never_ had 
 If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
 {{site.data.alerts.callout_info}}
-To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
+To take incremental backups, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
@@ -112,7 +112,7 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 ~~~
 
 {{site.data.alerts.callout_info}}
-To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
+To take incremental backups, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ### Examples
@@ -209,7 +209,7 @@ If you miss an incremental backup, delete the `recent_backups.txt` file and run 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
 {{site.data.alerts.callout_info}}
-To take incremental backups, backups with revision history, locality-aware backups, and encrypted backups, you need an [Enterprise license](enterprise-licensing.html).
+To take incremental backups, backups with revision history, locality-aware backups, and encrypted backups, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## See also
