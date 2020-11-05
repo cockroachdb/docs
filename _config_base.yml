@@ -64,7 +64,6 @@ exclude:
 - "vendor"
 - "jekyll-algolia-dev"
 - "archived"
-- "tutorials"
 
 keep_files: [_internal]
 

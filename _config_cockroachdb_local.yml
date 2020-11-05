@@ -9,4 +9,3 @@ exclude:
 - "scripts"
 - "vendor"
 - "archived"
-- "tutorials"
