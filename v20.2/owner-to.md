@@ -63,7 +63,7 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_database` and `p
 (1 row)
 ~~~
 
-Note: The user running the command must be a member of the new owning role and have the `CREATEDB` [privilege](authorization.html#assign-privileges) on the database.
+Note: If the user running the command is not an admin user, they must own the database and be a member of the new owning role. They must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
 
 ### Change a table's owner
 
@@ -88,7 +88,7 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_tables` table:
 (1 row)
 ~~~
 
-Note: The user running the command must be a member of the new owning role. Also, the new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
+Note: If the user running the command is not an admin user, they must own the table and be a member of the new owning role. Also, the new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
 
 ## See also
 
