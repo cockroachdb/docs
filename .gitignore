@@ -12,3 +12,5 @@ _site
 bootstrap
 vendor/
 tmp/
+offline-docs.tar
+offline-docs.tar.gz
