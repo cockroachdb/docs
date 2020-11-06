@@ -24,7 +24,9 @@ Area | Description
 [Replication Dashboard](admin-ui-replication-dashboard.html) | Metrics about how data is replicated across the cluster, e.g., range status, replicas per store, and replica quiescence.
 [Changefeeds Dashboard](admin-ui-cdc-dashboard.html) | Metrics about the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster.
 [Databases](admin-ui-databases-page.html) | Details about the system and user databases in the cluster.
+[Sessions](admin-ui-sessions-page.html) | <span class="version-tag">New in v20.2:</span> Details about open sessions in the cluster.
 [Statements](admin-ui-statements-page.html) | Frequently executed and high latency [SQL statements](sql-statements.html), with the option to collect statement diagnostics.
+[Transactions](admin-ui-transactions-page.html) | <span class="version-tag">New in v20.2:</span> Details about transactions running on the cluster.
 [Network Latency](admin-ui-network-latency-page.html) | Latencies and lost connections between all nodes in your cluster.
 [Jobs](admin-ui-jobs-page.html) | Details of jobs running in the cluster.
 [Advanced Debug](admin-ui-debug-pages.html) | Advanced monitoring and troubleshooting reports. These include details about data distribution, the state of specific queues, and slow query metrics. These details are largely intended for use by CockroachDB developers.
@@ -35,7 +37,7 @@ The Admin UI is accessible from every node at `http://<host>:<http-port>`, or `h
 
 - If you included the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address/hostname and port specified by that flag.
 - If you didn't include the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address/hostname specified by the [`--listen-addr`](cockroach-start.html#networking) flag and port `8080`.
-- If you are running a [secure cluster](#admin-ui-security), use `https` instead of `http`.
+- If you are running a [secure cluster](#admin-ui-security), use `https` instead of `http`. You will also need to [create a user with a password](create-user.html#create-a-user-with-a-password) to log in.
 
 {{site.data.alerts.callout_success}}
 For guidance on accessing the Admin UI in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).

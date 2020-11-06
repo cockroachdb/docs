@@ -442,9 +442,7 @@ historical reads against a time which is recent but sufficiently old for reads
 to be performed against the closest replica as opposed to the currently
 leaseholder for a given range.</p>
 <p>Note that this function requires an enterprise license on a CCL distribution to
-return a result that is less likely the closest replica. It is otherwise
-hardcoded as -4.8s from the statement time, which may not result in reading from the
-nearest replica.</p>
+return without an error.</p>
 </span></td></tr>
 <tr><td><a name="localtimestamp"></a><code>localtimestamp() &rarr; <a href="date.html">date</a></code></td><td><span class="funcdesc"><p>Returns the time of the current transaction.</p>
 <p>The value is based on a timestamp picked when the transaction starts
@@ -1504,8 +1502,6 @@ from the given Geometry.</p>
 </span></td></tr>
 <tr><td><a name="st_clipbybox2d"></a><code>st_clipbybox2d(geometry: geometry, box2d: box2d) &rarr; geometry</code></td><td><span class="funcdesc"><p>Clips the geometry to conform to the bounding box specified by box2d.</p>
 </span></td></tr>
-<tr><td><a name="st_closestpoint"></a><code>st_closestpoint(geometry_a: geometry, geometry_b: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the 2-dimensional point on geometry_a that is closest to geometry_b. This is the first point of the shortest line.</p>
-</span></td></tr>
 <tr><td><a name="st_collectionextract"></a><code>st_collectionextract(geometry: geometry, type: <a href="int.html">int</a>) &rarr; geometry</code></td><td><span class="funcdesc"><p>Given a collection, returns a multitype consisting only of elements of the specified type. If there are no elements of the given type, an EMPTY geometry is returned. Types are specified as 1=POINT, 2=LINESTRING, 3=POLYGON - other types are not supported.</p>
 </span></td></tr>
 <tr><td><a name="st_collectionhomogenize"></a><code>st_collectionhomogenize(geometry: geometry) &rarr; geometry</code></td><td><span class="funcdesc"><p>Returns the “simplest” representation of a collection’s contents. Collections of a single type will be returned as an appopriate multitype, or a singleton if it only contains a single geometry.</p>
@@ -2434,8 +2430,6 @@ The swap_ordinate_string parameter is a 2-character string naming the ordinates 
 <tr><td><a name="translate"></a><code>translate(input: <a href="string.html">string</a>, find: <a href="string.html">string</a>, replace: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>In <code>input</code>, replaces the first character from <code>find</code> with the first character in <code>replace</code>; repeat for each character in <code>find</code>.</p>
 <p>For example, <code>translate('doggie', 'dog', '123');</code> returns <code>1233ie</code>.</p>
 </span></td></tr>
-<tr><td><a name="unaccent"></a><code>unaccent(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Removes accents (diacritic signs) from the text provided in <code>val</code>.</p>
-</span></td></tr>
 <tr><td><a name="upper"></a><code>upper(val: <a href="string.html">string</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Converts all characters in <code>val</code> to their to their upper-case equivalents.</p>
 </span></td></tr></tbody>
 </table>
@@ -2504,7 +2498,7 @@ SELECT * FROM crdb_internal.check_consistency(true, ‘\x02’, ‘\x04’)</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.num_inverted_index_entries"></a><code>crdb_internal.num_inverted_index_entries(val: jsonb) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
 </span></td></tr>
-<tr><td><a name="crdb_internal.pretty_key"></a><code>crdb_internal.pretty_key(raw_key: <a href="bytes.html">bytes</a>, skip_fields: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>This function is used only by CockroachDB’s developers for testing purposes.</p>
+<tr><td><a name="crdb_internal.pretty_key"></a><code>crdb_internal.pretty_key(raw_key: <a href="bytes.html">bytes</a>, skip_fields: <a href="int.html">int</a>) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>This function triggers a transaction retry, which can be useful for testing purposes.</p>
 </span></td></tr>
 <tr><td><a name="crdb_internal.range_stats"></a><code>crdb_internal.range_stats(key: <a href="bytes.html">bytes</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This function is used to retrieve range statistics information as a JSON object.</p>
 </span></td></tr>

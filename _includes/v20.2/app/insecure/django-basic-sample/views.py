@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.db import Error, IntegrityError
 from django.db.transaction import atomic
-
+from psycopg2 import errorcodes
 import json
 import sys
 import time

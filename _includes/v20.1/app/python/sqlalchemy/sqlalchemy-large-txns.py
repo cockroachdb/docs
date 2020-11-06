@@ -22,8 +22,6 @@ Base = declarative_base()
 engine = create_engine(
     # For cockroach demo:
     'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=require',
-    # For CockroachCloud:
-    # 'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>',
     echo=True                   # Log SQL queries to stdout
 )
 

@@ -1,0 +1,38 @@
+{
+  "noindex": true,
+  "title": "Build a Python App with CockroachDB",
+  "description": "Learn how to use CockroachDB from a simple Python application with the psycopg2 driver",
+  "difficulty": "Beginner",
+  "time": "5 minutes",
+  "details": {
+    "steps": [
+      {
+        "title": "Start CockroachDB",
+        "text": "step1.md",
+        "foreground": "foreground.sh"
+      },
+      {
+        "title": "Create a database",
+        "text": "step2.md"
+      },
+      {
+        "title": "Get the Python code",
+        "text": "step3.md"
+      },
+      {
+        "title": "Run the Python code",
+        "text": "step4.md"
+      }
+    ],
+    "finish": {
+        "text": "finish.md"
+    }
+  },
+  "environment": {
+    "hideintro": true,
+    "uilayout": "editor-terminal"
+  },
+  "backend": {
+    "imageid": "ubuntu:1804"
+  }
+}

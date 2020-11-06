@@ -26,6 +26,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - Sessions
 - Queries
 - Thread stack traces (Linux only)
+- CPU profiles
 
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
@@ -39,7 +40,7 @@ The file produced by `cockroach debug zip` can contain highly sensitive, unanony
 
 There are two scenarios in which `debug zip` is useful:
 
-- To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. See more information [on this page](#collecting-log-files).
+- To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. For more information, see [Collecting log files](#collecting-log-files) below.
 
 - If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`.
 
@@ -77,6 +78,8 @@ Flag | Description
 `--host` | The server host to connect to. This can be the address of any node in the cluster. <br><br>**Env Variable:** `COCKROACH_HOST`<br>**Default:** `localhost`
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
+`--nodes` | Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
+`--exclude-nodes` | Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
 
 ### Client connection
 

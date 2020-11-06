@@ -25,6 +25,7 @@
 
 </section>
 
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
@@ -55,3 +56,4 @@
     ~~~
 
 </section>
+{% endcomment %}

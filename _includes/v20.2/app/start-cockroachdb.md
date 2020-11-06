@@ -1,3 +1,4 @@
+{% comment %}
 Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachCloud. The instructions below will adjust accordingly.
 
 <div class="filters clearfix">
@@ -5,6 +6,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
   <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
 </div>
 <p></p>
+{% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -31,6 +33,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
 </section>
 
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
@@ -83,3 +86,4 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 1. Move the downloaded `ca.crt` file to the `certs` directory.
 
 </section>
+{% endcomment %}

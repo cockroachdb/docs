@@ -20,23 +20,28 @@ Some environments, such as Amazon EKS, do not support certificates signed by Kub
 
 #### Set up configuration file
 
-Modify the values in the StatefulSet configuration.
+On a production cluster, you will need to modify the StatefulSet configuration with values that are appropriate for your workload.
 
-1. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes instance, you *must* set `resources.requests.memory` and `resources.limits.memory` to explicit values in the CockroachDB `containers` spec. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. 
+1. Allocate CPU and memory resources to CockroachDB on each pod. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
 
-    For example, to allocate 8Gi of memory to CockroachDB in each pod: 
+    {{site.data.alerts.callout_success}}
+    Resource `requests` and `limits` should have identical values. 
+    {{site.data.alerts.end}}
 
     ~~~
-    containers:
-      - name: cockroachdb
-        ...
-          resources:
-            requests:
-              memory: "8Gi"
-            limits:
-              memory: "8Gi"
+    resources:
+      requests:
+        cpu: "16"
+        memory: "8Gi"
+      limits:
+        cpu: "16"
+        memory: "8Gi"
     ~~~
-    
+
+    {{site.data.alerts.callout_info}}
+    If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
+    {{site.data.alerts.end}}
+
 2. In the `volumeClaimTemplates` specification, you may want to modify `resources.requests.storage` for your use case. This configuration defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).
 
     ~~~
@@ -44,10 +49,6 @@ Modify the values in the StatefulSet configuration.
       requests:
         storage: "100Gi"
     ~~~
-
-    {{site.data.alerts.callout_info}}
-    If necessary, you can [expand disk size](orchestrate-cockroachdb-with-kubernetes.html#expand-disk-size) after the cluster is live.
-    {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
 If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).

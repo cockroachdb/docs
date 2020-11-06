@@ -20,6 +20,31 @@ MySQL strings are case-insensitive by default, but strings in CockroachDB are ca
 
 For more information about the case sensitivity of strings in MySQL, see [Case Sensitivity in String Searches](https://dev.mysql.com/doc/refman/8.0/en/case-sensitivity.html) from the MySQL documentation.  For more information about CockroachDB strings, see [`STRING`](string.html).
 
+### `FIELD` function
+
+The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use the [`array_position`](functions-and-operators.html#array-functions) function, which returns the index of the first occurrence of element in the array.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT array_position(ARRAY[4,1,3,2],1);
+~~~
+
+~~~
+  array_position
+------------------
+               2
+(1 row)
+~~~
+
+While MYSQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
+~~~
+
 ## Step 1. Dump the MySQL database
 
 There are several ways to dump data from MySQL to be imported into CockroachDB:

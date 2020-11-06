@@ -5,15 +5,15 @@ toc: true
 twitter: false
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 22%" class="filter-button">Use <strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 22%" class="filter-button current">Use <strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 22%" class="filter-button">Use <strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
-</div>
+<div class="filters clearfix">
+    <a href="build-a-python-app-with-cockroachdb.html"><button class="filter-button page-level"><strong>psycopg2</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button class="filter-button page-level current"><strong>SQLAlchemy</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
+    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
+</div></br>
 
-This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM. For the CockroachDB back-end, you'll use either a temporary local cluster or a free cluster on CockroachCloud.
+This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM. For the CockroachDB back-end, you'll use a temporary local cluster.
 
 {{site.data.alerts.callout_info}}
 The example code on this page uses Python 3.
@@ -92,6 +92,7 @@ In the `create_engine()` function, update the connection string as follows:
 
 </section>
 
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 - Comment out the connection string for `cockroach demo`, and uncomment the connection string for CockroachCloud.
@@ -100,6 +101,7 @@ In the `create_engine()` function, update the connection string as follows:
 - Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
 
 </section>
+{% endcomment %}
 
 ### Run the code
 

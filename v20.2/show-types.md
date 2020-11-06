@@ -16,6 +16,10 @@ CockroachDB currently only supports [enumerated user-defined types](enum.html). 
 SHOW TYPES
 ~~~
 
+## Required privileges
+
+The `SELECT` [privilege](authorization.html#assign-privileges) on the database is required to list any user-defined types in the database.
+
 ## Examples
 
 {% include copy-clipboard.html %}

@@ -117,7 +117,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 The **Diagnostics** section of the Statement Details page allows you to activate and view diagnostics for the SQL statement fingerprint.
 
-When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of a JSON file that contains a distributed trace of the SQL statement, a physical query plan, execution statistics, and other information about the query. For more details on the contents, see [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option).
+When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces](show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option).
 
 {{site.data.alerts.callout_success}}
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
@@ -131,13 +131,7 @@ Diagnostics will be collected a maximum of *N* times for a given activated finge
 	- `READY` indicates that the diagnostics have run and can be downloaded. A download link will appear beside the status.
 - For any row with a `READY` status, click **Bundle (.zip)** to retrieve the diagnostics.
 
-After downloading the statement diagnostics, you will have a JSON file that represents transaction events across nodes for the SQL statement. The information collected here can be used to diagnose problematic SQL statements, such as [slow queries](query-behavior-troubleshooting.html#query-is-always-slow).
-
-We currently recommend that you share the diagnostics with our [support team](support-resources.html), which can help you interpret the results.
-
-{{site.data.alerts.callout_info}}
-This is different from the output of [`SHOW TRACE FOR SESSION`](show-trace.html), which returns messages and timing information for all statements recorded during a session.
-{{site.data.alerts.end}}
+The information collected in the bundle can be used to diagnose problematic SQL statements, such as [slow queries](query-behavior-troubleshooting.html#query-is-always-slow). We recommend that you share the diagnostics bundle with our [support team](support-resources.html), which can help you interpret the results. You can also import `trace-jaeger.json` into Jaeger to [visualize the statement traces](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger).
 
 Click **All statement diagnostics** to view a complete history of your collected diagnostics, each of which can be downloaded. Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. If you need to access diagnostics that were collected for a fingerprint not present in the past [interval](#time-interval), you can find the bundle here.
 
@@ -165,6 +159,13 @@ By default, the logical plan for each fingerprint is sampled every 5 minutes. Yo
 {{site.data.alerts.callout_info}}
 Service latency can be affected by network latency, which is displayed for your cluster on the [Network Latency](admin-ui-network-latency-page.html) page.
 {{site.data.alerts.end}}
+
+**Other Execution Statistics** displays the following statistics.
+
+Parameter | Description
+----------|------------
+Rows Read | The number of rows read by the statement. The gray bar indicates the mean number of rows read. The blue bar indicates one standard deviation from the mean.
+Disk Bytes Read | The size of the data read by the statement. The gray bar indicates the mean number of bytes read. The blue bar indicates one standard deviation from the mean.
 
 The **Statistics by Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Make Queries Fast](make-queries-fast.html#cluster-topology)).
 

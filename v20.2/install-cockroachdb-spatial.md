@@ -1,6 +1,6 @@
 ---
 title: Install CockroachDB Spatial
-summary: Install instructions for CockroachDB with support for efficiently storing and querying spatial data.
+summary: Install CockroachDB with spatial libraries for efficiently storing and querying spatial data.
 toc: true
 ---
 
@@ -9,12 +9,10 @@ toc: true
 
 This page has instructions for installing CockroachDB Spatial on Mac and Linux.
 
-If you are looking to install a single-file CockroachDB binary without spatial support, see [Install CockroachDB](install-cockroachdb.html).
+If you are looking to install a single-file CockroachDB binary without [spatial features](spatial-features.html), see [Install CockroachDB](install-cockroachdb.html).
 
 {{site.data.alerts.callout_info}}
-These instructions are likely to change, since they refer to an alpha build of CockroachDB. Note that the Windows installation instructions for CockroachDB Spatial are still being developed.
-
-For instructions showing how to get started using CockroachDB Spatial, see [Working with Spatial Data](spatial-data.html).
+For instructions showing how to get started using CockroachDB Spatial, see [Working with Spatial Data](spatial-data.html).  For more information about supported spatial features, see [Spatial features](spatial-features.html)
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -28,17 +26,17 @@ For instructions showing how to get started using CockroachDB Spatial, see [Work
 
 {% include copy-clipboard.html %}
 ~~~ shell
-wget https://binaries.cockroachdb.com/cockroach-v20.2.0-beta.1.darwin-10.9-amd64.tgz
+wget https://binaries.cockroachdb.com/cockroach-v20.2.0-rc.4.darwin-10.9-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-tar xzvf cockroach-v20.2.0-beta.1.darwin-10.9-amd64.tgz
+tar xzvf cockroach-v20.2.0-rc.4.darwin-10.9-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cd cockroach-v20.2.0-beta.1.darwin-10.9-amd64
+cd cockroach-v20.2.0-rc.4.darwin-10.9-amd64
 ~~~
 
 ## Step 2. Copy the binary and libraries to the appropriate locations
@@ -71,6 +69,15 @@ cp lib/libgeos.dylib /usr/local/lib/cockroach/
 ~~~ shell
 cp lib/libgeos_c.dylib /usr/local/lib/cockroach/
 ~~~
+
+{{site.data.alerts.callout_info}}
+By default, CockroachDB looks for spatial libraries in the following locations:
+<ul>
+  <li>`/usr/local/lib/cockroach`</li>
+  <li>A `lib` subdirectory of the CockroachDB binary's current directory.</li>
+</ul>
+You can change the location where CockroachDB looks for spatial libraries by passing the [`--spatial-libs` flag to `cockroach start`](cockroach-start.html#flags-spatial-libs).
+{{site.data.alerts.end}}
 
 ## Step 3. Test the installation
 
@@ -144,17 +151,17 @@ If you are having difficulties installing CockroachDB Spatial, please see our [S
 
 {% include copy-clipboard.html %}
 ~~~ shell
-wget https://binaries.cockroachdb.com/cockroach-v20.2.0-beta.1.linux-amd64.tgz
+wget https://binaries.cockroachdb.com/cockroach-v20.2.0-rc.4.linux-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-tar xzvf cockroach-v20.2.0-beta.1.linux-amd64.tgz
+tar xzvf cockroach-v20.2.0-rc.4.linux-amd64.tgz
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cd cockroach-v20.2.0-beta.1.linux-amd64
+cd cockroach-v20.2.0-rc.4.linux-amd64
 ~~~
 
 ## Step 2. Copy the binary and libraries to the appropriate directories
@@ -187,6 +194,15 @@ cp lib/libgeos.so /usr/local/lib/cockroach/
 ~~~ shell
 cp lib/libgeos_c.so /usr/local/lib/cockroach/
 ~~~
+
+{{site.data.alerts.callout_info}}
+By default, CockroachDB looks for spatial libraries in the following locations:
+<ul>
+  <li>`/usr/local/lib/cockroach`</li>
+  <li>A `lib` subdirectory of the CockroachDB binary's current directory.</li>
+</ul>
+You can change the location where CockroachDB looks for spatial libraries by passing the [`--spatial-libs` flag to `cockroach start`](cockroach-start.html#flags-spatial-libs).
+{{site.data.alerts.end}}
 
 ## Step 3. Test that the installation works
 
@@ -256,13 +272,35 @@ If you are having difficulties installing CockroachDB Spatial, please see our [S
 
 ## See also
 
+- [Install CockroachDB](install-cockroachdb.html)
+- [Spatial Features](spatial-features.html)
+- [Spatial indexes](spatial-indexes.html)
+- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
-- [Spatial indexes](spatial-indexes.html)
-- [Spatial Features](spatial-features.html)
-- [Spatial & GIS Glossary of Terms](spatial-glossary.html)
-- [Geospatial functions](functions-and-operators.html#spatial-functions)
-- [Install CockroachDB](install-cockroachdb.html)
+- [Spatial functions](functions-and-operators.html#spatial-functions)
+- [POINT](point.html)
+- [LINESTRING](linestring.html)
+- [POLYGON](polygon.html)
+- [MULTIPOINT](multipoint.html)
+- [MULTILINESTRING](multilinestring.html)
+- [MULTIPOLYGON](multipolygon.html)
+- [GEOMETRYCOLLECTION](geometrycollection.html)
+- [Well known text](well-known-text.html)
+- [Well known binary](well-known-binary.html)
+- [GeoJSON](geojson.html)
+- [SRID 4326 - longitude and latitude](srid-4326.html)
+- [`ST_Contains`](st_contains.html)
+- [`ST_ConvexHull`](st_convexhull.html)
+- [`ST_CoveredBy`](st_coveredby.html)
+- [`ST_Covers`](st_covers.html)
+- [`ST_Disjoint`](st_disjoint.html)
+- [`ST_Equals`](st_equals.html)
+- [`ST_Intersects`](st_intersects.html)
+- [`ST_Overlaps`](st_overlaps.html)
+- [`ST_Touches`](st_touches.html)
+- [`ST_Union`](st_union.html)
+- [`ST_Within`](st_within.html)

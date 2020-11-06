@@ -1,14 +1,12 @@
 ---
-title: RENAME DATABASE
-summary: The RENAME DATABASE statement changes the name of a database.
+title: ALTER DATABASE ... RENAME TO
+summary: The ALTER DATABASE ... RENAME TO statement changes the name of a database.
 toc: true
 ---
 
-The `RENAME DATABASE` [statement](sql-statements.html) changes the name of a database.
+The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database.
 
-{{site.data.alerts.callout_danger}}
-Database renames **are not transactional**. For more information, see [Database renaming considerations](#database-renaming-considerations).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Synopsis
 
@@ -26,21 +24,11 @@ Parameter | Description
 ----------|------------
 `name` | The first instance of `name` is the current name of the database. The second instance is the new name for the database. The new name [must be unique](#rename-fails-new-name-already-in-use) and follow these [identifier rules](keywords-and-identifiers.html#identifiers). You cannot rename a database if it is set as the [current database](sql-name-resolution.html#current-database) or if [`sql_safe_updates = true`](set-vars.html).
 
-## Database renaming considerations
+## Viewing schema changes
 
-### Database renames are not transactional
+{% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-Database renames are not transactional. There are two phases during a rename:
-
-1. The `system.namespace` table is updated. This phase is transactional, and will be rolled back if the transaction aborts.
-2. The database descriptor (an internal data structure) is updated, and announced to every other node. This phase is **not** transactional. The rename will be announced to other nodes only if the transaction commits, but there is no guarantee on how much time this operation will take.
-3. Once the new name has propagated to every node in the cluster, another internal transaction is run that declares the old name ready for reuse in another context.
-
-This yields a surprising and undesirable behavior: when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. This violates A, C, and I in [ACID](https://en.wikipedia.org/wiki/ACID_(computer_science)). Only D is guaranteed: If the transaction commits successfully, the new name will persist after that.
-
-This is a [known limitation](known-limitations.html#database-and-table-renames-are-not-transactional). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
-
-### Other limitations
+## Limitations
 
 It is not possible to rename a database if:
 

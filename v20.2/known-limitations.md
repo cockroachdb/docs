@@ -102,9 +102,9 @@ DETAIL: subqueries are not allowed in SET
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
-The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
+The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
-As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](cockroach-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
+As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
@@ -175,12 +175,6 @@ To resolve this issue on Windows, download Go's official [zoneinfo.zip](https://
 Make sure to do this across all nodes in the cluster and to keep this time zone data up-to-date.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
-
-### Database and table renames are not transactional
-
-Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
-
-Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
 
 ### Change data capture
 
