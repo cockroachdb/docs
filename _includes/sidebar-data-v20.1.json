@@ -1967,6 +1967,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach statement-diag</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-statement-diag.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach gen</code>",
                 "urls": [
                   "/${VERSION}/cockroach-gen.html"

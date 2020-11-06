@@ -2347,6 +2347,12 @@
     		  "/${VERSION}/cockroach-debug-zip.html"
     		]
     	      },
+            {
+        "title": "<code>cockroach statement-diag</code>",
+        "urls": [
+          "/${VERSION}/cockroach-statement-diag.html"
+        ]
+            },
     	      {
     		"title": "<code>cockroach gen</code>",
     		"urls": [
