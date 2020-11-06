@@ -94,7 +94,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by gathering [diagnostics](admin-ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
 
-	In the below example, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock](architecture/transaction-layer.html#writing) (56.85ms) and that transaction being committed (131.37ms).
+	In the example below, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock](architecture/transaction-layer.html#writing) (56.85ms) and that transaction being committed (131.37ms).
 
     <img src="{{ 'images/v20.1/jaeger-trace-transaction-contention.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
     
