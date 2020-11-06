@@ -13,6 +13,10 @@ twitter: false
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
 </div>
 
+{{site.data.alerts.callout_success}}
+[Take the free online course at Cockroach University](https://university.cockroachlabs.com/)
+{{site.data.alerts.end}}
+
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
 
 ## Step 1. Install the psycopg2 driver
