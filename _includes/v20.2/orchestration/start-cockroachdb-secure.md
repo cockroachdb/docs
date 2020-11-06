@@ -22,7 +22,7 @@ Some environments, such as Amazon EKS, do not support certificates signed by Kub
 
 On a production cluster, you will need to modify the StatefulSet configuration with values that are appropriate for your workload.
 
-1. Allocate CPU and memory resources to CockroachDB on each pod. In the `containers` specification. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
+1. Allocate CPU and memory resources to CockroachDB on each pod. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
 
     {{site.data.alerts.callout_success}}
     Resource `requests` and `limits` should have identical values. 

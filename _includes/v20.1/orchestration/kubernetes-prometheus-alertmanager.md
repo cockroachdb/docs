@@ -22,7 +22,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     service/cockroachdb labeled
     ~~~
 
-    This ensures that there is a Prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
+    This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
@@ -35,7 +35,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     service/cockroachdb labeled
     ~~~
 
-    This ensures that there is a Prometheus job and monitoring data only for the `cockroachdb` service, not for the `cockroach-public` service.
+    This ensures that only the `cockroachdb` (not the `cockroach-public` service) is being monitored by a Prometheus job.
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
