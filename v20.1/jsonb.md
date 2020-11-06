@@ -52,8 +52,8 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 
 ## Functions
 
-Function | Description
----------|------------
+Function | Description | Example |
+---------|-------------|---------|
 `jsonb_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values. | `SELECT jsonb_array_elements('[1,true, 2,false]');`
 `jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list that alternates between keys and values. | `SELECT json_build_object('Zoo',1,'Enter',2);`
 `jsonb_each(<jsonb>)` | Expands the outermost `JSONB` object into a set of key-value pairs. | `SELECT * from json_each('{"a":"Apple", "b":"ball"}');`
