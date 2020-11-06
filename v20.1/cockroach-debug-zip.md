@@ -26,6 +26,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - Sessions
 - Queries
 - Thread stack traces (Linux only)
+- CPU profiles
 
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
@@ -39,7 +40,7 @@ The file produced by `cockroach debug zip` can contain highly sensitive, unanony
 
 There are two scenarios in which `debug zip` is useful:
 
-- To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. See more information [on this page](#collecting-log-files).
+- To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. For more information, see [Collecting log files](#collecting-log-files) below.
 
 - If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`.
 
