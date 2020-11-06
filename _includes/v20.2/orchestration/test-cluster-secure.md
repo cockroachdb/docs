@@ -20,6 +20,8 @@
     #
     root@:26257/defaultdb>
     ~~~
+
+{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -79,6 +81,8 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
     {{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -141,50 +145,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 
     If you'd prefer to delete the pod and recreate it when needed, run `kubectl delete pod cockroachdb-client-secure`.
     {{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 </section>
-
-
-1. Run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE bank;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO bank.accounts VALUES (1, 1000.50);
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SELECT * FROM bank.accounts;
-    ~~~
-
-    ~~~
-      id | balance
-    +----+---------+
-       1 | 1000.50
-    (1 row)
-    ~~~
-
-1. [Create a user with a password](create-user.html#create-a-user-with-a-password):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
-    ~~~
-
-      You will need this username and password to access the Admin UI later.
-
-1. Exit the SQL shell and pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
