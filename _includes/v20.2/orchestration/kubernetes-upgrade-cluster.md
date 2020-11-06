@@ -14,7 +14,16 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     {% if page.secure == true %}
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+    1. Start the CockroachDB [built-in SQL client](cockroach-sql.html):
+
+        <section class="filter-content" markdown="1" data-scope="operator">
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl exec -it cockroachdb-2 \
+        -- ./cockroach sql \
+        --certs-dir cockroach-certs
+        ~~~
+        </section>
 
         <section class="filter-content" markdown="1" data-scope="manual">
         {% include copy-clipboard.html %}
@@ -67,45 +76,45 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     {% endif %}
 
-    1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html):
+    1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from:
 
         {% include copy-clipboard.html %}
         ~~~ sql
-        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '19.2';
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.1';
         ~~~
-
-    1. Exit the SQL shell and delete the temporary pod:
+        
+    1. Exit the SQL shell and pod:
 
         {% include copy-clipboard.html %}
         ~~~ sql
         > \q
         ~~~
 
-1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+1. Change the desired Docker image:
 
-    <section class="filter-content" markdown="1" data-scope="manual">
+    <section class="filter-content" markdown="1" data-scope="operator">
+
+    Open and edit `example.yaml`:
+
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl patch statefulset cockroachdb \
-    -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
+    $ vi example.yaml
     ~~~
 
     ~~~
-    statefulset.apps/cockroachdb patched
+    image:
+      name: cockroachdb/cockroach:{{page.release_info.version}}
     ~~~
-    </section>
 
-    <section class="filter-content" markdown="1" data-scope="helm">
+    Apply `example.yaml` with the new image:
+
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ helm upgrade \
-    my-release \
-    cockroachdb/cockroachdb \
-    --set statefulset.updateStrategy.rollingUpdate.partition=2
+    $ kubectl apply -f example.yaml
     ~~~
-    </section>
 
-1. Kick off the upgrade process by changing the Docker image used in the CockroachDB StatefulSet:
+    The Operator will perform the staged update.
+    </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
@@ -121,7 +130,6 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-
     {{site.data.alerts.callout_info}}
     For Helm, you must remove the cluster initialization job from when the cluster was created before the cluster version can be changed.
     {{site.data.alerts.end}}
@@ -141,12 +149,23 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     ~~~
     </section>
 
-1. Check the status of your cluster's pods. You should see one of them being restarted:
+1. If you then check the status of your cluster's pods, you should see them being restarted:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
+
+    <section class="filter-content" markdown="1" data-scope="operator">
+    ~~~
+    NAME            READY     STATUS        RESTARTS   AGE
+    cockroachdb-0   1/1       Running       0          2m
+    cockroachdb-1   1/1       Running       0          2m
+    cockroachdb-2   1/1       Running       0          2m
+    cockroachdb-3   0/1       Terminating   0          1m
+    ...
+    ~~~
+    </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
@@ -172,114 +191,24 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     Ignore the pod for cluster initialization. It is re-created as a byproduct of the StatefulSet configuration but does not impact your existing cluster.
     {{site.data.alerts.end}}
     </section>    
-
-1. After the pod has been restarted with the new image, get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
-
-    {% if page.secure == true %}
-    <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
-    --certs-dir=/cockroach-certs \
-    --host=cockroachdb-public
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure \
-    -- ./cockroach sql \
-    --certs-dir=/cockroach-certs \
-    --host=my-release-cockroachdb-public
-    ~~~
-    </section>
-
-    {% else %}
-
-    <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl run cockroachdb -it \
-    --image=cockroachdb/cockroach \
-    --rm \
-    --restart=Never \
-    -- sql \
-    --insecure \
-    --host=cockroachdb-public
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl run cockroachdb -it \
-    --image=cockroachdb/cockroach \
-    --rm \
-    --restart=Never \
-    -- sql \
-    --insecure \
-    --host=my-release-cockroachdb-public
-    ~~~
-    </section>    
-    {% endif %}
-
-1. Run the following SQL query to verify that the number of underreplicated ranges is zero:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
-    ~~~
-
-    ~~~
-      ranges_underreplicated
-    --------------------------
-                           0
-    (1 row)        
-    ~~~
-
-    This indicates that it is safe to proceed to the next pod.
-
-1. Exit the SQL shell:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
-
-1. Decrement the partition value by 1 to allow the next pod in the cluster to update:
-
-    <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl patch statefulset cockroachdb \
-    -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":1}}}}'
-    ~~~
-
-    ~~~
-    statefulset.apps/cockroachdb patched
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ helm upgrade \
-    my-release \
-    cockroachdb/cockroachdb \
-    --set statefulset.updateStrategy.rollingUpdate.partition=1 \
-    ~~~
-    </section>
-
-1. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
-
-1. Check the image of each pod to confirm that all have been upgraded:
+    
+1. This will continue until all of the pods have restarted and are running the new image. To check the image of each pod to determine whether they've all be upgraded, run:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
     ~~~
+
+    <section class="filter-content" markdown="1" data-scope="operator">
+    ~~~
+    cockroachdb-0   cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-1   cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-2   cockroachdb/cockroach:{{page.release_info.version}}
+    cockroachdb-3   cockroachdb/cockroach:{{page.release_info.version}}
+    ...
+    ~~~
+    </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
     ~~~
@@ -309,11 +238,20 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     If you disabled auto-finalization in step 1 above, monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
-    Once you are satisfied with the new version, re-enable auto-finalization:
+    Once you are satisfied with the new version, re-enable auto-finalization.
 
     {% if page.secure == true %}
+    
+    1. Start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+        <section class="filter-content" markdown="1" data-scope="operator">
+        {% include copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl exec -it cockroachdb-2 \
+        -- ./cockroach sql \
+        --certs-dir cockroach-certs
+        ~~~    
+        </section>
 
         <section class="filter-content" markdown="1" data-scope="manual">
         {% include copy-clipboard.html %}
@@ -374,7 +312,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
 
-    1. Exit the SQL shell and delete the temporary pod:
+    1. Exit the SQL shell and pod:
 
         {% include copy-clipboard.html %}
         ~~~ sql
