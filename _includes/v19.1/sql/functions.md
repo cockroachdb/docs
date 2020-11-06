@@ -432,74 +432,58 @@ has no relationship with the commit order of concurrent transactions.</p>
 </span></td></tr>
 <tr><td><code>array_to_json(array: anyelement[], pretty_bool: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the array as JSON or JSONB.</p>
 </span></td></tr>
-<tr><td><code>json_array_length(json: jsonb) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of elements in the outermost JSON or JSONB array.</p><p>For example, <code>json_array_length('[56,22,93,{"green":1,"blue":[15,336]},104]');</code> returns the array length as <code>5</code>.</p>
+<tr><td><code>json_array_length(json: jsonb) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of elements in the outermost JSON or JSONB array.</p>
 </span></td></tr>
-<tr><td><code>json_build_array(anyelement...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a possibly-heterogeneously-typed JSON or JSONB array out of a variadic argument list.</p><p>For example, <code>json_build_array('potatoes', 'tomatoes','beetroots', 'carrots', 'onions');</code> builds a JSONB array from a list of elements inside the paranthesis as <code> ["potatoes", "tomatoes", "beetroots", "carrots", "onions"]</code>.</p>
+<tr><td><code>json_build_array(anyelement...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a possibly-heterogeneously-typed JSON or JSONB array out of a variadic argument list.</p>
 </span></td></tr>
 <tr><td><code>json_build_object(anyelement...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON object out of a variadic argument list.</p>
-<p>For example, <code>json_build_object('potatoes', 'tomatoes','beetroots', 'carrots', 'onions', 'greens');</code> builds JSON objects in alternating key-value pairs as<code> {"beetroots": "carrots", "onions": "greens", "potatoes": "tomatoes"}</code>.</p>
 </span></td></tr>
-<tr><td><code>json_extract_path(jsonb, <a href="string.html">string</a>...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p><p>For example, <code>json_extract_path('{"b2":{"b3":1},"b4":{"b9":88,"b7":"zoo"}}','b4');</code> returns<code>  {"b7": "zoo", "b9": 88} JSON value</code>.</p>
+<tr><td><code>json_extract_path(jsonb, <a href="string.html">string</a>...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p>
 </span></td></tr>
-<tr><td><code>json_object(keys: <a href="string.html">string</a>[], values: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This form of json_object takes keys and values pairwise from two separate arrays. In all other respects it is identical to the one-argument form.</p><p>For example, <code>json_object('{Name, Age}', '{Sandy, 25}');</code> returns<code>  {"Age": "25", "Name": "Sandy"}</code>.</p>
+<tr><td><code>json_object(keys: <a href="string.html">string</a>[], values: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This form of json_object takes keys and values pairwise from two separate arrays. In all other respects it is identical to the one-argument form.</p>
 </span></td></tr>
 <tr><td><code>json_object(texts: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON or JSONB object out of a text array. The array must have exactly one dimension with an even number of members, in which case they are taken as alternating key/value pairs.</p>
 </span></td></tr>
 <tr><td><code>json_remove_path(val: jsonb, path: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Remove the specified path from the JSON object.</p>
 </span></td></tr>
-<tr><td><code>json_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p><p>For example, <code>json_set( ' [ { "S.No" : 1, "Name" : "Sandy" }, 2 ] ', ' { 0, on } ', ' [ 2, 3, 4] ' );</code> returns<code>  [ { "Name" : "Sandy", "S.No": 1, "on": [2, 3, 4] }, 2 ].</code>.</p>
+<tr><td><code>json_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p>
 </span></td></tr>
-<tr><td><code>json_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb, create_missing: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. If <code>create_missing</code> is false, new keys will not be inserted to objects and values will not be prepended or appended to arrays.</p><p>For example, <code>json_set('[{"S.No":1,"Name":"Sandy"},2,null,3]', '{0,"S.No"}','[2,3,4]', false);</code> returns<code>  [{"Name": "Sandy", "S.No": [2, 3, 4]}, 2, null, 3]</code>.</p>
+<tr><td><code>json_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb, create_missing: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. If <code>create_missing</code> is false, new keys will not be inserted to objects and values will not be prepended or appended to arrays.</p>
 </span></td></tr>
-<tr><td><code>json_strip_nulls(from_json: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns from_json with all object fields that have null values omitted. Other null values are untouched.</p><p>For example, <code>json_strip_nulls('[{"S.No":1,"BookType":null, "Author": null}, "BookName", null, 3]');</code> returns<code>   [{"S.No": 1}, "BookName", null, 3]</code>.</p>
+<tr><td><code>json_strip_nulls(from_json: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns from_json with all object fields that have null values omitted. Other null values are untouched.</p>
 </span></td></tr>
-<tr><td><code>json_typeof(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the type of the outermost JSON value as a text string.</p><p>For example, <code>json_typeof('true');</code>  returns<code>  boolean</code>  as output.</p>
+<tr><td><code>json_typeof(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the type of the outermost JSON value as a text string.</p>
 </span></td></tr>
-<tr><td><code>jsonb_array_length(json: jsonb) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of elements in the outermost JSON or JSONB array.</p><p>For example, <code>jsonb_array_length('["License","Name",3,{"f1":1,"f2":[5,6]},4]')</code>  returns<code> 5</code> for the length of the array.</p>
+<tr><td><code>jsonb_array_length(json: jsonb) &rarr; <a href="int.html">int</a></code></td><td><span class="funcdesc"><p>Returns the number of elements in the outermost JSON or JSONB array.</p>
 </span></td></tr>
-<tr><td><code>jsonb_build_array(anyelement...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a possibly-heterogeneously-typed JSON or JSONB array out of a variadic argument list.</p><p>For example, <code>jsonb_build_array('potatoes', 'tomatoes','beetroots', 'carrots', 'onions');</code> builds a JSONB array from a list of elements inside the paranthesis as<code>  ["potatoes", "tomatoes", "beetroots", "carrots", "onions"]</code>.</p>
+<tr><td><code>jsonb_build_array(anyelement...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a possibly-heterogeneously-typed JSON or JSONB array out of a variadic argument list.</p>
 </span></td></tr>
 <tr><td><code>jsonb_build_object(anyelement...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON object out of a variadic argument list.</p>
-<p>For example, <code>jsonb_build_object('potatoes', 'tomatoes','beetroots', 'carrots', 'onions', 'greens');</code> builds JSON objects in alternating key-value pairs as<code> {"beetroots": "carrots", "onions": "greens", "potatoes": "tomatoes"}</code>.</p></span></td></tr>
-<tr><td><code>jsonb_extract_path(jsonb, <a href="string.html">string</a>...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p><p>For example, <code>jsonb_extract_path('{"b2":{"b3":1},"b4":{"b9":88,"b7":"zoo"}}','b4');</code> returns<code>  {"b7": "zoo", "b9": 88}</code> JSON value.</p>
 </span></td></tr>
-<tr><td><code>jsonb_insert(target: jsonb, path: <a href="string.html">string</a>[], new_val: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. <code>new_val</code> will be inserted before path target.</p><p>For example, <code>jsonb_insert('{"b": [0,1,2]}', '{b, 1}', '"new_val"');</code> returns the JSON value 'b' with the 'new_val' inserted before the target as<code> {"b": [0, "new_val", 1, 2]}</code>.</p>
+<tr><td><code>jsonb_extract_path(jsonb, <a href="string.html">string</a>...) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p>
 </span></td></tr>
-<tr><td><code>jsonb_insert(target: jsonb, path: <a href="string.html">string</a>[], new_val: jsonb, insert_after: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. If <code>insert_after</code> is true (default is false), <code>new_val</code> will be inserted after path target.</p><p>For example, <code>jsonb_insert('{"b": [0,1,2]}', '{b, 1}', '"new_val"', true);</code> returns the JSON value 'b' with the 'new_val' inserted after the target as<code> {"b": [0, 1, "new_val", 2]}</code>.</p>
+<tr><td><code>jsonb_insert(target: jsonb, path: <a href="string.html">string</a>[], new_val: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. <code>new_val</code> will be inserted before path target.</p>
 </span></td></tr>
-<tr><td><code>jsonb_object(keys: <a href="string.html">string</a>[], values: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This form of json_object takes keys and values pairwise from two separate arrays. In all other respects it is identical to the one-argument form.</p><p>For example, <code>jsonb_object('{Name, Age}', '{Sandy, 25}');</code> returns<code>  {"Age": "25", "Name": "Sandy"}</code>.</p>
+<tr><td><code>jsonb_insert(target: jsonb, path: <a href="string.html">string</a>[], new_val: jsonb, insert_after: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. If <code>insert_after</code> is true (default is false), <code>new_val</code> will be inserted after path target.</p>
+</span></td></tr>
+<tr><td><code>jsonb_object(keys: <a href="string.html">string</a>[], values: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>This form of json_object takes keys and values pairwise from two separate arrays. In all other respects it is identical to the one-argument form.</p>
 </span></td></tr>
 <tr><td><code>jsonb_object(texts: <a href="string.html">string</a>[]) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Builds a JSON or JSONB object out of a text array. The array must have exactly one dimension with an even number of members, in which case they are taken as alternating key/value pairs.</p>
 </span></td></tr>
-<tr><td><code>jsonb_pretty(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the given JSON value as a STRING indented and with newlines.</p><p>For Example, <code>jsonb_pretty (detail)</code> returns the JSON value of detail in human readable format. The returned JSON value appears as below:
-~~~
-id  |           jsonb_pretty
--------+------------------------------------
-name | {
-    |     "master": [
-    |         {
-    |             "first_name": "Antony"
-    |         },
-    |         {
-    |             "location": "Chicago"
-    |         }
-    |     ]
-    | }
-(1 row)
-~~~
+<tr><td><code>jsonb_pretty(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the given JSON value as a STRING indented and with newlines.</p>
 </span></td></tr>
-<tr><td><code>jsonb_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p><p>For example, <code>jsonb_set( ' [ { "S.No" : 1, "Name" : "Sandy" }, 2 ] ', ' { 0, on } ', ' [ 2, 3, 4] ' );</code> returns<code>  [ { "Name" : "Sandy", "S.No": 1, "on": [2, 3, 4] }, 2 ]</code>.</p>
+<tr><td><code>jsonb_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments.</p>
 </span></td></tr>
-<tr><td><code>jsonb_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb, create_missing: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. If <code>create_missing</code> is false, new keys will not be inserted to objects and values will not be prepended or appended to arrays.</p><p>For example, <code>jsonb_set('[{"S.No":1,"Name":"Sandy"},2,null,3]', '{0,"S.No"}','[2,3,4]', false);</code> returns<code>  [{"Name": "Sandy", "S.No": [2, 3, 4]}, 2, null, 3]</code>.</p>
+<tr><td><code>jsonb_set(val: jsonb, path: <a href="string.html">string</a>[], to: jsonb, create_missing: <a href="bool.html">bool</a>) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the JSON value pointed to by the variadic arguments. If <code>create_missing</code> is false, new keys will not be inserted to objects and values will not be prepended or appended to arrays.</p>
 </span></td></tr>
-<tr><td><code>jsonb_strip_nulls(from_json: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns from_json with all object fields that have null values omitted. Other null values are untouched.</p><p>For example, <code>jsonb_strip_nulls('[{"S.No":1,"BookType":null, "Author": null}, "BookName", null, 3]');</code> returns<code>  [{"S.No": 1}, "BookName", null, 3]</code>.</p>
+<tr><td><code>jsonb_strip_nulls(from_json: jsonb) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns from_json with all object fields that have null values omitted. Other null values are untouched.</p>
 </span></td></tr>
-<tr><td><code>jsonb_typeof(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the type of the outermost JSON value as a text string.</p><p>For example, <code>jsonb_typeof('true');</code> returns<code> boolean</code> as output.</p>
+<tr><td><code>jsonb_typeof(val: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns the type of the outermost JSON value as a text string.</p>
 </span></td></tr>
-<tr><td><code>to_json(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p><p>For example, <code>to_json('Hi John, type "Hi."'::text);</code> returns<code>  "Hi John, type \\"Hi.\\""</code>.</p>
+<tr><td><code>to_json(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
 </span></td></tr>
 <tr><td><code>to_jsonb(val: anyelement) &rarr; jsonb</code></td><td><span class="funcdesc"><p>Returns the value as JSON or JSONB.</p>
-</span></td></tr></tbody><p>For example, <code>to_jsonb('Hi John, type "Hi."'::text);</code> returns<code>  "Hi John, type \\"Hi.\\""</code>.</p>
+</span></td></tr></tbody>
 </table>
 
 ### Math and numeric functions
@@ -695,8 +679,10 @@ name | {
 </span></td></tr>
 <tr><td><code>jsonb_array_elements_text(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Expands a JSON array to a set of text values.</p>
 </span></td></tr>
-<tr><td><code>jsonb_each(input: jsonb) &rarr; tuple{string AS key, jsonb AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs.</p></span></td></tr>
-<tr><td><code>jsonb_each_text(input: jsonb) &rarr; tuple{string AS key, string AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs. The returned values will be of type text.</p></span></td></tr>
+<tr><td><code>jsonb_each(input: jsonb) &rarr; tuple{string AS key, jsonb AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs.</p>
+</span></td></tr>
+<tr><td><code>jsonb_each_text(input: jsonb) &rarr; tuple{string AS key, string AS value}</code></td><td><span class="funcdesc"><p>Expands the outermost JSON or JSONB object into a set of key/value pairs. The returned values will be of type text.</p>
+</span></td></tr>
 <tr><td><code>jsonb_object_keys(input: jsonb) &rarr; <a href="string.html">string</a></code></td><td><span class="funcdesc"><p>Returns sorted set of keys in the outermost JSON object.</p>
 </span></td></tr>
 <tr><td><code>pg_get_keywords() &rarr; tuple{string AS word, string AS catcode, string AS catdesc}</code></td><td><span class="funcdesc"><p>Produces a virtual table containing the keywords known to the SQL parser.</p>
