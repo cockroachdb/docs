@@ -52,11 +52,11 @@ The size of a `JSONB` value is variable, but it's recommended to keep values und
 
 Function | Description
 ---------|------------
-`jsonb_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values.
-`jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list that alternates between keys and values.
-`jsonb_each(<jsonb>)` | Expands the outermost `JSONB` object into a set of key-value pairs.
-`jsonb_object_keys(<jsonb>)` | Returns sorted set of keys in the outermost `JSONB` object.
-`jsonb_pretty(<jsonb>)` | Returns the given `JSONB` value as a `STRING` indented and with newlines. See the [example](#retrieve-formatted-jsonb-data) below.
+`jsonb_array_elements(<jsonb>)` | Expands a `JSONB` array to a set of `JSONB` values. | `SELECT jsonb_array_elements('[1,true, 2,false]');`
+`jsonb_build_object(<any_element>...)` | Builds a `JSONB` object out of a variadic argument list that alternates between keys and values. | `SELECT json_build_object('Zoo',1,'Enter',2);`
+`jsonb_each(<jsonb>)` | Expands the outermost `JSONB` object into a set of key-value pairs. | `SELECT * from json_each('{"a":"Apple", "b":"ball"}');`
+`jsonb_object_keys(<jsonb>)` | Returns sorted set of keys in the outermost `JSONB` object. | `SELECT * from jsonb_object_keys('{"fb1":"abc123","fb2":{"fb3":"ant", "f4":"ball"}}');`
+`jsonb_pretty(<jsonb>)` | Returns the given `JSONB` value as a `STRING` indented and with newlines. | See the [example](#retrieve-formatted-jsonb-data) below.
 
 For the full list of supported `JSONB` functions, see [Functions and Operators](functions-and-operators.html#jsonb-functions).
 
