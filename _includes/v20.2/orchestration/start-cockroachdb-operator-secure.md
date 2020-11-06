@@ -4,20 +4,11 @@ The Operator is currently supported for **GKE** only.
 
 ### Install the Operator
 
-1. Locate the latest [release tag](https://github.com/cockroachdb/cockroach-operator/tags) for the Operator.
-
-1. Clone the latest Operator release:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ git clone --depth 1 --branch <tag_name> https://github.com/cockroachdb/cockroach-operator
-    ~~~
-
 1. Apply the [CustomResourceDefinition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) for the Operator:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f cockroach-operator/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
     ~~~
 
     ~~~
@@ -28,7 +19,7 @@ The Operator is currently supported for **GKE** only.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f cockroach-operator/manifests/operator.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
     ~~~
 
     ~~~
@@ -54,11 +45,16 @@ The Operator is currently supported for **GKE** only.
 
 On a production cluster, you will need to modify the StatefulSet configuration with values that are appropriate for your workload.
 
-1. Open and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
+1. Download and edit `example.yaml`, which tells the Operator how to configure the Kubernetes cluster.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-	$ vi cockroach-operator/examples/example.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/example.yaml
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+	$ vi example.yaml
 	~~~
 
 1. Allocate CPU and memory resources to CockroachDB on each pod. Enable the commented-out lines in `example.yaml` and substitute values that are appropriate for your workload. For more context on provisioning CPU and memory, see the [Production Checklist](recommended-production-settings.html#hardware).
@@ -67,19 +63,18 @@ On a production cluster, you will need to modify the StatefulSet configuration w
     Resource `requests` and `limits` should have identical values. 
     {{site.data.alerts.end}}
 
-	~~~
-    resources:
-      requests:
-        cpu: "4"
-        memory: "16Gi"
-        ...
-      limits:
-        cpu: "4"
-        memory: "16Gi"
-	~~~
+    ~~~
+      resources:
+        requests:
+          cpu: "4"
+          memory: "16Gi"
+        limits:
+          cpu: "4"
+          memory: "16Gi"
+    ~~~
 
     {{site.data.alerts.callout_info}}
-    If no resource requests are specified, the Kubernetes scheduler provides the maximum allowed CPUs and memory to each pod. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
+    If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
     {{site.data.alerts.end}}
 
 1. Modify `resources.requests.storage` to allocate the appropriate amount of disk storage for your workload. This configuration defaults to 60Gi of disk space per pod. For more context on provisioning storage, see the [Production Checklist](recommended-production-settings.html#storage).
@@ -87,7 +82,6 @@ On a production cluster, you will need to modify the StatefulSet configuration w
     ~~~
     resources:
       requests:
-        ...
         storage: "60Gi"
     ~~~
 
@@ -101,7 +95,7 @@ By default, the Operator uses the built-in Kubernetes CA to generate and approve
 
     {% include copy-clipboard.html %}
 	~~~ shell
-	$ kubectl apply -f cockroach-operator/examples/example.yaml
+	$ kubectl apply -f example.yaml
 	~~~
 
     The Operator will create a StatefulSet and initialize the nodes as a cluster.

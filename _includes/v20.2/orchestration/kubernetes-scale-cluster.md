@@ -5,7 +5,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ vi cockroach-operator/examples/example.yaml
+    $ vi example.yaml
     ~~~
 
 1. In `example.yaml`, update the number of `nodes`:
@@ -22,7 +22,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f cockroach-operator/examples/example.yaml
+    $ kubectl apply -f example.yaml
     ~~~
 
 1. Verify that the new pod started successfully:

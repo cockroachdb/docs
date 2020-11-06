@@ -99,7 +99,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ vi cockroach-operator/examples/example.yaml
+    $ vi example.yaml
     ~~~
 
     ~~~
@@ -111,7 +111,7 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f cockroach-operator/examples/example.yaml
+    $ kubectl apply -f example.yaml
     ~~~
 
     The Operator will perform the staged update.

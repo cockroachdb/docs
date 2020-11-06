@@ -39,7 +39,7 @@ On a production cluster, you will need to modify the StatefulSet configuration w
     ~~~
 
     {{site.data.alerts.callout_info}}
-    If no resource requests are specified, the Kubernetes scheduler provides the maximum allowed CPUs and memory to each pod. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
+    If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
     {{site.data.alerts.end}}
 
 2. In the `volumeClaimTemplates` specification, you may want to modify `resources.requests.storage` for your use case. This configuration defaults to 100Gi of disk space per pod. For more details on customizing disks for performance, see [these instructions](kubernetes-performance.html#disk-type).

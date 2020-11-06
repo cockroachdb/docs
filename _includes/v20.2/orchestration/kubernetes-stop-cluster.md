@@ -1,18 +1,25 @@
 To shut down the CockroachDB cluster:
 
 <section class="filter-content" markdown="1" data-scope="operator">
-1. Delete the StatefulSet:
+1. Delete the previously created custom resource:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete -f cockroach-operator/examples/example.yaml
+    $ kubectl delete -f example.yaml
     ~~~
 
 1. Remove the Operator:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete -f cockroach-operator/manifests/operator.yaml
+    $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
+    ~~~
+
+1. Delete the persistent volumes and persistent volume claims:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete pv,pvc --all
     ~~~
 
 1. Get the names of any CSRs for the cluster:
@@ -39,30 +46,6 @@ To shut down the CockroachDB cluster:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete csr node.cockroachdb.default.svc.cluster.local root.cockroachdb.default.svc.cluster.local 
-    ~~~
-
-1. Get the names of the secrets for the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get secrets
-    ~~~
-
-    ~~~
-    NAME                                     TYPE                                  DATA   AGE
-    alertmanager-cockroachdb                 Opaque                                1      1h
-    cockroach-operator-default-token-5wcvr   kubernetes.io/service-account-token   3      1h
-    cockroachdb-node                         Opaque                                3      1h
-    cockroachdb-root                         Opaque                                3      1h
-    default-token-5pz5v                      kubernetes.io/service-account-token   3      2h
-    prometheus-operator-token-bpdv8          kubernetes.io/service-account-token   3      1h    
-    ~~~
-
-1. Delete the secrets that you created:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete secrets alertmanager-cockroachdb cockroachdb-node cockroachdb-root
     ~~~
 </section>
 
