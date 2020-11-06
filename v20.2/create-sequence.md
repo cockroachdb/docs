@@ -14,6 +14,7 @@ The `CREATE SEQUENCE` [statement](sql-statements.html) creates a new sequence in
 - A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
 - {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
 - If a table references a sequence, and the reference explicitly specifies a database name, that [database cannot be renamed](rename-database.html). In this case, you can drop the column in the table that references the sequence, or you can modify the reference so that it does not specify the database name.
+- <span class="version-tag">New in v20.2</span> By default, you cannot create sequences that are [owned by](authorization.html#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting](cluster-settings.html) to `true`.
 
 ## Required privileges
 

@@ -12,8 +12,8 @@ This page documents `ALTER DATABASE ... OWNER TO` and `ALTER TABLE ... OWNER TO`
 
 ## Required privileges
 
-- To change the owner of a database, the user must be the current owner of the database, and a member of the new owner [role](authorization.html#roles). The user must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
-- To change the owner of a table, the user must be the current owner of the table, and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
+- To change the owner of a database, the user must be an `admin` user, or the current owner of the database and a member of the new owner [role](authorization.html#roles). The user must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
+- To change the owner of a table, the user must be an `admin` user, or the current owner of the table and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
 
 ## Syntax
 
@@ -42,19 +42,7 @@ Parameter | Description
 
 ### Change a database's owner
 
-Suppose that you want to change the owner of the `movr` database to a new user named `max`.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER IF NOT EXISTS max WITH PASSWORD "roach";
-~~~
-
-To change the owner of a database, the current owner (in this case, `root`) must belong to the role of the new owner (in this case, `max`):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT max TO root;
-~~~
+Suppose that the current owner of the `movr` database is `root` and you want to change the owner to a new user named `max`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -75,21 +63,13 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_database` and `p
 (1 row)
 ~~~
 
+{{site.data.alerts.callout_info}}
+If the user running the command is not an admin user, they must own the database and be a member of the new owning role. They must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
+{{site.data.alerts.end}}
+
 ### Change a table's owner
 
-Suppose that you want to change the owner of the `rides` table to a new user named `max`.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER IF NOT EXISTS max WITH PASSWORD "roach";
-~~~
-
-To change the owner of a table, the current owner (in this case, `root`) must belong to the role of the new owner (in this case, `max`):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT max TO root;
-~~~
+Suppose that the current owner of the `rides` table is `root` and you want to change the owner to a new user named `max`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -109,6 +89,12 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_tables` table:
   max
 (1 row)
 ~~~
+
+{{site.data.alerts.callout_info}}
+If the user running the command is not an admin user, they must own the table and be a member of the new owning role. Also, the new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
+{{site.data.alerts.end}}
+
+
 
 ## See also
 
