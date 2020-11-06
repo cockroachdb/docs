@@ -13,7 +13,7 @@ This page documents `ALTER DATABASE ... OWNER TO` and `ALTER TABLE ... OWNER TO`
 ## Required privileges
 
 - To change the owner of a database, the user must be an `admin` user, or the current owner of the database and a member of the new owner [role](authorization.html#roles). The user must also have the `CREATEDB` [privilege](authorization.html#assign-privileges).
-- To change the owner of a table, the user must be `admin` user, or the current owner of the table and a member of the new owner [role](authorization.html#roles). In the case of a non-`admin` current owner, the new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
+- To change the owner of a table, the user must be `admin` user, or the current owner of the table and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
 
 ## Syntax
 
@@ -63,7 +63,7 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_database` and `p
 (1 row)
 ~~~
 
-Note: If the current owner of the database is a non-`admin` user, they must belong to the same role as the new owner and have the `CREATEDB` [privilege](authorization.html#assign-privileges) on the database.
+Note: The user running the command must be a member of the new owning role and have the `CREATEDB` [privilege](authorization.html#assign-privileges) on the database.
 
 ### Change a table's owner
 
@@ -88,7 +88,7 @@ To verify that the owner is now `max`, query the `pg_catalog.pg_tables` table:
 (1 row)
 ~~~
 
-Note: If the current owner of the table is a non-`admin` user, they must belong to the same role as the new owner. Also, the new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
+Note: The user running the command must be a member of the new owning role. Also, the new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the schema to which the table belongs.
 
 ## See also
 
