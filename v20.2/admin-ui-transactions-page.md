@@ -7,7 +7,7 @@ toc: true
 On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
 {{site.data.alerts.end}}
 
-The **Transactions** page helps you:
+<span class="version-tag">New in v20.2:</span> The **Transactions** page helps you:
 	
 - Identify frequently retried or high latency transactions.
 - View transaction [details](#transaction-details-page).
