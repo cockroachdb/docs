@@ -11,21 +11,22 @@ redirect_from:
 
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for [disaster recovery](disaster-recovery.html) (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
 
-Based on your [license type](https://www.cockroachlabs.com/pricing/), CockroachDB offers two methods to backup and restore your cluster's data: [Enterprise](#perform-enterprise-backup-and-restore) and [Core](#perform-core-backup-and-restore).
+There are two main types of backups:
 
-## Watch the demo
+- [Full backups](#full-backups)
+- [Incremental backups](#incremental-backups)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RGuya_SYfY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+## Perform backup and restore
 
-## Perform Enterprise backup and restore
-
-If you have an [Enterprise license](enterprise-licensing.html), you can use the [`BACKUP`][backup] statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`][restore] statement to efficiently restore schema and data as necessary.
+You can use the [`BACKUP`][backup] statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`][restore] statement to efficiently restore schema and data as necessary.
 
 {{site.data.alerts.callout_success}}
 We recommend [automating daily backups of your cluster](#automated-full-and-incremental-backups). To automate backups, you must have a client send the `BACKUP` statement to the cluster. Once the backup is complete, your client will receive a `BACKUP` response.
 {{site.data.alerts.end}}
 
 ### Full backups
+
+<span class="version-tag">New in v20.2:</span> Full backups are now available to both core and enterprise users.
 
 In most cases, **it's recommended to take full nightly backups of your cluster**. A cluster backup allows you to do the following:
 
@@ -65,9 +66,13 @@ Or to restore your full cluster:
 A full cluster restore can only be run on a target cluster that has _never_ had user-created databases or tables.
 {{site.data.alerts.end}}
 
-### Full and incremental backups
+### Incremental backups
 
 If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
+
+{{site.data.alerts.callout_info}}
+To take incremental backups, you need an [enterprise license](enterprise-licensing.html).
+{{site.data.alerts.end}}
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
 
@@ -105,6 +110,10 @@ TO 'gs://acme-co-backup/db/bank/2017-03-29-nightly' \
 AS OF SYSTEM TIME '-10s' \
 INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly' WITH revision_history;
 ~~~
+
+{{site.data.alerts.callout_info}}
+To take incremental backups, you need an [enterprise license](enterprise-licensing.html).
+{{site.data.alerts.end}}
 
 ### Examples
 
@@ -199,32 +208,8 @@ If you miss an incremental backup, delete the `recent_backups.txt` file and run 
 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
-## Perform Core backup and restore
-
-If you do not have an Enterprise license, you can perform a core backup. Run the [`cockroach dump`](cockroach-dump.html) command to dump all the tables in the database to a new file (e.g., `backup.sql`):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach dump <database_name> <flags> > backup.sql
-~~~
-
-To restore a database from a core backup, use the [`IMPORT PGDUMP`](import.html#import-a-cockroachdb-dump-file) statement:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --execute="IMPORT PGDUMP 's3://your-external-storage/backup.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'" \
- <flags>
-~~~
-
-You can also [use the `cockroach sql` command](cockroach-dump.html#restore-a-table-from-a-backup-file) to execute the [`CREATE  TABLE`](create-table.html) and [`INSERT`](insert.html) statements in the backup file:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --database=[database name] < backup.sql
-~~~
-
-{{site.data.alerts.callout_success}}
-If you created a backup from another database and want to import it into CockroachDB, see the [Migration Overview](migration-overview.html).
+{{site.data.alerts.callout_info}}
+To take incremental backups, backups with revision history, locality-aware backups, and encrypted backups, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## See also

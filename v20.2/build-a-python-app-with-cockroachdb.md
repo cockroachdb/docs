@@ -5,15 +5,19 @@ toc: true
 twitter: false
 ---
 
-<div class="filters filters-big clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button style="width: 22%" class="filter-button current">Use <strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button style="width: 22%" class="filter-button">Use <strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button style="width: 22%" class="filter-button">Use <strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button style="width: 22%" class="filter-button">Use <strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button style="width: 22%" class="filter-button">Use <strong>peewee</strong></button></a>
-</div>
+<div class="filters clearfix">
+    <a href="build-a-python-app-with-cockroachdb.html"><button class="filter-button page-level current"><strong>psycopg2</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button class="filter-button page-level"><strong>SQLAlchemy</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
+    <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
+    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
+</div></br>
 
-This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use either a temporary local cluster or a free cluster on CockroachCloud.
+This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
+
+<div class="filters clearfix">
+  <a href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+</div>
 
 ## Step 1. Install the psycopg2 driver
 
@@ -38,9 +42,11 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 Now that you have a database, you'll run the code shown below to:
 
-- Create an `accounts` table and insert some rows.
-- Transfer funds between two accounts inside a [transaction](transactions.html). To ensure that you [handle transaction retry errors](transactions.html#client-side-intervention), you'll use an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
-- Finally, you'll delete the accounts from the table before exiting so you can re-run the example code.
+- Create an accounts table and insert some rows.
+- Transfer funds between two accounts inside a [transaction](transactions.html).
+- Delete the accounts from the table before exiting so you can re-run the example code.
+
+To [handle transaction retry errors](error-handling-and-troubleshooting.html#transaction-retry-errors), the code uses an application-level retry loop that, in case of error, sleeps before trying the funds transfer again. If it encounters another retry error, it sleeps for a longer interval, implementing [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff).
 
 ### Get the code
 
@@ -60,7 +66,7 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 ### Run the code
 
-The Python code is a command-line utility that accepts the connection string to CockroachDB as the `--dsn` flag. Before running the the code, update the connection string as follows:
+The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the code, update the connection string as follows:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -70,11 +76,12 @@ The Python code is a command-line utility that accepts the connection string to 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
---dsn='postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
+'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
 ~~~
 
 </section>
 
+{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
@@ -84,20 +91,21 @@ $ python3 example.py \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
---dns='postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'
+'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'
 ~~~
 
 </section>
+{% endcomment %}
 
 The output should show the account balances before and after the funds transfer:
 
 ~~~
-Balances at Sun Oct 11 14:32:18 2020
-['1', '1000']
-['2', '250']
-Balances at Sun Oct 11 14:32:18 2020
-['1', '900']
-['2', '350']
+Balances at Fri Oct 30 18:27:00 2020:
+(1, 1000)
+(2, 250)
+Balances at Fri Oct 30 18:27:00 2020:
+(1, 900)
+(2, 350)
 ~~~
 
 ## What's next?

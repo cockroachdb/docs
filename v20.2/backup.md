@@ -8,9 +8,9 @@ toc: true
 Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
-CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html#perform-enterprise-backup-and-restore) of your cluster's schema and data that are consistent as of a given timestamp.
+CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
- You can [backup a full cluster](#backup-a-cluster), which includes:
+You can [backup a full cluster](#backup-a-cluster), which includes:
 
 - All user tables
 - Relevant system tables

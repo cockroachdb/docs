@@ -31,7 +31,29 @@ For more information about the different options available when creating a backu
 
 ## Set up monitoring for the backup schedule
 
-We recommend that you monitor your backup schedule and alert on metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect. For more information, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
+We recommend that you [monitor your backup schedule with Prometheus](monitoring-and-alerting.html#prometheus-endpoint), and alert when there are anomalies such as backups that have failed or no backups succeeding over a certain amount of time&mdash; at which point, you can inspect schedules by running [`SHOW SCHEDULES`](show-schedules.html).
+
+Metrics for scheduled backups fall into two categories:
+
+- Backup schedule-specific metrics, aggregated across all schedules:
+
+    - `schedules_BACKUP_started`: A counter for the total number of backups started by a schedule
+    - `schedules_BACKUP_succeeded`: A counter for the number of backups started by a schedule that succeeded
+    - `schedules_BACKUP_failed`: A counter for the number of backups started by a schedule that failed
+
+        When `schedules_BACKUP_failed` increments, run [`SHOW SCHEDULES`](show-schedules.html) to check which schedule is affected and to inspect the error in the `status` column.
+
+- Scheduler-specific metrics:
+
+    - `schedules.round.reschedule-wait`: The number of schedules that were rescheduled due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=wait`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
+
+    - `schedules.round.reschedule-skip`: The number of schedules that were skipped due to a currently running job. A value greater than 0 indicates that a previous backup was still running when a new scheduled backup was supposed to start. This corresponds to the [`on_previous_running=skip`](create-schedule-for-backup.html#on-previous-running-option) schedule option.
+
+{{site.data.alerts.callout_info}}
+`schedules.round.reschedule-wait` and `schedules.round.reschedule-skip` are gauge metrics and can be graphed. A continual positive value for either of these metrics may indicate a misconfigured backup cadence, and you should consider adjusting the cadence to avoid waiting for or skipping the next backup.
+{{site.data.alerts.end}}
+
+For a tutorial on how to use Prometheus to set up monitoring and alerting, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).
 
 ## View scheduled backup details
 

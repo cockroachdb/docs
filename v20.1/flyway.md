@@ -15,7 +15,7 @@ This page walks you through a series of simple database schema changes using Fly
 Before you begin, do the following:
 
 1. [Install CockroachDB](install-cockroachdb.html) and [start a secure cluster](secure-a-cluster.html).    
-1. Download the latest version of the [Flyway comand-line tool](https://flywaydb.org/documentation/commandline/#download-and-installation). CockroachDB is fully compatible with Flyway versions 6.4.2 and greater.
+1. Download the latest version of the [Flyway comand-line tool](https://flywaydb.org/documentation/commandline/#download-and-installation). CockroachDB v20.1 is fully compatible with Flyway versions 6.4.2 and greater.
 
 ## Step 1. Configure Flyway connect to CockroachDB
 
@@ -164,6 +164,12 @@ When used with most databases, [Flyway wraps the statements in a migration withi
 ### Transaction retries
 
 When multiple, concurrent transactions or statements are issued to a single CockroachDB cluster, [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) can cause schema migrations to fail. In the event of transaction contention, CockroachDB returns a `40001 SQLSTATE` (i.e., a serialization failure), and Flyway automatically retries the migration. For more information about client-side transaction retries in CockroachDB, see [Transaction Retries](transactions.html#transaction-retries).
+
+### Transactional schema changes
+
+Support for [transactional schema changes](online-schema-changes.html) is limited in CockroachDB. As a result, if a migration with multiple schema changes fails at any point, the partial migration could leave the database schema in an incomplete state. If this happens, manual intervention will be required to determine the state of the schema, in addition to any possible fixes.
+
+Note that this limitation also applies to single [`ALTER TABLE`](alter-table.html) statements that include multiple schema changes (e.g., `ALTER TABLE ... ALTER COLUMN ... RENAME ..., ADD COLUMN ...`).
 
 ## Report Issues with Flyway and CockroachDB
 

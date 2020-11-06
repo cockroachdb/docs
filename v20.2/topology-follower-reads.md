@@ -58,16 +58,16 @@ Insert some data:
 
 1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
-2. Configure your app to use `AS OF SYSTEM TIME experimental_follower_read_timestamp()` whenever reading from the table:
+2. Configure your app to use `AS OF SYSTEM TIME follower_read_timestamp()` whenever reading from the table:
 
     {{site.data.alerts.callout_info}}
-    The `experimental_follower_read_timestamp()` [function](functions-and-operators.html) will set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads.
+    The `follower_read_timestamp()` [function](functions-and-operators.html) will set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT code FROM postal_codes
-        AS OF SYSTEM TIME experimental_follower_read_timestamp()
+        AS OF SYSTEM TIME follower_read_timestamp()
                 WHERE id = 5;
     ~~~
 
@@ -77,7 +77,7 @@ Insert some data:
     ~~~ sql
     > BEGIN;
 
-    SET TRANSACTION AS OF SYSTEM TIME experimental_follower_read_timestamp();
+    SET TRANSACTION AS OF SYSTEM TIME follower_read_timestamp();
 
       SELECT code FROM postal_codes
         WHERE id = 5;

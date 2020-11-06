@@ -8,8 +8,8 @@ The `EXPORT` [statement](sql-statements.html) exports tabular data or the result
 
 Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
-{{site.data.alerts.callout_danger}}
-This is an [enterprise feature](enterprise-licensing.html). Also, it is in **beta** and is currently undergoing continued testing. Please [file a Github issue](file-an-issue.html) with us if you identify a bug.
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> `EXPORT` no longer requires an enterprise license.
 {{site.data.alerts.end}}
 
 ## Cancelling export
@@ -145,7 +145,7 @@ Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, wh
 
 ## Known limitation
 
-`EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
+`EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, [export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
 ## See also
 

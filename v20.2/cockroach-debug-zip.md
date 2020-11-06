@@ -30,7 +30,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
 {{site.data.alerts.callout_danger}}
-The file produced by `cockroach debug zip` can contain highly sensitive, unanonymized information, such as usernames, hashed passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.
+The file produced by `cockroach debug zip` can contain highly [sensitive, identifiable information](debug-and-error-logs.html#redacted-logs), such as usernames, hashed passwords, and possibly your table's data. You can use the [`--redact-logs`](#redact-sensitive-information-from-the-logs) flag to redact the sensitive data out of log files and crash reports before sharing them with Cockroach Labs.
 {{site.data.alerts.end}}
 
 ## Details
@@ -81,6 +81,7 @@ Flag | Description
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--nodes` | <span class="version-tag">New in v20.2:</span> Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
 `--exclude-nodes` | <span class="version-tag">New in v20.2:</span> Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
+`--redact-logs` | Redact [sensitive data](debug-and-error-logs.html#redacted-logs) from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed above) collected by the `debug zip` command may still contain sensitive information.
 
 ### Client connection
 
@@ -98,19 +99,40 @@ If you need to troubleshoot this command's behavior, you can also change its [lo
 
 ### Generate a debug zip file
 
-{% include copy-clipboard.html %}
-~~~ shell
-# Generate the debug zip file for an insecure cluster:
-$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
-~~~
+Generate the debug zip file for an insecure cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-# Generate the debug zip file for a secure cluster:
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
+~~~
+
+Generate the debug zip file for a secure cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
 $ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
 ~~~
 
 {{site.data.alerts.callout_info}}Secure examples assume you have the appropriate certificates in the default certificate directory, <code>${HOME}/.cockroach-certs/</code>.{{site.data.alerts.end}}
+
+### Redact sensitive information from the logs
+
+Example of a log string without redaction enabled:
+
+~~~
+server/server.go:1423 ⋮ password of user ‹admin› was set to ‹"s3cr34?!@x_"›
+~~~
+
+Enable log redaction:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip -- redact-logs --insecure --host=200.100.50.25
+~~~
+
+~~~
+server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
+~~~
 
 ## See also
 
