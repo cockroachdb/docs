@@ -1,5 +1,5 @@
 ---
-title: Common Table Expressions
+title: WITH (Common Table Expressions)
 summary: Common Table Expressions (CTEs) simplify the definition and use of subqueries
 toc: true
 toc_not_nested: true

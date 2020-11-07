@@ -1715,7 +1715,13 @@
     		    "urls": [
     		      "/${VERSION}/validate-constraint.html"
     		    ]
-    		  }
+    		  },
+    		  {
+                    "title": "<code>WITH</code> Common Table Expressions",
+                    "urls": [
+                      "/${VERSION}/common-table-expressions.html"
+                    ]
+                  }
     		]
       },
       {
