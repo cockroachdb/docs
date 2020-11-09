@@ -22,29 +22,9 @@ In this section, we'll describe how to:
 
 ### Installation
 
-An easy way to install a build of CockroachDB with support for spatial data is via [Docker](https://www.docker.com).
+Install a build of CockroachDB with support for spatial data by following the instructions at [Install CockroachDB](install-cockroachdb.html).
 
-Get the spatial build of CockroachDB:
-
-{% include copy-clipboard.html %}
-~~~ shell
-docker pull cockroachdb/cockroach-unstable:v20.2.0-rc.4
-~~~
-
-{{site.data.alerts.callout_success}}
-For instructions showing other ways to install CockroachDB with spatial support, see [Install CockroachDB Spatial](install-cockroachdb-spatial.html).
-{{site.data.alerts.end}}
-
-Start the server:
-
-{% include copy-clipboard.html %}
-~~~ shell
-docker run -d --name=geo --hostname=geo-host -p 26257:26257 -p 8080:8080  -v "${PWD}/cockroach-data/roach1:/cockroach/cockroach-data" cockroachdb/cockroach-unstable:v20.2.0-rc.4 start-single-node --insecure
-~~~
-
-The example above uses some Docker networking and file location settings that map from the container to the host using CockroachDB's default network ports.
-
-Next, connect to the server from a [SQL client](cockroach-sql.html) [installed on your local machine](install-cockroachdb.html):
+Next, [start a local insecure cluster](start-a-local-cluster.html) and connect to that cluster from a [SQL client](cockroach-sql.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -315,7 +295,7 @@ If you encounter behavior that you think is due to a performance issue, please g
 
 ## See also
 
-- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
+- [Install CockroachDB](install-cockroachdb.html)
 - [Spatial Features](spatial-features.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial & GIS Glossary of Terms](spatial-glossary.html)
