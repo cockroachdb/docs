@@ -104,9 +104,9 @@ $ cockroach init --insecure --host=<address of any node>
 
 <img src="{{ 'images/v20.2/ui-node-map-before-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-### Step 2. [Set the enterprise license](enterprise-licensing.html) and refresh the DB Console
+### Step 2. Set the enterprise license and refresh the DB Console
 
-The Node Map should now be displaying the highest-level localities you defined:
+After [setting the enterprise license](enterprise-licensing.html), the Node Map should now be displaying the highest-level localities you defined:
 
 <img src="{{ 'images/v20.2/ui-node-map-after-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
