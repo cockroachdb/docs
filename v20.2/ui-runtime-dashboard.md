@@ -1,4 +1,4 @@
-	---
+---
 title: Runtime Dashboard
 toc: true
 redirect_from: admin-ui-runtime-dashboard.html
