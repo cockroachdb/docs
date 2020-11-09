@@ -147,7 +147,7 @@ The replication layer sends `BatchResponses` back to the distribution layer's `D
 
 Committed Raft commands are written to the Raft log and ultimately stored on disk through the storage layer.
 
-The leaseholder serves reads from its RocksDB instance, which is in the storage layer.
+The leaseholder serves reads from the storage layer.
 
 ## What's next?
 

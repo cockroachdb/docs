@@ -128,9 +128,10 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 Supported options:
 
-- `default`: Checks which engine type was last used for this node's [store directory](#store) (Pebble or RocksDB), and uses that engine.  If more than one store is specified, the previous engine type of the first store is used. If the check fails for any reason, or if the store directory does not exist yet, RocksDB is used.
+- `pebble`: **Default** unless specified otherwise at node startup. Uses the [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format.  Pebble differs from RocksDB in that it:
+  - Is written in Go and implements a subset of RocksDB's large feature set.
+  - Contains optimizations that benefit CockroachDB. 
 - `rocksdb`: Uses the [RocksDB](https://rocksdb.org) storage engine.
-- `pebble`: Uses the experimental [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format.  Pebble differs from RocksDB in that it is written in Go and implements a subset of RocksDB's large feature set.
 
 #### Store
 
