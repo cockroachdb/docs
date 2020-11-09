@@ -1,4 +1,4 @@
-w---
+---
 title: Deploy CockroachDB on Digital Ocean
 summary: Learn how to deploy CockroachDB on Digital Ocean.
 toc: true

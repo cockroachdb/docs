@@ -1,4 +1,4 @@
-w---
+---
 title: ALTER USER
 summary: The ALTER USER statement can be used to add or change a user's password.
 toc: true
