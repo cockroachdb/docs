@@ -52,7 +52,7 @@ Metric | Description
 **System** | Number of physical bytes stored in [system key-value pairs](architecture/distribution-layer.html#meta-ranges). This includes historical and deleted data that has not been [garbage collected](architecture/storage-layer.html#garbage-collection).
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/db-console/logical-bytes.md %}
+{% include {{ page.version.version }}/ui/logical-bytes.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors
