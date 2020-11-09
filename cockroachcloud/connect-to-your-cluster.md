@@ -47,7 +47,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 6. Select whether the network can connect to the cluster's **UI**, **SQL** client, or both.
 
-    The **UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](../stable/admin-ui-overview.html).
+    The **UI** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../stable/ui-overview.html).
 
 7. Click **Apply**.
 
