@@ -14,7 +14,7 @@ In the example below we will import a data set with [the locations of undergroun
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB Spatial [installed](install-cockroachdb-spatial.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
 - [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html)
 - [Python 3](https://www.python.org)
 
@@ -81,7 +81,6 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 ## See also
 
 - [`IMPORT`][import]
-- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)

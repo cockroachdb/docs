@@ -215,7 +215,6 @@ This section has information about the representation of geometric and geographi
 ## See also
 
 - [Spatial Features](spatial-features.html)
-- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
