@@ -15,4 +15,5 @@ gem "sassc", "~> 2.2"
 
 group :jekyll_plugins do
     gem 'jekyll-algolia', "~> 1.0", path: "./jekyll-algolia-dev"
+    gem 'jekyll-remote-include', :github => 'netrics/jekyll-remote-include'
   end
