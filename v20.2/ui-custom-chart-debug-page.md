@@ -28,7 +28,7 @@ On the **Custom Chart** page, you can set the time span for all charts, add new 
 - To add a chart, click **Add Chart** and customize the new chart.
 
 - To customize each chart, use the **Units** dropdown menu to set the units to display. Then use the table below the chart to select the metrics being queried, and how they'll be combined and displayed. Options include:
-{% include {{page.version.version}}/db-console-custom-chart-debug-page-00.html %}
+{% include {{page.version.version}}/ui-custom-chart-debug-page-00.html %}
 
 ## Examples
 
