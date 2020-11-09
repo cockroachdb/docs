@@ -447,16 +447,6 @@ INSERT INTO dump_test (id, name) VALUES
 
 As you can see, the results of the dump are identical to the earlier time-travel query.
 
-## Known limitations
-
-### Dumping a table with no user-visible columns
-
-{% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
-
-### Dumping a table with collations
-
-{% include {{page.version.version}}/known-limitations/dump-table-with-collations.md %}
-
 ## See also
 
 - [Import Data](import-data.html)

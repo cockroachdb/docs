@@ -26,11 +26,9 @@ When the schema of a table targeted by a prepared statement changes before the p
 ~~~
 
 ~~~
-+----+-----------+
-| id |   name    |
-+----+-----------+
-|  1 | Max Roach |
-+----+-----------+
+  id |   name
+-----+------------
+   1 | Max Roach
 (1 row)
 ~~~
 

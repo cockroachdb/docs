@@ -310,7 +310,11 @@ CockroachDB does not currently support the [Postgres recursive CTE variant](http
 
 ## Known limitations
 
+### Correlated common table expressions
+
 {% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/42540).
 
 ## See also
 
