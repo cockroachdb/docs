@@ -23,7 +23,7 @@ Please refer to the documentation of your GIS software for instructions on expor
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB Spatial [installed](install-cockroachdb-spatial.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
 - [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html)
 - [Python 3](https://www.python.org)
 
@@ -100,7 +100,6 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql');
 ## See also
 
 - [`IMPORT`][import]
-- [Install CockroachDB Spatial](install-cockroachdb-spatial.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
