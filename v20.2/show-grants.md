@@ -33,8 +33,8 @@ SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
 Parameter    | Description
 -------------|-----------------------------------------------------------------------------------------------------
 `targets`    | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To list the privilege grants for all tables in the current database, you can use `SHOW GRANTS ON TABLE *`.{{site.data.alerts.end}}
-`roles`      | A comma-separated list of the roles whose grants you want to show.
 `users`      | A comma-separated list of the [users](authorization.html#sql-users) whose privileges or roles you want to show.
+`roles`      | A comma-separated list of the roles whose grants you want to show.
 
 ## Response
 
