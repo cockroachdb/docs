@@ -454,7 +454,7 @@ PostgreSQL:
 
 ### Concurrent SQL shells overwrite each other's history
 
-The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine, therefore, each shell's command history can get overwritten in unexpected ways.
+The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine. Therefore, each shell's command history can get overwritten in unexpected ways.
 
 As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
 
@@ -478,7 +478,7 @@ CockroachDB does not allow passwords with special characters to be passed as a [
 
 ### CockroachDB does not test for all connection failure scenarios
 
-CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a "`Connection refused`" error.
+CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error.
 
 However, if there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests. To work around this kind of scenario, we recommend the following:
 
@@ -490,7 +490,7 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 
 ### Some column-dropping schema changes do not roll back properly
 
-Some [schema changes](online-schema-changes.html) that [drop columns](drop-column.html) can't be [rolled back](rollback-transaction.html) properly.
+Some [schema changes](online-schema-changes.html) that [drop columns](drop-column.html) cannot be [rolled back](rollback-transaction.html) properly.
 
 In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
 
@@ -508,11 +508,11 @@ To reduce the chance that a column drop will roll back incorrectly:
 
 - Drop any [default values](default-value.html) or [computed expressions](computed-columns.html) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
 
-If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](show-jobs.html). Schema changes with an error prefaced by "`cannot be reverted, manual cleanup may be required`" might require manual intervention.
+If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](show-jobs.html). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
 
 ### Disk-spilling on joins with `JSON` columns
 
-If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 

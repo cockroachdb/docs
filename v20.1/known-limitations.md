@@ -10,7 +10,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ### Limited vectorized support for changefeeds
 
-[Changefeeds](changefeed-for.html) are incompatible wit the v20.1 `vectorize=on` [cluster setting](cluster-settings.html) due to the buffering behavior of the `Columnarizer` operator. This issue is resolved in v20.2.
+[Changefeeds](changefeed-for.html) are incompatible with the v20.1 `vectorize=on` [cluster setting](cluster-settings.html) due to the buffering behavior of the `Columnarizer` operator. This issue is resolved in v20.2.
 
 ### Dropping and renaming objects during an upgrade to v20.1.0
 
@@ -545,7 +545,7 @@ CockroachDB does not allow passwords with special characters to be passed as a [
 
 ### CockroachDB does not test for all connection failure scenarios
 
-CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a "`Connection refused`" error.
+CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error.
 
 However, if there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests. To work around this kind of scenario, we recommend the following:
 
@@ -557,7 +557,7 @@ However, if there is no host at the target IP address, or if a firewall rule blo
 
 ### Some column-dropping schema changes do not roll back properly
 
-Some [schema changes](online-schema-changes.html) which [drop columns](drop-column.html) can't be [rolled back](rollback-transaction.html) properly.
+Some [schema changes](online-schema-changes.html) that [drop columns](drop-column.html) cannot be [rolled back](rollback-transaction.html) properly.
 
 In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
 
@@ -567,11 +567,11 @@ In other cases, the rollback will fail in such a way that will never be cleaned 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/47712)
 
-If you have performed a rollback of a column-dropping schema change, check the [jobs table entry](show-jobs.html) for schema changes with an error prefaced by "`cannot be reverted, manual cleanup may be required`".
+If you have performed a rollback of a column-dropping schema change, check the [jobs table entry](show-jobs.html) for schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required`.
 
 ### Disk-spilling on joins with `JSON` columns
 
-If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type [`JSON`](jsonb.html), CockroachDB returns the error "`unable to encode table key: *tree.DJSON`". If the memory limit is not reached, then the query will be processed without error.
+If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
