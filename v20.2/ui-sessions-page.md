@@ -1,15 +1,16 @@
 ---
 title: Sessions Page
 toc: true
+redirect_from: admin-ui-sessions-page.html
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the Admin UI can only be accessed by a SQL user with the [`VIEWACTIVITY`](authorization.html#create-and-manage-users) role option. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
+On a secure cluster, this area of the DB Console can only be accessed by a SQL user with the [`VIEWACTIVITY`](authorization.html#create-and-manage-users) role option. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
 {{site.data.alerts.end}}
 
-<span class="version-tag">New in v20.2:</span> The **Sessions** page of the Admin UI provides details of all open sessions in the cluster.
+<span class="version-tag">New in v20.2:</span> The **Sessions** page of the DB Console provides details of all open sessions in the cluster.
 
-To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Sessions** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Sessions** in the left-hand navigation.
 
 ## Sessions list
 
@@ -22,7 +23,7 @@ A session is *active* if it has an open transaction (including implicit transact
 - If an active session also has an open transaction, the most recent SQL statement will be displayed in the **Statement** column.
 - To view [details of a session](#session-details), click on the **Session Age**.
 
-<img src="{{ 'images/v20.2/admin-ui-sessions-page.png' | relative_url }}" alt="CockroachDB Admin UI Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui-sessions-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 The following are displayed for each active session:
 
@@ -43,7 +44,7 @@ Sort by **Txn Duration** to display all active sessions at the top.
 
 Click the **Session Age** of any session to display details and possible actions for that session.
 
-<img src="{{ 'images/v20.2/admin-ui-sessions-details-page.png' | relative_url }}" alt="CockroachDB Admin UI Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui-sessions-details-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 - **Session** shows the ID of the connected session.
 	- **Session Start Time** shows the timestamp at which the session started.
@@ -65,12 +66,12 @@ Click the **Session Age** of any session to display details and possible actions
 	- The SQL statement is shown.
 	- **Execution Start Time** shows the timestamp at which the statement was run.
 	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)](architecture/sql-layer.html#distsql) optimization.
-	- **View Statement Details** opens the [Statement Details](admin-ui-statements-page.html#statement-details-page) page for the statement.
+	- **View Statement Details** opens the [Statement Details](ui-statements-page.html#statement-details-page) page for the statement.
 
 ## See also
 
 - [`SHOW SESSIONS`](show-sessions.html)
-- [Statements page](admin-ui-statements-page.html)
+- [Statements page](ui-statements-page.html)
 - [SQL Statements](sql-statements.html)
 - [Transactions](transactions.html)
 - [Transaction Error Retry Reference](transaction-retry-error-reference.html)

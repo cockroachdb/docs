@@ -196,7 +196,7 @@ $ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-
 Upon starting, the node will read the existing data keys using the old encryption key (`aes-128.key`), then rewrite
 the data keys using the new key (`aes-256.key`). A new data key will be generated to match the desired AES-256 algorithm.
 
-To check that the new key is active, use the stores report page in the Admin UI to [check the encryption status](#checking-encryption-status).
+To check that the new key is active, use the stores report page in the DB Console to [check the encryption status](#checking-encryption-status).
 
 To disable encryption, specify `key=plain`. The data keys will be stored in plaintext and new data will not be encrypted.
 

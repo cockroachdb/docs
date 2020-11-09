@@ -63,7 +63,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 {% include {{ page.version.version }}/orchestration/test-cluster-insecure.md %}
 
-## Step 4. Access the Admin UI
+## Step 4. Access the DB Console
 
 {% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 

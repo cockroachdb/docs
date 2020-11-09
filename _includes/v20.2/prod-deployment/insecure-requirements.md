@@ -2,7 +2,7 @@
 
 - Your network configuration must allow TCP communication on the following ports:
 	- `26257` for intra-cluster and client-cluster communication
-	- `8080` to expose your Admin UI
+	- `8080` to expose your DB Console
 
 - Carefully review the [Production Checklist](recommended-production-settings.html) and recommended [Topology Patterns](topology-patterns.html).
 

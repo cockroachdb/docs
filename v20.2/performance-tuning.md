@@ -51,7 +51,7 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
     - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
     - Use the Ubuntu 16.04 OS image.
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
-    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
+    - To apply the DB Console firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
 2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
@@ -203,7 +203,7 @@ As mentioned above, before beginning, it's useful to collect each instance's int
     ~~~
 
 {{site.data.alerts.callout_info}}
-On accessing the Admin UI in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates-custom-ca.html#accessing-the-admin-ui-for-a-secure-cluster).
+On accessing the DB Console in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](create-security-certificates-custom-ca.html#accessing-the-db-console-for-a-secure-cluster).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/performance/start-cluster.md %}
@@ -1177,7 +1177,7 @@ Given that MovR is active on both US coasts, you'll now scale the cluster into t
     - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
     - Use the Ubuntu 16.04 OS image.
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
-    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
+    - To apply the DB Console firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
 2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
@@ -1283,5 +1283,5 @@ In each of the new zones, SSH to the instance not running a CockroachDB node, an
 - [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
 - [Make Queries Fast](make-queries-fast.html)
 - [Performance Benchmarking](performance-benchmarking-with-tpcc-small.html)
-- [Network Latency Page](admin-ui-network-latency-page.html)
+- [Network Latency Page](ui-network-latency-page.html)
 - [Production Checklist](recommended-production-settings.html)

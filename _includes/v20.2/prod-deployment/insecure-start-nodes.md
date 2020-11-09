@@ -58,7 +58,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain enterprise features. For more details, see [Locality](cockroach-start.html#locality).
 
-	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds Admin UI HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
+	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
 5. Repeat these steps for each additional node that you want in your cluster.
 
@@ -130,7 +130,7 @@ For each initial node of your cluster, complete the following steps:
 
     When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain enterprise features. For more details, see [Locality](cockroach-start.html#locality).
 
-    For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds Admin UI HTTP requests to `--http-port=8080`. To set these options manually, see [Start a Node](cockroach-start.html).
+    For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-port=8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
 9. Start the CockroachDB cluster:
 

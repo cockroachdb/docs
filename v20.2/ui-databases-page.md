@@ -1,19 +1,20 @@
 ---
 title: Database Page
 toc: true
+redirect_from: admin-ui-databases-page.html
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
 {{site.data.alerts.end}}
 
-The **Databases** page of the Admin UI provides details of the following:
+The **Databases** page of the DB Console provides details of the following:
 
 - The databases configured.
 - The tables in each database.
 - The grants assigned to each user. 
 
-To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Databases** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
 
 ## Tables view
 
@@ -21,7 +22,7 @@ The **Tables** view shows details of the system table as well as the tables in y
 
 To view [table details](#table-details), click on a table name.
 
-<img src="{{ 'images/v20.2/admin_ui_database_tables_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_database_tables_view.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 The following are displayed for each table:
 
@@ -37,7 +38,7 @@ Ranges | The number of ranges in the table.
 
 Click any table name in [Tables](#tables-view) view to display details for that table.
 
-<img src="{{ 'images/v20.2/admin_ui_database_tables_details.png' | relative_url }}" alt="CockroachDB Admin UI Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_database_tables_details.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 - **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info and [zone configurations](configure-replication-zones.html). In addition, the following metrics are displayed:
 	- **Size** is the approximate disk size of all replicas of this table on the cluster.
@@ -51,11 +52,11 @@ The **Grants** view shows the [privileges](authorization.html#assign-privileges)
 
 For more details about grants and privileges, see [`GRANT <privileges>`](grant.html).
 
-<img src="{{ 'images/v20.2/admin_ui_database_grants_view.png' | relative_url }}" alt="CockroachDB Admin UI Database Grants View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_database_grants_view.png' | relative_url }}" alt="DB Console Database Grants View" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
-- [Statements page](admin-ui-statements-page.html)
+- [Statements page](ui-statements-page.html)
 - [Assign privileges](authorization.html#assign-privileges)
 - [`GRANT <privileges>`](grant.html)
 - [Raw status endpoints](monitoring-and-alerting.html#raw-status-endpoints)

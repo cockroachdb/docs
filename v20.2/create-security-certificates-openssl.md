@@ -8,7 +8,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 - Nodes
 - Clients
-- Admin UI (optional)
+- DB Console (optional)
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 

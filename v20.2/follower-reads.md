@@ -61,7 +61,7 @@ If follower reads are enabled, but the time-travel query is not using [`AS OF SY
 To verify that your cluster is performing follower reads:
 
 1. Make sure that [follower reads are enabled](#enable-disable-follower-reads).
-2. Go to the [Custom Chart Debug Page in the Admin UI](admin-ui-custom-chart-debug-page.html) and add the metric `follower_read.success_count` to the time series graph you see there. The number of follower reads performed by your cluster will be shown.
+2. Go to the [Custom Chart Debug Page in the DB Console](ui-custom-chart-debug-page.html) and add the metric `follower_read.success_count` to the time series graph you see there. The number of follower reads performed by your cluster will be shown.
 
 ### Run queries that use follower reads
 
@@ -110,6 +110,6 @@ COMMIT;
 
 - [Cluster Settings Overview](cluster-settings.html)
 - [Load-Based Splitting](load-based-splitting.html)
-- [Network Latency Page](admin-ui-network-latency-page.html)
+- [Network Latency Page](ui-network-latency-page.html)
 - [Enterprise Features](enterprise-licensing.html)
 - [Follower Reads Topology Pattern](topology-follower-reads.html)

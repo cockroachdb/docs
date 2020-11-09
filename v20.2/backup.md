@@ -135,7 +135,7 @@ Pause the backup       | [`PAUSE JOB`](pause-job.html)
 Resume the backup      | [`RESUME JOB`](resume-job.html)
 Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 
-You can also visit the [**Jobs** page](admin-ui-jobs-page.html) of the Admin UI to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
+You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
 The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.

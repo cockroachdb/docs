@@ -51,7 +51,7 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 
 {% include {{ page.version.version }}/orchestration/test-cluster-secure.md %}
 
-## Step 4. Access the Admin UI
+## Step 4. Access the DB Console
 
 {% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 

@@ -12,7 +12,7 @@ For a developer-centric walkthrough of optimizing SQL query performance, see [Ma
 
 ## Identify slow queries
 
-Use the [slow query log](#using-the-slow-query-log) or [Admin UI](#using-the-admin-ui) to detect slow queries in your cluster.
+Use the [slow query log](#using-the-slow-query-log) or [DB Console](#using-the-db-console) to detect slow queries in your cluster.
 
 ### Using the slow query log
 
@@ -67,20 +67,20 @@ Setting `sql.log.slow_query.latency_threshold` to a non-zero value enables traci
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+{% include {{ page.version.version }}/ui/ui-log-files.md %}
 {{site.data.alerts.end}}
 
-### Using the Admin UI
+### Using the DB Console
 
-High latency SQL statements are displayed on the [**Statements page**](admin-ui-statements-page.html) of the Admin UI. To view the Statements page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Statements** on the left.
+High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
 
-You can also check the [service latency graph](admin-ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](admin-ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
+You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
 ## Visualize statement traces in Jaeger
 
 You can look more closely at the behavior of a statement by visualizing a statement trace in [Jaeger](https://www.jaegertracing.io/). A [statement trace](show-trace.html) contains messages and timing information from all nodes involved in the execution.
 
-1. Activate [statement diagnostics](admin-ui-statements-page.html#diagnostics) on the Admin UI Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option) to obtain a diagnostics bundle for the statement.
+1. Activate [statement diagnostics](ui-statements-page.html#diagnostics) on the DB Console Statements Page or run [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option) to obtain a diagnostics bundle for the statement.
 
 1. Start Jaeger:
 
@@ -105,7 +105,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
     <img src="{{ 'images/v20.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
-1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by gathering [diagnostics](admin-ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
+1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by gathering [diagnostics](ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
 
   In the example below, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock](architecture/transaction-layer.html#writing) (56.85ms) and that transaction being committed (131.37ms).
 
@@ -121,7 +121,7 @@ The common reasons for a sub-optimal `SELECT` performance are inefficient scans,
 
 ## Query is always slow
 
-If you have consistently slow queries in your cluster, use the [Statement Details](admin-ui-statements-page.html#statement-details-page) page to drill down to an individual statement and [collect diagnostics](admin-ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
+If you have consistently slow queries in your cluster, use the [Statement Details](ui-statements-page.html#statement-details-page) page to drill down to an individual statement and [collect diagnostics](ui-statements-page.html#diagnostics) for the statement. A diagnostics bundle contains a record of transaction events across nodes for the SQL statement.
 
 You can also use an [`EXPLAIN ANALYZE`](explain-analyze.html) statement, which executes a SQL query and returns a physical query plan with execution statistics. Query plans can be used to troubleshoot slow queries by indicating where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc.
 
@@ -141,17 +141,17 @@ See [Cancel query](manage-long-running-queries.html#cancel-long-running-queries)
 
 ## Low throughput
 
-Throughput is affected by the disk I/O, CPU usage, and network latency. Use the Admin UI to check the following metrics:
+Throughput is affected by the disk I/O, CPU usage, and network latency. Use the DB Console to check the following metrics:
 
-- Disk I/O: [Disk IOPS in progress](admin-ui-hardware-dashboard.html#disk-iops-in-progress)
+- Disk I/O: [Disk IOPS in progress](ui-hardware-dashboard.html#disk-iops-in-progress)
 
-- CPU usage: [CPU percent](admin-ui-hardware-dashboard.html#cpu-percent)
+- CPU usage: [CPU percent](ui-hardware-dashboard.html#cpu-percent)
 
-- Network latency: [Network Latency page](admin-ui-network-latency-page.html)
+- Network latency: [Network Latency page](ui-network-latency-page.html)
 
 ## Single hot node
 
-A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
+A hot node is one that has much higher resource usage than other nodes. To determine if you have a hot node in your cluster, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left, and navigate to the following graphs. Hover over each of the following graphs to see the per-node values of the metrics. If one of the nodes has a higher value, you have a hot node in your cluster.
 
 -   Replication dashboard > Average queries per store graph.
 
@@ -177,7 +177,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 ## INSERT/UPDATE statements are slow
 
-Use the [Statements page](admin-ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and then click Statements on the left.
+Use the [Statements page](ui-statements-page.html) to identify the slow [SQL statements](sql-statements.html). To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and then click Statements on the left.
 
 Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 

@@ -109,7 +109,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 
 ## Step 3. Create a SQL user
 
-You'll use a non-`root` user for running a client workload and accessing the Admin UI.
+You'll use a non-`root` user for running a client workload and accessing the DB Console.
 
 1. In the same terminal, as the `root` user, open the [built-in SQL shell](cockroach-sql.html) against any node:
 
@@ -247,7 +247,7 @@ You'll use a non-`root` user for running a client workload and accessing the Adm
     **Range** | CockroachDB stores all user data (tables, indexes, etc.) and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.<br><br>From a SQL perspective, a table and its secondary indexes initially map to a single range, where each key-value pair in the range represents a single row in the table (also called the primary index because the table is sorted by the primary key) or a single row in a secondary index. As soon as that range reaches 512 MiB in size, it splits into two ranges. This process continues for these new ranges as the table and its indexes continue growing.
     **Replica** | CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
 
-2. With those concepts in mind, open the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and log in with the `maxroach` user.
+2. With those concepts in mind, open the DB Console at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a> and log in with the `maxroach` user.
 
 3. On the **Overview** page, note that the **Replicas** count is the same on all three nodes. This indicates:
     - There are this many "ranges" of data in the cluster. These are mostly internal "system" ranges since you haven't added much table data.
@@ -282,7 +282,7 @@ You'll use a non-`root` user for running a client workload and accessing the Adm
 
 ## Step 7. Watch data rebalance
 
-Back in the Admin UI, you'll see that there are now 5 nodes listed.
+Back in the DB Console, you'll see that there are now 5 nodes listed.
 
 At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being automatically rebalanced to utilize the additional capacity of the new nodes.
 

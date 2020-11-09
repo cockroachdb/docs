@@ -2,13 +2,14 @@
 title: Storage Dashboard
 summary: The Storage dashboard lets you monitor the storage utilization of your cluster.
 toc: true
+redirect_from: admin-ui-storage-dashboard.html
 ---
 
 The **Storage** dashboard lets you monitor the storage utilization of your cluster. 
 
-To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
+To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
 
-{% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
+{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Storage** dashboard displays the following time series graphs:
 
@@ -16,7 +17,7 @@ The **Storage** dashboard displays the following time series graphs:
 
 You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
 
-<img src="{{ 'images/v20.2/admin_ui_capacity.png' | relative_url }}" alt="CockroachDB Admin UI Capacity graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------
@@ -43,7 +44,7 @@ The disk usage of the Cockroach binary, operating system, and other system files
 
 The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB. 
 
-<img src="{{ 'images/v20.2/admin_ui_live_bytes.png' | relative_url }}" alt="CockroachDB Admin UI Replicas per Store" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_live_bytes.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|--------
@@ -51,12 +52,12 @@ Metric | Description
 **System** | Number of physical bytes stored in [system key-value pairs](architecture/distribution-layer.html#meta-ranges). This includes historical and deleted data that has not been [garbage collected](architecture/storage-layer.html#garbage-collection).
 
 {{site.data.alerts.callout_info}}
-{% include {{ page.version.version }}/admin-ui/logical-bytes.md %}
+{% include {{ page.version.version }}/db-console/logical-bytes.md %}
 {{site.data.alerts.end}}
 
 ## File Descriptors
 
-<img src="{{ 'images/v20.2/admin_ui_file_descriptors.png' | relative_url }}" alt="CockroachDB Admin UI File Descriptors" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_file_descriptors.png' | relative_url }}" alt="DB Console File Descriptors" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of open file descriptors for that node, compared with the file descriptor limit.
 
@@ -65,7 +66,7 @@ Metric | Description
 If the Open count is almost equal to the Limit count, increase [File Descriptors](recommended-production-settings.html#file-descriptors-limit).
 
 {{site.data.alerts.callout_info}}
-If you are running multiple nodes on a single machine (not recommended), the actual number of open file descriptors are considered open on each node. Thus the limit count value displayed on the Admin UI is the actual value of open file descriptors multiplied by the number of nodes, compared with the file descriptor limit.
+If you are running multiple nodes on a single machine (not recommended), the actual number of open file descriptors are considered open on each node. Thus the limit count value displayed on the DB Console is the actual value of open file descriptors multiplied by the number of nodes, compared with the file descriptor limit.
 {{site.data.alerts.end}}
 
 For Windows systems, you can ignore the File Descriptors graph because the concept of file descriptors is not applicable to Windows.
@@ -84,7 +85,7 @@ The **Storage** dashboard shows other time series graphs that are important for 
 
 For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
 
-{% include {{ page.version.version }}/admin-ui/admin-ui-summary-events.md %}
+{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 

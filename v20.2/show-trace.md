@@ -9,7 +9,7 @@ The `SHOW TRACE FOR SESSION` [statement](sql-statements.html) returns details ab
 You can use `SHOW TRACE FOR SESSION` to debug why a query is not performing as expected, to add more information to bug reports, or to generally learn more about how CockroachDB works.
 
 {{site.data.alerts.callout_info}}
-Statement traces can be obtained in plaintext, JSON, and [Jaeger-compatible](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) formats by activating [statement diagnostics](admin-ui-statements-page.html#diagnostics) on the Admin UI Statements Page or running [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option).
+Statement traces can be obtained in plaintext, JSON, and [Jaeger-compatible](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) formats by activating [statement diagnostics](ui-statements-page.html#diagnostics) on the DB Console Statements Page or running [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#debug-option).
 {{site.data.alerts.end}}
 
 ## Usage overview

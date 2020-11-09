@@ -125,7 +125,7 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+{% include {{ page.version.version }}/ui/ui-log-files.md %}
 {{site.data.alerts.end}}
 
 ## Step 5. Populate the `orders` table
@@ -185,7 +185,7 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+{% include {{ page.version.version }}/ui/ui-log-files.md %}
 {{site.data.alerts.end}}
 
 ## See also

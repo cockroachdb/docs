@@ -102,7 +102,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
 
 2. Take a moment to understand the [flags](cockroach-start.html#flags) you used:
     - The `--certs-dir` directory points to the directory holding certificates and keys.
-    - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the Admin UI.
+    - Since this is a purely local cluster, `--listen-addr=localhost:26257` and `--http-addr=localhost:8080` tell the node to listen only on `localhost`, with port `26257` used for internal and client traffic and port `8080` used for HTTP requests from the DB Console.
     - The `--store` flag indicates the location where the node's data and logs are stored.
     - The `--join` flag specifies the addresses and ports of the nodes that will initially comprise your cluster. You'll use this exact `--join` flag when starting other nodes as well.
 
@@ -244,7 +244,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
     As you can see, node 1 and node 2 behaved identically as SQL gateways.
 
-5. Now [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need to [access the Admin UI](#step-5-access-the-admin-ui):
+5. Now [create a user with a password](create-user.html#create-a-user-with-a-password), which you will need to [access the DB Console](#step-5-access-the-db-console):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -287,11 +287,11 @@ CockroachDB also comes with a number of [built-in workloads](cockroach-workload.
     'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
     ~~~
 
-## Step 5. Access the Admin UI
+## Step 5. Access the DB Console
 
-The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
+The CockroachDB [DB Console](ui-overview.html) gives you insight into the overall health of your cluster as well as the performance of the client workload.
 
-1. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
 
     Run the [`cockroach sql`](cockroach-sql.html) command against node 1:
 
@@ -320,21 +320,21 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
 5. Log in with the username and password you created earlier (`max`/`roach`).
 
-6. On the [**Cluster Overview**](admin-ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
+6. On the [**Cluster Overview**](ui-cluster-overview-page.html), notice that three nodes are live, with an identical replica count on each node:
 
-    <img src="{{ 'images/v20.2/admin_ui_cluster_overview_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     This demonstrates CockroachDB's [automated replication](demo-data-replication.html) of data via the Raft consensus protocol.    
 
     {{site.data.alerts.callout_info}}
-    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).
+    Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).
     {{site.data.alerts.end}}
 
-7. Click [**Metrics**](admin-ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
+7. Click [**Metrics**](ui-overview-dashboard.html) to access a variety of time series dashboards, including graphs of SQL queries and service latency over time:
 
-    <img src="{{ 'images/v20.2/admin_ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/ui_overview_dashboard_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-8. Use the [**Databases**](admin-ui-databases-page.html), [**Statements**](admin-ui-statements-page.html), and [**Jobs**](admin-ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
+8. Use the [**Databases**](ui-databases-page.html), [**Statements**](ui-statements-page.html), and [**Jobs**](ui-jobs-page.html) pages to view details about your databases and tables, to assess the performance of specific queries, and to monitor the status of long-running operations like schema changes, respectively.
 
 ## Step 6. Simulate node failure
 
@@ -345,9 +345,9 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
     $ cockroach quit --certs-dir=certs --host=localhost:26259
     ~~~
 
-2. Back in the Admin UI, despite one node being "suspect", notice the continued SQL traffic:
+2. Back in the DB Console, despite one node being "suspect", notice the continued SQL traffic:
 
-    <img src="{{ 'images/v20.2/admin_ui_overview_dashboard_1_suspect.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/ui_overview_dashboard_1_suspect.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     This demonstrates CockroachDB's use of the Raft consensus protocol to [maintain availability and consistency in the face of failure](demo-fault-tolerance-and-recovery.html); as long as a majority of replicas remain online, the cluster and client traffic continue uninterrupted.
 
@@ -394,9 +394,9 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 
     Again, these commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-2. Back on the **Cluster Overview** in the Admin UI, you'll now see 5 nodes listed:
+2. Back on the **Cluster Overview** in the DB Console, you'll now see 5 nodes listed:
 
-    <img src="{{ 'images/v20.2/admin_ui_cluster_overview_5_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/ui_cluster_overview_5_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     At first, the replica count will be lower for nodes 4 and 5. Very soon, however, you'll see those numbers even out across all nodes, indicating that data is being [automatically rebalanced](demo-replication-and-rebalancing.html) to utilize the additional capacity of the new nodes.
 

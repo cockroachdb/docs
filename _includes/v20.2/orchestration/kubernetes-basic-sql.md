@@ -34,7 +34,7 @@
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
 
-      You will need this username and password to access the Admin UI later.
+      You will need this username and password to access the DB Console later.
 
 1. Exit the SQL shell and pod:
 

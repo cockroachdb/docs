@@ -1,4 +1,4 @@
-Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE)  service, the hosted Amazon Elastic Kubernetes Service (EKS), or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
+wChoose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE)  service, the hosted Amazon Elastic Kubernetes Service (EKS), or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
 - [Hosted GKE](#hosted-gke)
 - [Hosted EKS](#hosted-eks)
@@ -11,7 +11,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
     This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
-    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the CockroachDB Admin UI using the steps in this guide.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.{{site.data.alerts.end}}
 
 2. From your local workstation, start the Kubernetes cluster:
 

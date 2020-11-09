@@ -1,10 +1,11 @@
 ---
 title: Statements Page
 toc: true
+redirect_from: admin-ui-statements-page.html
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
 {{site.data.alerts.end}}
 
 The **Statements** page helps you:
@@ -13,7 +14,7 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Statements** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** in the left-hand navigation.
 
 ## Search and filter by application
 
@@ -33,7 +34,7 @@ Use this page to identify SQL statements that you may want to [troubleshoot](que
 If you haven't yet executed any queries in the cluster as a user, this page will initially be blank.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v20.2/admin-ui-statements-page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui-statements-page.png' | relative_url }}" alt="DB Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 Parameter | Description
 -----|------------
@@ -87,7 +88,7 @@ Click on a SQL statement fingerprint to open **Statement Details**. For each sta
 - [Logical plan](#logical-plan)
 - [Statistics](#execution-stats)
 
-<img src="{{ 'images/v20.2/admin_ui_statements_details_page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_statements_details_page.png' | relative_url }}" alt="DB Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 ### Overview
 
@@ -123,7 +124,7 @@ When you activate diagnostics for a fingerprint, CockroachDB waits for the next 
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v20.2/admin_ui_statements_diagnostics.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_statements_diagnostics.png' | relative_url }}" alt="DB Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 - Click the **Activate** button to begin collecting diagnostics for the fingerprint. This will open the list of **Statement diagnostics** with a status next to each activated diagnostic.
 	- `WAITING FOR QUERY` indicates that a SQL statement matching the fingerprint has not yet been recorded.
@@ -139,7 +140,7 @@ Click **All statement diagnostics** to view a complete history of your collected
 
 The **Logical Plan** section displays CockroachDB's query plan for an [explainable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](explain.html).
 
-<img src="{{ 'images/v20.2/admin_ui_statements_logical_plan.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_statements_logical_plan.png' | relative_url }}" alt="DB Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 By default, the logical plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
@@ -157,7 +158,7 @@ By default, the logical plan for each fingerprint is sampled every 5 minutes. Yo
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Service latency can be affected by network latency, which is displayed for your cluster on the [Network Latency](admin-ui-network-latency-page.html) page.
+Service latency can be affected by network latency, which is displayed for your cluster on the [Network Latency](ui-network-latency-page.html) page.
 {{site.data.alerts.end}}
 
 **Other Execution Statistics** displays the following statistics.

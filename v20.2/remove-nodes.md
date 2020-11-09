@@ -82,7 +82,7 @@ To successfully decommission a node in this cluster, you need to add a 6th node.
 
 To ensure your cluster can adequately handle decommissioning nodes:
 
-- Before decommissioning each node verify that there are no [underreplicated or unavailable ranges](admin-ui-replication-dashboard.html).
+- Before decommissioning each node verify that there are no [underreplicated or unavailable ranges](ui-replication-dashboard.html).
 - If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node. If you notice any issues persisting, [contact our support team](support-resources.html).
 
     If possible, keep the node running instead of stopping it, because a hung decommissioning process might be a symptom of a problem that could result in data loss.
@@ -90,7 +90,7 @@ To ensure your cluster can adequately handle decommissioning nodes:
 
 ### Step 1. Check the node before decommissioning
 
-Open the Admin UI, click **Metrics** on the left, select the **Replication** dashboard, and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
+Open the DB Console, click **Metrics** on the left, select the **Replication** dashboard, and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/before-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -138,18 +138,18 @@ Note that `is_decommissioning` will remain `true` after all replicas have been t
 
 ### Step 3. Check the node and cluster after the decommissioning process
 
-In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the decommissioning node, the counts should be 0:
+In the DB Console **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the decommissioning node, the counts should be 0:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
-Return to the [**Node List**](admin-ui-cluster-overview-page.html#node-list) on the Overview page. The `DECOMMISSIONING` node should have 0 replicas, and all other nodes should be healthy (`LIVE`):
+Return to the [**Node List**](ui-cluster-overview-page.html#node-list) on the Overview page. The `DECOMMISSIONING` node should have 0 replicas, and all other nodes should be healthy (`LIVE`):
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/cluster-status-after-decommission1.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
 {{site.data.alerts.callout_success}}
-Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.html#node-status) on the Node List will be `DECOMMISSIONING` until you stop the node. It is also counted as a "Suspect" node in the [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until being shut down.
+Even with zero replicas on a node, its [status](ui-cluster-overview-page.html#node-status) on the Node List will be `DECOMMISSIONING` until you stop the node. It is also counted as a "Suspect" node in the [Cluster Overview panel](ui-cluster-overview-page.html#cluster-overview-panel) until being shut down.
 {{site.data.alerts.end}}
 
 ### Step 4. Stop the decommissioning node
@@ -176,7 +176,7 @@ After a node has been dead for 5 minutes, CockroachDB transfers the range replic
 To prevent the cluster from rebalancing data to a dead node if it comes back online, do the following:
 
 {{site.data.alerts.callout_success}}
-You can check that a node is dead by either running [`cockroach node status`](cockroach-node.html) or opening the Admin UI and scrolling to the [**Node List**](admin-ui-cluster-overview-page.html#node-list) on the **Overview** page.
+You can check that a node is dead by either running [`cockroach node status`](cockroach-node.html) or opening the DB Console and scrolling to the [**Node List**](ui-cluster-overview-page.html#node-list) on the **Overview** page.
 {{site.data.alerts.end}}
 
 ### Step 1. Mark the dead node as decommissioned
@@ -206,7 +206,7 @@ $ cockroach node decommission --self --insecure --host=<address of node to decom
 No more data reported on target nodes. Please verify cluster health before removing the nodes.
 ~~~
 
-Within 5 minutes, you'll see the node move from the Node List to the **Recently Decommissioned Nodes** list in the Admin UI, with its status changed from `DEAD` to `DECOMMISSIONED`.
+Within 5 minutes, you'll see the node move from the Node List to the **Recently Decommissioned Nodes** list in the DB Console, with its status changed from `DEAD` to `DECOMMISSIONED`.
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/cluster-status-after-decommission2.png' | relative_url }}" alt="Decommission a single live node" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -225,7 +225,7 @@ If you want to utilize a decommissioned node again, first [recommission](#recomm
 
 ### Before decommissioning nodes
 
-- Before decommissioning each node verify that there are no [underreplicated or unavailable ranges](admin-ui-replication-dashboard.html).
+- Before decommissioning each node verify that there are no [underreplicated or unavailable ranges](ui-replication-dashboard.html).
 - If you have a decommissioning node that appears to be hung, you can [recommission](#recommission-nodes) the node. If you notice any issues persisting, [contact our support team](support-resources.html).
 
     If possible, keep the node running instead of stopping it, because a hung decommissioning process might be a symptom of a problem that could result in data loss.
@@ -233,7 +233,7 @@ If you want to utilize a decommissioned node again, first [recommission](#recomm
 
 ### Step 1. Check the nodes before decommissioning
 
-Open the Admin UI, click **Metrics** on the left, select the **Replication** dashboard, and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
+Open the DB Console, click **Metrics** on the left, select the **Replication** dashboard, and hover over the **Replicas per Store** and **Leaseholders per Store** graphs:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/decommission-multiple2.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
@@ -291,18 +291,18 @@ Note that `is_decommissioning` will remain `true` after all replicas have been t
 
 ### Step 3. Check the nodes and cluster after the decommissioning process
 
-In the Admin UI **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the decommissioning nodes, the counts should be 0:
+In the DB Console **Replication** dashboard, again hover over the **Replicas per Store** and **Leaseholders per Store** graphs. For the decommissioning nodes, the counts should be 0:
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/decommission-multiple4.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/decommission-multiple5.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
-Return to the [**Node List**](admin-ui-cluster-overview-page.html#node-list) on the Overview page. The `DECOMMISSIONING` nodes should each have 0 replicas, and all other nodes should be healthy (`LIVE`):
+Return to the [**Node List**](ui-cluster-overview-page.html#node-list) on the Overview page. The `DECOMMISSIONING` nodes should each have 0 replicas, and all other nodes should be healthy (`LIVE`):
 
 <div style="text-align: center;"><img src="{{ 'images/v20.2/decommission-multiple6.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 {{site.data.alerts.callout_success}}
-Even with zero replicas on a node, its [status](admin-ui-cluster-overview-page.html#node-status) on the Node List will be `DECOMMISSIONING` until you stop the node. It is also counted as a "Suspect" node in the [Cluster Overview panel](admin-ui-cluster-overview-page.html#cluster-overview-panel) until being shut down.
+Even with zero replicas on a node, its [status](ui-cluster-overview-page.html#node-status) on the Node List will be `DECOMMISSIONING` until you stop the node. It is also counted as a "Suspect" node in the [Cluster Overview panel](ui-cluster-overview-page.html#cluster-overview-panel) until being shut down.
 {{site.data.alerts.end}}
 
 ### Step 4. Stop the decommissioning nodes
@@ -365,7 +365,7 @@ The value of `is_decommissioning` will change back to `false`:
 (1 row)
 ~~~
 
-On the [**Node List**](admin-ui-cluster-overview-page.html#node-list), you should soon see the recommissioned nodes listed as `LIVE`. After a few minutes, you should see replicas rebalanced to the nodes.
+On the [**Node List**](ui-cluster-overview-page.html#node-list), you should soon see the recommissioned nodes listed as `LIVE`. After a few minutes, you should see replicas rebalanced to the nodes.
 
 ## Check the status of decommissioning nodes
 
@@ -407,4 +407,4 @@ $ cockroach node status --decommission --insecure --host=<address of any live no
 ## See also
 
 - [`cockroach start`](cockroach-start.html)
-- [Node status](admin-ui-cluster-overview-page.html#node-status)
+- [Node status](ui-cluster-overview-page.html#node-status)
