@@ -136,10 +136,10 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
 ~~~
                                       text
 --------------------------------------------------------------------------------
-  Statement diagnostics bundle generated. Download from the DB Console (Advanced
+  Statement diagnostics bundle generated. Download from the Admin UI (Advanced
   Debug -> Statement Diagnostics History), via the direct link below, or using
   the command line.
-  DB Console: http://127.0.0.1:26258
+  Admin UI: http://127.0.0.1:26258
   Direct link: http://127.0.0.1:26258/_admin/v1/stmtbundle/...
   Command line: cockroach statement-diag list / download
 (6 rows)
