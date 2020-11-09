@@ -4,8 +4,8 @@ summary: Use the DB Console to monitor and optimize cluster performance.
 toc: true
 redirect_from:
 - explore-the-db-console.html
-- db-console-access-and-navigate.html
-- db-console-overview.html
+- admin-ui-access-and-navigate.html
+- admin-ui-overview.html
 key: explore-the-db-console.html
 ---
 
