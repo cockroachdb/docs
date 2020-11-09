@@ -484,4 +484,4 @@ If we do not have a solution here, you can try using our other [support resource
 
 <!-- Reference Links -->
 
-[db_console]: db-console-overview.html
+[db_console]: ui-overview.html
