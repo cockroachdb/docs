@@ -145,7 +145,7 @@ To exit this state, you should:
 2. Set the following environment variables: `COCKROACH_SCAN_INTERVAL=60m`, and `COCKROACH_SCAN_MIN_IDLE_TIME=1s`.
 3. Restart the cluster.
 
-Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](admin-ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
+Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
@@ -182,9 +182,9 @@ Change data capture (CDC) provides efficient, distributed, row-level change feed
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
-### Admin UI may become inaccessible for secure clusters
+### DB Console may become inaccessible for secure clusters
 
-Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
+Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
 
 ### `AS OF SYSTEM TIME` in `SELECT` statements
 
@@ -200,7 +200,7 @@ To work around this issue, we recommend limiting the size of primary and seconda
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
 
-### Admin UI: Statements page latency reports
+### DB Console: Statements page latency reports
 
 The Statements page does not correctly report "mean latency" or "latency by phase" for statements that result in schema changes or other background jobs.
 
@@ -216,15 +216,15 @@ CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING`
 
 Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB {{ page.version.version }}.
 
-### Admin UI: CPU percentage calculation
+### DB Console: CPU percentage calculation
 
 For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have _n_ cores, then the user CPU percent can range from 0% (indicating an idle system) to (_n_*100)% (indicating full utilization).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
 
-### Admin UI: CPU count in containerized environments
+### DB Console: CPU count in containerized environments
 
-When CockroachDB is run in a containerized environment (e.g., Kubernetes), the Admin UI does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
+When CockroachDB is run in a containerized environment (e.g., Kubernetes), the DB Console does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
 
@@ -311,7 +311,7 @@ SQLSTATE: 0A000
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
-### Available capacity metric in the Admin UI
+### Available capacity metric in the DB Console
 
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 
@@ -358,7 +358,7 @@ However, you might see increased latency caused by a consistently high rate of l
 - Each node was started with a single tier of `--locality`, e.g., `--locality=datacenter=a`.
 - Most client requests get sent to a single datacenter because that's where all your application traffic is.
 
-To detect if this is happening, open the [Admin UI](admin-ui-overview.html), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
+To detect if this is happening, open the [DB Console](ui-overview.html), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
 
 For example, let's say that latency is 10ms from nodes in datacenter A to nodes in datacenter B but is 100ms from nodes in datacenter A to nodes in datacenter C. To ensure A's and B's relative proximity is factored into lease holder rebalancing, you could restart the nodes in datacenter A and B with a common region, `--locality=region=foo,datacenter=a` and `--locality=region=foo,datacenter=b`, while restarting nodes in datacenter C with a different region, `--locality=region=bar,datacenter=c`.
 

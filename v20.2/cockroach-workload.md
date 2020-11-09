@@ -69,7 +69,7 @@ Workload | Description
 [`ycsb`](#ycsb-workload) | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
 {{site.data.alerts.callout_info}}
- `cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used. You can filter queries on `application_name` on the [Statements page of the Admin UI](admin-ui-statements-page.html#search-and-filter-by-application), or in a [`SHOW QUERIES`](show-queries.html#filter-for-specific-queries) statement.
+ `cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used. You can filter queries on `application_name` on the [Statements page of the DB Console](ui-statements-page.html#search-and-filter-by-application), or in a [`SHOW QUERIES`](show-queries.html#filter-for-specific-queries) statement.
 {{site.data.alerts.end}}
 
 ## Flags

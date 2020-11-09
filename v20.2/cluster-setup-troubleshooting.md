@@ -201,7 +201,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 ### Network partition
 
-If the Admin UI lists any dead nodes on the [**Cluster Overview** page](admin-ui-cluster-overview-page.html), then you might have a network partition.
+If the DB Console lists any dead nodes on the [**Cluster Overview** page](ui-cluster-overview-page.html), then you might have a network partition.
 
 **Explanation:** A network partition prevents nodes from communicating with each other in one or both directions. This can be due to a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is torn down and rebuilt. In a symmetric partition, node communication is broken in both directions. In an asymmetric partition, node communication works in one direction but not the other.
 
@@ -211,8 +211,8 @@ The effect of a network partition depends on which nodes are partitioned, where 
 
 To identify a network partition:
 
-1.  Access the [Network Latency](admin-ui-network-latency-page.html) page of the Admin UI.
-2.  In the **Latencies** table, check for nodes with [no connections](admin-ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
+1.  Access the [Network Latency](ui-network-latency-page.html) page of the DB Console.
+2.  In the **Latencies** table, check for nodes with [no connections](ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
 
 ## CockroachDB authentication issues
 
@@ -241,7 +241,7 @@ If you’re running a secure cluster, be sure to monitor your certificate expira
 
 To check the certificate expiration date:
 
-1. [Access the Admin UI](admin-ui-overview.html#admin-ui-access).
+1. [Access the DB Console](ui-overview.html#db-console-access).
 2. Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 3. Scroll down to the **Even More Advanced Debugging** section. Click **All Nodes**. The **Node Diagnostics** page appears. Click the certificates for each node and check the expiration date for each certificate in the Valid Until field.
 
@@ -275,7 +275,7 @@ Following are some of the possible issues you might have while planning capacity
 -   Running storage at 100% utilization read/write will causes poor service time.
 -   Running network at 100% utilization causes response between databases and client to be poor.
 
-**Solution:** [Access the Admin UI](admin-ui-overview.html#admin-ui-access) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
+**Solution:** [Access the DB Console](ui-overview.html#db-console-access) and navigate to **Metrics > Hardware** dashboard to monitor the following metrics:
 
 First, check adequate capacity was available for the incident for the following components.
 
@@ -319,7 +319,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
 **Solution:** To determine Go/CGo allocated memory:
 
-1. [Access the Admin UI](admin-ui-overview.html#admin-ui-access).
+1. [Access the DB Console](ui-overview.html#db-console-access).
 
 2. Navigate to **Metrics > Runtime** dashboard, and check the **Memory Usage** graph.
 
@@ -362,7 +362,7 @@ To rectify the issue, you can either run the cockroachdb process on another node
 
 ### Decommissioned nodes displayed in UI forever
 
-By design, decommissioned nodes are displayed in the Admin UI forever. We retain the list of decommissioned nodes for the following reasons:
+By design, decommissioned nodes are displayed in the DB Console forever. We retain the list of decommissioned nodes for the following reasons:
 
 -   Decommissioning is not entirely free, so showing those decommissioned nodes in the UI reminds you of the baggage your cluster will have to carry around forever.
 -   It also explains to future administrations why your node IDs have gaps (e.g., why the nodes are numbered n1, n2, and n8).
@@ -371,7 +371,7 @@ You can follow the discussion here: [https://github.com/cockroachdb/cockroach/is
 
 ## Replication issues
 
-### Admin UI shows under-replicated/unavailable ranges
+### DB Console shows under-replicated/unavailable ranges
 
 When a CockroachDB node dies (or is partitioned) the under-replicated range count will briefly spike while the system recovers.
 
@@ -385,7 +385,7 @@ When a CockroachDB node dies (or is partitioned) the under-replicated range coun
 
 To identify under-replicated/unavailable ranges:
 
-1.  [Access the Admin UI](admin-ui-overview.html#admin-ui-access).
+1.  [Access the DB Console](ui-overview.html#db-console-access).
 
 2.  On the **Cluster Overview** page, check the **Replication Status**. If the **Under-replicated ranges** or **Unavailable ranges** count is non-zero, then you have under-replicated or unavailable ranges in your cluster.
 
@@ -393,11 +393,11 @@ To identify under-replicated/unavailable ranges:
 
 **Add nodes to the cluster:**
 
-On the Admin UI’s Cluster Overview page, check if any nodes are down. If the number of nodes down is less than (n-1)/2, then that is most probably the cause of the under-replicated/unavailable ranges. Add nodes to the cluster such that the cluster has the required number of nodes to replicate ranges properly.
+On the DB Console’s Cluster Overview page, check if any nodes are down. If the number of nodes down is less than (n-1)/2, then that is most probably the cause of the under-replicated/unavailable ranges. Add nodes to the cluster such that the cluster has the required number of nodes to replicate ranges properly.
 
 If you still see under-replicated/unavailable ranges on the Cluster Overview page, investigate further:
 
-1.  [Access the Admin UI](admin-ui-overview.html#admin-ui-access)
+1.  [Access the DB Console](ui-overview.html#db-console-access)
 2.  Click the gear icon on the left-hand navigation bar to access the **Advanced Debugging** page.
 2.  Click **Problem Ranges**.
 3.  In the **Connections** table, identify the node with the under-replicated/unavailable ranges and click the node ID in the Node column.
@@ -414,7 +414,7 @@ Common reasons for node liveness issues include:
 - Outright I/O failure due to a disk stall. This will cause node liveness issues for the same reasons as listed above.
 - Any [Networking issues](#networking-issues) with the node.
 
-The [Admin UI][admin_ui] provides several ways to check for node liveness issues in your cluster:
+The [DB Console][db_console] provides several ways to check for node liveness issues in your cluster:
 
 - [Check node heartbeat latency](#check-node-heartbeat-latency)
 - [Check node liveness record last update](#check-node-liveness-record-last-update)
@@ -428,7 +428,7 @@ For more information about how node liveness works, see [the architecture docume
 
 To check node heartbeat latency:
 
-1. In the [Admin UI][admin_ui], select the **Metrics** tab from the left-hand side of the page.
+1. In the [DB Console][db_console], select the **Metrics** tab from the left-hand side of the page.
 
 2. From the metrics page, select **Dashboard: Distributed** from the dropdown at the top of the page.
 
@@ -440,7 +440,7 @@ To check node heartbeat latency:
 
 To see when a node last updated its liveness record:
 
-1. Go to the **Node Diagnostics** page of the [Admin UI][admin_ui], which lives at:
+1. Go to the **Node Diagnostics** page of the [DB Console][db_console], which lives at:
 
     <https://yourcluster.yourdomain/#/reports/nodes>
 
@@ -454,7 +454,7 @@ A good signal of I/O load is the **Command Commit Latency** in the **Storage** s
 
 To view command commit latency:
 
-1. In the [Admin UI][admin_ui], select the **Metrics** tab from the left-hand side of the page.
+1. In the [DB Console][db_console], select the **Metrics** tab from the left-hand side of the page.
 
 2. From the Metrics page, select **Dashboard: Storage** from the dropdown at the top of the page.
 
@@ -484,4 +484,4 @@ If we do not have a solution here, you can try using our other [support resource
 
 <!-- Reference Links -->
 
-[admin_ui]: admin-ui-overview.html
+[db_console]: ui-overview.html

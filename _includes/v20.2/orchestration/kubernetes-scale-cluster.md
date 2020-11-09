@@ -42,7 +42,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     ...
     ~~~
 
-1. Back in the Admin UI, view the **Node List** to ensure that the fourth node successfully joined the cluster.
+1. Back in the DB Console, view the **Node List** to ensure that the fourth node successfully joined the cluster.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -143,7 +143,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     ...
     ~~~
 
-1. Back in the Admin UI, view the **Node List** to ensure that the fourth node successfully joined the cluster.
+1. Back in the DB Console, view the **Node List** to ensure that the fourth node successfully joined the cluster.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -260,5 +260,5 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     ...
     ~~~
 
-1. Back in the Admin UI, view the **Node List** to ensure that the fourth node successfully joined the cluster.
+1. Back in the DB Console, view the **Node List** to ensure that the fourth node successfully joined the cluster.
 </section>

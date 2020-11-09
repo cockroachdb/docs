@@ -1,9 +1,10 @@
 ---
 title: Jobs Page
 toc: true
+redirect_from: admin-ui-jobs-page.html
 ---
 
-The **Jobs** page of the Admin UI provides details about long-running tasks performed by your cluster. These can include:
+The **Jobs** page of the DB Console provides details about long-running tasks performed by your cluster. These can include:
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}.
 - [`IMPORT`](import.html).
@@ -16,7 +17,7 @@ The **Jobs** page of the Admin UI provides details about long-running tasks perf
 All users can see their own jobs, and `admin` users can view all jobs performed across all nodes in the cluster.
 {{site.data.alerts.end}}
 
-To view these details, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Jobs** in the left-hand navigation.
+To view these details, [access the DB Console](ui-overview.html#db-console-access) and click **Jobs** in the left-hand navigation.
 
 ## Filter jobs
 
@@ -42,7 +43,7 @@ Use the **Jobs** list to see your recently created and completed jobs.
 
 - To view [job details](#job-details), click on the job description.
 
-<img src="{{ 'images/v20.2/admin_ui_jobs_page_new.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_jobs_page_new.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 Parameter | Description
 ----------|------------
@@ -70,7 +71,7 @@ Click any description on the [jobs list](#jobs-list) to see the full SQL stateme
 
 The job ID, creation time, users, and status are also shown.
 
-<img src="{{ 'images/v20.2/admin_ui_jobs_page_details.png' | relative_url }}" alt="CockroachDB Admin UI Jobs Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

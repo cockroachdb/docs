@@ -12,7 +12,7 @@
  Port Range | **26257**
  Source | Your application's IP ranges
 
-#### Admin UI
+#### DB Console
 
  Field | Value
 -------|-------------------

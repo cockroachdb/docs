@@ -4,12 +4,12 @@
 
 A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
 
-<img src="{{ 'images/v20.2/admin_ui_summary_panel.png' | relative_url }}" alt="CockroachDB Admin UI Summary Panel" style="border:1px solid #eee;max-width:40%" />
+<img src="{{ 'images/v20.2/ui_summary_panel.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:40%" />
 
 Metric | Description
 --------|----
 Total Nodes | The total number of nodes in the cluster. [Decommissioned nodes](remove-nodes.html) are not included in this count.
-Capacity Used | The storage capacity used as a percentage of [usable capacity](admin-ui-cluster-overview-page.html#capacity-metrics) allocated across all nodes.
+Capacity Used | The storage capacity used as a percentage of [usable capacity](ui-cluster-overview-page.html#capacity-metrics) allocated across all nodes.
 Unavailable Ranges | The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.
 Queries per second | The total number of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` queries executed per second across the cluster.
 P99 Latency | The 99th percentile of service latency.
@@ -22,7 +22,7 @@ P99 Latency | The 99th percentile of service latency.
 
 Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
 
-<img src="{{ 'images/v20.2/admin_ui_events.png' | relative_url }}" alt="CockroachDB Admin UI Events" style="border:1px solid #eee;max-width:40%" />
+<img src="{{ 'images/v20.2/ui_events.png' | relative_url }}" alt="DB Console Events" style="border:1px solid #eee;max-width:40%" />
 
 The following types of events are listed:
 

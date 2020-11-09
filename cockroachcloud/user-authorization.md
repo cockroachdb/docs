@@ -50,7 +50,7 @@ To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../stable/create
 ~~~
 
 {{site.data.alerts.callout_info}}
-Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the admin UI. To add or change a password for a user, use the [`ALTER USER`](../stable/alter-user.html) statement.
+Be sure to create a password for each new user. Without a password, a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](../stable/alter-user.html) statement.
 {{site.data.alerts.end}}
 
 ### Granting privileges

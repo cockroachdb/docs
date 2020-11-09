@@ -84,7 +84,7 @@ Disabled by | `--log-dir=""`<sup>1</sup> | Default
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/admin-ui/admin-ui-log-files.md %}
+{% include {{ page.version.version }}/ui/ui-log-files.md %}
 {{site.data.alerts.end}}
 
 #### Print to `stderr`

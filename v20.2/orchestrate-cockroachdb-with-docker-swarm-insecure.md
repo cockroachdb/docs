@@ -36,7 +36,7 @@ Create three instances, one for each node of your cluster.
 Be sure to configure your network to allow TCP communication on these ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster) and connecting with applications
-- `8080` for exposing your Admin UI
+- `8080` for exposing your DB Console
 
 ## Step 2. Install Docker Engine
 
@@ -180,7 +180,7 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
     - `--mount`: This flag mounts a local volume with the same name as the service. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
      {{site.data.alerts.callout_info}}If you plan on replacing or adding instances, it's recommended to use remote storage instead of local disk. To do so, <a href="https://docs.docker.com/engine/reference/commandline/volume_create/">create a remote volume</a> for each CockroachDB instance using the volume driver of your choice, and then specify that volume driver instead of the <code>volume-driver=local</code> part of the command above, e.g., <code>volume-driver=gce</code> if using the <a href="https://github.com/mcuadros/gce-docker">GCE volume driver</a>.
     - `--stop-grace-period`: This flag sets a grace period to give CockroachDB enough time to shut down gracefully, when possible.
-    - `--publish`: This flag makes the Admin UI accessible at the IP of any instance running a swarm node on port `8080`. Note that, even though this flag is defined only in the first node's service, the swarm exposes this port on every swarm node using a routing mesh. See [Publishing ports](https://docs.docker.com/engine/swarm/services/#publish-ports) for more details.
+    - `--publish`: This flag makes the DB Console accessible at the IP of any instance running a swarm node on port `8080`. Note that, even though this flag is defined only in the first node's service, the swarm exposes this port on every swarm node using a routing mesh. See [Publishing ports](https://docs.docker.com/engine/swarm/services/#publish-ports) for more details.
     - `cockroachdb/cockroach:{{page.release_info.version}} start ...`: The CockroachDB command to [start a node](cockroach-start.html) in the container in insecure mode and instruct other cluster members to talk to each other using their persistent network addresses, which match the services' names.
 
 2. Verify that all three services were created successfully:
@@ -227,9 +227,9 @@ The `--attachable` option enables non-swarm containers running on Docker to acce
 
 ## Step 7. Monitor the cluster
 
-To view your cluster's Admin UI, open a browser and go to `http://<any node's external IP address>:8080`.
+To view your cluster's DB Console, open a browser and go to `http://<any node's external IP address>:8080`.
 
-{{site.data.alerts.callout_info}}It's possible to access the Admin UI from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}It's possible to access the DB Console from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition.{{site.data.alerts.end}}
 
 On this page, verify that the cluster is running as expected:
 
@@ -272,7 +272,7 @@ To see this in action:
     4a58f86e3ced        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   7 seconds ago       Up 1 seconds        8080/tcp, 26257/tcp   cockroachdb-0.1.cph86kmhhcp8xzq6a1nxtk9ng
     ~~~
 
-4. Back in the Admin UI, view the **Node list** and verify that all 3 nodes are live.
+4. Back in the DB Console, view the **Node list** and verify that all 3 nodes are live.
 
 ## Step 9. Scale the cluster
 

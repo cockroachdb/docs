@@ -65,7 +65,7 @@ Digital Ocean offers fully-managed load balancers to distribute traffic between 
 Set up a firewall for each of your Droplets, allowing TCP communication on the following two ports:
 
 - **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
-- **8080** (`tcp:8080`) for exposing your Admin UI
+- **8080** (`tcp:8080`) for exposing your DB Console
 
 For guidance, you can use Digital Ocean's guide to configuring firewalls based on the Droplet's OS:
 

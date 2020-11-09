@@ -54,7 +54,7 @@ For more details, see [Hardware Recommendations](recommended-production-settings
 [Add Custom TCP inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) to your security group to allow TCP communication on two ports:
 
 - `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
-- `8080` for exposing the Admin UI to the user, and for routing the load balancer to the health check endpoint.
+- `8080` for exposing the DB Console to the user, and for routing the load balancer to the health check endpoint.
 
 {% include {{ page.version.version }}/prod-deployment/aws-inbound-rules.md %}
 

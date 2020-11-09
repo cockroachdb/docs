@@ -166,7 +166,7 @@ When using AWS CloudFormation, the launch process generally takes 10 to 15 minut
 
 ## Step 4. Monitor the cluster
 
-To access the cluster's [Admin UI](explore-the-admin-ui.html), you can [use a DC/OS tunnel to run an HTTP proxy](https://docs.mesosphere.com/1.10/developing-services/tunnel/#using-dcos-tunnel):
+To access the cluster's [DB Console](explore-the-db-console.html), you can [use a DC/OS tunnel to run an HTTP proxy](https://docs.mesosphere.com/1.10/developing-services/tunnel/#using-dcos-tunnel):
 
 1. Install the DC/OS tunnel package:
 
@@ -193,7 +193,7 @@ The default `cockroachdb` service creates a 3-node CockroachDB cluster. You can 
 5. Update the `NODE_COUNT` variable to match the number of CockroachDB nodes you want.
 6. Click **Review & Run** and then **Run Service**.
 
-The Scheduler process will restart with the new configuration and will validate any detected changes. To check that nodes were successfully added to the cluster, go back to the Admin UI, view **Node List**, and check for the new nodes.
+The Scheduler process will restart with the new configuration and will validate any detected changes. To check that nodes were successfully added to the cluster, go back to the DB Console, view **Node List**, and check for the new nodes.
 
 Alternately, you can [SSH to the DC/OS master node](https://docs.mesosphere.com/1.10/administering-clusters/sshcluster/) and then run the [`cockroach node status`](cockroach-node.html) command in a temporary container, again using the `vip` endpoint as the `--host`:
 

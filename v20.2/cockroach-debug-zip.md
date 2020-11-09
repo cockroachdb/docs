@@ -19,7 +19,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - A list of databases and tables
 - Jobs
 - [Cluster Settings](cluster-settings.html)
-- [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
+- [Metrics](ui-custom-chart-debug-page.html#available-metrics)
 - Alerts
 - Heap profiles
 - Problem ranges

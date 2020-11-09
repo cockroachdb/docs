@@ -66,10 +66,10 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.</span>
 
-To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
+To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_info}}
-Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../stable/show-jobs.html) and the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../stable/pause-job.html)/[`RESUME JOB`](../stable/resume-job.html)/[`CANCEL JOB`](../stable/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
+Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../stable/show-jobs.html) and the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../stable/pause-job.html)/[`RESUME JOB`](../stable/resume-job.html)/[`CANCEL JOB`](../stable/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
 
 Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not apply to other upgrades.
 {{site.data.alerts.end}}
@@ -114,7 +114,7 @@ Once your cluster is running v20.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [Admin UI](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 

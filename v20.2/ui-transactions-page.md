@@ -1,10 +1,11 @@
 ---
 title: Transactions Page
 toc: true
+redirect_from: admin-ui-transactions-page.html
 ---
 
 {{site.data.alerts.callout_info}}
-On a secure cluster, this area of the Admin UI can only be accessed by an `admin` user. See [Admin UI access](admin-ui-overview.html#admin-ui-access).
+On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
 {{site.data.alerts.end}}
 
 <span class="version-tag">New in v20.2:</span> The **Transactions** page helps you:
@@ -13,10 +14,10 @@ On a secure cluster, this area of the Admin UI can only be accessed by an `admin
 - View transaction [details](#transaction-details-page).
 
 {{site.data.alerts.callout_success}}
-In contrast with the [**Statements** page](admin-ui-statements-page.html), which displays [SQL statement fingerprints](admin-ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](transactions.html).
+In contrast with the [**Statements** page](ui-statements-page.html), which displays [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](transactions.html).
 {{site.data.alerts.end}}
 
-To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Transactions** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Transactions** in the left-hand navigation.
 
 ## Search and filter by application
 
@@ -41,13 +42,13 @@ Use this page to identify transactions that you may want to [troubleshoot](query
 If you haven't yet run any transactions in the cluster as a user, this page will display a blank table.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v20.2/admin-ui-transactions-page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui-transactions-page.png' | relative_url }}" alt="DB Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 Parameter | Description
 -----|------------
 Transactions | Transaction.<br><br>To view the transaction fingerprint and details, click this to open the [**Transaction Details** page](#transaction-details-page).
 Statements | Number of SQL statements in the transaction.
-Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval).
+Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](ui-statements-page.html#time-interval).
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
 Rows Affected | Average number of rows returned while executing this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
 Latency | Average service latency of this transaction within the last hour or specified [time interval](#time-interval). This includes the total time the transaction remains open, which can exceed the latency of the SQL statements in the transaction. To view the SQL statement latency for this transaction, see the [**Transaction Details**](#transaction-details-page) page. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
@@ -64,26 +65,26 @@ By default, the Transactions page displays all transactions executed within a on
 
 Click on a transaction fingerprint to open **Transaction Details**. 
 
-The *transaction fingerprint* is displayed as a list of the individual [SQL statement fingerprints](admin-ui-statements-page.html#sql-statement-fingerprints) in the transaction:
+The *transaction fingerprint* is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction:
 
-<img src="{{ 'images/v20.2/admin-ui-transactions-details-page.png' | relative_url }}" alt="CockroachDB Admin UI Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui-transactions-details-page.png' | relative_url }}" alt="DB Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 The following details are also displayed for the SQL statements in the transaction:
 
 Parameter | Description
 -----|------------
-Statement | SQL statement [fingerprint](admin-ui-statements-page.html#sql-statement-fingerprints).<br><br>To view additional details of a SQL statement fingerprint, click this to open the [**Statement Details** page](admin-ui-statements-page.html#statement-details-page).
+Statement | SQL statement [fingerprint](ui-statements-page.html#sql-statement-fingerprints).<br><br>To view additional details of a SQL statement fingerprint, click this to open the [**Statement Details** page](ui-statements-page.html#statement-details-page).
 Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions. 
-Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval).
-Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
-Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](admin-ui-statements-page.html#time-interval). This includes the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval).
+Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval). This includes the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 
 ## See also
 
 - [Transactions](transactions.html)
 - [Transaction Layer](architecture/transaction-layer.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Transaction latency graphs](admin-ui-sql-dashboard.html#transactions)
+- [Transaction latency graphs](ui-sql-dashboard.html#transactions)
 - [Transaction retries](transactions.html#transaction-retries)
-- [Admin UI Statements Page](admin-ui-statements-page.html)
+- [DB Console Statements Page](ui-statements-page.html)

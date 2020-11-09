@@ -77,7 +77,7 @@ For an example using this table, see [Find out which databases and tables have u
 | report_id               | [`INT8`](int.html) | The ID of the [report](#system-reports_meta) that generated all of the rows in this table.                                            |
 | total_ranges            | [`INT8`](int.html) | Total [ranges](architecture/overview.html#architecture-range) in the zone this report entry is referring to.                          |
 | unavailable_ranges      | [`INT8`](int.html) | Unavailable ranges in the zone this report entry is referring to.                                                                     |
-| under_replicated_ranges | [`INT8`](int.html) | [Under-replicated ranges](admin-ui-replication-dashboard.html#under-replicated-ranges) in the zone this report entry is referring to. |
+| under_replicated_ranges | [`INT8`](int.html) | [Under-replicated ranges](ui-replication-dashboard.html#under-replicated-ranges) in the zone this report entry is referring to. |
 | over_replicated_ranges  | [`INT8`](int.html) | Over-replicated ranges in the zone this report entry is referring to.                                                                 |
 
 ### system.replication_critical_localities
@@ -312,7 +312,7 @@ If you were to repeat this query at 60-second intervals, you would see that the 
 
 ### Find out which databases and tables have under-replicated ranges
 
-By default, this geo-distributed demo cluster will not have any [under-replicated ranges](admin-ui-replication-dashboard.html#under-replicated-ranges).
+By default, this geo-distributed demo cluster will not have any [under-replicated ranges](ui-replication-dashboard.html#under-replicated-ranges).
 
 To force it into a state where some ranges are under-replicated, issue the following statement, which tells it to store 9 copies of each range underlying the `rides` table (by default [it stores 3](configure-replication-zones.html#num_replicas)).
 

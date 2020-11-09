@@ -56,7 +56,7 @@ Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#bac
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.
 
-To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
+To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_danger}}
 If there are any ongoing schema changes that were started when the cluster was running v19.2 or earlier and that have not reached a terminal state (`succeeded`, `failed`, or `canceled`) after the upgrade to v20.1, wait for them to finish running before upgrading to v20.2. Otherwise, they will be marked as `failed` during the upgrade to v20.2.
@@ -90,7 +90,7 @@ Once your cluster is running v20.2, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [Admin UI](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 

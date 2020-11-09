@@ -9,7 +9,7 @@ key: cluster-topology-patterns.html
 This section provides recommended topology patterns for running CockroachDB in a cloud environment, each with required configurations and latency and resiliency characteristics.
 
 {{site.data.alerts.callout_info}}
-You can observe latency patterns for your cluster on the [Network Latency page](admin-ui-network-latency-page.html) of the Admin UI.
+You can observe latency patterns for your cluster on the [Network Latency page](ui-network-latency-page.html) of the DB Console.
 {{site.data.alerts.end}}
 
 ## Single-region patterns

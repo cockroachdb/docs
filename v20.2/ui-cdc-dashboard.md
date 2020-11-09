@@ -2,11 +2,12 @@
 title: Changefeeds Dashboard
 summary: The Changefeeds dashboard lets you monitor the changefeeds created across your cluster.
 toc: true
+redirect_from: admin-ui-cdc-dashboard.html
 ---
 
-The **Changefeeds** dashboard in the CockroachDB Admin UI lets you monitor the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster. To view this dashboard, [access the Admin UI](admin-ui-overview.html#admin-ui-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
+The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
 
-{% include {{ page.version.version }}/admin-ui/admin-ui-metrics-navigation.md %}
+{% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
 The **Changefeeds** dashboard displays the following time series graphs:
 
@@ -14,7 +15,7 @@ The **Changefeeds** dashboard displays the following time series graphs:
 
 This graph shows the maximum latency for resolved timestamps of any running changefeed.
 
-<img src="{{ 'images/v20.2/admin_ui_max_changefeed.png' | relative_url }}" alt="CockroachDB Admin UI Max Changefeed Latency graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_max_changefeed.png' | relative_url }}" alt="DB Console Max Changefeed Latency graph" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 The maximum latency for resolved timestamps is distinct from and slower than the commit-to-emit latency for individual change messages. For more information about resolved timestamps, see [Ordering guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
@@ -24,7 +25,7 @@ The maximum latency for resolved timestamps is distinct from and slower than the
 
 This graph shows the number of bytes emitted by CockroachDB into the sink for changefeeds.
 
-<img src="{{ 'images/v20.2/admin_ui_sink_byte_traffic.png' | relative_url }}" alt="CockroachDB Admin UI Sink Byte Traffic graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_sink_byte_traffic.png' | relative_url }}" alt="DB Console Sink Byte Traffic graph" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|----
@@ -37,7 +38,7 @@ This graph shows:
 - The number of messages that CockroachDB sent to the sink.
 - The number of flushes that the sink performed for changefeeds.
 
-<img src="{{ 'images/v20.2/admin_ui_sink_counts.png' | relative_url }}" alt="CockroachDB Admin UI Sink Counts graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_sink_counts.png' | relative_url }}" alt="DB Console Sink Counts graph" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|----
@@ -51,7 +52,7 @@ This graph shows:
 - The time in milliseconds per second required by CockroachDB to send messages to the sink.
 - The time CockroachDB spent waiting for the sink to flush the messages for changefeeds.
 
-<img src="{{ 'images/v20.2/admin_ui_sink_timings.png' | relative_url }}" alt="CockroachDB Admin UI Sink Timings graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_sink_timings.png' | relative_url }}" alt="DB Console Sink Timings graph" style="border:1px solid #eee;max-width:100%" />
 
 Metric | Description
 --------|----
@@ -62,9 +63,9 @@ Metric | Description
 
 This graph displays the number of times changefeeds restarted due to retryable errors.
 
-<img src="{{ 'images/v20.2/admin_ui_changefeed_restarts.png' | relative_url }}" alt="CockroachDB Admin UI Changefeed Restarts graph" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_changefeed_restarts.png' | relative_url }}" alt="DB Console Changefeed Restarts graph" style="border:1px solid #eee;max-width:100%" />
 
-{% include {{ page.version.version }}/admin-ui/admin-ui-summary-events.md %}
+{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 

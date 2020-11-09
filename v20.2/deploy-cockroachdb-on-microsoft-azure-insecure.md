@@ -32,7 +32,7 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 CockroachDB requires TCP communication on two ports:
 
 - **26257** (`tcp:26257`) for inter-node communication (i.e., working as a cluster), for applications to connect to the load balancer, and for routing from the load balancer to nodes
-- **8080** (`tcp:8080`) for exposing your Admin UI
+- **8080** (`tcp:8080`) for exposing your DB Console
 
 To enable this in Azure, you must create a Resource Group, Virtual Network, and Network Security Group.
 
@@ -41,7 +41,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 2. [Create a Virtual Network](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-vnet-arm-pportal) that uses your **Resource Group**.
 
 3. [Create a Network Security Group](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-create-nsg-arm-pportal) that uses your **Resource Group**, and then add the following **inbound** rules to it:
-    - **Admin UI support**:
+    - **DB Console support**:
 
          Field | Recommended Value
         -------|-------------------

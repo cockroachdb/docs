@@ -28,7 +28,7 @@ Make sure your cluster is behind a [load balancer](recommended-production-settin
 
 ### Check cluster health
 
-Verify the overall health of your cluster using the [Admin UI](admin-ui-overview.html). On the **Overview**:
+Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
 
   - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
@@ -46,7 +46,7 @@ Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#bac
 
 Make sure there are no [bulk imports](import.html) or [schema changes](online-schema-changes.html) in progress. These are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
 
-To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
+To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_danger}}
 If there are any ongoing schema changes that were started when the cluster was running v19.2 or earlier and that have not reached a terminal state (`succeeded`, `failed`, or `canceled`) after the upgrade to v20.1, wait for them to finish running before upgrading to v20.2. Otherwise, they will be marked as `failed` during the upgrade to v20.2.
@@ -203,7 +203,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     $ systemctl start <systemd config filename>
     ~~~
 
-1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [Admin UI](admin-ui-cluster-overview-page.html#node-status).
+1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [DB Console](ui-cluster-overview-page.html#node-status).
 
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 

@@ -10,7 +10,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 
 - Nodes
 - Clients
-- Admin UI (optional)
+- DB Console (optional)
 
 To create these certificates and keys, use the `cockroach cert` [commands](cockroach-commands.html) with the appropriate subcommands and flags, use [`openssl` commands](https://wiki.openssl.org/index.php/), or use a [custom CA](create-security-certificates-custom-ca.html) (for example, a public CA or your organizational CA).
 
@@ -63,11 +63,11 @@ File name pattern | File usage
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br> Must be signed  by `ca.crt`. Also, `client.<username>.crt` must have `CN=<user>` (for example, `CN=marc` for `client.marc.crt`)
 `client.<user>.key` | Key for the client certificate.
 
-Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the Admin UI](create-security-certificates-custom-ca.html#accessing-the-admin-ui-for-a-secure-cluster).
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag. For more information, refer to [Use a UI certificate and key to access the DB Console](create-security-certificates-custom-ca.html#accessing-the-db-console-for-a-secure-cluster).
 
 Note the following:
 
-- By default, the `node.crt` is multi-functional, as in the same certificate is used for both incoming connections (from SQL and Admin UI clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
+- By default, the `node.crt` is multi-functional, as in the same certificate is used for both incoming connections (from SQL and DB Console clients, and from other CockroachDB nodes) and for outgoing connections to other CockroachDB nodes. To make this possible, the `node.crt` created using the `cockroach cert` command has `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field.
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 

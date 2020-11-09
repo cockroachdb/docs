@@ -1,11 +1,12 @@
 ---
 title: Network Latency Page
 toc: true
+redirect_from: admin-ui-network-latency-page.html
 ---
 
 The **Network Latency** page displays round-trip latencies between all nodes in your cluster. Latency is the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern](topology-patterns.html), or to identify nodes with unexpected latencies.
 
-To view this page, [access the Admin UI](admin-ui-overview.html#admin-ui-access) and click **Network Latency** in the left-hand navigation.
+To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Network Latency** in the left-hand navigation.
 
 ## Sort and filter network latency
 
@@ -19,15 +20,15 @@ Select **Collapse Nodes** to display the mean latencies of each locality, depend
 
 Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network: green for lower values, and blue for higher.
 
-<img src="{{ 'images/v20.2/admin_ui_network_latency_matrix.png' | relative_url }}" alt="CockroachDB Admin UI Network Latency matrix" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_network_latency_matrix.png' | relative_url }}" alt="DB Console Network Latency matrix" style="border:1px solid #eee;max-width:100%" />
 
 Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and locality metadata for origin and destination nodes.
 
-On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html#step-4-access-the-admin-ui), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
+On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html#step-4-access-the-db-console), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
 
 For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
 
-<img src="{{ 'images/v20.2/admin_ui_network_latency_collapsed_nodes.png' | relative_url }}" alt="CockroachDB Admin UI Network Latency collapsed nodes" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/ui_network_latency_collapsed_nodes.png' | relative_url }}" alt="DB Console Network Latency collapsed nodes" style="border:1px solid #eee;max-width:100%" />
 
 ### No connections
 
@@ -46,7 +47,7 @@ Click the **NO CONNECTIONS** link to see lost connections between nodes or [loca
 {% include {{ page.version.version }}/topology-patterns/fundamentals.md %}
 
 {{site.data.alerts.callout_info}}
-Network latency limits the performance of individual operations. You can use the [Statements](admin-ui-statements-page.html) page to see the latencies of SQL statements on gateway nodes.
+Network latency limits the performance of individual operations. You can use the [Statements](ui-statements-page.html) page to see the latencies of SQL statements on gateway nodes.
 {{site.data.alerts.end}}
 
 ## See also

@@ -72,7 +72,7 @@ To rotate a node certificate, you create a new node certificate and key and relo
 
     The `SIGHUP` signal must be sent by the same user running the process (e.g., run with `sudo` if the `cockroach` process is running under user `root`).
 
-4. Verify that certificate rotation was successful using the **Local Node Certificates** page in the Admin UI: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
+4. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
 
     Scroll to the node certificate details and confirm that the **Valid Until** field shows the new certificate expiration time.
 
@@ -126,7 +126,7 @@ For more background, see [Why CockroachDB creates a combined CA certificate](rot
 
     This step is application-specific and may require restarting the client.
 
-6. Verify that certificate rotation was successful using the **Local Node Certificates** page in the Admin UI: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
+6. Verify that certificate rotation was successful using the **Local Node Certificates** page in the DB Console: `https://<address of node with new certs>:8080/#/reports/certificates/local`.
 
     The details of the old as well as new CA certificates should be shown. Confirm that the **Valid Until** field of the new CA certificate shows the new certificate expiration time.
 

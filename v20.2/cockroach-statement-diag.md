@@ -4,7 +4,7 @@ summary: Use statement-diag to manage and download statement diagnostics bundles
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `cockroach statement-diag` [command](cockroach-commands.html) can be used to manage and download statement diagnostics bundles generated from the [Admin UI](admin-ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
+<span class="version-tag">New in v20.2:</span> The `cockroach statement-diag` [command](cockroach-commands.html) can be used to manage and download statement diagnostics bundles generated from the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
 
 ## Required privileges
 
@@ -84,7 +84,7 @@ If you need to troubleshoot this command's behavior, you can change its [logging
 
 ### Setup
 
-These examples assume you are running [an insecure cluster](start-a-local-cluster.html) and have requested and/or generated statement diagnostics bundles using the [Admin UI](admin-ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
+These examples assume you are running [an insecure cluster](start-a-local-cluster.html) and have requested and/or generated statement diagnostics bundles using the [DB Console](ui-statements-page.html#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug).
 
 ### Download a statement diagnostics bundle
 
@@ -142,7 +142,7 @@ $ cockroach statement-diag cancel 603811900498804737 --insecure
 
 ## See also
 
-- [Admin UI Statement Details page](admin-ui-statements-page.html#statement-details-page)
+- [DB Console Statement Details page](ui-statements-page.html#statement-details-page)
 - [`EXPLAIN ANALYZE (DEBUG)`](explain-analyze.html#explain-analyze-debug)
 - [SQL Statements](sql-statements.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)

@@ -112,7 +112,7 @@ The table below describes what actions to take to recover from various hardware 
     <tr>
       <td style="color:#46a417"><b>1 Node</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="2">If the node or AZ becomes unavailable, check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
+      <td rowspan="2">If the node or AZ becomes unavailable, check the <a href="ui-overview-dashboard.html">Overview dashboard</a> on the DB Console:
       <ul>
       <li>If the down node is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.</li>
       <li>If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a>, wipe the store path, and then <a href="cockroach-start.html">rejoin it back to the cluster</a>. If the node has additional hardware issues, decommission the node and <a href="cockroach-start.html">add a new node</a> to the cluster. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.</li></ul></td>
@@ -252,7 +252,7 @@ The table below describes what actions to take to recover from various hardware 
     </tr>
       <td style="color:#46a417"><b>1 Node</td>
       <td style="color:#228B22"><b>√</b></td>
-      <td rowspan="2">If the node or AZ becomes unavailable check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI:
+      <td rowspan="2">If the node or AZ becomes unavailable check the <a href="ui-overview-dashboard.html">Overview dashboard</a> on the DB Console:
       <ul>
       <li>If the down node is marked <b>Suspect</b>, try <a href="start-a-node.html">restarting the node</a>.</li>
       <li>If the down node is marked <b>Dead</b>, <a href="remove-nodes.html">decommission the node</a>, wipe the store path, and then <a href="cockroach-start.html">rejoin it back to the cluster</a>. If the node has additional hardware issues, decommission the node and <a href="cockroach-start.html">add a new node</a> to the cluster. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.</li>
@@ -266,7 +266,7 @@ The table below describes what actions to take to recover from various hardware 
     <tr>
       <td style="color:#46a417"><b>1 Region</b></td>
       <td style="color:#228B22"><b>√</b></td>
-      <td>Check the <a href="admin-ui-overview-dashboard.html">Overview dashboard</a> on the Admin UI. If nodes are marked <b>Dead</b>, <a href="remove-nodes.html">decommission the nodes</a> and <a href="start-a-node.html">add 3 new nodes</a> in a new region. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.</td>
+      <td>Check the <a href="ui-overview-dashboard.html">Overview dashboard</a> on the DB Console. If nodes are marked <b>Dead</b>, <a href="remove-nodes.html">decommission the nodes</a> and <a href="start-a-node.html">add 3 new nodes</a> in a new region. Ensure that <a href="cockroach-start.html#locality">locality flags are set</a> correctly upon node startup.</td>
     </tr>
     <tr>
       <td style="color:#46a417"><b>2 or More Regions</b></td>
