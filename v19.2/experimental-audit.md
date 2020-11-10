@@ -53,7 +53,7 @@ The audit log file format is as shown below.  The numbers above each column are 
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=root, n1]   13   exec "cockroach" {"ab"[53]:READ} "SELECT nonexistent FROM ab" {}    0.123 12   ERROR 0
 ~~~
 
-1. Log level (`INFO`, `WARN`, `ERROR`, or `FATAL`) and date (in yymmdd format)
+1. Log level (`INFO`, `WARN`, `ERROR`, or `FATAL`) and date (in YYMMDD format)
 2. Time (in UTC)
 3. Goroutine ID - this column is used for troubleshooting CockroachDB and may change its meaning at any time
 4. Where the log line was generated
