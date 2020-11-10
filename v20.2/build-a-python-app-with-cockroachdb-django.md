@@ -13,7 +13,7 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level current"><strong>Django</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
-</div></br>
+</div>
 
 {% endunless %}
 
