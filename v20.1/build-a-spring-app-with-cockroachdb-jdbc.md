@@ -618,7 +618,7 @@ This section walks you through the different components of the application proje
 
 `JdbcApplication.java` defines the application's main process. It starts a Spring Boot web application, and then submits requests to the app's REST API that result in database transactions on the CockroachDB cluster.
 
-Here are the contents of [`JdbcApplication.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/JdbcApplication.java):
+Here are the contents of [`JdbcApplication.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/JdbcApplication.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -721,7 +721,7 @@ For simplicity, `application.yml` only specifies properties for a single [Spring
 
 `Account.java` defines the [domain entity](https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks) for the `accounts` table. This class is used throughout the application to represent a row of data in the `accounts` table.
 
-Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/Account.java):
+Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/Account.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -732,7 +732,7 @@ Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach
 
 To represent database objects as [HAL+JSON](https://en.wikipedia.org/wiki/Hypertext_Application_Language) for the REST API, the application extends the Spring HATEOAS module's [RepresentationModel](https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.representation-models) class with `AccountModel`. Like the `Account` class, its attributes represent a row of data in the `accounts` table.
 
-The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/AccountModel.java):
+The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountModel.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -762,7 +762,7 @@ The aspects declared in `TransactionHintsAspect.java` and `RetryableTransactionA
 
 ### REST controller
 
-There are several endpoints exposed by the application's web layer, some of which monitor the health of the application, and some that map to queries executed against the connected database. All of the endpoints served by the application are handled by the `AccountController` class, which is defined in [`AccountController.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/AccountController.java):
+There are several endpoints exposed by the application's web layer, some of which monitor the health of the application, and some that map to queries executed against the connected database. All of the endpoints served by the application are handled by the `AccountController` class, which is defined in [`AccountController.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountController.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -798,7 +798,7 @@ For more details about advice ordering, see [Advice Ordering](https://docs.sprin
 
 #### Transaction attributes
 
-The `TransactionHintsAspect` class, declared as an aspect with the [`@Aspect` annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-at-aspectj), declares an advice method that defines the attributes of a transaction. The `@Order` annotation is passed the lowest level of precedence, `Ordered.LOWEST_PRECEDENCE`, indicating that this advisor must run after the main transaction advisor, within the context of a transaction. Here are the contents of [`TransactionHintsAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/TransactionHintsAspect.java):
+The `TransactionHintsAspect` class, declared as an aspect with the [`@Aspect` annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-at-aspectj), declares an advice method that defines the attributes of a transaction. The `@Order` annotation is passed the lowest level of precedence, `Ordered.LOWEST_PRECEDENCE`, indicating that this advisor must run after the main transaction advisor, within the context of a transaction. Here are the contents of [`TransactionHintsAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/TransactionHintsAspect.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -815,7 +815,7 @@ On verifying that the transaction is active (using `TransactionSynchronizationMa
 
 Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transactions.html#client-side-intervention) into applications written on CockroachDB.
 
-In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class. This class is declared an aspect with the `@Aspect` annotation. The `@Order` annotation on this aspect class is passed `Ordered.LOWEST_PRECEDENCE-2`, a level of precedence above the primary transaction advisor. This indicates that the transaction retry advisor must run outside the context of a transaction. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/RetryableTransactionAspect.java):
+In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class. This class is declared an aspect with the `@Aspect` annotation. The `@Order` annotation on this aspect class is passed `Ordered.LOWEST_PRECEDENCE-2`, a level of precedence above the primary transaction advisor. This indicates that the transaction retry advisor must run outside the context of a transaction. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/RetryableTransactionAspect.java):
 
 {% include copy-clipboard.html %}
 ~~~ java

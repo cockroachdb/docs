@@ -622,7 +622,7 @@ Typically, Liquibase properties are defined in a separate [`liquibase.properties
 
 `Account.java` defines the [entity](https://en.wikipedia.org/wiki/Domain-driven_design#Building_blocks) for the `accounts` table. This class is used throughout the application to represent a row of data in the `accounts` table.
 
-Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/Account.java):
+Here are the contents of [`Account.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/json/Account.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -642,7 +642,7 @@ Spring Data JPA supports standard Java Persistence API (JPA) annotations for dom
 
 To represent database objects as [HAL+JSON](https://en.wikipedia.org/wiki/Hypertext_Application_Language) for the REST API, the application extends the Spring HATEOAS module's [RepresentationModel](https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.representation-models) class with `AccountModel`. Like the `Account` class, its attributes represent a row of data in the `accounts` table.
 
-The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/AccountModel.java):
+The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/json/AccountModel.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -655,7 +655,7 @@ We don't go into much detail about hypermedia representation in this tutorial. F
 
 To abstract the database layer, Spring applications use the [`Repository` interface](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories), or some subinterface of `Repository`. This interface maps to a database object, like a table, and its methods map to queries against that object, like a [`SELECT`](selection-queries.html) or an [`INSERT`](insert.html) statement against a table.
 
-[`AccountRepository.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/AccountRepository.java) defines the main repository for the `accounts` table:
+[`AccountRepository.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/json/AccountRepository.java) defines the main repository for the `accounts` table:
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -672,7 +672,7 @@ For details about control flow and transaction management in this application, s
 
 ### REST controller
 
-There are several endpoints exposed by the application's web layer, some of which monitor the health of the application, and some that map to queries executed against the connected database. All of the endpoints served by the application are handled by the `AccountController` class, which is defined in [`AccountController.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/AccountController.java):
+There are several endpoints exposed by the application's web layer, some of which monitor the health of the application, and some that map to queries executed against the connected database. All of the endpoints served by the application are handled by the `AccountController` class, which is defined in [`AccountController.java`](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jpa/src/main/java/io/roach/data/json/AccountController.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
@@ -703,7 +703,7 @@ For more details about advice ordering, see [Advice Ordering](https://docs.sprin
 
 Transactions may require retries if they experience deadlock or [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) that cannot be resolved without allowing [serialization](demo-serializable.html) anomalies. To handle transactions that are aborted due to transient serialization errors, we highly recommend writing [client-side transaction retry logic](transactions.html#client-side-intervention) into applications written on CockroachDB.
 
-In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, declared an aspect with the `@Aspect` annotation. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/RetryableTransactionAspect.java):
+In this application, transaction retry logic is written into the methods of the `RetryableTransactionAspect` class, declared an aspect with the `@Aspect` annotation. Here are the contents of [`RetryableTransactionAspect.java`](https://github.com/cockroachlabs/roach-data/blob/master/roach-data-jpa/src/main/java/io/roach/data/json/RetryableTransactionAspect.java):
 
 {% include copy-clipboard.html %}
 ~~~ java
