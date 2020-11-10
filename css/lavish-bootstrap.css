@@ -277,7 +277,7 @@ a {
 }
 a:hover {
   text-decoration: none;
-  color: #54B30E;
+  color: #46a417;
 }
 a:focus {
   outline: thin dotted #333;
@@ -286,16 +286,16 @@ a:focus {
 }
 
 .post-content a {
-  color: #54B30E;
+  color: #46a417;
 }
 
 .post-content a:hover {
-  color: #54B30E;
-  border-bottom: 1px solid #54B30E;
+  color: #46a417;
+  border-bottom: 1px solid #46a417;
 }
 
 .post-content .roach a:hover {
-  color: #54B30E;
+  color: #46a417;
   border-bottom: none;
 }
 

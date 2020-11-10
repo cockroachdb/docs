@@ -8,10 +8,10 @@ table {
 }
 
 table thead tr {
-    border-bottom: 2px solid #54B30E !important;
+    border-bottom: 2px solid #46a417 !important;
     border: none;
     background: #ffffff;
-    color: #54B30E;
+    color: #46a417;
 }
 
 table td {
@@ -39,11 +39,11 @@ tbody tr:hover {
 
 .nav > li.active > a {
     background-color: transparent;
-    color: #54B30E;
+    color: #46a417;
 }
 
 .nav > li.active > ul > li.active > a {
-    color: #54B30E;
+    color: #46a417;
 }
 
 .nav > li > a {
@@ -82,8 +82,8 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
 }
 
 .btn {
-    background: #54B30E;
-    border: 2px solid #54B30E;
+    background: #46a417;
+    border: 2px solid #46a417;
     font-family: Avernir-Black, sans-serif;
     font-size: 15px;
     font-weight: bold;
@@ -96,7 +96,7 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
 
 .btn:hover {
     background: #fff;
-    color: #54B30E;
+    color: #46a417;
 }
 
 .navbar-header-items > ul > li {
