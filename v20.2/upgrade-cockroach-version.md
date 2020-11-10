@@ -40,7 +40,7 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v20.2.0.html#deprecations). If any affect your application, make the necessary changes.
 
 ### Let ongoing bulk operations finish
 
