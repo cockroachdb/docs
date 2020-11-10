@@ -163,7 +163,7 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
     SET CLUSTER SETTING kv.range_merge_queue_enabled = false
     ~~~
 
-4. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to 5 minutes:
+4. Change the default [GC TTL](configure-replication-zones.html#gc-ttlseconds) to the following value:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -398,11 +398,11 @@ ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --pa
     ~~~
     Duration: 30m1., Warehouses: 140000, Efficiency: 95.45, tpmC: 1684437.21
     _elapsed___ops/sec(cum)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
-    2824.0    302.0   1140.9   2415.9   9126.8  55834.6 delivery 1801.1s
-    28074.0    402.7   1409.3   2684.4   9126.8  45097.2 newOrder 1801.1s
-    2826.0      6.8     62.9    125.8   4160.7  33286.0 orderStatus 1801.1s
-    28237.4    251.7   1006.6   2415.9  15032.4 103079.2 payment 1801.1s
-    2823.5     39.8    469.8    906.0   5905.6  38654.7 stockLevel 1801.1s
+    1801.1s 	 2824.0     302.0   1140.9   2415.9   9126.8  55834.6 delivery
+    1801.1s		28074.0     402.7   1409.3   2684.4   9126.8  45097.2 newOrder
+    1801.1s 	 2826.0       6.8     62.9    125.8   4160.7  33286.0 orderStatus
+    1801.1s 	28237.4     251.7   1006.6   2415.9  15032.4 103079.2 payment
+    1801.1s 	 2823.5      39.8    469.8    906.0   5905.6  38654.7 stockLevel
     ~~~
 
 ## See also
