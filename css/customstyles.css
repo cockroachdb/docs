@@ -1142,7 +1142,7 @@ section.footer {
     -moz-osx-font-smoothing: grayscale;
     line-height: 30px; }
   .bs-callout--success {
-    background-color: #F0FFE8;
+    background-color: #6933ff0d;
     border-left-color: #6933FF; }
     .bs-callout--success h4, .bs-callout--success .bs-callout__label {
       color: #6933FF; }
@@ -1277,7 +1277,7 @@ section.footer {
     border: 1px solid #6933FF; }
   #os-tabs button.current {
     border: 1px solid #6933FF;
-    background-color: #F0FFE8; }
+    background-color: #6933ff0d; }
 
 .install-button {
   display: inline-block;
@@ -1378,7 +1378,7 @@ section.footer {
       border: 1px solid #6933FF; }
     .filters .filter-button.current {
       border: 1px solid #6933FF;
-      background-color: #F0FFE8; }
+      background-color: #6933ff0d; }
     .filters .filter-button.page-level {
       margin: 15px 15px 0px 0px; }
   .filters a:hover {
@@ -1971,7 +1971,7 @@ polygon.regexp {
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: #F0FFE8;
+  background-color: #6933ff0d;
   font-size: 17px;
   line-height: 1; }
   #feedback-prompt form {
@@ -2013,7 +2013,7 @@ polygon.regexp {
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: #F0FFE8;
+  background-color: #6933ff0d;
   color: #152849 !important;
   font-family: 'AvenirLTStd-Black', serif;
   font-size: 12px;
@@ -2109,8 +2109,8 @@ form[class*="hs-form"] {
 
 .white-popup .hbspt-form .hs-button {
   color: #fff;
-  background: #6933FF;
-  border: 2px solid #6933FF;
+  background: #46a417;
+  border: 2px solid #46a417;
   border-radius: 35px;
   text-align: center;
   vertical-align: middle;
@@ -2125,7 +2125,7 @@ form[class*="hs-form"] {
 
 .white-popup .hbspt-form .hs-button:hover {
   background: #fff;
-  color: #6933FF;
+  color: #46a417;
   outline: none; }
 
 .white-popup .hbspt-form .submitted-message {
