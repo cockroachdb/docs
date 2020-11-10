@@ -61,7 +61,7 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 {% include copy-clipboard.html %}
 ~~~ python
-{% include {{page.version.version}}/app/python/psycopg2/example.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-python-psycopg2/master/example.py %}
 ~~~
 
 ### Run the code
