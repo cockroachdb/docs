@@ -22,7 +22,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table. | Yesnes.html) for a table. | No
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
-[`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs. | Yes
+[`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs, for security purposes. | Yes
 [`OWNER TO`](owner-to.html) | <span class="version-tag">New in v20.2</span>: Change the owner of the table.
 [`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([Enterprise-only](enterprise-licensing.html)). | Yes
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
