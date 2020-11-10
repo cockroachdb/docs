@@ -40,7 +40,7 @@ To set up a secure cluster without using an existing certificate authority, you'
 
 ### Client authentication
 
-CockroachDB offers four methods for client authentication:
+CockroachDB offers the following methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
@@ -68,7 +68,11 @@ CockroachDB offers four methods for client authentication:
 
    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
-   A less secure option is to set the experimental [`--accept-sql-without-tls` flag](cockroach-start.html#security) when starting the cluster. Setting the flag allows you to connect to the cluster without validating the nodes' certificates.
+- **Password authentication without TLS**
+
+   For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start#security).
+
+   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
    Example:
    {% include copy-clipboard.html %}
@@ -84,9 +88,11 @@ CockroachDB offers four methods for client authentication:
     Enter password:
   ~~~
 
-- [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the Admin UI.
+- [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the DB Console.
 
 - [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
+
+
 
 ### Using `cockroach cert` or `openssl` commands
 
