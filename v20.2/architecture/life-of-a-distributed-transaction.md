@@ -1,6 +1,6 @@
 ---
 title: Life of a Distributed Transaction
-summary: This guide details the path through CockroachDB's architecture that a query takes, starting with a SQL client and progressing all the way to RocksDB (and then back out again).
+summary: This guide details the path through CockroachDB's architecture that a query takes, starting with a SQL client and progressing all the way to the storage layer (and then back out again).
 toc: true
 ---
 
@@ -117,9 +117,9 @@ If the write operation is valid according to the evaluator, the leaseholder send
 
 Importantly, this feature is entirely built for transactional optimization (known as [transaction pipelining](transaction-layer.html#transaction-pipelining)). There are no issues if an operation passes the evaluator but doesn't end up committing.
 
-### Reads from RocksDB
+### Reads from the storage layer
 
-All operations (including writes) begin by reading from the local instance of RocksDB to check for write intents for the operation's key. We talk much more about [write intents in the transaction layer of the CockroachDB architecture](transaction-layer.html#write-intents), which is worth reading, but a simplified explanation is that these are provisional, uncommitted writes that express that some other concurrent transaction plans to write a value to the key.
+All operations (including writes) begin by reading from the local instance of the [storage engine](storage-layer.html) to check for write intents for the operation's key. We talk much more about [write intents in the transaction layer of the CockroachDB architecture](transaction-layer.html#write-intents), which is worth reading, but a simplified explanation is that these are provisional, uncommitted writes that express that some other concurrent transaction plans to write a value to the key.
 
 What we detail below is a simplified version of the CockroachDB transaction model. For more detail, check out [the transaction architecture documentation](transaction-layer.html).
 
@@ -128,7 +128,7 @@ What we detail below is a simplified version of the CockroachDB transaction mode
 If an operation encounters a write intent for a key, it attempts to "resolve" the write intent by checking the state of the write intent's transaction. If the write intent's transaction record is...
 
 - `COMMITTED`, this operation converts the write intent to a regular key-value pair, and then proceeds as if it had read that value instead of a write intent.
-- `ABORTED`, this operation discards the write intent and reads the next-most-recent value from RocksDB.
+- `ABORTED`, this operation discards the write intent and reads the next-most-recent value from the storage engine.
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e.,  ahead of this transaction's timestamp); however, this only succeeds if the write intent's transaction has become inactive.
   	- If the push succeeds, the operation continues.
   	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](https:www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
@@ -142,7 +142,7 @@ Check out our architecture documentation for more information about [CockroachDB
 
 #### Read Operations
 
-If the read doesn't encounter a write intent and the key-value operation is meant to serve a read, it can simply use the value it read from the leaseholder's instance of RocksDB. This works because the leaseholder had to be part of the Raft consensus group for any writes to complete, meaning it must have the most up-to-date version of the range's data.
+If the read doesn't encounter a write intent and the key-value operation is meant to serve a read, it can simply use the value it read from the leaseholder's instance of the storage engine. This works because the leaseholder had to be part of the Raft consensus group for any writes to complete, meaning it must have the most up-to-date version of the range's data.
 
 The leaseholder aggregates all read responses into a `BatchResponse` that will get returned to the gateway node's `DistSender`.
 
@@ -158,21 +158,21 @@ The leaseholder then proposes these Raft operations to the Raft group leader. Th
 
 CockroachDB leverages Raft as its consensus protocol. If you aren't familiar with it, we recommend checking out the details about [how CockroachDB leverages Raft](https://www.cockroachlabs.com/docs/v2.1/architecture/replication-layer.html#raft), as well as [learning more about how the protocol works at large](http://thesecretlivesofdata.com/raft/).
 
-In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in RocksDB.
+In terms of executing transactions, the Raft leader receives proposed Raft commands from the leaseholder. Each Raft command is a write that is used to represent an atomic state change of the underlying key-value pairs stored in the storage engine.
 
 ### Consensus
 
 For each command the Raft leader receives, it proposes a vote to the other members of the Raft group.
 
-Once the command achieves consensus (i.e., a majority of nodes including itself acknowledge the Raft command), it is committed to the Raft leader’s Raft log and written to RocksDB. At the same time, the Raft leader also sends a command to all other nodes to include the command in their Raft logs.
+Once the command achieves consensus (i.e., a majority of nodes including itself acknowledge the Raft command), it is committed to the Raft leader’s Raft log and written to the storage engine. At the same time, the Raft leader also sends a command to all other nodes to include the command in their Raft logs.
 
-Once the leader commits the Raft log entry, it’s considered committed. At this point the value is considered written, and if another operation comes in and performs a read on RocksDB for this key, they’ll encounter this value.
+Once the leader commits the Raft log entry, it’s considered committed. At this point the value is considered written, and if another operation comes in and performs a read from the storage engine for this key, they’ll encounter this value.
 
 Note that this write operation creates a write intent; these writes will not be fully committed until the gateway node sets the transaction record's status to `COMMITTED`.
 
 ## On the way back up
 
-Now that we have followed an operation all the way down from the SQL client to RocksDB, we can pretty quickly cover what happens on the way back up (i.e., when generating a response to the client).
+Now that we have followed an operation all the way down from the SQL client to the storage engine, we can pretty quickly cover what happens on the way back up (i.e., when generating a response to the client).
 
 1. Once the leaseholder applies a write to its Raft log,
  it sends an commit acknowledgment to the gateway node's `DistSender`, which was waiting for this signal (having already received the provisional acknowledgment from the leaseholder's evaluator).

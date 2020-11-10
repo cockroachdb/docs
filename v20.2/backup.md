@@ -8,9 +8,9 @@ toc: true
 Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
-CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html#perform-enterprise-backup-and-restore) of your cluster's schema and data that are consistent as of a given timestamp.
+CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
- You can [backup a full cluster](#backup-a-cluster), which includes:
+You can [backup a full cluster](#backup-a-cluster), which includes:
 
 - All user tables
 - Relevant system tables
@@ -35,7 +35,8 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ## Synopsis
 
@@ -111,13 +112,17 @@ For an example of an incremental backup, see the [Create incremental backups](#c
 
 The `BACKUP` process minimizes its impact to the cluster's performance by distributing work to all nodes. Each node backs up only a specific subset of the data it stores (those for which it serves writes; more details about this architectural concept forthcoming), with no two nodes backing up the same data.
 
-For best performance, we also recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
+`BACKUP`, like any read, cannot export a range if the range contains an [unresolved intent](architecture/transaction-layer.html#resolving-write-intents). While you typically will want bulk, background jobs like `BACKUP` to have as little impact on your foreground traffic as possible, it's more important for backups to actually complete (which maintains your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)). Unlike a normal read transaction that will block until any uncommitted writes it encounters are resolved, `BACKUP` will block only for a configurable duration before invoking priority to ensure it can complete on-time.
+
+We recommend always starting backups with a specific [timestamp](timestamp.html) at least 10 seconds in the past. For example:
 
 ~~~ sql
 > BACKUP...AS OF SYSTEM TIME '-10s';
 ~~~
 
-This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
+This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, since the backup will take priority and will force still-running transactions to restart after the backup is finished.
+
+<span class="version-tag">New in v20.2:</span> `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to _not_ skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
 
 ## Viewing and controlling backups jobs
 
@@ -130,7 +135,7 @@ Pause the backup       | [`PAUSE JOB`](pause-job.html)
 Resume the backup      | [`RESUME JOB`](resume-job.html)
 Cancel the backup      | [`CANCEL JOB`](cancel-job.html)
 
-You can also visit the [**Jobs** page](admin-ui-jobs-page.html) of the Admin UI to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
+You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
 
 {{site.data.alerts.callout_info}}
 The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.

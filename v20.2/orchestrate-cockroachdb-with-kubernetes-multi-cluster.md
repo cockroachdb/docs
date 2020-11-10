@@ -78,7 +78,7 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
     This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
-    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the CockroachDB Admin UI using the steps in this guide.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.{{site.data.alerts.end}}
 
 1. From your local workstation, start the first Kubernetes cluster, specifying the [zone](https://cloud.google.com/compute/docs/regions-zones/) it should run in:
 
@@ -300,7 +300,7 @@ For pods to communciate across three separate Kubernetes clusters, the VPCs in a
 For each region, navigate to the Security Groups section of the [Amazon EC2 console](https://console.aws.amazon.com/ec2/) and locate the security group that enables communication between nodes in the cluster. It should have a name like `ClusterSharedNodeSecurityGroup`. [Add Custom TCP inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) to this security group to allow TCP communication on two ports:
 
 - `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
-- `8080` for exposing the Admin UI to the user, and for routing the load balancer to the health check endpoint.
+- `8080` for exposing the DB Console to the user, and for routing the load balancer to the health check endpoint.
 
 {{site.data.alerts.callout_info}}
 Remember to create these inbound rules in all 3 regions. This enables CockroachDB to communicate across each Kubernetes cluster.
@@ -886,7 +886,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
 
-      You will need this username and password to access the Admin UI in the next step.
+      You will need this username and password to access the DB Console in the next step.
 
 1. Exit the SQL shell and pod:
 
@@ -905,16 +905,16 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
     ~~~
 
 <section class="filter-content" markdown="1" data-scope="gke">
-## Step 4. Access the Admin UI
+## Step 4. Access the DB Console
 </section>
 
 <section class="filter-content" markdown="1" data-scope="eks">
-## Step 5. Access the Admin UI
+## Step 5. Access the DB Console
 </section>
 
-To access the cluster's [Admin UI](admin-ui-overview.html):
+To access the cluster's [DB Console](ui-overview.html):
 
-1. On secure clusters, [certain pages of the Admin UI](admin-ui-overview.html#admin-ui-access) can only be accessed by `admin` users.
+1. On secure clusters, [certain pages of the DB Console](ui-overview.html#db-console-access) can only be accessed by `admin` users.
 
     Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
@@ -949,12 +949,12 @@ To access the cluster's [Admin UI](admin-ui-overview.html):
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The `port-forward` command must be run on the same machine as the web browser in which you want to view the Admin UI. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
+    The `port-forward` command must be run on the same machine as the web browser in which you want to view the DB Console. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
     {{site.data.alerts.end}}
 
 1. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password created in the [Use the built-in SQL client](#step-3-use-the-built-in-sql-client) step.
 
-1. In the UI, check the [**Node List**](admin-ui-cluster-overview-page.html#node-list) to verify that all nodes are running, open the [**Databases** page](admin-ui-databases-page.html) to verify that `bank` is listed, and open the [**Network Latency** page](admin-ui-network-latency-page.html) to see the performance of your CockroachDB cluster across 3 regions.
+1. In the UI, check the [**Node List**](ui-cluster-overview-page.html#node-list) to verify that all nodes are running, open the [**Databases** page](ui-databases-page.html) to verify that `bank` is listed, and open the [**Network Latency** page](ui-network-latency-page.html) to see the performance of your CockroachDB cluster across 3 regions.
 
 <section class="filter-content" markdown="1" data-scope="gke">
 ## Step 5. Simulate datacenter failure
@@ -979,7 +979,7 @@ To see this in action:
     statefulset "cockroachdb" scaled
     ~~~
 
-1. In the Admin UI, the **Cluster Overview** will soon show the three nodes from that region as **Suspect**. If you wait for 5 minutes or more, they will be listed as **Dead**. Note that even though there are three dead nodes, the other nodes are all healthy, and any clients using the database in the other regions will continue to work just fine.
+1. In the DB Console, the **Cluster Overview** will soon show the three nodes from that region as **Suspect**. If you wait for 5 minutes or more, they will be listed as **Dead**. Note that even though there are three dead nodes, the other nodes are all healthy, and any clients using the database in the other regions will continue to work just fine.
 
 1. When you're done verifying that the cluster still fully functions with one of the regions down, you can bring the region back up by running:
 

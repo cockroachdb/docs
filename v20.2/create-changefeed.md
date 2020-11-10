@@ -321,4 +321,4 @@ Note that because the cursor is provided, the initial scan is not performed.
 
 - [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
 - [Other SQL Statements](sql-statements.html)
-- [Changefeed Dashboard](admin-ui-cdc-dashboard.html)
+- [Changefeed Dashboard](ui-cdc-dashboard.html)

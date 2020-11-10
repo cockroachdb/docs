@@ -50,7 +50,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 1. In the left navigation bar, click **Networking**.
 2. Click **Add Network**. The **Add Network** modal displays.
 3. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
-4. To allow the network to access the cluster's Admin UI and to use the CockroachDB client to access the databases, select the **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
+4. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 5. Click **Apply**.
 
 ## Step 4. Get the connection string

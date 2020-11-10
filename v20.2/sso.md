@@ -1,10 +1,10 @@
 ---
 title: Single Sign-on (Enterprise)
-summary: Implement single sign-on (SSO) for Admin UI access.
+summary: Implement single sign-on (SSO) for DB Console access.
 toc: true
 ---
 
-Single sign-on (SSO) allows a CockroachDB user to access the Admin UI in a secure cluster via an external identity provider. When SSO is configured and enabled, the [Admin UI login page](admin-ui-overview.html#admin-ui-access) will display an OAuth login button in addition to the password access option.
+Single sign-on (SSO) allows a CockroachDB user to access the DB Console in a secure cluster via an external identity provider. When SSO is configured and enabled, the [DB Console login page](ui-overview.html#db-console-access) will display an OAuth login button in addition to the password access option.
 
 CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/), an authentication layer built on top of OAuth 2.0.
 
@@ -22,14 +22,14 @@ SSO authentication is an [enterprise-only](enterprise-licensing.html) feature.
 
 This SSO implementation uses the [authorization code grant type](https://tools.ietf.org/html/rfc6749#section-4.1) to authenticate a user.
 
-1. A user opens the Admin UI and clicks on the OAuth login button. 
+1. A user opens the DB Console and clicks on the OAuth login button. 
 1. The user is redirected to an external identity provider.
 1. The user successfully authenticates with the provider, completing the OAuth flow.
 1. The user is redirected to the CockroachDB cluster via a callback URL.
 1. The authorization code in the callback query is exchanged for an [ID Token](https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
 1. CockroachDB matches the ID Token to a registered SQL user.
 1. CockroachDB creates a web session for the SQL user.
-1. The user is redirected to the [Admin UI Cluster Overview](admin-ui-cluster-overview-page.html).
+1. The user is redirected to the [DB Console Cluster Overview](ui-cluster-overview-page.html).
 
 ## Cluster settings
 
@@ -56,11 +56,11 @@ The following OIDC [cluster settings](cluster-settings.html) are used to configu
 - `principal_regex` is a regular expression applied to the field specified by `claim_json_key`. It is used to extract an identifier that can be mapped to a SQL user. For example:
 	- `^([^@]+)@[^@]+$` matches any email address (defined as a string containing one `@` sign) and extracts a username from the string to the left of `@`.
 	- `^(.+)$` maps the claim directly to a principal.
-- `autologin` is a Boolean. When `true`, upon loading the Admin UI login page, the browser will automatically initiate the OIDC authentication process by redirecting to `/oidc/v1/login` instead of waiting for the user to log in manually or click the OIDC login button.
+- `autologin` is a Boolean. When `true`, upon loading the DB Console login page, the browser will automatically initiate the OIDC authentication process by redirecting to `/oidc/v1/login` instead of waiting for the user to log in manually or click the OIDC login button.
 
 ## Example (Google OAuth 2.0)
 
-These steps demonstrate how to enable SSO authentication for the Admin UI on a [local secure cluster](secure-a-cluster.html) using [Google's OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) implementation.
+These steps demonstrate how to enable SSO authentication for the DB Console on a [local secure cluster](secure-a-cluster.html) using [Google's OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) implementation.
 
 1. Open the [Credentials page](https://console.developers.google.com/apis/credentials) for your account at Google APIs.
 
@@ -128,7 +128,7 @@ These steps demonstrate how to enable SSO authentication for the Admin UI on a [
 	> SET CLUSTER SETTING server.oidc_authentication.principal_regex = '^([^@]+)@cockroachlabs.com$';
 	~~~
 
-1. [Create a SQL user](create-user.html#create-a-user) that will log into the Admin UI. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `maxroach@cockroachlabs.com` will need the SQL username `maxroach`:
+1. [Create a SQL user](create-user.html#create-a-user) that will log into the DB Console. The SQL username you specify must match the identifier obtained in the previous step. For example, a user with the email address `maxroach@cockroachlabs.com` will need the SQL username `maxroach`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -142,10 +142,10 @@ These steps demonstrate how to enable SSO authentication for the Admin UI on a [
 	> SET CLUSTER SETTING server.oidc_authentication.enabled = true;
 	~~~
 
-	When the user [accesses the Admin UI](admin-ui-overview.html#admin-ui-access), they will be able to log in with their Google account.
+	When the user [accesses the DB Console](ui-overview.html#db-console-access), they will be able to log in with their Google account.
 
-	<img src="{{ 'images/v20.2/admin_ui_login_sso.png' | relative_url }}" alt="CockroachDB Admin UI Single Sign-on" style="border:1px solid #eee;max-width:50%" />
+	<img src="{{ 'images/v20.2/ui_login_sso.png' | relative_url }}" alt="DB Console Single Sign-on" style="border:1px solid #eee;max-width:50%" />
 
 {{site.data.alerts.callout_info}}
-You can optionally enable the [`server.oidc_authentication.autologin` cluster setting](#cluster-settings) to automatically log in an authenticated user who visits the Admin UI.
+You can optionally enable the [`server.oidc_authentication.autologin` cluster setting](#cluster-settings) to automatically log in an authenticated user who visits the DB Console.
 {{site.data.alerts.end}}

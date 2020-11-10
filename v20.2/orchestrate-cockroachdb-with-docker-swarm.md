@@ -38,7 +38,7 @@ Create three instances, one for each node of your cluster.
 Be sure to configure your network to allow TCP communication on these ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster) and connecting with applications
-- `8080` for exposing your Admin UI
+- `8080` for exposing your DB Console
 
 ## Step 2. Install Docker Engine
 
@@ -391,7 +391,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     - `--mount`: This flag mounts a local volume with the same name as the service. This means that data and logs for the node running in this container will be stored in `/cockroach/cockroach-data` on the instance and will be reused on restart as long as restart happens on the same instance, which is not guaranteed.
     {{site.data.alerts.callout_info}}If you plan on replacing or adding instances, it's recommended to use remote storage instead of local disk. To do so, <a href="https://docs.docker.com/engine/reference/commandline/volume_create/">create a remote volume</a> for each CockroachDB instance using the volume driver of your choice, and then specify that volume driver instead of the <code>volume-driver=local</code> part of the command above, e.g., <code>volume-driver=gce</code> if using the <a href="https://github.com/mcuadros/gce-docker">GCE volume driver</a>.{{site.data.alerts.end}}
     - `--stop-grace-period`: This flag sets a grace period to give CockroachDB enough time to shut down gracefully, when possible.
-    - `--publish`: This flag makes the Admin UI accessible at the IP of any instance running a swarm node on port `8080`. Note that, even though this flag is defined only in the first node's service, the swarm exposes this port on every swarm node using a routing mesh. See [Publishing ports](https://docs.docker.com/engine/swarm/services/#publish-ports) for more details.
+    - `--publish`: This flag makes the DB Console accessible at the IP of any instance running a swarm node on port `8080`. Note that, even though this flag is defined only in the first node's service, the swarm exposes this port on every swarm node using a routing mesh. See [Publishing ports](https://docs.docker.com/engine/swarm/services/#publish-ports) for more details.
     - `--secret`: These flags identify the secrets to use in securing the node. They must reference the secret names defined in step 5. For the node and client certificate and key secrets, the `source` field identifies the relevant secret, and the `target` field defines the name to be used in `cockroach start` and `cockroach sql` flags. For the node and client key secrets, the `mode` field also sets the file permissions to `0600`; if this isn't set, Docker will assign a default file permission of `0444`, which will not work with CockroachDB's built-in SQL client.
     - `cockroachdb/cockroach:{{page.release_info.version}} start ...`: The CockroachDB command to [start a node](cockroach-start.html) in the container in insecure mode and instruct other cluster members to talk to each other using their persistent network addresses, which match the services' names.
 
@@ -443,20 +443,20 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     > CREATE USER roach WITH PASSWORD 'Q7gc8rEdS';
     ~~~
 
-  You will need this username and password to access the Admin UI in Step 8.
+  You will need this username and password to access the DB Console in Step 8.
 
 4. Use **CTRL-D**, **CTRL-C**, or `\q` to exit the SQL shell.
 
 ## Step 8. Monitor the cluster
 
-To access your cluster's Admin UI:
+To access your cluster's DB Console:
 
 1. Open a browser and go to `https://<any node's external IP address>:8080`.
-{{site.data.alerts.callout_info}}It's possible to access the Admin UI from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition. However, your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}It's possible to access the DB Console from outside of the swarm because you published port <code>8080</code> externally in the first node's service definition. However, your browser will consider the CockroachDB-created certificate invalid, so you’ll need to click through a warning message to get to the UI.{{site.data.alerts.end}}
 
-2. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password created in Step 7.
+2. On accessing the DB Console, you will see a Login screen, where you will need to enter your username and password created in Step 7.
 
-3. On the Admin UI, verify that the cluster is running as expected:
+3. On the DB Console, verify that the cluster is running as expected:
 
   1. View **Node List** to ensure that all of your nodes successfully joined the cluster.
 
@@ -497,7 +497,7 @@ To see this in action:
     4a58f86e3ced        cockroachdb/cockroach:{{page.release_info.version}}   "/cockroach/cockroach"   7 seconds ago       Up 1 seconds        8080/tcp, 26257/tcp   cockroachdb-2.1.cph86kmhhcp8xzq6a1nxtk9ng
     ~~~
 
-4. Back in the Admin UI, view **Node List** and verify that all 3 nodes are live.
+4. Back in the DB Console, view **Node List** and verify that all 3 nodes are live.
 
 ## Step 10. Scale the cluster
 

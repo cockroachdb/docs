@@ -34,11 +34,11 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 CockroachDB requires TCP communication on two ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster)
-- `8080` for exposing your Admin UI
+- `8080` for exposing your DB Console
 
-To expose your Admin UI and allow traffic from the TCP proxy load balancer and health checker to your instances, [create firewall rules](https://cloud.google.com/compute/docs/vpc/firewalls) for your project. When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature to apply the rule only to instances with the same tag.
+To expose your DB Console and allow traffic from the TCP proxy load balancer and health checker to your instances, [create firewall rules](https://cloud.google.com/compute/docs/vpc/firewalls) for your project. When creating firewall rules, we recommend using Google Cloud Platform's **tag** feature to apply the rule only to instances with the same tag.
 
-#### Admin UI
+#### DB Console
 
  Field | Recommended Value
 -------|-------------------

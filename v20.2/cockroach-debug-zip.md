@@ -9,7 +9,7 @@ key: debug-zip.html
 The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single file (inactive nodes are not included):
 
 - [Log files](debug-and-error-logs.html)
-- Secondary log files (e.g., RocksDB logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log))
+- Secondary log files (e.g., storage engine logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log))
 - Cluster events
 - Schema change events
 - Node liveness
@@ -19,13 +19,14 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 - A list of databases and tables
 - Jobs
 - [Cluster Settings](cluster-settings.html)
-- [Metrics](admin-ui-custom-chart-debug-page.html#available-metrics)
+- [Metrics](ui-custom-chart-debug-page.html#available-metrics)
 - Alerts
 - Heap profiles
 - Problem ranges
 - Sessions
 - Queries
 - Thread stack traces (Linux only)
+- CPU profiles
 
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
@@ -39,7 +40,7 @@ The file produced by `cockroach debug zip` can contain highly [sensitive, identi
 
 There are two scenarios in which `debug zip` is useful:
 
-- To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. See more information [on this page](#collecting-log-files).
+- To collect all of your nodes' logs, which you can then parse to locate issues. It's important to note, though, that `debug zip` can only access logs from active nodes. For more information, see [Collecting log files](#collecting-log-files) below.
 
 - If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`.
 

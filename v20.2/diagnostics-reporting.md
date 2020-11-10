@@ -4,12 +4,12 @@ summary: Learn about the diagnostic details that get shared with CockroachDB and
 toc: true
 ---
 
-By default, the Admin UI and each node of a CockroachDB cluster share anonymous usage details with Cockroach Labs. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
+By default, the DB Console and each node of a CockroachDB cluster share anonymous usage details with Cockroach Labs. These details, which are completely scrubbed of identifiable information, greatly help us understand and improve how the system behaves in real-world scenarios.
 
 This page summarizes the details that get shared, how to view the details yourself, and how to opt out of sharing.
 
 {{site.data.alerts.callout_success}}
-For insights into your cluster's performance and health, use the built-in [Admin UI](admin-ui-overview.html) or a third-party monitoring tool like [Prometheus](monitor-cockroachdb-with-prometheus.html).
+For insights into your cluster's performance and health, use the built-in [DB Console](ui-overview.html) or a third-party monitoring tool like [Prometheus](monitor-cockroachdb-with-prometheus.html).
 {{site.data.alerts.end}}
 
 ## What gets shared

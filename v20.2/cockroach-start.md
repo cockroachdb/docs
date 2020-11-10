@@ -65,6 +65,7 @@ Flag | Description
 `--max-sql-memory` | The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>The temporary files are located in the path specified by the `--temp-dir` flag, or in the subdirectory of the first store (see `--store`) by default.<br><br><strong>Note:</strong> If you use the `%` notation, you might need to escape the `%` sign, for instance, while configuring CockroachDB through `systemd` service files. For this reason, it's recommended to use the decimal notation instead.<br><br>**Default:** `25%` <br><br>The default SQL memory size is suitable for production deployments but can be raised to increase the number of simultaneous client connections the node allows as well as the node's capacity for in-memory processing of rows when using `ORDER BY`, `GROUP BY`, `DISTINCT`, joins, and window functions. For local development clusters with memory-intensive workloads, reduce this value to, for example, `128MiB` to prevent out of memory errors.
 `--pid-file` | The file to which the node's process ID will be written as soon as the node is ready to accept connections. When `--background` is used, this happens before the process detaches from the terminal. When this flag is not set, the process ID is not written to file.
 `--store`<br>`-s` | The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example: <br><br>`--store=/mnt/ssd01 --store=/mnt/ssd02` <br><br>For more details, see [Store](#store) below.
+<a name="flags-spatial-libs"></a>`--spatial-libs` | <span class="version-tag">New in v20.2</span>: The location on disk where CockroachDB looks for [spatial](spatial-features.html) libraries.<br/><br/>**Defaults:** <br/><ul><li>`/usr/local/lib/cockroach`</li><li>A `lib` subdirectory of the CockroachDB binary's current directory.</li></ul><br/>
 `--temp-dir` <a name="temp-dir"></a> | The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output. <br><br>**Default:** Subdirectory of the first [store](#store)
 
 ### Networking
@@ -73,7 +74,7 @@ Flag | Description
 -----|-----------
 `--listen-addr` | The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-addr`. For example, the node will also advertise itself to other nodes using this value if `--advertise-addr` is not specified. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** Listen on all IP addresses on port `26257`; if `--advertise-addr` is not specified, also advertise the node's canonical hostname to other nodes
 `--advertise-addr` | The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--listen-addr`. For example, if the port number is different than the one used in `--listen-addr`, port forwarding is required. For more details, see [Networking](recommended-production-settings.html#networking).<br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257`
-`--http-addr` | The IP address/hostname and port to listen on for Admin UI HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
+`--http-addr` | The IP address/hostname and port to listen on for DB Console HTTP requests. For IPv6, use the notation `[...]`, e.g., `[::1]:8080` or `[fe80::f6f2:::]:8080`.<br><br>**Default:** Listen on the address part of `--listen-addr` on port `8080`
 `--locality-advertise-addr` | The IP address/hostname and port to tell other nodes in specific localities to use. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use `--locality-advertise-addr` to tell nodes within the same network to prefer the private or local address to improve performance and use `--advertise-addr` to tell nodes outside the network to use another address that is reachable from them.<br><br>This flag relies on nodes being started with the [`--locality`](#locality) flag and uses the `locality@address` notation, for example:<br><br>`--locality-advertise-addr=region=us-west@10.0.0.0:26257`<br><br>See the [example](#start-a-multi-node-cluster-across-private-networks) below for more details.
 `--sql-addr` | The IP address/hostname and port to listen on for SQL connections from clients. For IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--advertise-sql-addr`. For example, the node will also advertise itself to clients using this value if `--advertise-sql-addr` is not specified. <br><br>**Default:** The value of `--listen-addr`; if `--listen-addr` is not specified, advertises the node's canonical hostname and port `26257` <br><br>For an example, see [Start a cluster with separate RPC and SQL networks](#start-a-cluster-with-separate-rpc-and-sql-networks)
 `--advertise-sql-addr` | The IP address/hostname and port to tell clients to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation `[...]`, e.g., `[::1]` or `[fe80::f6f2:::]`.<br><br>This flag's effect depends on how it is used in combination with `--sql-addr`. For example, if the port number is different than the one used in `--sql-addr`, port forwarding is required. <br><br>**Default:** The value of `--sql-addr`; if `--sql-addr` is not specified, advertises the value of `--listen-addr`
@@ -128,9 +129,10 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 Supported options:
 
-- `default`: Checks which engine type was last used for this node's [store directory](#store) (Pebble or RocksDB), and uses that engine.  If more than one store is specified, the previous engine type of the first store is used. If the check fails for any reason, or if the store directory does not exist yet, RocksDB is used.
+- `pebble`: **Default** unless specified otherwise at node startup. Uses the [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format.  Pebble differs from RocksDB in that it:
+  - Is written in Go and implements a subset of RocksDB's large feature set.
+  - Contains optimizations that benefit CockroachDB. 
 - `rocksdb`: Uses the [RocksDB](https://rocksdb.org) storage engine.
-- `pebble`: Uses the experimental [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format.  Pebble differs from RocksDB in that it is written in Go and implements a subset of RocksDB's large feature set.
 
 #### Store
 
@@ -190,7 +192,7 @@ These details are also written to the `INFO` log in the `/logs` directory. You c
 Field | Description
 ------|------------
 `build` | The version of CockroachDB you are running.
-`webui` | The URL for accessing the Admin UI.
+`webui` | The URL for accessing the DB Console.
 `sql` | The connection URL for your client.
 `RPC client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
 `logs` | The directory containing debug log data.
@@ -202,10 +204,6 @@ Field | Description
 `status` | Whether the node is the first in the cluster (`initialized new cluster`), joined an existing cluster for the first time (`initialized new node, joined pre-existing cluster`), or rejoined an existing cluster (`restarted pre-existing node`).
 `clusterID` | The ID of the cluster.<br><br>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see the [troubleshooting](common-errors.html#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) docs.
 `nodeID` | The ID of the node.
-
-## Known limitations
-
-{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
 
 ## Examples
 

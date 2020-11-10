@@ -205,8 +205,8 @@ Monitoring is only available for enterprise changefeeds.
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
-- On the [Changefeed Dashboard](admin-ui-cdc-dashboard.html) of the Admin UI.
-- On the [Jobs page](admin-ui-jobs-page.html) of the Admin UI. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
+- On the [Changefeed Dashboard](ui-cdc-dashboard.html) of the DB Console.
+- On the [Jobs page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
 - Using `crdb_internal.jobs`:
 
     {% include copy-clipboard.html %}
@@ -258,9 +258,9 @@ SELECT * from crdb_internal.jobs WHERE job_type='CHANGEFEED';
 
 For more information, see [`SHOW JOBS`](show-jobs.html).
 
-### Using the Admin UI
+### Using the DB Console
 
- On the [**Custom Chart** debug page](admin-ui-custom-chart-debug-page.html) of the Admin UI:
+ On the [**Custom Chart** debug page](ui-custom-chart-debug-page.html) of the DB Console:
 
 1. To add a chart, click **Add Chart**.
 2. Select `changefeed.error_retries` from the **Metric Name** dropdown menu.
@@ -783,7 +783,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-11. Monitor your changefeed on the [Admin UI](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
+11. Monitor your changefeed on the [DB Console](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](ui-cdc-dashboard.html).
 
 12. When you are done, exit the SQL shell (`\q`).
 
@@ -805,4 +805,4 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 - [`PAUSE JOB`](pause-job.html)
 - [`CANCEL JOB`](cancel-job.html)
 - [Other SQL Statements](sql-statements.html)
-- [Changefeed Dashboard](admin-ui-cdc-dashboard.html)
+- [Changefeed Dashboard](ui-cdc-dashboard.html)

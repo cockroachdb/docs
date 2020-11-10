@@ -110,25 +110,25 @@ Inverted indexes on `JSONB` columns support the following comparison operators:
 
 If you require comparisons using [`<`](functions-and-operators.html#operator-less-than)), [`<=`](functions-and-operators.html#operator-less-than-or-equal), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
 
-1. Create your table with a computed column: 
+1. Create your table with a computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE test (
-        id INT, 
-        data JSONB, 
+        id INT,
+        data JSONB,
         foo INT AS ((data->>'foo')::INT) STORED
         );
     ~~~
 
-2. Create an index on your computed column: 
+2. Create an index on your computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
-3. Execute your query with your comparison: 
+3. Execute your query with your comparison:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -141,6 +141,10 @@ If you require comparisons using [`<`](functions-and-operators.html#operator-les
 
 - "is contained by": [`<@`](functions-and-operators.html#operator-is-contained-by)
 - "contains": [`@>`](functions-and-operators.html#operator-contains)
+
+## Known limitations
+
+CockroachDB does not support partitioning inverted indexes. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
 
 ## Example
 

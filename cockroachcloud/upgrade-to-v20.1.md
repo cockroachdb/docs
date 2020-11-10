@@ -25,14 +25,14 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../stable/multi-active-availability.html) design.
 
-Approximately 72 hours after all nodes are running v20.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
+Approximately 72 hours after all nodes are running v20.1, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 72-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
 
 </section>
 <section class="filter-content" markdown="1" data-scope="single-node">
 
 When you start the upgrade, the cluster will be unavailable for a few minutes while the node is stopped and restarted with v20.1.
 
-Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 24-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 24-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
+Approximately 72 hours after the node has been restarted, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.1](#respect-temporary-limitations). Finalization also removes the ability to roll back to v19.2, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console. Also, there are some [temporary limitations](#review-temporary-limitations) during this 72-hour window, so if everything looks good, you'll have the choice to finalize the upgrade more quickly so as to lift these limitations.
 
 </section>
 
@@ -66,10 +66,10 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.</span>
 
-To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI.
+To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_info}}
-Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../stable/show-jobs.html) and the [**Jobs** page](../stable/admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../stable/pause-job.html)/[`RESUME JOB`](../stable/resume-job.html)/[`CANCEL JOB`](../stable/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
+Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../stable/show-jobs.html) and the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../stable/pause-job.html)/[`RESUME JOB`](../stable/resume-job.html)/[`CANCEL JOB`](../stable/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
 
 Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not apply to other upgrades.
 {{site.data.alerts.end}}
@@ -114,11 +114,11 @@ Once your cluster is running v20.1, you will have approximately 72 hours before 
 
 ### Monitor your application
 
-Use the [Admin UI](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
+Use the [DB Console](monitoring-page.html) or your own tooling to monitor your application for any unexpected behavior.
 
 - If everything looks good, you can wait for the upgrade to automatically finalize or you can [trigger finalization more quickly](#finalize-the-upgrade).
 
-- If you see unexpected behavior, you can [rollback to v19.2](#roll-back-the-upgrade). This option is available only during the 24-hour window. If you see unexpected behavior after the upgrade has been finalized, you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+- If you see unexpected behavior, you can [rollback to v19.2](#roll-back-the-upgrade). This option is available only during the 72-hour window. If you see unexpected behavior after the upgrade has been finalized, you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ### Respect temporary limitations
 
@@ -142,7 +142,7 @@ Also, most v20.1 features can be used right way, but there are some that will be
 
 ## Step 6. Finish the upgrade
 
-During the 24-hour window before the upgrade is automatically finalized, if you see unexpected behavior, you can trigger a rollback to v19.2. If everything looks good, you also have the choice to finalize the upgrade more quickly so as to lift the [temporary limitations](#review-temporary-limitations) in place during the upgrade.
+During the 72-hour window before the upgrade is automatically finalized, if you see unexpected behavior, you can trigger a rollback to v19.2. If everything looks good, you also have the choice to finalize the upgrade more quickly so as to lift the [temporary limitations](#review-temporary-limitations) in place during the upgrade.
 
 ### Finalize the upgrade
 

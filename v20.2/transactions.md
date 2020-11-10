@@ -270,6 +270,6 @@ For more information about the relationship between these levels, see [this pape
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
 - [`SHOW`](show-vars.html)
 - [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
-- [Admin UI Transactions Page](admin-ui-transactions-page.html)
+- [DB Console Transactions Page](ui-transactions-page.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
 - [Transaction retry error reference](transaction-retry-error-reference.html)

@@ -34,13 +34,13 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 ## Why is disk usage increasing despite lack of writes?
 
-The timeseries data used to power the graphs in the Admin UI is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
+The timeseries data used to power the graphs in the DB Console is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
 
 ## Can I reduce or disable the storage of timeseries data?
 
-Yes. By default, CockroachDB stores timeseries data for the last 30 days for display in the Admin UI, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
+Yes. By default, CockroachDB stores timeseries data for the last 30 days for display in the DB Console, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
 
-{{site.data.alerts.callout_info}}After reducing or disabling timeseries storage, it can take up to 24 hours for timeseries data to be deleted and for the change to be reflected in Admin UI metrics.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}After reducing or disabling timeseries storage, it can take up to 24 hours for timeseries data to be deleted and for the change to be reflected in DB Console metrics.{{site.data.alerts.end}}
 
 ### Reduce the interval for timeseries storage
 
@@ -126,7 +126,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 {% include {{ page.version.version }}/faq/clock-synchronization-monitoring.html %}
 
-You can also see these metrics in [the Clock Offset graph](admin-ui-runtime-dashboard.html#clock-offset) on the Admin UI's Runtime dashboard.
+You can also see these metrics in [the Clock Offset graph](ui-runtime-dashboard.html#clock-offset) on the DB Console's Runtime dashboard.
 
 ## How do I prepare for planned node maintenance?
 

@@ -61,18 +61,16 @@ If follower reads are enabled, but the time-travel query is not using [`AS OF SY
 To verify that your cluster is performing follower reads:
 
 1. Make sure that [follower reads are enabled](#enable-disable-follower-reads).
-2. Go to the [Custom Chart Debug Page in the Admin UI](admin-ui-custom-chart-debug-page.html) and add the metric `follower_read.success_count` to the time series graph you see there. The number of follower reads performed by your cluster will be shown.
+2. Go to the [Custom Chart Debug Page in the DB Console](ui-custom-chart-debug-page.html) and add the metric `follower_read.success_count` to the time series graph you see there. The number of follower reads performed by your cluster will be shown.
 
 ### Run queries that use follower reads
 
-<a name="experimental-follower-read-timestamp"></a>
-
 Any [`SELECT` statement](select-clause.html) with an [`AS OF SYSTEM TIME`](as-of-system-time.html) value at least 4.8 seconds in the past can be a follower read (i.e., served by any replica).
 
-To simplify this calculation, we've added a convenience function that will always set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads, `experimental_follower_read_timestamp()`:
+To simplify this calculation, we've added a convenience function that will always set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads, `follower_read_timestamp()`:
 
 ``` sql
-SELECT ... FROM ... AS OF SYSTEM TIME experimental_follower_read_timestamp();
+SELECT ... FROM ... AS OF SYSTEM TIME follower_read_timestamp();
 ```
 
 ### Run read-only transactions that use follower reads
@@ -82,7 +80,7 @@ You can set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value for all oper
 ```sql
 BEGIN;
 
-SET TRANSACTION AS OF SYSTEM TIME experimental_follower_read_timestamp();
+SET TRANSACTION AS OF SYSTEM TIME follower_read_timestamp();
 SELECT ...
 SELECT ...
 
@@ -102,7 +100,7 @@ Long-running write transactions will create write intents with a timestamp near 
 To counteract this, you can issue all follower reads in explicit transactions set with `HIGH` priority:
 
 ```sql
-BEGIN PRIORITY HIGH AS OF SYSTEM TIME experimental_follower_read_timestamp();
+BEGIN PRIORITY HIGH AS OF SYSTEM TIME follower_read_timestamp();
 SELECT ...
 SELECT ...
 COMMIT;
@@ -112,6 +110,6 @@ COMMIT;
 
 - [Cluster Settings Overview](cluster-settings.html)
 - [Load-Based Splitting](load-based-splitting.html)
-- [Network Latency Page](admin-ui-network-latency-page.html)
+- [Network Latency Page](ui-network-latency-page.html)
 - [Enterprise Features](enterprise-licensing.html)
 - [Follower Reads Topology Pattern](topology-follower-reads.html)

@@ -6,25 +6,25 @@ redirect_from:
 - ../stable/cockroachcloud-monitoring-page.html
 ---
 
-The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in Admin UI to see them.
+The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in DB Console to see them.
 
-You can use the cluster's built-in Admin UI to view time series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
+You can use the cluster's built-in DB Console to view time series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
-## Access the Admin UI
+## Access the DB Console
 
-To access the Admin UI:
+To access the DB Console:
 
-1. On the cluster's **Monitoring** page, click **Open Admin UI**.
+1. On the cluster's **Monitoring** page, click **Open DB Console**.
 
-    You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+    You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 
 2. Log in with your [SQL username](user-authorization.html#use-the-console) and password.
 
 {{site.data.alerts.callout_info}}
-For details on creating additional users that can connect to the cluster and access the Admin UI, see [User Management](user-authorization.html#use-the-console).
+For details on creating additional users that can connect to the cluster and access the DB Console, see [User Management](user-authorization.html#use-the-console).
 {{site.data.alerts.end}}
 
-## Explore the Admin UI
+## Explore the DB Console
 
-- For an overview of all the areas of the Admin UI, see [Admin UI Overview](../stable/admin-ui-overview.html).
-- Be sure to check out the [**Node Map**](../stable/admin-ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
+- For an overview of all the areas of the DB Console, see [DB Console Overview](../stable/ui-overview.html).
+- Be sure to check out the [**Node Map**](../stable/ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.

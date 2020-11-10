@@ -315,7 +315,7 @@ In a geo-distributed scenario with a cluster that spans multiple datacenters, it
 
 For example, if you have 11 nodes, you may see 11 queries with high latency due to schema cache misses.  Once all nodes have cached the schema locally, the latencies will drop.
 
-This behavior may also cause the [Statements page of the Web UI](admin-ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
+This behavior may also cause the [Statements page of the Web UI](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
 {{site.data.alerts.end}}
 
 As expected, the node in the USA region uses the primary key index.

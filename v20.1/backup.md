@@ -35,7 +35,8 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ## Synopsis
 

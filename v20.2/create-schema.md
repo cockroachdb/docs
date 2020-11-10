@@ -12,7 +12,9 @@ You can also create a user-defined schema by converting an existing database to 
 
 ## Required privileges
 
-Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.
+- Only members of the `admin` role can create new schemas. By default, the `root` user belongs to the `admin` role.
+- To [grant privileges](grant.html) on a user-defined schema, a user must have the `GRANT` privilege on the schema and the privilege that they want to grant.
+- To create or interact with objects that depend on a user-defined schema, a user must have the `USAGE` privilege on the schema.
 
 ## Syntax
 

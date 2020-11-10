@@ -57,7 +57,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Tool | Recommended version | Support level |
 |-----+---------------------+---------------|
-| [Flyway](flyway.html) | [6.4.2](https://flywaydb.org/documentation/commandline/#download-and-installation) or higher | Full |
+| [Flyway](flyway.html) | [7.1.0](https://flywaydb.org/documentation/commandline/#download-and-installation) or higher | Full |
 | [Liquibase](liquibase.html) | [3.8.9](https://www.liquibase.org/download) or higher | Beta |
 
 ## Other tools
