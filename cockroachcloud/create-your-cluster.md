@@ -95,7 +95,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
-        
+
 3. Click **Next**.
 
 ## Step 7. Enter your billing details
@@ -107,7 +107,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
     {{site.data.alerts.end}}
     You will be billed on the 1st and 15th of every month.
 3. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
-4. If you haven't used it yet, enter the code `CRDB30` in the **Trial code** box for a 30-day trial of CockroachCloud and click **Apply**.
+4. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
       {{site.data.alerts.end}}

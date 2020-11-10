@@ -34,6 +34,16 @@ We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS 
 - `europe-west3`
 - `europe-west6`
 
+### How do CockroachCloud free trials work?
+
+CockroachCloud offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
+
+- Create the first cluster in your organization
+- Select 4 or fewer nodes (we recommend starting with 3 so you can try scaling)
+- Don't remove the pre-applied trial code at check out
+
+Once the 30-day period is over, your trial cluster can be scaled beyond 4 nodes. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
+
 ### How do I connect to my cluster?
 
 To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
