@@ -18,7 +18,7 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 
 ## Considerations
 
-- The `SHOW JOBS` statement shows only long-running tasks. For an exhaustive list of jobs running in the cluster, use the [SQL Audit Logging (Experimental)](sql-audit-logging.html) feature.
+- The `SHOW JOBS` statement shows only long-running tasks.
 - For jobs older than 12 hours, query the `crdb_internal.jobs` table.
 - Jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
 - While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.

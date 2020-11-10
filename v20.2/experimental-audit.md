@@ -4,9 +4,9 @@ summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or o
 toc: true
 ---
 
-`EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to turn [SQL audit logging](sql-audit-logging.html) on or off for a table.
+`EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to turn SQL audit logging on or off for a table.
 
-The audit logs contain detailed information about queries being executed against your system, including:
+SQL audit logs contain detailed information about queries being executed against your system, including:
 
 - Full text of the query (which may include personally identifiable information (PII))
 - Date/Time
@@ -14,6 +14,8 @@ The audit logs contain detailed information about queries being executed against
 - Application name
 
 For a detailed description of exactly what is logged, see the [Audit Log File Format](#audit-log-file-format) section below.
+
+CockroachDB stores audit log information in a way that ensures durability, but negatively impacts performance. As a result, we recommend using SQL audit logs for security purposes only. For more information, see [Performance considerations](#performance-considerations).
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
@@ -90,23 +92,9 @@ If your deployment requires particular lifecycle and access policies for audit l
 
 ## Performance considerations
 
-Enabling SQL audit logs will impact performance, as every query that causes a logging event must access the disk of the node on which audit logging is enabled.
+To ensure [non-repudiation](https://en.wikipedia.org/wiki/Non-repudiation) in audit logs, CockroachDB synchronously logs all of the activity of every user on a cluster in a way that is durable to system failures. Every query that causes a logging event must access the disk of the node on which audit logging is enabled. As a result, enabling SQL audit logs negatively impacts performance, and we recommend using SQL audit logs for security purposes only.
 
-For production clusters, the most performant way to log all queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING sql.trace.log_statement_execute = true;
-~~~
-
-With this setting on, each node of the cluster writes all SQL queries it executes to a secondary `cockroach-sql-exec` log file. Use the symlink `cockroach-sql-exec.log` to open the most recent log. When you no longer need to log queries, you can turn the setting back off:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING sql.trace.log_statement_execute = false;
-~~~
-
-These log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
+For debugging and troubleshooting on production clusters, the most performant way to log all queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`. For details, see [Troubleshoot Query Behavior](query-behavior-troubleshooting.html#cluster-wide-execution-logs).
 
 ## Examples
 
