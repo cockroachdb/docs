@@ -88,7 +88,7 @@ CockroachDB offers the following methods for client authentication:
     Enter password:
   ~~~
 
-- [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the Admin UI.
+- [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the DB Console.
 
 - [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
