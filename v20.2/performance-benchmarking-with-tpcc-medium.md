@@ -158,7 +158,7 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
     SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
     SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '128 MiB';
     SET CLUSTER SETTING rocksdb.min_wal_sync_interval = '500us';
-    SET CLUSTER SETTING kv.range_merge_queue_enabled = false;
+    SET CLUSTER SETTING kv.range_merge.queue_enabled = false;
     ~~~
 
 4. Enable the trial license you requested earlier:
