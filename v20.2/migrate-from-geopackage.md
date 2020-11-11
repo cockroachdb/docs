@@ -18,6 +18,8 @@ To follow along with the example below, you will need the following prerequisite
 - [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html)
 - [Python 3](https://www.python.org)
 
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
+
 ## Step 1. Download the GeoPackage data
 
 First, download the zip file containing the spring location data:
@@ -48,6 +50,8 @@ This particular data set emits a warning  due to some date formatting.
 ~~~
 Warning 1: Non-conformant content for record 1 in column field_ch_1, 2017/05/04, successfully parsed
 ~~~
+
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
 ## Step 3. Host the files where the cluster can access them
 
@@ -94,6 +98,7 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
