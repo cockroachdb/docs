@@ -24,7 +24,7 @@
     z-index: 3;
 
     @include at-query($min, $screen-md) {
-      top: 91px;
+      top: 100px;
     }
   }
 

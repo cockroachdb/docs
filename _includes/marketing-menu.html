@@ -1,7 +1,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <div id="new-header">
   <header class="main-navigation p-0 d-lg-flex flex-column-l flex-grow">
-    <nav class="navbar navbar-expand-xl navbar-light px-md-45 px-2 py-lx-0 w-100 pt-sm-2 bg-white z-index-2">
+    <nav class="navbar navbar-expand-xl navbar-light px-2 py-lx-0 w-100 pt-sm-2 bg-white z-index-2">
       <a class="navbar-brand p-0 mr-0 mr-md-2 d-block d-xl-none" href="/"><img width="199" alt="Cockroach Labs"
           class="br0 db mb0" src="https://crl2020.imgix.net/img/cockroach-labs-logo-dark.svg" /></a>
       <button type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbars"
@@ -374,17 +374,31 @@
 
 <script>
   function toggleDropdown(e) {
+    e.preventDefault();
     const _d = $(e.target).closest(".dropdown"),
       _m = $(".dropdown-menu", _d);
       //   TODO: remove timeout
+      if(window.innerWidth <= 768){
+        let shouldOpen = e.type == "click";
+        if(_d.hasClass('show')){
+          shouldOpen = false;
+        }
+
+      _m.toggleClass("show", shouldOpen);
+      _d.toggleClass("show", shouldOpen);
+      $('[data-toggle="dropdown"]', _d).attr("aria-expanded", shouldOpen);
+      return;
+    }
+
     setTimeout(function() {
-      const shouldOpen = e.type !== "click" && _d.is(":hover");
+      let shouldOpen = e.type !== "click" && _d.is(":hover");
       _m.toggleClass("show", shouldOpen);
       _d.toggleClass("show", shouldOpen);
       $('[data-toggle="dropdown"]', _d).attr("aria-expanded", shouldOpen);
     }, e.type === "mouseleave" ? 100 : 0);
+
   }
   
   $("body").on("mouseenter mouseleave", ".dropdown", toggleDropdown);
-  $("body").on("click", ".dropdown-menu a", toggleDropdown);
+  $("body").on("click", ".dropdown-toggle", toggleDropdown);
 </script>

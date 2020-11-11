@@ -472,7 +472,7 @@ body.sidenav-open .col-content {
   @media screen and (min-width: 1200px) {
     .col-sidebar {
       position: fixed;
-      top: 145px;
+      top: 175px;
       bottom: 0;
       min-width: 295px;
       padding: 60px 0 0 30px;
@@ -965,7 +965,7 @@ section.footer {
     z-index: 3; }
     @media screen and (min-width: 992px) {
       .version-nav-wrapper {
-        top: 91px; } }
+        top: 100px; } }
   .version-nav__link {
     display: flex;
     align-items: center;
@@ -1055,7 +1055,7 @@ section.footer {
   @media screen and (min-width: 992px) {
     #sidebar li.search-wrap {
       position: fixed;
-      top: 104px;
+      top: 130px;
       width: 235px;
       padding-top: 50px;
       padding-bottom: 0;
@@ -3475,8 +3475,9 @@ p .version-tag, .clickable-header .version-tag {
     align-items: center;
     width: 100%; }
   #new-header .navbar-toggler {
-    display: none;
-    padding: 0.25rem 0.75rem;
+    margin-left: auto;
+    font-size: 21px !important;
+    padding: 4px 12px;
     font-size: calc(1.26562rem + 0.1875vw);
     line-height: 1;
     background-color: transparent;
@@ -4867,8 +4868,8 @@ p .version-tag, .clickable-header .version-tag {
     padding-right: 0.25rem;
     padding-left: 0.25rem; }
   #new-header .px-2 {
-    padding-right: 0.5rem !important;
-    padding-left: 0.5rem !important; }
+    padding-right: 0.5rem;
+    padding-left: 0.5rem; }
   #new-header .px-3 {
     padding-right: 1rem;
     padding-left: 1rem; }
@@ -5046,8 +5047,8 @@ p .version-tag, .clickable-header .version-tag {
     #new-header .mr-xl-4 {
       margin-right: 24px; }
     #new-header .py-xl-45 {
-      padding-top: 18.75px;
-      padding-bottom: 18.75px; } }
+      padding-top: 30px;
+      padding-bottom: 30px; } }
   @media (min-width: 768px) {
     #new-header .px-md-45 {
       padding-right: 30px;
@@ -5220,18 +5221,12 @@ p .version-tag, .clickable-header .version-tag {
   @media (min-width: 1400px) {
     #new-header .megamenu .container, #new-header .megamenu .container-lg, #new-header .megamenu .container-md, #new-header .megamenu .container-sm, #new-header .megamenu .container-xl, #new-header .megamenu .container-xxl {
       max-width: 1320px !important; } }
-  @media screen and (max-width: 991px) {
-    #new-header .megamenu {
-      display: none; } }
   #new-header .megamenu .navbar-brand {
     margin-right: 15px;
     margin-top: 10px; }
     #new-header .megamenu .navbar-brand a {
       margin-top: 9px;
       margin-right: 16px; }
-
-.navbar-collapse.collapse {
-  display: none !important; }
 
 html {
   height: 100%; }

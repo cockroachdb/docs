@@ -101,7 +101,7 @@ body.sidenav-open {
 
   @include at-query($min, $screen-lg) {
     position: fixed;
-    top: 145px;
+    top: 175px;
     bottom: 0;
     min-width: 295px;
     padding: 60px 0 0 30px;
