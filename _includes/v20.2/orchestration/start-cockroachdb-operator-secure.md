@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_info}}
-The Operator is currently supported for **GKE** only.
+The Operator is currently supported for GKE only.
 {{site.data.alerts.end}}
 
 ### Install the Operator
@@ -66,11 +66,11 @@ On a production cluster, you will need to modify the StatefulSet configuration w
     ~~~
       resources:
         requests:
-          cpu: "4"
-          memory: "16Gi"
+          cpu: "2"
+          memory: "8Gi"
         limits:
-          cpu: "4"
-          memory: "16Gi"
+          cpu: "2"
+          memory: "8Gi"
     ~~~
 
     {{site.data.alerts.callout_info}}
