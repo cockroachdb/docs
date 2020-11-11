@@ -13,6 +13,8 @@ We are using `shp2pgsql` in the example below, but [`ogr2ogr`](https://gdal.org/
 `ogr2ogr -f PGDUMP file.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF file.shp`
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
+
 In the example below we will import a [tornadoes data set](https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip) that is [available from the US National Weather Service](https://www.spc.noaa.gov/gis/svrgis/) (NWS).
 
 {{site.data.alerts.callout_info}}
@@ -100,6 +102,7 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
