@@ -8,10 +8,6 @@ redirect_from:
 
 This page describes the **Backups** page and how to restore your data.
 
-{{site.data.alerts.callout_info}}
-Currently, the **Backups** page is only available for CockroachCloud clusters running on AWS. This page will be available for GCP clusters soon.
-{{site.data.alerts.end}}
-
 Cockroach Labs runs [full backups](../v20.1/backup.html#full-backups) daily and [incremental backups](../v20.1/backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page), where you can:
