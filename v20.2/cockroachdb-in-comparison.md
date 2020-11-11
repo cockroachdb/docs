@@ -19,7 +19,7 @@ This page shows you how the key features of CockroachDB stack up against other d
         <option value="Cassandra">Cassandra</option>
         <option value="MongoDB" selected>MongoDB</option>
         <option value="Spanner">Spanner</option>
-        <option value="Spanner">Yugabyte</option>
+        <option value="Yugabyte">Yugabyte</option>
       </select>
     </th>
     <th class="comparison-chart__column-two">
@@ -30,7 +30,7 @@ This page shows you how the key features of CockroachDB stack up against other d
         <option value="Cassandra">Cassandra</option>
         <option value="MongoDB">MongoDB</option>
         <option value="Spanner">Spanner</option>
-        <option value="Spanner">Yugabyte</option>
+        <option value="Yugabyte">Yugabyte</option>
       </select>
     </th>
     <th>CockroachDB</th>
