@@ -58,7 +58,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster:
 - Manually apply our StatefulSet configuration and related files
 
 {{site.data.alerts.callout_success}}
-<span class="version-tag">New in v20.2:</span> The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) is the recommended method of deploying and maintaining secure CockroachDB clusters on Kubernetes. The Operator eases the creation of StatefulSets, pod authentication, cluster scaling, and rolling upgrades. 
+<span class="version-tag">New in v20.2:</span> The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases the creation of StatefulSets, pod authentication, cluster scaling, and rolling upgrades. The Operator is currently in **beta** and is not yet production-ready.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
