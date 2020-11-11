@@ -89,7 +89,7 @@ body.sidenav-open {
   background-color: $cl_gray_light;
   position: relative;
 
-  @include at-query($max, $screen-md) {
+  @include at-query($max, $screen-lg) {
     position: fixed;
     left: 0;
     top: 115px;
@@ -99,7 +99,7 @@ body.sidenav-open {
     @include groovy(box-shadow);
   }
 
-  @include at-query($min, $screen-md) {
+  @include at-query($min, $screen-lg) {
     position: fixed;
     top: 145px;
     bottom: 0;
