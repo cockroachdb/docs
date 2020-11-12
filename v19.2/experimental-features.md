@@ -26,7 +26,7 @@ The table below lists the experimental session settings that are available.  For
 
 ### Keep SQL audit logs
 
-Log queries against a table to a file. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
 {% include copy-clipboard.html %}
 ~~~ sql
