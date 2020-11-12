@@ -18,6 +18,8 @@ To follow along with the example below, you will need the following prerequisite
 - [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html)
 - [Python 3](https://www.python.org)
 
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
+
 ## Step 1. Download the GeoJSON data
 
 First, download the storage tank GeoJSON data:
@@ -35,6 +37,8 @@ Next, convert the GeoJSON data to SQL using the following `ogr2ogr` command:
 ~~~ shell
 ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
 ~~~
+
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
 ## Step 3. Host the files where the cluster can access them
 
@@ -81,6 +85,7 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)

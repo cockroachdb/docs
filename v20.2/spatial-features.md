@@ -13,12 +13,13 @@ See the links below for more information about how to use CockroachDB for spatia
 - [Install CockroachDB](install-cockroachdb.html)
 - [Working with Spatial Data](spatial-data.html)
 
-## Migrating spatial data into CockroachDB
+## Migrating spatial data into and out of CockroachDB
 
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
+- [Export Spatial Data](export-spatial-data.html)
 
 ## Reference
 
