@@ -1,6 +1,6 @@
 In a new terminal, download the Python code:
 
-`curl -O https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v20.2/app/python/psycopg2/example.py`{{execute T2}}
+`curl -O https://raw.githubusercontent.com/cockroachlabs/hello-world-python-psycopg2/master/example.py`{{execute T2}}
 
 Open the file: `example.py`{{open}}
 
