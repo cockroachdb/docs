@@ -21,7 +21,9 @@ There are two main types of backups:
 You can use the [`BACKUP`][backup] statement to efficiently back up your cluster's schemas and data to popular cloud services such as AWS S3, Google Cloud Storage, or NFS, and the [`RESTORE`][restore] statement to efficiently restore schema and data as necessary.
 
 {{site.data.alerts.callout_success}}
-We recommend [automating daily backups of your cluster](#automated-full-and-incremental-backups). To automate backups, you must have a client send the `BACKUP` statement to the cluster. Once the backup is complete, your client will receive a `BACKUP` response.
+<span class="version-tag">New in v20.2:</span> You can create [schedules for periodic backups](manage-a-backup-schedule.html) in CockroachDB. We recommend using scheduled backups to automate daily backups of your cluster.
+
+Or, you can [automate daily backups of your cluster using scripts](#automated-full-and-incremental-backups) and your preferred method of automation.
 {{site.data.alerts.end}}
 
 ### Full backups
@@ -119,7 +121,7 @@ To take incremental backups, you need an [enterprise license](enterprise-licensi
 
 #### Automated full and incremental backups
 
-You can automate your backups using scripts and your preferred method of automation, such as cron jobs.
+You can automate your backups using scripts and your preferred method of automation, such as cron jobs. To automate backups, you must have a client send the `BACKUP` statement to the cluster. Once the backup is complete, your client will receive a `BACKUP` response.
 
 For your reference, we have created this [sample backup script](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/backup.sh) that you can customize to automate your backups.
 
