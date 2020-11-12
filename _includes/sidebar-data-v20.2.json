@@ -964,22 +964,12 @@
   		  "/${VERSION}/performance-best-practices-overview.html"
   		]
   	      },
-  	      {
-  		"title": "SQL Feature Support",
-  		"items": [
-  		  {
-  		    "title": "SQL Support Summary",
-  		    "urls": [
-  		      "/${VERSION}/sql-feature-support.html"
-  		    ]
-  		  },
-  		  {
-  		    "title": "Detailed SQL Standard Comparison",
-  		    "urls": [
-  		      "/${VERSION}/detailed-sql-support.html"
-  		    ]
-  		  }
-  		]
+      {
+        "title": "SQL Feature Support",
+        "urls": [
+          "/${VERSION}/sql-feature-support.html"
+        ]
+      },
   	      },
       {
     		"title": "SQL Statements",
@@ -2119,67 +2109,67 @@
                       "/${VERSION}/srid-4326.html"
                   ]
               },
-              { 
+              {
                 "title": "ST_Contains",
                 "urls": [
                     "/${VERSION}/st_contains.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Within",
                 "urls": [
                     "/${VERSION}/st_within.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Intersects",
                 "urls": [
                     "/${VERSION}/st_intersects.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_CoveredBy",
                 "urls": [
                     "/${VERSION}/st_coveredby.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Covers",
                 "urls": [
                     "/${VERSION}/st_covers.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Disjoint",
                 "urls": [
                     "/${VERSION}/st_disjoint.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Equals",
                 "urls": [
                     "/${VERSION}/st_equals.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Overlaps",
                 "urls": [
                     "/${VERSION}/st_overlaps.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Touches",
                 "urls": [
                     "/${VERSION}/st_touches.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_ConvexHull",
                 "urls": [
                     "/${VERSION}/st_convexhull.html"
                 ]
               },
-              { 
+              {
                 "title": "ST_Union",
                 "urls": [
                     "/${VERSION}/st_union.html"
