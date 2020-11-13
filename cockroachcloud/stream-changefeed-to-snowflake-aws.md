@@ -18,7 +18,7 @@ Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. 
 
 Before you begin, make sure you have:
 
-- Admin access to a [CockroachCloud account](create-your-account.html)
+- Admin access to a [CockroachCloud account](https://cockroachlabs.cloud/)
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
 
     {{site.data.alerts.callout_info}}

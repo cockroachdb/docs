@@ -35,7 +35,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](create-your-account.html#log-in), you can use the Console to authorize your network:
+Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
 2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.

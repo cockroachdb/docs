@@ -4,6 +4,7 @@ summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-quickstart.html
+- create-your-account.html
 ---
 
 This page shows you how to deploy a free CockroachDB cluster on CockroachCloud, connect to it using a sample workload, and run your first query.
