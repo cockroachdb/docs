@@ -13,6 +13,10 @@ CockroachDB supports Django versions 2.2 and 3.0.
 The example code and instructions on this page use Python 3 and Django 3.0.
 {{site.data.alerts.end}}
 
+## Before you begin
+
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs">sign up for a CockroachCloud account</a>.
+
 ## Step 1. Install Django and the CockroachDB backend for Django
 
 Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
