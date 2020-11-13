@@ -14,7 +14,7 @@ To create and connect to a 30-day free CockroachCloud cluster and run your first
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Start the cluster creation process
 
