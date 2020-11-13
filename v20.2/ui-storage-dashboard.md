@@ -5,7 +5,7 @@ toc: true
 redirect_from: admin-ui-storage-dashboard.html
 ---
 
-The **Storage** dashboard lets you monitor the storage utilization of your cluster. 
+The **Storage** dashboard lets you monitor the storage utilization of your cluster.
 
 To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Storage**.
 
@@ -15,7 +15,7 @@ The **Storage** dashboard displays the following time series graphs:
 
 ## Capacity
 
-You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)).
 
 <img src="{{ 'images/v20.2/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
@@ -42,7 +42,7 @@ The disk usage of the Cockroach binary, operating system, and other system files
 
 ## Live Bytes
 
-The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB. 
+The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB.
 
 <img src="{{ 'images/v20.2/ui_live_bytes.png' | relative_url }}" alt="DB Console Replicas per Store" style="border:1px solid #eee;max-width:100%" />
 
@@ -75,8 +75,10 @@ For Windows systems, you can ignore the File Descriptors graph because the conce
 
 The **Storage** dashboard shows other time series graphs that are important for CockroachDB developers:
 
-- Log Commit Latency
-- Command Commit Latency
+- Log Commit Latency: 99th Percentile
+- Log Commit Latency: 50th Percentile
+- Command Commit Latency: 99th Percentile
+- Command Commit Latency: 50th Percentile
 - Read Amplification
 - SSTables
 - Compactions/Flushes

@@ -290,13 +290,25 @@ module Jekyll
           type: 'synonym',
           synonyms: ['CBO', 'cost-based optimizer', 'cost based optimizer']
         }, false)
- 
+
         index.save_synonym('spatial', {
           objectID: 'spatial',
           type: 'synonym',
           synonyms: ['spatial', 'geospatial']
         }, false)
-      
+
+        index.save_synonym('lisense', {
+          objectID: 'lisense',
+          type: 'synonym',
+          synonyms: ['lisense', 'licence']
+        }, false)
+
+        index.save_synonym('request-cert', {
+          objectID: 'request-cert',
+          type: 'synonym',
+          synonyms: ['request-cert', 'CSR', 'certificate signing request']
+        }, false)
+
         return
       end
 
