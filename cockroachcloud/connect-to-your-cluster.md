@@ -14,7 +14,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
-- If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-6-enable-vpc-peering-optional).
+- If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
 
 ### Add IP addresses to the allowlist
 
@@ -93,7 +93,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
     <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />    
 
 2. **IP Allowlist** is selected by default as the **Network Security** option. Select **VPC Peering** if you have already:
-      - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-6-enable-vpc-peering-optional) for your GCP cluster and
+      - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional) for your GCP cluster and
       - [Established a VPC Peering connection](#establish-a-vpc-peering-connection)
 3. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 4. From the **Region** dropdown, select the region closest to where your client or application is running.

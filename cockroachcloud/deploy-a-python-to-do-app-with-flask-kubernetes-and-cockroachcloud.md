@@ -13,13 +13,15 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 ## Before you begin
 
-Install the following tools, if you don't already have them:
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
-Tool | Purpose
------|--------
-[pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
-[Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
-[minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
+1. Install the following tools, if you don't already have them:
+
+    Tool | Purpose
+    -----|--------
+    [pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
+    [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
+    [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
 ## Prepare your cluster
 
@@ -33,7 +35,7 @@ Tool | Purpose
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](create-your-account.html#log-in), you can use the Console to authorize your network:
+Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
 2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.

@@ -4,6 +4,7 @@ summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-quickstart.html
+- create-your-account.html
 ---
 
 This page shows you how to deploy a free CockroachDB cluster on CockroachCloud, connect to it using a sample workload, and run your first query.
@@ -12,7 +13,7 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 ## Before you begin
 
-If you haven't already, [sign up for a CockroachCloud account](https://cockroachlabs.cloud/signup).
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Create a free cluster
 
