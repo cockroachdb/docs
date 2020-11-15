@@ -64,9 +64,13 @@ For more information, see [`cockroach userfile delete`](cockroach-userfile-delet
     joined DATE
 )
 CSV DATA (
-    'userfile://defaultdb.public.userfiles_root/test-data.csv'
+    'userfile:///test-data.csv'
 );
 ~~~
+
+{{site.data.alerts.callout_info}}
+`userfile:///` references the default path (`userfile://defaultdb.public.userfiles_root/`).
+{{site.data.alerts.end}}
 
 ~~~
         job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes
