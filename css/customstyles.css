@@ -770,7 +770,7 @@ a:not([href]) {
   overflow: auto; }
   @media screen and (min-width: 992px) {
     #content {
-      padding-top: 120px; } }
+      padding-top: 145px; } }
   #content #main-content {
     margin: 0 15px; }
     @media screen and (min-width: 992px) {
