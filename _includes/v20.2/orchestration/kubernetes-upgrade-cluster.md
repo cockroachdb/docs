@@ -298,7 +298,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     ...
     ~~~
 
-    You can also check the CockroachDB version of each node in the [Admin UI](admin-ui-cluster-overview-page.html#node-details).
+    You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
 
 
 1. Finish the upgrade.
@@ -536,7 +536,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     ...
     ~~~
 
-    You can also check the CockroachDB version of each node in the [Admin UI](admin-ui-cluster-overview-page.html#node-details).
+    You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
 
 
 1. Finish the upgrade.
