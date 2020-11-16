@@ -13,9 +13,9 @@ Cockroach Labs runs [full backups](../v20.1/backup.html#full-backups) daily and 
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
 
 {{site.data.alerts.callout_info}}
-Currently, you cannot access the backups that Cockroach Labs runs to restore your data. In the future, you will be able to restore databases and tables from the CockroachCloud Console.
+Currently, you cannot access the backups that Cockroach Labs runs to restore your data. In the future, you will be able to restore databases and tables from the CockroachCloud Console. If you need to access these backups, please [contact Support](https://support.cockroachlabs.com/hc/en-us).
 
-In the meantime, you can [back up and restore data manually](#back-up-and-restore-data-manually) or [back up from a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster). If you require further assistance, please [contact Support](https://support.cockroachlabs.com/hc/en-us).
+In the meantime, you can [back up and restore data manually](#back-up-and-restore-data-manually) or [back up from a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster).
 {{site.data.alerts.end}}
 
 ## Backups page
