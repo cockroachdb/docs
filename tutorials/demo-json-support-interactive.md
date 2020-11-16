@@ -13,7 +13,7 @@ layout: tutorial
 
 <script>
   if(window.location.href.indexOf('/demo-json-support-interactive') > 0){
-    document.querySelector('#content').style.paddingTop = '62px';
+    document.querySelector('#content').style.paddingTop = '100px';
   }
 </script>
 <script src="//katacoda.com/embed.js"></script>
