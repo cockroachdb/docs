@@ -52,7 +52,7 @@ This configuration is intended for performance benchmarking only. For production
 CockroachDB requires TCP communication on two ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster) and for the TPC-C workload to connect to nodes
-- `8080` for exposing your Admin UI
+- `8080` for exposing your DB Console
 
 [Create inbound rules](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) for your security group:
 
@@ -65,7 +65,7 @@ CockroachDB requires TCP communication on two ports:
  Port Range | **26257**
  Source | The name of your security group (e.g., *sg-07ab277a*)
 
-#### Admin UI
+#### DB Console
 
  Field | Recommended Value
 -------|-------------------
@@ -140,7 +140,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
     This will load 200 GB of data for 2500 "warehouses". This can take a while to complete.
 
-    You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 4. Run the benchmark
 
