@@ -67,7 +67,7 @@ This configuration is intended for performance benchmarking only. For production
 CockroachDB requires TCP communication on two ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster) and for the TPC-C workload to connect to nodes
-- `8080` for exposing your Admin UI
+- `8080` for exposing your DB Console
 
 [Create inbound rules](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) for your security group:
 
@@ -80,7 +80,7 @@ CockroachDB requires TCP communication on two ports:
  Port Range | **26257**
  Source | The name of your security group (e.g., *sg-07ab277a*)
 
-#### Admin UI
+#### DB Console
 
  Field | Recommended Value
 -------|-------------------
@@ -205,7 +205,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
     This will load data for 13,000 "warehouses". This can take around 1 hour to complete.
 
-    You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 5. Allow the cluster to rebalance
 
@@ -225,7 +225,7 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
 2. Wait for range rebalancing to finish.
 
-    This will likely take 10s of minutes. To watch the progress, go to the **Metrics > Queues > Replication Queue** graph in the Admin UI. Once the **Replication Queue** gets to `0` for all actions and stays there, you can move on to the next step.
+    This will likely take 10s of minutes. To watch the progress, go to the **Metrics > Queues > Replication Queue** graph in the DB Console. Once the **Replication Queue** gets to `0` for all actions and stays there, you can move on to the next step.
 
 ## Step 6. Run the benchmark
 

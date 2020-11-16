@@ -68,7 +68,7 @@ This configuration is intended for performance benchmarking only. For production
 CockroachDB requires TCP communication on two ports:
 
 - `26257` for inter-node communication (i.e., working as a cluster) and for the TPC-C workload to connect to nodes
-- `8080` for exposing your Admin UI
+- `8080` for exposing your DB Console
 
 [Create inbound rules](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html#adding-security-group-rule) for your security group:
 
@@ -81,7 +81,7 @@ CockroachDB requires TCP communication on two ports:
  Port Range | **26257**
  Source | The name of your security group (e.g., *sg-07ab277a*)
 
-#### Admin UI
+#### DB Console
 
  Field | Recommended Value
 -------|-------------------
@@ -218,7 +218,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
     This will load the data for 140,000 warehouses. This can take up to 8 hours to complete.
 
-    You can monitor progress on the **Jobs** screen of the Admin UI. Open the [Admin UI](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 5. Partition the database
 
@@ -226,9 +226,9 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
 Wait for up-replication and partitioning to finish.  You will know when they have finished because both the number of *lease transfers* and *snapshots* will go down to `0` and stay there.  Note that this will likely take 10s of minutes.
 
-- To monitor the number of Lease transfers, open the [Admin UI](admin-ui-overview.html), select the **Replication** dashboard, hover over the **Range Operations** graph, and check the **Lease Transfers** data point.
+- To monitor the number of Lease transfers, open the [DB Console](ui-overview.html), select the **Replication** dashboard, hover over the **Range Operations** graph, and check the **Lease Transfers** data point.
 
-- To check the number of snapshots, open the [Admin UI](admin-ui-overview.html), select the **Replication** dashboard, and hover over the **Snapshots** graph.
+- To check the number of snapshots, open the [DB Console](ui-overview.html), select the **Replication** dashboard, and hover over the **Snapshots** graph.
 
 <img src="{{ 'images/v20.2/tpcc-large-replication-dashboard.png' | relative_url }}" alt="TPC-C 140k replication and partitioning dashboards" style="border:1px solid #eee;max-width:100%" />
 
