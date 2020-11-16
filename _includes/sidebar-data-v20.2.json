@@ -594,10 +594,10 @@
               {
                 "title": "Benchmarking Instructions",
                 "urls": [
-                  "/${VERSION}/performance-benchmarking-with-tpc-c-10-warehouses.html",
-                  "/${VERSION}/performance-benchmarking-with-tpc-c-1k-warehouses.html",
-                  "/${VERSION}/performance-benchmarking-with-tpc-c-10k-warehouses.html",
-                  "/${VERSION}/performance-benchmarking-with-tpc-c-100k-warehouses.html"
+                  "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+                  "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+                  "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+                  "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
                 ]
               },
               {
