@@ -160,7 +160,7 @@ $(function() {
     if (_viewport_width >= 1072 && scrollTop >= 31) {
       $tocColContents.css({
         position: 'fixed',
-        top: 140,
+        top: 165,
         width: '260px'
       });
 
