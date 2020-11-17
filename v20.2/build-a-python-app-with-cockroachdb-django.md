@@ -15,10 +15,10 @@ twitter: false
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
-CockroachDB supports Django versions 2.2 and 3.0.
+CockroachDB supports Django versions 2.2, 3.0, and 3.1.
 
 {{site.data.alerts.callout_info}}
-The example code and instructions on this page use Python 3 and Django 3.0.
+The example code and instructions on this page use Python 3 and Django 3.1.
 {{site.data.alerts.end}}
 
 ## Step 1. Install Django and the CockroachDB backend for Django
@@ -27,7 +27,7 @@ Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install django==3.0.*
+$ python -m pip install django>=3.1.*
 ~~~
 
 Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
@@ -40,7 +40,7 @@ After you install the psycopg2 prerequisite, install the CockroachDB Django back
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install django-cockroachdb==3.0.*
+$ python -m pip install django-cockroachdb>=3.1.*
 ~~~
 
 {{site.data.alerts.callout_info}}
