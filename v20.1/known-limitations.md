@@ -159,6 +159,35 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 ## Unresolved limitations
 
+### Collation names that include upper-case or hyphens may cause errors
+
+Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
+
+For example, the following SQL will result in an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE nocase_strings (s STRING COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO nocase_strings VALUES ('Aaa' COLLATE "en-US-u-ks-level2"), ('Bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT s FROM nocase_strings WHERE s = ('bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+~~~
+ERROR: internal error: "$0" = 'bbb' COLLATE en_us_u_ks_level2: unsupported comparison operator: <collatedstring{en-US-u-ks-level2}> = <collatedstring{en_us_u_ks_level2}>
+~~~
+
+As a workaround, only use collation names that have lower-case letters and underscores.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/56335)
+
 ### Subqueries in `SET` statements
 
 It is not currently possible to use a subquery in a [`SET`](set-vars.html) or [`SET CLUSTER SETTING`](set-cluster-setting.html) statement. For example:
