@@ -1,10 +1,10 @@
 ---
 title: Name Resolution
-summary: Table and function names can exist in multiple places. Resolution decides which one to use.
+summary: Object names can exist in multiple places in the naming hierarchy. Resolution decides which one to use.
 toc: true
 ---
 
-This page documents how CockroachDB performs **name resolution**.
+This page documents **name resolution** in CockroachDB.
 
 To reference an object (e.g., a table) in a query, you can specify a database, a schema, both, or neither. To resolve which object a query references, CockroachDB scans the [appropriate namespaces](#naming-hierarchy), following [a set of rules outlined below](#how-name-resolution-works).
 
@@ -14,17 +14,31 @@ For compatibility with PostgreSQL, CockroachDB supports a **three-level structur
 
 In the naming hierarchy, the path to a stored object has three components:
 
-- database name (also called "catalog")
+- database name
 - schema name
 - object name
 
-A CockroachDB cluster can store multiple databases. Each database can store multiple schemas, and each schema can store multiple tables/views/sequences.
+A CockroachDB cluster can store multiple databases. Each database can store multiple schemas, and each schema can store multiple tables, views, and sequences.
 
 When you first [start a cluster](start-a-local-cluster.html), a number of [preloaded databases](show-databases.html#preloaded-databases) and schemas are included, including the `defaultdb` database and the `public` schema. By default, objects (e.g., tables) are stored in the preloaded `public` schema, in the [current database](#current-database) (`defaultdb`, by default).
 
 In addition to the `public` schema, CockroachDB supports a fixed set of virtual schemas, available in every database, that provide ancillary, non-stored data to client applications. For example, [`information_schema`](information-schema.html) is provided for compatibility with the SQL standard, and `pg_catalog` and [`pg_extension`](spatial-glossary.html#spatial-system-tables) are provided for compatibility with PostgreSQL.
 
 To create a new database, use a [`CREATE DATABASE`](create-database.html) statement. To create a new schema, use a [`CREATE SCHEMA`](create-schema.html) statement. The list of all databases can be obtained with [`SHOW DATABASES`](show-databases.html). The list of all schemas for a given database can be obtained with [`SHOW SCHEMAS`](show-schemas.html). The list of all objects for a given schema can be obtained with other `SHOW` statements.
+
+### Migrating namespaces from previous versions of CockroachDB
+
+In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are not supported, and all objects created in a given database use the `public` schema. To provide a multi-level structure for stored objects in earlier versions of CockroachDB, we have recommended using [database](create-database.html) namespaces instead of schema namespaces.
+
+In CockroachDB versions >= v20.2, we recommend using schema namespaces, not database namespaces, to create a naming structure that is more similar to [PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
+
+If you are upgrading to v20.2, take any combination of the following actions after the upgrade is complete:
+
+- Use the [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html) statement to convert databases into schemas. This statement is particularly useful if you created databases for the sole purpose of creating a multi-level naming structure. When you convert a database to a schema, all tables and sequences in the database are copied over to a new schema, and the database is deleted. Note that you cannot convert databases that contain user-defined schemas or [views](views.html).
+
+- [Create new schemas](create-schema.html) in databases on your cluster such that the schemas satisfy a coherent naming structure. After the schemas are created, use [`ALTER TABLE ... RENAME`](rename-table.html), [`ALTER SEQUENCE ... RENAME`](rename-sequence.html), or [`ALTER VIEW ... RENAME`](alter-view.html) statements to move objects between databases as needed. To move objects between schemas, use [`ALTER TABLE ... SET SCHEMA`](set-schema.html), [`ALTER SEQUENCE ... SET SCHEMA`](set-schema.html), or [`ALTER VIEW ... SET SCHEMA`](set-schema.html).
+
+- If your cluster contains cross-database references (e.g., a cross-database foreign key reference, or a cross-database view reference), use the relevant [`ALTER TABLE`](alter-table.html), [`ALTER SEQUENCE`](alter-sequence.html), or [`ALTER VIEW `](alter-view.html) statements to move any cross-referencing objects to the same database, but different schemas. Cross-database object references were allowed in earlier versions of CockroachDB to make database-object naming hierarchies more flexible for users. In v20.2, creating cross-database references are disabled for [foreign keys](foreign-key.html), [views](views.html), and [sequence ownership](create-sequence.html), as cross-database references will be deprecated in a future release. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/55791).
 
 ## How name resolution works
 

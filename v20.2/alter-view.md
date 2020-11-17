@@ -7,7 +7,9 @@ toc: true
 The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [view](views.html).
 
 {{site.data.alerts.callout_info}}
-This page only documents changing the name of a view. For information about changing the schema of a view, see [`SET SCHEMA`](set-schema.html).
+`ALTER VIEW ... RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a views's schema, use [`SET SCHEMA`](set-schema.html).
+
+Note that, in a future release, `ALTER VIEW ... RENAME TO` will be limited to changing the name of a view, and will not have to the ability to change a view's database.
 {{site.data.alerts.end}}
 
 {% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
