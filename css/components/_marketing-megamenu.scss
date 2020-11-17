@@ -2724,6 +2724,9 @@
     }
     .megamenu-main {
       z-index: 1;
+      a {
+        color: $electric-purple;
+      }
     }
     .megamenu-main .column-large-icon-box {
       height: 80px;
@@ -2841,7 +2844,7 @@
     letter-spacing: 0 !important;
   }
   .navbar img {
-    min-width: 199px;
+    // min-width: 199px;
   }
   .megamenu h6 {
     font-size: 24px !important;

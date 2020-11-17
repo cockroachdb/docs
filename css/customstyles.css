@@ -5105,6 +5105,8 @@ p .version-tag, .clickable-header .version-tag {
     background: #f5f7fa; }
   #new-header .megamenu-main {
     z-index: 1; }
+    #new-header .megamenu-main a {
+      color: #6933FF; }
   #new-header .megamenu-main .column-large-icon-box {
     height: 80px; }
   @media (max-width: 1199.98px) {
@@ -5196,8 +5198,6 @@ p .version-tag, .clickable-header .version-tag {
   #new-header .btn {
     text-transform: capitalize !important;
     letter-spacing: 0 !important; }
-  #new-header .navbar img {
-    min-width: 199px; }
   #new-header .megamenu h6 {
     font-size: 24px !important;
     font-weight: 600 !important;
