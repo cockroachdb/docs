@@ -53,8 +53,8 @@ release_info:
     name: v20.2.1
     version: v20.2.1
     docker_image: cockroachdb/cockroach
-    build_time: 2020/11/16 11:00:26 (go1.13.4)
-    start_time: 2020-11-16 11:01:26.34274101 +0000 UTC
+    build_time: 2020/11/18 11:00:26 (go1.13.4)
+    start_time: 2020-11-18 11:01:26.34274101 +0000 UTC
 
 
 include: ["_redirects"]
