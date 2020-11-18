@@ -10,7 +10,7 @@
   background: $cl_gray_light;
   border-bottom: 1px solid $cl_gray_medium;
 
-  @include at-query($min, $screen-md) {
+  @include at-query($min, $screen-lg) {
     padding: 0 30px;
     border-bottom: unset;
   }
@@ -23,7 +23,7 @@
     width: 100%;
     z-index: 3;
 
-    @include at-query($min, $screen-md) {
+    @include at-query($min, $screen-lg) {
       top: 100px;
     }
   }
