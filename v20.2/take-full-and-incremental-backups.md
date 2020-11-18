@@ -119,7 +119,7 @@ To take incremental backups, you need an [enterprise license](enterprise-licensi
 
 #### Automated full backups
 
-Both core and enterprise users can use backup scheduling for full backups of clusters, databases, or tables. Full backups are taken with the `FULL BACKUP ALWAYS` clause. For example, to take a full cluster backup:
+Both core and enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, included the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -136,7 +136,7 @@ Both core and enterprise users can use backup scheduling for full backups of clu
 (1 row)
 ~~~
 
-For more examples on how to schedule backups, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
+For more examples on how to schedule backups that take full and incremental backups, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
 
 #### Advanced examples
 
