@@ -47,7 +47,7 @@ $(function() {
   function sidenavOnResize(winWidth) {
     $('body').removeClass('sidenav-open');
 
-    if (winWidth >= 992) {
+    if (winWidth >= 1199) {
       $('#sidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
@@ -61,7 +61,7 @@ $(function() {
   }
 
   // Collapse side nav on load depending on window width
-  if (_viewport_width < 992) {
+  if (_viewport_width < 1199) {
     collapseSideNav();
   }
 
@@ -81,7 +81,7 @@ $(function() {
   $(window).resize(function(e) {
     _viewport_width = window.innerWidth;
 
-    if(_viewport_width > 992) {
+    if(_viewport_width > 1199) {
       $('body').removeClass('menu_open');
       // make sure all footer menu items are visible
       $('.footer-sub-nav').show();
@@ -91,7 +91,7 @@ $(function() {
       $('.footer-sub-nav').hide();
     }
 
-    if (_viewport_width > 992) {
+    if (_viewport_width > 1199) {
       $versionSwitcher.show();
     } else {
       $versionSwitcher.hide();
@@ -134,7 +134,7 @@ $(function() {
     $sidebar.css('padding-top', '');
 
     // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
-    if (_viewport_width > 992) {
+    if (_viewport_width > 1199) {
       if (scrollTop + windowHeight >= footerOffset) {
         // $versionSwitcher.css({'bottom': viewportFooterDiff + 'px'});
         $colSidebar.css('bottom', viewportFooterDiff + 'px');
@@ -240,7 +240,7 @@ $(function() {
   }
 
   // On page load, update last list item style to match siblings
-  if (_viewport_width <= 992) {
+  if (_viewport_width <= 1199) {
     $('li.active:last a').css({
       'border-bottom': 'none',
       'margin-bottom': '0',
@@ -251,7 +251,7 @@ $(function() {
   function toggleSideNav() {
     _viewport_width = window.innerWidth;
     // mobile only
-    if (_viewport_width <= 992) {
+    if (_viewport_width <= 1199) {
       if ($sidebar.hasClass('nav--collapsed')) {
         $('.collapsed-header').hide();
         $('body').addClass('sidenav-open');
@@ -302,7 +302,7 @@ $(function() {
   $('#sidebar a').on('click', function() {
     _viewport_width = window.innerWidth;
     // mobile only
-    if (_viewport_width <= 992) {
+    if (_viewport_width <= 1199) {
       // hide sibling links
       $(this).closest('li').siblings('li:not(.search-wrap)').slideToggle();
       // ensure child links are open

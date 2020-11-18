@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  if (window.innerWidth >= 992) {
+  if (window.innerWidth >= 1199) {
     // this will make search appear instead of header in collapsed docs menu
     $('.collapsed-header').hide();
     $('.search-wrap').show();

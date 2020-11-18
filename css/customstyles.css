@@ -393,7 +393,7 @@ header {
   padding: 10px 15px 5px 15px;
   border-bottom: 1px solid #DADADA;
   background: #F3F3F3; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     #sidebar {
       top: 0;
       width: 235px;
@@ -406,7 +406,7 @@ header {
     margin-top: 0;
     text-transform: none;
     line-height: 28px; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     #sidebar li .arrow-down,
     #sidebar li .nav-expand {
       float: right; } }
@@ -485,7 +485,7 @@ body.sidenav-open .col-content {
     .col-sidebar--scrolled .nav--collapsed .sidenav-arrow img {
       transform: rotate(0deg); }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 1200px) {
   .sidebar-row {
     display: flex;
     padding-top: 15px; } }
@@ -500,14 +500,14 @@ body.sidenav-open .col-content {
   width: 40px;
   height: 40px;
   text-align: center; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     .sidenav-arrow {
       display: none; } }
   .sidenav-arrow .arrow-down {
     padding: 4px;
     margin: 19px 30px 2px 12px;
     border-width: 2px 0 0 2px; }
-    @media screen and (min-width: 992px) {
+    @media screen and (min-width: 1200px) {
       .sidenav-arrow .arrow-down {
         margin: 23px 0 2px 7px; } }
 
@@ -558,7 +558,7 @@ body.sidenav-open .col-content {
       -moz-osx-font-smoothing: grayscale;
       line-height: 20px;
       padding: 0; }
-      @media screen and (min-width: 992px) {
+      @media screen and (min-width: 1200px) {
         .nav > li > a {
           line-height: 30px; } }
     .nav > li > ul {
@@ -578,7 +578,7 @@ body.sidenav-open .col-content {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           line-height: 20px; }
-          @media screen and (min-width: 992px) {
+          @media screen and (min-width: 1200px) {
             .nav > li > ul > li > a {
               font-size: 13px; } }
         .nav > li > ul > li > ul {
@@ -595,7 +595,7 @@ body.sidenav-open .col-content {
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
               line-height: 20px; }
-              @media screen and (min-width: 992px) {
+              @media screen and (min-width: 1200px) {
                 .nav > li > ul > li > ul > li > a {
                   font-size: 13px; } }
             .nav > li > ul > li > ul > li > ul {
@@ -609,7 +609,7 @@ body.sidenav-open .col-content {
                   -webkit-font-smoothing: antialiased;
                   -moz-osx-font-smoothing: grayscale;
                   line-height: 20px; }
-                  @media screen and (min-width: 992px) {
+                  @media screen and (min-width: 1200px) {
                     .nav > li > ul > li > ul > li > ul > li > a {
                       font-size: 13px; } }
                 .nav > li > ul > li > ul > li > ul > li > ul {
@@ -623,7 +623,7 @@ body.sidenav-open .col-content {
                       -webkit-font-smoothing: antialiased;
                       -moz-osx-font-smoothing: grayscale;
                       line-height: 20px; }
-                      @media screen and (min-width: 992px) {
+                      @media screen and (min-width: 1200px) {
                         .nav > li > ul > li > ul > li > ul > li > ul > li > a {
                           font-size: 13px; } }
   .nav a {
@@ -643,7 +643,7 @@ body.sidenav-open .col-content {
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #d8d8d8; }
-    @media screen and (min-width: 992px) {
+    @media screen and (min-width: 1200px) {
       .nav li.active > a {
         border-bottom: none;
         margin-bottom: 0;
@@ -768,12 +768,12 @@ a:not([href]) {
   -moz-box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 5px 0 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     #content {
       padding-top: 145px; } }
   #content #main-content {
     margin: 0 15px; }
-    @media screen and (min-width: 992px) {
+    @media screen and (min-width: 1200px) {
       #content #main-content {
         margin: 0 auto;
         min-height: 625px;
@@ -784,7 +784,7 @@ a:not([href]) {
       min-width: 0;
       padding-top: 105px;
       overflow-x: scroll; }
-      @media screen and (min-width: 992px) {
+      @media screen and (min-width: 1200px) {
         #content #main-content .content-col {
           padding-top: 0;
           min-height: 625px;
@@ -952,7 +952,7 @@ section.footer {
   padding: 0 15px;
   background: #F3F3F3;
   border-bottom: 1px solid #DADADA; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     .version-nav {
       padding: 0 30px;
       border-bottom: unset; } }
@@ -963,7 +963,7 @@ section.footer {
     top: 60px;
     width: 100%;
     z-index: 3; }
-    @media screen and (min-width: 992px) {
+    @media screen and (min-width: 1200px) {
       .version-nav-wrapper {
         top: 100px; } }
   .version-nav__link {
@@ -1046,13 +1046,13 @@ section.footer {
       color: #bcbcbc; }
     .search #search-input:focus {
       border-color: #69CC00; }
-    @media (min-width: 992px) {
+    @media (min-width: 1200px) {
       .search #search-input {
         width: 100%; } }
 
 #sidebar li.search-wrap {
   margin-bottom: 0; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     #sidebar li.search-wrap {
       position: fixed;
       top: 130px;
@@ -1093,7 +1093,7 @@ section.footer {
   border-radius: 50%;
   outline: none;
   cursor: pointer; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     .clear-search {
       right: 0; } }
   .clear-search:before, .clear-search:after {
