@@ -8,6 +8,35 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Collation names that include upper-case or hyphens may cause errors
+
+Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
+
+For example, the following SQL will result in an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE nocase_strings (s STRING COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO nocase_strings VALUES ('Aaa' COLLATE "en-US-u-ks-level2"), ('Bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT s FROM nocase_strings WHERE s = ('bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+~~~
+ERROR: internal error: "$0" = 'bbb' COLLATE en_us_u_ks_level2: unsupported comparison operator: <collatedstring{en-US-u-ks-level2}> = <collatedstring{en_us_u_ks_level2}>
+~~~
+
+As a workaround, only use collation names that have lower-case letters and underscores.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/56335)
+
 ### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
 
 CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
