@@ -23,7 +23,7 @@ The example code and instructions on this page use Python 3 and Django 3.1.
 
 ## Step 1. Install Django and the CockroachDB backend for Django
 
-Install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
+Install [Django](https://docs.djangoproject.com/en/3.1/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -57,14 +57,14 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 ## Step 4. Create a Django project
 
-In the directory where you'd like to store your code, use the [`django-admin` command-line tool](https://docs.djangoproject.com/en/3.0/ref/django-admin/) to create an application project:
+In the directory where you'd like to store your code, use the [`django-admin` command-line tool](https://docs.djangoproject.com/en/3.1/ref/django-admin/) to create an application project:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ django-admin startproject cockroach_example
 ~~~
 
-This creates a new project directory called `cockroach_example`. `cockroach_example` contains the [`manage.py` script](https://docs.djangoproject.com/en/3.0/ref/django-admin/) and a subdirectory, also named `cockroach_example`, that contains some `.py` files.
+This creates a new project directory called `cockroach_example`. `cockroach_example` contains the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin/) and a subdirectory, also named `cockroach_example`, that contains some `.py` files.
 
 Open `cockroach_example/cockroach_example/settings.py`, and add `0.0.0.0` to the `ALLOWED_HOSTS`, so that it reads as follows:
 
@@ -116,7 +116,7 @@ After you generate the initial Django project files and edit the project's confi
 
 ### Models
 
-Start by building some [models](https://docs.djangoproject.com/en/3.0/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/models.py" download>download the file directly</a>.
+Start by building some [models](https://docs.djangoproject.com/en/3.1/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/models.py" download>download the file directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -127,7 +127,7 @@ In this file, we define some simple classes that map to the tables in the exampl
 
 ### Views
 
-Next, build out some [class-based views](https://docs.djangoproject.com/en/3.0/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/views.py" download>download the file directly</a>.
+Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/views.py" download>download the file directly</a>.
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -140,7 +140,7 @@ Importantly, the file defines a [transaction retry loop](transactions.html#trans
 
 ### URL routes
 
-Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `cockroach_example/cockroach_example`. You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/urls.py" download>download the file directly</a> and replace the existing one.
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `cockroach_example/cockroach_example`. You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/urls.py" download>download the file directly</a> and replace the existing one.
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -149,7 +149,7 @@ Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.0/topics/ht
 
 ## Step 6. Set up and run the Django app
 
-In the top `cockroach_example` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.0/ref/django-admin/) to create [Django migrations](https://docs.djangoproject.com/en/3.0/topics/migrations/) that initialize the database for the application:
+In the top `cockroach_example` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin/) to create [Django migrations](https://docs.djangoproject.com/en/3.1/topics/migrations/) that initialize the database for the application:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -240,6 +240,6 @@ You can also query the tables directly in the SQL shell to see the changes:
 
 ## What's next?
 
-Read more about writing a [Django app](https://docs.djangoproject.com/en/3.0/intro/tutorial01/).
+Read more about writing a [Django app](https://docs.djangoproject.com/en/3.1/intro/tutorial01/).
 
 {% include {{page.version.version}}/app/see-also-links.md %}
