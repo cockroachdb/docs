@@ -180,7 +180,7 @@ To view a list of which users and roles had which privileges on each database an
 
 ### Show an encrypted backup
 
-Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the `encryption_passphrase` option and the same passphrase that was used to create the backup:
+Depending on how the backup was [encrypted](take-and-restore-encrypted-backups.html), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) and the same passphrase that was used to create the backup:
 
 {% include copy-clipboard.html %}
 ~~~ sql
