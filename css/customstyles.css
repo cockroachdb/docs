@@ -1046,13 +1046,13 @@ section.footer {
       color: #bcbcbc; }
     .search #search-input:focus {
       border-color: #69CC00; }
-    @media (min-width: 992px) {
+    @media (min-width: 1200px) {
       .search #search-input {
         width: 100%; } }
 
 #sidebar li.search-wrap {
   margin-bottom: 0; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     #sidebar li.search-wrap {
       position: fixed;
       top: 130px;
@@ -1093,7 +1093,7 @@ section.footer {
   border-radius: 50%;
   outline: none;
   cursor: pointer; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     .clear-search {
       right: 0; } }
   .clear-search:before, .clear-search:after {

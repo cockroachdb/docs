@@ -31,7 +31,7 @@
       border-color: $cl_green_bright;
     }
 
-    @media (min-width: $screen-md) {
+    @media (min-width: $screen-lg) {
       width: 100%;
     }
   }
@@ -40,7 +40,7 @@
 #sidebar li.search-wrap {
   margin-bottom: 0;
 
-  @include at-query($min, $screen-md) {
+  @include at-query($min, $screen-lg) {
     position: fixed;
     top: 130px;
     width: 235px;
@@ -75,7 +75,7 @@
   outline: none;
   cursor: pointer;
 
-  @include at-query($min, $screen-md) { right: 0; }
+  @include at-query($min, $screen-lg) { right: 0; }
 
   &:before, &:after {
     content: '';
