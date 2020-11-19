@@ -3,7 +3,7 @@
 .toc-col {
   display: none;
 
-  @include at-query($min, 1072px) {
+  @include at-query($min, 1199px) {
     padding: 34px 0;
     min-width: 260px;
     max-width: 260px;
@@ -18,7 +18,7 @@
   padding-left: 0px;
   margin: 0;
 
-  @include at-query($min, 1072px) {
+  @include at-query($min, 1199px) {
     display: none;
   }
 }
