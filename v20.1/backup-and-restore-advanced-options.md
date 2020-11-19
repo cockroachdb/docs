@@ -284,7 +284,7 @@ Then, [resume the restore](resume-job.html):
 
 ### Create an encrypted backup
 
-<span class="version-tag">New in v20.1:</span> To create an [encrypted backup](#encrypted-backup-and-restore), use the `encryption_passphrase` option:
+<span class="version-tag">New in v20.1:</span> To create an [encrypted backup](#encrypted-backup-and-restore), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
 {% include copy-clipboard.html %}
 ~~~ sql

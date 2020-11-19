@@ -127,7 +127,7 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 #### Take an encrypted backup using a passphrase
 
-To take an encrypted backup, use the `encryption_passphrase` option:
+To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -146,7 +146,7 @@ To [restore](restore.html), use the same `encryption_passphrase`. See the [examp
 
 #### Restore from an encrypted backup using a passphrase
 
-To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the `encryption_passphrase` option and the same passphrase that was used to create the backup.
+To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
 
 For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
 
