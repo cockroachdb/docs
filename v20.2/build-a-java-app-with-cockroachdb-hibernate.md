@@ -58,7 +58,7 @@ To run it:
 
 1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
-    1. Modify the `hibernate.connection.url` property with the port number:
+    1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
 
         {% include copy-clipboard.html %}
         ~~~ xml
