@@ -361,6 +361,7 @@ template {
 .col-xl-auto {
   position: relative;
   width: 100%;
+  overflow-x: hidden;
   padding-right: 12px;
   padding-left: 12px; }
 
@@ -7036,6 +7037,7 @@ section.footer {
   max-height: 85vh;
   padding-right: 15px;
   background: #ffffff;
+  overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: 1.5rem; }
 
@@ -7225,18 +7227,19 @@ section.footer {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 15px;
     color: #475872;
     text-decoration: none !important;
-    padding: 15px;
+    padding: 8px;
     margin: 0;
-    outline: none; }
+    outline: none;
+    line-height: 24px; }
     .filters .filter-button:hover {
       color: #242A35;
       border-bottom-color: #0788FF; }
     .filters .filter-button.current {
       color: #242A35;
-      border-bottom-color: #0788FF; }
+      border-bottom-color: #0788FF;
+      line-height: 24px; }
     .filters .filter-button.page-level {
       margin: 15px 15px 0px 0px; }
   .filters a:hover {
@@ -9595,6 +9598,9 @@ dd {
 .post-content img.inline {
   margin: 0px;
   margin-bottom: 6px; }
+
+.horizontal-scroll {
+  overflow-x: auto; }
 
 .note code, .alert code, .warning code, div#toc code {
   color: inherit;

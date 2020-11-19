@@ -324,8 +324,8 @@ $(function() {
   var clipboard = new Clipboard('.copy-clipboard', {
     target: function(trigger) {
       // revert any previously copied snippets
-      $('.copy-clipboard--copied').removeClass('copy-clipboard--copied')
-        .find('.copy-clipboard__text').text('copy');
+      $('.copy-clipboard--copied').removeClass('copy-clipboard--copied');
+        // .find('.copy-clipboard__text').text('copy');
       return $(trigger).next().find('code')[0];
     },
     text: function(trigger) {
@@ -337,7 +337,7 @@ $(function() {
 
   clipboard.on('success', function(e) {
     $(e.trigger).addClass('copy-clipboard--copied');
-    $(e.trigger).find('.copy-clipboard__text').text('copied');
+    // $(e.trigger).find('.copy-clipboard__text').text('copied');
   });
 
   $('[data-tooltip]').tooltip();

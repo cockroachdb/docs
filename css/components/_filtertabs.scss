@@ -145,13 +145,13 @@
 		background-color: #ffffff;
 		text-align: center;
 		@include sourcesanspro_r(14px);
-		line-height: 15px;
+		// line-height: 15px;
 		color: $neutral-600;
 		text-decoration: none !important;
-		padding: 15px;
+		padding: 8px;
 		margin: 0;
 		outline: none;
-
+		line-height: 24px;
 		&:hover {
 			color: $neutral-800;
 			border-bottom-color: $blue-300;
@@ -160,6 +160,7 @@
 		&.current {
 			color: $neutral-800;
 			border-bottom-color: $blue-300;
+			line-height: 24px;
 		}
 
 		&.page-level {
