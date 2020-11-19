@@ -30,23 +30,7 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 
 {% include {{page.version.version}}/app/create-a-database.md %}
 
-## Step 3. Generate a certificate for the database user
-
-Create a certificate and key for the database user by running the following command. The code samples will run as this user.
-
-You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.{user}.key.pk8`.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client {user} --certs-dir={certs_dir} --ca-key={certs_dir}/ca.key --also-generate-pkcs8-key
-~~~
-
-Where:
-
-- `{user}` is the username that you created earlier.
-- `{certs_dir}` is a safe directory to store the certificates and keys.
-
-## Step 4. Run the Java code
+## Step 3. Run the Java code
 
 The code below uses Hibernate to map Java methods to SQL operations. It perform the following steps which roughly correspond to method calls in the `Sample` class.
 
@@ -74,16 +58,20 @@ To run it:
 
 1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
-    1. Set the `hibernate.connection.username` property to the username you created earlier.
-
-    1. Modify the `hibernate.connection.url` property with the port number and certificate settings:
+    1. Modify the `hibernate.connection.url` property with the port number:
 
         {% include copy-clipboard.html %}
         ~~~ xml
-        <property name="hibernate.connection.url"><![CDATA[jdbc:postgresql://localhost:{port}/bank?ssl=true&sslmode=require&sslrootcert={certs_dir}/ca.crt&sslkey={certs_dir}>/client.{username}.key.pk8&sslcert={certs_dir}/client.{username}.crt]]></property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:{port}/bank?ssl=true&amp;sslmode=require</property>
         ~~~
 
-        Where `{port}` is the port number on which the CockroachDB demo cluster is listening, `{certs_dir}` is the path to the directory containing the certificates and keys you generated earlier, and `{username}` is the username you created earlier.
+        Where `{port}` is the port number on which the CockroachDB demo cluster is listening.
+
+    1. Set the `hibernate.connection.username` property to the username you created earlier.
+
+    1. Set the `hibernate.connection.password` property to the user's password.
+
+
 
 1. Compile and run the code using `gradlew`, which will also download the dependencies.
 
