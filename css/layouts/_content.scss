@@ -1,3 +1,9 @@
+#maincontent{
+	@include at-query(0, $screen-sm) {
+		margin-top:100px;
+	}
+} 
+//TODO: clean up, not sure if it used
 #content {
 	background: #fff;
 	position: relative;

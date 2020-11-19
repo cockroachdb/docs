@@ -29,14 +29,12 @@ $(function() {
       $colSidebar = $('.col-sidebar'),
       $sidebar = $('#sidebar'),
       $footer = $('section.footer'),
-      sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
       $versionSwitcher = $('#version-switcher'),
       $tocColContents = $('.toc-col-contents');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
-    $sidebar.css({height: sideNavHeight});
     $('#sidebar li').hide();
     $('#version-switcher .tier-1 ul').slideUp();
     $versionSwitcher.removeClass('open');
@@ -47,26 +45,20 @@ $(function() {
   function sidenavOnResize(winWidth) {
     $('body').removeClass('sidenav-open');
 
-    if (winWidth >= 992) {
+    if (winWidth >= 768) {
       $('#sidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
-      $sidebar.css('height', '');
     } else {
       $('.collapsed-header').show();
       $sidebar.addClass('nav--collapsed');
-      $sidebar.css({height: sideNavHeight});
       $('#sidebar li').hide();
     }
   }
 
-  // Collapse side nav on load depending on window width
-  if (_viewport_width < 992) {
-    collapseSideNav();
-  }
-
   if (_viewport_width <= 768) {
     $mobile_menu.css('visibility', 'visible');
+    collapseSideNav();
   }
 
   $('header nav.mobile').on('click', '.hamburger', function(e){
@@ -131,8 +123,6 @@ $(function() {
     var tocHeightInColumn = tocHeight + parseInt($tocColContents.css('top')),
     _viewport_width = window.innerWidth;
 
-    $sidebar.css('padding-top', '');
-
     // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 992) {
       if (scrollTop + windowHeight >= footerOffset) {
@@ -143,16 +133,10 @@ $(function() {
         $colSidebar.css('bottom', '0');
       }
     } else { // mobile
-      $sidebar.css('padding-top', 10);
-      $colSidebar.css('bottom', '');
+      
       $versionSwitcher.css({'bottom': '0'});
-
-      var scrolled = $colSidebar.hasClass('col-sidebar--scrolled');
       if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
-        $colSidebar.addClass('col-sidebar--scrolled');
-        $('.collapsed-header__pre').slideUp(250);
-        sideNavHeight = '40px';
-        $sidebar.animate({height: sideNavHeight}, {duration: 250});
+        //$sidebar.animate({height: 0}, {duration: 250});
       }
     }
 
@@ -256,7 +240,6 @@ $(function() {
         $('.collapsed-header').hide();
         $('body').addClass('sidenav-open');
         $sidebar.removeClass('nav--collapsed');
-        $sidebar.css('height', '');
 
         var $active = $('#sidebar .active');
         if ($active.length > 0) {

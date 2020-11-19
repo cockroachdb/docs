@@ -1,374 +1,117 @@
+body.sidenav-open{
+  overflow: hidden;
+  &:before{
+    content:"";
+    display: block;
+    position: fixed;
+    top: 50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: rgba(4,2,28,0.73);
+    z-index: 1;
+  }
+}
+.col-sidebar{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .col-sidebar-content{
+    flex: 0 1 auto;
+  }
+  .stiky-spacer{
+    flex: 1 1 auto;
+  }
+}
+#sidebarMenu{
+  @include at-query(0, $screen-sm) {
+    height: auto;
+    position: fixed;
+    z-index: 10;
+    background-color: $white;
+    top: 50px;
+    border-top: 1px solid $neutral-300;
+	}
+}
+
+.col-sidebar-content{
+  max-height: calc(100vh - 50px);
+  overflow-y: scroll;
+  position: -webkit-sticky; /* Safari */  
+  position: sticky;
+  top: 0;
+  @include at-query(0, $screen-sm) {
+    height: auto;
+    overflow-y: auto;
+  }
+}
+
 #sidebar {
   width: 100%;
   padding: 10px 15px 5px 15px;
-  border-bottom: 1px solid $cl_gray_medium;
-  background: $cl_gray_light;
+  display: flex;
+  flex-direction: column;
+  @include sourcesanspro_r(14px);
 
-  @include at-query($min, $screen-md) {
-    top: 0;
-    width: 200px;
+  &.nav--collapsed{
     padding: 0;
-    border-bottom: unset;
-    background: transparent;
+    &:before{display: none;}
   }
 
-  li {
-    &.tier-1 {
-      margin-top: 5px;
-    }
-
-    &:not(.tier-1) {
-      margin-top: 0;
-      text-transform: none;
-      line-height: 28px;
-    }
-
-    .arrow-down,
-    .nav-expand {
-      @include at-query($min, $screen-md) {
-        float: right;
-      }
-    }
-
-    .arrow-down {
-      margin-right: 10px;
-    }
-
-    .nav-expand {
-      content: url(../images/nav-expand.svg);
-      float: right;
-      height: 8px;
-      margin-top: 8px;
-      margin-right: 2px;
-    }
-
-    a {
-      width: 100%;
-    }
-  }
-
-  // tier 1
-  > li {
-    padding: 5px 0 7px;
-
-    > a {
-      @include button-text--heavy--small;
-      line-height: 26px;
-      font-size: 13px;
-    }
-
-    .arrow-down { margin-top: 7px; }
-
-    // tier 2
-    li .arrow-down { margin-top: 5px; }
-  }
-}
-
-body.sidenav-open {
-  .col-sidebar {
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    #sidebar {
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-      border-bottom: none;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-
-  .col-content {
-    height: 100%;
-    overflow: hidden;
-  }
-}
-
-.col-sidebar {
-  background-color: $cl_gray_light;
-  position: relative;
-
-  @include at-query($max, $screen-md) {
-    position: fixed;
-    left: 0;
-    top: 115px;
-    width: 100%;
-    z-index: 2;
-    @include groovy(margin-left);
-    @include groovy(box-shadow);
-  }
-
-  @include at-query($min, $screen-md) {
-    position: fixed;
-    top: 145px;
-    bottom: 0;
-    min-width: 295px;
-    padding: 60px 30px 0 30px;
-    background-color: transparent;
-    overflow: hidden;
-
-    &:hover {
-      overflow-y: scroll;
-    }
-  }
-
-  &--scrolled {
-    .nav--collapsed {
-      .sidenav-arrow {
-        transform: translateY(14px);
-
-        img {
-          transform: rotate(0deg);
-        }
-      }
-    }
-  }
-}
-
-.sidebar-row {
-  @include at-query($min, $screen-md) {
-    display: flex;
-    padding-top: 15px;
-  }
-}
-
-.sidenav-arrow {
-  position: absolute;
-  z-index: 1;
-  right: 0;
-  top: -14px;
-  transition: transform 0.2s ease;
-  transform: translateY(30px);
-  width: 40px;
-  height: 40px;
-  text-align: center;
-
-  @include at-query($min, $screen-md) {
+  .sidenav-arrow {
     display: none;
-  }
-
-  .arrow-down {
-    padding: 4px;
-    margin: 19px 30px 2px 12px;
-    border-width: 2px 0 0 2px;
-
-    @include at-query($min, $screen-md) {
-      margin: 23px 0 2px 7px;
-    }
-  }
-}
-
-.collapsed-header {
-  display: none;
-  @include avenir_h(16px);
-  line-height: 20px;
-  position: absolute;
-
-  &__pre {
-    font-size: 11px;
-  }
-}
-
-.nav {
-  background-color: transparent;
-  padding: 0;
-  margin: 0px;
-
-  &--collapsed {
-    .sidenav-arrow {
-      transform: translateY(21px);
-
-      .arrow-down {
-        border-width: 0 2px 2px 0;
-        margin-top: 13px;
-      }
-    }
-
-    &.nav--home {
-      height: 40px !important;
-
-      .sidenav-arrow {
-        transform: translateY(14px);
-        cursor: pointer;
-      }
-    }
-
-    &.nav--search {
-      height: 60px !important;
-
-      .sidenav-arrow {
-        transform: translateY(25px);
-      }
-    }
-  }
-
-  //1st level
-  > li {
-    list-style: none;
-    border-bottom: 1px solid $cl_gray_medium;
-
-    &:first-of-type { border-bottom: none; }
-
-    > a {
+    @include at-query(0, $screen-sm) {
       display: block;
-      outline: none;
-      text-decoration: none;
-      color: $cl_blue;
-
-      @include avenir_r(13px);
-
-      line-height: 20px;
-      padding: 0;
-      @include at-query($min, $screen-md) {
-        line-height: 30px;
-      }
+      position: fixed;
+      z-index: 1030;
+      top: 17px;
+      right: 15px;
     }
+  }
 
-    > ul {
+  .burger{
+    content: url(../images/hamburger.svg);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    li{
+      list-style: none;
+      position: relative;
+      padding: 4px 0 4px 20px;
       margin: 0;
-      padding: 0;
+      .nav-expand {
+        content: url(../images/arrow-down.svg);
+        position: absolute;
+        top: 13px;
+        left: 2px;
+      }
 
-      //2nd level
-      > li {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+      &.visited a{
+        color: $blue-300;
+      }
 
-        &:last-of-type {
-          margin-bottom: 0;
-        }
-
-        > a {
-          width: 100%;
-          @include avenir_r(13px);
-          line-height: 20px;
-
-          @include at-query($min, $screen-md) {
-            font-size: 13px;
-          }
-        }
-
-        > ul {
-          margin: 0 0 0 5px;
-          padding: 0;
-
-          //3rd level
-          > li {
-            margin: 0 0 0 15px;
-            padding: 0;
-            list-style: none;
-
-            > a {
-              @include avenir_r(13px);
-              line-height: 20px;
-
-              @include at-query($min, $screen-md) {
-                font-size: 13px;
-              }
-            }
-
-            > ul {
-              padding-left: 15px;
-
-              //4th level
-              > li {
-                list-style: none;
-
-                > a {
-                  @include avenir_r(13px);
-                  line-height: 20px;
-
-                  @include at-query($min, $screen-md) {
-                    font-size: 13px;
-                  }
-                }
-
-                > ul {
-                  padding-left: 15px;
-
-                  //5th level
-                  > li {
-                    list-style: none;
-
-                    > a {
-                      @include avenir_r(13px);
-                      line-height: 20px;
-
-                      @include at-query($min, $screen-md) {
-                        font-size: 13px;
-                      }
-                    }
-
-                  }
-                }
-              }
-            }
-          }
-        }
+      &.active > a .nav-expand{
+        transform: rotate(-180deg);
+        -webkit-transform: rotate(-180deg);
       }
     }
   }
 
-  a {
-    background-color: transparent;
-    display: inline-block;
-
-    code {
-      color: $cl_blue;
-
-      &:hover {
-        color: $cl_green;
-      }
-    }
-
-    &:hover, &:active {
-      background-color: transparent;
-
-      > span {
-        color: $cl_green;
-      }
-    }
+  .tier-1 a{
+    color: $neutral-800;
   }
 
-  li.active {
-    > a {
-      background-color: transparent;
-      color: $cl_green;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #d8d8d8;
-
-      @include at-query($min, $screen-md) {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-      }
-
-      > code {
-        color: $cl_green;
-      }
+  .tier-2 {
+    a {
+      color: $neutral-500;
     }
 
-    // third tier
-    li.active {
-      a {
-        width: 100%;
-      }
+    a:hover{
+      text-decoration: none;
+      color: $neutral-600;
     }
+    
   }
-
-  li.active {
-    > a {
-      .arrow-down {
-        transform: rotate(-135deg);
-        -webkit-transform: rotate(-135deg);
-        margin-bottom: 0px;
-      }
-    }
-  }
-}
-
-a:not([href]) {
-  color: #aaa;
 }
