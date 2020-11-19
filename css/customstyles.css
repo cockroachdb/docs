@@ -1159,7 +1159,7 @@ section.footer {
 
 .toc-col {
   display: none; }
-  @media screen and (min-width: 1072px) {
+  @media screen and (min-width: 1199px) {
     .toc-col {
       padding: 34px 0;
       min-width: 260px;
@@ -1172,7 +1172,7 @@ section.footer {
   max-width: 500px;
   padding-left: 0px;
   margin: 0; }
-  @media screen and (min-width: 1072px) {
+  @media screen and (min-width: 1199px) {
     #toc {
       display: none; } }
 
