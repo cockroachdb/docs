@@ -217,6 +217,12 @@
     {
       "title": "Releases",
       "items": [
+        {
+          "title": "November 2020",
+          "urls": [
+            "/releases/cockroachcloud-11192020.html"
+          ]
+        },
       	{
       	  "title": "July 2020",
       	  "urls": [
