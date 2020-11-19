@@ -32,16 +32,24 @@ For another use of Hibernate with CockroachDB, see our [`examples-orms`](https:/
 
 ## Step 3. Run the Java code
 
-The code below uses Hibernate to map Java methods to SQL operations. It perform the following steps which roughly correspond to method calls in the `Sample` class.
+The sample code in this tutorial ([`Sample.java`](#code-contents))uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
 
-1. Create an `accounts` table in the `bank` database as specified by the Hibernate `Account` class.
-1. Inserts rows into the table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()`).
-1. Transfer money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)`).
-1. Print out account balances before and after the transfer (see `Sample.getAccountBalance(long id)`).
+1. Creates an `accounts` table in the `bank` database as specified by the `Account` mapping class.
+1. Inserts rows into the table with the `addAccounts()` method.
+1. Transfers money from one account to another with the `transferFunds()` method.
+1. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
 
-In addition, the code shows a pattern for automatically handling [transaction retries](transactions.html#client-side-intervention-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+In addition, the code shows a pattern for automatically handling [transaction retries](transactions.html#client-side-intervention-example) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
 
 It does all of the above using the practices we recommend for using Hibernate (and the underlying JDBC connection) with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
+
+<a name="code-contents"></a>
+The contents of `Sample.java`:
+
+{% include copy-clipboard.html %}
+~~~ java
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
+~~~
 
 To run it:
 
@@ -79,13 +87,6 @@ To run it:
     ~~~ shell
     $ ./gradlew run
     ~~~
-
-The contents of `Sample.java`:
-
-{% include copy-clipboard.html %}
-~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
-~~~
 
 Toward the end of the output, you should see:
 
