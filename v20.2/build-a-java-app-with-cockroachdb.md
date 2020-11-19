@@ -56,7 +56,29 @@ To run it:
     ~~~ shell
     git clone https://github.com/cockroachlabs/hello-world-java-jdbc
     ~~~
-2. Compile and run the code:
+
+1. In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the demo cluster:
+
+    1. Set the port number in the `PGSimpleDataSource` instance:
+
+        {% include copy-clipboard.html %}
+        ~~~ java
+        ds.setPortNumber({port});
+        ~~~
+
+        Where `{port}` is the port number from the connection string you noted earlier.
+
+    1. Set the username and password in the `PGSimpleDataSource` instance:
+
+        {% include copy-clipboard.html %}
+        ~~~ java
+        ds.setUser("{username}");
+        ds.setPassword("{password}");
+        ~~~
+
+        Where `{username}` is the database username you created, and `{password}` is the database user's password.
+
+1. Compile and run the code:
 
     {% include copy-clipboard.html %}
     ~~~ shell
