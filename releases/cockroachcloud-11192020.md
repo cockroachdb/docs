@@ -23,7 +23,7 @@ Get future release notes emailed to you:
 
 ### General changes
 
-CockroachCloud is now running CockroachDB [v20.2.0](v20.2.0.html).
+New CockroachCloud clusters will now run CockroachDB [v20.2.0](v20.2.0.html).
 
 - [Create a 30-day free CockroachCloud cluster](../cockroachcloud/quickstart.html).
 - [Add or remove nodes](../cockroachcloud/cluster-management.html#add-or-remove-nodes-from-a-cluster) through the CockroachCloud Console.
