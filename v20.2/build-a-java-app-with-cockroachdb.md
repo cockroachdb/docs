@@ -20,32 +20,15 @@ This tutorial shows you how to build a simple Java application with CockroachDB 
 For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC](build-a-spring-app-with-cockroachdb-jdbc.html).
 {{site.data.alerts.end}}
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Install the Java JDBC driver
+## Step 2. Create a database
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the latest PostgreSQL JDBC 42.2.x driver.
+{% include {{page.version.version}}/app/create-a-database.md %}
 
-<section class="filter-content" markdown="1" data-scope="secure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
-
-<span class="version-tag">New in v19.1</span>: You can pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
-~~~
-
-## Step 4. Run the Java code
+## Step 3. Run the Java code
 
 The code below uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 
@@ -67,88 +50,25 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 To run it:
 
-1. Download [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/BasicExample.java), or create the file yourself and copy the code below.
-2. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
+1. Clone the `hello-world-java-hibernate` repo to your machine:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ javac -classpath .:/path/to/postgresql.jar BasicExample.java
+    git clone https://github.com/cockroachlabs/hello-world-java-jdbc
     ~~~
+2. Compile and run the code:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ java -classpath .:/path/to/postgresql.jar BasicExample
+    ./gradlew run
     ~~~
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
-
-`git clone https://github.com/cockroachlabs/hello-world-java-jdbc/`
-{{site.data.alerts.end}}
-
-The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/BasicExample.java):
+The contents of `BasicExample.java`:
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/BasicExample.java %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Run the Java code
-
-The code below uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
-
-1. `BasicExample`, which is where the application logic lives.
-2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class has logic to handle [transaction retries](transactions.html#transaction-retries) (see the `BasicExampleDAO.runSQL()` method).
-
-It performs the following steps which roughly correspond to method calls in the `BasicExample` class.
-
-1. Create an `accounts` table in the `bank` database (`BasicExampleDAO.createAccounts()`).
-2. Insert account data using a `Map` that corresponds to the input to `INSERT` on the backend (`BasicExampleDAO.updateAccounts(Map balance)`).
-3. Transfer money from one account to another, printing out account balances before and after the transfer (`BasicExampleDAO.transferFunds(int from, int to, int amount)`).
-4. Insert random account data using JDBC's bulk insertion support (`BasicExampleDAO.bulkInsertRandomAccountData()`).
-5. Print out (some) account data (`BasicExampleDAO.readAccounts(int limit)`).
-6. Drop the `accounts` table and perform any other necessary cleanup (`BasicExampleDAO.tearDown()`). (Note that you can run this program as many times as you want due to this cleanup step.)
-
-It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
-
-To run it:
-
-1. Clone the `hello-world-java-jdbc` repo to your machine:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachlabs/hello-world-java-jdbc/
-    ~~~
-
-2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
-3. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ javac -classpath .:/path/to/postgresql.jar BasicExample.java
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ java -classpath .:/path/to/postgresql.jar BasicExample
-    ~~~
-
-The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v19.1/app/insecure/BasicExample.java):
-
-{% include copy-clipboard.html %}
-~~~ java
-{% include {{page.version.version}}/app/insecure/BasicExample.java %}
-~~~
-
-</section>
 
 The output will look like the following:
 
