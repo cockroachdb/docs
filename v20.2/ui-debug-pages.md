@@ -4,6 +4,10 @@ toc: true
 redirect_from: admin-ui-debug-pages.html
 ---
 
+{{site.data.alerts.callout_info}}
+Most of the functionality on this page can only be accessed by an `admin` user. See [DB Console security](ui-overview.html#db-console-security).
+{{site.data.alerts.end}}
+
 The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Advanced Debug** in the left-hand navigation.
 
 {{site.data.alerts.callout_info}}
