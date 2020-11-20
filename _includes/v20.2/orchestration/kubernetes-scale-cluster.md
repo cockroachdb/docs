@@ -38,7 +38,6 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     cockroachdb-1               1/1       Running   0          47m
     cockroachdb-2               1/1       Running   0          3m
     cockroachdb-3               1/1       Running   0          1m
-    cockroachdb-client-secure   1/1       Running   0          15m
     ...
     ~~~
 
