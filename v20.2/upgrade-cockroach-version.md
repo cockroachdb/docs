@@ -100,7 +100,7 @@ When upgrading from v20.1 to v20.2, certain features and performance improvement
 {{site.data.alerts.callout_danger}}
 Before upgrading to v20.2, you must have fewer than 100 jobs in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`). Otherwise, the v20.2 node will hang and never successfully start.
 
-This will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](known-limitations.html#upgrading-to-v20-2-with-more-than-100-non-terminal-jobs).
+This will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](known-limitations.html#upgrading-to-v20-2-with-100-or-more-non-terminal-jobs).
 {{site.data.alerts.end}}
 
 For each node in your cluster, complete the following steps. Be sure to upgrade only one node at a time, and wait at least one minute after a node rejoins the cluster to upgrade the next node. Simultaneously upgrading more than one node increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability.
