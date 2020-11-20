@@ -28,7 +28,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     (4 rows)
 ~~~
 
-1. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](cockroach-node.html) command to decommission it:
+1. Use the [`cockroach node decommission`](cockroach-node.html) command to decommission the node with the highest number in its address (in this case, the address including `cockroachdb-3`):
 
     {{site.data.alerts.callout_info}}
     It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
@@ -36,10 +36,11 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure \
-    -- ./cockroach node decommission <node ID> \
-    --certs-dir=/cockroach-certs \
-    --host=cockroachdb-public
+    $ kubectl exec -it cockroachdb-3 \
+    -- ./cockroach node decommission \
+    --self \
+    --certs-dir cockroach-certs \
+    --host=<address of node to decommission>
     ~~~
 
     You'll then see the decommissioning status print to `stderr` as it changes:
@@ -96,7 +97,6 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     cockroachdb-0               1/1       Running   0          51m
     cockroachdb-1               1/1       Running   0          47m
     cockroachdb-2               1/1       Running   0          3m
-    cockroachdb-client-secure   1/1       Running   0          15m
     ...
     ~~~
 </section>
