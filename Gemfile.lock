@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/ianjevans/jekyll-remote-include.git
+  revision: 40de8276b19f04adfe354b8bf4c8b2928cb78dbf
+  specs:
+    jekyll-remote-include (1.1.0)
+
+GIT
   remote: https://github.com/jekyll/jekyll.git
   revision: 930c65fb20da6572ead9ca81830633a4cf969519
   ref: 930c65f
@@ -18,12 +24,6 @@ GIT
       rouge (~> 3.0)
       safe_yaml (~> 1.0)
       terminal-table (~> 1.8)
-
-GIT
-  remote: https://github.com/netrics/jekyll-remote-include.git
-  revision: 287e7def683559574eb0087e58afff7e9264dc92
-  specs:
-    jekyll-remote-include (1.0.1)
 
 PATH
   remote: jekyll-algolia-dev
