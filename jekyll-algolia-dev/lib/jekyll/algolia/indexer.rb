@@ -309,6 +309,12 @@ module Jekyll
           synonyms: ['request-cert', 'CSR', 'certificate signing request']
         }, false)
 
+        index.save_synonym('admin ui', {
+          objectID: 'admin ui',
+          type: 'synonym',
+          synonyms: ['db console', 'admin ui', 'web ui']
+        }, false)
+
         return
       end
 
