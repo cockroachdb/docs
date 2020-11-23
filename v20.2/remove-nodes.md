@@ -176,24 +176,24 @@ After a node has been dead for 5 minutes, CockroachDB transfers the range replic
 To prevent the cluster from rebalancing data to a dead node if it comes back online, do the following:
 
 {{site.data.alerts.callout_success}}
-You can check that a node is dead by either running [`cockroach node status`](cockroach-node.html) or opening the DB Console and scrolling to the [**Node List**](ui-cluster-overview-page.html#node-list) on the **Overview** page.
+You can check that a node is dead and find its internal ID by either running [`cockroach node status`](cockroach-node.html) or opening the DB Console and scrolling to the [**Node List**](ui-cluster-overview-page.html#node-list) on the **Overview** page.
 {{site.data.alerts.end}}
 
 ### Step 1. Mark the dead node as decommissioned
 
-Run the [`cockroach node decommission`](cockroach-node.html) command against the address of the node to decommission:
+Run the [`cockroach node decommission`](cockroach-node.html) command against the address of any live node, specifying the ID of the dead node:
 
 <div class="filter-content" markdown="1" data-scope="secure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission --self --certs-dir=certs --host=<address of node to decommission>
+$ cockroach node decommission <id of the dead node> --certs-dir=certs --host=<address of any live node>
 ~~~
 </div>
 
 <div class="filter-content" markdown="1" data-scope="insecure">
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach node decommission --self --insecure --host=<address of node to decommission>
+$ cockroach node decommission <id of the dead node> --insecure --host=<address of any live node>
 ~~~
 </div>
 
