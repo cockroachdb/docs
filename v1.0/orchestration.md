@@ -10,7 +10,6 @@ Use the following guides to run CockroachDB with popular open-source orchestrati
 
 - [Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)
 - [Docker Swarm](orchestrate-cockroachdb-with-docker-swarm.html)
-- [Mesosphere DC/OS](orchestrate-cockroachdb-with-mesosphere-insecure.html)
 
 ## See Also
 
@@ -18,4 +17,3 @@ Use the following guides to run CockroachDB with popular open-source orchestrati
 - [Manual Deployment](manual-deployment.html)
 - [Monitoring](monitor-cockroachdb-with-prometheus.html)
 - [Start a Local Cluster](start-a-local-cluster.html)
-
