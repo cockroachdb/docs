@@ -4,7 +4,7 @@ summary: The CONVERT TO SCHEMA statement converts a database to a schema.
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: The `CONVERT TO SCHEMA` [statement](sql-statements.html) converts a database to a new, user-defined [schema](sql-name-resolution.html). When you convert a database to a schema, all tables and sequences in the database are copied over to the new schema, and the database is deleted.
+<span class="version-tag">New in v20.2</span>: The `CONVERT TO SCHEMA` [statement](sql-statements.html) converts a database to a new, user-defined [schema](sql-name-resolution.html). When you convert a database to a schema, all [tables](create-table.html), [sequences](create-sequence.html), and [user-defined types](enum.html) in the database become child objects of the new schema, and the database is deleted.
 
 In CockroachDB versions < v20.2, [user-defined schemas](create-schema.html) are not supported, and all stored objects in a given database use the `public` schema. To provide a [multi-level structure for stored objects](sql-name-resolution.html) in earlier versions of CockroachDB, we've recommended using [database](create-database.html) namespaces instead of schema namespaces. The `CONVERT TO SCHEMA` statement is meant to help users who are upgrading to v20.2 and want to use schema namespaces in a way that is more similar to [PostgreSQL](http://www.postgresql.cn/docs/current/ddl-schemas.html).
 
