@@ -66,13 +66,13 @@
         color: $cl_blue;
 
         &:hover {
-          color: $cl_green;
+          color: $dark-blue;
           text-decoration: none;
           border-bottom: none;
         }
 
         &.active--scroll {
-          color: $cl_green;
+          color: $dark-blue;
         }
       }
 

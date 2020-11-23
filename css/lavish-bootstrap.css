@@ -286,16 +286,16 @@ a:focus {
 }
 
 .post-content a {
-  color: #46a417;
+  color: #0055FF;
 }
 
 .post-content a:hover {
-  color: #46a417;
-  border-bottom: 1px solid #46a417;
+  color: #0055FF;
+  border-bottom: 1px solid #0055FF;
 }
 
 .post-content .roach a:hover {
-  color: #46a417;
+  color: #0055FF;
   border-bottom: none;
 }
 

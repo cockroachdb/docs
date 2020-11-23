@@ -1027,7 +1027,7 @@ section.footer {
     position: absolute;
     top: 10px;
     left: 15px;
-    color: #54B30E;
+    color: #6933FF;
     font-size: 20px; }
   .search #search-input {
     background-color: white;
@@ -1119,7 +1119,8 @@ section.footer {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 25px;
-  color: #152849; }
+  color: #152849;
+  border-radius: 5px; }
   @media screen and (min-width: 992px) {
     .bs-callout {
       font-size: 17px;
@@ -1142,10 +1143,10 @@ section.footer {
     -moz-osx-font-smoothing: grayscale;
     line-height: 30px; }
   .bs-callout--success {
-    background-color: #F0FFE8;
-    border-left-color: #54B30E; }
+    background-color: #C5FAED;
+    border-left-color: #3DEFC4; }
     .bs-callout--success h4, .bs-callout--success .bs-callout__label {
-      color: #54B30E; }
+      color: #190F33; }
   .bs-callout--danger {
     background-color: #FCF4F3;
     border-left-color: #D9534F; }
@@ -1217,12 +1218,12 @@ section.footer {
       color: #152849; }
       #toc > ul li a:hover,
       #toc-right > ul li a:hover {
-        color: #54B30E;
+        color: #0055FF;
         text-decoration: none;
         border-bottom: none; }
       #toc > ul li a.active--scroll,
       #toc-right > ul li a.active--scroll {
-        color: #54B30E; }
+        color: #0055FF; }
     #toc > ul li a:first-child,
     #toc-right > ul li a:first-child {
       position: relative;
