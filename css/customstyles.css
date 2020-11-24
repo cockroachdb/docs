@@ -630,16 +630,16 @@ body.sidenav-open .col-content {
     background-color: transparent;
     display: inline-block; }
     .nav a code {
-      color: #152849; }
+      color: #6933FF; }
       .nav a code:hover {
-        color: #54B30E; }
+        color: #6933FF; }
     .nav a:hover, .nav a:active {
       background-color: transparent; }
       .nav a:hover > span, .nav a:active > span {
-        color: #54B30E; }
+        color: #6933FF; }
   .nav li.active > a {
     background-color: transparent;
-    color: #54B30E;
+    color: #6933FF;
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #d8d8d8; }
@@ -649,7 +649,7 @@ body.sidenav-open .col-content {
         margin-bottom: 0;
         padding-bottom: 0; } }
     .nav li.active > a > code {
-      color: #54B30E; }
+      color: #6933FF; }
   .nav li.active li.active a {
     width: 100%; }
   .nav li.active > a .arrow-down {
@@ -973,7 +973,7 @@ section.footer {
     position: relative;
     height: 100%; }
     .version-nav__link:hover, .version-nav__link--active {
-      color: #3A7DE1; }
+      color: #24CAFF; }
       .version-nav__link:hover .version-nav__link-icon--standard, .version-nav__link--active .version-nav__link-icon--standard {
         display: none; }
       .version-nav__link:hover .version-nav__link-icon--hover, .version-nav__link--active .version-nav__link-icon--hover {
@@ -1148,15 +1148,15 @@ section.footer {
     .bs-callout--success h4, .bs-callout--success .bs-callout__label {
       color: #190F33; }
   .bs-callout--danger {
-    background-color: #FCF4F3;
-    border-left-color: #D9534F; }
+    background-color: #FFE3EA;
+    border-left-color: #FF7595; }
     .bs-callout--danger h4, .bs-callout--danger .bs-callout__label {
-      color: #D9534F; }
+      color: #190F33; }
   .bs-callout--info {
-    background-color: #ECF7FF;
-    border-left-color: #3A7DE1; }
+    background-color: #DEF7FF;
+    border-left-color: #24CAFF; }
     .bs-callout--info h4, .bs-callout--info .bs-callout__label {
-      color: #3A7DE1; }
+      color: #190F33; }
 
 .toc-col {
   display: none; }
@@ -1214,23 +1214,22 @@ section.footer {
       font-size: 13px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      color: #152849; }
+      -moz-osx-font-smoothing: grayscale; }
       #toc > ul li a:hover,
       #toc-right > ul li a:hover {
-        color: #0055FF;
+        color: #6933FF;
         text-decoration: none;
         border-bottom: none; }
       #toc > ul li a.active--scroll,
       #toc-right > ul li a.active--scroll {
-        color: #0055FF; }
+        color: #6933FF; }
     #toc > ul li a:first-child,
     #toc-right > ul li a:first-child {
       position: relative;
       white-space: normal; }
       #toc > ul li a:first-child:hover:before,
       #toc-right > ul li a:first-child:hover:before {
-        color: #152849; }
+        color: #6933FF; }
     #toc > ul li > ul,
     #toc-right > ul li > ul {
       margin: 0;
@@ -1244,7 +1243,7 @@ section.footer {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 30px;
-    color: #152849;
+    color: #6933FF;
     display: block; }
 #toc code,
 #toc-right code {
@@ -1972,16 +1971,15 @@ polygon.regexp {
 #feedback-prompt {
   display: inline-block;
   padding: 25px;
-  background-color: #F0FFE8;
   font-size: 17px;
   line-height: 1; }
   #feedback-prompt form {
     display: inline-block;
     vertical-align: bottom; }
-
-#feedback-prompt p {
-  margin-bottom: 18px;
-  line-height: 0; }
+  #feedback-prompt .yes-button img,
+  #feedback-prompt .no-button img {
+    vertical-align: middle;
+    margin: 0 8px 4px 0; }
 
 .feedback-question {
   display: block;
@@ -1993,7 +1991,7 @@ polygon.regexp {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 30px; }
+  line-height: 22px; }
   @media screen and (min-width: 544px) {
     .feedback-question {
       display: inline-block; } }
@@ -2008,14 +2006,13 @@ polygon.regexp {
 #yes-button,
 #no-button,
 #feedback-prompt input[type="submit"] {
-  width: 70px;
-  height: 40px;
+  width: 88px;
+  height: 44px;
   margin: 0 5px;
   padding: 0;
   display: inline-block;
   vertical-align: bottom;
-  background-color: #F0FFE8;
-  color: #152849 !important;
+  color: #6933FF !important;
   font-family: 'AvenirLTStd-Black', serif;
   font-size: 12px;
   font-weight: normal;
@@ -2023,23 +2020,16 @@ polygon.regexp {
   -moz-osx-font-smoothing: grayscale;
   line-height: 15px;
   letter-spacing: 1.5px;
-  line-height: 40px;
-  text-transform: uppercase;
+  line-height: 44px;
   text-align: center;
   text-decoration: none !important;
-  border: 2px solid #152849;
+  border: 2px solid #6933FF;
   border-radius: 5px;
   outline: none;
   -webkit-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -moz-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -o-transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: background-color 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99); }
-  #yes-button:hover,
-  #no-button:hover,
-  #feedback-prompt input[type="submit"]:hover {
-    background-color: #152849;
-    color: #fff !important;
-    border-bottom: none; }
 
 form[class*="hs-form"] {
   margin-bottom: 0; }
@@ -2847,7 +2837,7 @@ img.mfp-img {
 .version-tag {
   display: inline-block;
   position: relative;
-  color: #3A7DE1;
+  color: #24CAFF;
   font-family: 'AvenirLTStd-Roman', serif;
   font-size: 13px;
   font-weight: normal;
@@ -3097,7 +3087,7 @@ p .version-tag, .clickable-header .version-tag {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         line-height: 20px;
-        color: #3A7DE1;
+        color: #24CAFF;
         text-transform: none;
         letter-spacing: normal; }
       #version-switcher .tier-1 a .arrow-down {
@@ -3134,9 +3124,9 @@ p .version-tag, .clickable-header .version-tag {
       letter-spacing: normal;
       border-bottom: none; }
       #version-switcher .tier-2 a:hover {
-        color: #3A7DE1; }
+        color: #24CAFF; }
     #version-switcher .tier-2.active a {
-      color: #3A7DE1; }
+      color: #24CAFF; }
     #version-switcher .tier-2 .version-text--page-dne {
       color: #152849;
       font-style: italic;
