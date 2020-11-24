@@ -11,12 +11,12 @@ $max-plus-gutters: 1590px;
 // Marketing
 $electric-purple: #6933FF;
 $dark-blue: #0055FF;
-$shallow-end: #C5FAED;
+$shallow-end: #c5faed4d;
 $aquamarine: #3DEFC4;
 $spanish-roast: #190F33;
 $border-radius: 5px;
 
-$winters-day: #DEF7FF;
+$winters-day: rgba(222, 247, 255, .60);
 $cherenkov-radiation: #24CAFF;
 
 // base colors
@@ -35,7 +35,7 @@ $cl_gray_light: #F3F3F3;
 $cl_gray_body: #142848;
 $cl_gray_footer: #F7F7F7;
 $cl_warning: #FF7595;
-$cl_warning_light: #FFE3EA;
+$cl_warning_light: rgba(255, 227, 234, .60);
 
 // syntax highlighting colors
 $cl_syntax_gray: #A2A2A2;
