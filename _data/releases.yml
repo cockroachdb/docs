@@ -5,6 +5,8 @@
       latest: true
     - date: Nov 20, 2020
       version: v20.2.1
+    - date: Nov 10, 2020
+      version: v20.2.0
     - date: Oct 21, 2020
       version: v20.1.8
     - date: Oct 12, 2020
