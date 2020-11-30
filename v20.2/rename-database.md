@@ -4,7 +4,7 @@ summary: The ALTER DATABASE ... RENAME TO statement changes the name of a databa
 toc: true
 ---
 
-The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database.
+The `RENAME TO` clause is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database. 
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 

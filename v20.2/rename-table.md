@@ -6,8 +6,10 @@ toc: true
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER TABLE`](alter-table.html), and changes the name of a table.
 
-{{site.data.alerts.callout_success}}
+{{site.data.alerts.callout_info}}
 `ALTER TABLE ... RENAME TO` can be used to move a table from one database to another, but it cannot be used to move a table from one schema to another. To change a table's schema, use [`SET SCHEMA`](set-schema.html).
+
+Note that, in a future release, `ALTER TABLE ... RENAME TO` will be limited to changing the name of a table, and will not have to the ability to change a table's database.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
