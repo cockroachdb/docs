@@ -56,7 +56,7 @@ Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#bac
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.
 
-In addition, make sure there are fewer than 100 jobs of all kinds, including backups, in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`). Otherwise, v20.2 nodes will hang and never successfully start. Note that this will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](known-limitations.html#upgrading-to-v20-2-with-100-or-more-non-terminal-jobs).
+In addition, make sure there are fewer than 100 jobs of all types, including backups, in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`). Otherwise, v20.2 nodes will hang and never successfully start. Note that this will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](known-limitations.html#upgrading-to-v20-2-with-100-or-more-non-terminal-jobs).
 
 To check for ongoing jobs, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console.
 
