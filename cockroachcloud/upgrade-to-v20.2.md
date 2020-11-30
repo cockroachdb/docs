@@ -52,11 +52,13 @@ Because your cluster will be unavailable while its single node is stopped and re
 
 Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
 
-### Let ongoing bulk operations finish
+### Check ongoing jobs
 
 Make sure there are no [bulk imports](../stable/import.html) or [schema changes](../stable/online-schema-changes.html) in progress. These are complex operations that can increase the potential for unexpected behavior during an upgrade.
 
-To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console.
+In addition, make sure there are fewer than 100 jobs of all types, including backups, in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`). Otherwise, v20.2 nodes will hang and never successfully start. Note that this will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](../v20.2/known-limitations.html#upgrading-to-v20-2-with-100-or-more-non-terminal-jobs).
+
+To check for ongoing jobs, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/stable/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../stable/ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_danger}}
 If there are any ongoing schema changes that were started when the cluster was running v19.2 or earlier and that have not reached a terminal state (`succeeded`, `failed`, or `canceled`) after the upgrade to v20.1, wait for them to finish running before upgrading to v20.2. Otherwise, they will be marked as `failed` during the upgrade to v20.2.
