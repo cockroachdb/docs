@@ -14,33 +14,15 @@ twitter: false
 
 This tutorial shows you how build a simple Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
 
-## Step 1. Install the pgx driver
-
-To install the pgx driver, run the following command:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/jackc/pgx
-~~~
-
-## Step 2. Install the CockroachDB Go library
-
-To install the [CockroachDB Go library](https://pkg.go.dev/github.com/cockroachdb/cockroach-go/crdb), run the following command:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/cockroachdb/cockroach-go/crdb
-~~~
-
-## Step 3. Start CockroachDB
+## Step 1. Start CockroachDB
 
 {% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 4. Create a database
+## Step 2. Create a database
 
 {% include {{page.version.version}}/app/create-a-database.md %}
 
-## Step 5. Run the Go code
+## Step 3. Run the Go code
 
 You can now run the code sample (`main.go`) provided in this tutorial to do the following:
 
