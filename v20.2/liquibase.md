@@ -13,7 +13,7 @@ For detailed information about using Liquibase, see the [Liquibase documentation
 Before you begin the tutorial, do the following:
 
 1. [Install CockroachDB](install-cockroachdb.html), and [start a secure cluster](secure-a-cluster.html). When starting your cluster, make sure that you generate cluster certificates, create the `bank` database, and create the `max` user.
-1. Download and install a Java Development Kit. Liquibase supports JDK versions 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 8, but you can follow along with any JDK version 11+.
+1. Download and install a Java Development Kit. Liquibase supports JDK versions 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 8, but you can follow along with any JDK version 8+.
 
 ## Step 1. Download and install Liquibase
 
@@ -515,4 +515,3 @@ If you run into problems, please file an issue on the [Liquibase issue tracker](
 + [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 + [Build a Spring App with CockroachDB and JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)
 + [Build a Spring App with CockroachDB and JPA](build-a-spring-app-with-cockroachdb-jpa.html)
-
