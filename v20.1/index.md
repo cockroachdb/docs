@@ -92,6 +92,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
   <div class="row">
     <div class="col-12">
+      <p class="overline">CockroachDB</p>
       <h2 class="">Recommended articles</h2>
     </div>
   </div>
@@ -151,6 +152,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
   </div>
 
 
+<p class="overline">Releases</p>
   <h2 class="">What’s new in docs</h2>
 
 <div class="row">
@@ -250,9 +252,9 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
             >
               Engineering
             </p>
-            <h2 class="card-title font-weight-bold mt-3">
+            <h6 class="card-title font-weight-bold mt-3">
               Disk Spilling in a Vectorized Execution Engine
-            </h2>
+            </h6>
             <div class="d-flex align-items-center">
               <div>
                 <img

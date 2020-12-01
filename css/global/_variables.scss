@@ -18,6 +18,7 @@ $border-radius: 5px;
 
 $winters-day: rgba(222, 247, 255, .60);
 $cherenkov-radiation: #24CAFF;
+$ice-temple: #1BF8EC;
 
 // base colors
 $cl_green: #54B30E;
@@ -106,6 +107,7 @@ $theme-colors: (
   "danger": #ff4136,
   "electric-purple": $purple-200,
   "black": $black,
+  "ice-temple": $ice-temple,
 );
 
 $secondary: $neutral-400;
