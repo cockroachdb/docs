@@ -150,3 +150,22 @@
 @mixin sourcesanspro_r($size) {font-family: 'SourceSansPro-Regular', sans-serif; font-size:$size; @include font-props;}
 @mixin sourcesanspro_m($size) {font-family: 'SourceSansPro-SemiBold', sans-serif; font-size:$size; @include font-props;}
 @mixin sourcesanspro_b($size) {font-family: 'SourceSansPro-Bold', sans-serif; font-size:$size; @include font-props;}
+
+// Poppins
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins-SemiBold';
+  src: url('../fonts/Poppins-SemiBold.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin poppins($size) {font-family: 'Poppins', sans-serif; font-size:$size; @include font-props;}
+@mixin poppins_sb($size) {font-family: 'Poppins-SemiBold', sans-serif; font-size:$size; @include font-props;}

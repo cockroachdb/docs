@@ -8,41 +8,40 @@ build_for: [cockroachdb, cockroachcloud]
 cta: false
 ---
 
-<div class="home-header mb-xl-5" style="background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
-">
+<div class="home-header mb-xl-5 bg-cover bg-cover__bg-3-1">
   <div class="p-5">
   <h1 class="m-0 text-white">Documentation</h1>
-  <p class="mt-0 pb-4 text-white h4">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
+  <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
     <div class="row d-lg-flex">
       <div class="col-lg-4 mb-3 mb-lg-0">
-        <div class="card card-link h-100">
-        <a href="#">
-          <div class="card-body p-4">
-            <img src="{{ 'images/lightning.svg' | relative_url }}"/>
-            <h3 class="m-0 mt-3">Getting started</h3>
-            <h4 class="mt-0 text-gray-500">Learn how to install CockroachDB, start a cluster locally, and interact with it via the built-in SQL client.</h4>
+        <div class="card card-link h-100 d-flex text-center">
+        <a href="#" class="h-100">
+          <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
+            <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-in-browser.svg' | relative_url }}"/>
+            <h6 class="m-0 text-black">In-browser<br>tutorials</h6>
+            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
         </div>
       </div>
       <div class="col-lg-4 mb-3 mb-lg-0">
-        <div class="card card-link h-100">
-        <a href="#">
-          <div class="card-body p-4">
-          <img src="{{ 'images/browser-code-alt.svg' | relative_url }}"/>
-            <h3 class="m-0 mt-3">Sample applications</h3>
-            <h4 class="mt-0 text-gray-500"">Lorem ipsum dolor sit amet cons ectetur adipiscing elit. Gravida eget vestibulum proin aliquam.</h4>
+        <div class="card card-link h-100 d-flex text-center">
+        <a href="#" class="h-100">
+          <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
+          <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}"/>
+            <h6 class="m-0 text-black">Sample <br>Applications</h6>
+            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
         </div>
         </div>
       <div class="col-lg-4 mb-3 mb-lg-0">
-        <div class="card card-link h-100">
-        <a href="#">
-          <div class="card-body p-4">
-          <img src="{{ 'images/partly-cloudy.svg' | relative_url }}"/>
-            <h3 class="m-0 mt-3">Deploy with CockroachCloud</h3>
-            <h4 class="mt-0 text-gray-500"">Lorem ipsum dolor sit amet cons ectetur adipiscing elit. Gravida eget vestibulum proin aliquam.</h4>
+        <div class="card card-link h-100 d-flex text-center">
+        <a href="#" class="h-100">
+          <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
+          <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}"/>
+            <h6 class="m-0 text-black">Deploy with <br>CockroachCloud</h6>
+            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
         </div>
@@ -84,9 +83,10 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
   <div class="row pt-4">
     <div class="col-lg-8">
-    <h1 class="mb-0">What is CockroachDB?</h1>
-    <p class="h4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis facilisis eget nibh consectetur. Ultrices eu dictumst pulvinar est scelerisque euismod. Convallis turpis interdum at varius. Lobortis nibh turpis blandit nunc. At consectetur feugiat at pellentesque est cras. Et vel, mauris velit nibh sodales in commodo velit.</p>
-    <a class="btn btn-redirect mt-3" href="#">Try CockroachDB <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
+    <p class="overline">CockroachCloud</p>
+    <h2 class="mb-0 mt-0">Serverless Deployment</h2>
+    <p class="h4">Supporting text goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Drives to capabilities page.</p>
+    <a class="btn btn-redirect mt-3" href="#">Start a Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
     </div>
   </div>
 

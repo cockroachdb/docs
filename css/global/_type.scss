@@ -5,28 +5,34 @@
 // Global header stylings are still declared in _general.scss as a fallback.
 
 @mixin headline-1 { // global h1
-  @include graphik_sb(36px);
-  line-height: 45px;
+  @include poppins_sb(50px);
+  line-height: 85px;
 }
 
 @mixin headline-2 { // global h2
-  @include graphik_sb(30px);
+  @include poppins_sb(36px);
   line-height: 40px;
 }
 
 @mixin headline-3 { // global h3
-  @include graphik_sb(24px);
+  @include poppins_sb(26px);
   line-height: 35px;
 }
 
 @mixin headline-4 { // global h4
-  @include graphik_sb(17px);
+  @include poppins_sb(17px);
   line-height: 30px;
 }
 
 @mixin headline-4--avenir {
   @include avenir_r(17px);
   line-height: 30px;
+}
+
+
+@mixin headline-6 {
+  @include poppins_sb(24px);
+  line-height: 28px;
 }
 
 @mixin headline-24-30 {
@@ -144,8 +150,8 @@
 }
 
 @mixin paragraph-type {
-  @include sourcesanspro_r(14px);
-  line-height: 25px;
+  @include sourcesanspro_r(18px);
+  line-height: 24px;
 
   @include at-query($min, $screen-md) {
     font-size: 14px;

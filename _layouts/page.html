@@ -12,7 +12,9 @@ layout: default
 {% endif %}
 
 <div class="post-content">
-   {% include version-switcher.html %}
+   {% if page.homepage != true %}
+      {% include version-switcher.html %}
+   {% endif %}
   <!--
        TOC LEVEL: By default, a page TOC includes h2 and h3 headers. To limit a
        page TOC to h2 headers only, set `toc_not_nested: true` in the page's

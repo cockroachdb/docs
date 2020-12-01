@@ -390,7 +390,10 @@ header {
 			
 	}
 	@include media-breakpoint-up(xl) {
-		height:350px;
+		height:405px;
+		.card-header-overlap {
+			min-height: 268px;
+		}
 	}
 
 	@media (min-width: $screen-md){

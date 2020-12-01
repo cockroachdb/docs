@@ -31,6 +31,8 @@
 @import "components/version-switcher";
 @import "components/navbar";
 @import "components/badge";
+@import "utils/backgrounds";
+@import "utils/type";
 
 html {
   height: 100%;
@@ -70,8 +72,7 @@ h3, h4, h5, h6 {
 }
 
 h1 {
-  @include sourcesanspro_r(28px);
-  line-height: 64px;
+  @include headline-1;
 }
 
 h2 {
@@ -119,6 +120,10 @@ h5, .h5 {
   code {
     font-size: 17px;
   }
+}
+
+h6, .h6 {
+  @include headline-6;
 }
 
 pre.prettyprint {
