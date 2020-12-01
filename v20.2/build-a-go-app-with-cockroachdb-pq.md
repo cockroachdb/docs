@@ -12,217 +12,86 @@ twitter: false
     <a href="build-a-go-app-with-cockroachdb-upperdb.html"><button class="filter-button">Use <strong>upper/db</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Go application with CockroachDB and the Go pq driver.
+This tutorial shows you how build a simple Go application with CockroachDB and the Go [pq driver](https://github.com/lib/pq).
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Install the Go pq driver
+## Step 2. Create a database
 
-To install the [Go pq driver](https://godoc.org/github.com/lib/pq), run the following command:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go get -u github.com/lib/pq
-~~~
-
-<section class="filter-content" markdown="1" data-scope="secure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
-
-The code samples will run with `maxroach` as the user.
-
-## Step 4. Run the Go code
-
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
-
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the following:
-
-`git clone https://github.com/cockroachlabs/hello-world-go-pq/`
-
-Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
-{{site.data.alerts.end}}
-
-### Basic statements
-
-First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
-
-{% include copy-clipboard.html %}
-~~~ go
-{% include {{ page.version.version }}/app/basic-sample.go %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go run basic-sample.go
-~~~
-
-The output should be:
-
-~~~
-Initial balances:
-1 1000
-2 250
-~~~
-
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
-
-{% include copy-clipboard.html %}
-~~~ go
-{% include {{ page.version.version }}/app/txn-sample.go %}
-~~~
-
-CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client. To install, clone the library into your `$GOPATH` as follows:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ mkdir -p $GOPATH/src/github.com/cockroachdb
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cd $GOPATH/src/github.com/cockroachdb
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ git clone git@github.com:cockroachdb/cockroach-go.git
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go run txn-sample.go
-~~~
-
-The output should be:
-
-~~~
-Success
-~~~
-
-To verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs -e 'SELECT id, balance FROM accounts' --database=bank
-~~~
-
-~~~
-  id | balance
------+----------
-   1 |     900
-   2 |     350
-(2 rows)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Run the Go code
 
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+You can now run the code sample (`main.go`) provided in this tutorial to do the following:
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the following:
+- Create a table in the `bank` database.
+- Insert some rows into the table you created.
+- Read values from the table.
+- Execute a batch of statements as an atomic [transaction](transactions.html).
 
-`git clone https://github.com/cockroachlabs/hello-world-go-pq/`
+    Note that CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in the case of read/write contention. The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
 
-Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
-{{site.data.alerts.end}}
+### Get the code
 
-### Basic statements
+You can copy the code below, <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pq/master/main.go">download the code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pq).
 
-First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.go" download><code>basic-sample.go</code></a> file, or create the file yourself and copy the code into it.
+Here are the contents of `main.go`:
 
 {% include copy-clipboard.html %}
-~~~ go
-{% include {{ page.version.version }}/app/insecure/basic-sample.go %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pq/master/main.go %}
+~~~
+
+### Update the connection parameters
+
+Edit the connection string passed to `sql.Open()` so that:
+
+- `{username}` and `{password}` specify the SQL username and password that you created earlier.
+- `{hostname}` and `{port}` specify the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+
+### Run the code
+
+Initialize the module:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ go mod init basic-sample
 ~~~
 
 Then run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ go run basic-sample.go
+$ go run main.go
 ~~~
 
 The output should be:
 
 ~~~
-Initial balances:
+Balances:
 1 1000
 2 250
+Success
+Balances:
+1 900
+2 350
 ~~~
 
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.go" download><code>txn-sample.go</code></a> file, or create the file yourself and copy the code into it.
+To verify that the SQL statements were executed, run the following query from inside the SQL shell:
 
 {% include copy-clipboard.html %}
-~~~ go
-{% include {{ page.version.version }}/app/insecure/txn-sample.go %}
+~~~ sql
+> USE bank;
 ~~~
 
-CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in case of read/write contention. CockroachDB provides a generic **retry function** that runs inside a transaction and retries it as needed. For Go, the CockroachDB retry function is in the `crdb` package of the CockroachDB Go client.
-
-To install the [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go), run the following command:
-
 {% include copy-clipboard.html %}
-~~~ shell
-$ go get -d github.com/cockroachdb/cockroach-go
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go run txn-sample.go
+~~~ sql
+> SELECT id, balance FROM accounts;
 ~~~
 
 The output should be:
-
-~~~
-Success
-~~~
-
-To verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
-~~~
 
 ~~~
   id | balance
@@ -231,8 +100,6 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
    2 |     350
 (2 rows)
 ~~~
-
-</section>
 
 ## What's next?
 
