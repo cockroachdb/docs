@@ -76,9 +76,7 @@ h1 {
 }
 
 h2 {
-  @include sourcesanspro_m(28px);
-  line-height: 40px;
-
+  @include headline-2;
   &.clickable-header {
     cursor: pointer;
   }

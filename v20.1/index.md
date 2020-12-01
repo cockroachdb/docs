@@ -13,7 +13,7 @@ cta: false
   <h1 class="m-0 text-white">Documentation</h1>
   <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
     <div class="row d-lg-flex">
-      <div class="col-lg-4 mb-3 mb-lg-0">
+      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
         <a href="#" class="h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
@@ -24,7 +24,7 @@ cta: false
           </a>
         </div>
       </div>
-      <div class="col-lg-4 mb-3 mb-lg-0">
+      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
         <a href="#" class="h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
@@ -35,7 +35,7 @@ cta: false
           </a>
         </div>
         </div>
-      <div class="col-lg-4 mb-3 mb-lg-0">
+      <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
         <a href="#" class="h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
@@ -81,10 +81,10 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 <div class="container">
 
-  <div class="row pt-4">
+  <div class="row pt-5 mt-5">
     <div class="col-lg-8">
     <p class="overline">CockroachCloud</p>
-    <h2 class="mb-0 mt-0">Serverless Deployment</h2>
+    <h2 class="mt-0">Serverless Deployment</h2>
     <p class="h4">Supporting text goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Drives to capabilities page.</p>
     <a class="btn btn-redirect mt-3" href="#">Start a Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
     </div>
@@ -92,7 +92,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
   <div class="row">
     <div class="col-12">
-      <h1 class="mb-0">Recommended articles</h1>
+      <h2 class="">Recommended articles</h2>
     </div>
   </div>
 
@@ -151,7 +151,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
   </div>
 
 
-  <h1 class="mb-0">What’s new in docs</h1>
+  <h2 class="">What’s new in docs</h2>
 
 <div class="row">
     <div class="col-lg-8">

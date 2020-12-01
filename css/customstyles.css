@@ -6893,11 +6893,11 @@ section.footer {
     background-color: rgba(180, 241, 170, 0.3);
     border-left-color: #37A806; }
   .bs-callout--danger {
-    background-color: #FCF4F3;
-    border-left-color: #D9534F; }
+    background-color: rgba(255, 227, 234, 0.6);
+    border-left-color: #FF7595; }
   .bs-callout--info {
-    background-color: #E0EEFB;
-    border-left-color: #0788FF; }
+    background-color: rgba(222, 247, 255, 0.6);
+    border-left-color: #24CAFF; }
 
 .toc-col {
   display: none; }
@@ -8354,7 +8354,7 @@ img.mfp-img {
   line-height: 1.725;
   white-space: nowrap;
   color: #FFFFFF;
-  background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
+  background: linear-gradient(-90deg, #190F33 0%, #0037A5 48.3%, #6933FF 100%);
   box-shadow: none; }
   .btn-redirect:hover {
     color: #fff; }
@@ -8676,7 +8676,7 @@ img.mfp-img {
 .version-tag {
   display: inline-block;
   position: relative;
-  color: #0788FF;
+  color: #24CAFF;
   font-family: 'AvenirLTStd-Roman', serif;
   font-size: 13px;
   font-weight: normal;
@@ -9063,8 +9063,8 @@ h1 {
   line-height: 85px; }
 
 h2 {
-  font-family: 'SourceSansPro-SemiBold', sans-serif;
-  font-size: 28px;
+  font-family: 'Poppins-SemiBold', sans-serif;
+  font-size: 36px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
