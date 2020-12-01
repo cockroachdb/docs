@@ -114,7 +114,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
 - Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
 
-- You cannot interleave a [hash-sharded index]((indexes.html#hash-sharded-indexes).
+- You cannot interleave a [hash-sharded index](indexes.html#hash-sharded-indexes).
 
 ## Recommendations
 
