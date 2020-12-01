@@ -12,30 +12,19 @@ twitter: false
     <a href="build-a-go-app-with-cockroachdb-upperdb.html"><button class="filter-button">Use <strong>upper/db</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Go application with CockroachDB and the GORM ORM.
+This tutorial shows you how build a simple Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
 
 {{site.data.alerts.callout_success}}
 For another use of GORM with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-<section class="filter-content" markdown="1" data-scope="secure">
+## Step 2. Create a database
 
-## Step 1. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
-
-## Step 2. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Run the Go code
 
@@ -46,25 +35,31 @@ The following code uses the [GORM](http://gorm.io) ORM (v1) to map Go-specific o
 - `db.Find(&accounts)` selects from the table so that balances can be printed.
 - The funds transfer occurs in `transferFunds()`. To ensure that we [handle retry errors](transactions.html#client-side-intervention), we wrap the function call in [`crdbgorm.ExecuteTx()`](https://github.com/cockroachdb/cockroach-go/blob/master/crdb/crdbgorm/gorm.go#L29).
 
-Copy the code below and save it to a file named `main.go`, or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/gorm-basic-sample/main.go" download>download it directly</a>.
+### Get the code
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
+You can copy the code below, <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-go-gorm/master/main.go">download the code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-gorm).
 
-`git clone https://github.com/cockroachlabs/hello-world-go-gorm/`
-{{site.data.alerts.end}}
+Here are the contents of `main.go`:
 
 {% include copy-clipboard.html %}
-~~~ go
-{% include {{ page.version.version }}/app/gorm-basic-sample/main.go %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-gorm/master/main.go %}
 ~~~
 
-Use `go mod init` to get the dependencies:
+### Update the connection parameters
+
+Edit the `addr` constant so that:
+
+- `{username}` and `{password}` specify the SQL username and password that you created earlier.
+- `{hostname}` and `{port}` specify the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+
+### Run the code
+
+Initialize the module:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ go mod init hello-world-go-gorm
+$ go mod init basic-sample
 ~~~
 
 Then run the code:
@@ -74,72 +69,16 @@ Then run the code:
 $ go run main.go
 ~~~
 
-The output should show the account balances before and after the funds transfer:
+The output should be:
 
-~~~ shell
-Balance at '2019-08-06 13:37:19.311423 -0400 EDT m=+0.034072606':
+~~~
+Balance at '2020-12-01 17:31:01.499548 -0500 EST m=+0.092649542':
 1 1000
 2 250
-Balance at '2019-08-06 13:37:19.325654 -0400 EDT m=+0.048303286':
+Balance at '2020-12-01 17:31:01.570412 -0500 EST m=+0.163512523':
 1 900
 2 350
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 1. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 2. Run the Go code
-
-The following code uses the [GORM](http://v1.gorm.io/) ORM (v1) to map Go-specific objects to SQL operations, and the [`crdbgorm`](https://godoc.org/github.com/cockroachdb/cockroach-go/crdb/crdbgorm) package to handle [transactions](transactions.html). Specifically:
-
-- `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model.
-- `db.Create(&Account{})` inserts rows into the table.
-- `db.Find(&accounts)` selects from the table so that balances can be printed.
-- The funds transfer occurs in `transferFunds()`. To ensure that we [handle retry errors](transactions.html#client-side-intervention), we wrap the function call in [`crdbgorm.ExecuteTx()`](https://github.com/cockroachdb/cockroach-go/blob/master/crdb/crdbgorm/gorm.go#L29).
-
-To get the code below, clone the `hello-world-go-gorm` repo to your machine:
-
-{% include copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-go-gorm/
-~~~
-
-{% include copy-clipboard.html %}
-~~~ go
-{% include {{ page.version.version }}/app/insecure/gorm-basic-sample/main.go %}
-~~~
-
-Change to the directory where you cloned the repo, and use `go mod init` to get the dependencies:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go mod init hello-world-go-gorm
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ go run main.go
-~~~
-
-The output should show the account balances before and after the funds transfer:
-
-~~~ shell
-Balance at '2019-07-15 13:34:22.536363 -0400 EDT m=+0.019918599':
-1 1000
-2 250
-Balance at '2019-07-15 13:34:22.540037 -0400 EDT m=+0.023592845':
-1 900
-2 350
-~~~
-
-</section>
 
 ## What's next?
 
