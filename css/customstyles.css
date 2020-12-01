@@ -1274,10 +1274,10 @@ section.footer {
     margin-top: -8px;
     vertical-align: middle; }
   #os-tabs button:hover {
-    border: 1px solid #54B30E; }
+    border: 1px solid #6933FF; }
   #os-tabs button.current {
-    border: 1px solid #54B30E;
-    background-color: #F0FFE8; }
+    border: 1px solid #6933FF;
+    background-color: #f8f5ff; }
 
 .install-button {
   display: inline-block;
@@ -1375,10 +1375,10 @@ section.footer {
     margin: 15px 15px 15px 0px;
     outline: none; }
     .filters .filter-button:hover {
-      border: 1px solid #54B30E; }
+      border: 1px solid #6933FF; }
     .filters .filter-button.current {
-      border: 1px solid #54B30E;
-      background-color: #F0FFE8; }
+      border: 1px solid #6933FF;
+      background-color: #f8f5ff; }
     .filters .filter-button.page-level {
       margin: 15px 15px 0px 0px; }
   .filters a:hover {

@@ -618,9 +618,9 @@ code {
   border-radius: 4px;
 }
 
-a code {
+/* a code {
   color: #54B30E;
-}
+} */
 
 pre {
   display: block;
