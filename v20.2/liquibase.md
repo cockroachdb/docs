@@ -6,8 +6,6 @@ toc: true
 
 This page walks you through a series of simple database schema changes using the [Liquibase](https://www.liquibase.org/get-started/how-liquibase-works) command-line tool and the [CockroachDB SQL shell](cockroach-sql.html).
 
-We have tested Liquibase enough to claim **beta-level** support.
-
 For detailed information about using Liquibase, see the [Liquibase documentation site](https://docs.liquibase.com/home.html).
 
 ## Before you begin
@@ -15,13 +13,13 @@ For detailed information about using Liquibase, see the [Liquibase documentation
 Before you begin the tutorial, do the following:
 
 1. [Install CockroachDB](install-cockroachdb.html), and [start a secure cluster](secure-a-cluster.html). When starting your cluster, make sure that you generate cluster certificates, create the `bank` database, and create the `max` user.
-1. Download and install a Java Development Kit. Liquibase supports Java 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 11.
+1. Download and install a Java Development Kit. Liquibase supports JDK versions 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 8, but you can follow along with any JDK version 8+.
 
 ## Step 1. Download and install Liquibase
 
 To install the Liquibase binary on your machine:
 
-1. Download the latest version of the [Liquibase comand-line tool](https://www.liquibase.org/download). CockroachDB is compatible with Liquibase versions 3.8.9 and greater. We use the binary download of Liquibase 3.10, for macOS.
+1. Download the latest version of the [Liquibase comand-line tool](https://www.liquibase.org/download). CockroachDB is fully compatible with Liquibase versions 4.2.0 and greater. We use the binary download of Liquibase 4.20, for macOS.
 
     {{site.data.alerts.callout_info}}
     In this tutorial, we go through a manual installation, using a download of the binary version of the Liquibase command-line tool. If you are new to Liquibase, you can also use the [Liquibase Installer](https://www.liquibase.org/get-started/using-the-liquibase-installer) to get started. The installer comes with some example properties and changelog files, an example H2 database, and a distribution of AdoptOpenJDK.
@@ -31,21 +29,21 @@ To install the Liquibase binary on your machine:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ mkdir liquibase-3.10.2-bin
+    $ mkdir liquibase-4.2.0-bin
     ~~~
 
 1. Extract the Liquibase download to the new directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar -xvf liquibase-3.10.2.tar.gz -C liquibase-3.10.2-bin
+    $ tar -xvf liquibase-4.2.0.tar.gz -C liquibase-4.2.0-bin
     ~~~
 
-1. Append the full path of the `liquibase` binary (now located in the `liquibase-3.10.2-bin` folder) to your machine's `PATH` environment variable:
+1. Append the full path of the `liquibase` binary (now located in the `liquibase-4.2.0-bin` folder) to your machine's `PATH` environment variable:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ echo "export PATH=$PATH:/full-path/liquibase-3.10.2-bin" >> ~/.bash_profile
+    $ echo "export PATH=$PATH:/full-path/liquibase-4.2.0-bin" >> ~/.bash_profile
     ~~~
 
     {% include copy-clipboard.html %}
@@ -80,13 +78,13 @@ To install the Liquibase binary on your machine:
     ##  Get documentation at docs.liquibase.com       ##
     ##  Get certified courses at learn.liquibase.com  ##
     ##  Get advanced features and support at          ##
-    ##      liquibase.com/protrial                    ##
+    ##      liquibase.com/support                     ##
     ##                                                ##
     ####################################################
-    Starting Liquibase at Tue, 28 Jul 2020 16:00:57 EDT (version 3.10.2 #22 built at Mon Jul 27 04:21:02 UTC 2020)
-    Liquibase Version: 3.10.2
-    Liquibase Community 3.10.2 by Datical
-    Running Java under /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home (Version 11.0.7)
+    Starting Liquibase at 13:38:36 (version 4.2.0 #18 built at 2020-11-13 16:49+0000)
+    Liquibase Version: 4.2.0
+    Liquibase Community 4.2.0 by Datical
+    Running Java under /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/jre (Version 1.8.0_242)
     ~~~
 
 ## Step 2: Download the PostgreSQL JDBC driver
@@ -100,7 +98,7 @@ To install the driver for Liquibase:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp ~/Downloads/postgresql-42.2.6.jar liquibase-3.10.2-bin/lib/
+    $ cp ~/Downloads/postgresql-42.2.9.jar liquibase-4.2.0-bin/lib/
     ~~~
 
 {{site.data.alerts.callout_success}}
@@ -240,10 +238,11 @@ To configure Liquibase properties:
 
 1. Add the following property definitions to the file:
 
+    {% include copy-clipboard.html %}
     ~~~ yml
     changeLogFile: changelog-main.xml
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:26257/bank?sslmode=verify-full&sslrootcert=/full-path/certs/ca.crt&sslkey=/full-ath/certs/client.max.key.pk8&sslcert=/full-path/certs/client.max.crt
+    url: jdbc:postgresql://localhost:26257/bank?sslmode=verify-full&sslrootcert=/full-path/certs/ca.crt&sslkey=/full-path/certs/client.max.key.pk8&sslcert=/full-path/certs/client.max.crt
     username: max
     ~~~
 
@@ -263,7 +262,7 @@ $ liquibase update
 You should see output similar to the following:
 
 ~~~
-Liquibase Community 3.10.2 by Datical
+Liquibase Community 4.2.0 by Datical
 ####################################################
 ##   _     _             _ _                      ##
 ##  | |   (_)           (_) |                     ##
@@ -277,10 +276,10 @@ Liquibase Community 3.10.2 by Datical
 ##  Get documentation at docs.liquibase.com       ##
 ##  Get certified courses at learn.liquibase.com  ##
 ##  Get advanced features and support at          ##
-##      liquibase.com/protrial                    ##
+##      liquibase.com/support                     ##
 ##                                                ##
 ####################################################
-Starting Liquibase at Thu, 30 Jul 2020 11:16:45 EDT (version 3.10.2 #22 built at Mon Jul 27 04:21:02 UTC 2020)
+Starting Liquibase at 13:59:37 (version 4.2.0 #18 built at 2020-11-13 16:49+0000)
 Liquibase: Update has been successful.
 ~~~
 
@@ -301,8 +300,8 @@ $ cockroach sql --certs-dir=certs
 ~~~
   id | author |      filename      |           dateexecuted           | orderexecuted | exectype |               md5sum               |                                              description                                               | comments | tag  | liquibase | contexts | labels | deployment_id
 -----+--------+--------------------+----------------------------------+---------------+----------+------------------------------------+--------------------------------------------------------------------------------------------------------+----------+------+-----------+----------+--------+----------------
-  1  | root   | changelog-main.xml | 2020-07-30 11:16:46.507829+00:00 |             1 | EXECUTED | 8:567321cdb0100cbe76731a7ed414674b | sqlFile                                                                                                |          | NULL | 3.10.2    | crdb     | NULL   | 6122206453
-  2  | max    | changelog-main.xml | 2020-07-30 11:16:46.554696+00:00 |             2 | EXECUTED | 8:c2945f2a445cf60b4b203e1a91d14a89 | insert tableName=account; insert tableName=account; insert tableName=account; insert tableName=account |          | NULL | 3.10.2    | crdb     | NULL   | 6122206453
+  1  | max    | changelog-main.xml | 2020-11-30 13:59:38.40272+00:00  |             1 | EXECUTED | 8:567321cdb0100cbe76731a7ed414674b | sqlFile                                                                                                |          | NULL | 4.2.0     | NULL     | NULL   | 6762778263
+  2  | max    | changelog-main.xml | 2020-11-30 13:59:38.542547+00:00 |             2 | EXECUTED | 8:c2945f2a445cf60b4b203e1a91d14a89 | insert tableName=account; insert tableName=account; insert tableName=account; insert tableName=account |          | NULL | 4.2.0     | NULL     | NULL   | 6762778263
 (2 rows)
 ~~~
 
@@ -395,7 +394,7 @@ Suppose that you want to change the primary key of the `accounts` table from a s
     You should see output similar to the following:
 
     ~~~
-    Liquibase Community 3.10.2 by Datical
+    Liquibase Community 4.2.0 by Datical
     ####################################################
     ##   _     _             _ _                      ##
     ##  | |   (_)           (_) |                     ##
@@ -409,10 +408,10 @@ Suppose that you want to change the primary key of the `accounts` table from a s
     ##  Get documentation at docs.liquibase.com       ##
     ##  Get certified courses at learn.liquibase.com  ##
     ##  Get advanced features and support at          ##
-    ##      liquibase.com/protrial                    ##
+    ##      liquibase.com/support                     ##
     ##                                                ##
     ####################################################
-    Starting Liquibase at Thu, 30 Jul 2020 11:19:35 EDT (version 3.10.2 #22 built at Mon Jul 27 04:21:02 UTC 2020)
+    Starting Liquibase at 14:26:50 (version 4.2.0 #18 built at 2020-11-13 16:49+0000)
     Liquibase: Update has been successful.
     ~~~
 
@@ -431,10 +430,10 @@ $ cockroach sql --certs-dir=certs
 ~~~
   id | author |      filename      |           dateexecuted           | orderexecuted | exectype |               md5sum               |                                              description                                               | comments | tag  | liquibase | contexts | labels | deployment_id
 -----+--------+--------------------+----------------------------------+---------------+----------+------------------------------------+--------------------------------------------------------------------------------------------------------+----------+------+-----------+----------+--------+----------------
-  1  | root   | changelog-main.xml | 2020-07-30 11:16:46.507829+00:00 |             1 | EXECUTED | 8:567321cdb0100cbe76731a7ed414674b | sqlFile                                                                                                |          | NULL | 3.10.2    | crdb     | NULL   | 6122206453
-  2  | max    | changelog-main.xml | 2020-07-30 11:16:46.554696+00:00 |             2 | EXECUTED | 8:c2945f2a445cf60b4b203e1a91d14a89 | insert tableName=account; insert tableName=account; insert tableName=account; insert tableName=account |          | NULL | 3.10.2    | crdb     | NULL   | 6122206453
-  3  | max    | changelog-main.xml | 2020-07-30 11:19:36.450805+00:00 |             3 | EXECUTED | 8:7b76f0ae200b1ae1d9f0c0f78979348b | sqlFile                                                                                                |          | NULL | 3.10.2    | crdb     | NULL   | 6122376070
-  4  | max    | changelog-main.xml | 2020-07-30 11:19:36.84275+00:00  |             4 | EXECUTED | 8:facd6f3627d02ffe05eeb69c06b3b90f | sqlFile                                                                                                |          | NULL | 3.10.2    | crdb     | NULL   | 6122376070
+  1  | max    | changelog-main.xml | 2020-11-30 13:59:38.40272+00:00  |             1 | EXECUTED | 8:567321cdb0100cbe76731a7ed414674b | sqlFile                                                                                                |          | NULL | 4.2.0     | NULL     | NULL   | 6762778263
+  2  | max    | changelog-main.xml | 2020-11-30 13:59:38.542547+00:00 |             2 | EXECUTED | 8:c2945f2a445cf60b4b203e1a91d14a89 | insert tableName=account; insert tableName=account; insert tableName=account; insert tableName=account |          | NULL | 4.2.0     | NULL     | NULL   | 6762778263
+  3  | max    | changelog-main.xml | 2020-11-30 14:26:51.916768+00:00 |             3 | EXECUTED | 8:7b76f0ae200b1ae1d9f0c0f78979348b | sqlFile                                                                                                |          | NULL | 4.2.0     | NULL     | NULL   | 6764411427
+  4  | max    | changelog-main.xml | 2020-11-30 14:26:52.609161+00:00 |             4 | EXECUTED | 8:fcaa0dca049c34c6372847af7a2646d9 | sqlFile                                                                                                |          | NULL | 4.2.0     | NULL     | NULL   | 6764411427
 (4 rows)
 ~~~
 
@@ -516,4 +515,3 @@ If you run into problems, please file an issue on the [Liquibase issue tracker](
 + [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 + [Build a Spring App with CockroachDB and JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)
 + [Build a Spring App with CockroachDB and JPA](build-a-spring-app-with-cockroachdb-jpa.html)
-

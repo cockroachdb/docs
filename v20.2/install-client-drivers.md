@@ -138,7 +138,7 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 **Support level:** Full
 
-Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the latest PostgreSQL JDBC 42.2.x driver.
+Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
 
 For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
@@ -154,7 +154,7 @@ If you are using Gradle, add the following to your `dependencies`:
 
 ~~~
 implementation 'org.hibernate:hibernate-core:5.4.19.Final'
-implementation 'org.postgresql:postgresql:42.2.14'
+implementation 'org.postgresql:postgresql:42.2.9'
 ~~~
 
 For a simple but complete "Hello World" example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
