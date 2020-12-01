@@ -7,8 +7,13 @@ toc_not_nested: true
 
 Interleaving tables improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same [key-value range](frequently-asked-questions.html#how-does-cockroachdb-scale) if it's likely to be read and written together.
 
-{{site.data.alerts.callout_info}}Interleaving tables does not affect their behavior within SQL.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Interleaving tables does not affect their behavior within SQL.
+{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+Interleaved tables will be deprecated in a future release. We do not recommend interleaving tables.
+{{site.data.alerts.end}}
 
 ## How interleaved tables work
 
@@ -118,7 +123,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
 - Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
 
-- You cannot interleave a [hash-sharded index]((indexes.html#hash-sharded-indexes).
+- You cannot interleave a [hash-sharded index](indexes.html#hash-sharded-indexes).
 
 ## Recommendations
 
