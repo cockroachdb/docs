@@ -8,10 +8,10 @@ table {
 }
 
 table thead tr {
-    border-bottom: 2px solid #6933FF !important;
+    border-bottom: 2px solid #190F33 !important;
     border: none;
     background: #ffffff;
-    color: #6933FF;
+    color: #190F33;
 }
 
 table td {
