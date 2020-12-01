@@ -103,7 +103,7 @@ To list all grants for all users and roles on all database objects:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW GRANTS FOR USER max;
+> SHOW GRANTS FOR max;
 ~~~
 
 ~~~
