@@ -13,7 +13,7 @@ For detailed information about using Liquibase, see the [Liquibase documentation
 Before you begin the tutorial, do the following:
 
 1. [Install CockroachDB](install-cockroachdb.html), and [start a secure cluster](secure-a-cluster.html). When starting your cluster, make sure that you generate cluster certificates, create the `bank` database, and create the `max` user.
-1. Download and install a Java Development Kit. Liquibase supports Java 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 8.
+1. Download and install a Java Development Kit. Liquibase supports JDK versions 8+. In this tutorial, we use [AdoptOpenJDK](https://adoptopenjdk.net/) 8, but you can follow along with any JDK version 11+.
 
 ## Step 1. Download and install Liquibase
 
@@ -98,7 +98,7 @@ To install the driver for Liquibase:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cp ~/Downloads/postgresql-42.2.18.jar liquibase-4.2.0-bin/lib/
+    $ cp ~/Downloads/postgresql-42.2.9.jar liquibase-4.2.0-bin/lib/
     ~~~
 
 {{site.data.alerts.callout_success}}
@@ -238,6 +238,7 @@ To configure Liquibase properties:
 
 1. Add the following property definitions to the file:
 
+    {% include copy-clipboard.html %}
     ~~~ yml
     changeLogFile: changelog-main.xml
     driver: org.postgresql.Driver
