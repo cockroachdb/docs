@@ -92,28 +92,28 @@ Toward the end of the output, you should see:
 
 ~~~
 APP: BEGIN;
-APP: addAccounts() --> 1
+APP: addAccounts() --> 1.00
 APP: COMMIT;
 APP: BEGIN;
-APP: getAccountBalance(1) --> 1000
+APP: getAccountBalance(1) --> 1000.00
 APP: COMMIT;
 APP: BEGIN;
-APP: getAccountBalance(2) --> 250
+APP: getAccountBalance(2) --> 250.00
 APP: COMMIT;
-APP: getAccountBalance(1) --> 1000
-APP: getAccountBalance(2) --> 250
+APP: getAccountBalance(1) --> 1000.00
+APP: getAccountBalance(2) --> 250.00
 APP: BEGIN;
-APP: transferFunds(1, 2, 100) --> 100
+APP: transferFunds(1, 2, 100.00) --> 100.00
 APP: COMMIT;
-APP: transferFunds(1, 2, 100) --> 100
+APP: transferFunds(1, 2, 100.00) --> 100.00
 APP: BEGIN;
-APP: getAccountBalance(1) --> 900
+APP: getAccountBalance(1) --> 900.00
 APP: COMMIT;
 APP: BEGIN;
-APP: getAccountBalance(2) --> 350
+APP: getAccountBalance(2) --> 350.00
 APP: COMMIT;
-APP: getAccountBalance(1) --> 900
-APP: getAccountBalance(2) --> 350
+APP: getAccountBalance(1) --> 900.00
+APP: getAccountBalance(2) --> 350.00
 ~~~
 
 To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
@@ -134,11 +134,11 @@ SELECT id, balance FROM accounts;
 ~~~
 
 ~~~
-  id | balance
-+----+---------+
-   1 |     900
-   2 |     350
-   3 |  314159
+id |  balance
+-----+------------
+ 1 |    900.00
+ 2 |    350.00
+ 3 | 314159.00
 (3 rows)
 ~~~
 

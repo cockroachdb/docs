@@ -41,7 +41,7 @@ It performs the following steps which roughly correspond to method calls in the 
 |------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------|
 | 1. Create an `accounts` table in the `bank` database                                                       | `BasicExampleDAO.createAccounts()`                                                              |
 | 2. Insert account data using a `Map` that corresponds to the input to `INSERT` on the backend              | `BasicExampleDAO.updateAccounts(Map balance)`                                                   |
-| 3. Transfer money from one account to another, printing out account balances before and after the transfer | `BasicExampleDAO.transferFunds(int from, int to, int amount)`                                   |
+| 3. Transfer money from one account to another, printing out account balances before and after the transfer | `BasicExampleDAO.transferFunds(int from, int to, BigDecimal amount)`                                   |
 | 4. Insert random account data using JDBC's bulk insertion support                                          | `BasicExampleDAO.bulkInsertRandomAccountData()`                                                 |
 | 5. Print out some account data                                                                             | `BasicExampleDAO.readAccounts(int limit)`                                                       |
 | 6. Drop the `accounts` table and perform any other necessary cleanup                                       | `BasicExampleDAO.tearDown()` (This cleanup step means you can run this program more than once.) |
@@ -96,7 +96,7 @@ The output will look like the following:
 
 ~~~
 BasicExampleDAO.createAccounts:
-    'CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT, CONSTRAINT balance_gt_0 CHECK (balance >= 0))'
+    'CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance DECIMAL(12,2), CONSTRAINT balance_gt_0 CHECK (balance >= 0))'
 
 BasicExampleDAO.updateAccounts:
     'INSERT INTO accounts (id, balance) VALUES (1, 1000)'
@@ -120,19 +120,19 @@ main:
     ID 2 => $350
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (354685257, 158423397)'
+    'INSERT INTO accounts (id, balance) VALUES (354685257, '158423397'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (206179866, 950590234)'
+    'INSERT INTO accounts (id, balance) VALUES (206179866, '950590234'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (708995411, 892928833)'
+    'INSERT INTO accounts (id, balance) VALUES (708995411, '892928833'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (500817884, 189050420)'
+    'INSERT INTO accounts (id, balance) VALUES (500817884, '189050420'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
@@ -201,9 +201,9 @@ try (PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts
     for (int i=0; i<=(500/BATCH_SIZE);i++) {
         for (int j=0; j<BATCH_SIZE; j++) {
             int id = random.nextInt(1000000000);
-            int balance = random.nextInt(1000000000);
+            BigDecimal balance = BigDecimal.valueOf(random.nextInt(1000000000));
             pstmt.setInt(1, id);
-            pstmt.setInt(2, balance);
+            pstmt.setBigDecimal(2, balance);
             pstmt.addBatch();
         }
         int[] count = pstmt.executeBatch();
