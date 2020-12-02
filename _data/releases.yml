@@ -203,6 +203,8 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Dec 3, 2020
+      version: v21.1.0-alpha.1
     - date: Nov 3, 2020
       version: v20.2.0-rc.4
     - date: Oct 26, 2020
