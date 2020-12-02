@@ -1,0 +1,681 @@
+<table>
+ <thead>
+
+  <tr>
+   <td>Variable name</td>
+   <td>Description</td>
+   <td>Initial value</td>
+   <td>Modify with <a href="set-vars.html">
+     <code>SET</code>
+    </a>?</td>
+   <td>View with <a href="show-vars.html">
+     <code>SHOW</code>
+    </a>?</td>
+  </tr>
+
+ </thead>
+ <tbody>
+
+  <tr>
+   <td>
+    <code>application_name</code>
+   </td>
+   <td>The current application name for statistics collection.</td>
+   <td>Empty string, or <code>cockroach</code> for sessions from the <a href="cockroach-sql.html">built-in SQL client</a>.</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>bytea_output</code>
+   </td>
+   <td>The <a href="bytes.html#supported-conversions">mode for conversions from <code>STRING</code> to <code>BYTES</code></a>.</td>
+   <td>hex</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>client_min_messages</code>
+   </td>
+   <td>The severity level of notices displayed in the <a href="cockroach-sql.html">SQL shell</a>. Accepted values include <code>debug5</code>, <code>debug4</code>, <code>debug3</code>, <code>debug2</code>, <code>debug1</code>, <code>log</code>, <code>notice</code>, <code>warning</code>, and <code>error</code>.</td>
+   <td>
+    <code>notice</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>crdb_version</code>
+   </td>
+   <td>The version of CockroachDB.</td>
+   <td>`CockroachDB OSS <i>version</i>`</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>database</code>
+   </td>
+   <td>The <a href="sql-name-resolution.html#current-database">current database</a>.</td>
+   <td>Database in connection string, or empty if not specified.</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_int_size</code>
+   </td>
+   <td>The size, in bytes, of an <a href="int.html"><code>INT</code></a> type.</td>
+   <td>
+    <code>8</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_transaction_isolation</code>
+   </td>
+   <td>All transactions execute with <code>SERIALIZABLE</code> isolation. See <a href="transactions.html#isolation-levels">Transactions: Isolation levels</a>.</td>
+   <td>
+    <code>SERIALIZABLE</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_transaction_priority</code>
+   </td>
+   <td>The default transaction priority for the current session. The supported options include <code>LOW</code>, <code>NORMAL</code>, and <code>HIGH</code>.</td>
+   <td>
+    <code>NORMAL</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_transaction_read_only</code>
+   </td>
+   <td>The default transaction access mode for the current session. If set to <code>on</code>, only read operations are allowed in transactions in the current session; if set to <code>off</code>, both read and write operations are allowed. See <a href="set-transaction.html"><code>SET TRANSACTION</code></a>
+ for more details.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>disallow_full_table_scans</code>
+   </td>
+   <td> If set to <code>on</code>, all queries that have planned a full table or full secondary index scan will return an error message. This setting does not apply to internal queries, which may plan full table or index scans without checking the session variable.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>distsql</code>
+   </td>
+   <td>The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node.</td>
+   <td>
+    <code>auto</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <a name="enable-implicit-select-for-update"></a>
+    <code>enable_implicit_select_for_update</code>
+   </td>
+   <td>Indicates whether <a href="update.html"><code>UPDATE</code></a> and <a href="upsert.html"><code>UPSERT</code></a> statements acquire locks using the <code>FOR UPDATE</code> locking mode during their initial row scan, which improves performance for contended workloads. For more information about how <code>FOR UPDATE</code> locking works, see the documentation for <a href="select-for-update.html"><code>SELECT FOR UPDATE</code></a>.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_insert_fast_path</code>
+   </td>
+   <td>Indicates whether CockroachDB will use a specialized execution operator for inserting into a table. We recommend leaving this setting <code>on</code>.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_zigzag_join</code>
+   </td>
+   <td>Indicates whether the <a href="cost-based-optimizer.html">cost-based optimizer</a> will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that after constraining indexes, they share an ordering. </td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>extra_float_digits</code>
+   </td>
+   <td>The number of digits displayed for floating-point values. Only values between <code>-15</code> and <code>3</code> are supported.</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td><code>force_savepoint_restart</code></td>
+   <td>When set to <code>true</code>, allows the <a href="savepoint.html"><code>SAVEPOINT</code></a> statement to accept any name for a savepoint.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td><code>foreign_key_cascades_limit</code></td>
+   <td> Limits the number of <a href="foreign-key.html">cascading operations</a> that run as part of a single query.</td>
+   <td>
+    <code>10000</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td><code>idle_in_session_timeout</code></td>
+   <td>Automatically terminates sessions that idle past the specified threshold. When set to <code>0</code>, the session will not timeout.</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>idle_in_transaction_session_timeout</code>
+   </td>
+   <td> Automatically terminates sessions that are idle in a transaction past the specified threshold. When set to <code>0</code>, the session will not timeout.</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>node_id</code>
+   </td>
+   <td>The ID of the node currently connected to.<br />
+    <br />This variable is particularly useful for verifying load balanced connections.</td>
+   <td>Node-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>optimizer_use_histograms</code>
+   </td>
+   <td>If <code>on</code>, the optimizer uses collected histograms for cardinality estimation.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>optimizer_use_multicol_stats</code>
+   </td>
+   <td>If <code>on</code>, the optimizer uses collected multi-column statistics for cardinality estimation.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>prefer_lookup_joins_for_fks</code>
+   </td>
+   <td> If <code>on</code>, the optimizer prefers <a href="joins.html#lookup-joins"><code>lookup joins</code></a> to <a href="joins.html#merge-joins"><code>merge joins</code></a> when performing <a href="foreign-key.html"><code>foreign key</code></a> checks.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>reorder_joins_limit</code>
+   </td>
+   <td>Maximum number of joins that the optimizer will attempt to reorder when searching for an optimal query execution plan. For more information, see <a href="cost-based-optimizer.html#join-reordering">Join reordering</a>.</td>
+   <td>
+    <code>4</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>results_buffer_size</code>
+   </td>
+   <td>The default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can also be set for all connections using the 'sql.defaults.results_buffer_size' <a href="cluster-settings.html">cluster setting</a>. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Setting to 0 disables any buffering.
+   <td>
+    <code>16384</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>require_explicit_primary_keys</code>
+   </td>
+   <td> If <code>on</code>, CockroachDB throws on error for all tables created without an explicit primary key defined.
+   </td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>search_path</code>
+   </td>
+   <td>A list of schemas that will be searched to resolve unqualified table or function names. For more details, see <a href="sql-name-resolution.html">SQL name resolution</a>.</td>
+   <td>
+    <code>public</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+
+  <tr>
+   <td>
+    <code>serial_normalization</code>
+   </td>
+   <td>Specifies the default handling of <code>SERIAL</code> in table definitions. Valid options include <code>'rowid'</code>, <code>'virtual_sequence'</code>, and <code>sql_sequence</code>.<br>If set to <code>'virtual_sequence'</code>, the <code>SERIAL</code> type auto-creates a sequence for <a href="https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/">better compatibility with Hibernate sequences</a>.</td>
+   <td>
+    <code>'rowid'</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>server_version</code>
+   </td>
+   <td>The version of PostgreSQL that CockroachDB emulates.</td>
+   <td>Version-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>server_version_num</code>
+   </td>
+   <td>The version of PostgreSQL that CockroachDB emulates.</td>
+   <td>Version-dependent</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>session_id</code>
+   </td>
+   <td>The ID of the current session.</td>
+   <td>Session-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>session_user</code>
+   </td>
+   <td>The user connected for the current session.</td>
+   <td>User in connection string</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>sql_safe_updates</code>
+   </td>
+   <td>If <code>false</code>, potentially unsafe SQL statements are allowed, including <code>DROP</code> of a non-empty database and all dependent objects, <code>DELETE</code> without a <code>WHERE</code> clause, <code>UPDATE</code> without a <code>WHERE</code> clause, and <code>ALTER TABLE .. DROP COLUMN</code>. See <a href="cockroach-sql.html#allow-potentially-unsafe-sql-statements">Allow Potentially Unsafe SQL Statements</a> for more details.</td>
+   <td>
+    <code>true</code> for interactive sessions from the <a href="cockroach-sql.html">built-in SQL client</a>,<br /><code>false</code> for sessions from other clients</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>statement_timeout</code>
+   </td>
+   <td>The amount of time a statement can run before being stopped.<br />
+    <br />This value can be an <code>int</code> (e.g., <code>10</code>) and will be interpreted as milliseconds. It can also be an interval or string argument, where the string can be parsed as a valid interval (e.g., <code>'4s'</code>). A value of <code>0</code> turns it off.</td>
+   <td>
+    <code>0s</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>timezone</code>
+   </td>
+   <td>The default time zone for the current session. <br />
+    <br />This session variable was named <code>"time zone"</code> (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL.</td>
+   <td>
+    <code>UTC</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>tracing</code>
+   </td>
+   <td>The trace recording state.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>
+   </td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_isolation</code>
+   </td>
+   <td>All transactions execute with <code>SERIALIZABLE</code> isolation. See <a href="transactions.html#isolation-levels">Transactions: Isolation levels</a>. <br />
+    <br />This session variable was called <code>transaction isolation level</code> (with spaces) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL.</td>
+   <td>
+    <code>SERIALIZABLE</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_priority</code>
+   </td>
+   <td>The priority of the current transaction. See <a href="transactions.html#isolation-levels">Transactions: Isolation levels</a> for more details.<br />
+    <br />This session variable was called <code>transaction priority</code> (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL.</td>
+   <td>
+    <code>NORMAL</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_read_only</code>
+   </td>
+   <td>The access mode of the current transaction. See <a href="set-transaction.html">Set Transaction</a> for more details.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_status</code>
+   </td>
+   <td>The state of the current transaction. See <a href="transactions.html">Transactions</a> for more details.<br />
+    <br />This session variable was called <code>transaction status</code> (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL.</td>
+   <td>
+    <code>NoTxn</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>vectorize</code>
+   </td>
+   <td>The vectorized execution engine mode. Options include <code>auto</code>, <code>on</code>, and <code>off</code>.
+     For more details, see <a href="vectorized-execution.html#configuring-vectorized-execution">Configuring vectorized execution for CockroachDB</a>.
+   </td>
+   <td>
+    <code>auto</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>vectorize_row_count_threshold</code>
+   </td>
+   <td>The minimum number of rows required to use the vectorized engine to execute a query plan.
+   </td>
+   <td>
+    <code>1000</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>client_encoding</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>UTF8</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>datestyle</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>ISO</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>default_tablespace</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code></code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_seqscan</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>integer_datetimes</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>intervalstyle</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>postgres</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>lock_timeout</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>max_identifier_length</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>128</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>max_index_keys</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>32</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>row_security</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>standard_conforming_strings</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>server_encoding</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>UTF8</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>synchronize_seqscans</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>synchronous_commit</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+ </tbody>
+</table>
