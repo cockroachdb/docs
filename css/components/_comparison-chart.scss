@@ -35,7 +35,7 @@
     border-bottom: 2px solid $cl_blue;
     @include avenir_h(12px);
     line-height: 28px; // vertical spacing
-    color: $cl_green;
+    color: $spanish-roast;
     text-align: center;
     padding: 20px;
 
@@ -129,7 +129,7 @@
 
     .select2-selection__rendered {
       text-align: center;
-      color: $cl_green;
+      color: $spanish-roast;
 
       @include at-query($min, $screen-md) {
         padding-right: 5px;
@@ -182,7 +182,7 @@
 .select2-container--default .select2-results__option--highlighted[aria-selected],
 .select2-container--default .select2-results__option[aria-selected=true] {
   background-color: #fff;
-  color: $cl_green;
+  color: $spanish-roast;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {

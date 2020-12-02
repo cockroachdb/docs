@@ -715,7 +715,7 @@ a:not([href]) {
   .landing-page .landing-page__tutorial--tile:hover {
     border-bottom: none; }
     .landing-page .landing-page__tutorial--tile:hover .landing-page__tutorial--tile-label {
-      color: #54B30E; }
+      color: #190F33; }
 .landing-page .landing-page__tutorial--tile-icon {
   display: none; }
   @media screen and (min-width: 544px) {
@@ -898,7 +898,7 @@ section.footer {
             line-height: 25px;
             margin-bottom: 10px; } }
         section.footer .footer-nav li a:hover {
-          color: #54B30E; }
+          color: #190F33; }
     section.footer .footer-nav li.header {
       font-family: 'Graphik-Semibold', sans-serif;
       font-size: 13px;
@@ -1310,11 +1310,11 @@ section.footer {
     .install-button {
       padding: 15px 25px; } }
   .install-button:hover {
-    color: #54B30E !important;
+    color: #190F33 !important;
     border-bottom: none !important; }
   .install-button.current {
     border: 2px solid #DADADA;
-    border-top: 2px solid #54B30E;
+    border-top: 2px solid #190F33;
     border-bottom: 2px #fff; }
     .install-button.current:hover {
       color: #152849 !important; }
@@ -2050,7 +2050,7 @@ form[class*="hs-form"] {
       box-shadow: none; }
   form[class*="hs-form"] textarea:focus,
   form[class*="hs-form"] input[type="email"]:focus {
-    border: 1px solid #54B30E;
+    border: 1px solid #190F33;
     box-shadow: none; }
 
 /* Feedback popup and hubspot form
@@ -2885,7 +2885,7 @@ p .version-tag, .clickable-header .version-tag {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 28px;
-    color: #54B30E;
+    color: #190F33;
     text-align: center;
     padding: 20px; }
     @media screen and (min-width: 768px) {
@@ -2958,7 +2958,7 @@ p .version-tag, .clickable-header .version-tag {
   outline: none; }
   .select2-container .select2-selection .select2-selection__rendered {
     text-align: center;
-    color: #54B30E; }
+    color: #190F33; }
     @media screen and (min-width: 992px) {
       .select2-container .select2-selection .select2-selection__rendered {
         padding-right: 5px; } }
@@ -2999,7 +2999,7 @@ p .version-tag, .clickable-header .version-tag {
 .select2-container--default .select2-results__option--highlighted[aria-selected],
 .select2-container--default .select2-results__option[aria-selected=true] {
   background-color: #fff;
-  color: #54B30E; }
+  color: #190F33; }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
   right: 6px; }
