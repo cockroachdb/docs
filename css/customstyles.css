@@ -1045,7 +1045,7 @@ section.footer {
     .search #search-input::-webkit-input-placeholder {
       color: #bcbcbc; }
     .search #search-input:focus {
-      border-color: #69CC00; }
+      border-color: #6933FF; }
     @media (min-width: 1200px) {
       .search #search-input {
         width: 100%; } }
@@ -1640,7 +1640,7 @@ section.footer {
     .hubspot-install-form .install-form .hs_email input:placeholder-shown {
       color: #A2A2A2; }
     .hubspot-install-form .install-form .hs_email input:focus {
-      border-color: #69CC00; }
+      border-color: #6933FF; }
   .hubspot-install-form .install-form .inputs-list {
     display: none !important; }
   .hubspot-install-form .install-form .hs-button {
@@ -3087,7 +3087,6 @@ p .version-tag, .clickable-header .version-tag {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         line-height: 20px;
-        color: #24CAFF;
         text-transform: none;
         letter-spacing: normal; }
       #version-switcher .tier-1 a .arrow-down {
@@ -3124,9 +3123,9 @@ p .version-tag, .clickable-header .version-tag {
       letter-spacing: normal;
       border-bottom: none; }
       #version-switcher .tier-2 a:hover {
-        color: #24CAFF; }
+        color: #6933FF; }
     #version-switcher .tier-2.active a {
-      color: #24CAFF; }
+      color: #6933FF; }
     #version-switcher .tier-2 .version-text--page-dne {
       color: #152849;
       font-style: italic;
@@ -5363,7 +5362,8 @@ ul {
   padding-left: 25px; }
 
 a code:hover {
-  text-decoration: underline; }
+  text-decoration: underline;
+  color: #0055FF; }
 
 .breadcrumb > .active {
   color: #777 !important; }

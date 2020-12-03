@@ -54,7 +54,7 @@
       .version-name {
         @include avenir_h(14px);
         line-height: 20px;
-        color: $cl_blue_note;
+        // color: $cl_blue_note;
         text-transform: none;
         letter-spacing: normal;
       }
@@ -103,12 +103,12 @@
       border-bottom: none;
 
       &:hover {
-        color: $cl_blue_note;
+        color: $electric-purple;
       }
     }
 
     &.active a {
-      color: $cl_blue_note;
+      color: $electric-purple;
     }
 
     .version {
