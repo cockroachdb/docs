@@ -31,3 +31,4 @@ SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.99277
 - [MULTIPOINT](multipoint.html)
 - [MULTILINESTRING](multilinestring.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

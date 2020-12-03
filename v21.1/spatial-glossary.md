@@ -214,6 +214,7 @@ This section has information about the representation of geometric and geographi
 
 ## See also
 
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Spatial Features](spatial-features.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial indexes](spatial-indexes.html)

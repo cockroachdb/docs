@@ -108,6 +108,7 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql');
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

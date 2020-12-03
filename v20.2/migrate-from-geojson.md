@@ -91,6 +91,7 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Spatial indexes](spatial-indexes.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

@@ -128,6 +128,7 @@ Osm2pgsql took 2879s overall
 - [Migrate from GeoPackages](migrate-from-geopackage.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

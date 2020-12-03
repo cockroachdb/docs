@@ -329,5 +329,6 @@ If you encounter behavior that you think is due to a performance issue, please g
 - [`ST_Touches`](st_touches.html)
 - [`ST_Union`](st_union.html)
 - [`ST_Within`](st_within.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Troubleshooting overview](troubleshooting-overview.html)
 - [Support resources](support-resources.html)
