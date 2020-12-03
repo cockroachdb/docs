@@ -479,7 +479,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
     At the top of the `setup.py` script, fill in the `contexts` map with the zones of your clusters and their "context" names, e.g.:
 
     ~~~
-    context = {
+    contexts = {
         'us-east1-b': 'gke_cockroach-shared_us-east1-b_cockroachdb1',
         'us-west1-a': 'gke_cockroach-shared_us-west1-a_cockroachdb2',
         'us-central1-a': 'gke_cockroach-shared_us-central1-a_cockroachdb3',
