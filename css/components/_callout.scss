@@ -4,7 +4,7 @@
   border-left: 5px solid #eee;
   @include paragraph-type;
   color: $cl_blue;
-
+  border-radius: $border-radius;
   h4 {
     margin-top: 0;
     margin-bottom: 5px;
@@ -28,11 +28,11 @@
   }
 
   &--success {
-    background-color: $cl_green_light;
-    border-left-color: $cl_green;
+    background-color: $shallow-end;
+    border-left-color: $aquamarine;
 
     h4, .bs-callout__label {
-      color: $cl_green;
+      color: $spanish-roast;
     }    
   }
 
@@ -41,7 +41,7 @@
     border-left-color: $cl_warning;
 
     h4, .bs-callout__label {
-      color: $cl_warning;
+      color: $spanish-roast;
     }
   }
 
@@ -50,7 +50,7 @@
     border-left-color: $cl_blue_note;
 
     h4, .bs-callout__label {
-      color: $cl_blue_note;
+      color: $spanish-roast;
     }
   }
 }

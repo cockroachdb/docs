@@ -8,6 +8,17 @@ $screen-lg:  1200px;
 $max-width: 1530px;
 $max-plus-gutters: 1590px;
 
+// Marketing
+$electric-purple: #6933FF;
+$dark-blue: #0055FF;
+$shallow-end: #c5faed4d;
+$aquamarine: #3DEFC4;
+$spanish-roast: #190F33;
+$border-radius: 5px;
+
+$winters-day: rgba(222, 247, 255, .60);
+$cherenkov-radiation: #24CAFF;
+
 // base colors
 $cl_green: #54B30E;
 $cl_green_dark: #338C03;
@@ -15,16 +26,16 @@ $cl_green_bright: #69CC00;
 $cl_green_light: #F0FFE8;
 $cl_blue: #152849;
 $cl_blue_dark: #111D39;
-$cl_blue_pale: #ECF7FF;
-$cl_blue_note: #3A7DE1;
+$cl_blue_pale: $winters-day;
+$cl_blue_note: $cherenkov-radiation;
 $cl_gray: #A2A2A2;
 $cl_gray_dark: #333333;
 $cl_gray_medium: #DADADA;
 $cl_gray_light: #F3F3F3;
 $cl_gray_body: #142848;
 $cl_gray_footer: #F7F7F7;
-$cl_warning: #D9534F;
-$cl_warning_light: #FCF4F3;
+$cl_warning: #FF7595;
+$cl_warning_light: rgba(255, 227, 234, .60);
 
 // syntax highlighting colors
 $cl_syntax_gray: #A2A2A2;
@@ -34,5 +45,3 @@ $cl_syntax_blue: #3C80E1;
 $cl_syntax_green: #26A5A5;
 $cl_syntax_green_link: #54B30E;
 
-// Marketing
-$electric-purple: #6933FF;

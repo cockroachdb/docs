@@ -21,12 +21,12 @@
 		}
 
 		&:hover {
-			border: 1px solid $cl_green;
+			border: 1px solid #6933FF;
 		}
 
 		&.current {
-			border: 1px solid $cl_green;
-			background-color: #F0FFE8;
+			border: 1px solid #6933FF;
+			background-color: #f8f5ff;
 		}
 	}
 }
@@ -64,13 +64,13 @@
 	}
 
 	&:hover {
-		color: $cl_green !important;
+		color: $spanish-roast !important;
 		border-bottom: none !important;
 	}
 
 	&.current {
 		border: 2px solid $cl_gray_medium;
-		border-top: 2px solid $cl_green;
+		border-top: 2px solid $spanish-roast;
 		border-bottom: 2px #fff;
 
 		&:hover {
@@ -151,12 +151,12 @@
 		outline: none;
 
 		&:hover {
-			border: 1px solid $cl_green;
+			border: 1px solid #6933FF;
 		}
 
 		&.current {
-			border: 1px solid $cl_green;
-			background-color: #F0FFE8;
+			border: 1px solid #6933FF;
+			background-color: #f8f5ff;
 		}
 
 		&.page-level {

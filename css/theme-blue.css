@@ -8,10 +8,10 @@ table {
 }
 
 table thead tr {
-    border-bottom: 2px solid #46a417 !important;
+    border-bottom: 2px solid #190F33 !important;
     border: none;
     background: #ffffff;
-    color: #46a417;
+    color: #190F33;
 }
 
 table td {
@@ -39,11 +39,11 @@ tbody tr:hover {
 
 .nav > li.active > a {
     background-color: transparent;
-    color: #46a417;
+    color: #6933FF;
 }
 
 .nav > li.active > ul > li.active > a {
-    color: #46a417;
+    color: #6933FF;
 }
 
 .nav > li > a {

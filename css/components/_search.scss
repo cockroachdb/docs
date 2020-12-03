@@ -5,7 +5,7 @@
     position: absolute;
     top: 10px;
     left: 15px;
-    color: $cl-green;
+    color: $electric-purple;
     font-size: 20px; // icon sizing
   }
 
@@ -28,7 +28,7 @@
     }
 
     &:focus {
-      border-color: $cl_green_bright;
+      border-color: $electric-purple;
     }
 
     @media (min-width: $screen-lg) {

@@ -63,16 +63,16 @@
 
       a {
         @include avenir_r(13px);
-        color: $cl_blue;
+        // color: $electric-purple;
 
         &:hover {
-          color: $cl_green;
+          color: $electric-purple;
           text-decoration: none;
           border-bottom: none;
         }
 
         &.active--scroll {
-          color: $cl_green;
+          color: $electric-purple;
         }
       }
 
@@ -82,7 +82,7 @@
 
         &:hover {
           &:before {
-            color: $cl_blue;
+            color: $electric-purple;
           }
         }
       }
@@ -97,7 +97,7 @@
       content: "Contents";
       @include avenir_h(14px);
       line-height: 30px;
-      color: $cl_blue;
+      color: $electric-purple;
       display: block;
     }
   }
