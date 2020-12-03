@@ -140,10 +140,12 @@ pre, code {
 ul {
   padding-left: 25px;
 }
-
-a code:hover {
-  text-decoration: underline;
+a code {
   color: $dark-blue;
+  &:hover {
+    text-decoration: underline;
+    color: $dark-blue;
+  }
 }
 
 .breadcrumb > .active {color: #777 !important;}

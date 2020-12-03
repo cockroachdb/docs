@@ -5361,9 +5361,11 @@ pre, code {
 ul {
   padding-left: 25px; }
 
-a code:hover {
-  text-decoration: underline;
+a code {
   color: #0055FF; }
+  a code:hover {
+    text-decoration: underline;
+    color: #0055FF; }
 
 .breadcrumb > .active {
   color: #777 !important; }
