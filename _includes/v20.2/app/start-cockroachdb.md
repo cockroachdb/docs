@@ -29,7 +29,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     #   (sql/tcp) postgres://root:admin@127.0.0.1:61011?sslmode=require    
     ~~~
 
-    You will use it in your application code later.
+    In this example, the port number is 61011. You will use the port number in your application code later.
 
 </section>
 
