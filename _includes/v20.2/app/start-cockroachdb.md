@@ -19,7 +19,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     --empty
     ~~~
 
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster.
+    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
 1. Take note of the `(sql/tcp)` connection string in the SQL shell welcome text:
 
     ~~~
