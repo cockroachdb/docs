@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/ianjevans/jekyll-remote-include.git
-  revision: 40de8276b19f04adfe354b8bf4c8b2928cb78dbf
+  revision: d53114a8fe40fad86313c62f9dfa160d9c9a97aa
   specs:
-    jekyll-remote-include (1.1.0)
+    jekyll-remote-include (1.1.1)
 
 GIT
   remote: https://github.com/jekyll/jekyll.git
@@ -110,7 +110,7 @@ DEPENDENCIES
   jekyll!
   jekyll-algolia (~> 1.0)!
   jekyll-redirect-from (~> 0.15)
-  jekyll-remote-include!
+  jekyll-remote-include (~> 1.1.1)!
   jekyll-sitemap (~> 1.3.1)
   liquid-c (~> 4.0.0)
   redcarpet (~> 3.4)
