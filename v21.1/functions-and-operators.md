@@ -36,7 +36,7 @@ functions but have special evaluation rules:
 
 ## Built-in functions
 
-{% include {{ page.version.version }}/sql/functions.md %}
+{% include {{ page.version.version }}/sql/generated/functions.md %}
 
 ## Aggregate functions
 
@@ -46,12 +46,12 @@ For examples showing how to use aggregate functions, see [the `SELECT` clause do
 Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding [`SELECT` clause](select-clause.html#aggregate-functions). To specify the order in which input rows are processed, you can add an [`ORDER BY`](query-order.html) clause within the function argument list. For examples, see the [`SELECT` clause](select-clause.html#order-aggregate-function-input-rows-by-column) documentation.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/sql/aggregates.md %}
+{% include {{ page.version.version }}/sql/generated/aggregates.md %}
 
 
 ## Window functions
 
-{% include {{ page.version.version }}/sql/window_functions.md %}
+{% include {{ page.version.version }}/sql/generated/window_functions.md %}
 
 ## Operators
 
@@ -113,7 +113,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported operations
 
-{% include {{ page.version.version }}/sql/operators.md %}
+{% include {{ page.version.version }}/sql/generated/operators.md %}
 
 <!--
 ## `CAST()`

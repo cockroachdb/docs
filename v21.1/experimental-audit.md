@@ -24,7 +24,7 @@ CockroachDB stores audit log information in a way that ensures durability, but n
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/experimental_audit.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/experimental_audit.html %}
 </div>
 
 ## Required privileges

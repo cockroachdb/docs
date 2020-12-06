@@ -20,7 +20,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/diagrams/alter_role.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/alter_role.html %}</div>
 
 ## Parameters
 

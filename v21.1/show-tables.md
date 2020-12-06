@@ -14,7 +14,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_tables.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_tables.html %}
 </div>
 
 ## Required privileges

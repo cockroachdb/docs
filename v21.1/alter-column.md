@@ -23,7 +23,7 @@ Support for altering column types is [experimental](experimental-features.html),
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/alter_column.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_column.html %}
 </div>
 
 ## Required privileges

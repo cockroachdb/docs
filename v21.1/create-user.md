@@ -27,7 +27,7 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_user.html %}</section>
 
 ## Parameters
 

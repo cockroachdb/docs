@@ -30,7 +30,7 @@ For `SHOW TRACE FOR SESSION`, no privileges are required.
 ## Syntax
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_trace.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_trace.html %}
 </div>
 
 ## Parameters

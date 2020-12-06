@@ -13,7 +13,7 @@ Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/show_partitions.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_partitions.html %}
 </div>
 
 ## Required privileges
