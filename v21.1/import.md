@@ -30,13 +30,13 @@ Only members of the `admin` role can run `IMPORT`. By default, the `root` user b
 **Import a table from CSV or Avro**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/import_csv.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/import_csv.html %}
 </div>
 
 **Import a database or table from dump file**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/import_dump.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/import_dump.html %}
 </div>
 
 ## Parameters

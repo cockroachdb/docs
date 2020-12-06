@@ -23,13 +23,13 @@ You cannot alter the primary key after it has been defined while [creating the t
 **alter_table_partition_by_stmt ::=**
 
 <section>
-{% include {{ page.version.version }}/sql/diagrams/alter_table_partition_by.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_table_partition_by.html %}
 </section>
 
 **alter_index_partition_by_stmt ::=**
 
 <section>
-{% include {{ page.version.version }}/sql/diagrams/alter_index_partition_by.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_index_partition_by.html %}
 </section>
 
 ## Parameters

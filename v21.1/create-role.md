@@ -31,7 +31,7 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/create_role.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_role.html %}</section>
 
 ## Parameters
 

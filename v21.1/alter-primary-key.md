@@ -29,7 +29,7 @@ To change an existing primary key without creating a secondary index from that p
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/alter_primary_key.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_primary_key.html %}
 </div>
 
 ## Parameters

@@ -41,7 +41,7 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/backup.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/backup.html %}
 </div>
 
 ## Parameters

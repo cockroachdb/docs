@@ -20,7 +20,7 @@ Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` u
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/import_into.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/import_into.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

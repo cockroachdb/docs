@@ -91,7 +91,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/interleave.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/interleave.html %}
 </div>
 
 ## Parameters

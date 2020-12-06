@@ -23,7 +23,7 @@ To pause a job, the user must be a member of the `admin` role or must have the [
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/pause_job.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/pause_job.html %}
 </div>
 
 ## Parameters

@@ -24,7 +24,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/rename_sequence.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/rename_sequence.html %}</section>
 
 ## Parameters
 

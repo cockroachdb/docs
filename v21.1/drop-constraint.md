@@ -20,7 +20,7 @@ For information about removing other constraints, see [Constraints: Remove Const
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/drop_constraint.html %} </section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/drop_constraint.html %} </section>
 
 ## Required privileges
 

@@ -25,7 +25,7 @@ Only members of the `admin` role can run `RESTORE`. By default, the `root` user 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/restore.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/restore.html %}
 </div>
 
 ## Parameters

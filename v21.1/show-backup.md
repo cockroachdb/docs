@@ -13,7 +13,7 @@ Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` u
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_backup.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
 </div>
 
 ## Parameters

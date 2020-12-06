@@ -19,7 +19,7 @@ The [`DEFAULT`](default-value.html) and [`NOT NULL`](not-null.html) constraints 
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/diagrams/add_constraint.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/add_constraint.html %}
 </div>
 
 ## Required privileges
