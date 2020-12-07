@@ -2335,7 +2335,7 @@ input[type="button"].btn-block {
 .fade.in {
   opacity: 1;
 }
-.collapse {
+/* .collapse {
   display: none;
 }
 .collapse.in {
@@ -2347,7 +2347,7 @@ input[type="button"].btn-block {
   overflow: hidden;
   -webkit-transition: height 0.35s ease;
   transition: height 0.35s ease;
-}
+} */
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');

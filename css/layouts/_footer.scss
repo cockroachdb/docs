@@ -5,8 +5,8 @@ section.footer {
 	position: relative; // needed for z-index
 
 	@include at-query($min, $screen-md) {
-		border-top: 1px solid $cl_gray_medium;
-		background: #fff;
+		// border-top: 1px solid $cl_gray_medium;
+		// background: #fff;
 		padding: 0 0 40px;
 	}
 
@@ -18,11 +18,11 @@ section.footer {
 		max-width: 100%;
 
 		@include at-query($min, $screen-md) {
-			display: -webkit-box;
-			display: -ms-flexbox;
-			display: flex;
-			-ms-flex-wrap: wrap;
-			    flex-wrap: wrap;
+			// display: -webkit-box;
+			// display: -ms-flexbox;
+			// display: flex;
+			// -ms-flex-wrap: wrap;
+			//     flex-wrap: wrap;
 			padding: 60px 0 20px 45px;
 			margin: 0 auto;
 			width: 1500px;
@@ -91,7 +91,7 @@ section.footer {
 
 		li {
 			color: $cl_blue;
-			text-transform: uppercase;
+			// text-transform: uppercase;
 			list-style:none;
 			text-align: left;
 			padding:0;
@@ -104,8 +104,9 @@ section.footer {
 			}
 
 			a {
+				@include sourcesanspro_r(14px);
 				color: $cl_blue_dark;
-				@include type-caption;
+				// @include type-caption;
 				// vertical spacing
 				line-height: 40px;
 				text-transform: none;
@@ -125,9 +126,10 @@ section.footer {
 		}
 
 		li.header {
-			@include button-text--heavy--medium;
+			@include poppins_sb(14px);
+			// @include button-text--heavy--medium;
 			line-height: 5px;
-			text-transform: uppercase;
+			// text-transform: uppercase;
 
 			@include at-query($min, $screen-md) {
 				margin-bottom: 15px;
