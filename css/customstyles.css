@@ -8948,7 +8948,8 @@ p .version-tag, .clickable-header .version-tag {
   z-index: 2;
   display: inline-block;
   position: relative;
-  height: 32px; }
+  height: 32px;
+  line-height: 32px; }
   #version-switcher:hover {
     background-color: #F5F7FA; }
   #version-switcher:active {
@@ -8981,13 +8982,15 @@ p .version-tag, .clickable-header .version-tag {
       #version-switcher .tier-1 a .arrow {
         content: url(../images/caret-filled-down-blue.svg);
         right: 10px;
-        top: 12px;
+        top: 14px;
         position: absolute; }
   #version-switcher .nav li ul {
     margin: 3px 0 0 0;
     box-shadow: 0px 8px 8px rgba(67, 90, 111, 0.231);
     background: #FFFFFF;
-    border-radius: 5px; }
+    border-radius: 5px;
+    padding: 0;
+    list-style: none; }
   #version-switcher .tier-2 {
     margin: 0; }
     #version-switcher .tier-2 a {
@@ -8999,7 +9002,7 @@ p .version-tag, .clickable-header .version-tag {
       text-transform: none;
       letter-spacing: normal;
       border-bottom: none;
-      padding: 8px 16px;
+      padding: 0px 16px;
       height: 32px; }
       #version-switcher .tier-2 a:hover {
         color: #fff;

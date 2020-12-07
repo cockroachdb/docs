@@ -6,7 +6,7 @@
   display: inline-block;
   position: relative;
   height: 32px;
-
+  line-height: 32px;
   &:hover{
     background-color: $neutral-100;
   }
@@ -45,7 +45,7 @@
       .arrow {
         content: url(../images/caret-filled-down-blue.svg);
         right: 10px;
-        top: 12px;
+        top: 14px;
         position: absolute;
       }
     }
@@ -56,6 +56,8 @@
     box-shadow: 0px 8px 8px rgba(67, 90, 111, 0.231);
     background: #FFFFFF;
     border-radius: $border-radius;
+    padding: 0;
+    list-style: none;
   }
 
   .tier-2 {
@@ -66,7 +68,7 @@
       text-transform: none;
       letter-spacing: normal;
       border-bottom: none;
-      padding: 8px 16px;
+      padding: 0px 16px;
       height: 32px;
       &:hover {
         color: $white;
