@@ -26,4 +26,3 @@ Get future release notes emailed to you:
 New CockroachCloud clusters will now run CockroachDB [v20.2.2](v20.2.2.html).
 
 - CockroachCloud is now offered on [larger machine sizes](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) to customers running self-service. You will now be able to select from four options in the create cluster workflow. The pricing has also been updated to reflect the new machine configurations.
-- You can now restore databases or tables from the CockroachCloud Console.
