@@ -24,7 +24,7 @@
   line-height: 30px;
 }
 
-@mixin headline-4--avenir {
+@mixin headline-4--avenir { //
   @include avenir_r(17px);
   line-height: 30px;
 }
@@ -150,13 +150,13 @@
 }
 
 @mixin paragraph-type {
-  @include sourcesanspro_r(18px);
-  line-height: 24px;
+  @include sourcesanspro_r(16px);
+  line-height: 22.6px;
 
-  @include at-query($min, $screen-md) {
-    font-size: 14px;
-    line-height: 24px;
-  }
+  // @include at-query($min, $screen-md) {
+  //   font-size: 14px;
+  //   line-height: 24px;
+  // }
 }
 
 @mixin paragraph-type--medium {

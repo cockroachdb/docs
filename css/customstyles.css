@@ -6626,16 +6626,11 @@ body.sidenav-open {
   @media screen and (min-width: 544px) {
     .landing-page .landing-page__tutorial--tile-label {
       font-family: 'SourceSansPro-Regular', sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 24px; } }
-  @media screen and (min-width: 544px) and (min-width: 992px) {
-    .landing-page .landing-page__tutorial--tile-label {
-      font-size: 14px;
-      line-height: 24px; } }
-
+      line-height: 22.6px; } }
 .landing-page .landing-page__video-wrapper {
   position: relative;
   padding-bottom: 56.25%;
@@ -6932,15 +6927,11 @@ section.footer {
   border-left: 5px solid #eee;
   border-radius: 6px;
   font-family: 'SourceSansPro-Regular', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 24px; }
-  @media screen and (min-width: 992px) {
-    .bs-callout {
-      font-size: 14px;
-      line-height: 24px; } }
+  line-height: 22.6px; }
   .bs-callout h4 {
     margin-top: 0;
     margin-bottom: 5px; }
@@ -9082,28 +9073,20 @@ html {
 body {
   height: 100%;
   font-family: 'SourceSansPro-Regular', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 24px;
+  line-height: 22.6px;
   color: #242A35; }
-  @media screen and (min-width: 992px) {
-    body {
-      font-size: 14px;
-      line-height: 24px; } }
 
 p {
   font-family: 'SourceSansPro-Regular', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 24px; }
-  @media screen and (min-width: 992px) {
-    p {
-      font-size: 14px;
-      line-height: 24px; } }
+  line-height: 22.6px; }
   p strong, p b {
     font-family: 'Graphik-Semibold', sans-serif;
     font-size: 16px;
@@ -9287,6 +9270,27 @@ td a:target:before {
 @media screen and (min-width: 992px) {
   .post-content ul, .post-content ol {
     margin-bottom: 20px; } }
+.post-content h2 {
+  font-family: 'Poppins-SemiBold', sans-serif;
+  font-size: 26px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 35px; }
+.post-content h3 {
+  font-family: 'Poppins-SemiBold', sans-serif;
+  font-size: 17px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 30px; }
+.post-content h5 {
+  font-family: 'Poppins-SemiBold', sans-serif;
+  font-size: 24px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 28px; }
 
 .post-summary {
   margin-bottom: 12px; }
@@ -9606,13 +9610,6 @@ a.accordion-toggle {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 40px; }
-  .post-header h2 {
-    font-family: 'Poppins-SemiBold', sans-serif;
-    font-size: 26px;
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    line-height: 35px; }
 
 .post-title-main {
   margin-top: 0;

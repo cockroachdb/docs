@@ -218,6 +218,20 @@ td a:target:before {
       margin-bottom: 20px;
     }
   }
+
+  h2 {
+    @include headline-3;
+  }
+  h3 {
+    @include headline-4;
+  }
+  h4 {
+    // no h5
+  }
+  h5 {
+    @include headline-6;
+  }
+
 }
 
 .post-summary {
@@ -640,9 +654,6 @@ a.accordion-toggle {
   // margin: 20px 0;
   h1 {
     @include headline-2;
-  }
-  h2 {
-    @include headline-3;
   }
 }
 
