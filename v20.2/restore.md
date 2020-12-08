@@ -89,9 +89,9 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 Restoring a database will create a new database and restore all of its tables and views.
 
-The created database will have the name of the database in the backup. The database cannot already exist in the target cluster, and you cannot specify the target database's name while doing a database restore. 
+The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
 
-If you would like to restore a database into a database with a different name, or into an existing database, you might try doing a _table_ restore instead:
+If dropping or renaming the database in the existing cluster is not an option, you can use _table_ restore to restore all of the table data from the database backup into another database:
 
 ```sql
 RESTORE backup_database_name.* FROM 'your_backup_location' WITH into_db=your_target_db
@@ -109,12 +109,11 @@ You can also restore individual tables (which automatically includes their index
 `RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
 {{site.data.alerts.end}}
 
-By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
+By default, tables and views are restored into a database with the name of the database from which they were backed up. In order for the RESTORE to succeed, the database must exist AND the target database must not have tables or views with the same name as the tables or views you're restoring.
 
-- If it no longer exists, you must [create the target database](create-database.html).
-- You can choose to [change the target database](#into_db).
+If the database you wish to restore to does not exist, you must create the target [create the target database](create-database.html). You can choose to [change the target database](#into_db).
 
-The target database must have not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
+If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
