@@ -8963,14 +8963,14 @@ p .version-tag, .clickable-header .version-tag {
     #version-switcher .tier-1 a {
       margin: 0;
       padding: 0 25px 0 10px;
-      font-family: 'SourceSansPro-Bold', sans-serif;
+      font-family: 'Poppins', sans-serif;
       font-size: 16px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       color: #00294D; }
       #version-switcher .tier-1 a .version-name {
-        font-family: 'SourceSansPro-SemiBold', sans-serif;
+        font-family: 'Poppins-SemiBold', sans-serif;
         font-size: 16px;
         font-weight: normal;
         -webkit-font-smoothing: antialiased;
@@ -8994,8 +8994,8 @@ p .version-tag, .clickable-header .version-tag {
   #version-switcher .tier-2 {
     margin: 0; }
     #version-switcher .tier-2 a {
-      font-family: 'SourceSansPro-SemiBold', sans-serif;
-      font-size: 16px;
+      font-family: 'SourceSansPro-Regular', sans-serif;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -9010,7 +9010,7 @@ p .version-tag, .clickable-header .version-tag {
         text-decoration: none; }
     #version-switcher .tier-2.active a {
       font-family: 'SourceSansPro-Bold', sans-serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -9598,8 +9598,21 @@ a.accordion-toggle {
 .post-header {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 20px 0; }
+  justify-content: space-between; }
+  .post-header h1 {
+    font-family: 'Poppins-SemiBold', sans-serif;
+    font-size: 36px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 40px; }
+  .post-header h2 {
+    font-family: 'Poppins-SemiBold', sans-serif;
+    font-size: 26px;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 35px; }
 
 .post-title-main {
   margin-top: 0;

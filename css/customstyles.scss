@@ -637,7 +637,13 @@ a.accordion-toggle {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 20px 0;
+  // margin: 20px 0;
+  h1 {
+    @include headline-2;
+  }
+  h2 {
+    @include headline-3;
+  }
 }
 
 .post-title-main {

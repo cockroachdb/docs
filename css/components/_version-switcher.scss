@@ -31,11 +31,11 @@
     a {
       margin: 0;
       padding: 0 25px 0 10px;
-      @include sourcesanspro_b(16px);
+      @include poppins(16px);
       color: $blue-500;
 
       .version-name {
-        @include sourcesanspro_m(16px);
+        @include poppins_sb(16px);
         line-height: 20px;
         color: $purple-200;
         text-transform: none;
@@ -64,7 +64,7 @@
     margin: 0;
 
     a {
-      @include sourcesanspro_m(16px);
+      @include sourcesanspro_r(14px);
       text-transform: none;
       letter-spacing: normal;
       border-bottom: none;
@@ -78,7 +78,7 @@
     }
 
     &.active a {
-      @include sourcesanspro_b(16px);
+      @include sourcesanspro_b(14px);
       background-color: $neutral-100;
       &:hover {
         background-color: $purple-200;
