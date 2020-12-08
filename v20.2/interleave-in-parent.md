@@ -139,7 +139,7 @@ Interleaved tables will be deprecated in a future release. After upgrading to v2
 
 To de-interleave a table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause. Note that an `ALTER PRIMARY KEY` statement can only de-interleave a child table if that that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
 
-Interleaved [secondary indexes](indexes,html) cannot be de-interleaved. You must [drop the existing index](drop-index.html), and [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
+Interleaved [secondary indexes](indexes.html) cannot be de-interleaved. You must [drop the existing index](drop-index.html), and [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
 
 ## Examples
 
