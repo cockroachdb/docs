@@ -1,50 +1,51 @@
 #!/usr/bin/env python3
 
+"""Update docs site for a new major version
+
+With each new major release of CockroachDB, there are a number of
+administrative tasks that need to be accomplished on the docs website. This
+includes, but is not limited to:
+
+- Create a new `vXY.Z` folder, and copy content to it
+- Copy includes to a new `_includes/vXY.Z` folder
+- Copy images to a new versioned folder, and edit image link text in the
+referencing documents as needed to point to the right places
+- Update the YAML config files with the new version info
+- Create a new sidebar JSON file
+- In the newly created XY.Z folder, remove the various "new in vXY.Z-1"
+callouts from the copied files.
+
+Note: this list may not be exhaustive, see the code below for details.
+
+This script attempts to automate these tasks as much as possible.
+
+For example, to do all of the admin tasks around bumping the version of
+CockroachDB from 20.1 to 20.2, and then surfacing the places where additional
+edits may be needed, run:
+
+$ ./bump_major_version.py -d /path/to/docs -f 20.1 -t 20.2
+
+Running this command will generate a lot of output, since
+it attempts to grep for the "old-versionish" things in the docs that
+have been copied over into the new version.  These potential
+references to the previous version will need to be manually reviewed
+and edited by a human.
+
+Finally, note that this script is *only* for use when CockroachDB
+does a major version release, since that is the only time we would
+ever create a new version folder and copy files into it.  That means
+this script would be used for a 20.1 -> 20.2 transition, but *not*
+for a 20.1.1 to 20.1.2 transition.
+
+Requirements:
+  - PyYAML: https://pyyaml.org/wiki/PyYAMLDocumentation
+"""
+
 import os
 import re
 import argparse
 import shutil
 import yaml
-
-# With each new major release of CockroachDB, there are a number of
-# administrative tasks that need to be accomplished on the docs website.  This
-# includes, but is not limited to:
-
-# - Create a new `vXY.Z` folder, and copy content to it
-#
-# - Copy includes to a new `_includes/vXY.Z` folder
-#
-# - Copy images to a new versioned folder, and edit image link text in the
-# referencing documents as needed to point to the right places
-#
-# - Update the YAML config files with the new version info
-#
-# - Create a new sidebar JSON file
-#
-# - In the newly created XY.Z folder, remove the various "new in vXY.Z-1"
-# callouts from the copied files.
-#
-# Note: this list may not be exhaustive, see the code below for details.
-#
-# This script attempts to automate these tasks as much as possible.
-#
-# For example, to do all of the admin tasks around bumping the version of
-# CockroachDB from 20.1 to 20.2, and then surfacing the places where additional
-# edits may be needed, run:
-#
-# $ ./bump_major_version.py -d /path/to/docs -f 20.1 -t 20.2
-#
-# Note that running this command will generate a lot of output, since
-# it attempts to grep for the "old-versionish" things in the docs that
-# have been copied over into the new version.  These potential
-# references to the previous version will need to be manually reviewed
-# and edited by a human.
-#
-# Finally, note that this script is *only* for use when CockroachDB
-# does a major version release, since that is the only time we would
-# ever create a new version folder and copy files into it.  That means
-# this script would be used for a 20.1 -> 20.2 transition, but *not*
-# for a 20.1.1 to 20.1.2 transition.
 
 parser = argparse.ArgumentParser(
     description="do admin tasks related to version bumps"
@@ -144,19 +145,6 @@ def copy_sidebar_json():
 
     shutil.copy2(src_json, dest_json)
     files_to_check[dest_json] = 1
-
-    # Do it once more for CockroachCloud
-    src_json_cloud = os.path.join(docs_directory,
-                                  '_includes',
-                                  'sidebar-data-' + old_version_name +
-                                  '.cockroachcloud.json')
-    dest_json_cloud = os.path.join(docs_directory,
-                                   '_includes',
-                                   'sidebar-data-' + new_version_name +
-                                   '.cockroachcloud.json')
-
-    shutil.copy2(src_json_cloud, dest_json_cloud)
-    files_to_check[dest_json_cloud] = 1
 
 
 def read_file(file):
