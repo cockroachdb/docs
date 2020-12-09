@@ -34,7 +34,7 @@ $(function() {
       $mobile_menu = $('nav.mobile_expanded'),
       $colSidebar = $('.col-sidebar'),
       $sidebar = $('#sidebar'),
-      $footer = $('section.footer'),
+      $footer = $('.footer'),
       $versionSwitcher = $('#version-switcher'),
       $tocColContents = $('.toc-col-contents');
 

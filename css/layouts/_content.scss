@@ -14,7 +14,7 @@
 	overflow: auto;
 
 	@include at-query($min, $screen-md){
-		padding-top: 120px;
+		padding-top: 145px;
 	}
 
 	#main-content {
