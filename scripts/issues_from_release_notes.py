@@ -35,6 +35,10 @@ release_notes = args.release_notes
 milestone = args.milestone
 
 # Map milestones to their internal IDs.
+if milestone == "21.1":
+    milestone = 23
+if milestone == "20.2.x":
+    milestone = 24
 if milestone == "20.2":
     milestone = 18
 if milestone == "20.1.x":
