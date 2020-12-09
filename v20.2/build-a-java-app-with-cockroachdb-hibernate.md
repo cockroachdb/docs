@@ -61,7 +61,7 @@ To run it:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html#hibernate).
+    The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
     {{site.data.alerts.end}}
 
 1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
