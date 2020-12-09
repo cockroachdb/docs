@@ -172,3 +172,126 @@ section.footer {
 		cursor: pointer;
 	}
 }
+
+.footer {
+	background: $cl_gray_footer;
+	// &__flex-wrap {
+	// 	display: -webkit-box;
+	// 	display: -ms-flexbox;
+	// 	display: flex;
+	// 	-webkit-box-pack: justify;
+	// 		-ms-flex-pack: justify;
+	// 			justify-content: space-between;
+	// 	-ms-flex-wrap: wrap;
+	// 		flex-wrap: wrap;
+
+	// 	@include at-query($min, $screen-md) {
+	// 		width: 68%;
+	// 	}
+	// }
+
+	// &__right {
+	// 	display: flex;
+	// 	border-bottom: solid 1px $cl_gray_medium;
+
+	// 	@include at-query($min, $screen-md) {
+	// 		border-bottom: none;
+	// 		border-left: solid 1px $cl_gray_medium;
+	// 		width: 25%;
+	// 		padding-top: 0;
+	// 		padding-left: 60px;
+	// 		margin-left: 50px;
+	// 	}
+	// }
+}
+
+// Nav Items
+.footer-nav {
+	width: 100%;
+	list-style: none;
+	margin-bottom: 0;
+
+	// mobile only
+	// @include at-query($max, $screen-md) {
+	// 	border-top: 1px solid $cl_gray_medium;
+	// 	padding: 20px;
+	// }
+
+	// @include at-query($min, $screen-md) {
+	// 	padding-left: 0;
+
+	// 	&--product {
+	// 		-webkit-box-ordinal-group: -1;
+	// 			-ms-flex-order: -2;
+	// 				order: -2;
+	// 	}
+
+	// 	&--documentation {
+	// 		-webkit-box-ordinal-group: 0;
+	// 			-ms-flex-order: -1;
+	// 				order: -1;
+	// 	}
+	// }
+
+	li {
+		list-style:none;
+		text-align: left;
+		padding:0;
+		margin: 0 10px 0 0;
+		text-indent:0;
+
+		@include at-query($min, $screen-md) {
+			width: 100%;
+			margin-right: 20px;
+		}
+
+		a {
+			@include sourcesanspro_r(14px);
+			color: $cl_blue_dark;
+			line-height: 40px;
+			text-transform: none;
+			display: block;
+			@include groovy(color);
+
+			@include at-query($min, $screen-md) {
+				line-height: 25px;
+				margin-bottom: 10px;
+			}
+
+			&:hover {
+				color: $electric-purple;
+			}
+		}
+	}
+
+	li.header {
+		@include poppins_sb(14px);
+		// @include button-text--heavy--medium;
+		line-height: 5px;
+		// text-transform: uppercase;
+
+		@include at-query($min, $screen-md) {
+			margin-bottom: 15px;
+		}
+	}
+
+	li:before {
+	  content: "";
+		display:none;
+		left:auto;
+		top:auto;
+	}
+}
+
+.copyright {
+	margin: 20px 0 0 20px;
+	@include type-caption;
+	color: $cl_blue;
+
+	@include at-query($min, $screen-md) {
+		text-align: left;
+		width: 100%;
+		margin-top: 15px;
+		margin-left: 0;
+	}
+}

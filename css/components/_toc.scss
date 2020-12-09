@@ -3,7 +3,8 @@
 .toc-col {
   display: none;
 
-  @include at-query($min, 1072px) {
+  @include at-query($min, $screen-lg) {
+    
     padding: 34px 0;
     // min-width: 260px;
     // max-width: 260px;
@@ -18,7 +19,7 @@
   padding-left: 0px;
   margin: 0;
 
-  @include at-query($min, 1072px) {
+  @include at-query($min, $screen-lg) {
     display: none;
   }
 }
@@ -68,7 +69,6 @@
         display: inline-flex;
         letter-spacing: 0.1px;
         padding: 6px 0 7px 20px;
-        border-left: 2px solid $neutral-200;
         &:hover {
           font-weight: bold;
           text-decoration: none;
@@ -76,7 +76,6 @@
         }
 
         &.active--scroll {
-          border-left: 2px solid $blue-300;
           font-weight: bold;
         }
 
@@ -85,6 +84,12 @@
         }
       }
 
+      &.toc-li-top {
+        border-left: 2px solid $neutral-200;
+        // &.active {
+        //   border-left: 2px solid $electric-purple;
+        // }
+      }
       a:first-child {
         position: relative;
         white-space: normal;
@@ -104,14 +109,10 @@
 
     &:before {
       content: "On this page";
-      text-transform: uppercase;
-      font-family: 'Source Sans Pro', sans-serif;
-      font-size: 12px;
-      line-height: 14px;
-      color: #242A35;
-      display: flex;
-      letter-spacing: 1.5px;
-      padding-bottom: 20px;
+      @include poppins_sb(16px);
+      line-height: 24px;
+      padding-bottom: 10px;
+      display: inline-block;
     }
   }
 

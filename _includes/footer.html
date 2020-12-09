@@ -1,96 +1,39 @@
-<section class="footer">
-  {% if page.back_to_top == true %} {% include back-to-top.html %} {% endif %}
+<div class="footer pt-5">
   <div class="container">
     <div class="row">
-      <div class="col-md-8 left">
-        <div class="row">
-          <div class="col-md-3">
-            <nav class="navbar navbar-footer navbar-expand-lg navbar-light bg-light">
-              <a class="navbar-brand d-lg-none" href="#">Product</a>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                  </li>
-
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://www.cockroachlabs.com/product/">CockroachDB</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://www.cockroachlabs.com/product/cockroachcloud/">CockroachCloud</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://www.cockroachlabs.com/compare/">Compare</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://www.cockroachlabs.com/pricing/">Pricing</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://www.cockroachlabs.com/product/whats-new/">What's New</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://www.cockroachlabs.com/get-cockroachdb/">Get CockroachDB</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://cockroachlabs.cloud/">Sign In</a>
-                  </li>
-
-                </ul>
-              </div>
-            </nav>
-          </div>
-          <div class="col-md-3">
-            two
-          </div>
-          <div class="col-md-3">Three</div>
-          <div class="col-md-3">Four</div>
-        </div>
-      </div>
-      <div class="col-md-2 right">
-        form
-      </div>
-    </div>
-  </div>
-  <div class="container">
-    <div class="footer__flex-wrap">
-      <ul class="footer-nav">
-        <li class="header">
-          Product<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
-          <li>
-            <a href="https://www.cockroachlabs.com/product/">CockroachDB</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/product/cockroachcloud/"
-              >CockroachCloud</a
-            >
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/compare/">Compare</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/pricing/">Pricing</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/product/whats-new/">What's New</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/get-cockroachdb/">Get CockroachDB</a>
-          </li>
-          <li>
-            <a href="https://cockroachlabs.cloud/">Sign In</a>
-          </li>
+      <div class="col-md-2">
+        <p class="font-weight-bold pb-2">Product</p>
+        <ul class="footer-nav p-0">
+          <ul class="p-0">
+            <li>
+              <a href="https://www.cockroachlabs.com/product/">CockroachDB</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/product/cockroachcloud/"
+                >CockroachCloud</a
+              >
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/compare/">Compare</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/pricing/">Pricing</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/product/whats-new/">What's New</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/get-cockroachdb/">Get CockroachDB</a>
+            </li>
+            <li>
+              <a href="https://cockroachlabs.cloud/">Sign In</a>
+            </li>
+          </ul>
         </ul>
-      </ul>
-      <ul class="footer-nav">
-        <li class="header">
-          Resources<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
+      </div>
+      <div class="col-md-2">
+        <p class="font-weight-bold pb-2">Resources</p>
+        <ul class="footer-nav p-0">
           <li><a href="https://www.cockroachlabs.com/guides/">Guides</a></li>
           <li>
             <a href="https://www.cockroachlabs.com/community/tech-talks"
@@ -111,22 +54,18 @@
           </li>
           <li><a href="https://www.cockroachlabs.com/security/">Security</a></li>
         </ul>
-      </ul>
-      <ul class="footer-nav">
-        <li class="header">
-          Learn<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
+      </div>
+      <div class="col-md-2">
+        <p class="font-weight-bold pb-2">Learn</p>
+        <ul class="footer-nav p-0">
           <li><a href="https://www.cockroachlabs.com/docs/stable/">Docs</a></li>
           <li>
             <a href="https://university.cockroachlabs.com/catalog">University</a>
           </li>
         </ul>
         <br>
-        <li class="header">
-          Support Channels<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
+        <p class="font-weight-bold pb-2">Support Channels</p>
+        <ul class="footer-nav p-0">
           <li><a href="https://forum.cockroachlabs.com/">Forum</a></li>
           <li>
             <a href="https://cockroa.ch/slack">Slack</a>
@@ -138,45 +77,10 @@
             <a href="https://www.cockroachlabs.com/contact/">Contact Us</a>
           </li>
         </ul>
-      </ul>
-      <!-- Fourth col -->
-      <ul class="footer-nav">
-        <li class="header">
-          Company<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
-          <li>
-            <a href="https://www.cockroachlabs.com/product/">CockroachDB</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/product/cockroachcloud/"
-              >CockroachCloud</a
-            >
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/compare/">Compare</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/pricing/">Pricing</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/product/whats-new/">What's New</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/get-cockroachdb/">Get CockroachDB</a>
-          </li>
-          <li>
-            <a href="https://cockroachlabs.cloud/">Sign In</a>
-          </li>
-        </ul>
-      </ul>
-    </div>
-    <div class="footer__right">
-      <ul class="footer-nav">
-        <li class="header">
-          Get developer news<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
+      </div>
+      <div class="col-md-2">
+        <p class="font-weight-bold pb-2">Company</li>
+        <ul class="footer-nav p-0">
           <li><a href="https://www.cockroachlabs.com/about/">About</a></li>
           <li><a href="https://www.cockroachlabs.com/blog/">Blog</a></li>
           <li><a href="https://www.cockroachlabs.com/careers/">Careers</a></li>
@@ -190,11 +94,20 @@
           <li><a href="https://www.cockroachlabs.com/privacy/">Privacy</a></li>
         </ul>
       </ul>
-    </div>
-    <div class="copyright">
-      <span class="year">&copy; 2020 </span>Cockroach Labs
+      </div>
+      <div class="col-md-4 border-left">
+        <div class="pl-5">
+          <p class="font-weight-bold pb-2">Get developer news</p>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 {% include newsletter-popout.html %}

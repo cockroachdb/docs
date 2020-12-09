@@ -22,12 +22,12 @@
 
 		&:hover {
 			color: $neutral-800;
-			border-bottom-color: $blue-300;
+			border-bottom-color: $electric-purple;
 		}
 
 		&.current {
 			color: $neutral-800;
-			border-bottom-color: $blue-300;
+			border-bottom-color: $electric-purple;
 		}
 	}
 }
@@ -154,13 +154,14 @@
 		line-height: 24px;
 		&:hover {
 			color: $neutral-800;
-			border-bottom-color: $blue-300;
+			border-bottom-color: $electric-purple;
 		}
 
 		&.current {
 			color: $neutral-800;
-			border-bottom-color: $blue-300;
+			border-bottom-color: $electric-purple;
 			line-height: 24px;
+			padding: 6px;
 		}
 
 		&.page-level {

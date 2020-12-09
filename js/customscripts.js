@@ -18,6 +18,12 @@ function renderTOC() {
     showSpeed: 0,
     headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
   });
+
+      // Set class on top level elements
+      var list = document.getElementById('toc-right').children[0].childNodes;
+      for (let li of list) {
+        li.classList.add('toc-li-top');
+      }
 }
 
 var $versionSwitcher, versionSwitcherBottom = Infinity;
