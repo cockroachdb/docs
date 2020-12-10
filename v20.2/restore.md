@@ -109,7 +109,7 @@ You can also restore individual tables (which automatically includes their index
 `RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
 {{site.data.alerts.end}}
 
-By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database by with the [`into_db` option](#into_db). 
+By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database with the [`into_db` option](#into_db). 
 
 The target database must not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
 
