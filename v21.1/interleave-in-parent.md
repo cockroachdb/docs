@@ -7,8 +7,13 @@ toc_not_nested: true
 
 Interleaving tables improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same [key-value range](frequently-asked-questions.html#how-does-cockroachdb-scale) if it's likely to be read and written together.
 
-{{site.data.alerts.callout_info}}Interleaving tables does not affect their behavior within SQL.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Interleaving tables does not affect their behavior within SQL.
+{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+Interleaved tables will be deprecated in a future release. We recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables-to-non-interleaved-tables) and replace any existing interleaved secondary indexes with non-interleaved indexes. We do not recommend interleaving tables in new clusters.
+{{site.data.alerts.end}}
 
 ## How interleaved tables work
 
@@ -118,7 +123,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
 - Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
 
-- You cannot interleave a [hash-sharded index]((indexes.html#hash-sharded-indexes).
+- You cannot interleave a [hash-sharded index](indexes.html#hash-sharded-indexes).
 
 ## Recommendations
 
@@ -127,6 +132,14 @@ For an example showing how to create tables that meet these criteria, see [Inter
 - To enforce the relationship between the parent and children table's Primary Keys, use [Foreign Key constraints](foreign-key.html) on the child table.
 
 - In cases where you're uncertain if interleaving tables will improve your queries' performance, test how tables perform under load when they're interleaved and when they aren't.
+
+## Convert interleaved tables to non-interleaved tables
+
+Interleaved tables will be deprecated in a future release. We recommend that you convert any existing interleaved tables to non-interleaved tables.
+
+To convert an interleaved table to a non-interleaved table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause. Note that an `ALTER PRIMARY KEY` statement can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
+
+Interleaved [secondary indexes](indexes.html) cannot be converted to non-interleaved indexes. You must [drop the existing index](drop-index.html), and then [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
 
 ## Examples
 
