@@ -13,7 +13,7 @@ The `LIMIT` and `OFFSET` clauses restrict the operation of:
 `OFFSET` instructs the operation to skip a specified number of rows. It is often used in conjunction with `LIMIT` to "paginate" through retrieved rows.
 
 {{site.data.alerts.callout_danger}}
-Using `LIMIT`/`OFFSET` to implement pagination can be very slow for large tables.  We recommend using [keyset pagination](selection-queries.html#pagination-example) instead.
+Using `LIMIT`/`OFFSET` to implement pagination can be very slow for large tables.  We recommend using [keyset pagination](pagination.html) instead.
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -34,7 +34,7 @@ OFFSET <offset_value> [ ROW | ROWS ]
 
 ## Examples
 
-For example uses with `SELECT`, see [Limiting Row Count and Pagination](selection-queries.html#limiting-row-count-and-pagination).
+For example uses with `SELECT`, see [Limiting Row Count(selection-queries.html#limiting-row-count).
 
 ## See also
 

@@ -131,55 +131,337 @@
             ]
           },
           {
-            "title": "Install a Postgres Client",
-            "urls": [
-              "/${VERSION}/install-client-drivers.html"
+            "title": "Connect to a Cluster",
+            "items": [
+              {
+                "title": "Start a Cluster",
+                "urls": [
+                  "/${VERSION}/secure-a-cluster.html",
+                  "/${VERSION}/start-a-local-cluster.html"
+                ]
+              },
+              {
+                "title": "Install a driver or ORM",
+                "urls": [
+                  "/${VERSION}/install-client-drivers.html"
+                ]
+              },
+              {
+                "title": "Connect to CockroachDB",
+                "urls": [
+                  "/${VERSION}/connect-to-the-database.html"
+                ]
+              },
+              {
+                "title": "Advanced Connection Topics",
+                "items": [
+                  {
+                    "title": "Connection Pooling",
+                    "urls": [
+                      "/${VERSION}/connection-pooling.html"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "title": "Connect to the Database",
-            "urls": [
-              "/${VERSION}/connect-to-the-database.html"
+            "title": "Design a Schema",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/schema-design-overview.html"
+                ]
+              },
+              {
+                "title": "Create a Database and Schema",
+                "urls": [
+                  "/${VERSION}/schema-design-database-schema.html"
+                ]
+              },
+              {
+                "title": "Create Tables and Indexes",
+                "items": [
+                  {
+                    "title": "Define Columns",
+                    "urls": [
+                      "/${VERSION}/schema-design-columns.html"
+                    ]
+                  },
+                  {
+                    "title": "Select a Primary Key",
+                    "urls": [
+                      "/${VERSION}/schema-design-primary-key.html"
+                    ]
+                  },
+                  {
+                    "title": "Add Secondary Indexes",
+                    "urls": [
+                      "/${VERSION}/schema-design-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Add Column Constraints",
+                    "urls": [
+                      "/${VERSION}/schema-design-constraints.html"
+                    ]
+                  },
+                  {
+                    "title": "Advanced Schema Design",
+                    "items": [
+                      {
+                        "title": "Create Computed Columns",
+                        "urls": [
+                          "/${VERSION}/schema-design-computed-columns.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Column Families",
+                        "urls": [
+                          "/${VERSION}/column-families.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Partial Indexes",
+                        "urls": [
+                          "/${VERSION}/partial-indexes.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Inverted Indexes",
+                        "urls": [
+                          "/${VERSION}/inverted-indexes.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Hash-sharded Indexes",
+                        "urls": [
+                          "/${VERSION}/hash-sharded-indexes.html"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Update a Schema",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/schema-update-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "How Schema Changes Work",
+                    "urls": [
+                      "/${VERSION}/online-schema-changes.html"
+                    ]
+                  },
+                  {
+                    "title": "Modify an Object in a Schema",
+                    "urls": [
+                      "/${VERSION}/schema-update-modify-objects.html"
+                    ]
+                  },
+                  {
+                    "title": "Remove an Object from a Schema",
+                    "urls": [
+                      "/${VERSION}/schema-update-remove-objects.html"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "title": "Insert Data",
-            "urls": [
-              "/${VERSION}/insert-data.html"
+            "title": "Write Data",
+            "items": [
+              {
+                "title": "Insert Data",
+                "urls": [
+                  "/${VERSION}/insert-data.html"
+                ]
+              },
+              {
+                "title": "Bulk-insert Data",
+                "urls": [
+                  "/${VERSION}/bulk-insert-data.html"
+                ]
+              },
+              {
+                "title": "Import Data",
+                "urls": [
+                  "/${VERSION}/import-data.html"
+                ]
+              },
+              {
+                "title": "Overwrite Existing Data",
+                "urls": [
+                  "/${VERSION}/update-data.html"
+                ]
+              },
+              {
+                "title": "Bulk-update Data",
+                "urls": [
+                  "/${VERSION}/bulk-update-data.html"
+                ]
+              },
+              {
+                "title": "Delete Data",
+                "urls": [
+                  "/${VERSION}/delete-data.html"
+                ]
+              },
+              {
+                "title": "Bulk-delete Data",
+                "urls": [
+                  "/${VERSION}/bulk-delete-data.html"
+                ]
+              }
             ]
           },
           {
-            "title": "Query Data",
-            "urls": [
-              "/${VERSION}/query-data.html"
+            "title": "Read Data",
+            "items": [
+              {
+                "title": "Simple Selection Queries",
+                "items": [
+                  {
+                    "title": "Select Rows of Data",
+                    "urls": [
+                      "/${VERSION}/query-data.html"
+                    ]
+                  },
+                  {
+                    "title": "Order Results",
+                    "urls": [
+                      "/${VERSION}/query-order.html"
+                    ]
+                  },
+                  {
+                    "title": "Filter Results",
+                    "urls": [
+                      "/${VERSION}/query-filter.html"
+                    ]
+                  },
+                  {
+                    "title": "Limit Results",
+                    "urls": [
+                      "/${VERSION}/query-limit.html"
+                    ]
+                  },
+                  {
+                    "title": "Combine Results from Different Queries",
+                    "urls": [
+                      "/${VERSION}/query-combine.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Advanced Selection Queries",
+                "items": [
+                  {
+                    "title": "Refer to Queries by Alias",
+                    "items": [
+                      {
+                        "title": "Use Table Expressions",
+                        "urls": [
+                          "/${VERSION}/table-expressions.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Common Table Expressions",
+                        "urls": [
+                          "/${VERSION}/common-table-expressions.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Reuse Query Results",
+                    "items": [
+                      {
+                        "title": "Create Reusable Views",
+                        "urls": [
+                          "/${VERSION}/views.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Subqueries",
+                        "urls": [
+                          "/${VERSION}/subqueries.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Paginate Results",
+                    "urls": [
+                      "/${VERSION}/pagination.html"
+                    ]
+                  },
+                  {
+                    "title": "Read Historical Data",
+                    "items": [
+                      {
+                        "title": "Use AS OF SYSTEM TIME",
+                        "urls": [
+                          "/${VERSION}/as-of-system-time.html"
+                        ]
+                      },
+                      {
+                        "title": "Use Follower Reads",
+                        "urls": [
+                          "/${VERSION}/follower-reads.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Create Complex Joins",
+                    "urls": [
+                      "/${VERSION}/complex-joins.html"
+                    ]
+                  },
+                  {
+                    "title": "Use SQL Functions in Queries",
+                    "urls": [
+                      "/${VERSION}/functions-in-queries.html"
+                    ]
+                  },
+                  {
+                    "title": "Force Index Selection",
+                    "urls": [
+                      "/${VERSION}/force-index-selection.html"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "title": "Update Data",
-            "urls": [
-              "/${VERSION}/update-data.html"
+            "title": "Debug Your Application",
+            "items":
+            [
+              {
+                "title": "Log Events",
+                "urls": [
+                  "/${VERSION}/debug-and-error-logs.html"
+                ]
+              },
+              {
+                "title": "Troubleshoot Common Problems",
+                "urls": [
+                  "/${VERSION}/error-handling-and-troubleshooting.html"
+                ]
+              }
             ]
           },
           {
-            "title": "Delete Data",
-            "urls": [
-              "/${VERSION}/delete-data.html"
-            ]
-          },
-          {
-            "title": "Run Multi-Statement Transactions",
-            "urls": [
-              "/${VERSION}/run-multi-statement-transactions.html"
-            ]
-          },
-          {
-            "title": "Error Handling & Troubleshooting",
-            "urls": [
-              "/${VERSION}/error-handling-and-troubleshooting.html"
-            ]
-          },
-          {
-            "title": "Make Queries Fast",
+            "title": "Optimize Performance",
             "urls": [
               "/${VERSION}/make-queries-fast.html"
             ]
@@ -2525,12 +2807,6 @@
                   "/${VERSION}/ui-debug-pages.html"
                 ]
               }
-            ]
-          },
-          {
-            "title": "Third-Party Database Tools",
-            "urls": [
-              "/${VERSION}/third-party-database-tools.html"
             ]
           },
           {
