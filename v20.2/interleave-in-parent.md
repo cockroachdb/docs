@@ -12,7 +12,7 @@ Interleaving tables does not affect their behavior within SQL.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-Interleaved tables will be deprecated in a future release. After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you [de-interleave](#de-interleave-tables) any existing interleaved tables and replace any existing interleaved secondary indexes. We do not recommend interleaving tables in new clusters.
+Interleaved tables will be deprecated in a future release. After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables-to-non-interleaved-tables) and replace any existing interleaved secondary indexes with non-interleaved indexes. We do not recommend interleaving tables in new clusters.
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
@@ -133,13 +133,13 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
 - In cases where you're uncertain if interleaving tables will improve your queries' performance, test how tables perform under load when they're interleaved and when they aren't.
 
-## De-interleave tables
+## Convert interleaved tables to non-interleaved tables
 
-Interleaved tables will be deprecated in a future release. After upgrading to v20.2, we recommend that you de-interleave any existing interleaved tables.
+Interleaved tables will be deprecated in a future release. After upgrading to v20.2, we recommend that you convert any existing interleaved tables to non-interleaved tables.
 
-To de-interleave a table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause. Note that an `ALTER PRIMARY KEY` statement can only de-interleave a child table if that that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
+To convert an interleaved table to a non-interleaved table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause. Note that an `ALTER PRIMARY KEY` statement can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
 
-Interleaved [secondary indexes](indexes.html) cannot be de-interleaved. You must [drop the existing index](drop-index.html), and [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
+Interleaved [secondary indexes](indexes.html) cannot be converted to non-interleaved indexes. You must [drop the existing index](drop-index.html), and then [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
 
 ## Examples
 
