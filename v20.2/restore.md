@@ -91,7 +91,7 @@ Restoring a database will create a new database and restore all of its tables an
 
 The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
 
-If dropping or renaming the database in the existing cluster is not an option, you can use _table_ restore to restore all of the table data from the database backup into another database:
+If [dropping](drop-database.html) or [renaming](rename-database.html) the database in the existing cluster is not an option, you can use _table_ restore to restore all of the table data from the database backup into another database:
 
 ```sql
 RESTORE backup_database_name.* FROM 'your_backup_location' WITH into_db=your_target_db
@@ -109,7 +109,7 @@ You can also restore individual tables (which automatically includes their index
 `RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
 {{site.data.alerts.end}}
 
-By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database by with the [`into_db` parameter](#into_db). 
+By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database by with the [`into_db` option](#into_db). 
 
 The target database must not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
 
@@ -120,7 +120,7 @@ The target database must not have tables or views with the same name as the tabl
 
 - If there is _not_ an existing type in the cluster with the same name, CockroachDB will create the user-defined type as it exists in the backup.
 - If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
-- If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either dropping or renaming the existing user-defined type.
+- If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either [dropping](drop-type.html) or [renaming](alter-type) the existing user-defined type.
 
 In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same ordered set of elements that have also been [created in the same way](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200331_enums.md#physical-layout). For example:
 
@@ -256,7 +256,7 @@ The job ID is returned immediately without waiting for the job to finish:
 
 #### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](restore.html#into_db) option, you can control the target database.
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
 {% include copy-clipboard.html %}
 ~~~ sql
