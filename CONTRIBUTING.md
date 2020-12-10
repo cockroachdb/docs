@@ -16,7 +16,7 @@ This section helps you set up the tools you'll need to write the docs and use Co
 
     ```
     brew update
-    brew install ruby ruby-dev git
+    brew install ruby
     ````
 
 You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions. 
