@@ -19,7 +19,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     --empty
     ~~~
 
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster.
+    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
 1. Take note of the `(sql/tcp)` connection string in the SQL shell welcome text:
 
     ~~~
@@ -29,7 +29,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     #   (sql/tcp) postgres://root:admin@127.0.0.1:61011?sslmode=require    
     ~~~
 
-    You will use it in your application code later.
+    In this example, the port number is 61011. You will use the port number in your application code later.
 
 </section>
 
