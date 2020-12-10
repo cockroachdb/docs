@@ -49,7 +49,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
-<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](restore.html#restore-into-a-different-database). This is useful if you want to restore a table that currently exists, but do not want to drop it.<br><br>Example: `WITH into_db = 'newdb'`
+<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](restore.html#restore-tables-into-a-different-database) for table restores. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
@@ -64,8 +64,6 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Functional details
-
-### Restore targets
 
 You can restore:
 
@@ -89,22 +87,31 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 #### Databases
 
-To restore a database, the database cannot already exist in the target cluster. Restoring a database will create the database and restore all of its tables and views. By default, tables and views are restored into a database with the name of the database from which they were backed up. However, also consider:
+Restoring a database will create a new database and restore all of its tables and views.
 
-- You can choose to [change the target database](#into_db).
-- If it no longer exists, you must [create the target database](create-database.html).
+The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
 
-The target database must have not have tables or views with the same name as the tables or views you're restoring.
+If [dropping](drop-database.html) or [renaming](rename-database.html) the database in the existing cluster is not an option, you can use _table_ restore to restore all of the table data from the database backup into another database:
+
+```sql
+RESTORE backup_database_name.* FROM 'your_backup_location' WITH into_db=your_target_db
+```
+
+{{site.data.alerts.callout_info}}
+The [`into_db`](#into_db) option only applies to [table restores](#tables).
+{{site.data.alerts.end}}
 
 #### Tables
 
-You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the [target database](#databases).
+You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the target database.
 
 {{site.data.alerts.callout_info}}
 `RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
 {{site.data.alerts.end}}
 
-To restore individual tables, the tables can not already exist in the [target database](#databases). This means the target database must not have tables or views with the same name as the restored table or view. If any of the restore target's names are being used, you can:
+By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database with the [`into_db` option](#into_db). 
+
+The target database must not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
@@ -113,7 +120,7 @@ To restore individual tables, the tables can not already exist in the [target da
 
 - If there is _not_ an existing type in the cluster with the same name, CockroachDB will create the user-defined type as it exists in the backup.
 - If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
-- If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either dropping or renaming the existing user-defined type.
+- If there is an existing type in the cluster with the same name but it is _not_ compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either [dropping](drop-type.html) or [renaming](alter-type.html) the existing user-defined type.
 
 In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same ordered set of elements that have also been [created in the same way](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200331_enums.md#physical-layout). For example:
 
@@ -247,9 +254,9 @@ The job ID is returned immediately without waiting for the job to finish:
 
 ### Other restore usages
 
-#### Restore into a different database
+#### Restore tables into a different database
 
-By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](restore.html#into_db) option, you can control the target database.
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
 
 {% include copy-clipboard.html %}
 ~~~ sql
