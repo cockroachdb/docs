@@ -105,16 +105,16 @@ The [`into_db`](#into_db) option only applies to [table restores](#tables).
 
 You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the target database.
 
-{{site.data.alerts.callout_info}}
-`RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
-{{site.data.alerts.end}}
-
 By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database with the [`into_db` option](#into_db). 
 
 The target database must not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`](drop-table.html), [`DROP VIEW`](drop-view.html), or [`DROP SEQUENCE`](drop-sequence.html) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](functions-and-operators.html#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table or view into a different database](#into_db).
+
+{{site.data.alerts.callout_info}}
+`RESTORE` only offers table-level granularity; it _does not_ support restoring subsets of a table.
+{{site.data.alerts.end}}
 
 <span class="version-tag">New in v20.2:</span> When restoring an individual table that references a user-defined type (e.g., [`ENUM`](enum.html)), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
 

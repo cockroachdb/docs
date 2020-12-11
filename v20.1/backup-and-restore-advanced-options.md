@@ -12,7 +12,7 @@ This doc provides information about the advanced options you can use when you [b
 - [Backup with revision history and point-in-time restore](#backup-with-revision-history-and-point-in-time-restore)
 - [Locality-aware backup and restore](#locality-aware-backup-and-restore)
 - <span class="version-tag">New in v20.1:</span> [Encrypted backup and restore](#encrypted-backup-and-restore)
-- [Restore into a different database](#restore-into-a-different-database)
+- [Restore into a different database](#restore-tables-into-a-different-database)
 - [Remove the foreign key before restore](#remove-the-foreign-key-before-restore)
 - [Restoring users from `system.users` backup](#restoring-users-from-system-users-backup)
 
@@ -331,7 +331,7 @@ WITH encryption_passphrase = 'password123';
 
 ## Other restore usages
 
-### Restore into a different database
+### Restore tables into a different database
 
 By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db`](restore.html#into_db) option, you can control the target database.
 
