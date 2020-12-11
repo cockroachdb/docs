@@ -4,7 +4,7 @@ toc: true
 summary: Additions and changes in CockroachCloud.
 ---
 
-## December 10, 2020
+## December 11, 2020
 
 Get future release notes emailed to you:
 
