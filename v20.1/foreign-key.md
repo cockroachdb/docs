@@ -137,6 +137,10 @@ Because the foreign key constraint requires per-row checks on two tables, statem
 
 You can improve the performance of some statements that use foreign keys by also using [`INTERLEAVE IN PARENT`](interleave-in-parent.html), but there are tradeoffs. For more information about the performance implications of interleaved tables (as well as the limitations), see the **Interleave tables** section of [Performance best practices](performance-best-practices-overview.html#interleave-tables).
 
+{{site.data.alerts.callout_danger}}
+Using `IMPORT INTO` will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+{{site.data.alerts.end}}
+
 ## Syntax
 
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
