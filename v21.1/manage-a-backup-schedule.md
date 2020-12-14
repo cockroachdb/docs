@@ -134,7 +134,7 @@ Or nest a [`SELECT` clause](select-clause.html) that retrieves `id`(s) inside th
 For more information, see [`DROP SCHEDULES`](drop-schedules.html).
 
 {{site.data.alerts.callout_danger}}
-`DROP SCHEDULE` does **not** cancel any in -rogress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](cancel-job.html) first, as you will not be able to look up the job ID once the schedule is dropped.
+`DROP SCHEDULE` does **not** cancel any in-progress jobs started by the schedule. Before you drop a schedule, [cancel any in-progress jobs](cancel-job.html) first, as you will not be able to look up the job ID once the schedule is dropped.
 {{site.data.alerts.end}}
 
 ## View and control a backup initiated by a schedule

@@ -318,7 +318,7 @@ Check Near Out of Capacity Conditions:
 Type | Time Series | What to look for
 --------|--------|--------|
 RAM capacity | Memory Usage | Consistently more than 80%
-CPU capacity | CPU Percent | Consistently less than 20% in idle (ie:80% busy)
+CPU capacity | CPU Percent | Consistently less than 20% in idle (i.e.:80% busy)
 Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently more than 50% capacity for both
 
 ## Storage issues

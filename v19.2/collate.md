@@ -65,7 +65,7 @@ For more details on locale extensions, see the [Unicode Collation Algorithm](htt
 
 ## Collation versioning
 
-While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplifed and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column](computed-columns.html) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
+While changes to collations are rare, they are possible, especially in languages with a large numbers of characters (e.g., Simplified and Traditional Chinese). CockroachDB updates its support with new versions of the Unicode standard every year, but there is currently no way to specify the version of Unicode to use. As a result, it is possible for a collation change to invalidate existing collated string data. To prevent collated data from being invalidated by Unicode changes, we recommend storing data in columns with an uncollated string type, and then using a [computed column](computed-columns.html) for the desired collation. In the event that a collation change produces undesired effects, the computed column can be dropped and recreated.
 
 ## SQL syntax
 

@@ -171,13 +171,13 @@ This page shows you how the key features of CockroachDB stack up against other d
     </td>
     <td class="comparison-chart__column-one">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Single region consistent default - Snapshot highest - Serializable</span>
-      <span class="support " data-dbs='["MongoDB"]'>Eventual consistent default - Read uncommited highest - Snapshot read</span>
+      <span class="support " data-dbs='["MongoDB"]'>Eventual consistent default - Read uncommitted highest - Snapshot read</span>
       <span class="support " data-dbs='["Cassandra"]'>Eventual consistent - No transaction isolation guarantees</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Default - Snapshot highest - Serializable</span>
     </td>
     <td class="comparison-chart__column-two">
       <span class="support " data-dbs='["MySQL", "PostgreSQL", "Oracle", "AWS Aurora"]'>Single region consistent default - Snapshot highest - Serializable</span>
-      <span class="support " data-dbs='["MongoDB"]'>Eventual consistent default - Read uncommited highest - Snapshot read</span>
+      <span class="support " data-dbs='["MongoDB"]'>Eventual consistent default - Read uncommitted highest - Snapshot read</span>
       <span class="support " data-dbs='["Cassandra"]'>Eventual consistent - No transaction isolation guarantees</span>
       <span class="support " data-dbs='["Spanner", "Yugabyte"]'>Default - Snapshot highest - Serializable</span>
     </td>

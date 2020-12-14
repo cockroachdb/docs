@@ -12,7 +12,7 @@ In a multi-region deployment, the geo-partitioned [leaseholders](architecture/re
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-**See It In Action** - Read about how a [large telecom provider](https://www.cockroachlabs.com/case-studies/telecom-provider-replaces-amazon-aurora-with-cockroachdb-to-attain-analways-on-customer-experience/) with millions of customers accross the United States is using the Geo-Partitioned Leaseholders topology in production for strong resiliency and performance.
+**See It In Action** - Read about how a [large telecom provider](https://www.cockroachlabs.com/case-studies/telecom-provider-replaces-amazon-aurora-with-cockroachdb-to-attain-analways-on-customer-experience/) with millions of customers across the United States is using the Geo-Partitioned Leaseholders topology in production for strong resiliency and performance.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -213,7 +213,7 @@ For example, in the animation below:
 4. The leaseholder retrieves the results and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v21.1/topology-patterns/topology_geo-partitioned_leaseholders_reads.png' | relative_url }}" alt="Geo-partitoned leaseholders topology" style="max-width:100%" />
+<img src="{{ 'images/v21.1/topology-patterns/topology_geo-partitioned_leaseholders_reads.png' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
 
 #### Writes
 
@@ -229,7 +229,7 @@ For example, in the animation below:
 6. The leaseholders then return acknowledgement of the commit to the gateway node.
 7. The gateway node returns the acknowledgement to the client.
 
-<img src="{{ 'images/v21.1/topology-patterns/topology_geo-partitioned_leaseholders_writes.gif' | relative_url }}" alt="Geo-partitoned leaseholders topology" style="max-width:100%" />
+<img src="{{ 'images/v21.1/topology-patterns/topology_geo-partitioned_leaseholders_writes.gif' | relative_url }}" alt="Geo-partitioned leaseholders topology" style="max-width:100%" />
 
 ### Resiliency
 
