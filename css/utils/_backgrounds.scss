@@ -3,6 +3,12 @@
     background-repeat: no-repeat;
     background-position: center center;
     &__bg-3-1 {
-        background: url("../images/bg-3-1.png");
+        background-image: url("../images/bg-3-1.png");
+    }
+    &__bg-early-3-1 {
+        background-image: url("../images/bg-early-3-1.png");
+    }
+    &__bg-gradient-purple-blue {
+        background: linear-gradient(90deg, #0037A5 0%, #6933FF 50.38%, #00FCED 100%);
     }
 }

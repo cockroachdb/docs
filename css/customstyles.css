@@ -11289,7 +11289,11 @@ p .version-tag, .clickable-header .version-tag {
   background-repeat: no-repeat;
   background-position: center center; }
   .bg-cover__bg-3-1 {
-    background: url("../images/bg-3-1.png"); }
+    background-image: url("../images/bg-3-1.png"); }
+  .bg-cover__bg-early-3-1 {
+    background-image: url("../images/bg-early-3-1.png"); }
+  .bg-cover__bg-gradient-purple-blue {
+    background: linear-gradient(90deg, #0037A5 0%, #6933FF 50.38%, #00FCED 100%); }
 
 .font-poppins-sb {
   font-family: 'Poppins-SemiBold', sans-serif;
