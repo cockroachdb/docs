@@ -364,7 +364,6 @@ template {
 .col-xl-auto {
   position: relative;
   width: 100%;
-  overflow-x: hidden;
   padding-right: 12px;
   padding-left: 12px; }
 
@@ -6581,7 +6580,7 @@ body.sidenav-open {
   position: -webkit-sticky;
   /* Safari */
   position: sticky;
-  top: 0; }
+  top: 102px; }
   @media screen and (min-width: 0) and (max-width: 767px) {
     .col-sidebar-content {
       height: auto;
@@ -9702,10 +9701,11 @@ p .version-tag, .clickable-header .version-tag {
     z-index: 10001;
     position: relative;
     position: fixed;
-    top: 0; }
+    top: 0;
+    left: 0; }
   @media (min-width: 1200px) {
     #new-header .main-navigation {
-      height: 92px; } }
+      height: 102px; } }
   #new-header .main-navigation .navigation .nav-item {
     padding: 0 16px;
     font-size: 16px;
@@ -11280,6 +11280,10 @@ p .version-tag, .clickable-header .version-tag {
       margin-top: 9px;
       margin-right: 16px; }
 
+@media screen and (max-width: 1199px) {
+  .navbar-collapse {
+    height: 90vh;
+    overflow: scroll; } }
 .bg-cover {
   background-size: cover;
   background-repeat: no-repeat;
@@ -11344,11 +11348,19 @@ h3, h4, h5, h6 {
 
 h1 {
   font-family: 'Poppins-SemiBold', sans-serif;
-  font-size: 50px;
+  font-size: 26px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 85px; }
+  line-height: 35px; }
+  @media screen and (min-width: 767px) {
+    h1 {
+      font-family: 'Poppins-SemiBold', sans-serif;
+      font-size: 50px;
+      font-weight: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 85px; } }
 
 h2 {
   font-family: 'Poppins-SemiBold', sans-serif;

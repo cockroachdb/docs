@@ -5,8 +5,12 @@
 // Global header stylings are still declared in _general.scss as a fallback.
 
 @mixin headline-1 { // global h1
-  @include poppins_sb(50px);
-  line-height: 85px;
+  @include poppins_sb(26px);
+  line-height: 35px;
+  @include at-query($min, $screen-sm) {
+    @include poppins_sb(50px);
+    line-height: 85px;
+  }
 }
 
 @mixin headline-2 { // global h2

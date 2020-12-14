@@ -9,10 +9,10 @@ cta: false
 ---
 
 <div class="home-header mb-xl-5 bg-cover bg-cover__bg-3-1">
-  <div class="p-5">
+  <div class="p-2 p-md-5">
   <h1 class="m-0 text-white">Documentation</h1>
   <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
-    <div class="row d-lg-flex">
+    <div class="row d-lg-flex mx-0">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
         <a href="#" class="h-100">
@@ -98,7 +98,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
   </div>
 
   <div class="row display-flex pb-4 mb-5">
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-6 col-lg-3">
       <h3 class="mt-3">Get Started</h3>
       <div class="landing-column-content">
       <ul>
@@ -111,7 +111,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
         </ul>
       </div>
     </div>
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-6 col-lg-3">
       <h3 class="mt-3">Develop</h3>
       <div class="landing-column-content">
       <ul>
@@ -124,7 +124,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
         </ul>
       </div>
     </div>
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-6 col-lg-3">
       <h3 class="mt-3">Deploy</h3>
       <div class="landing-column-content">
       <ul>
@@ -137,7 +137,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
         </ul>
       </div>
     </div>
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-6 col-lg-3">
       <h3 class="mt-3">Migrate</h3>
       <div class="landing-column-content">
       <ul>

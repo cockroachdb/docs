@@ -59,7 +59,6 @@ html {
 .col-xl-auto {
   position: relative;
   width: 100%;
-  overflow-x: hidden;
   padding-right: 15px;
   padding-left: 15px; }
 

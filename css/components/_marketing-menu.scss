@@ -655,10 +655,11 @@
       position: relative;
       position: fixed;
       top: 0;
+      left: 0;
     }
     @media (min-width: 1200px) {
       .main-navigation {
-        height: 92px;
+        height: 102px;
       }
     }
     .main-navigation .navigation .nav-item {
@@ -2917,8 +2918,9 @@
 
   }
 
-//   @media (min-width: 768px) { 
-    // .navbar-collapse.collapse {
-    //     display: none!important;
-    // }
-//   }
+    @include at-query($max, $screen-lg) {
+      .navbar-collapse {
+        height: 90vh;
+        overflow: scroll;
+      }
+    }
