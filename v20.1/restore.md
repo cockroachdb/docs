@@ -49,7 +49,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
-<a name="into_db"></a>`into_db`                                     | Database name                               | Use to [change the target database](restore.html#restore-tables-into-a-different-database) for table restores. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
+<a name="into_db"></a>`into_db`                                     | Database name                               | Use to change the target database for table restores. (Does not apply to database or cluster restores.)<br><br>Example: `WITH into_db = 'newdb'`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
@@ -89,10 +89,11 @@ Restoring a database will create a new database and restore all of its tables an
 
 The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
 
-If [dropping](drop-database.html) or [renaming](rename-database.html) the database in the existing cluster is not an option, you can use _table_ restore to restore all of the table data from the database backup into another database:
+If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database:
 
 ```sql
-RESTORE backup_database_name.* FROM 'your_backup_location' WITH into_db=your_target_db
+RESTORE backup_database_name.* FROM 'your_backup_location' 
+WITH into_db = 'your_target_db'
 ```
 
 {{site.data.alerts.callout_info}}

@@ -91,10 +91,11 @@ Restoring a database will create a new database and restore all of its tables an
 
 The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
 
-If [dropping](drop-database.html) or [renaming](rename-database.html) the database in the existing cluster is not an option, you can use _table_ restore to restore all of the table data from the database backup into another database:
+If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database:
 
 ```sql
-RESTORE backup_database_name.* FROM 'your_backup_location' WITH into_db=your_target_db
+RESTORE backup_database_name.* FROM 'your_backup_location' 
+WITH into_db = 'your_target_db'
 ```
 
 {{site.data.alerts.callout_info}}
