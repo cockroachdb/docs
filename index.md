@@ -1,19 +1,10 @@
 ---
+title:
+summary: 
 layout: home
-peter: true
-homepage: true
+toc: false
 contribute: false
-build_for: [cockroachdb, cockroachcloud]
 cta: false
+homepage: true
 ---
 this is index.md
-asdf
-s
-s
-d
-a
-a
-b
-c
-d
-f

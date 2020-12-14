@@ -4,7 +4,11 @@ layout: null
 
 {%- if site.baseurl == "/docs" %}
 / /docs/ 301!
+
+{% comment %}
 /docs /docs/stable/ 301!
+{% endcomment %}
+
 /docs/cockroachcloud /docs/cockroachcloud/stable/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!
@@ -46,6 +50,8 @@ layout: null
 /docs/cockroachcloud/dev/managed-troubleshooting-page.html /docs/cockroachcloud/dev/cockroachcloud-troubleshooting-page.html 301!
 {% endif %}
 
+{% comment %}
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
+{% endcomment %}
