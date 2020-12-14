@@ -18,7 +18,7 @@
 	left: 50%;
 	top: 50%;
 	z-index: 2001;
-	background-color: $cl_green;
+	background-color: $electric-purple;
 	width: 600px;
 
 	.news-header {
@@ -70,7 +70,7 @@
 				}
 
 			.hs-button {
-				background-color: $green-3;
+				background-color: $electric-purple;
 				color: #FFFFFF;
 				border:none;
 				outline:none;
@@ -98,7 +98,7 @@
 
 #newsletter-footer-popout {
 	padding: 40px 0;
-	background-color: $cl_green;
+	background-color: $electric-purple;
 	position: fixed;
 	z-index: 1999;
 	bottom: 0;
@@ -250,7 +250,7 @@
 		}
 
 		.hs-button {
-			background-color: $green-3;
+			background-color: $electric-purple;
 			color: #FFFFFF;
 			// border: 2px solid #DDDDDD;
 			// border-left: none;

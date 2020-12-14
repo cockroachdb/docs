@@ -106,7 +106,7 @@
     .version--mobile {
       display: block;
 
-      @include at-query($min, $screen-md) {
+      @include at-query($min, $screen-lg) {
         display: none;
       }
     }
@@ -114,7 +114,7 @@
     .version--desktop {
       display: none;
 
-      @include at-query($min, $screen-md) {
+      @include at-query($min, $screen-lg) {
         display: block;
       }
     }

@@ -41,7 +41,7 @@ html {
 
 body {
   height: 100%;
-  @include paragraph-type;
+  // @include paragraph-type;
   color: $neutral-800;
 }
 
@@ -192,6 +192,11 @@ a.external:after{
 
 a code:hover {
   text-decoration: underline;
+  color: $dark-blue;
+  &:hover {
+    text-decoration: underline;
+    color: $dark-blue;
+  }
 }
 
 .breadcrumb > .active {color: #777 !important;}
@@ -777,4 +782,17 @@ a.accordion-toggle {
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 22px;
+}
+
+.form-control {
+  &:focus {
+    border-color: $electric-purple;
+    box-shadow: none;
+  }
+}
+
+.contribute {
+  li {
+    padding: 0 10px;
+  }
 }

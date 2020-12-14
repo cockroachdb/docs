@@ -81,7 +81,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 <div class="container">
 
-  <div class="row pt-5 mt-5">
+  <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-8">
     <p class="overline">CockroachCloud</p>
     <h2 class="mt-0">Serverless Deployment</h2>
@@ -93,11 +93,11 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
   <div class="row">
     <div class="col-12">
       <p class="overline">CockroachDB</p>
-      <h2 class="">Recommended articles</h2>
+      <h2 class="mt-2">Recommended articles</h2>
     </div>
   </div>
 
-  <div class="row display-flex">
+  <div class="row display-flex pb-4 mb-5">
     <div class="col-sm-6 col-lg-3">
       <h3 class="mt-3">Get Started</h3>
       <div class="landing-column-content">
@@ -153,7 +153,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 
 <p class="overline">Releases</p>
-  <h2 class="">What’s new in docs</h2>
+  <h2 class="mt-2">What’s new in docs</h2>
 
 <div class="row">
     <div class="col-lg-8">
@@ -177,8 +177,6 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
     </div>
 
   </div>
-
-  <div class="col-12"><a class="btn btn-outline-secondary" href="#">See all the latest</a></div>
 </div>
 
 
@@ -278,7 +276,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
   </div>
 </div>
 <div class="text-center">
-<a class="btn btn-outline-secondary mt-3" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
+<a class="btn btn-outline-primary mt-3" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
 </div>
 
 </div>

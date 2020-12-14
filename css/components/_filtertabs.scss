@@ -1,19 +1,19 @@
 #os-tabs {
-	border-bottom: 1px solid $neutral-200;
+
 	button {
-		border: none;
+		border: 1px solid #dddddd;
 		background-color: #ffffff;
-		color: $neutral-600;
-		@include sourcesanspro_r(14px);
+		color: $cl_blue;
+		@include avenir_h(16px);
 		outline: 0;
 		width: 90px;
 		padding: 17px 0 11px;
 		position: relative;
-		// bottom: -2px;
+		bottom: -2px;
 		float: left;
 		line-height: 25px;
-		margin: 0 0 2% 0;
-		border-bottom: 3px solid transparent;
+		margin: 0 2% 2% 0;
+
 		&:before {
 			display: inline-block;
 			margin-top: -8px;
@@ -21,13 +21,12 @@
 		}
 
 		&:hover {
-			color: $neutral-800;
-			border-bottom-color: $electric-purple;
+			border: 1px solid #6933FF;
 		}
 
 		&.current {
-			color: $neutral-800;
-			border-bottom-color: $electric-purple;
+			border: 1px solid #6933FF;
+			background-color: #f8f5ff;
 		}
 	}
 }
@@ -36,7 +35,7 @@
 	display: inline-block;
 	background-color: #ffffff;
 	text-align: center;
-	@include sourcesanspro_r(14px);
+	@include avenir_r(12px);
 	line-height: 15px;
 	color: $cl_blue !important;
 	text-decoration: none !important;
@@ -65,13 +64,13 @@
 	}
 
 	&:hover {
-		color: $cl_green !important;
+		color: $spanish-roast !important;
 		border-bottom: none !important;
 	}
 
 	&.current {
 		border: 2px solid $cl_gray_medium;
-		border-top: 2px solid $cl_green;
+		border-top: 2px solid $spanish-roast;
 		border-bottom: 2px #fff;
 
 		&:hover {
@@ -90,7 +89,7 @@
 	}
 
 	.c2a {
-		@include sourcesanspro_r(12px);
+		@include avenir_h(12px);
 
 		@media (min-width: 700px) {
 			display: inline-block;
@@ -137,31 +136,27 @@
 
 .filters {
 	font-size: 0;
-	border-bottom: 1px solid $neutral-200;
+
 	.filter-button {
 		display: inline-block;
-		border: none;
-		border-bottom: 3px solid transparent;
+		border: 1px solid #dddddd;
 		background-color: #ffffff;
 		text-align: center;
-		@include sourcesanspro_r(14px);
-		// line-height: 15px;
-		color: $neutral-600;
+		@include avenir_r(12px);
+		line-height: 15px;
+		color: $cl_blue !important;
 		text-decoration: none !important;
-		padding: 8px;
-		margin: 0;
+		padding: 15px;
+		margin: 15px 15px 15px 0px;
 		outline: none;
-		line-height: 24px;
+
 		&:hover {
-			color: $neutral-800;
-			border-bottom-color: $electric-purple;
+			border: 1px solid #6933FF;
 		}
 
 		&.current {
-			color: $neutral-800;
-			border-bottom-color: $electric-purple;
-			line-height: 24px;
-			padding: 6px;
+			border: 1px solid #6933FF;
+			background-color: #f8f5ff;
 		}
 
 		&.page-level {
@@ -171,39 +166,6 @@
 
 	a:hover {
 		border-bottom: none;
-	}
-
-	// Code tabs
-	&__code {
-		background: #1B1E25; //  TODO: Move to color variable
-		border: 0;
-		padding-top: 5px;
-		padding-left: 5px;
-		padding-right: 5px;
-		border-top-left-radius: $border-radius;
-		border-top-right-radius: $border-radius;
-		.filter-button {
-			@include sourcesanspro_r(16px);
-			border-bottom: none;
-			background: #1B1E25; 
-			color: $white;
-			&.current {
-				@include sourcesanspro_b(16px);
-				background: $neutral-800;
-				color: $white;
-			}
-			&:hover{
-				background: $neutral-800;
-				color: $white;
-			}
-		}
-
-		& ~ .filter-content {
-			.highlight {
-				border-top-left-radius: 0;
-				border-top-right-radius: 0;
-			}
-		}
 	}
 }
 
@@ -220,7 +182,7 @@
 
 		button {
 			width: 140px;
-			margin: 0;
+			margin: 0 10px 15px 0;
 
 			&:before {
 				font-family: 'FontAwesome';
@@ -280,7 +242,7 @@
 
 	.filters {
 		.filter-button {
-			@include sourcesanspro_r(16px);
+			@include avenir_r(16px);
 			line-height: 20px;
 		}
 	}
@@ -289,10 +251,9 @@
 .filters-big {
 	.filter-button {
 		height: 55px;
-		margin: 0;
+		margin: 15px 15px 10px 0px;
 		padding-left: 20px;
 		padding-right: 20px;
 		width: 20%;
 	}
 }
-

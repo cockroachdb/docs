@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     {% include head.html %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body>
     {% for hash in page.allowed_hashes %}
@@ -10,8 +12,7 @@
 
     <div class="container-fluid">
      
-      {% include topnav.html %}
-      <!-- {% include marketing-menu.html %} -->
+      {% include marketing-menu.html %}
    
       <div class="row" id="maincontent">
         <nav

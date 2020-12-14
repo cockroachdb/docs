@@ -1,4 +1,9 @@
 <div class="col-sidebar">
+  <div class="mb-3">
+    <form action="/docs/search.html">
+      <input class="form-control" name="query" type="text" placeholder="Search">
+    </form>
+  </div>
   <script src="{{ 'js/initSidebar.js' | relative_url }}"></script>
   <div class="col-sidebar-content">
     <ul id="sidebar" class="nav {% if page.name == 'index.md' %}nav--home{% endif %}{% if page.url == '/search.html'%}nav--search{% endif %}" style="display: none">

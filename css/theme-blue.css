@@ -39,11 +39,11 @@ tbody tr:hover {
 
 .nav > li.active > a {
     background-color: transparent;
-    color: #46a417;
+    color: #6933FF;
 }
 
 .nav > li.active > ul > li.active > a {
-    color: #46a417;
+    color: #6933FF;
 }
 
 .nav > li > a {

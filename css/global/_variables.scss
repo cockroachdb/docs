@@ -16,6 +16,9 @@ $aquamarine: #3DEFC4;
 $spanish-roast: #190F33;
 $border-radius: 5px;
 
+$winters-day: rgba(222, 247, 255, .60);
+$cherenkov-radiation: #24CAFF;
+
 $neutral-100: #F5F7FA;
 $neutral-200: #E7ECF3;
 $neutral-300: #D6DBE7;
@@ -27,8 +30,6 @@ $neutral-800: #242A35;
 $neutral-900: #060C12;
 $black:  #000;
 
-$winters-day: rgba(222, 247, 255, .60);
-$cherenkov-radiation: #24CAFF;
 $ice-temple: #1BF8EC;
 
 // base colors
@@ -133,6 +134,9 @@ $btn-padding-y-sm: $input-btn-padding-y-sm;
 $btn-padding-x-sm: $input-btn-padding-x-sm;
 $input-btn-focus-width: 3px;
 
+$input-btn-focus-color:       rgba($electric-purple, .25) !default;
+$input-btn-focus-box-shadow:  0 0 0 $input-btn-focus-width $input-btn-focus-color !default;
+
 $line-height-base: 1.725;
 $link-color: $blue-300;
 $link-hover-color: $blue-300;
@@ -140,3 +144,4 @@ $link-hover-color: $blue-300;
 $box-shadow:  0px 7px 13px rgba($neutral-600, 0.301);
 $box-shadow-lg: 0px 12px 24px rgba($neutral-600, 0.54);
 
+$font-weight-bold: 600;

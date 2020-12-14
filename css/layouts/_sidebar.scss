@@ -22,6 +22,14 @@ body.sidenav-open{
   .stiky-spacer{
     flex: 1 1 auto;
   }
+  .form-control {
+    max-width: 196px;
+    background: url("../images/icon-mag-glass.svg");
+    background-size: 17px 17px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    padding-left: 30px;
+  }
 }
 #sidebarMenu{
   @include at-query(0, $screen-sm) {

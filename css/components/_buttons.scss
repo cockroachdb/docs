@@ -14,7 +14,7 @@
 	@include button();
 	color: #FFFFFF;
 	padding: 18px 25px 16px;
-	background-color: $cl_green;
+	background-color: $electric-purple;
 
 	&:focus {
 		color: #FFFFFF;
@@ -22,7 +22,7 @@
 
 	&:hover {
 		background-color: #FFFFFF;
-		color: $cl_green;
+		color: $electric-purple;
 	}
 }
 
@@ -48,7 +48,41 @@
 		}
 	}
 }
+.btn-outline-primary {
+	@include button();
+	color: $electric-purple; 
+	text-align: center;
+	background-color: #FFFFFF;
+	border-color: $electric-purple;
+	border-width: 2px;
+	@include poppins(16px);
+	&:focus {
+		border-color: $electric-purple;
+		background-color: $electric-purple;
+		box-shadow: 0 0 0 $input-focus-width $electric-purple;
+	}
 
+	&:hover {
+		border-color: $electric-purple;
+		background-color: $electric-purple;
+		color: #fff;
+	}
+
+	&:not(:disabled):not(.disabled) {
+
+		&:active {
+			border-color: $electric-purple;
+			background-color: $electric-purple;
+	
+			&:focus {
+				border-color: $electric-purple;
+				background-color: $electric-purple;
+				box-shadow: 0 0 0 $input-focus-width $electric-purple; 
+			  }
+		}
+		
+	}
+}
 .btn-outline-secondary {
 	@include button();
 	color: $neutral-700; 
@@ -81,6 +115,7 @@
 		
 	}
 }
+
 .btn--sm {
 	padding: $btn-padding-y-sm $btn-padding-x-sm;
 }
@@ -90,8 +125,8 @@
 	height: 30px;
 	@include avenir_h(10px);
 	line-height: 13px;
-	background-color: $cl_green;
-	border-color: $cl_green;
+	background-color: $electric-purple;
+	border-color: $electric-purple;
 	border-width: 1px;
 	border-radius: 0px;
 	padding: 8.25px 16px;
@@ -115,8 +150,8 @@
 
 		&:hover {
 			background-color: #FFFFFF;
-			color: $cl_green;
-			border: 1px solid $cl_green;
+			color: $electric-purple;
+			border: 1px solid $electric-purple;
 		}
 	}
 
@@ -126,15 +161,15 @@
 
 	&--alt {
 		background-color: #FFFFFF;
-		color: $cl_green;
+		color: $electric-purple;
 
 		&:focus, &:hover {
-			color: $cl_green;
+			color: $electric-purple;
 		}
 
 		@include at-query($min, $screen-md) {
 			&:hover {
-				background-color: $cl_green;
+				background-color: $electric-purple;
 				color: #FFFFFF;
 			}
 		}
