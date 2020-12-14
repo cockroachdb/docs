@@ -187,7 +187,7 @@ For example, in the animation below:
 4. The leaseholder retrieves the results and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
-<img src="{{ 'images/v21.1/topology-patterns/topology_geo-partitioning_reads.png' | relative_url }}" alt="Geo-partitoning topology" style="max-width:100%" />
+<img src="{{ 'images/v21.1/topology-patterns/topology_geo-partitioning_reads.png' | relative_url }}" alt="Geo-partitioning topology" style="max-width:100%" />
 
 #### Writes
 

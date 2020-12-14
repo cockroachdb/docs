@@ -90,5 +90,5 @@ If you encounter issues other than those outlined above, please [file an issue o
 
 ## See Also
 
-+ [Client connection paramters](connection-parameters.html)
++ [Client connection parameters](connection-parameters.html)
 + [Third-Party Database Tools](third-party-database-tools.html)

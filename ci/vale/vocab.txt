@@ -69,8 +69,10 @@ concats
 config
 configs
 cpu
+crdb
 cron
 crontab
+crypto
 csv
 ctrl
 cuasing
@@ -97,6 +99,7 @@ dev
 dharmesh
 distsql
 dmitry
+docstrings
 dolf
 duplicative
 eastasia
@@ -135,6 +138,7 @@ gemfile
 geobuf
 geocoder
 geocoding
+geographiclib
 geojson
 geos
 geospatial
@@ -200,6 +204,8 @@ kenjiro
 kerberos
 keyset
 keyspace
+keytab
+keytabs
 keywhiz
 kimball
 kiran
@@ -215,6 +221,7 @@ libedit
 libpq
 libpqxx
 linestring
+linestrings
 lightstep
 linearizability
 liquibase
@@ -276,6 +283,8 @@ offlined
 oid
 oli
 ons
+onwards
+openid
 openssl
 orchstrations
 ordinality

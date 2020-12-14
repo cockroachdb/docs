@@ -270,7 +270,7 @@ This page shows you how the key features of CockroachDB stack up against other d
 
   <tr>
     <td class="comparison-chart__feature">
-      Data Geo-partitoning
+      Data Geo-partitioning
       <a href="#" data-toggle="tooltip" title="Tie data to an instance/node to comply with regulations or optimize access latency">
         <img src="{{ 'images/v19.2/icon_info.svg' | relative_url }}" alt="tooltip icon">
       </a>
