@@ -802,3 +802,7 @@ a.accordion-toggle {
     border-left: 1px solid $neutral-400;
   }
 }
+
+::marker {
+  color: $neutral-400;
+}

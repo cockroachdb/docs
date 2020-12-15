@@ -11980,5 +11980,7 @@ a.accordion-toggle {
 @media screen and (min-width: 1200px) {
   .border-md-left {
     border-left: 1px solid #C0C6D9; } }
+::marker {
+  color: #C0C6D9; }
 
 /*# sourceMappingURL=customstyles.css.map */
