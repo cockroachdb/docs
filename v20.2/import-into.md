@@ -17,18 +17,18 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into
 
 #### Table privileges
 
-The user must have the `INSERT` and `DROP` [privileges](authorization.html#assign-privileges) on the specified table. (DROP is required because the table is taken offline during the IMPORT INTO.)
+The user must have the `INSERT` and `DROP` [privileges](authorization.html#assign-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
 
 #### Source privileges
 
 The source file URL does _not_ require the `ADMIN` role in the following scenarios:
 
-- S3 and GS using SPECIFIED (and not IMPLICIT) credentials. Azure is always SPECIFIED by default.
+- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
 - [Userfile](use-userfile-for-bulk-operations.html)
 
 The source file URL _does_ require the `ADMIN` role in the following scenarios:
 
-- S3 or GS using IMPLICIT credentials
+- S3 or GS using `IMPLICIT` credentials
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
 - [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
 
