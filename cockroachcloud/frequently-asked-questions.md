@@ -98,10 +98,6 @@ To optimize schema design to achieve your performance goals, we recommend workin
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 
-### Can I use my startup cloud credits?
-
-Today, we do not support cloud credits you may have in your account, as we run the clusters in our own accounts.
-
 ### Can you run my CockroachDB cluster on-premise?
 
 Today, we do not have an offering that manages running CockroachDB on customer premises. In the future, we expect to have a private cloud offering that will allow you to run multiple CockroachDB clusters on your premises using the same tools that we use internally for our CockroachCloud offering.
