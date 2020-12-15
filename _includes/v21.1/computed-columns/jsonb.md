@@ -30,13 +30,13 @@ Then, insert a few rows of data:
 > SELECT * FROM student_profiles;
 ~~~
 ~~~
-+--------+---------------------------------------------------------------------------------------------------------------------+
-|   id   |                                                       profile                                                       |
-+--------+---------------------------------------------------------------------------------------------------------------------+
-| d78236 | {"age": "16", "credits": 120, "id": "d78236", "name": "Arthur Read", "school": "PVPHS", "sports": "none"}           |
-| f98112 | {"age": "15", "clubs": "MUN", "credits": 67, "id": "f98112", "name": "Buster Bunny", "school": "THS"}               |
-| t63512 | {"clubs": "Chess", "id": "t63512", "name": "Ernie Narayan", "school": "Brooklyn Tech", "sports": "Track and Field"} |
-+--------+---------------------------------------------------------------------------------------------------------------------+
++--------+---------------------------------------------------------------------------------------------------------------------+------+
+|   id   |                                                       profile                                                       | age  |
+---------+---------------------------------------------------------------------------------------------------------------------+------+
+| d78236 | {"age": "16", "credits": 120, "id": "d78236", "name": "Arthur Read", "school": "PVPHS", "sports": "none"}           |   16 |
+| f98112 | {"age": "15", "clubs": "MUN", "credits": 67, "id": "f98112", "name": "Buster Bunny", "school": "THS"}               |   15 |
+| t63512 | {"clubs": "Chess", "id": "t63512", "name": "Ernie Narayan", "school": "Brooklyn Tech", "sports": "Track and Field"} | NULL |
++--------+---------------------------------------------------------------------------------------------------------------------+------|
 ~~~
 
-The primary key `id` is computed as a field from the `profile` column.
+The primary key `id` is computed as a field from the `profile` column.  Additionally the `age` column is computed from the profile column data as well.
