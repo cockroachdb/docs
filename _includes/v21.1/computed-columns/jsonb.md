@@ -8,6 +8,13 @@ In this example, create a table with a `JSONB` column and a computed column:
 );
 ~~~
 
+Create a compute column after you create a table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE student_profiles ADD COLUMN age INT AS ( (profile->>'age')::INT) STORED;
+~~~
+
 Then, insert a few rows of data:
 
 {% include copy-clipboard.html %}
