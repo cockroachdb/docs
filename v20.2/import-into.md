@@ -17,7 +17,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into
 
 #### Table privileges
 
-The user must have the `INSERT` and `DROP` [privileges](authorization.html#assign-privileges) on the specified table. (DROP is required because we take the table offline during the IMPORT INTO.)
+The user must have the `INSERT` and `DROP` [privileges](authorization.html#assign-privileges) on the specified table. (DROP is required because the table is taken offline during the IMPORT INTO.)
 
 #### Source privileges
 
