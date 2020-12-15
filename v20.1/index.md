@@ -158,7 +158,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
     <div class="col-lg-8">
     {% for item in site.data.whats_new %}
       <div class="row mb-3">
-        <div class="col-lg-3 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4">{{ item.date }}</div></div>
+        <div class="col-lg-3 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4 mr-3">{{ item.date }}</div></div>
         <div class="col-lg-8 pl-lg-0">
         <div class="border-bottom">
           <div><p class="font-weight-bold m-0 h5">{{ item.title }}</p></div>
@@ -262,7 +262,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
   </div>
 </div>
 <div class="text-center">
-<a class="btn btn-outline-primary mt-3" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
+<a class="btn btn-redirect mt-3" target="_blank" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
 </div>
 
 </div>

@@ -797,7 +797,7 @@ a.accordion-toggle {
   }
 }
 
-@include at-query($min, $screen-lg) {
+@include at-query($min, $screen-md) {
   .border-md-left {
     border-left: 1px solid $neutral-400;
   }

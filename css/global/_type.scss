@@ -106,7 +106,7 @@
 }
 
 @mixin button-text {
-  @include sourcesanspro_r(14px);
+  @include poppins_sb(18px);
   line-height: $line-height-base;
   letter-spacing: 0.1px;
   font-weight: 600;
