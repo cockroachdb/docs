@@ -285,6 +285,11 @@ After it's restored into a new database, you can write the restored `users` tabl
 
 {% include copy-clipboard.html %}
 ~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
 > RESTORE system.users \
 FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
 WITH into_db = 'newdb';
