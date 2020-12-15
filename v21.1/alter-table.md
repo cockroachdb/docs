@@ -19,7 +19,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`ADD COLUMN`](add-column.html) | Add columns to tables. | Yes
 [`ADD CONSTRAINT`](add-constraint.html) | Add constraints to columns. | Yes
 [`ALTER COLUMN`](alter-column.html) | Change an existing column. | Yes
-[`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table. | Yesnes.html) for a table. | No
+[`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table. | Yes | No
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs, for security purposes. | Yes
