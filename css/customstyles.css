@@ -7067,6 +7067,10 @@ section.footer {
   .clear-search:after {
     transform: rotate(-45deg); }
 
+.form-control {
+  height: 40px;
+  padding: 10px 14px; }
+
 .bs-callout {
   padding: 30px 40px 30px 25px;
   margin: 15px 0;

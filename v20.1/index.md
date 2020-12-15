@@ -15,10 +15,10 @@ cta: false
     <div class="row d-lg-flex mx-0">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
-        <a href="#" class="h-100">
+        <a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
             <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-in-browser.svg' | relative_url }}"/>
-            <h6 class="m-0 text-black">In-browser<br>tutorials</h6>
+            <h6 class="m-0 text-black">Start a free cloud<br> cluster</h6>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
@@ -26,10 +26,10 @@ cta: false
       </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
-        <a href="#" class="h-100">
+        <a href="https://www.cockroachlabs.com/docs/dev/secure-a-cluster.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
           <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}"/>
-            <h6 class="m-0 text-black">Sample <br>Applications</h6>
+            <h6 class="m-0 text-black">Start a local <br>cluster</h6>
             <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
@@ -37,10 +37,10 @@ cta: false
         </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex text-center">
-        <a href="#" class="h-100">
+        <a href="https://www.cockroachlabs.com/docs/dev/hello-world-example-apps.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
           <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}"/>
-            <h6 class="m-0 text-black">Deploy with <br>CockroachCloud</h6>
+            <h6 class="m-0 text-black">Sample <br>applications</h6>
             <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
@@ -83,10 +83,10 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-8">
-    <p class="overline">CockroachCloud</p>
+    <p class="overline">Build fast. Scale fast.</p>
     <h2 class="mt-0">Serverless Deployment</h2>
-    <p class="h4">Supporting text goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Drives to capabilities page.</p>
-    <a class="btn btn-redirect mt-3" href="#">Start a Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
+    <p class="h4">CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.</p>
+    <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
     </div>
   </div>
 
@@ -103,8 +103,8 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
       <div class="landing-column-content">
       <ul>
         <li><a href="https://university.cockroachlabs.com/catalog">Online Training</a></li>
+        <li><a href="https://www.cockroachlabs.com/docs/cockroachcloud/quickstart.html">Create a CockroachCloud Cluster</a></li>
         <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
-        <li><a href="start-a-local-cluster.html">Start a Local Cluster</a></li>
         <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
         <li><a href="build-an-app-with-cockroachdb.html">Hello, World!</a></li>
         <li><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
@@ -125,27 +125,26 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
       </div>
     </div>
     <div class="col-6 col-lg-3">
-      <h3 class="mt-3">Deploy</h3>
+      <h3 class="mt-3">FAQs</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="recommended-production-settings.html">Production Checklist <span class="badge-new">NEW</span></a></li>
-        <li><a href="topology-patterns.html">Topology Patterns</a></li>
-        <li><a href="manual-deployment.html">Manual Deployment</a></li>
-        <li><a href="orchestration.html">Orchestration</a></li>
-        <li><a href="performance.html">Performance</a></li>
-        <li><a href="upgrade-cockroach-version.html">Rolling Upgrade</a></li>
+        <li><a href="/docs/stable/frequently-asked-questions.html">Product FAQs</a></li>
+        <li><a href="/docs/cockroachcloud/frequently-asked-questions.html">CockroachCloud FAQs</a></li>
+        <li><a href="/docs/stable/sql-faqs.html">SQL FAQs</a></li>
+        <li><a href="/docs/stable/operational-faqs.html">Operational FAQs</a></li>
+        <li><a href="/docs/stable/multi-active-availability.html">Availability FAQs</a></li>
+        <li><a href="/docs/stable/licensing-faqs.html">Licensing FAQs</a></li>
         </ul>
       </div>
     </div>
     <div class="col-6 col-lg-3">
-      <h3 class="mt-3">Migrate</h3>
+      <h3 class="mt-3">Releases</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="migration-overview.html">Overview</a></li>
-        <li><a href="migrate-from-oracle.html">Migrate from Oracle</a></li>
-        <li><a href="migrate-from-postgres.html">Migrate from Postgres</a></li>
-        <li><a href="migrate-from-mysql.html">Migrate from MySQL</a></li>
-        <li><a href="migrate-from-csv.html">Migrate from CSV</a></li>
+        <li><a href="/docs/releases/v20.2.2.html">Latest Stable Release</a></li>
+        <li><a href="/docs/releases/#production-releases">All Production Releases</a></li>
+        <li><a href="/docs/releases/#testing-releases">All Testing Releases</a></li>
+        <li><a href="/docs/stable/known-limitations.html">Known Limitations</a></li>
         </ul>
       </div>
     </div>
@@ -157,32 +156,23 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 <div class="row">
     <div class="col-lg-8">
-    <div class="row mb-3">
-      <div class="col-lg-2 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4">June 25, 2020</div></div>
-      <div class="col-lg-8 pl-lg-0">
-      <div class="border-bottom">
-        <div><p class="font-weight-bold m-0 h5">Enterprise edition changes</p></div>
-        <div class="text-gray-600 pb-3 h4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam dignissim et mattis <a href="#">scelerisque donec</a> habitasse ut hac. Eget.</div>
-        </div>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-lg-2 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4">June 25, 2020</div></div>
-      <div class="col-lg-8 pl-lg-0">
+    {% for item in site.whats_new %}
+      <div class="row mb-3">
+        <div class="col-lg-3 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4">{{ item.date }}</div></div>
+        <div class="col-lg-8 pl-lg-0">
         <div class="border-bottom">
-        <div><p class="font-weight-bold m-0 h5">Enterprise edition changes</p></div>
-        <div class="text-gray-600 pb-3 h4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam dignissim et mattis <a href="#">scelerisque donec</a> habitasse ut hac. Eget.</div>
+          <div><p class="font-weight-bold m-0 h5">{{ item.title }}</p></div>
+          <div class="text-gray-600 pb-3 h4">{{ item.summary }}</div>
+          </div>
         </div>
       </div>
-    </div>
-
+    {% endfor %}
   </div>
 </div>
 
 
 <div class="row pt-5">
-  
-  <div class="col-lg-12 text-center mb-5">
+  <div class="col-lg-12 mb-5">
     <div class="card shadow position-relative alert alert-dismissable">
       <a
         class="close close-card position-absolute"
@@ -192,20 +182,16 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
         ><img class="m-0" src="{{ 'images/icon-cancel.svg' | relative_url }}"
       /></a>
       <div class="card-body p-5 text-white bg-blackk-texture-logo m-3">
-        <p
-          class="d-inline-block rounded py-1 px-3 caption-sm m-0 bg-white-transparent text-white font-weight-bold"
-        >
-          Learning Resources
-        </p>
+        <h6 class="m-0">Learning Resources</h6>
         <h1 class="m-0 text-white">Cockroach University</h1>
         <h4 class="mt-0 pb-3">
           Free online learning platform covering distributed databases,
           cloud-native <br />applications, general purpose SQL databases & moch
           more!
         </h4>
-        <a class="btn btn-redirect mb-3" href="#"
+        <a class="mb-3 text-ice-temple text-decoration-none" href="https://www.cockroachlabs.com/cockroach-university/"
           >Start free course
-          <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"
+          <img class="ml-1 m-0" src="{{ 'images/icon-arrow-right-ice-temple.svg' | relative_url }}"
         /></a>
       </div>
     </div>
