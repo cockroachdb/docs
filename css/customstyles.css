@@ -7182,7 +7182,8 @@ section.footer {
         font-weight: bold; }
       #toc > ul li a.anchorjs-link,
       #toc-right > ul li a.anchorjs-link {
-        visibility: hidden; }
+        visibility: hidden;
+        display: none; }
     #toc > ul li.toc-li-top,
     #toc-right > ul li.toc-li-top {
       border-left: 2px solid #E7ECF3; }
@@ -7975,7 +7976,7 @@ polygon.regexp {
   line-height: 1.725;
   letter-spacing: 0.1px;
   font-weight: 600;
-  line-height: 50px;
+  line-height: 45px;
   text-align: center;
   text-decoration: none !important;
   border: 2px solid #6933FF;
