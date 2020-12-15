@@ -156,7 +156,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
 <div class="row">
     <div class="col-lg-8">
-    {% for item in site.whats_new %}
+    {% for item in site.data.whats_new %}
       <div class="row mb-3">
         <div class="col-lg-3 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4">{{ item.date }}</div></div>
         <div class="col-lg-8 pl-lg-0">
