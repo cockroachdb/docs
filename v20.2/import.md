@@ -23,7 +23,24 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 ## Required privileges
 
-Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
+### Table privileges
+
+The user must have the `CREATE` [privileges](authorization.html#assign-privileges) on the target database.
+
+### Source privileges
+
+The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+
+- S3 and GS using SPECIFIED (and not IMPLICIT) credentials. Azure is always SPECIFIED by default.
+- [Userfile](use-userfile-for-bulk-operations.html)
+
+The source file URL _does_ require the `ADMIN` role in the following scenarios:
+
+- S3 or GS using IMPLICIT credentials
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+
+Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
