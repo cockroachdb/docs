@@ -30,7 +30,7 @@ Parameter | Description
 
 ### Show all grants
 
-To list all grants for all users and roles on all databases and tables:
+To list all grants for all users and roles on the current database and its tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql

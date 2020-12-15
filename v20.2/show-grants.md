@@ -71,7 +71,7 @@ Field        |  Description
 
 ### Show all grants
 
-To list all grants for all users and roles on all database objects:
+To list all grants for all users and roles on the current database and its tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
