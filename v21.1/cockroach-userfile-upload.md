@@ -82,7 +82,7 @@ $ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv
 successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data.csv
 ~~~
 
-Also, a file can be uploaded to to the default storage if the destination is not specified:
+Also, a file can be uploaded to the default storage if the destination is not specified:
 
 {% include copy-clipboard.html %}
 ~~~ shell

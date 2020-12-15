@@ -88,7 +88,7 @@ In future versions of CockroachDB, we plan on providing stronger guarantees for 
 Individual statements are treated as implicit transactions, and so they fall
 under the rules described above. If the results are small enough, they will be
 automatically retried. In particular, `INSERT/UPDATE/DELETE` statements without
-a `RETURNING` clause are guaranteed to have miniscule result sizes.
+a `RETURNING` clause are guaranteed to have minuscule result sizes.
 For example, the following statement would be automatically retried by CockroachDB:
 
 ~~~ sql

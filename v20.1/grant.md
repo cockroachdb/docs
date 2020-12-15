@@ -154,7 +154,7 @@ Parameter | Description
 > GRANT ZONECONFIG ON TABLE mytable TO myuser;
 ~~~
 
-The user `myuser` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to to add, modify, reset, or remove replication zones for the table `mytable`.
+The user `myuser` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to add, modify, reset, or remove replication zones for the table `mytable`.
 
 ## See also
 

@@ -51,7 +51,7 @@ Click the **Session Age** of any session to display details and possible actions
 	- **Gateway Node** shows the node ID and IP address/port of the [gateway](architecture/life-of-a-distributed-transaction.html#gateway) node handling the client connection.
 	- **Client Address** shows the IP address/port of the client that opened the session.
 	- **Memory Usage** shows the amount of memory currently allocated to this session / maximum amount of memory this session has ever allocated.
-	- The **Terminate Session** button ends the session. The client that holds this session will receive a "conenction terminated" event.
+	- The **Terminate Session** button ends the session. The client that holds this session will receive a "connection terminated" event.
 	- The **Terminate Statement** button ends the SQL statement. The session running this statement will receive an error.
 - **Transaction** will display the following information for an open transaction.
 	- **Transaction Start Time** shows the timestamp at which the transaction started.

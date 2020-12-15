@@ -84,7 +84,7 @@ Before using `IMPORT INTO`, you should have:
     - Literals (booleans, strings, integers, decimals, dates)
     - Functions where each argument is a constant expression and the functions themselves depend solely on their arguments (e.g., arithmetic operations, boolean logical operations, string operations).
 
-- Current [`TIMESTAMP`](timestamp.html) functions that record the transcation timestamp, which include:
+- Current [`TIMESTAMP`](timestamp.html) functions that record the transaction timestamp, which include:
 
     - `current_date()`
     - `current_timestamp()`

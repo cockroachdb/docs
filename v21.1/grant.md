@@ -230,7 +230,7 @@ The user granting privileges must also have the privilege being granted on the t
 > GRANT ZONECONFIG ON TABLE rides TO max;
 ~~~
 
-The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to to add, modify, reset, or remove replication zones for the table `rides`.
+The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to add, modify, reset, or remove replication zones for the table `rides`.
 
 ## See also
 

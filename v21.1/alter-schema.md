@@ -74,7 +74,7 @@ SQLSTATE: 42501
 
 Because you are executing the `ALTER SCHEMA` command as a non-owner of the schema (i.e., `root`), CockroachDB returns an error.
 
-[Drop the schema](drop-schema.html) and create it again, this time with with `root` as the owner.
+[Drop the schema](drop-schema.html) and create it again, this time with `root` as the owner.
 
 {% include copy-clipboard.html %}
 ~~~ sql

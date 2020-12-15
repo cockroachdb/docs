@@ -66,7 +66,7 @@ CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 ~~~
 
-Next, we'll start a [transaction](transactions.html) and and lock the row we want to operate on:
+Next, we'll start a [transaction](transactions.html) and lock the row we want to operate on:
 
 {% include copy-clipboard.html %}
 ~~~ sql
