@@ -7067,9 +7067,8 @@ section.footer {
   .clear-search:after {
     transform: rotate(-45deg); }
 
-.form-control {
-  height: 40px;
-  padding: 10px 14px; }
+.col-sidebar .form-control {
+  height: 40px; }
 
 .bs-callout {
   padding: 30px 40px 30px 25px;
@@ -11976,5 +11975,9 @@ a.accordion-toggle {
 
 .contribute li {
   padding: 0 10px; }
+
+@media screen and (min-width: 1200px) {
+  .border-md-left {
+    border-left: 1px solid #C0C6D9; } }
 
 /*# sourceMappingURL=customstyles.css.map */

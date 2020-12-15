@@ -796,3 +796,9 @@ a.accordion-toggle {
     padding: 0 10px;
   }
 }
+
+@include at-query($min, $screen-lg) {
+  .border-md-left {
+    border-left: 1px solid $neutral-400;
+  }
+}
