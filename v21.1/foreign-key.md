@@ -129,7 +129,6 @@ You can improve the performance of some statements that use foreign keys by also
 Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
 {{site.data.alerts.end}}
 
-
 ## Syntax
 
 Foreign key constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
