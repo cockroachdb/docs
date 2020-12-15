@@ -23,11 +23,11 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 ## Required privileges
 
-### Table privileges
+#### Table privileges
 
 The user must have the `CREATE` [privileges](authorization.html#assign-privileges) on the target database.
 
-### Source privileges
+#### Source privileges
 
 The source file URL does _not_ require the `ADMIN` role in the following scenarios:
 
