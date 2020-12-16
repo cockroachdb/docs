@@ -165,6 +165,7 @@ Flag | Description
 Flag | Description
 -----|------------
 `--active-warehouses` | Run the load generator against a specific number of warehouses.<br><br>**Applicable commands:** `init` or `run`<br>**Defaults:** Value of `--warehouses`
+`--data-loader` | How to load initial table data. Valid options are `INSERT` and `IMPORT`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `INSERT`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `tpcc`
 `--display-every` | The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
 `--display-format` | The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
@@ -195,6 +196,7 @@ Flag | Description
 Flag | Description
 -----|------------
 `--concurrency` | The number of concurrent workers.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `8`
+`--data-loader` | How to load initial table data. Valid options are `INSERT` and `IMPORT`.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `INSERT`
 `--db` | The SQL database to use.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `ycsb`
 `--display-every` | The frequency for printing per-operation statistics. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `1s`
 `--display-format` | The format for printing per-operation statistics (`simple`, `incremental-json`). When using `incremental-json`, note that totals are not printed at the end of the workload's duration.<br><br>**Applicable command:** `run`<br>**Default:** `simple`
@@ -203,7 +205,7 @@ Flag | Description
 `--families` | Place each column in its own [column family](column-families.html).<br><br>**Applicable commands:** `init` or `run`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
-`--initial-count` | Initial number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
+`--insert-count` | Number of rows to sequentially insert before beginning random number generation.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `10000`
 `--json` | Use JSONB rather than relational data.<br><br>**Applicable commands:** `init` or `run`
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
