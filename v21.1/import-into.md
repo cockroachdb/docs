@@ -8,10 +8,10 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into
 
 ## Considerations
 
-- `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
+- `IMPORT INTO` only works for existing tables. To import data into new tables, use [`IMPORT`](import.html).
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
-- `IMPORT INTO` cannot be used to insert data into a column for an existing row. To do this, use [`INSERT`](insert.html).
+- `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 
 ## Required privileges
 
