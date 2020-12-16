@@ -28,4 +28,4 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.0](v20.2.0.html).
 - [Create a 30-day free CockroachCloud cluster](../cockroachcloud/quickstart.html).
 - [Add or remove nodes](../cockroachcloud/cluster-management.html#add-or-remove-nodes-from-a-cluster) through the CockroachCloud Console.
 - [Set up VPC peering](../cockroachcloud/network-authorization.html) for clusters running on GCP.
-- [Restore data from a backup](../cockroachcloud/backups-page.html) for clusters running on AWS.
+- [View backups](../cockroachcloud/backups-page.html) that Cockroach Labs has taken for your CockroachCloud cluster.
