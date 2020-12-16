@@ -69,7 +69,7 @@ CSV DATA (
 ~~~
 
 {{site.data.alerts.callout_info}}
-`userfile:///` references the default path (`userfile://defaultdb.public.userfiles_$user/`).
+`userfile:///` (note the three slashes) references the default path (`userfile://defaultdb.public.userfiles_$user/`).
 {{site.data.alerts.end}}
 
 ~~~

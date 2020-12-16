@@ -4,18 +4,35 @@ summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
+The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into an [existing table](create-table.html), by appending new rows into the table.
 
 ## Considerations
 
-- `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
+- `IMPORT INTO` only works for existing tables. To import data into new tables, see [`IMPORT`](import.html).
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
-- `IMPORT INTO` cannot be used to insert data into a column for an existing row. To do this, use [`INSERT`](insert.html).
+- `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 
 ## Required privileges
 
-Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` user belongs to the `admin` role.
+#### Table privileges
+
+The user must have the `INSERT` and `DROP` [privileges](authorization.html#assign-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
+
+#### Source privileges
+
+The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+
+- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
+- [Userfile](use-userfile-for-bulk-operations.html)
+
+The source file URL _does_ require the `ADMIN` role in the following scenarios:
+
+- S3 or GS using `IMPLICIT` credentials
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+
+Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
@@ -109,6 +126,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- <span class="version-tag">New in v20.2:</span> [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Performance
