@@ -5,7 +5,7 @@ toc: true
 redirect_from: [show-testing-ranges.html, show-experimental-ranges.html]
 ---
 
-The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located.  If `SHOW RANGES` displays `NULL` for both the start and end keys, that typically indicates the range is empty a has no splits.
+The `SHOW RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that comprise the data for a table, index, or entire database. This information is useful for verifying how SQL data maps to underlying ranges, and where the replicas for ranges are located.  If `SHOW RANGES` displays `NULL` for both the start and end keys, that typically indicates the range is empty and has no splits.
 
 {{site.data.alerts.callout_info}}
 To show range information for a specific row in a table or index, use the [`SHOW RANGE ... FOR ROW`](show-range-for-row.html) statement.
