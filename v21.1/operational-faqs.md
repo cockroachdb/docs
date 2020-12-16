@@ -34,21 +34,21 @@ Like most databases, CockroachDB caches the most recently accessed data in memor
 
 ## Why is disk usage increasing despite lack of writes?
 
-The timeseries data used to power the graphs in the DB Console is stored within the cluster and accumulates for 30 days before it starts getting truncated. As a result, for the first 30 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
+The timeseries data used to power the graphs in the DB Console is stored within the cluster and accumulates for 10 days before it starts getting truncated. As a result, for the first 10 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
 
 ## Can I reduce or disable the storage of timeseries data?
 
-Yes. By default, CockroachDB stores timeseries data for the last 30 days for display in the DB Console, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
+Yes. By default, CockroachDB stores timeseries data for the last 10 days for display in the DB Console, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
 
 {{site.data.alerts.callout_info}}After reducing or disabling timeseries storage, it can take up to 24 hours for timeseries data to be deleted and for the change to be reflected in DB Console metrics.{{site.data.alerts.end}}
 
 ### Reduce the interval for timeseries storage
 
-To reduce the interval for storage of timeseries data, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `720h0m0s` (30 days). For example, to store timeseries data for the last 15 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+To reduce the interval for storage of timeseries data, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days). For example, to store timeseries data for the last 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '360h0m0s';
+> SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '120h0m0s';
 ~~~
 
 {% include copy-clipboard.html %}
