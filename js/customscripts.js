@@ -153,7 +153,7 @@ $(function() {
       $tocColContents.css({
         position: 'fixed',
         top: 100,
-        width: '260px'
+        // width: '260px'
       });
 
       // if footer in view and TOC overruns top of footer, set bottom property to top of footer
