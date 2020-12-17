@@ -83,8 +83,8 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-8">
-    <p class="overline">Build fast. Scale fast.</p>
-    <h2 class="mt-0">Serverless Deployment</h2>
+    <p class="overline">CockroachCloud</p>
+    <h2 class="mt-0">Build fast. Scale fast.</h2>
     <p class="h4">CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.</p>
     <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
     </div>
@@ -92,7 +92,6 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
 
   <div class="row">
     <div class="col-12">
-      <p class="overline">CockroachDB</p>
       <h2 class="mt-2">Recommended articles</h2>
     </div>
   </div>

@@ -1,10 +1,15 @@
 .release-table {
+    thead {
+        td {
+            font-weight: bold;
+        }
+    }
     .fa {
         margin-right: 2px;
     }
 
     .latest {
-        background-color: #fafdf6;
+        background-color: $neutral-100;
     }
 
     // .badge {

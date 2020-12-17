@@ -8869,10 +8869,12 @@ img.mfp-img {
     background-color: transparent;
     color: #394455; }
 
+.release-table thead td {
+  font-weight: bold; }
 .release-table .fa {
   margin-right: 2px; }
 .release-table .latest {
-  background-color: #fafdf6; }
+  background-color: #F5F7FA; }
 .release-table .badge-gray {
   background-color: #959797; }
 .release-table .os-release-link {
@@ -9742,7 +9744,7 @@ p .version-tag, .clickable-header .version-tag {
     left: 0; }
   @media (min-width: 1200px) {
     #new-header .main-navigation {
-      height: 102px; } }
+      height: 92px; } }
   #new-header .main-navigation .navigation .nav-item {
     padding: 0 16px;
     font-size: 16px;
