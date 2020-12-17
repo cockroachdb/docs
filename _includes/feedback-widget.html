@@ -7,18 +7,7 @@
 <script>
   $(document).ready(function(){
     $("#yes-button, #no-button").bind("click", function () {
-      if ($(this).attr("id") == "yes-button")
-      {
-        $('#feedback-prompt').html('<p class="feedback-response">Thanks for the feedback!</p>')
-      }
-      if ($(this).attr("id") == "no-button")
-      {
-        hbspt.forms.create({
-          portalId: '1753393',
-          formId: '90745362-7730-4dfd-83ff-dd64dc02a7ae',
-          target: '#feedback-prompt'
-        });
-      }
+      $('#feedback-prompt').html('<p class="feedback-response">Thanks for the feedback!</p>')
     });
   });
 </script>
