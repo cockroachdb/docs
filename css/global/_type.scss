@@ -7,7 +7,7 @@
 @mixin headline-1 { // global h1
   @include poppins_sb(26px);
   line-height: 35px;
-  @include at-query($min, $screen-sm) {
+  @include at-query($min, $screen-md) {
     @include poppins_sb(50px);
     line-height: 85px;
   }

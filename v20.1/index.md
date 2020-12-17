@@ -180,7 +180,7 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
         aria-label="Close"
         ><img class="m-0" src="{{ 'images/icon-cancel.svg' | relative_url }}"
       /></a>
-      <div class="card-body p-5 text-white bg-blackk-texture-logo m-3">
+      <div class="card-body m-2 p-xl-5 text-white bg-dark-wing m-3">
         <h6 class="m-0">Learning Resources</h6>
         <h1 class="m-0 text-white">Cockroach University</h1>
         <h4 class="mt-0 pb-3">
@@ -221,15 +221,16 @@ These docs are a work in progress. Please reach out to [support.cockroachlabs.co
         </svg>
       </a>
       <div class="row no-gutters p-3">
-        <div class="col-md-4 m-0">
-          <img
-            src="{{ 'images/disk-spilling.png' | relative_url }}"
-            class="card-img m-0"
-            alt="..."
-          />
+        <div class="col-md-4 m-0"
+        style="background-image: url('{{ 'images/disk-spilling.png' | relative_url }}');background-size:cover;min-height: 150px;">
         </div>
         <div class="col-md-8">
-          <div class="card-body p-0 pl-4">
+          <div class="card-body p-0 pl-4"
+          style="
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+">
             <p
               class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0"
             >

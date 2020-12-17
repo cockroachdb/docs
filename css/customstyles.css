@@ -6536,6 +6536,10 @@ header {
   background: url(/docs/images/bg-black-texture-logo.png);
   background-size: cover; }
 
+.bg-dark-wing {
+  background: url(/docs/images/bg-dark-wing.png);
+  background-size: cover; }
+
 body.sidenav-open {
   overflow: hidden; }
   body.sidenav-open:before {
@@ -11396,7 +11400,7 @@ h1 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 35px; }
-  @media screen and (min-width: 767px) {
+  @media screen and (min-width: 992px) {
     h1 {
       font-family: 'Poppins-SemiBold', sans-serif;
       font-size: 50px;
