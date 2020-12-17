@@ -391,17 +391,18 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
 1. Still on the client VM in the US East region, load the MovR schema and initial data for the cities of New York, Chicago, and Seattle, pointing at the address of the US East load balancer:
 
     {% include copy-clipboard.html %}
+
     ~~~ shell
-    $ sudo docker run -it --rm cockroachdb/movr:19.09.2 \
+    $ sudo docker run --rm cockroachdb/movr:19.09.2 \
     --app-name "movr-load" \
     --url "postgres://root@<address of HAProxy in US East>:26257/movr?sslmode=disable" \
     load \
     --num-users 100 \
     --num-rides 100 \
     --num-vehicles 10 \
-    --city-pair us_east:"new york" \
-    --city-pair central:chicago \
-    --city-pair us_west:seattle
+    --city "new york" \
+    --city "chicago" \
+    --city "seattle"
     ~~~
 
     After the Docker image downloads, you'll see data being generated for the specified cities:
