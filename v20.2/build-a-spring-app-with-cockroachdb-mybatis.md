@@ -253,7 +253,7 @@ The main process of the application is defined in `src/main/java/com/example/coc
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/CockroachDemoApplication.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/CockroachDemoApplication.java %}
 ~~~
 
 The `SpringApplication.run` call in the `main` method bootstraps and launches a Spring application. The [`@SpringBootApplication` annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) on the `CockroachDemoApplication` class triggers Spring's [component scanning](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-structuring-your-code) and [auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-auto-configuration) features.
@@ -262,7 +262,7 @@ The `BasicExample` class, defined in `src/main/java/com/example/cockroachdemo/Ba
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/BasicExample.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/BasicExample.java %}
 ~~~
 
 `BasicExample` implements the [Spring `CommandLineRunner` interface](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-command-line-runner). Implementations of this interface automatically run when detected in a Spring project directory. `BasicExample` runs a series of test methods that are eventually executed as SQL queries in the [data access layer of the application](#mappers).
@@ -283,7 +283,7 @@ The class defined in `src/main/java/com/example/cockroachdemo/MyBatisConfigurati
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/MyBatisConfiguration.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/MyBatisConfiguration.java %}
 ~~~
 
 This class explicitly defines the batch `SqlSessionTemplate` (i.e., `batchSqlSessionTemplate`), and registers `batchmapper`, the batch mapper interface defined in [`src/main/java/com/example/cockroachdemo/batchmapper/BatchMapper.java`](#mappers) with `batchSqlSessionTemplate`. To complete the MyBatis configuration, the class also declares a `DataSource`, and defines the remaining `SqlSessionFactory` and `SqlSessionTemplate` beans.
@@ -295,8 +295,8 @@ Note that a configuration class is not required for MyBatis-Spring-Boot-Starter 
 `src/main/resources/application.yml` contains the metadata used to create a connection to the CockroachDB cluster:
 
 {% include copy-clipboard.html %}
-~~~ yaml
-{% include {{page.version.version}}/app/spring-mybatis/application.yml %}
+~~~ java
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/resources/application.yml %}
 ~~~
 
 Spring Boot uses the application's `datasource` property [to auto-configure the database connection](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-configure-datasource). This database connection configuration can be injected into the application's `SqlSessionFactoryBean`, as is explicitly done in the [MyBatisConfiguration](#configuration) configuration class definition.
@@ -313,7 +313,7 @@ MyBatis-Spring-Boot-Starter usually scans the project for interfaces annotated w
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/mapper/AccountMapper.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/mapper/AccountMapper.java %}
 ~~~
 
 The `@Mapper` annotation declares the interface a mapper for MyBatis to scan. The SQL statement annotations on each of the interface methods map them to SQL queries. For example, the first method, `deleteAllAccounts()` is marked as a `DELETE` statement with the `@Delete` annotation. This method executes the SQL statement specified in the string passed to the annotation, "`delete from accounts`", which deletes all rows in the `accounts` table.
@@ -324,7 +324,7 @@ The `@Mapper` annotation declares the interface a mapper for MyBatis to scan. Th
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/batchmapper/BatchAccountMapper.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/batchmapper/BatchAccountMapper.java %}
 ~~~
 
 This interface has a single `INSERT` statement query method, along with a method for flushing (i.e., executing) a batch of statements.
@@ -335,14 +335,14 @@ This interface has a single `INSERT` statement query method, along with a method
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/service/AccountService.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/service/AccountService.java %}
 ~~~
 
 `MyBatisAccountService.java` implements the `AccountService` interface, using the mappers defined in [`AccountMapper.java` and `BatchAccountMapper.java`](#mappers), and the models defined in [`Account.java` and `BatchResults.java`](#models):
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/service/MyBatisAccountService.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/service/MyBatisAccountService.java %}
 ~~~
 
 Note that the public methods (i.e., the methods to be called by other classes in the project) are annotated as [`@Transactional`](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction-declarative-annotations) methods. This ensures that all of the SQL statements executed in the data access layer are run within the context of a [database transaction](transactions.html)
@@ -357,14 +357,14 @@ Instances of the `Account` class, defined in `src/main/java/com/example/cockroac
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/model/Account.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/model/Account.java %}
 ~~~
 
 Instances of the `BatchResults` class, defined in `src/main/java/com/example/cockroachdemo/model/BatchResults.java`, hold metadata about a batch write operation and its results:
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/model/BatchResults.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/model/BatchResults.java %}
 ~~~
 
 ### Transaction management
@@ -375,7 +375,7 @@ Transactions may require retries if they experience deadlock or [transaction con
 
 {% include copy-clipboard.html %}
 ~~~ java
-{% include {{page.version.version}}/app/spring-mybatis/RetryableTransactionAspect.java %}
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/RetryableTransactionAspect.java %}
 ~~~
 
 The [`@Aspect` annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-at-aspectj) declares `RetryableTransactionAspect` an [aspect](https://en.wikipedia.org/wiki/Aspect_(computer_programming)), with [pointcut](https://en.wikipedia.org/wiki/Pointcut) and [advice](https://en.wikipedia.org/wiki/Advice_(programming)) methods.
