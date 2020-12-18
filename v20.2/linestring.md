@@ -35,3 +35,4 @@ You can also make a LineString using the [aggregate function form](functions-and
 - [MULTILINESTRING](multilinestring.html)
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

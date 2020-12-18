@@ -60,3 +60,7 @@ In addition to the [generated reference documentation for spatial functions](fun
 - [`ST_Touches`](st_touches.html)
 - [`ST_Union`](st_union.html)
 - [`ST_Within`](st_within.html)
+
+## See also
+
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

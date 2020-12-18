@@ -126,3 +126,4 @@ This can be addressed in one of the following ways:
 - [`ST_Touches`](st_touches.html)
 - [`ST_Union`](st_union.html)
 - [`ST_Within`](st_within.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

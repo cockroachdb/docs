@@ -24,3 +24,4 @@ The Extended Well Known Binary (_EWKB_) format is the same as WKB, with an [SRID
 - [Well known text](well-known-text.html)
 - [GeoJSON](geojson.html)
 - [SRID 4326 - longitude and latitude](srid-4326.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

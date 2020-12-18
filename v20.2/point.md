@@ -51,3 +51,4 @@ SELECT ST_GeomFromText('POINT(0 0)');
 - [MULTILINESTRING](multilinestring.html)
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
