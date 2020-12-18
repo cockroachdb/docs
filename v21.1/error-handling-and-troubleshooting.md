@@ -33,7 +33,9 @@ If your driver or ORM does not implement this logic, then you will need to imple
 {% include {{page.version.version}}/misc/client-side-intervention-example.md %}
 
 {{site.data.alerts.callout_info}}
-If a consistently high percentage of your transactions are resulting in transaction retry errors, then you may need to evaluate your schema design and data access patterns to find and remove sources of contention. For more information, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+If a consistently high percentage of your transactions are resulting in transaction retry errors, then you may need to evaluate your schema design and data access patterns to find and remove sources of contention. For more information about contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+For more information about what is causing a specific transaction retry error code, see the [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 {{site.data.alerts.end}}
 
 For more information about transaction retry errors, see [Transaction retries](transactions.html#client-side-intervention).
