@@ -394,6 +394,9 @@ header {
 		.card-header-overlap {
 			min-height: 268px;
 		}
+		.card-header-overlap-text {
+			min-height: 250px;
+		}
 	}
 
 	@media (min-width: $screen-md){

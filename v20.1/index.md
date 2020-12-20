@@ -124,12 +124,12 @@ cta: false
   <h2 class="mt-2">What’s new in docs</h2>
 
   <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-12 col-xl-8">
       {% for item in site.data.whats_new %}
         <div class="row mb-3">
-          <div class="col-lg-3 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4 mr-3">{{ item.date }}</div></div>
+          <div class="col-lg-3 pr-lg-0 text-gray-500"><div class="border-bottom d-flex h-100 h4 pr-3">{{ item.date }}</div></div>
           <div class="col-lg-8 pl-lg-0">
-          <div class="border-bottom">
+          <div class="border-md-bottom">
             <div><p class="font-weight-bold m-0 h5">{{ item.title }}</p></div>
             <div class="text-gray-600 pb-3 h4">{{ item.summary }}</div>
             </div>
@@ -201,14 +201,14 @@ cta: false
       height: 100%;
   ">
               <p
-                class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0"
+                class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0 mr-auto"
               >
                 Engineering
               </p>
               <h6 class="card-title font-weight-bold mt-3">
                 Disk Spilling in a Vectorized Execution Engine
               </h6>
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center mt-auto mb-2">
                 <div>
                   <img
                     class="m-0"
@@ -217,7 +217,7 @@ cta: false
                     alt=""
                   />
                 </div>
-                <div class="ml-3 d-flex flex-column justify-content-center">
+                <div class="ml-3 d-flex flex-column justify-content-center ">
                   <div class="card-text m-0 lh-n">Alfonso Subioto Marquez</div>
                   <p class="card-text m-0 lh-n">
                     <small class="text-muted">June 30, 2020</small>
@@ -231,7 +231,7 @@ cta: false
     </div>
   </div>
   <div class="text-center">
-  <a class="btn btn-redirect mt-3" target="_blank" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
+  <a class="btn btn-redirect mt-3 text-inherit" target="_blank" href="https://www.cockroachlabs.com/blog/">Check out the blog</a>
   </div>
 
 </div>

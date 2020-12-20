@@ -752,9 +752,13 @@ a.accordion-toggle {
 }
 
 .close-card {
-  right: 39px;
+  right: 30px;
   top: 30px;
   z-index: 1;
+  @media (min-width: $screen-md){ 
+    right: 15px;
+    top: 15px;
+  }
 }
 
 .text-purple-300 {
@@ -802,6 +806,14 @@ a.accordion-toggle {
     border-left: 1px solid $neutral-400;
   }
 }
+
+@include at-query($min, $screen-md) {
+  .border-md-bottom {
+    border-bottom: 1px solid $neutral-400;
+  }
+}
+
+
 
 ::marker {
   color: $neutral-400;

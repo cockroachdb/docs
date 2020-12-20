@@ -68,7 +68,10 @@
         line-height: 22px;
         display: inline-flex;
         letter-spacing: 0.1px;
-        padding: 6px 0 7px 20px;
+        padding: 3px 0 3px 20px;
+        @include at-query($min, $screen-lg) {
+          padding: 6px 0 7px 20px;
+        }
         &:hover {
           font-weight: bold;
           text-decoration: none;
