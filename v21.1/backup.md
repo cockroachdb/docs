@@ -12,11 +12,11 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [fu
 
 You can [backup a full cluster](#backup-a-cluster), which includes:
 
-- All user tables
 - Relevant system tables
 - All [databases](create-database.html)
 - All [tables](create-table.html) (which automatically includes their [indexes](indexes.html))
 - All [views](views.html)
+- All [scheduled jobs](manage-a-backup-schedule.html#view-and-control-a-backup-initiated-by-a-schedule)
 
 You can also back up:
 
