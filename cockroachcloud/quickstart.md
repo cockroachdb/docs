@@ -4,15 +4,16 @@ summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-quickstart.html
+- create-your-account.html
 ---
 
-This page shows you how to deploy a free CockroachDB cluster on CockroachCloud. You'll use a 30-day free trial code to create the cluster and a sample workload to connect and run your first query.
+This page shows you how to deploy a free CockroachDB cluster on CockroachCloud, connect to it using a sample workload, and run your first query.
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
 ## Before you begin
 
-If you haven't already, [sign up for a CockroachCloud account](https://cockroachlabs.cloud/signup).
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Create a free cluster
 
@@ -31,8 +32,7 @@ For this tutorial, we will create a 3-node GCP cluster in the `us-west` region.
     You won't be charged until after your free trial expires in 30 days.
     {{site.data.alerts.end}}
 
-9. In the **Trial Code** field, enter `CRDB30`. Click **Apply**.
-10. Click **Create cluster**.
+9. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes. Watch this [Getting Started with CockroachCloud](https://youtu.be/3hxSBeE-1tM) video while you wait.
 
@@ -50,7 +50,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 1. In the left navigation bar, click **Networking**.
 2. Click **Add Network**. The **Add Network** modal displays.
 3. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
-4. To allow the network to access the cluster's Admin UI and to use the CockroachDB client to access the databases, select the **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
+4. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 5. Click **Apply**.
 
 ## Step 4. Get the connection string

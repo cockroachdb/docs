@@ -34,6 +34,16 @@ We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS 
 - `europe-west3`
 - `europe-west6`
 
+### How do CockroachCloud free trials work?
+
+CockroachCloud offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
+
+- Create the first cluster in your organization
+- Select 4 or fewer nodes (we recommend starting with 3 so you can try scaling)
+- Don't remove the pre-applied trial code at check out
+
+Once the 30-day period is over, your trial cluster can be scaled beyond 4 nodes. You can create other paid clusters at any time. If Cockroach Labs has provided you with additional codes, you can use those on applicable clusters. For extended trial options, [contact us](https://www.cockroachlabs.com/contact-sales/).
+
 ### How do I connect to my cluster?
 
 To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
@@ -78,7 +88,7 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to work with our Sales Engineering team to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
 ## Cluster troubleshooting
 
@@ -87,10 +97,6 @@ Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all e
 To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) and [Performance Tuning](../stable/performance-tuning.html) docs for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
-
-### Can I use my startup cloud credits?
-
-Today, we do not support cloud credits you may have in your account, as we run the clusters in our own accounts.
 
 ### Can you run my CockroachDB cluster on-premise?
 

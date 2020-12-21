@@ -88,7 +88,7 @@ In future versions of CockroachDB, we plan on providing stronger guarantees for 
 Individual statements are treated as implicit transactions, and so they fall
 under the rules described above. If the results are small enough, they will be
 automatically retried. In particular, `INSERT/UPDATE/DELETE` statements without
-a `RETURNING` clause are guaranteed to have miniscule result sizes.
+a `RETURNING` clause are guaranteed to have minuscule result sizes.
 For example, the following statement would be automatically retried by CockroachDB:
 
 ~~~ sql
@@ -168,19 +168,43 @@ For more details about transaction contention and best practices for avoiding co
 
 ## Transaction priorities
 
-Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), the client can set the priority within the [`BEGIN`](begin-transaction.html) statement:
+Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
-Alternately, the client can set the priority immediately after the transaction is started as follows:
+You can also set the priority immediately after a transaction is started:
 
 ~~~ sql
 > SET TRANSACTION PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
-The client can also display the current priority of the transaction with [`SHOW TRANSACTION PRIORITY`](show-vars.html).
+To see the current priority of a transaction, use [`SHOW TRANSACTION PRIORITY`](show-vars.html) or `SHOW transaction_priority`:
+
+~~~ sql
+> SHOW transaction_priority;
+~~~
+
+~~~
+  transaction_priority
++----------------------+
+  normal
+(1 row)
+~~~
+
+~~~ sql
+> SHOW TRANSACTION PRIORITY;
+~~~
+
+~~~
+  transaction_priority
++----------------------+
+  normal
+(1 row)
+~~~
+
+Note that `transaction_priority` is a read-only [session variable](show-vars.html) that cannot be set directly.
 
 {{site.data.alerts.callout_info}}
 When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.

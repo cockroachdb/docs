@@ -20,7 +20,7 @@ function renderTOC() {
   });
 
   // Set class on top level elements
-  if(document.getElementById('toc-right')){
+  if(document.getElementById('toc-right') && (document.getElementById('toc-right').children.length > 0)){
     var list = document.getElementById('toc-right').children[0].childNodes;
     for (let li of list) {
       li.classList.add('toc-li-top');

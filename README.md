@@ -9,3 +9,8 @@ Want a topic added to the docs? Need additional details or clarification? See an
 ## Write Docs
 
 Want to contribute to the docs? See [CONTRIBUTING](CONTRIBUTING.md) for details about setting yourself up and getting started.
+
+## Resources
+
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Contributing](CONTRIBUTING.md)

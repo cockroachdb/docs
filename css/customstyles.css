@@ -6893,7 +6893,7 @@ section.footer {
             line-height: 25px;
             margin-bottom: 10px; } }
         section.footer .footer-nav li a:hover {
-          color: #54B30E; }
+          color: #190F33; }
     section.footer .footer-nav li.header {
       font-family: 'Poppins-SemiBold', sans-serif;
       font-size: 14px;
@@ -7043,18 +7043,18 @@ section.footer {
       color: #bcbcbc; }
     .search #search-input:focus {
       border-color: #6933FF; }
-    @media (min-width: 992px) {
+    @media (min-width: 1200px) {
       .search #search-input {
         width: 100%; } }
 
 #sidebar li.search-wrap,
 .js-sidebar li.search-wrap {
   margin-bottom: 0; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     #sidebar li.search-wrap,
     .js-sidebar li.search-wrap {
       position: fixed;
-      top: 104px;
+      top: 130px;
       width: 235px;
       padding-top: 50px;
       padding-bottom: 0;
@@ -7092,7 +7092,7 @@ section.footer {
   border-radius: 50%;
   outline: none;
   cursor: pointer; }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     .clear-search {
       right: 0; } }
   .clear-search:before, .clear-search:after {
@@ -7238,7 +7238,7 @@ section.footer {
       white-space: normal; }
       #toc > ul li a:first-child:hover:before,
       #toc-right > ul li a:first-child:hover:before {
-        color: #152849; }
+        color: #6933FF; }
     #toc > ul li > ul,
     #toc-right > ul li > ul {
       margin: 0;
@@ -7322,11 +7322,11 @@ section.footer {
     .install-button {
       padding: 15px 25px; } }
   .install-button:hover {
-    color: #54B30E !important;
+    color: #190F33 !important;
     border-bottom: none !important; }
   .install-button.current {
     border: 2px solid #DADADA;
-    border-top: 2px solid #54B30E;
+    border-top: 2px solid #190F33;
     border-bottom: 2px #fff; }
     .install-button.current:hover {
       color: #152849 !important; }

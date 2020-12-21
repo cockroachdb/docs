@@ -2,7 +2,6 @@
 title: SQL Performance Best Practices
 summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 This page provides best practices for optimizing SQL performance in CockroachDB.
@@ -348,6 +347,10 @@ If you have long-running queries (such as analytics queries that perform full ta
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
 ## Understanding and avoiding transaction contention
+
+{{site.data.alerts.callout_success}}
+You can use a [statement trace](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) to identify transaction contention on a running cluster.
+{{site.data.alerts.end}}
 
 Transaction contention occurs when the following three conditions are met:
 

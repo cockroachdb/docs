@@ -747,12 +747,6 @@
 	"title": "Deploy",
 	"items": [
 	  {
-	    "title": "Deploy a Test Cluster",
-	    "urls": [
-	      "/${VERSION}/deploy-a-test-cluster.html"
-	    ]
-	  },
-	  {
 	    "title": "Recommended Production Settings",
 	    "urls": [
 	      "/${VERSION}/recommended-production-settings.html"
@@ -824,12 +818,6 @@
 		"urls": [
 		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
 		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
-		]
-	      },
-	      {
-		"title": "Mesosphere DC/OS",
-		"urls": [
-		  "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
 		]
 	      }
 	    ]

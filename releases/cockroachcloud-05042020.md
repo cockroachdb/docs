@@ -23,6 +23,6 @@ Get future release notes emailed to you:
 
 ### General changes
 
-- Updated the layout of the [Sign up](https://cockroachlabs.cloud/signup) page.
+- Updated the layout of the <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">Sign up</a> page.
 - [CockroachCloud Console Admins](../cockroachcloud/console-access-management.html#console-admin) can now update their [CockroachCloud Organization](../cockroachcloud/console-access-management.html#organization) name.
 - [CockroachCloud Console Admins](../cockroachcloud/console-access-management.html#console-admin) can now delete their [CockroachCloud Organization](../cockroachcloud/console-access-management.html#organization).

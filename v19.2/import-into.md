@@ -196,6 +196,7 @@ Google Cloud:
     ~~~ sql
     > SET CLUSTER SETTING kv.bulk_io_write.max_rate = '10MB';
     ~~~
+- `IMPORT INTO` cannot be used on a table with a [`DEFAULT`](default-value.html) expression for any of its columns.
 
 ## See also
 

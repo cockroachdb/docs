@@ -110,7 +110,7 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 
 ~~~
   schema_name | table_name | type  | estimated_row_count
---------------+------------+-------+----------------------
+--------------+------------+-------+---------------------
   public      | rides      | table |               29446
 (1 row)
 ~~~

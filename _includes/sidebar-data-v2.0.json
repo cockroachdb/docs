@@ -1053,12 +1053,6 @@
 	    ]
 	  },
 	  {
-	    "title": "Test Deployment",
-	    "urls": [
-	      "/${VERSION}/deploy-a-test-cluster.html"
-	    ]
-	  },
-	  {
 	    "title": "Manual Deployment",
 	    "items": [
 	      {
@@ -1137,12 +1131,6 @@
 		"urls": [
 		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
 		  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
-		]
-	      },
-	      {
-		"title": "Mesosphere DC/OS Deployment",
-		"urls": [
-		  "/${VERSION}/orchestrate-cockroachdb-with-mesosphere-insecure.html"
 		]
 	      }
 	    ]

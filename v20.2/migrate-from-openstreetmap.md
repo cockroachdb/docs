@@ -14,7 +14,7 @@ In the example below we will import the [OSM data for Australia](https://downloa
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB Spatial [installed](install-cockroachdb-spatial.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
 - [`osm2pgsql`](https://github.com/openstreetmap/osm2pgsql/)
 
 ## Step 1. Download the OpenStreetMap data
@@ -122,10 +122,13 @@ Osm2pgsql took 2879s overall
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Migrate from GeoPackages](migrate-from-geopackage.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

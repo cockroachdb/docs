@@ -194,29 +194,29 @@ Now that you have a load balancer running in front of your cluster, use the [`co
 
 Initially, the workload creates a new database called `ycsb`, creates a `usertable` table in that database, and inserts a bunch of rows into the table. Soon, the load generator starts executing approximately 95% reads and 5% writes.
 
-1. Go to the Admin UI at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
+1. Go to the DB Console at <a href="http://localhost:8080" data-proofer-ignore>http://localhost:8080</a>.
 
 2. To check the SQL queries getting executed, click **Metrics** on the left, and hover over the **SQL Queries** graph at the top:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-1.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/fault-tolerance-1.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 3. To check the client connections from the load generator, select the **SQL** dashboard and hover over the **SQL Connections** graph:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-2.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/fault-tolerance-2.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     You'll notice 3 client connections from the load generator. If you want to check that HAProxy balanced each connection to a different node, you can change the **Graph** dropdown from **Cluster** to specific nodes.
 
 4. To see more details about the `ycsb` database and `usertable` table, click **Databases** in the upper left and then scroll down until you see **ycsb**:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-3.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/fault-tolerance-3.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     You can also view the schema of the `usertable` by clicking the table name:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-4.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />    
+    <img src="{{ 'images/v20.2/fault-tolerance-4.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />    
 
 5. By default, CockroachDB replicates all data 3 times and balances it across all nodes. To see this balance, click **Overview** and check the replica count across all nodes:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-6.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/fault-tolerance-6.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 5. Simulate a single node failure
 
@@ -243,9 +243,9 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
 
 ## Step 6. Check load continuity and cluster health
 
-Go back to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
+Go back to the DB Console, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite one of the nodes being unavailable and marked as **Suspect**:
 
-<img src="{{ 'images/v20.2/fault-tolerance-7.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/fault-tolerance-7.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 This shows that when all ranges are replicated 3 times (the default), the cluster can tolerate a single node failure because the surviving nodes have a majority of each range's replicas (2/3).
 
@@ -253,7 +253,7 @@ This shows that when all ranges are replicated 3 times (the default), the cluste
 
 Click **Overview** on the left:
 
-<img src="{{ 'images/v20.2/fault-tolerance-5.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/fault-tolerance-5.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
 Because you reduced the time it takes for the cluster to consider the down node dead, after 1 minute or so, the cluster will consider the down node "dead", and you'll see the replica count on the remaining nodes increase and the number of under-replicated ranges decrease to 0. This shows the cluster repairing itself by re-replicating missing replicas.
 
@@ -283,9 +283,9 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     $ cockroach sql --execute="ALTER RANGE default CONFIGURE ZONE USING num_replicas=5;" --insecure --host=localhost:26000
     ~~~
 
-3. Back in the Admin UI **Overview** dashboard, watch the replica count increases and even out across all 6 nodes:
+3. Back in the DB Console **Overview** dashboard, watch the replica count increases and even out across all 6 nodes:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-8.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/fault-tolerance-8.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     This shows the cluster up-replicating so that each range has 5 replicas, one on each node.
 
@@ -305,9 +305,9 @@ $ cockroach quit --insecure --host=localhost:26261
 
 ## Step 10. Check load continuity and cluster health
 
-1. Like before, go to the Admin UI, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite 2 nodes being offline:
+1. Like before, go to the DB Console, click **Metrics** on the left, and verify that the cluster as a whole continues serving data, despite 2 nodes being offline:
 
-    <img src="{{ 'images/v20.2/fault-tolerance-9.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/v20.2/fault-tolerance-9.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
     This shows that when all ranges are replicated 5 times, the cluster can tolerate 2 simultaneous node outages because the surviving nodes have a majority of each range's replicas (3/5).
 

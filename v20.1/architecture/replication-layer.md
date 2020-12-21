@@ -69,7 +69,7 @@ To achieve this, each lease renewal or transfer also attempts to collocate them.
 
 #### Epoch-based leases (table data)
 
-To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the the epoch is considered changed. This causes the node to immediately lose all of its leases.
+To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to immediately lose all of its leases.
 
 Because leases don't expire until a node disconnects from a cluster, leaseholders do not have to individually renew their own leases. Tying lease lifetimes to node liveness in this way lets us eliminate a substantial amount of traffic and Raft processing we would otherwise incur, while still tracking leases for every range.
 
@@ -85,7 +85,7 @@ Because CockroachDB serves reads from a range's leaseholder, it benefits your cl
 
 {{site.data.alerts.callout_info}}
 
-This feature is also called [Follow-the-Workload](../demo-follow-the-workload.html) in our documentation.
+This feature is also called [Follow-the-Workload](../topology-follow-the-workload.html) in our documentation.
 
 {{site.data.alerts.end}}
 

@@ -101,7 +101,7 @@ You need 9 VMs across 3 GCE regions, 3 per region with each VM in a distinct ava
         8 | `us-west1` | `us-west1-b`
         9 | `us-west1` | `us-west1-c`
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
-    - To apply the Admin UI firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
+    - To apply the DB Console firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
 2. [Create 3 VMs](https://cloud.google.com/compute/docs/instances/create-start-instance) for the region-specific versions of MovR and HAProxy, one in each of the regions mentioned above, using same machine types and OS image as mentioned above.
 
@@ -373,7 +373,7 @@ Before you can run MovR against the cluster, you must create a `movr` database a
         ('region', 'us-west1', 43.804133, -120.554201);
     ~~~
 
-    Inserting these coordinates enables you to visualize your cluster on the [**Node Map**](enable-node-map.html) feature of the Admin UI.
+    Inserting these coordinates enables you to visualize your cluster on the [**Node Map**](enable-node-map.html) feature of the DB Console.
 
 6. Exit the SQL shell:
 
@@ -392,16 +392,16 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ sudo docker run -it --rm cockroachdb/movr:19.09.2 \
+    $ sudo docker run --rm cockroachdb/movr:19.09.2 \
     --app-name "movr-load" \
     --url "postgres://root@<address of HAProxy in US East>:26257/movr?sslmode=disable" \
     load \
     --num-users 100 \
     --num-rides 100 \
     --num-vehicles 10 \
-    --city-pair us_east:"new york" \
-    --city-pair central:chicago \
-    --city-pair us_west:seattle
+    --city "new york" \
+    --city "chicago" \
+    --city "seattle"
     ~~~
 
     After the Docker image downloads, you'll see data being generated for the specified cities:
@@ -474,9 +474,9 @@ Be sure to use the exact version of MovR specified in the commands: `movr:19.09.
     --city="seattle"
     ~~~
 
-## Step 4. Access the Admin UI
+## Step 4. Access the DB Console
 
-Now that you've deployed and configured your cluster, take a look at it in the Admin UI:
+Now that you've deployed and configured your cluster, take a look at it in the DB Console:
 
 1. Open a browser and go to `http://<external address of any node>:8080`.
 
@@ -494,9 +494,9 @@ Now that you've deployed and configured your cluster, take a look at it in the A
 
 ## Step 5. Check latency
 
-Use the Admin UI to see the effect of network latency before applying multi-region data topologies.
+Use the DB Console to see the effect of network latency before applying multi-region data topologies.
 
-1. Still in the Admin UI, click **Metrics** on the left and hover over the **Service Latency: SQL, 99th percentile** timeseries graph:
+1. Still in the DB Console, click **Metrics** on the left and hover over the **Service Latency: SQL, 99th percentile** timeseries graph:
 
     <img src="{{ 'images/v20.2/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
@@ -1093,7 +1093,7 @@ In contrast to the other tables, the `promo_codes` table is not tied to geograph
 
 ## Step 9. Re-check latency
 
-1. Now that you've verified that replicas are located properly, go back to the Admin UI, click **Metrics** on the left, and hover over the **Service Latency: SQL, 99th percentile** timeseries graph:
+1. Now that you've verified that replicas are located properly, go back to the DB Console, click **Metrics** on the left, and hover over the **Service Latency: SQL, 99th percentile** timeseries graph:
 
     <img src="{{ 'images/v20.2/geo-partitioning-sql-latency-after-1.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
@@ -1135,7 +1135,7 @@ Given that most of the data in your cluster is geo-partitioned, let's focus on A
     $ cockroach quit --insecure --host=<address of one node in US East>
     ~~~
 
-3. Back in the Admin UI, click **Overview** and note that the cluster now considers that node "suspect":
+3. Back in the DB Console, click **Overview** and note that the cluster now considers that node "suspect":
 
     <img src="{{ 'images/v20.2/geo-partitioning-resiliency-1.png' | relative_url }}" alt="Geo-partitioning resiliency" style="max-width:100%" />    
 

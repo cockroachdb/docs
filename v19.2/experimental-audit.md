@@ -4,9 +4,9 @@ summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or o
 toc: true
 ---
 
-`EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to turn [SQL audit logging](sql-audit-logging.html) on or off for a table.
+`EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html) that is used to turn SQL audit logging on or off for a table.
 
-The audit logs contain detailed information about queries being executed against your system, including:
+SQL audit logs contain detailed information about queries being executed against your system, including:
 
 - Full text of the query (which may include personally identifiable information (PII))
 - Date/Time
@@ -14,6 +14,8 @@ The audit logs contain detailed information about queries being executed against
 - Application name
 
 For a detailed description of exactly what is logged, see the [Audit Log File Format](#audit-log-file-format) section below.
+
+CockroachDB stores audit log information in a way that ensures durability, but negatively impacts performance. As a result, we recommend using SQL audit logs for security purposes only. For more information, see [Performance considerations](#performance-considerations).
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
@@ -51,7 +53,7 @@ The audit log file format is as shown below.  The numbers above each column are 
 I180211 07:30:48.832004 317 sql/exec_log.go:90  [client=127.0.0.1:62503, user=root, n1]   13   exec "cockroach" {"ab"[53]:READ} "SELECT nonexistent FROM ab" {}    0.123 12   ERROR 0
 ~~~
 
-1. Date
+1. Log level (`INFO`, `WARN`, `ERROR`, or `FATAL`) and date (in YYMMDD format)
 2. Time (in UTC)
 3. Goroutine ID - this column is used for troubleshooting CockroachDB and may change its meaning at any time
 4. Where the log line was generated
@@ -87,6 +89,12 @@ If your deployment requires particular lifecycle and access policies for audit l
 ## Viewing schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
+
+## Performance considerations
+
+To ensure [non-repudiation](https://en.wikipedia.org/wiki/Non-repudiation) in audit logs, CockroachDB synchronously logs all of the activity of every user on a cluster in a way that is durable to system failures. Every query that causes a logging event must access the disk of the node on which audit logging is enabled. As a result, enabling SQL audit logs negatively impacts performance, and we recommend using SQL audit logs for security purposes only.
+
+For debugging and troubleshooting on production clusters, the most performant way to log all queries is to turn on the [cluster-wide setting](cluster-settings.html) `sql.trace.log_statement_execute`. For details, see [Troubleshoot Query Behavior](query-behavior-troubleshooting.html#cluster-wide-execution-logs).
 
 ## Examples
 

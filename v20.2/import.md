@@ -23,7 +23,24 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 
 ## Required privileges
 
-Only members of the `admin` role can run `IMPORT`. By default, the `root` user belongs to the `admin` role.
+#### Table privileges
+
+The user must have the `CREATE` [privileges](authorization.html#assign-privileges) on the target database.
+
+#### Source privileges
+
+The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+
+- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
+- [Userfile](use-userfile-for-bulk-operations.html)
+
+The source file URL _does_ require the `ADMIN` role in the following scenarios:
+
+- S3 or GS using `IMPLICIT` credentials
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+
+Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
@@ -130,7 +147,9 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
-{% include {{ page.version.version }}/sql/import-default-value.md %}
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> `IMPORT` supports [computed columns](computed-columns.html) for Avro and Postgres dump files only. To import CSV data to a table with a computed column or `DEFAULT` expression, use [`IMPORT INTO`](import-into.html).
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 By default, the [Postgres][postgres] and [MySQL][mysql] import formats support foreign keys. However, the most common dependency issues during import are caused by unsatisfied foreign key relationships that cause errors like `pq: there is no unique constraint matching given keys for referenced table tablename`. You can avoid these issues by adding the [`skip_foreign_keys`](#import-options) option to your `IMPORT` statement as needed. Ignoring foreign constraints will also speed up data import.
@@ -147,6 +166,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- <span class="version-tag">New in v20.2:</span> [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ### Table users and privileges
@@ -161,7 +181,7 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 
 ## Viewing and controlling import jobs
 
-After CockroachDB initiates an import, you can view its progress with [`SHOW JOBS`](show-jobs.html) and on the [**Jobs** page](admin-ui-jobs-page.html) of the Admin UI, and you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
+After CockroachDB initiates an import, you can view its progress with [`SHOW JOBS`](show-jobs.html) and on the [**Jobs** page](ui-jobs-page.html) of the DB Console, and you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
 {{site.data.alerts.callout_info}}
 If initiated correctly, the statement returns when the import is finished or if it encounters an error. In some cases, the import can continue after an error has been returned (the error message will tell you that the import has resumed in the background).

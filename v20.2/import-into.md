@@ -4,18 +4,35 @@ summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-The `IMPORT INTO` [statement](sql-statements.html) imports CSV data into an [existing table](create-table.html). `IMPORT INTO` appends new rows onto the table.
+The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into an [existing table](create-table.html), by appending new rows into the table.
 
 ## Considerations
 
-- `IMPORT INTO` only works for existing tables. For information on how to import data into new tables, see [`IMPORT`](import.html).
+- `IMPORT INTO` only works for existing tables. To import data into new tables, see [`IMPORT`](import.html).
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
-- `IMPORT INTO` cannot be used to insert data into a column for an existing row. To do this, use [`INSERT`](insert.html).
+- `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 
 ## Required privileges
 
-Only members of the `admin` role can run `IMPORT INTO`. By default, the `root` user belongs to the `admin` role.
+#### Table privileges
+
+The user must have the `INSERT` and `DROP` [privileges](authorization.html#assign-privileges) on the specified table. (`DROP` is required because the table is taken offline during the `IMPORT INTO`.)
+
+#### Source privileges
+
+The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+
+- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
+- [Userfile](use-userfile-for-bulk-operations.html)
+
+The source file URL _does_ require the `ADMIN` role in the following scenarios:
+
+- S3 or GS using `IMPLICIT` credentials
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+
+Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
@@ -70,9 +87,33 @@ For instructions and working examples showing how to migrate data from other dat
 Before using `IMPORT INTO`, you should have:
 
 - An existing table to import into (use [`CREATE TABLE`](create-table.html)).
+
+    <span class="version-tag">New in v20.2:</span> `IMPORT INTO` supports [computed columns](computed-columns.html) and the [`DEFAULT` expressions listed below](#supported-default-expressions).
+
 - The CSV or Avro data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location. This is necessary because the `IMPORT INTO` statement is issued once by the client, but is executed concurrently across all nodes of the cluster. For more information, see the [Import file location](#import-file-location) section below.
 
-{% include {{ page.version.version }}/sql/import-into-default-value.md %}
+#### Supported `DEFAULT` expressions
+
+<span class="version-tag">New in v20.2:</span> `IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
+
+- Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
+
+    - Literals (booleans, strings, integers, decimals, dates)
+    - Functions where each argument is a constant expression and the functions themselves depend solely on their arguments (e.g., arithmetic operations, boolean logical operations, string operations).
+
+- Current [`TIMESTAMP`](timestamp.html) functions that record the transaction timestamp, which include:
+
+    - `current_date()`
+    - `current_timestamp()`
+    - `localtimestamp()`
+    - `now()`
+    - `statement_timestamp()`
+    - `timeofday()`
+    - `transaction_timestamp()`
+
+- `random()`
+- `gen_random_uuid()`
+- `unique_rowid()`
 
 ### Available storage
 
@@ -85,6 +126,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
+- <span class="version-tag">New in v20.2:</span> [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ## Performance
@@ -222,6 +264,7 @@ For more detailed information about importing data from Avro and examples, see [
 
 ## Known limitations
 
+- You cannot import into a table with [partial indexes](partial-indexes.html).
 - While importing into an existing table, the table is taken offline.
 - After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
 - Imported rows must not conflict with existing rows in the table or any unique secondary indexes.

@@ -245,10 +245,10 @@ To serve a secure web application, you also need a public domain name!
 
 1. Select your zone, and copy the nameserver addresses (under "**Data**") for the recordset labeled "**NS**".
 
-1. Outside of the GCP console, through your domain name provider, add the nameserver addresses to the authorative nameserver list for your domain name.
+1. Outside of the GCP console, through your domain name provider, add the nameserver addresses to the authoritative nameserver list for your domain name.
 
     {{site.data.alerts.callout_info}}
-    It can take up to 48 hours for changes to the authorative nameserver list to take effect.
+    It can take up to 48 hours for changes to the authoritative nameserver list to take effect.
     {{site.data.alerts.end}}
 
 1. Navigate to the domain name and test out your application.

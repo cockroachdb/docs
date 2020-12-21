@@ -1,32 +1,18 @@
 ---
-title: Primary Key constraint
-summary: The Primary Key constraint specifies that the columns can be used to uniquely identify rows in a table.
+title: Primary Key Constraint
+summary: A primary key constraint specifies columns that can be used to uniquely identify rows in a table.
 toc: true
 ---
 
 The `PRIMARY KEY` [constraint](constraints.html) specifies that the constrained columns' values must uniquely identify each row.
 
-Unlike other constraints which have very specific uses, the `PRIMARY KEY` constraint *should be used for every table* because it provides an intrinsic structure to the table's data. This both makes it easier to understand, as well as improving query performance.
+Unlike other constraints which have very specific uses, the `PRIMARY KEY` constraint *must be used for every table* because it provides an intrinsic structure to the table's data.
+
+A table's primary key should be explicitly defined in the [`CREATE TABLE`](create-table.html) statement. Tables can only have one primary key.
 
 {{site.data.alerts.callout_info}}
 A table's primary key can only be specified in the [`CREATE TABLE`](create-table.html) statement. It cannot be changed later using `ALTER TABLE`, though it is possible to [go through a process](constraints.html#change-constraints) to create a new table with the new primary key you want and then migrate the data.
 {{site.data.alerts.end}}
-
-## Details
-
-- Tables can only have one primary key.
-- To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [`UNIQUE`](unique.html) and [`NOT NULL`](not-null.html) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values.
-
-    - The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values.
-    - However, because *NULL* values never equal other *NULL* values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the Not Null constraint.
-
-- The columns in the `PRIMARY KEY` constraint are used to create its `primary` [index](indexes.html), which CockroachDB uses by default to access the table's data.
-
-    This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
-
-- For optimal performance, we recommend defining a primary key for *every* table.
-
-    If you create a table without defining a primary key, CockroachDB uses a unique identifier for each row, which it then uses for the `primary` index. Because you cannot meaningfully use this unique row identifier column to filter table data, it does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
 ## Syntax
 
@@ -52,7 +38,7 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE orders (
-    order_id        INT PRIMARY KEY,
+    order_id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     order_date      TIMESTAMP NOT NULL,
     order_mode      STRING(8),
     customer_id     INT,
@@ -86,7 +72,43 @@ A table's primary key can only be specified in the [`CREATE TABLE`](create-table
   );
 ~~~
 
-## Usage example
+## Details
+
+The columns in the `PRIMARY KEY` constraint are used to create its `primary` [index](indexes.html), which CockroachDB uses by default to access the table's data. This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the `primary` index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+
+To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [`UNIQUE`](unique.html) and [`NOT NULL`](not-null.html) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values. The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values. However, because *NULL* values never equal other *NULL* values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is *NULL*). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the `NOT NULL` constraint.
+
+## Performance considerations
+
+When defining a primary key constraint, it's important to consider:
+
+- How the data in the primary key column(s) is [distributed across a cluster](architecture/distribution-layer.html).
+
+    Non-uniform data distributions can lead to hotspots on a single range, or cause [transaction contention](transactions.html#transaction-contention).
+
+- The [data type](data-types.html) of the primary key column(s).
+
+    A primary key column's data type can determine where its row data is stored on a cluster. For example, some data types are sequential in nature (e.g., [`TIMESTAMP`](timestamp.html)). Defining primary keys on columns of sequential data can result in data being concentrated in a smaller number of ranges, which can negatively affect performance.
+
+For optimal performance, we recommend that you do the following:
+
+- Define a primary key for every table.
+
+    If you create a table without defining a primary key, CockroachDB will automatically create a primary key over a hidden, [`INT`](int.html)-typed column named `rowid`. By default, sequential, unique identifiers are generated for each row in the `rowid` column with the [`unique_rowid()` function](functions-and-operators.html#built-in-functions). The sequential nature of the `rowid` values can lead to a poor distribution of the data across a cluster, which can negatively affect performance. Furthermore, because you cannot meaningfully use the `rowid` column to filter table data, the primary key index on `rowid` does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table. For more information, see our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+
+- Define primary key constraints over multiple columns (i.e., use [composite primary keys](https://en.wikipedia.org/wiki/Composite_key)).
+
+    When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries](query-order.html), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [Use multi-column primary keys](performance-best-practices-overview.html#use-multi-column-primary-keys) on the [SQL Performance Best Practices](performance-best-practices-overview.html) page.
+
+- For single-column primary keys, use [`UUID`](uuid.html)-typed columns with [randomly-generated default values](performance-best-practices-overview.html#use-uuid-to-generate-unique-ids).
+
+    Randomly generating `UUID` values ensures that the primary key values will be unique and well-distributed across a cluster.
+
+- Avoid defining primary keys over a single column of sequential data.
+
+    Querying a table with a primary key on a single sequential column (e.g., an auto-incrementing [`INT`](int.html) column) can result in single-range hotspots that negatively affect performance. Instead, use a composite key with a non-sequential prefix, or use a `UUID`-typed column.
+
+## Example
 
 {% include copy-clipboard.html %}
 ~~~ sql

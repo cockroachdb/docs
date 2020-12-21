@@ -32,7 +32,7 @@ This hardware guidance is meant to be platform agnostic and can apply to bare-me
 | Value | Recommendation | Reference
 |-------|----------------|----------
 | RAM per vCPU | 4 GiB | [CPU and memory](#cpu-and-memory)
-| Capacity per vCPU | 60 GiB | [Storage](#storage)
+| Capacity per vCPU | 150 GiB | [Storage](#storage)
 | IOPS per vCPU | 500 | [Disk I/O](#disk-i-o)
 | MB/s per vCPU | 30 | [Disk I/O](#disk-i-o)
 
@@ -42,7 +42,7 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 Each node should have **at least 2 vCPUs**. For best performance, we recommend at least 4 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
-- To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size. 
+- To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size.
 
       {{site.data.alerts.callout_info}}
       Based on internal testing, 32 vCPUs is a sweet spot for OLTP workloads. It is not a hard limit, especially for deployments using physical hardware rather than cloud instances.
@@ -58,8 +58,10 @@ Each node should have **at least 2 vCPUs**. For best performance, we recommend a
 
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
 
+- Disable Linux memory swapping. CockroachDB manages its own [memory caches](#cache-and-sql-memory-size) (configured via the `--cache` and `--max-sql-memory` flags), independent of the operating system. Over-allocating memory on production machines can lead to unexpected performance issues when pages have to be read back into memory.
+
 {{site.data.alerts.callout_info}}
-Underprovisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause OOM crashes. Underprovisioning CPU generally results in poor performance, and in extreme cases can lead to cluster unavailability. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [memory issues](cluster-setup-troubleshooting.html#memory-issues).
+Under-provisioning RAM results in reduced performance (due to reduced caching and increased spilling to disk), and in some cases can cause OOM crashes. Under-provisioning CPU generally results in poor performance, and in extreme cases can lead to cluster unavailability. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [memory issues](cluster-setup-troubleshooting.html#memory-issues).
 {{site.data.alerts.end}}
 
 #### Storage
@@ -74,7 +76,7 @@ We recommend provisioning volumes with **150 GiB per vCPU**. It's fine to have l
 
 - The recommended Linux filesystems are [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page) and [XFS](https://xfs.wiki.kernel.org/).
 
-- Always keep some of your disk capacity free on production. Doing so accommodates fluctuations in routine database operations and supports continuous data growth. 
+- Always keep some of your disk capacity free on production. Doing so accommodates fluctuations in routine database operations and supports continuous data growth.
 
     We strongly recommend [monitoring](monitoring-and-alerting.html#node-is-running-low-on-disk-space) your storage utilization and rate of growth, and taking action to add capacity well before you hit the limit.
 
@@ -279,7 +281,7 @@ $ cockroach start --cache=.25 --max-sql-memory=.25 <other start flags>
 ~~~
 
 {{site.data.alerts.callout_danger}}
-Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures.
+Avoid setting `--cache` and `--max-sql-memory` to a combined value of more than 75% of a machine's total RAM. Doing so increases the risk of memory-related failures. Also, since CockroachDB manages its own memory caches, disable Linux memory swapping to avoid over-allocating memory.
 {{site.data.alerts.end}}
 
 ## Dependencies

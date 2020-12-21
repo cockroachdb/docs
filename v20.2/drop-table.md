@@ -43,14 +43,14 @@ In this example, other objects do not depend on the table being dropped.
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  promo_codes
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | promo_codes                | table |                1000
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (6 rows)
 ~~~
 
@@ -69,13 +69,13 @@ DROP TABLE
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (5 rows)
 ~~~
 
@@ -91,13 +91,13 @@ In this example, a [foreign key](foreign-key.html) from a different table refere
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  rides
-  user_promo_codes
-  users
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | users                      | table |                  50
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (5 rows)
 ~~~
 
@@ -118,9 +118,9 @@ To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`
 ~~~
 
 ~~~
-  table_name |                                       create_statement
-+------------+-----------------------------------------------------------------------------------------------+
-  vehicles   | CREATE TABLE vehicles (
+  table_name |                                         create_statement
+-------------+---------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE public.vehicles (
              |     id UUID NOT NULL,
              |     city VARCHAR NOT NULL,
              |     type VARCHAR NULL,
@@ -130,7 +130,7 @@ To see how `users` is referenced from `vehicles`, you can use the [`SHOW CREATE`
              |     current_location VARCHAR NULL,
              |     ext JSONB NULL,
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-             |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
+             |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES public.users(city, id),
              |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
              |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
              | )
@@ -153,12 +153,12 @@ DROP TABLE
 ~~~
 
 ~~~
-          table_name
-+----------------------------+
-  rides
-  user_promo_codes
-  vehicle_location_histories
-  vehicles
+  schema_name |         table_name         | type  | estimated_row_count
+--------------+----------------------------+-------+----------------------
+  public      | rides                      | table |                 500
+  public      | user_promo_codes           | table |                   0
+  public      | vehicle_location_histories | table |                1000
+  public      | vehicles                   | table |                  15
 (4 rows)
 ~~~
 
@@ -171,15 +171,15 @@ Use a `SHOW CREATE TABLE` statement to verify that the foreign key constraint ha
 
 ~~~
   table_name |                                       create_statement
-+------------+-----------------------------------------------------------------------------------------------+
-  vehicles   | CREATE TABLE vehicles (
+-------------+------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE public.vehicles (
              |     id UUID NOT NULL,
-             |     city STRING NOT NULL,
-             |     type STRING NULL,
+             |     city VARCHAR NOT NULL,
+             |     type VARCHAR NULL,
              |     owner_id UUID NULL,
              |     creation_time TIMESTAMP NULL,
-             |     status STRING NULL,
-             |     current_location STRING NULL,
+             |     status VARCHAR NULL,
+             |     current_location VARCHAR NULL,
              |     ext JSONB NULL,
              |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
              |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),

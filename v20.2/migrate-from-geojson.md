@@ -14,9 +14,11 @@ In the example below we will import a data set with [the locations of undergroun
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB Spatial [installed](install-cockroachdb-spatial.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
 - [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html)
 - [Python 3](https://www.python.org)
+
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
 ## Step 1. Download the GeoJSON data
 
@@ -35,6 +37,8 @@ Next, convert the GeoJSON data to SQL using the following `ogr2ogr` command:
 ~~~ shell
 ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
 ~~~
+
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
 ## Step 3. Host the files where the cluster can access them
 
@@ -81,10 +85,13 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Spatial indexes](spatial-indexes.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

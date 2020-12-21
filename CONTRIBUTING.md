@@ -6,21 +6,21 @@ The CockroachDB docs are open source just like the database itself. We welcome y
 
 This section helps you set up the tools you'll need to write the docs and use CockroachDB.
 
-1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations:
+1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations. If you use Linux, then default package manager will work fine as well:
 
-    ```
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    ``` 
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     ```
 
 2. Install Ruby, the language required by Jekyll, our website generator, and the latest version of Git, the source control tool we use:
 
     ```
     brew update
-    ```
-
-    ```
-    brew install ruby git
+    brew install ruby
+    brew install git
     ````
+
+You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions. 
 
 3. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
 
@@ -31,6 +31,8 @@ This section helps you set up the tools you'll need to write the docs and use Co
     ```
     gem install jekyll bundler
     ```
+If you get a permissions error, then try re-running the command with `sudo`.    
+    
 6. Learn the essentials of our [Docs Structure](#docs-structure).
 
 7. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).

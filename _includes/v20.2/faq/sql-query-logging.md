@@ -1,19 +1,8 @@
-There are several ways to log SQL queries. The type of logging you use will depend on your requirements.
+There are several ways to log SQL queries. The type of logging to use depends on your requirements and on the purpose of the logs.
 
-- For per-table audit logs, turn on [SQL audit logs](#sql-audit-logs).
-- For system troubleshooting and performance optimization, turn on [cluster-wide execution logs](#cluster-wide-execution-logs) and [slow query logs](#slow-query-logs).
-- For connection troubleshooting, turn on [authentication logs](#authentication-logs).
+- For system troubleshooting and performance optimization, turn on [cluster-wide execution logs](#cluster-wide-execution-logs).
 - For local testing, turn on [per-node execution logs](#per-node-execution-logs).
-
-### SQL audit logs
-
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
-
-SQL audit logging is useful if you want to log all queries that are run against specific tables.
-
-- For a tutorial, see [SQL Audit Logging](sql-audit-logging.html).
-- For SQL reference documentation, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
-- Note that SQL audit logs perform one disk I/O per event and will impact performance.
+- For per-table audit logs for security purposes, turn on [SQL audit logs](#sql-audit-logs).
 
 ### Cluster-wide execution logs
 
@@ -35,20 +24,26 @@ Log files are written to CockroachDB's standard [log directory](debug-and-error-
 
 ### Slow query logs
 
-The `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is used to log only queries whose service latency exceeds a specified threshold value (e.g., 100 milliseconds):
+The `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is used to log queries whose service latency exceeds a specified threshold value. The threshold value must be specified with a unit of time (e.g., `500ms` for 500 milliseconds, `5us` for 5 nanoseconds, or `5s` for 5 seconds). A threshold of `0s` disables the slow query log.
+
+For example, to enable the slow query log for all queries with a latency above 100 milliseconds:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
 ~~~
 
-Each node that serves as a gateway will then record slow SQL queries to a `cockroach-sql-slow` log file. Use the symlink `cockroach-sql-slow.log` to open the most recent log. For more details on logging slow queries, see [Using the slow query log](query-behavior-troubleshooting.html#using-the-slow-query-log).
+After the threshold is set, each gateway node records slow SQL queries to a `cockroach-sql-slow` log file. Log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
 
 {{site.data.alerts.callout_info}}
-Setting `sql.log.slow_query.latency_threshold` to a non-zero value enables tracing on all queries, which impacts performance. After debugging, set the value back to `0s` to disable the log.
+Setting `sql.log.slow_query.latency_threshold` to a non-zero time enables tracing on all queries, which impacts performance. After debugging, set the value back to `0s` to disable the log.
 {{site.data.alerts.end}}
 
-Log files are written to CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
+<span class="version-tag">New in v20.2:</span> To log all queries that perform full table or index scans to the slow query log, regardless of query latency, set the `sql.log.slow_query.experimental_full_table_scans.enabled` [cluster setting](cluster-settings.html) to `true`. The end of each line in the slow query log indicates if the query was logged for surpassing the threshold (`LATENCY_THRESHOLD`), or if it was logged because of a full scan (`FULL_TABLE_SCAN` or `FULL_SECONDARY_INDEX_SCAN`).
+
+<span class="version-tag">New in v20.2:</span> By default, slow internal queries are not logged. To log slow internal queries, set the `sql.log.slow_query.internal_queries.enabled` cluster setting to `true`. When `sql.log.slow_query.internal_queries.enabled=true`, and `sql.log.slow_query.latency_threshold` does not equal `0s`, all internal queries that have a service latency above `sql.log.slow_query.latency_threshold` will be logged to `cockroach-slow-log-internal-only.log`.
+
+For an example of logging slow queries, see [Using the slow query log](query-behavior-troubleshooting.html#using-the-slow-query-log).
 
 ### Authentication logs
 
@@ -104,7 +99,7 @@ I200219 05:02:18.152863 1037 sql/pgwire/auth.go:327  [n1,client,local,user=root]
 I200219 05:02:18.154168 1036 sql/pgwire/conn.go:216  [n1,client,local,user=root] 20 session terminated; duration: 5.261538ms
 ~~~
 
-For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`. 
+For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`.
 
 {{site.data.alerts.callout_info}}
 Be aware that both logs perform one disk I/O per event and will impact performance when enabled.
@@ -149,3 +144,15 @@ Once the logging is enabled, all client-generated SQL queries executed by the no
 ~~~
 I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
 ~~~
+
+### SQL audit logs
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+SQL audit logging is useful if you want to log all queries that are run against specific tables, by specific users.
+
+- For a tutorial, see [SQL Audit Logging](sql-audit-logging.html).
+
+- For reference documentation, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+
+Note that enabling SQL audit logs can negatively impact performance. As a result, we recommend using SQL audit logs for security purposes only.

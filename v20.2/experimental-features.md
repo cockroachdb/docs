@@ -27,7 +27,7 @@ The table below lists the experimental session settings that are available.  For
 
 ### Keep SQL audit logs
 
-Log queries against a table to a file. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+Log all queries against a table to a file, for security purposes. For more information, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -146,6 +146,26 @@ The table below lists the experimental SQL functions and operators available in 
 ## Hash-sharded indexes
 
  CockroachDB supports hash-sharded indexes with the [`USING HASH`](create-index.html#parameters) keywords. Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range hotspots and improving write performance on sequentially-keyed indexes at a small cost to read performance. For more information, see [Hash-sharded indexes](indexes.html#hash-sharded-indexes).
+
+## Password authentication without TLS
+
+  <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
+
+  With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+
+  Example:
+  {% include copy-clipboard.html %}
+  ~~~ shell
+  $ cockroach sql --user=jpointsman --insecure
+  ~~~
+
+  ~~~
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    Enter password:
+  ~~~
 
 ## See Also
 

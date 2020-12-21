@@ -117,7 +117,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 ### Convert to a different data type
 
-The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database has a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html):
+The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -166,7 +166,7 @@ NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema c
 
 ### Change a column type's precision
 
-The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) `customer` table contains a column `c_balance` of type [`DECIMAL(12,2)`](decimal.html):
+The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table contains a column `c_balance` of type [`DECIMAL(12,2)`](decimal.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

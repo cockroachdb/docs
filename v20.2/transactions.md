@@ -88,7 +88,7 @@ In future versions of CockroachDB, we plan on providing stronger guarantees for 
 Individual statements are treated as implicit transactions, and so they fall
 under the rules described above. If the results are small enough, they will be
 automatically retried. In particular, `INSERT/UPDATE/DELETE` statements without
-a `RETURNING` clause are guaranteed to have miniscule result sizes.
+a `RETURNING` clause are guaranteed to have minuscule result sizes.
 For example, the following statement would be automatically retried by CockroachDB:
 
 ~~~ sql
@@ -150,8 +150,8 @@ To indicate that a transaction must be retried, CockroachDB signals an error wit
 To handle these types of errors you have the following options:
 
 1. If your database library or framework provides a method for retryable transactions (it will often be documented as a tool for handling deadlocks), use it. If you're building an application in the following languages, we have code to make client-side retries simpler:
-   - **Go** developers can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package, which handles retries automatically. For more information, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html#transaction-with-retry-logic).
-   - **Python** developers can use [SQLAlchemy](https://www.sqlalchemy.org) with the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For more information, see [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb-sqlalchemy.html).
+   - **Go** developers can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package, which handles retries automatically. For an example, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
+   - **Python** developers can use [SQLAlchemy](https://www.sqlalchemy.org) with the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb-sqlalchemy.html).
    - **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can re-use the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
 2. **Most users, such as application authors**: Abort the transaction using the [`ROLLBACK`](rollback-transaction.html) statement, and then reissue all of the statements in the transaction. For an example, see the [Client-side intervention example](#client-side-intervention-example).
 3. **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
@@ -187,19 +187,47 @@ For more information, including examples showing how to use savepoints to create
 
 ## Transaction priorities
 
-Every transaction in CockroachDB is assigned an initial **priority**. By default, that priority is `NORMAL`, but for transactions that should be given preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), the client can set the priority within the [`BEGIN`](begin-transaction.html) statement:
+Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
-Alternately, the client can set the priority immediately after the transaction is started as follows:
+You can also set the priority immediately after a transaction is started:
 
 ~~~ sql
 > SET TRANSACTION PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
-The client can also display the current priority of the transaction with [`SHOW TRANSACTION PRIORITY`](show-vars.html).
+<span class="version-tag">New in v20.2:</span> To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
+
+~~~ sql
+> SET default_transaction_priority 'high';
+~~~
+
+To see the current priority of a transaction, use [`SHOW TRANSACTION PRIORITY`](show-vars.html) or `SHOW transaction_priority`:
+
+~~~ sql
+> SHOW transaction_priority;
+~~~
+
+~~~
+  transaction_priority
+------------------------
+  high
+~~~
+
+~~~ sql
+> SHOW TRANSACTION PRIORITY;
+~~~
+
+~~~
+  transaction_priority
+------------------------
+  high
+~~~
+
+Note that `transaction_priority` is a read-only [session variable](show-vars.html) that cannot be set directly.
 
 {{site.data.alerts.callout_info}}
 When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.
@@ -242,5 +270,6 @@ For more information about the relationship between these levels, see [this pape
 - [`RELEASE SAVEPOINT`](release-savepoint.html)
 - [`SHOW`](show-vars.html)
 - [Retryable transaction example code in Java using JDBC](build-a-java-app-with-cockroachdb.html)
+- [DB Console Transactions Page](ui-transactions-page.html)
 - [CockroachDB Architecture: Transaction Layer](architecture/transaction-layer.html)
 - [Transaction retry error reference](transaction-retry-error-reference.html)

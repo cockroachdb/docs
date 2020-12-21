@@ -77,7 +77,7 @@ key. Using `ON CONFLICT` is therefore more flexible.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO users VALUES
+> INSERT INTO users (id, city, name, address, credit_card) VALUES
     ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee', '101 5th Ave', '1234567890');
 ~~~
 

@@ -13,6 +13,8 @@ We are using `shp2pgsql` in the example below, but [`ogr2ogr`](https://gdal.org/
 `ogr2ogr -f PGDUMP file.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF file.shp`
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
+
 In the example below we will import a [tornadoes data set](https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2018-torn-initpoint.zip) that is [available from the US National Weather Service](https://www.spc.noaa.gov/gis/svrgis/) (NWS).
 
 {{site.data.alerts.callout_info}}
@@ -23,7 +25,7 @@ Please refer to the documentation of your GIS software for instructions on expor
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB Spatial [installed](install-cockroachdb-spatial.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
 - [`shp2pgsql`](https://manpages.debian.org/stretch/postgis/shp2pgsql.1.en.html)
 - [Python 3](https://www.python.org)
 
@@ -100,10 +102,13 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

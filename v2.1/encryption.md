@@ -234,5 +234,4 @@ A workaround for the issue is to use a cloud storage provider that is configured
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](secure-a-cluster.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

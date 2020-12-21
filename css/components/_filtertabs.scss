@@ -65,13 +65,13 @@
 	}
 
 	&:hover {
-		color: $cl_green !important;
+		color: $spanish-roast !important;
 		border-bottom: none !important;
 	}
 
 	&.current {
 		border: 2px solid $cl_gray_medium;
-		border-top: 2px solid $cl_green;
+		border-top: 2px solid $spanish-roast;
 		border-bottom: 2px #fff;
 
 		&:hover {

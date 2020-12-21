@@ -27,7 +27,7 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 
 ## Required privileges
 
- To create other roles, the role must have the [`CREATEROLE`](#allow-the-role-to-create-other-roles) parameter set.
+ To create other roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 
 ## Synopsis
 
@@ -38,57 +38,83 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 | Parameter | Description |
 ------------|--------------
 `name` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
-`password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an [identifier](#create-a-role-with-a-password-using-an-identifier). <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
-`VALID UNTIL` |   The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
-`LOGIN`/`NOLOGIN` |  Allow or disallow a role to login with one of the [client authentication methods](authentication.html#client-authentication). <br><br>By default, the parameter is set to `NOLOGIN` for the `CREATE ROLE` statement.
-`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new role to create, alter, and drop other roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin and non-root users.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
+`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the role from logging in using any authentication method.
+`password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
+`VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
+`CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new role to create, [alter](alter-role.html), and [drop](drop-role.html) other non-admin roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the role to [create](create-database.html) or [rename](rename-database.html) a database. The role is assigned as the owner of the database. <br><br>By default, the parameter is set to `NOCREATEDB` for all non-admin roles.
+`CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the role to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-admin roles cannot control jobs created by admins. <br><br>By default, the parameter is set to `NOCONTROLJOB` for all non-admin roles.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other roles. Without this privilege, roles can only cancel their own queries and sessions. Even with this privilege, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the parameter is set to `NOCANCELQUERY` for all non-admin roles.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' [queries](show-queries.html) and [sessions](show-sessions.html) using `SHOW QUERIES`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and **Transactions** pages in the DB Console. Without this privilege, the `SHOW` commands only show the role's own data and the DB Console pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin roles.
+`CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the role to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin roles.
+`MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the role to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin roles.
 
 ## Examples
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE dev_ops;
+To run the following examples, [start a secure single-node cluster](cockroach-start-single-node.html) and use the built-in SQL shell:
+
+~~~ shell
+$ cockroach sql --certs-dir=certs
 ~~~
 
-After creating roles, you can [add users to the role](grant-roles.html) and [grant the role privileges](grant.html).
-
-### Allow the role to create other roles
-
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE dev with CREATEROLE;
+> SHOW ROLES;
 ~~~
 
-### Create a role with a password using a string literal
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE carl WITH PASSWORD 'ilov3beefjerky';
+~~~
+username | options | member_of
+---------+---------+------------
+admin    |         | {}
+root     |         | {admin}
+(2 rows)
 ~~~
 
-### Create a role with a password using an identifier
+{{site.data.alerts.callout_info}}
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+{{site.data.alerts.end}}
 
-The following statement sets the password to `ilov3beefjerky`, as above:
+### Create a role
 
-{% include copy-clipboard.html %}
+Role names are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+
 ~~~ sql
-> CREATE ROLE carl WITH PASSWORD ilov3beefjerky;
+root@:26257/defaultdb> CREATE ROLE no_options;
 ~~~
 
-This is equivalent to the example in the previous section because the password contains only lowercase characters.
-
-In contrast, the following statement sets the password to `thereisnotomorrow`, even though the password in the syntax contains capitals, because identifiers are normalized automatically:
-
-{% include copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE carl WITH PASSWORD ThereIsNoTomorrow;
+root@:26257/defaultdb> SHOW ROLES;
 ~~~
 
-To preserve case in a password specified using identifier syntax, use double quotes:
+~~~
+ username  | options | member_of
+ ----------+---------+------------
+admin      |         | {}
+no_options | NOLOGIN | {}
+root       |         | {admin}
+(3 rows)
+~~~
 
-{% include copy-clipboard.html %}
+After creating roles, you must [grant them privileges to databases](grant.html).
+
+### Create a role that can log in to the database
+
 ~~~ sql
-> CREATE ROLE carl WITH PASSWORD "ThereIsNoTomorrow";
+root@:26257/defaultdb> CREATE ROLE can_login WITH LOGIN PASSWORD '$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+ username  |                options                | member_of
+-----------+---------------------------------------+------------
+admin      |                                       | {}
+can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+no_options | NOLOGIN                               | {}
+root       |                                       | {admin}
+(4 rows)
 ~~~
 
 ### Prevent a role from using password authentication
@@ -97,7 +123,182 @@ The following statement prevents the role from using password authentication and
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE ROLE carl WITH PASSWORD NULL;
+> CREATE ROLE no_password WITH PASSWORD NULL;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+ username  |                options                | member_of
+-----------+---------------------------------------+------------
+admin      |                                       | {}
+can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+no_options | NOLOGIN                               | {}
+no_password| NOLOGIN                               | {}  
+root       |                                       | {admin}
+(5 rows)
+~~~
+
+### Create a role that can create other roles and manage authentication methods for the new roles
+
+The following example allows the role to [create other users](create-user.html) and [manage authentication methods](authentication.html#client-authentication) for them:
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE can_create_role WITH CREATEROLE CREATELOGIN;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+   username     |                options                | member_of
+----------------+---------------------------------------+------------
+admin           |                                       | {}
+can_create_role | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
+can_login       | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+no_options      | NOLOGIN                               | {}
+no_password     | NOLOGIN                               | {}
+root            |                                       | {admin}
+(6 rows)
+~~~
+
+### Create a role that can create and rename databases
+
+The following example allows the role to [create](create-database.html) or [rename](rename-database.html) databases:
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE can_create_db WITH CREATEDB;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_create_db         | CREATEDB, NOLOGIN                     | {}
+can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
+can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+no_options            | NOLOGIN                               | {}
+no_password           | NOLOGIN                               | {}
+root                  |                                       | {admin}
+(7 rows)
+~~~
+
+### Create a role that can pause, resume, and cancel non-admin jobs
+
+The following example allows the role to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs:
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE can_control_job WITH CONTROLJOB;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB, NOLOGIN                   | {}
+can_create_db         | CREATEDB, NOLOGIN                     | {}
+can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
+can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
+no_options            | NOLOGIN                               | {}
+no_password           | NOLOGIN                               | {}  
+root                  |                                       | {admin}
+(8 rows)
+~~~
+
+### Create a role that can see and cancel non-admin queries and sessions
+
+The following example allows the role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) for other non-admin roles:
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE can_manage_queries WITH CANCELQUERY VIEWACTIVITY;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+      username        |                options                | member_of
+----------------------+---------------------------------------+------------
+admin                 |                                       | {}
+can_control_job       | CONTROLJOB, NOLOGIN                   | {}
+can_create_db         | CREATEDB, NOLOGIN                     | {}
+can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
+can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+can_manage_queries    | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
+no_options            | NOLOGIN                               | {}
+no_password           | NOLOGIN                               | {}
+root                  |                                       | {admin}
+(9 rows)
+~~~
+
+### Create a role that can control changefeeds
+
+The following example allows the role to run [`CREATE CHANGEFEED`](create-changefeed.html):
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE can_control_changefeed WITH CONTROLCHANGEFEED;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+       username        |                options                | member_of
+-----------------------+---------------------------------------+------------
+admin                  |                                       | {}
+can_control_changefeed | CONTROLCHANGEFEED, NOLOGIN            | {}
+can_control_job        | CONTROLJOB, NOLOGIN                   | {}
+can_create_db          | CREATEDB, NOLOGIN                     | {}
+can_create_role        | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
+can_login              | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+can_manage_queries     | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
+no_options             | NOLOGIN                               | {}
+no_password            | NOLOGIN                               | {}
+root                   |                                       | {admin}
+(10 rows)
+~~~
+
+### Create a role that can modify cluster settings
+
+The following example allows the role to modify [cluster settings](cluster-settings.html):
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE can_modify_cluster_setting WITH MODIFYCLUSTERSETTING;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> SHOW ROLES;
+~~~
+
+~~~
+         username          |                options                | member_of
+---------------------------+---------------------------------------+------------
+admin                      |                                       | {}
+can_control_changefeed     | CONTROLCHANGEFEED, NOLOGIN            | {}
+can_control_job            | CONTROLJOB, NOLOGIN                   | {}
+can_create_db              | CREATEDB, NOLOGIN                     | {}
+can_create_role            | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
+can_login                  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
+can_manage_queries         | CANCELQUERY, NOLOGIN, VIEWACTIVITY    | {}
+can_modify_cluster_setting | MODIFYCLUSTERSETTING, NOLOGIN         | {}
+no_options                 | NOLOGIN                               | {}
+no_password                | NOLOGIN                               | {}
+root                       |                                       | {admin}
+(11 rows)
 ~~~
 
 ## See also

@@ -1,0 +1,1 @@
+After using [`cockroach dump`](cockroach-dump.html) to dump the schema and data of an interleaved table, the output must be edited before it can be imported via [`IMPORT`](import.html). See [#35462](https://github.com/cockroachdb/cockroach/issues/35462) for the workaround and more details.

@@ -4,7 +4,7 @@ summary: Learn about the authentication features for secure CockroachDB clusters
 toc: true
 ---
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the Admin UI. This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the DB Console. This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
@@ -25,7 +25,7 @@ CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB n
 
 Based on your security setup, you can use the [`cockroach cert` commands](cockroach-cert.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
 
-A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the Admin UI. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
+A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
 - Node authentication using [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication](gssapi_authentication.html) (for Enterprise users).
@@ -40,7 +40,7 @@ To set up a secure cluster without using an existing certificate authority, you'
 
 ### Client authentication
 
-CockroachDB offers three methods for client authentication:
+CockroachDB offers the following methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
@@ -67,6 +67,28 @@ CockroachDB offers three methods for client authentication:
   ~~~
 
    Note that the client still needs the CA certificate to validate the nodes' certificates.
+
+- **Password authentication without TLS**
+
+   <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
+
+   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+
+   Example:
+   {% include copy-clipboard.html %}
+   ~~~ shell
+   $ cockroach sql --user=jpointsman --insecure
+   ~~~
+
+   ~~~
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    Enter password:
+  ~~~
+
+- [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the DB Console.
 
 - [**GSSAPI authentication**](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
@@ -126,7 +148,7 @@ File name | File usage
 `client.node.crt` | Node certificate for when node acts as client. <br><br>Must have `CN=node`. <br><br> Must be signed by the CA represented by `ca.crt`.
 `client.node.key` | Client key corresponding to `client.node.crt`.
 
-Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
 **Client key and certificates**
 
@@ -140,9 +162,9 @@ File name | File usage
 
 Alternatively, you can use [password authentication](#client-authentication). Remember, the client still needs `ca.crt` for node authentication.
 
-### Using a public CA certificate to access the Admin UI for a secure cluster
+### Using a public CA certificate to access the DB Console for a secure cluster
 
-One of the limitations of using `cockroach cert` or `openssl` is that the browsers used to access the CockroachDB Admin UI do not trust the node certificates presented to them. Web browsers come preloaded with CA certificates from well-established entities (e.g., GlobalSign and DigiTrust). The CA certificate generated using the `cockroach cert` or `openssl` is not preloaded in the browser. Hence on accessing the Admin UI for a secure cluster, you get the “Unsafe page” warning. Now you could add the CA certificate to the browser to avoid the warning, but that is not a recommended practice. Instead, you can use the established CAs (for example, Let’s Encrypt), to create a certificate and key to access the Admin UI.
+One of the limitations of using `cockroach cert` or `openssl` is that the browsers used to access the DB Console do not trust the node certificates presented to them. Web browsers come preloaded with CA certificates from well-established entities (e.g., GlobalSign and DigiTrust). The CA certificate generated using the `cockroach cert` or `openssl` is not preloaded in the browser. Hence on accessing the DB Console for a secure cluster, you get the “Unsafe page” warning. Now you could add the CA certificate to the browser to avoid the warning, but that is not a recommended practice. Instead, you can use the established CAs (for example, Let’s Encrypt), to create a certificate and key to access the DB Console.
 
 Once you have the UI cert and key, add it to the Certificates directory specified by the `--certs-dir` flag in the `cockroach cert` command. The next time the browser tries to access the UI, the node will present the UI cert instead of the node cert, and you’ll not see the “unsafe site” warning anymore.
 
@@ -155,7 +177,7 @@ File name | File usage
 `ca.crt`     | CA certificate created using the `cockroach cert` command.
 `node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in the `Subject Alternative Name` field. CockroachDB also supports [wildcard notation in DNS names](https://en.wikipedia.org/wiki/Wildcard_certificate). <br><br>Must be signed by the CA represented by `ca.crt`.
 `node.key`   | Server key created using the `cockroach cert` command.
-`ui.crt` | UI certificate signed by the public CA. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in the `Subject Alternative Name`.
+`ui.crt` | UI certificate signed by the public CA. `ui.crt` must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name`.
 `ui.key` | UI key corresponding to `ui.crt`.
 
 **Client key and certificates**
@@ -191,7 +213,7 @@ File name | File usage
 `client.node.crt` | Node certificate for when node acts as client. This certificate must be signed by the CA represented by `ca-client.crt`.  <br><br>Must have `CN=node`.
 `client.node.key` | Client key corresponding to `client.node.crt`.
 
-Optionally, if you have a certificate issued by a public CA to securely access the Admin UI, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
+Optionally, if you have a certificate issued by a public CA to securely access the DB Console, you need to place the certificate and key (`ui.crt` and `ui.key` respectively) in the directory specified by the `--certs-dir` flag.
 
 **Client key and certificates**
 
@@ -222,7 +244,7 @@ For details about when and how to change security certificates without restartin
 
 As mentioned above, CockroachDB uses the [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocol that takes advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the Admin UI.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the DB Console.
 
 To understand how CockroachDB uses digital certificates, let's first understand what each of these terms means.
 
@@ -272,5 +294,4 @@ Let's see how the digital certificate is used in client-server communication: Th
 - [Manual Deployment](manual-deployment.html)
 - [Orchestrated Deployment](orchestration.html)
 - [Local Deployment](secure-a-cluster.html)
-- [Test Deployment](deploy-a-test-cluster.html)
 - [Other Cockroach Commands](cockroach-commands.html)

@@ -35,13 +35,13 @@ below](#auto-incrementing-is-not-always-sequential) for details.
 
 There are three possible translation modes for `SERIAL`:
 
-| Mode                                                                            | Description                                                                                                                   |
-|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| `rowid` (default)                                                               | `SERIAL` implies `DEFAULT unique_rowid()`. The real data type is always `INT`.                                                    |
-| `virtual_sequence` (experimental) | `SERIAL` creates a virtual sequence and implies `DEFAULT nextval(<seqname>)`.  The real data type is always `INT`.                |
-| `sql_sequence` (experimental)     | `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`. The real data type depends on `SERIAL` variant. |
+| Mode                | Description                                                                                                                       |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `rowid` (default)   | `SERIAL` implies `DEFAULT unique_rowid()`. The real data type is always `INT`.                                                    |
+| `virtual_sequence`  | `SERIAL` creates a virtual sequence and implies `DEFAULT nextval(<seqname>)`.  The real data type is always `INT`.                |
+| `sql_sequence`      | `SERIAL` creates a regular SQL sequence and implies `DEFAULT nextval(<seqname>)`. The real data type depends on `SERIAL` variant. |
 
-These modes can be configured with the experimental (unsupported) [session variable](set-vars.html) `experimental_serial_normalization`.
+These modes can be configured with the [session variable](set-vars.html) `serial_normalization`.
 
 {{site.data.alerts.callout_info}}
 The particular choice of `DEFAULT` expression when clients use the
@@ -49,11 +49,6 @@ The particular choice of `DEFAULT` expression when clients use the
 CockroachDB. Applications that wish to use `unique_rowid()`
 specifically must use the full explicit syntax `INT DEFAULT
 unique_rowid()` and avoid `SERIAL` altogether.
-
-Moreover, the existence of multiple translation modes for `SERIAL` is
-an experimental feature in CockroachDB 2.1 aimed at studying
-compatibility with existing PostgreSQL applications and may be removed
-in subsequent releases.
 {{site.data.alerts.end}}
 
 ### Generated values for modes `rowid` and `virtual_sequence`
@@ -77,9 +72,6 @@ The difference between `rowid` and `virtual_sequence` is that the
 latter setting also creates a virtual (pseudo) sequence in the
 database. However in both cases the `unique_rowid()` function is
 ultimately used to generate new values.
-
-This behavior of `virtual_sequence` is experimental and may be removed
-in a later version of CockroachDB.
 {{site.data.alerts.end}}
 
 ### Generated values for mode `sql_sequence`.
@@ -109,12 +101,6 @@ Therefore, applications should consider using `unique_rowid()` or
 `gen_random_uuid()` as discussed in [this FAQ
 entry](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
 instead of sequences when possible.
-
-{{site.data.alerts.callout_info}}
-This mode `sql_sequence` is an experimental feature provided for testing compatibility with existing PostgreSQL clients.
-
-It is subject to change without notice and may be removed in later versions of CockroachDB.
-{{site.data.alerts.end}}
 
 ## Examples
 

@@ -6,6 +6,10 @@ toc: true
 
 <span class="version-tag">New in v20.2:</span> User-defined `ENUM` [data types](data-types.html) consist of a set of enumerated, static values.
 
+{{site.data.alerts.callout_danger}}
+Clusters with `ENUM` types that are running [alpha testing releases](../releases/#testing-releases) of v20.2 will not be able to upgrade to beta testing releases or [production releases](../releases/#production-releases) of v20.2 due to internal representation changes.
+{{site.data.alerts.end}}
+
 ## Syntax
 
 To declare a new `ENUM` data type, use [`CREATE TYPE`](create-type.html):
@@ -17,7 +21,7 @@ To declare a new `ENUM` data type, use [`CREATE TYPE`](create-type.html):
 where `<name>` is the name of the new type, and `<value1>, <value2>, ...` are string literals that make up the type's set of static values.
 
 {{site.data.alerts.callout_info}}
-You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`).
+You can qualify the `<name>` of an enumerated type with a [database and schema name](sql-name-resolution.html) (e.g., `db.typename`). After the type is created, it can only be referenced from the database that contains the type.
 {{site.data.alerts.end}}
 
 To show all `ENUM` types in the database, use [`SHOW ENUMS`](show-enums.html):
@@ -49,6 +53,11 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 - To [drop a type](drop-type.html), a user must be the owner of the type.
 - To [alter a type](alter-type.html), a user must be the owner of the type.
 - To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
+- To create an object that depends on a type, a user must have the `USAGE` privilege on the type.
+
+## Known limitations
+
+[Partitions](partitioning.html) cannot be created on columns of type `ENUM`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/55342).
 
 ## Example
 

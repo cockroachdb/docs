@@ -8,80 +8,129 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### Primary key changes and zone configs
+### Upgrading to v20.2 with 100 or more non-terminal jobs
 
-When you change a table's primary key with [`ALTER PRIMARY KEY`](alter-primary-key.html), any [zone configurations](configure-zone.html#create-a-replication-zone-for-a-table) for that table or its secondary indexes will no longer apply.
+Clusters with 100 or more jobs in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`) are unable to upgrade to v20.2. The v20.2 node will hang and never successfully start, and the [logs](debug-and-error-logs.html) will show `checked 100 jobs for existence of deprecated schema change jobs` in a tight loop.
 
-As a workaround, recreate the zone configurations after changing the table's primary key.
+To avoid this limitation: 
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/48254)
+1. Before starting the upgrade to v20.2, check the [Jobs page](ui-jobs-page.html#jobs-list) in the DB Console or run `SELECT count(*) FROM crdb_internal.jobs WHERE status NOT IN ('succeeded', 'canceled', 'failed')` to ensure that fewer than 100 jobs are in a non-terminal state. 
 
-### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
+1. You can then [start the rolling upgrade](upgrade-cockroach-version.html#step-4-perform-the-rolling-upgrade) and wait for the log message `done ensuring all necessary migrations have run` to appear on the first upgraded node, at which point there are no further restrictions on jobs.
 
-Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56859)
 
-~~~ sql
-> BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
-~~~
+### Partitioning on `ENUM` values
 
-~~~
-ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
-SQLSTATE: 0A000
-HINT: You have attempted to use a feature that is not yet implemented.
-See: https://github.com/cockroachdb/cockroach/issues/46414
-~~~
+[Partitions](partitioning.html) cannot be created on columns of type [`ENUM`](enum.html).
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/46414)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55342)
 
-### Column name from an outer column inside a subquery differs from PostgreSQL
+### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 
-CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
+CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`](insert.html#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
 
-~~~ sql
-> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
-~~~
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53170)
 
-CockroachDB:
+### `IMPORT` into a table with partial indexes
 
-~~~
-  ?column?
-------------
-         1
-~~~
+CockroachDB does not currently support [`IMPORT`s](import.html) into tables with partial indexes.
 
-PostgreSQL:
+To work around this limitation:
 
-~~~
- x
----
- 1
-~~~
+1. Drop any partial indexes defined on the table.
+2. Perform the `IMPORT`.
+3. Recreate the partial indexes.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/46563)
+If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) with partial indexes:
 
-### Privileges required to access to certain virtual tables differs from PostgreSQL
+1. Drop the partial indexes on the PostgreSQL server.
+2. Recreate the `PGDUMP`.
+3. `IMPORT` the `PGDUMP`.
+4. Add partial indexes on the CockroachDB server.
 
-Access to certain virtual tables in the `pg_catalog` and `information_schema` schemas require more privileges than in PostgreSQL. For example, in CockroachDB, access to `pg_catalog.pg_types` requires the `SELECT` privilege on the current database, whereas this privilege is not required in PostgreSQL.
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/43177)
+### Spatial support limitations
 
-### Concurrent SQL shells overwrite each other's history
+CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
 
-The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine, therefore, each shell's command history can get overwritten in unexpected ways.
+- Not all [PostGIS spatial functions](https://postgis.net/docs/reference.html) are supported.
 
-As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49203)
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
-~~~
+- The `AddGeometryColumn` [spatial function](functions-and-operators.html#spatial-functions) only allows constant arguments.
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
-~~~
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49402)
+
+- The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/49448)
+
+- CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56124)
+
+- CockroachDB does not yet support [`INSERT`](insert.html)s into the [`spatial_ref_sys` table](spatial-glossary.html#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr.html#cmdoption-ogr2ogr-f).
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55903)
+
+- CockroachDB does not yet support `DECLARE CURSOR`, which prevents the `ogr2ogr` conversion tool from exporting from CockroachDB to certain formats and prevents [QGIS](https://qgis.org/en/site/) from working with CockroachDB. To work around this limitation, [export data first to CSV](export-spatial-data.html) or GeoJSON format.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41412)
+
+- CockroachDB does not yet support storing spatial objects of more than two dimensions.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53091)
+
+- CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
+
+- CockroachDB does not yet support Curve, MultiCurve, or CircularString spatial shapes.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56199)
+
+- CockroachDB does not yet support [k-nearest neighbors](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm).
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
+
+### KMS encryption not supported for scheduled backups
+
+You cannot [schedule a backup](create-schedule-for-backup.html) with [KMS encryption](take-and-restore-encrypted-backups.html#use-aws-key-management-service).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56082)
 
 ## Unresolved limitations
+
+### Collation names that include upper-case or hyphens may cause errors
+
+Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
+
+For example, the following SQL will result in an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE nocase_strings (s STRING COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO nocase_strings VALUES ('Aaa' COLLATE "en-US-u-ks-level2"), ('Bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT s FROM nocase_strings WHERE s = ('bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+~~~
+ERROR: internal error: "$0" = 'bbb' COLLATE en_us_u_ks_level2: unsupported comparison operator: <collatedstring{en-US-u-ks-level2}> = <collatedstring{en_us_u_ks_level2}>
+~~~
+
+As a workaround, only use collation names that have lower-case letters and underscores.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/56335)
 
 ### Subqueries in `SET` statements
 
@@ -98,19 +147,15 @@ SQLSTATE: 22023
 DETAIL: subqueries are not allowed in SET
 ~~~
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/42896)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
 ### Enterprise `BACKUP` does not capture database/table/column comments
 
-The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by enterprise [`BACKUP`](backup.html).
+The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
-As a workaround, alongside a `BACKUP`, run the [`cockroach dump`](cockroach-dump.html) command with `--dump-mode=schema` for each table in the backup. This will emit `COMMENT ON` statements alongside `CREATE` statements.
+As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Adding stores to a node
-
-{% include {{ page.version.version }}/known-limitations/adding-stores-to-node.md %}
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
 ### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
 
@@ -133,7 +178,7 @@ An `x` value less than `1` would result in the following error:
 pq: check constraint violated
 ~~~
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
 
 ### Cold starts of large clusters may require manual intervention
 
@@ -145,9 +190,9 @@ To exit this state, you should:
 2. Set the following environment variables: `COCKROACH_SCAN_INTERVAL=60m`, and `COCKROACH_SCAN_MIN_IDLE_TIME=1s`.
 3. Restart the cluster.
 
-Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](admin-ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
+Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
 
-[Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
 ### Requests to restarted node in need of snapshots may hang
 
@@ -174,13 +219,7 @@ To resolve this issue on Windows, download Go's official [zoneinfo.zip](https://
 
 Make sure to do this across all nodes in the cluster and to keep this time zone data up-to-date.
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
-
-### Database and table renames are not transactional
-
-Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
-
-Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/36864)
 
 ### Change data capture
 
@@ -188,9 +227,9 @@ Change data capture (CDC) provides efficient, distributed, row-level change feed
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
-### Admin UI may become inaccessible for secure clusters
+### DB Console may become inaccessible for secure clusters
 
-Accessing the Admin UI for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the Admin UI.
+Accessing the DB Console for a secure cluster now requires login information (i.e., username and password). This login information is stored in a system table that is replicated like other data in the cluster. If a majority of the nodes with the replicas of the system table data go down, users will be locked out of the DB Console.
 
 ### `AS OF SYSTEM TIME` in `SELECT` statements
 
@@ -200,13 +239,13 @@ Accessing the Admin UI for a secure cluster now requires login information (i.e.
 
 ### Large index keys can impair performance
 
-The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for RocksDB SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
+The use of tables with very large primary or secondary index keys (>32KB) can result in excessive memory usage. Specifically, if the primary or secondary index key is larger than 32KB the default indexing scheme for [storage engine](cockroach-start.html#storage-engine) SSTables breaks down and causes the index to be excessively large. The index is pinned in memory by default for performance.
 
 To work around this issue, we recommend limiting the size of primary and secondary keys to 4KB, which you must account for manually. Note that most columns are 8B (exceptions being `STRING` and `JSON`), which still allows for very complex key structures.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
 
-### Admin UI: Statements page latency reports
+### DB Console: Statements page latency reports
 
 The Statements page does not correctly report "mean latency" or "latency by phase" for statements that result in schema changes or other background jobs.
 
@@ -222,15 +261,15 @@ CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING`
 
 Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB {{ page.version.version }}.
 
-### Admin UI: CPU percentage calculation
+### DB Console: CPU percentage calculation
 
 For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have _n_ cores, then the user CPU percent can range from 0% (indicating an idle system) to (_n_*100)% (indicating full utilization).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
 
-### Admin UI: CPU count in containerized environments
+### DB Console: CPU count in containerized environments
 
-When CockroachDB is run in a containerized environment (e.g., Kubernetes), the Admin UI does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
+When CockroachDB is run in a containerized environment (e.g., Kubernetes), the DB Console does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
 
@@ -240,11 +279,9 @@ When CockroachDB is run in a containerized environment (e.g., Kubernetes), the A
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
 
-### `DISTINCT` operations cannot operate over JSON values
+### Ordering tables by `JSONB`/`JSON`-typed columns
 
-CockroachDB does not currently key-encode JSON values, which prevents `DISTINCT` filters from working on them.
-
-As a workaround, you can return the JSON field's values to a `string` using the `->>` operator, e.g., `SELECT DISTINCT col->>'field'...`.
+CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](query-order.html) [`JSONB`/`JSON`](jsonb.html)-typed columns.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
@@ -268,25 +305,15 @@ Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 
-### Dumping a table with no user-visible columns
-
-{% include {{page.version.version}}/known-limitations/dump-table-with-no-columns.md %}
-
-### Dumping a table with collations
-
-{% include {{page.version.version}}/known-limitations/dump-table-with-collations.md %}
-
 ### Import with a high amount of disk contention
 
 {% include {{ page.version.version }}/known-limitations/import-high-disk-contention.md %}
 
-### Assigning latitude/longitude for the Node Map
-
-{% include {{ page.version.version }}/known-limitations/node-map.md %}
-
 ### Placeholders in `PARTITION BY`
 
 {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/19464)
 
 ### Adding a column with sequence-based `DEFAULT` values
 
@@ -319,7 +346,7 @@ SQLSTATE: 0A000
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508)
 
-### Available capacity metric in the Admin UI
+### Available capacity metric in the DB Console
 
 {% include {{ page.version.version }}/misc/available-capacity-metric.md %}
 
@@ -366,7 +393,7 @@ However, you might see increased latency caused by a consistently high rate of l
 - Each node was started with a single tier of `--locality`, e.g., `--locality=datacenter=a`.
 - Most client requests get sent to a single datacenter because that's where all your application traffic is.
 
-To detect if this is happening, open the [Admin UI](admin-ui-overview.html), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
+To detect if this is happening, open the [DB Console](ui-overview.html), select the **Queues** dashboard, hover over the **Replication Queue** graph, and check the **Leases Transferred / second** data point. If the value is consistently larger than 0, you should consider stopping and restarting each node with additional tiers of locality to improve request latency.
 
 For example, let's say that latency is 10ms from nodes in datacenter A to nodes in datacenter B but is 100ms from nodes in datacenter A to nodes in datacenter C. To ensure A's and B's relative proximity is factored into lease holder rebalancing, you could restart the nodes in datacenter A and B with a common region, `--locality=region=foo,datacenter=a` and `--locality=region=foo,datacenter=b`, while restarting nodes in datacenter C with a different region, `--locality=region=bar,datacenter=c`.
 
@@ -380,11 +407,9 @@ Many string operations are not properly overloaded for [collated strings](collat
 ~~~
 
 ~~~
-+------------------------+
-| 'string1' || 'string2' |
-+------------------------+
-| string1string2         |
-+------------------------+
+     ?column?
+------------------
+  string1string2
 (1 row)
 ~~~
 
@@ -411,10 +436,6 @@ When a node has both a high number of client connections and running queries, th
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
 
-### SQL subexpressions and memory usage
-
-Many SQL subexpressions (e.g., `ORDER BY`, `UNION`/`INTERSECT`/`EXCEPT`, `GROUP BY`, subqueries) accumulate intermediate results in RAM on the node processing the query. If the operator attempts to process more rows than can fit into RAM, the node will either crash or report a memory capacity error. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
-
 ### Query planning for `OR` expressions
 
 Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
@@ -423,4 +444,121 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
+### Correlated common table expressions
+
 {% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42540)
+
+### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
+
+Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
+
+~~~ sql
+> BEGIN PRIORITY HIGH; SAVEPOINT s; CREATE TABLE t(x INT); ROLLBACK TO SAVEPOINT s;
+~~~
+
+~~~
+ERROR: unimplemented: cannot use ROLLBACK TO SAVEPOINT in a HIGH PRIORITY transaction containing DDL
+SQLSTATE: 0A000
+HINT: You have attempted to use a feature that is not yet implemented.
+See: https://github.com/cockroachdb/cockroach/issues/46414
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46414)
+
+### Column name from an outer column inside a subquery differs from PostgreSQL
+
+CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
+
+~~~ sql
+> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
+~~~
+
+CockroachDB:
+
+~~~
+  ?column?
+------------
+         1
+~~~
+
+PostgreSQL:
+
+~~~
+ x
+---
+ 1
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
+
+### Concurrent SQL shells overwrite each other's history
+
+The [built-in SQL shell](cockroach-sql.html) stores its command history in a single file by default (`.cockroachsql_history`). When running multiple instances of the SQL shell on the same machine. Therefore, each shell's command history can get overwritten in unexpected ways.
+
+As a workaround, set the `COCKROACH_SQL_CLI_HISTORY` environment variable to different values for the two different shells, for example:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_1
+~~~
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42027)
+
+### Passwords with special characters cannot be passed in connection parameter
+
+CockroachDB does not allow passwords with special characters to be passed as a [connection parameter](connection-parameters.html) to [`cockroach` commands](cockroach-commands.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
+
+### CockroachDB does not test for all connection failure scenarios
+
+CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error.
+
+However, if there is no host at the target IP address, or if a firewall rule blocks traffic to the target address and port, a TCP handshake can linger while the client network stack waits for a TCP packet in response to network requests. To work around this kind of scenario, we recommend the following:
+
+- When migrating a node to a new machine, keep the server listening at the previous IP address until the cluster has completed the migration.
+- Configure any active network firewalls to allow node-to-node traffic.
+- Verify that orchestration tools (e.g., Kubernetes) are configured to use the correct network connection information.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53410)
+
+### Some column-dropping schema changes do not roll back properly
+
+Some [schema changes](online-schema-changes.html) that [drop columns](drop-column.html) cannot be [rolled back](rollback-transaction.html) properly.
+
+In some cases, the rollback will succeed, but the column data might be partially or totally missing, or stale due to the asynchronous nature of the schema change.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46541)
+
+In other cases, the rollback will fail in such a way that will never be cleaned up properly, leaving the table descriptor in a state where no other schema changes can be run successfully.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/47712)
+
+To reduce the chance that a column drop will roll back incorrectly:
+
+- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures won't cause the column drop to be rolled back.
+
+- Drop all [constraints](constraints.html) (including [unique indexes](unique.html)) on the column in a separate transaction, before dropping the column.
+
+- Drop any [default values](default-value.html) or [computed expressions](computed-columns.html) on a column before attempting to drop the column. This prevents conflicts between constraints and default/computed values during a column drop rollback.
+
+If you think a rollback of a column-dropping schema change has occurred, check the [jobs table](show-jobs.html). Schema changes with an error prefaced by `cannot be reverted, manual cleanup may be required` might require manual intervention.
+
+### Disk-spilling on joins with `JSON` columns
+
+If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
+
+### Inverted indexes cannot be partitioned
+
+CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)

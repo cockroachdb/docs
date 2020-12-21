@@ -51,7 +51,7 @@ For detailed examples of vectorized query execution for hash and merge joins, se
 The following operations require [memory buffering](https://en.wikipedia.org/wiki/Data_buffer) during execution:
 
 - Global [sorts](query-order.html)
-- [Unordered aggregations](query-order.html#processing-order-during-aggregations)
+- [Unordered aggregations](query-order.html)
 - [Hash joins](joins.html#hash-joins)
 - [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", can execute entirely in-memory.
 - [Window functions](window-functions.html). Note that [support for window functions is limited in the vectorized execution engine](#window-functions).
@@ -74,7 +74,7 @@ Support for certain [window functions](window-functions.html) is limited in the 
 
 ### Spatial features
 
-The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#geospatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
+The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
 
 ## See also
 

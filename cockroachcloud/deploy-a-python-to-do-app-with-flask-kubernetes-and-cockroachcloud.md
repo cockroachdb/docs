@@ -13,13 +13,15 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 ## Before you begin
 
-Install the following tools, if you don't already have them:
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
-Tool | Purpose
------|--------
-[pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
-[Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
-[minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
+1. Install the following tools, if you don't already have them:
+
+    Tool | Purpose
+    -----|--------
+    [pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
+    [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
+    [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
 ## Prepare your cluster
 
@@ -33,15 +35,15 @@ Tool | Purpose
 
 Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
-Once you are [logged in](create-your-account.html#log-in), you can use the Console to authorize your network:
+Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
 2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.
 3. (Optional) Enter a descriptive name for the network.
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
-5. Select both networks: **Admin UI to monitor the cluster** and **CockroachDB Client to access the databases**.
+5. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
 
-    The **Admin UI** refers to the cluster's Admin UI, where you can observe your cluster's health and performance. For more information, see [Admin UI Overview](../stable/admin-ui-overview.html).
+    The **DB Console** refers to the cluster's DB Console, where you can observe your cluster's health and performance. For more information, see [DB Console Overview](../stable/ui-overview.html).
 
 6. Click **Apply**.
 
@@ -54,7 +56,7 @@ Once you are [logged in](create-your-account.html#log-in), you can use the Conso
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](authorization.html#granting-privileges) and [Using roles](authorization.html#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#granting-privileges) and [Using roles](user-authorization.html#using-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 
@@ -463,20 +465,20 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 
 ## Monitor the app
 
-- [Step 1. Access the Admin UI](#step-1-access-the-admin-ui)
+- [Step 1. Access the DB Console](#step-1-access-the-db-console)
 - [Step 2. Monitor cluster health, metrics, and SQL statements](#step-2-monitor-cluster-health-metrics-and-sql-statements)
 
-### Step 1. Access the Admin UI
+### Step 1. Access the DB Console
 
-1. On the Console, navigate to the cluster's **Monitoring** page and click **Open Admin UI**.
+1. On the Console, navigate to the cluster's **Monitoring** page and click **Open DB Console**.
 
-    You can also access the Admin UI by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
+    You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
 2. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
 3. Click **Log In**.
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 
-On the [**Cluster Overview** page](../stable/admin-ui-cluster-overview-page.html), view essential metrics about the cluster's health:
+On the [**Cluster Overview** page](../stable/ui-cluster-overview-page.html), view essential metrics about the cluster's health:
 
 - Number of live, dead, and suspect nodes
 - Number of unavailable and under-replicated ranges
@@ -486,7 +488,7 @@ On the [**Cluster Overview** page](../stable/admin-ui-cluster-overview-page.html
 #### Monitor the hardware metrics
 
 1. Click **Metrics** on the left, and then select **Dashboard > Hardware**.
-2. On the [**Hardware** dashboard](../stable/admin-ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
+2. On the [**Hardware** dashboard](../stable/ui-hardware-dashboard.html), view metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 
 #### Monitor inter-node latencies
 
@@ -495,4 +497,4 @@ On the [**Cluster Overview** page](../stable/admin-ui-cluster-overview-page.html
 #### Identify frequently executed or high latency SQL statements
 
 1. Click **Statements** on the left.
-2. The [**Statements** page](../stable/admin-ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.
+2. The [**Statements** page](../stable/ui-statements-page.html) helps you identify frequently executed or high latency SQL statements. The **Statements** page also allows you to view the details of an individual SQL statement by clicking on the statement to view the **Statement Details** page.

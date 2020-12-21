@@ -6,16 +6,21 @@ toc: true
 
 SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
 
-This page has an example showing:
+This page provides an example of SQL audit logging in CockroachDB, including:
 
 - How to turn audit logging on and off.
 - Where the audit log files live.
 - What the audit log files look like.
 
-For reference material, including a detailed description of the audit log file format, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+For a detailed description of the audit log file format, see [Audit log file format](experimental-audit.html#audit-log-file-format) on the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html) reference page.
+
+Note that enabling SQL audit logs can negatively impact performance. As a result, we recommend using SQL audit logs for security purposes only. For more details, see [Performance considerations](experimental-audit.html#performance-considerations), on the [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html) reference page.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
+{{site.data.alerts.callout_success}}
+To learn about other SQL query logging options, see [SQL logging](query-behavior-troubleshooting.html#sql-logging).
+{{site.data.alerts.end}}
 
 ## Step 1. Create sample tables
 
@@ -95,12 +100,10 @@ Now let's verify that our customers were added successfully:
 ~~~
 
 ~~~
-+--------------------------------------+----------------------------------+------------------------------------------------+-------------+-------------+-----------------------+
-|                  id                  |               name               |                    address                     | national_id |  telephone  |         email         |
-+--------------------------------------+----------------------------------+------------------------------------------------+-------------+-------------+-----------------------+
-| 4bd266fc-0b62-4cc4-8c51-6997675884cd | Vainglorious K. Snerptwiddle III | 44 Straight Narrows, Garden City, NY USA 11536 |   899127890 | 16465552000 | snerp@snerpy.net      |
-| 988f54f0-b4a5-439b-a1f7-284358633250 | Pritchard M. Cleveland           | 23 Crooked Lane, Garden City, NY USA 11536     |   778124477 | 12125552000 | pritchmeister@aol.com |
-+--------------------------------------+----------------------------------+------------------------------------------------+-------------+-------------+-----------------------+
+                   id                  |               name               |                    address                     | national_id |  telephone  |         email
+---------------------------------------+----------------------------------+------------------------------------------------+-------------+-------------+------------------------
+  859c6aa1-ae36-49c8-9f12-7a952b4e6915 | Vainglorious K. Snerptwiddle III | 44 Straight Narrows, Garden City, NY USA 11536 |   899127890 | 16465552000 | snerp@snerpy.net
+  90810df2-d3c1-4038-8462-132f4df5112b | Pritchard M. Cleveland           | 23 Crooked Lane, Garden City, NY USA 11536     |   778124477 | 12125552000 | pritchmeister@aol.com
 (2 rows)
 ~~~
 
@@ -155,15 +158,13 @@ Let's verify that our orders were added successfully:
 ~~~
 
 ~~~
-+--------------------------------------+------------+-----------------+--------------------------------------+
-|                  id                  | product_id | delivery_status |             customer_id              |
-+--------------------------------------+------------+-----------------+--------------------------------------+
-| 6e85c390-3bbf-48da-9c2f-a73a0ab9c2ce |          1 | processing      | df053c68-fcb0-4a80-ad25-fef9d3b408ca |
-| e93cdaee-d5eb-428c-bc1b-a7367f334f99 |          2 | processing      | df053c68-fcb0-4a80-ad25-fef9d3b408ca |
-| f05a1b0f-5847-424d-b8c8-07faa6b6e46b |          3 | processing      | df053c68-fcb0-4a80-ad25-fef9d3b408ca |
-| 86f619d6-9f18-4c84-8ead-68cd07a1ee37 |          4 | processing      | df053c68-fcb0-4a80-ad25-fef9d3b408ca |
-| 882c0fc8-64e7-4fab-959d-a4ff74f170c0 |          5 | processing      | df053c68-fcb0-4a80-ad25-fef9d3b408ca |
-+--------------------------------------+------------+-----------------+--------------------------------------+
+                   id                  | product_id | delivery_status |             customer_id
+---------------------------------------+------------+-----------------+---------------------------------------
+  77fa8340-8a65-4ab2-8191-ed87fc049b33 |          1 | processing      | 90810df2-d3c1-4038-8462-132f4df5112b
+  36c8b00d-01f0-4956-bb0e-6e9219f49bae |          2 | processing      | 90810df2-d3c1-4038-8462-132f4df5112b
+  5eebf961-1e4c-41a4-b6c6-441c3d5ef595 |          3 | processing      | 90810df2-d3c1-4038-8462-132f4df5112b
+  2952402e-0cde-438f-a1fb-09e30be26748 |          4 | processing      | 90810df2-d3c1-4038-8462-132f4df5112b
+  a9bf61ee-2c8c-4f77-b684-d943e1a46093 |          5 | processing      | 90810df2-d3c1-4038-8462-132f4df5112b
 (5 rows)
 ~~~
 
@@ -194,3 +195,4 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 - [SQL Feature Support](sql-feature-support.html)
 - [Authentication logs](query-behavior-troubleshooting.html#authentication-logs)
 - [Slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log)
+- [SQL logging](query-behavior-troubleshooting.html#sql-logging)

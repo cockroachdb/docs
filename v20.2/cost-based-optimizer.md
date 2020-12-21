@@ -83,6 +83,10 @@ For instructions showing how to manually generate statistics, see the examples i
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
 
 {{site.data.alerts.callout_info}}
+CockroachDB does not support histograms on [`ARRAY`-typed](array.html) columns. As a result, statistics created on `ARRAY`-typed columns do not include histograms.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 CockroachDB does not support multi-column histograms yet. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/49698).
 {{site.data.alerts.end}}
 
@@ -164,7 +168,7 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 {{site.data.alerts.callout_info}}
 With queries on [interleaved tables](interleave-in-parent.html), the optimizer might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
 
-<span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fk` [session variable](set-vars.html) to `on`.
+<span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
 ### Additional considerations
@@ -311,7 +315,7 @@ In a geo-distributed scenario with a cluster that spans multiple datacenters, it
 
 For example, if you have 11 nodes, you may see 11 queries with high latency due to schema cache misses.  Once all nodes have cached the schema locally, the latencies will drop.
 
-This behavior may also cause the [Statements page of the Web UI](admin-ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
+This behavior may also cause the [Statements page of the Web UI](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
 {{site.data.alerts.end}}
 
 As expected, the node in the USA region uses the primary key index.

@@ -58,9 +58,15 @@
       	      ]
       	    },
       	    {
-      	      "title": "Authorization",
+      	      "title": "User Authorization",
       	      "urls": [
-      		      "/cockroachcloud/authorization.html"
+      		      "/cockroachcloud/user-authorization.html"
+      	      ]
+      	    },
+            {
+      	      "title": "Network Authorization",
+      	      "urls": [
+      		      "/cockroachcloud/network-authorization.html"
       	      ]
       	    },
       	    {
@@ -168,6 +174,12 @@
       	      "urls": [
       		       "/cockroachcloud/upgrade-to-v20.1.html"
       	      ]
+      	    },
+      	    {
+      	      "title": "Upgrade to v20.2",
+      	      "urls": [
+      		       "/cockroachcloud/upgrade-to-v20.2.html"
+      	      ]
       	    }
       	  ]
       	}
@@ -205,6 +217,18 @@
     {
       "title": "Releases",
       "items": [
+        {
+          "title": "December 2020",
+          "urls": [
+            "/releases/cockroachcloud-12112020.html"
+          ]
+        },
+        {
+          "title": "November 2020",
+          "urls": [
+            "/releases/cockroachcloud-11192020.html"
+          ]
+        },
       	{
       	  "title": "July 2020",
       	  "urls": [

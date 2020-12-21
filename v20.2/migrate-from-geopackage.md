@@ -2,7 +2,6 @@
 title: Migrate from GeoPackages
 summary: Learn how to migrate data from GeoPackages into a CockroachDB cluster.
 toc: true
-build_for: [cockroachdb]
 ---
 
 <span class="version-tag">New in v20.2</span>: CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
@@ -15,9 +14,11 @@ In the example below we will import a data set with [the locations of natural sp
 
 To follow along with the example below, you will need the following prerequisites:
 
-- CockroachDB Spatial [installed](install-cockroachdb-spatial.html) and [running](start-a-local-cluster.html)
+- CockroachDB [installed](install-cockroachdb.html) and [running](start-a-local-cluster.html)
 - [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html)
 - [Python 3](https://www.python.org)
+
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
 ## Step 1. Download the GeoPackage data
 
@@ -49,6 +50,8 @@ This particular data set emits a warning  due to some date formatting.
 ~~~
 Warning 1: Non-conformant content for record 1 in column field_ch_1, 2017/05/04, successfully parsed
 ~~~
+
+{% include {{page.version.version}}/spatial/ogr2ogr-supported-version.md %}
 
 ## Step 3. Host the files where the cluster can access them
 
@@ -95,8 +98,12 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 ## See also
 
 - [`IMPORT`][import]
+- [Export Spatial Data](export-spatial-data.html)
+- [Working with Spatial Data](spatial-data.html)
+- [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Migration Overview](migration-overview.html)
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]

@@ -59,6 +59,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/create_as_constraint_def.html %}
 </div>
 
+**opt_with_storage_parameter_list ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
+</div>
+
 </div>
 
 ## Parameters
@@ -78,7 +84,9 @@ table td:first-child {
  `family_def` | An optional [column family definition](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.
  `create_as_constraint_def` | An optional [primary key constraint](primary-key.html).
  `select_stmt` | A [selection query](selection-queries.html) to provide the data.
- `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br>**Support for temporary tables is experimental**. The interface and output are subject to change.
+ `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
+ `opt_with_storage_parameter_list` | <span class="version-tag">New in v20.2:</span> A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+ `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
 ## Limitations
 

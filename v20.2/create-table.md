@@ -77,6 +77,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
 </div>
 
+**opt_with_storage_parameter_list ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
+</div>
+
 </div>
 
 {{site.data.alerts.callout_success}}To create a table from the results of a <code>SELECT</code> statement, use <a href="create-table-as.html"><code>CREATE TABLE AS</code></a>.
@@ -86,7 +92,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 Parameter | Description
 ----------|------------
-`opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
+`opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
 `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
 `column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html); optionally, a [column-level constraint](constraints.html) or other column qualification (e.g., [computed columns](computed-columns.html)) can be specified. Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
@@ -97,6 +103,8 @@ Parameter | Description
 `opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](indexes.html#hash-sharded-indexes) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
 `opt_where_clause` | <span class="version-tag">New in v20.2:</span> An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
+`opt_with_storage_parameter_list` | <span class="version-tag">New in v20.2:</span> A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+`ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
 ## Table-level replication
 
@@ -146,6 +154,8 @@ For additional examples, see [Create a new table from an existing one](#create-a
 ### Create a table
 
 In this example, we create the `users` table with a single [primary key](primary-key.html) column defined. In CockroachDB, every table requires a [primary key](primary-key.html). If one is not explicitly defined, a column called `rowid` of the type `INT` is added automatically as the primary key, with the `unique_rowid()` function used to ensure that new rows always default to unique `rowid` values. The primary key is automatically indexed.
+
+For performance recommendations on primary keys, see the [Primary Key Constraint](primary-key.html#performance-considerations) page and the [SQL Performance Best Practices](performance-best-practices-overview.html#use-multi-column-primary-keys) page.
 
 {{site.data.alerts.callout_info}}
   If no primary key is explicitly defined in a `CREATE TABLE` statement, you can add a primary key to the table with [`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html) or [`ALTER PRIMARY KEY`](alter-primary-key.html). If the `ADD` or `ALTER` statement follows the `CREATE TABLE` statement, and is part of the same transaction, no default primary key will be created. If the table has already been created and the transaction committed, the `ADD` or `ALTER` statements replace the default primary key.
@@ -248,11 +258,7 @@ We also have other resources on indexes:
 
 [Foreign key constraints](foreign-key.html) guarantee a column uses only values that already exist in the column it references, which must be from another table. This constraint enforces referential integrity between the two tables.
 
-There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the two most important are:
-
-- Foreign key columns must be [indexed](indexes.html). If no index is defined in the `CREATE TABLE` statement using `INDEX`, `PRIMARY KEY`, or `UNIQUE`, a secondary index is automatically created on the foreign key columns.
-
-- Referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
+There are a [number of rules](foreign-key.html#rules-for-creating-foreign-keys) that govern foreign keys, but the most important rule is that referenced columns must contain only unique values. This means the `REFERENCES` clause must use exactly the same columns as a [primary key](primary-key.html) or [unique](unique.html) constraint.
 
 You can include a [foreign key action](foreign-key.html#foreign-key-actions) to specify what happens when a column referenced by a foreign key constraint is updated or deleted. The default actions are `ON UPDATE NO ACTION` and `ON DELETE NO ACTION`.
 

@@ -7,8 +7,13 @@ toc_not_nested: true
 
 Interleaving tables improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same [key-value range](frequently-asked-questions.html#how-does-cockroachdb-scale) if it's likely to be read and written together.
 
-{{site.data.alerts.callout_info}}Interleaving tables does not affect their behavior within SQL.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+Interleaving tables does not affect their behavior within SQL.
+{{site.data.alerts.end}}
 
+{{site.data.alerts.callout_danger}}
+Interleaved tables will be deprecated in a future release. After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables-to-non-interleaved-tables) and replace any existing interleaved secondary indexes with non-interleaved indexes. We do not recommend interleaving tables in new clusters.
+{{site.data.alerts.end}}
 
 ## How interleaved tables work
 
@@ -99,8 +104,12 @@ For an example showing how to create tables that meet these criteria, see [Inter
  Parameter | Description
 -----------|-------------
  `CREATE TABLE ...` | For help with this section of the syntax, [`CREATE TABLE`](create-table.html).
+ `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
  `INTERLEAVE IN PARENT table_name` | The name of the parent table you want to interleave the new child table into.
  `name_list` | A comma-separated list of columns from the child table's Primary Key that represent the parent table's Primary Key (i.e., the interleave prefix).
+ `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+ `WITH storage_parameter` | <span class="version-tag">New in v20.2:</span> A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
+ `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
 ## Requirements
 
@@ -114,7 +123,7 @@ For an example showing how to create tables that meet these criteria, see [Inter
 
 - Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
 
-- You cannot interleave a [hash-sharded index]((indexes.html#hash-sharded-indexes).
+- You cannot interleave a [hash-sharded index](indexes.html#hash-sharded-indexes).
 
 ## Recommendations
 
@@ -123,6 +132,14 @@ For an example showing how to create tables that meet these criteria, see [Inter
 - To enforce the relationship between the parent and children table's Primary Keys, use [Foreign Key constraints](foreign-key.html) on the child table.
 
 - In cases where you're uncertain if interleaving tables will improve your queries' performance, test how tables perform under load when they're interleaved and when they aren't.
+
+## Convert interleaved tables to non-interleaved tables
+
+Interleaved tables will be deprecated in a future release. After upgrading to v20.2, we recommend that you convert any existing interleaved tables to non-interleaved tables.
+
+To convert an interleaved table to a non-interleaved table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause. Note that an `ALTER PRIMARY KEY` statement can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
+
+Interleaved [secondary indexes](indexes.html) cannot be converted to non-interleaved indexes. You must [drop the existing index](drop-index.html), and then [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
 
 ## Examples
 

@@ -618,9 +618,9 @@ code {
   border-radius: 4px;
 }
 
-a code {
+/* a code {
   color: #54B30E;
-}
+} */
 
 /* pre {
   display: block;
@@ -3672,9 +3672,9 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar {
   position: relative;
   z-index: 1000;
-  min-height: 50px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
+  /* min-height: 50px; */
+  /* margin-bottom: 20px; */
+  /* border: 1px solid transparent; */
 }
 .navbar:before,
 .navbar:after {
@@ -3777,8 +3777,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
     box-shadow: none;
   }
   .navbar-collapse.collapse {
-    display: block !important;
-    height: auto !important;
+    /* display: block !important; */
+    /* height: auto !important; */
     padding-bottom: 0;
     overflow: visible !important;
   }
@@ -3877,7 +3877,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-nav {
-  margin: 7.5px -15px;
+  /* margin: 7.5px -15px; */
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -3908,15 +3908,15 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 @media (min-width: 768px) {
   .navbar-nav {
-    float: left;
-    margin: 0;
+    /* float: left; */
+    /* margin: 0; */
   }
   .navbar-nav > li {
-    float: left;
+    /* float: left; */
   }
   .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    /* padding-top: 15px; */
+    /* padding-bottom: 15px; */
   }
 }
 @media (min-width: 768px) {

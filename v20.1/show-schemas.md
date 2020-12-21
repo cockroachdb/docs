@@ -4,11 +4,11 @@ summary: The SHOW SCHEMAS statement lists the schemas in a database.
 toc: true
 ---
 
-The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#logical-schemas-and-namespaces) in a database.
+The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name-resolution.html#naming-hierarchy) in a database.
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to list the schemas in a database.
+The `SELECT` [privilege](authorization.html#assign-privileges) on the database is required to list the schemas in a database.
 
 ## Synopsis
 
@@ -20,7 +20,7 @@ No [privileges](authorization.html#assign-privileges) are required to list the s
 
 Parameter | Description
 ----------|------------
-`name` | The name of the database for which to show [schemas](sql-name-resolution.html#logical-schemas-and-namespaces). When omitted, the schemas in the [current database](sql-name-resolution.html#current-database) are listed.
+`name` | The name of the database for which to show [schemas](sql-name-resolution.html#naming-hierarchy). When omitted, the schemas in the [current database](sql-name-resolution.html#current-database) are listed.
 
 ## Example
 

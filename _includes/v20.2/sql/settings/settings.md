@@ -29,6 +29,8 @@
 <tr><td><code>kv.snapshot_recovery.max_rate</code></td><td>byte size</td><td><code>8.0 MiB</code></td><td>the rate limit (bytes/sec) to use for recovery snapshots</td></tr>
 <tr><td><code>kv.transaction.max_intents_bytes</code></td><td>integer</td><td><code>262144</code></td><td>maximum number of bytes used to track locks in transactions</td></tr>
 <tr><td><code>kv.transaction.max_refresh_spans_bytes</code></td><td>integer</td><td><code>256000</code></td><td>maximum number of bytes used to track refresh spans in serializable transactions</td></tr>
+<tr><td><code>security.ocsp.mode</code></td><td>enumeration</td><td><code>off</code></td><td>use OCSP to check whether TLS certificates are revoked. If the OCSP<br/>server is unreachable, in strict mode all certificates will be rejected<br/>and in lax mode all certificates will be accepted. [off = 0, lax = 1, strict = 2]</td></tr>
+<tr><td><code>security.ocsp.timeout</code></td><td>duration</td><td><code>3s</code></td><td>timeout before considering the OCSP server unreachable</td></tr>
 <tr><td><code>server.auth_log.sql_connections.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, log SQL client connect and disconnect events (note: may hinder performance on loaded nodes)</td></tr>
 <tr><td><code>server.auth_log.sql_sessions.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if set, log SQL session login/disconnection events (note: may hinder performance on loaded nodes)</td></tr>
 <tr><td><code>server.clock.forward_jump_check_enabled</code></td><td>boolean</td><td><code>false</code></td><td>if enabled, forward clock jumps > max_offset/2 will cause a panic</td></tr>
@@ -36,6 +38,15 @@
 <tr><td><code>server.consistency_check.max_rate</code></td><td>byte size</td><td><code>8.0 MiB</code></td><td>the rate limit (bytes/sec) to use for consistency checks; used in conjunction with server.consistency_check.interval to control the frequency of consistency checks. Note that setting this too high can negatively impact performance.</td></tr>
 <tr><td><code>server.eventlog.ttl</code></td><td>duration</td><td><code>2160h0m0s</code></td><td>if nonzero, event log entries older than this duration are deleted every 10m0s. Should not be lowered below 24 hours.</td></tr>
 <tr><td><code>server.host_based_authentication.configuration</code></td><td>string</td><td><code></code></td><td>host-based authentication configuration to use during connection authentication</td></tr>
+<tr><td><code>server.oidc_authentication.button_text</code></td><td>string</td><td><code>Login with your OIDC provider</code></td><td>text to show on button on admin ui login page to login with your OIDC provider (only shown if OIDC is enabled) (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.claim_json_key</code></td><td>string</td><td><code></code></td><td>sets JSON key of principal to extract from payload after OIDC authentication completes (usually email or sid) (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.client_id</code></td><td>string</td><td><code></code></td><td>sets OIDC client id (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.client_secret</code></td><td>string</td><td><code></code></td><td>sets OIDC client secret (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.enabled</code></td><td>boolean</td><td><code>false</code></td><td>enables or disabled OIDC login for the Admin UI (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.principal_regex</code></td><td>string</td><td><code>(.+)</code></td><td>regular expression to apply to extracted principal (see claim_json_key setting) to translate to SQL user (golang regex format, must include 1 grouping to extract) (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.provider_url</code></td><td>string</td><td><code></code></td><td>sets OIDC provider URL ({provider_url}/.well-known/openid-configuration must resolve) (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.redirect_url</code></td><td>string</td><td><code>https://localhost:8080/oidc/v1/callback</code></td><td>sets OIDC redirect URL (base HTTP URL, likely your load balancer, must route to the path /oidc/v1/callback) (this feature is experimental)</td></tr>
+<tr><td><code>server.oidc_authentication.scopes</code></td><td>string</td><td><code>openid</code></td><td>sets OIDC scopes to include with authentication request (space delimited list of strings, required to start with `openid`) (this feature is experimental)</td></tr>
 <tr><td><code>server.rangelog.ttl</code></td><td>duration</td><td><code>720h0m0s</code></td><td>if nonzero, range log entries older than this duration are deleted every 10m0s. Should not be lowered below 24 hours.</td></tr>
 <tr><td><code>server.remote_debugging.mode</code></td><td>string</td><td><code>local</code></td><td>set to enable remote debugging, localhost-only or disable (any, local, off)</td></tr>
 <tr><td><code>server.shutdown.drain_wait</code></td><td>duration</td><td><code>0s</code></td><td>the amount of time a server waits in an unready state before proceeding with the rest of the shutdown process</td></tr>
@@ -44,10 +55,16 @@
 <tr><td><code>server.time_until_store_dead</code></td><td>duration</td><td><code>5m0s</code></td><td>the time after which if there is no new gossiped information about a store, it is considered dead</td></tr>
 <tr><td><code>server.user_login.timeout</code></td><td>duration</td><td><code>10s</code></td><td>timeout after which client authentication times out if some system range is unavailable (0 = no timeout)</td></tr>
 <tr><td><code>server.web_session_timeout</code></td><td>duration</td><td><code>168h0m0s</code></td><td>the duration that a newly created web session will be valid</td></tr>
+<tr><td><code>sql.cross_db_fks.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if true, creating foreign key references across databases is allowed</td></tr>
+<tr><td><code>sql.cross_db_sequence_owners.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if true, creating sequences owned by tables from other databases is allowed</td></tr>
+<tr><td><code>sql.cross_db_views.enabled</code></td><td>boolean</td><td><code>false</code></td><td>if true, creating views that refer to other databases is allowed</td></tr>
 <tr><td><code>sql.defaults.default_int_size</code></td><td>integer</td><td><code>8</code></td><td>the size, in bytes, of an INT type</td></tr>
+<tr><td><code>sql.defaults.disallow_full_table_scans.enabled</code></td><td>boolean</td><td><code>false</code></td><td>setting to true rejects queries that have planned a full table scan</td></tr>
 <tr><td><code>sql.defaults.results_buffer.size</code></td><td>byte size</td><td><code>16 KiB</code></td><td>default size of the buffer that accumulates results for a statement or a batch of statements before they are sent to the client. This can be overridden on an individual connection with the 'results_buffer_size' parameter. Note that auto-retries generally only happen while no results have been delivered to the client, so reducing this size can increase the number of retriable errors a client receives. On the other hand, increasing the buffer size can increase the delay until the client receives the first result row. Updating the setting only affects new connections. Setting to 0 disables any buffering.</td></tr>
 <tr><td><code>sql.defaults.serial_normalization</code></td><td>enumeration</td><td><code>rowid</code></td><td>default handling of SERIAL in table definitions [rowid = 0, virtual_sequence = 1, sql_sequence = 2]</td></tr>
 <tr><td><code>sql.distsql.max_running_flows</code></td><td>integer</td><td><code>500</code></td><td>maximum number of concurrent flows that can be run on a node</td></tr>
+<tr><td><code>sql.log.slow_query.experimental_full_table_scans.enabled</code></td><td>boolean</td><td><code>false</code></td><td>when set to true, statements that perform a full table/index scan will be logged to the slow query log even if they do not meet the latency threshold. Must have the slow query log enabled for this setting to have any effect.</td></tr>
+<tr><td><code>sql.log.slow_query.internal_queries.enabled</code></td><td>boolean</td><td><code>false</code></td><td>when set to true, internal queries which exceed the slow query log threshold are logged to a separate log. Must have the slow query log enabled for this setting to have any effect.</td></tr>
 <tr><td><code>sql.log.slow_query.latency_threshold</code></td><td>duration</td><td><code>0s</code></td><td>when set to non-zero, log statements whose service latency exceeds the threshold to a secondary logger on each node</td></tr>
 <tr><td><code>sql.metrics.statement_details.dump_to_logs</code></td><td>boolean</td><td><code>false</code></td><td>dump collected statement statistics to node logs when periodically cleared</td></tr>
 <tr><td><code>sql.metrics.statement_details.enabled</code></td><td>boolean</td><td><code>true</code></td><td>collect per-statement query statistics</td></tr>
@@ -56,6 +73,7 @@
 <tr><td><code>sql.metrics.statement_details.threshold</code></td><td>duration</td><td><code>0s</code></td><td>minimum execution time to cause statistics to be collected</td></tr>
 <tr><td><code>sql.metrics.transaction_details.enabled</code></td><td>boolean</td><td><code>true</code></td><td>collect per-application transaction statistics</td></tr>
 <tr><td><code>sql.notices.enabled</code></td><td>boolean</td><td><code>true</code></td><td>enable notices in the server/client protocol being sent</td></tr>
+<tr><td><code>sql.spatial.experimental_box2d_comparison_operators.enabled</code></td><td>boolean</td><td><code>false</code></td><td>enables the use of certain experimental box2d comparison operators</td></tr>
 <tr><td><code>sql.stats.automatic_collection.enabled</code></td><td>boolean</td><td><code>true</code></td><td>automatic statistics collection mode</td></tr>
 <tr><td><code>sql.stats.automatic_collection.fraction_stale_rows</code></td><td>float</td><td><code>0.2</code></td><td>target fraction of stale rows per table that will trigger a statistics refresh</td></tr>
 <tr><td><code>sql.stats.automatic_collection.min_stale_rows</code></td><td>integer</td><td><code>500</code></td><td>target minimum number of stale rows per table that will trigger a statistics refresh</td></tr>
@@ -72,6 +90,6 @@
 <tr><td><code>trace.debug.enable</code></td><td>boolean</td><td><code>false</code></td><td>if set, traces for recent requests can be seen in the /debug page</td></tr>
 <tr><td><code>trace.lightstep.token</code></td><td>string</td><td><code></code></td><td>if set, traces go to Lightstep using this token</td></tr>
 <tr><td><code>trace.zipkin.collector</code></td><td>string</td><td><code></code></td><td>if set, traces go to the given Zipkin instance (example: '127.0.0.1:9411'); ignored if trace.lightstep.token is set</td></tr>
-<tr><td><code>version</code></td><td>custom validation</td><td><code>20.1-13</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
+<tr><td><code>version</code></td><td>custom validation</td><td><code>20.2</code></td><td>set the active cluster version in the format '<major>.<minor>'</td></tr>
 </tbody>
 </table>

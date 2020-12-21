@@ -2,7 +2,6 @@
 title: Migrate from MySQL
 summary: Learn how to migrate data from MySQL into a CockroachDB cluster.
 toc: true
-build_for: [cockroachdb, cockroachcloud]
 ---
 
 This page has instructions for migrating data from MySQL to CockroachDB using [`IMPORT`](import.html)'s support for reading [`mysqldump`][mysqldump] files.
@@ -20,6 +19,31 @@ In addition to the general considerations listed in the [Migration Overview](mig
 MySQL strings are case-insensitive by default, but strings in CockroachDB are case-sensitive.  This means that you may need to edit your MySQL dump file to get the results you expect from CockroachDB.  For example, you may have been doing string comparisons in MySQL that will need to be changed to work with CockroachDB.
 
 For more information about the case sensitivity of strings in MySQL, see [Case Sensitivity in String Searches](https://dev.mysql.com/doc/refman/8.0/en/case-sensitivity.html) from the MySQL documentation.  For more information about CockroachDB strings, see [`STRING`](string.html).
+
+### `FIELD` function
+
+The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use the [`array_position`](functions-and-operators.html#array-functions) function, which returns the index of the first occurrence of element in the array.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT array_position(ARRAY[4,1,3,2],1);
+~~~
+
+~~~
+  array_position
+------------------
+               2
+(1 row)
+~~~
+
+While MYSQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](functions-and-operators.html#conditional-and-function-like-operators) operator.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
+~~~
 
 ## Step 1. Dump the MySQL database
 
@@ -98,7 +122,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
+> IMPORT TABLE employees FROM MYSQLDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/mysqldump/employees.sql.gz';
 ~~~
 
 ~~~

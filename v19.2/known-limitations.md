@@ -8,6 +8,35 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+### Collation names that include upper-case or hyphens may cause errors
+
+Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
+
+For example, the following SQL will result in an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE nocase_strings (s STRING COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO nocase_strings VALUES ('Aaa' COLLATE "en-US-u-ks-level2"), ('Bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT s FROM nocase_strings WHERE s = ('bbb' COLLATE "en-US-u-ks-level2");
+~~~
+
+~~~
+ERROR: internal error: "$0" = 'bbb' COLLATE en_us_u_ks_level2: unsupported comparison operator: <collatedstring{en-US-u-ks-level2}> = <collatedstring{en_us_u_ks_level2}>
+~~~
+
+As a workaround, only use collation names that have lower-case letters and underscores.
+
+[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/56335)
+
 ### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
 
 CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
@@ -149,12 +178,6 @@ Make sure to do this across all nodes in the cluster and to keep this time zone 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32415)
 
-### Database and table renames are not transactional
-
-Database and table renames using [`RENAME DATABASE`](rename-database.html) and [`RENAME TABLE`](rename-table.html) are not transactional.
-
-Specifically, when run inside a [`BEGIN`](begin-transaction.html) ... [`COMMIT`](commit-transaction.html) block, it’s possible for a rename to be half-done - not persisted in storage, but visible to other nodes or other transactions. For more information, see [Table renaming considerations](rename-table.html#table-renaming-considerations). For an issue tracking this limitation, see [cockroach#12123](https://github.com/cockroachdb/cockroach/issues/12123).
-
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
@@ -209,25 +232,11 @@ When CockroachDB is run in a containerized environment (e.g., Kubernetes), the A
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
 
-### `GROUP BY` referring to `SELECT` aliases
-
-Applications developed for PostgreSQL that use `GROUP BY` to refer to column aliases _produced_ in the same `SELECT` clause must be changed to use the full underlying expression instead. For example, `SELECT x+y AS z ... GROUP BY z` must be changed to `SELECT x+y AS z ... GROUP BY x+y`. Otherwise, CockroachDB will produce either a planning error or, in some cases, invalid results.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28059)
-
 ### `TRUNCATE` does not behave like `DELETE`
 
 `TRUNCATE` is not a DML statement, but instead works as a DDL statement. Its limitations are the same as other DDL statements, which are outlined in [Online Schema Changes: Limitations](online-schema-changes.html#limitations)
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/27953)
-
-### Using columns in `SELECT` not listed in `GROUP BY`
-
-Applications developed for PostgreSQL can exploit the fact that PostgreSQL allows a `SELECT` clause to name a column that is not also listed in `GROUP BY` in some cases, for example `SELECT a GROUP BY b`. This is not yet supported by CockroachDB.
-
-To work around this limitation, and depending on expected results, the rendered columns should be either added at the end of the `GROUP BY` list (e.g., `SELECT a GROUP BY b, a`), or `DISTINCT` should also be used (e.g., `SELECT DISTINCT a GROUP BY b`).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/26709)
 
 ### Cannot `DELETE` multiple rows with self-referencing FKs
 

@@ -6,7 +6,7 @@ redirect_from:
 - ../stable/cockroachcloud-console-access-management.html
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in to the Console](create-your-account.html#log-in) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
 
 ## Organization
 
@@ -14,7 +14,7 @@ An **Organization** allows you to manage your clusters under a shared [billing](
 
 To switch between the organizations:
 
-1. [Log in to the Console](create-your-account.html#log-in).
+1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
 ## Roles
@@ -55,7 +55,7 @@ As a Console Admin, you can invite Team Members to CockroachCloud. To invite Tea
 As a Console Admin, you can change Team Members' roles, delete Team Members, and revoke pending invites.
 
 {{site.data.alerts.callout_info}}
-If you are a member of multiple [organizations](create-your-account.html#create-your-cockroachcloud-account), make sure you are looking at the same Organization as the Team Member you want to manage. You can navigate to the correct Organization by using the drop-down box in the top-right corner.
+If you are a member of multiple [organizations](console-access-management.html#organization), make sure you are looking at the same Organization as the Team Member you want to manage. You can navigate to the correct Organization by using the drop-down box in the top-right corner.
 {{site.data.alerts.end}}
 
 #### Change a Team Member's role
@@ -101,7 +101,7 @@ As a Console Admin, you can set up and manage billing for the Organization.
 
 #### Check trial code details
 
-If you had used a CockroachCloud trial code while [creating a cluster](create-your-cluster.html#step-6-enter-your-billing-details), you can check the trial expiration details on the **Billing page**.
+If you had used a CockroachCloud trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Billing page**.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends. You can check the expiration date of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.

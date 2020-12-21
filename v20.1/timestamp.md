@@ -76,10 +76,6 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
 
-{{site.data.alerts.callout_info}}
-If you downgrade to a version of CockroachDB that does not support precision for `TIMESTAMP`/`TIMESTAMPTZ` values, all `TIMESTAMP`/`TIMESTAMPTZ` values previously specified with precision will be stored with full precision.
-{{site.data.alerts.end}}
-
 ## Examples
 
 ### Create a table with a `TIMESTAMPTZ`-typed column
@@ -234,6 +230,14 @@ Type | Details
 `INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
 `DATE` | --
 `STRING` | --
+
+### Infinity `TIMESTAMP` casts
+
+CockroachDB currently does not support an `infinity`/`-infinity` representation for `TIMESTAMP` casts. Instead, `infinity::TIMESTAMP` evaluates to `294276-12-31 23:59:59.999999+00:00`, the maximum `TIMESTAMP` value supported by PostgreSQL, and `-infinity::TIMESTAMP` evaluates to `-4713-11-24 00:00:00+00:00`, the minimum `TIMESTAMP` value supported by PostgreSQL.
+
+Note that this behavior differs from PostgreSQL, for which `infinity` is higher than any allowable `TIMESTAMP` value (including `294276-12-31 23:59:59.999999+00:00`), and `-infinity` is lower than any allowable `TIMESTAMP` value (including `-4713-11-24 00:00:00+00:00`).
+
+For more details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/41564).
 
 ## See also
 

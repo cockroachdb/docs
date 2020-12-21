@@ -6,7 +6,7 @@ redirect_from:
 - ../stable/cockroachcloud-create-your-cluster.html
 ---
 
-This page walks you through the process of creating a CockroachCloud cluster.
+This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart](quickstart.html).
@@ -14,13 +14,13 @@ To create and connect to a 30-day free CockroachCloud cluster and run your first
 
 ## Before you begin
 
-- Before creating a cluster, check that you have the correct [organization](create-your-account.html) selected. Click the drop down in the top right corner to select a specific organization.
-- Only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
-## Step 1. Access the Create new cluster page
+## Step 1. Start the cluster creation process
 
-1. [Log in](create-your-account.html#log-in) to your CockroachCloud account.
-2. On the **Overview** page, click **Create Cluster**.
+1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+3. On the **Overview** page, click **Create Cluster**. If there are multiple organization in your account,
 
 ##Step 2. Select the cloud provider
 
@@ -28,9 +28,7 @@ On the **Create new cluster** page, select either **Google Cloud** or **AWS** as
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
-## Step 3. Select the region and number of nodes
-
-### Select the region
+## Step 3. Select the region
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
@@ -45,7 +43,7 @@ Some regions in GCP and AWS might not be displayed in the **Regions** list. We r
 - `europe-west3`
 - `europe-west6`
 
-### Select the number of nodes
+## Step 4. Select the number of nodes
 
 - For single-region application development and testing, you may create a one-node cluster.
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
@@ -57,7 +55,7 @@ You cannot create a 2-node cluster because 2-replica configurations are less rel
 
 As of now, you can add a maximum of 24 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
-## Step 4. Select the hardware configuration
+## Step 5. Select the hardware per node
 
 The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. To select the hardware configuration, consider the following factors:
 
@@ -73,13 +71,32 @@ To change the hardware configuration after the cluster is created, you will have
 
 See [Example](#example) for further guidance.
 
-## Step 5. Name the cluster
+## Step 6. Name the cluster
 
 The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
 
-After entering the cluster name, click **Next**.
+Click **Next**. Optionally, you can enable VPC peering for your cluster.
 
-## Step 6. Enter your billing details
+## Step 7. Enable VPC peering (optional)
+
+{{site.data.alerts.callout_info}}
+Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+{{site.data.alerts.end}}
+
+You can use [VPC peering](network-authorization.html#vpc-peering) to connect your application to the CockroachCloud cluster. To enable VPC peering:
+
+1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
+2. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
+      -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
+      - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
+
+        Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
+
+        To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
+
+3. Click **Next**.
+
+## Step 8. Enter billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
 2. Verify the hourly estimated cost for the cluster.
@@ -88,7 +105,7 @@ After entering the cluster name, click **Next**.
     {{site.data.alerts.end}}
     You will be billed on the 1st and 15th of every month.
 3. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
-4. If you haven't used it yet, enter the code `CRDB30` in the **Trial code** box for a 30-day trial of CockroachCloud and click **Apply**.
+4. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
       {{site.data.alerts.end}}

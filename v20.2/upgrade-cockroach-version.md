@@ -28,7 +28,7 @@ Make sure your cluster is behind a [load balancer](recommended-production-settin
 
 ### Check cluster health
 
-Verify the overall health of your cluster using the [Admin UI](admin-ui-overview.html). On the **Cluster Overview**:
+Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
 
   - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](remove-nodes.html) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
 
@@ -40,13 +40,21 @@ Verify the overall health of your cluster using the [Admin UI](admin-ui-overview
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v20.2](../releases/v20.2.0-alpha.1.html#backward-incompatible-changes), and if any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v20.2.0.html#deprecations). If any affect your application, make the necessary changes.
 
-### Let ongoing bulk operations finish
+### Check ongoing jobs
 
 Make sure there are no [bulk imports](import.html) or [schema changes](online-schema-changes.html) in progress. These are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
 
-To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
+In addition, make sure there are fewer than 100 jobs of all types, including backups, in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`). Otherwise, v20.2 nodes will hang and never successfully start. Note that this will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](known-limitations.html#upgrading-to-v20-2-with-100-or-more-non-terminal-jobs).
+
+To check for ongoing jobs, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](ui-jobs-page.html) in the DB Console.
+
+{{site.data.alerts.callout_danger}}
+If there are any ongoing schema changes that were started when the cluster was running v19.2 or earlier and that have not reached a terminal state (`succeeded`, `failed`, or `canceled`) after the upgrade to v20.1, wait for them to finish running before upgrading to v20.2. Otherwise, they will be marked as `failed` during the upgrade to v20.2.
+
+Also, schema changes that have not reached a terminal state due to bugs in prior versions will be marked as `failed` during the upgrade to v20.2.
+{{site.data.alerts.end}}
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -64,14 +72,30 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.2';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.1';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
 
 ### Features that require upgrade finalization
 
-This information is TBD pending further development of CockroachDB v20.2.
+When upgrading from v20.1 to v20.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
+
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+
+- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
+
+- **Altering column data types:** After finalization, it will be possible to [alter column data types](../v20.2/alter-column.html#altering-column-data-types) where column data must be rewritten.
+
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../v20.2/create-schema.html), as well [alter user-defined schemas](../v20.2/alter-schema.html), [drop user-defined schemas](../v20.2/drop-schema.html), [set the schema for a database object](../v20.2/set-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html). For details on migrating a cluster that does not use user-defined schemas in its naming hierarchy, see [Migrating namespaces from previous versions of CockroachDB](sql-name-resolution.html#migrating-namespaces-from-previous-versions-of-cockroachdb).
+
+- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foreign-key.html) constraint.
+
+- **Minimum password length:** After finalization, it will be possible to use the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) to set a minimum length for passwords.
+
+- **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
+
+- **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
 
 ## Step 4. Perform the rolling upgrade
 
@@ -80,9 +104,9 @@ For each node in your cluster, complete the following steps. Be sure to upgrade 
 {{site.data.alerts.callout_success}}
 We recommend creating scripts to perform these steps instead of performing them manually. Also, if you are running CockroachDB on Kubernetes, see our documentation on [single-cluster](orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster) and/or [multi-cluster](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster) orchestrated deployments for upgrade guidance instead.
 {{site.data.alerts.end}}
-  
+
 1. Drain and stop the node using one of the following methods:
-    
+
     {% include {{ page.version.version }}/prod-deployment/node-shutdown.md %}
 
     Verify that the process has stopped:
@@ -160,6 +184,10 @@ We recommend creating scripts to perform these steps instead of performing them 
 
 1. Start the node to have it rejoin the cluster.
 
+    {{site.data.alerts.callout_danger}}
+    For maximum availability, do not wait more than a few minutes before restarting the node with the new binary. See [this open issue](https://github.com/cockroachdb/cockroach/issues/37906) for context.
+    {{site.data.alerts.end}}
+
     Without a process manager like `systemd`, re-run the [`cockroach start`](cockroach-start.html) command that you used to start the node initially, for example:
 
     {% include copy-clipboard.html %}
@@ -177,11 +205,7 @@ We recommend creating scripts to perform these steps instead of performing them 
     $ systemctl start <systemd config filename>
     ~~~
 
-1. Verify the node has rejoined the cluster through its output to `stdout` or through the [Admin UI](admin-ui-overview.html).
-
-    {{site.data.alerts.callout_info}}
-    To access the Admin UI for a secure cluster, [create a user with a password](create-user.html#create-a-user-with-a-password). Then open a browser and go to `https://<any node's external IP address>:8080`. On accessing the Admin UI, you will see a Login screen, where you will need to enter your username and password.
-    {{site.data.alerts.end}}
+1. Verify the node has rejoined the cluster through its output to [`stdout`](cockroach-start.html#standard-output) or through the [DB Console](ui-cluster-overview-page.html#node-status).
 
 1. If you use `cockroach` in your `$PATH`, you can remove the old binary:
 
@@ -192,7 +216,18 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     If you leave versioned binaries on your servers, you do not need to do anything.
 
-1. Wait at least one minute after the node has rejoined the cluster, and then repeat these steps for the next node.
+1. After the node has rejoined the cluster, ensure that the node is ready to accept a SQL connection.
+
+    Unless there are tens of thousands of ranges on the node, it's usually sufficient to wait one minute. To be certain that the node is ready, run the following command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql -e 'select 1'
+    ~~~
+
+    The command will automatically wait to complete until the node is ready.
+
+1. Repeat these steps for the next node.
 
 ## Step 5. Finish the upgrade
 

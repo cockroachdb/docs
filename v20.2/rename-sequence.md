@@ -6,10 +6,17 @@ toc: true
 
 The `RENAME TO` [statement](sql-statements.html) is part of [`ALTER SEQUENCE`](alter-sequence.html), and changes the name of a sequence.
 
-{{site.data.alerts.callout_danger}}You cannot rename a sequence that's being used in a table. To rename the sequence, <a href="alter-column.html#remove-default-constraint">drop the <code>DEFAULT</code> expressions</a> that reference the sequence, rename the sequence, and <a href="alter-column.html#set-or-change-a-default-value">add the <code>DEFAULT</code> expressions</a> back.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}
+You cannot rename a sequence that's being used in a table. To rename the sequence, <a href="alter-column.html#remove-default-constraint">drop the <code>DEFAULT</code> expressions</a> that reference the sequence, rename the sequence, and <a href="alter-column.html#set-or-change-a-default-value">add the <code>DEFAULT</code> expressions</a> back.
+{{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}To understand how CockroachDB changes schema elements without requiring table locking or other user-visible downtime, see <a href="https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb/">Online Schema Changes in CockroachDB</a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+`ALTER SEQUENCE ... RENAME TO` can be used to move a sequence from one database to another, but it cannot be used to move a sequence from one schema to another. To change a sequence's schema, use [`SET SCHEMA`](set-schema.html).
 
+Note that, in a future release, `ALTER SEQUENCE ... RENAME TO` will be limited to changing the name of a sequence, and will not have to the ability to change a sequence's database.
+{{site.data.alerts.end}}
+
+{% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
 ## Required privileges
 
@@ -37,88 +44,89 @@ table td:first-child {
 
 ### Rename a Sequence
 
-In this example, we will change the name of sequence `customer_seq` to `customer_number`.
+In this example, we will change the name of sequence.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences;
-~~~
-~~~
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| sequence_catalog | sequence_schema |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| def              | db_2            | test_4             | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-| def              | test_db         | customer_seq       | INT       |                64 |                       2 |             0 |         101 |                    1 | 9223372036854775807 |         2 | NO           |
-| def              | test_db         | desc_customer_list | INT       |                64 |                       2 |             0 |        1000 | -9223372036854775808 |                  -1 |        -2 | NO           |
-| def              | test_db         | test_sequence3     | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-(4 rows)
+> CREATE SEQUENCE even_numbers INCREMENT 2 START 2;
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER SEQUENCE test_db.customer_seq RENAME TO test_db.customer_number;
+> SHOW SEQUENCES;
 ~~~
+
 ~~~
-RENAME SEQUENCE
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | even_numbers
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences;
+> ALTER SEQUENCE even_numbers RENAME TO even_sequence;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SEQUENCES;
 ~~~
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| sequence_catalog | sequence_schema |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| def              | db_2            | test_4             | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-| def              | test_db         | customer_number    | INT       |                64 |                       2 |             0 |         101 |                    1 | 9223372036854775807 |         2 | NO           |
-| def              | test_db         | desc_customer_list | INT       |                64 |                       2 |             0 |        1000 | -9223372036854775808 |                  -1 |        -2 | NO           |
-| def              | test_db         | test_sequence3     | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-(4 rows)
+
+~~~
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | even_sequence
+(1 row)
 ~~~
 
 ### Move a Sequence
 
-In this example, we will move the sequence we renamed in the first example (`customer_number`) to a different database.
+In this example, we will move the sequence we renamed in the first example (`even_sequence`) from `defaultdb` (i.e., the default database) to a different database.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences;
+> SHOW SEQUENCES FROM defaultdb;
 ~~~
+
 ~~~
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| sequence_catalog | sequence_schema |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| def              | db_2            | test_4             | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-| def              | test_db         | customer_number    | INT       |                64 |                       2 |             0 |         101 |                    1 | 9223372036854775807 |         2 | NO           |
-| def              | test_db         | desc_customer_list | INT       |                64 |                       2 |             0 |        1000 | -9223372036854775808 |                  -1 |        -2 | NO           |
-| def              | test_db         | test_sequence3     | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-(4 rows)
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | even_sequence
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER SEQUENCE test_db.customer_number RENAME TO db_2.customer_number;
+> CREATE DATABASE mydb;
 ~~~
-~~~
-RENAME SEQUENCE
-~~~
+
+{% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM information_schema.sequences;
+> ALTER SEQUENCE even_sequence RENAME TO newdb.even_sequence;
 ~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SEQUENCES FROM defaultdb;
 ~~~
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| sequence_catalog | sequence_schema |   sequence_name    | data_type | numeric_precision | numeric_precision_radix | numeric_scale | start_value |    minimum_value     |    maximum_value    | increment | cycle_option |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-| def              | db_2            | test_4             | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-| def              | db_2            | customer_number    | INT       |                64 |                       2 |             0 |         101 |                    1 | 9223372036854775807 |         2 | NO           |
-| def              | test_db         | desc_customer_list | INT       |                64 |                       2 |             0 |        1000 | -9223372036854775808 |                  -1 |        -2 | NO           |
-| def              | test_db         | test_sequence3     | INT       |                64 |                       2 |             0 |           1 |                    1 | 9223372036854775807 |         1 | NO           |
-+------------------+-----------------+--------------------+-----------+-------------------+-------------------------+---------------+-------------+----------------------+---------------------+-----------+--------------+
-(4 rows)
+
+~~~
+  sequence_schema | sequence_name
+------------------+----------------
+(0 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SEQUENCES FROM mydb;
+~~~
+
+~~~
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | even_sequence
+(1 row)
 ~~~
 
 ## See also

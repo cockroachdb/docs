@@ -7,7 +7,7 @@ toc: true
 In a multi-region deployment, the duplicate indexes pattern is a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be much higher.
-- Reads must be up-to-date for business reasons or because the table is reference by [foreign keys](foreign-key.html).
+- Reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](foreign-key.html).
 - Rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies.
 - Table data must remain available during a region failure.
 

@@ -23,28 +23,16 @@ For example, given an `orders` table and a `customers` table, if you create a co
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a [computed column](computed-columns.html).
-- Foreign key columns must be [indexed](indexes.html).
 
-    If you are adding the `FOREIGN KEY` constraint to an existing table, and the columns you want to constraint are not already indexed, use [`CREATE INDEX`](create-index.html) to index them and only then use the [`ADD CONSTRAINT`](add-constraint.html) statement to add the `FOREIGN KEY` constraint to the columns.
-
-    If you are creating a new table, there are a number of ways that you can meet the indexing requirement:
-
-      - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
-      - You can rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
-      - If you add a foreign key constraint to an empty table, and an index on the referencing columns does not already exist, CockroachDB automatically creates one. For an example, see [Add the foreign key constraint with `CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade). It's important to note that if you later remove the `FOREIGN KEY` constraint, this automatically created index _is not_ removed.
-
-    {{site.data.alerts.callout_success}}
-    Using the foreign key columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_info}}
-     You can drop the index on foreign key columns if another index exists on the same columns and fulfills the indexing requirement described above.
-    {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> Foreign key columns do not need to be indexed. In versions < v20.2, an index on referencing foreign key columns is required.
+{{site.data.alerts.end}}
 
 **Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
+- <span class="version-tag">New in v20.2:</span> By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
 - Referenced columns must be [indexed](indexes.html). There are a number of ways to meet this requirement:
 
     - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
@@ -136,6 +124,10 @@ Parameter | Description
 Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
 
 You can improve the performance of some statements that use foreign keys by also using [`INTERLEAVE IN PARENT`](interleave-in-parent.html), but there are tradeoffs. For more information about the performance implications of interleaved tables (as well as the limitations), see the **Interleave tables** section of [Performance best practices](performance-best-practices-overview.html#interleave-tables).
+
+{{site.data.alerts.callout_danger}}
+Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+{{site.data.alerts.end}}
 
 ## Syntax
 

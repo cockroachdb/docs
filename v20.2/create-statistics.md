@@ -7,30 +7,48 @@ Use the `CREATE STATISTICS` [statement](sql-statements.html) to generate table s
 
 Once you [create a table](create-table.html) and load data into it (e.g., [`INSERT`](insert.html), [`IMPORT`](import.html)), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
+<span class="version-tag">New in v20.2:</span> For compatibility with PostgreSQL, CockroachDB supports the `ANALYZE`/`ANALYSE` statement as an alias for `CREATE STATISTICS`. For syntax, [see below](#aliases).
+
 {{site.data.alerts.callout_info}}
 [By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns. As a result, most users don't need to issue `CREATE STATISTICS` statements directly.
 
 <span class="version-tag">New in v20.2:</span> CockroachDB also automatically collects [multi-column statistics](#create-statistics-on-multiple-columns) on columns that prefix each index.
 {{site.data.alerts.end}}
 
-## Synopsis
+## Syntax
 
 <div>
   {% include {{ page.version.version }}/sql/diagrams/create_stats.html %}
 </div>
 
+## Parameters
+
+Parameter | Description
+----------|------------
+`statistics_name` | The name of the set of statistics you are creating.
+`opt_stats_columns`   | The name of the column(s) you want to create statistics for.
+`create_stats_target` | The name of the table you want to create statistics for.
+`opt_as_of_clause`    | Used to create historical stats using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.  For instructions, see [Create statistics as of a given time](#create-statistics-as-of-a-given-time).
+
 ## Required Privileges
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
 
-## Parameters
+## Aliases
 
-| Parameter             | Description                                                                                                                                                                                           |
-|-----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `statistics_name`     | The name of the set of statistics you are creating.                                                                                                                                                   |
-| `opt_stats_columns`   | The name of the column(s) you want to create statistics for.                                                                                                                                          |
-| `create_stats_target` | The name of the table you want to create statistics for.                                                                                                                                              |
-| `opt_as_of_clause`    | Used to create historical stats using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause.  For instructions, see [Create statistics as of a given time](#create-statistics-as-of-a-given-time). |
+<span class="version-tag">New in v20.2:</span> For PostgreSQL compatibility, CockroachDB supports `ANALYZE`/`ANALYSE` as an alias for `CREATE STATISTICS`.
+
+### Alias syntax
+
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/analyze.html %}
+</div>
+
+### Alias parameters
+
+Parameter | Description
+----------|------------
+`analyze_target` | The name of the table for which you want to create statistics.
 
 ## Examples
 

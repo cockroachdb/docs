@@ -4,8 +4,6 @@ summary: A summary of CockroachDB's support for storing and querying spatial dat
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: CockroachDB supports efficiently storing and querying spatial data.
-
 This page contains a glossary of terms common to spatial databases and geographic information systems (GIS). Where possible, we provide links to further information.
 
 {{site.data.alerts.callout_info}}
@@ -26,6 +24,10 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 - _Cartographic projection_: A cartographic projection, or map projection, is the process used to represent 3-dimensional (or higher) data on a 2-dimensional surface. This is usually related to how we might display 3-dimensional shapes represented in a database by the [`GEOGRAPHY` data type](#geography) on the surface of a map, which is a flat plane. For more information, see the GIS Lounge article [What is a Map Projection?](https://www.gislounge.com/map-projection/) by Caitlin Dempsey.
 
+<a name="covering"></a>
+
+- _Covering_: The covering of a shape _A_ is a set of locations (in CockroachDB, [S2 cell IDs](#s2)) that comprise another shape _B_ such that no points of _A_ lie outside of _B_.
+
 <a name="geocoder"></a>
 
 - _Geocoder_: Takes an address or the name of a place, and returns latitude and longitude coordinates. For more information, see [the wikipedia article on Geocoding](https://en.wikipedia.org/wiki/Geocoding).
@@ -36,7 +38,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="srid"></a>
 
-- _SRID_: The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. The most common SRID is 4326, which represents spatial data using latitude and longitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
+- _SRID_: The Spatial Referencing System Identifier (a.k.a. SRID) is used to tell which spatial reference system will be used to interpret each spatial object. A [commonly used SRID is 4326](srid-4326.html), which represents spatial data using longitude and latitude coordinates on the Earth's surface as defined in the [WGS84](#wgs84) standard.
 
 <a name="spatial-reference-system"></a>
 
@@ -59,18 +61,18 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="wkt"></a>
 
-- _WKT_: The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see [Well-known text representation of geometry](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry).
+- _WKT_: The "Well Known Text" data format is a convenient human-readable notation for representing [spatial objects](#spatial-objects). For example a 2-dimensional point object with x- and y-coordinates is represented in WKT as `POINT(123,456)`. This format is defined by the [OGC](#ogc). For more information, see the [Well Known Text](well-known-text.html) documentation.
 
-- _EWKT_: The "Extended Well Known Text" data format is a [PostGIS](#postgis)-specific format that extends [WKT](#wkt). For more information about this format, see [the PostGIS documentation](http://postgis.org/docs/ST_GeomFromEWKT.html).
+- _EWKT_: The "Extended Well Known Text" data format extends [WKT](#wkt) by prepending an [SRID](#srid) to the shape's description.  For more information, see the [Well Known Text](well-known-text.html#ewkt) documentation.
 
 <a name="ewkb"></a>
 
 
 <a name="wkb"></a>
 
-- _WKB_: The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc).
+- _WKB_: The "Well Known Binary" data format is a convenient machine-readable binary representation for [spatial objects](#spatial-objects). For efficiency, an application may choose to use this data format, but humans may prefer to read [WKT](#wkt). This format is defined by the [OGC](#ogc).  For more information, see [Well Known Binary](well-known-binary.html).
 
-- _EWKB_: The "Extended Well Known Binary" data format is a [PostGIS](#postgis)-specific format that extends [WKB](#wkb). For more information about this format, see [the PostGIS documentation](http://postgis.org/docs/ST_GeomFromEWKB.html).
+- _EWKB_: The "Extended Well Known Binary" data format extends [WKB](#wkb) by prepending [SRID](#srid) information to the shape's description.  For more information, see [Well Known Binary](well-known-binary.html#ewkb).
 
 ## Organizations
 
@@ -120,7 +122,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="geojson"></a>
 
-- _GeoJSON_: A format for encoding geometric and geographic data as [JSON](https://www.json.org). For more information, see the GeoJSON specification at <https://geojson.org>.
+- _GeoJSON_: A format for encoding geometric and geographic data as [JSON](https://www.json.org). For more information, see [GeoJSON](geojson.html).
 
 ## Software and Code Libraries
 
@@ -168,6 +170,10 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 - _TIGER_: The "Topographically Integrated Geographic Encoding and Referencing System" released by the [U.S. Census Bureau](https://www.census.gov/programs-surveys/geography/guidance/tiger-data-products-guide.html).
 
+<a name="s2"></a>
+
+- _S2_: The [S2 Geometry Library](http://s2geometry.io) is a C++ code library for performing spherical geometry computations.  It models a sphere using a [quadtree](https://en.wikipedia.org/wiki/Quadtree) "divide the space" approach, and is used by CockroachDB.
+
 ## Spatial objects
 
 This section has information about the representation of geometric and geographic "shapes" according to the [SQL/MM](#sql-mm) standard.
@@ -208,11 +214,16 @@ This section has information about the representation of geometric and geographi
 
 ## See also
 
+- [Spatial Features](spatial-features.html)
 - [Working with Spatial Data](spatial-data.html)
-- [Spatial functions](functions-and-operators.html#geospatial-functions)
-- [Spatial Features Overview](spatial-features.html)
+- [Spatial indexes](spatial-indexes.html)
+- [Spatial functions](functions-and-operators.html#spatial-functions)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
-- [Spatial and GIS Glossary of Terms](spatial-glossary.html)
+- [Well known text](well-known-text.html)
+- [Well known binary](well-known-binary.html)
+- [GeoJSON](geojson.html)
+- [SRID 4326 - longitude and latitude](srid-4326.html)
+- [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)

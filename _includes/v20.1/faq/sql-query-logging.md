@@ -1,19 +1,8 @@
-There are several ways to log SQL queries. The type of logging you use will depend on your requirements.
+There are several ways to log SQL queries. The type of logging to use depends on your requirements and on the purpose of the logs.
 
-- For per-table audit logs, turn on [SQL audit logs](#sql-audit-logs).
-- For system troubleshooting and performance optimization, turn on [cluster-wide execution logs](#cluster-wide-execution-logs) and [slow query logs](#slow-query-logs).
-- For connection troubleshooting, turn on [authentication logs](#authentication-logs).
+- For system troubleshooting and performance optimization, turn on [cluster-wide execution logs](#cluster-wide-execution-logs).
 - For local testing, turn on [per-node execution logs](#per-node-execution-logs).
-
-### SQL audit logs
-
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
-
-SQL audit logging is useful if you want to log all queries that are run against specific tables.
-
-- For a tutorial, see [SQL Audit Logging](sql-audit-logging.html).
-- For SQL reference documentation, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
-- Note that SQL audit logs perform one disk I/O per event and will impact performance.
+- For per-table audit logs for security purposes, turn on [SQL audit logs](#sql-audit-logs).
 
 ### Cluster-wide execution logs
 
@@ -104,7 +93,7 @@ I200219 05:02:18.152863 1037 sql/pgwire/auth.go:327  [n1,client,local,user=root]
 I200219 05:02:18.154168 1036 sql/pgwire/conn.go:216  [n1,client,local,user=root] 20 session terminated; duration: 5.261538ms
 ~~~
 
-For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`. 
+For complete logging of client connections, we recommend enabling both `server.auth_log.sql_connections.enabled` and `server.auth_log.sql_sessions.enabled`.
 
 {{site.data.alerts.callout_info}}
 Be aware that both logs perform one disk I/O per event and will impact performance when enabled.
@@ -149,3 +138,15 @@ Once the logging is enabled, all client-generated SQL queries executed by the no
 ~~~
 I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
 ~~~
+
+### SQL audit logs
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+SQL audit logging is useful if you want to log all queries that are run against specific tables, by specific users.
+
+- For a tutorial, see [SQL Audit Logging](sql-audit-logging.html).
+
+- For reference documentation, see [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html).
+
+Note that enabling SQL audit logs can negatively impact performance. As a result, we recommend using SQL audit logs for security purposes only.

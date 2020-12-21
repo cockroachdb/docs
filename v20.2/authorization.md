@@ -97,9 +97,25 @@ A user or role that is a member of the role by association.
 
 Example: A is a member of C ... is a member of B where "..." is an arbitrary number of memberships.
 
+## Object ownership
+
+<span class="version-tag">New in v20.2</span> All CockroachDB objects (such as databases, tables, schemas, and types) must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
+
+All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner except system objects. System objects without owners have `node` as their owner.
+
+To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
+
+Users that [own objects](authorization.html#privileges) cannot be dropped until the [ownership is transferred to another user](owner-to.html#change-a-databases-owner).
+
 ## Privileges
 
 When a user connects to a database, either via the built-in SQL client or a client driver, CockroachDB checks the user and role's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB gives an error.
+
+### Supported privileges
+
+Roles and users can be granted the following privileges:
+
+{% include {{ page.version.version }}/sql/privileges.md %}
 
 ### Assign privileges
 
@@ -107,7 +123,7 @@ Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.ht
 
 Take the following points into consideration while granting privileges to roles and users:
 
-- When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](grant.html#grant-privileges-on-all-tables-in-a-database)
+- When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed. To grant privileges to a user on all existing tables in a database, see [Grant privileges on all tables in a database](grant.html#grant-privileges-on-all-tables-in-a-database-or-schema)
 
     {{site.data.alerts.callout_info}}
     The user does not get privileges to existing tables in the database.
@@ -117,17 +133,6 @@ Take the following points into consideration while granting privileges to roles 
 - In CockroachDB, privileges are granted to users and roles at the database and table levels. They are not yet supported for other granularities such as columns or rows.
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
-
-You can manage the following privileges for databases and tables:
-
-- `ALL`
-- `CREATE`
-- `DROP`
-- `GRANT`  
-- `SELECT`  
-- `INSERT`  
-- `DELETE`  
-- `UPDATE`  
 
 ## Authorization best practices
 
@@ -189,7 +194,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name |    schema_name     |         table_name         | grantee  | privilege_type  
+      database_name |    schema_name     |         table_name         | grantee  | privilege_type  
     +---------------+--------------------+----------------------------+----------+----------------+
       movr          | crdb_internal      | NULL                       | db_admin | ALL             
       movr          | information_schema | NULL                       | db_admin | ALL             
@@ -222,7 +227,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name | grantee  | privilege_type  
+      database_name | schema_name | table_name | grantee  | privilege_type  
     +---------------+-------------+------------+----------+----------------+
       movr          | public      | vehicles   | app_user | DELETE          
       movr          | public      | vehicles   | app_user | INSERT          
@@ -287,7 +292,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-            username    |  options   | member_of
+        username    |  options   | member_of
     ----------------+------------+------------
       admin         | CREATEROLE | {}
       db_admin_role | NOLOGIN    | {}
@@ -311,7 +316,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name |    schema_name     |    grantee    | privilege_type
+      database_name |    schema_name     |    grantee    | privilege_type
     ----------------+--------------------+---------------+-----------------
       movr          | crdb_internal      | admin         | ALL
       movr          | crdb_internal      | db_admin_role | ALL
@@ -358,7 +363,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-            username    |  options   |    member_of
+        username    |  options   |    member_of
     ----------------+------------+------------------
       admin         | CREATEROLE | {}
       app_user_role | NOLOGIN    | {}
@@ -380,7 +385,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |    grantee    | privilege_type
+      database_name | schema_name | table_name |    grantee    | privilege_type
     ----------------+-------------+------------+---------------+-----------------
       movr          | public      | vehicles   | admin         | ALL
       movr          | public      | vehicles   | app_user_role | DELETE
@@ -427,7 +432,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-              username     |  options   |    member_of
+          username     |  options   |    member_of
     -------------------+------------+------------------
       admin            | CREATEROLE | {}
       app_user_1       |            | {app_user_role}
@@ -453,7 +458,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
     ~~~
-          database_name | schema_name | table_name |     grantee      | privilege_type
+      database_name | schema_name | table_name |     grantee      | privilege_type
     ----------------+-------------+------------+------------------+-----------------
       movr          | public      | vehicles   | admin            | ALL
       movr          | public      | vehicles   | app_user_role    | DELETE

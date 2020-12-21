@@ -21,6 +21,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 - The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
 - A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
+- CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](query-order.html) `JSONB`/`JSON`-typed columns. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
 
 ## Syntax
 
@@ -50,7 +51,7 @@ Examples:
 
 The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
-## `JSONB` Functions
+## Functions
 
 Function | Description
 ---------|------------
@@ -62,7 +63,7 @@ Function | Description
 
 For the full list of supported `JSONB` functions, see [Functions and Operators](functions-and-operators.html#jsonb-functions).
 
-## `JSONB` Operators
+## Operators
 
 Operator | Description | Example |
 ---------|-------------|---------|
@@ -71,6 +72,12 @@ Operator | Description | Example |
 `@>` | Tests whether the left `JSONB` field contains the right `JSONB` field. | `SELECT ('{"foo": {"baz": 3}, "bar": 2}'::JSONB @> '{"foo": {"baz":3}}'::JSONB ) = true;`
 
 For the full list of supported `JSONB` operators, see [Functions and Operators](functions-and-operators.html).
+
+## Known limitations
+
+If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
+
+For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
 
 ## Examples
 
@@ -181,6 +188,66 @@ You can also use the `->>` operator to return `JSONB` field values as `STRING` v
 | Ernie                       | Brooklyn                  |
 +-----------------------------+---------------------------+
 ~~~
+
+You can use the `@>` operator to filter the values in key-value pairs to return `JSONB` field values:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
+~~~
+~~~
++-----------------------------+---------------------------+
+| user_profile->>'first_name' | user_profile->>'location' |
++-----------------------------+---------------------------+
+| Lola                        | NYC                       |
++-----------------------------+---------------------------+
+~~~
+
+For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
+
+### Group and order `JSONB` values
+
+To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses with the `->>` operator. For example, organize the `first_name` values from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
+
+For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users (user_profile) VALUES
+    ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
+    ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
+~~~
+
+{% include copy-clipboard.html %}
+~~~sql
+> SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
+~~~
+
+~~~
+  first_name | location
+-------------+-----------
+  Ernie      | Brooklyn
+  Lola       | NYC
+  Parvati    | London
+  Lola       | Seoul
+~~~
+
+Now let’s group and order the data.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
+~~~
+
+~~~
+  first_name | total
+-------------+-------
+  Ernie      | 1
+  Parvati    | 1
+  Lola       | 2
+~~~
+
+The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, cast the resulting data to `FLOAT`.
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 

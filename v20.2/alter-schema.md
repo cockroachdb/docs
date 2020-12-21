@@ -4,13 +4,13 @@ summary: The ALTER SCHEMA statement modifies a user-defined schema in a database
 toc: true
 ---
 
-<span class="version-tag">New in v20.2:</span> The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#logical-schemas-and-namespaces) in the current database. CockroachDB currently supports changing the name of the schema and the owner of the schema.
+<span class="version-tag">New in v20.2:</span> The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy) in the current database. CockroachDB currently supports changing the name of the schema and the owner of the schema.
 
 ## Syntax
 
 ~~~
 ALTER SCHEMA ... RENAME TO <newschemaname>
-ALTER SCHEMA ... OWNER TO {<newowner> | CURRENT_USER | SESSION_USER }
+ALTER SCHEMA ... OWNER TO <newowner>
 ~~~
 
 ### Parameters
@@ -18,7 +18,7 @@ ALTER SCHEMA ... OWNER TO {<newowner> | CURRENT_USER | SESSION_USER }
 Parameter | Description
 ----------|------------
 `RENAME TO ...` | Rename the schema. The new schema name must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`OWNER TO ...` | Change the owner of the schema. You can specify the new owner by name or with the [`CURRENT_USER` or `SESSION_USER` keywords](functions-and-operators.html#special-syntax-forms).
+`OWNER TO ...` | Change the owner of the schema.
 
 ## Required privileges
 
@@ -26,6 +26,8 @@ Parameter | Description
 - To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](authorization.html#roles). The new owner role must also have the `CREATE` [privilege](authorization.html#assign-privileges) on the database to which the schema belongs.
 
 ## Example
+
+{% include {{page.version.version}}/sql/movr-statements.md %}
 
 ### Rename a schema
 
@@ -58,24 +60,6 @@ Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and 
 (6 rows)
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT
-  nspname, usename
-FROM
-  pg_catalog.pg_namespace
-  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
-WHERE
-  nspname LIKE 'org_one';
-~~~
-
-~~~
-  nspname | usename
-----------+----------
-  org_one | max
-(1 row)
-~~~
-
 Now, suppose you want to rename the schema:
 
 {% include copy-clipboard.html %}
@@ -90,7 +74,7 @@ SQLSTATE: 42501
 
 Because you are executing the `ALTER SCHEMA` command as a non-owner of the schema (i.e., `root`), CockroachDB returns an error.
 
-[Drop the schema](drop-schema.html) and create it again, this time with with `root` as the owner.
+[Drop the schema](drop-schema.html) and create it again, this time with `root` as the owner.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -101,6 +85,8 @@ Because you are executing the `ALTER SCHEMA` command as a non-owner of the schem
 ~~~ sql
 > CREATE SCHEMA org_one;
 ~~~
+
+To verify that the owner is now `root`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -155,20 +141,19 @@ Suppose that you access the [SQL shell](cockroach-sql.html) as user `root`, and 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT
-  nspname, usename
-FROM
-  pg_catalog.pg_namespace
-  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
-WHERE
-  nspname LIKE 'org_one';
+> SHOW SCHEMAS;
 ~~~
 
 ~~~
-  nspname | usename
-----------+----------
-  org_one | root
-(1 row)
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
 ~~~
 
 Now, suppose that you want to change the owner of the schema `org_one` to an existing user named `max`. To change the owner of a schema, the current owner must belong to the role of the new owner (in this case, `max`), and the new owner must have `CREATE` privileges on the database.
@@ -187,6 +172,8 @@ Now, suppose that you want to change the owner of the schema `org_one` to an exi
 ~~~ sql
 > ALTER SCHEMA org_one OWNER TO max;
 ~~~
+
+To verify that the owner is now `max`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql

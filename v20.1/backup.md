@@ -35,7 +35,8 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ## Synopsis
 
@@ -64,7 +65,7 @@ The `BACKUP` statement cannot be used within a [transaction](transactions.html).
  Option                                                          | Value                   | Description
 -----------------------------------------------------------------+-------------------------+------------------------------
 `revision_history`<a name="with-revision-history"></a>           | N/A                     | Create a backup with full [revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore), which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.
-`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to [encrypt the files](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) (`BACKUP` manifest and data files) that the `BACKUP` statement generates. This same passphrase is needed to decrypt the file when it is used to [restore](backup-and-restore-advanced-options.html#restore-from-an-encrypted-backup) and to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html).
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to [encrypt the files](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) (`BACKUP` manifest and data files) that the `BACKUP` statement generates. This same passphrase is needed to decrypt the file when it is used to [restore](backup-and-restore-advanced-options.html#restore-from-an-encrypted-backup) and to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html). There is no practical limit on the length of the passphrase.
 
 For more information about these options, see [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html).
 

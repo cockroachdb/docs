@@ -22,11 +22,11 @@ Subcommand | Description | Can combine with other subcommands?
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for a table. | No
 [`DROP COLUMN`](drop-column.html) | Remove columns from tables. | Yes
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
-[`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs. | Yes
+[`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs, for security purposes. | Yes
 [`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([Enterprise-only](enterprise-licensing.html)). | Yes
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
-[`RENAME TABLE`](rename-table.html) | Change the names of tables. | No
+[`RENAME TO`](rename-table.html) | Change the names of tables. | No
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table. | No
 [`UNSPLIT AT`](unsplit-at.html) | <span class="version-tag">New in v19.2:</span> Remove a range split enforcement at a specified row in the table. | No
 [`VALIDATE CONSTRAINT`](validate-constraint.html) | Check whether values in a column match a [constraint](constraints.html) on the column. | Yes

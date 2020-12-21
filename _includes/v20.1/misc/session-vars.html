@@ -120,6 +120,18 @@
 
   <tr>
    <td>
+    <code>enable_insert_fast_path</code>
+   </td>
+   <td>Indicates whether CockroachDB will use a specialized execution operator for inserting into a table. We recommend leaving this setting <code>on</code>.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>enable_zigzag_join</code>
    </td>
    <td>Indicates whether the <a href="cost-based-optimizer.html">cost-based optimizer</a> will plan certain queries using a zig-zag merge join algorithm, which searches for the desired intersection by jumping back and forth between the indexes based on the fact that after constraining indexes, they share an ordering. </td>
@@ -330,7 +342,7 @@
    <td>
     <code>transaction_priority</code>
    </td>
-   <td>The priority of the current transaction. See <a href="transactions.html#isolation-levels">Transactions: Isolation levels</a> for more details.<br />
+   <td>The priority of the current transaction. See <a href="transactions.html#transaction-priorities">Transactions: Transaction priorities</a> for more details.<br />
     <br />This session variable was called <code>transaction priority</code> (with a space) in CockroachDB 1.x. It has been renamed for compatibility with PostgreSQL.</td>
    <td>
     <code>NORMAL</code>
@@ -429,6 +441,30 @@
 
   <tr>
    <td>
+    <code>default_tablespace</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code></code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>idle_in_transaction_session_timeout</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>integer_datetimes</code>
    </td>
    <td>(Reserved; exposed only for ORM compatibility.)</td>
@@ -446,6 +482,18 @@
    <td>(Reserved; exposed only for ORM compatibility.)</td>
    <td>
     <code>postgres</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>lock_timeout</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>0</code>
    </td>
    <td>No</td>
    <td>Yes</td>
@@ -477,6 +525,18 @@
 
   <tr>
    <td>
+    <code>row_security</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>standard_conforming_strings</code>
    </td>
    <td>(Reserved; exposed only for ORM compatibility.)</td>
@@ -496,6 +556,18 @@
     <code>UTF8</code>
    </td>
    <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>synchronize_seqscans</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>No</td>
    <td>Yes</td>
   </tr>
 
