@@ -248,9 +248,9 @@ $ docker stop roach1 roach2 roach3
 $ docker rm roach1 roach2 roach3
 ~~~
 
-If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
+If you do not plan to restart the cluster, you may want to remove the Docker volumes:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ rm -rf cockroach-data
+$ docker volume rm roachdb1 roachdb2 roachdb3
 ~~~
