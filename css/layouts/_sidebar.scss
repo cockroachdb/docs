@@ -37,7 +37,7 @@ body.sidenav-open{
     position: fixed;
     z-index: 10;
     background-color: $white;
-    top: 50px;
+    top: 114px;
     border-top: 1px solid $neutral-300;
 	}
 }
@@ -54,7 +54,23 @@ body.sidenav-open{
   }
 }
 
-#sidebar {
+.nav-docs-mobile {
+  position: fixed;
+  top: 60px;
+  z-index: 999;
+  background: #fff;
+  .h3 {
+    font-size: 22px;
+  }
+  .arrow-down {
+    padding: 4px;
+    border-width: 2px 0 0 2px;
+    margin: 0;
+  }
+}
+
+#sidebar,
+.js-sidebar {
   width: 100%;
   padding: 10px 0 5px 15px;
   display: flex;
@@ -72,8 +88,10 @@ body.sidenav-open{
       display: block;
       position: fixed;
       z-index: 1030;
-      top: 17px;
+      top: 114px;
       right: 15px;
+      height: 60%;
+      overflow: scroll; 
     }
   }
 

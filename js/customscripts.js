@@ -66,7 +66,7 @@ $(function() {
 
   if (_viewport_width <= 768) {
     $mobile_menu.css('visibility', 'visible');
-    collapseSideNav();
+    // collapseSideNav();
   }
 
   $('header nav.mobile').on('click', '.hamburger', function(e){
@@ -100,7 +100,8 @@ $(function() {
     // chrome on android fires a resize event on scroll, this will make sure
     // these only fire on an actual resize event
     if (_viewport_width != cachedWidth) {
-      sidenavOnResize(_viewport_width);
+      
+      // sidenavOnResize(_viewport_width);
       $(window).scroll();
     }
 
@@ -280,10 +281,10 @@ $(function() {
     }
   };
 
-  $('.sidenav-arrow').on('click', function(e) {
-    e.stopPropagation();
-    toggleSideNav();
-  });
+  // $('.sidenav-arrow').on('click', function(e) {
+  //   e.stopPropagation();
+  //   toggleSideNav();
+  // });
 
   $sidebar.on('click', function(e) {
     // we only want this firing when collapsed, otherwise search won't work
@@ -363,3 +364,8 @@ $(function() {
     return this.hostname && this.hostname !== location.hostname;
   }).addClass('external').attr("target","_blank");
 });
+
+
+// $('.nav-docs-mobile').on('click', function(){
+//   $('#sidebarMenu').collapse();
+// });
