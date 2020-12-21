@@ -51,10 +51,13 @@ body.sidenav-open{
   overflow-y: scroll;
   position: -webkit-sticky; /* Safari */  
   position: sticky;
-  top: 102px;
+  top: 0;
   @include at-query(0, $screen-sm) {
     height: auto;
     overflow-y: auto;
+  }
+  @include at-query($min, $screen-md) {
+    top: 102px;
   }
 }
 

@@ -6590,11 +6590,14 @@ body.sidenav-open {
   position: -webkit-sticky;
   /* Safari */
   position: sticky;
-  top: 102px; }
+  top: 0; }
   @media screen and (min-width: 0) and (max-width: 767px) {
     .col-sidebar-content {
       height: auto;
       overflow-y: auto; } }
+  @media screen and (min-width: 992px) {
+    .col-sidebar-content {
+      top: 102px; } }
 
 .nav-docs-mobile {
   position: fixed;
