@@ -6578,7 +6578,11 @@ body.sidenav-open {
     z-index: 10;
     background-color: #fff;
     top: 114px;
-    border-top: 1px solid #D6DBE7; } }
+    border-top: 1px solid #D6DBE7;
+    border-bottom: 1px solid #D6DBE7;
+    height: 60%;
+    overflow: scroll;
+    padding-bottom: 15px; } }
 
 .col-sidebar-content {
   max-height: calc(100vh - 50px);
@@ -6631,9 +6635,7 @@ body.sidenav-open {
         position: fixed;
         z-index: 1030;
         top: 114px;
-        right: 15px;
-        height: 60%;
-        overflow: scroll; } }
+        right: 15px; } }
   #sidebar .burger,
   .js-sidebar .burger {
     content: url(../images/hamburger.svg); }

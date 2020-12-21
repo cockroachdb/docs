@@ -39,6 +39,10 @@ body.sidenav-open{
     background-color: $white;
     top: 114px;
     border-top: 1px solid $neutral-300;
+    border-bottom: 1px solid $neutral-300;
+    height: 60%;
+    overflow: scroll; 
+    padding-bottom: 15px;
 	}
 }
 
@@ -90,8 +94,6 @@ body.sidenav-open{
       z-index: 1030;
       top: 114px;
       right: 15px;
-      height: 60%;
-      overflow: scroll; 
     }
   }
 
