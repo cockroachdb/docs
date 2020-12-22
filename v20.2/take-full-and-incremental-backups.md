@@ -32,7 +32,6 @@ In most cases, **it's recommended to take full nightly backups of your cluster**
 
 - Restore table(s) from the cluster
 - Restore database(s) from the cluster
-- <span class="version-tag">New in v20.2:</span> Restore a cluster's scheduled jobs
 - Restore a full cluster
 
 To do a cluster backup, use the [`BACKUP`](backup.html) statement:
