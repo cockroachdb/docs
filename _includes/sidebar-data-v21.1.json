@@ -206,41 +206,6 @@
                     "urls": [
                       "/${VERSION}/schema-design-constraints.html"
                     ]
-                  },
-                  {
-                    "title": "Advanced Schema Design",
-                    "items": [
-                      {
-                        "title": "Create Computed Columns",
-                        "urls": [
-                          "/${VERSION}/schema-design-computed-columns.html"
-                        ]
-                      },
-                      {
-                        "title": "Use Column Families",
-                        "urls": [
-                          "/${VERSION}/column-families.html"
-                        ]
-                      },
-                      {
-                        "title": "Use Partial Indexes",
-                        "urls": [
-                          "/${VERSION}/partial-indexes.html"
-                        ]
-                      },
-                      {
-                        "title": "Use Inverted Indexes",
-                        "urls": [
-                          "/${VERSION}/inverted-indexes.html"
-                        ]
-                      },
-                      {
-                        "title": "Use Hash-sharded Indexes",
-                        "urls": [
-                          "/${VERSION}/hash-sharded-indexes.html"
-                        ]
-                      }
-                    ]
                   }
                 ]
               },
@@ -269,6 +234,41 @@
                     "title": "Remove an Object from a Schema",
                     "urls": [
                       "/${VERSION}/schema-update-remove-objects.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Advanced Schema Design",
+                "items": [
+                  {
+                    "title": "Create Computed Columns",
+                    "urls": [
+                      "/${VERSION}/schema-design-computed-columns.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Column Families",
+                    "urls": [
+                      "/${VERSION}/column-families.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Partial Indexes",
+                    "urls": [
+                      "/${VERSION}/partial-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Inverted Indexes",
+                    "urls": [
+                      "/${VERSION}/inverted-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Hash-sharded Indexes",
+                    "urls": [
+                      "/${VERSION}/hash-sharded-indexes.html"
                     ]
                   }
                 ]
