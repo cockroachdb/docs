@@ -11,11 +11,9 @@ twitter: false
     <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
     <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
     <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
-</div></br>
+</div>
 
-{{site.data.alerts.callout_success}}
-Take our newest Cockroach University course, [CockroachDB for Python Developers](https://university.cockroachlabs.com/).
-{{site.data.alerts.end}}
+{% include cockroach_u_pydev.md %}
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
 
