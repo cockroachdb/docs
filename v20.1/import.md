@@ -260,6 +260,8 @@ CSV DATA ('gs://acme-co/customers.csv')
 ;
 ~~~
 
+{% include {{ page.version.version }}/misc/csv-import-callout.md %}
+
 ### Import a table from multiple CSV files
 
 #### Using a comma-separated list

@@ -180,6 +180,10 @@ Google Cloud:
     );
 ~~~
 
+{{site.data.alerts.callout_info}}
+The column order in your statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
+{{site.data.alerts.end}}
+
 ### Import into an existing table from multiple CSV files
 
 Amazon S3:
