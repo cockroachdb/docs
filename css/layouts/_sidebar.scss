@@ -300,6 +300,24 @@ body.sidenav-open {
                       }
                     }
 
+                    > ul {
+                      padding-left: 15px;
+
+                      //6th level
+                      > li {
+                        list-style: none;
+
+                        > a {
+                          @include avenir_r(13px);
+                          line-height: 20px;
+
+                          @include at-query($min, $screen-lg) {
+                            font-size: 13px;
+                          }
+                        }
+
+                      }
+                    }
                   }
                 }
               }
