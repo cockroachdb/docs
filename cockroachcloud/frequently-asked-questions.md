@@ -18,6 +18,10 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
+## Is encryption-at-rest enabled on CockroachCloud?
+
+Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in. However, we do not enable encryption-at-rest within CockroachDB by default, so encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html) since it is unaware of cloud provider encryption.
+
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
 CockroachCloud is a single-tenant offering and resources are not shared between clusters.
