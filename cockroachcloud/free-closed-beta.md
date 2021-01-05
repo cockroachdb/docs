@@ -4,7 +4,7 @@ summary: Learn how to create and use your CockroachCloud cluster.
 toc: true
 ---
 
-We have been busy building out and improving the CockroachCloud experience and are excited to invite you to a **closed beta** of a new version that will be permanently free to consume!
+We have been busy building out and improving the CockroachCloud experience and are excited to invite you to a **closed beta** of a new offering that will be permanently free to consume!
 
 You are now able to create up to five free clusters in your organization. Creating a CockroachCloud Free cluster will not affect your existing clusters in any way.
 
@@ -14,7 +14,7 @@ CockroachCloud Free delivers free CockroachDB clusters for you and your organiza
 
 ## Can CockroachCloud Free be used for production apps?
 
-CockroachCloud Free is currently in beta and as such, it is not suitable for production use. Specifically, there are capabilities we are still working on enabling such as the ability to enable backups, and no-downtime upgrades to a paid tier. These capabilities and more are coming soon!
+CockroachCloud Free is currently in beta and as such, it is not suitable for production use. Specifically, there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. These capabilities and more are coming soon!
 
 ## What’s next?
 
