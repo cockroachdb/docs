@@ -10,7 +10,7 @@ You are now able to create up to five free clusters in your organization. Creati
 
 ## What is CockroachCloud Free?
 
-CockroachCloud Free delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that also removes the friction of initial cluster sizing and auto-scales based on your application traffic. While we have eliminated the concept of nodes for you, there will be an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster. More information to follow.
+CockroachCloud Free delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that also removes the friction of initial cluster sizing and auto-scales based on your application traffic. While we have eliminated the concept of nodes for you, there will be an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
 
 ## Can CockroachCloud Free be used for production apps?
 
