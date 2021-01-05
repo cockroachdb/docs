@@ -14,7 +14,7 @@ CockroachCloud Free delivers free CockroachDB clusters for you and your organiza
 
 ## Can CockroachCloud Free be used for production apps?
 
-CockroachCloud Free is currently in beta and as such, it is not suitable for production use. Specifically, there are capabilities we are still working on enabling such as the ability to delete clusters, enable backups, and no-downtime upgrades to a paid tier. These capabilities and more are coming soon!
+CockroachCloud Free is currently in beta and as such, it is not suitable for production use. Specifically, there are capabilities we are still working on enabling such as the ability to enable backups, and no-downtime upgrades to a paid tier. These capabilities and more are coming soon!
 
 ## What’s next?
 
