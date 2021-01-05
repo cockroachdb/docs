@@ -27,7 +27,7 @@ Install [Django](https://docs.djangoproject.com/en/3.1/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install django>=3.1.*
+$ python3 -m pip install 'django>=3.1.*'
 ~~~
 
 Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
@@ -40,7 +40,7 @@ After you install the psycopg2 prerequisite, install the CockroachDB Django back
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install django-cockroachdb>=3.1.*
+$ python3 -m pip install 'django-cockroachdb>=3.1.*'
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -153,12 +153,12 @@ In the top `cockroach_example` directory, use the [`manage.py` script](https://d
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python manage.py makemigrations cockroach_example
+$ python3 manage.py makemigrations cockroach_example
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python manage.py migrate
+$ python3 manage.py migrate
 ~~~
 
 This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
@@ -199,7 +199,7 @@ In a different terminal, navigate to the top of the `cockroach_example` director
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python manage.py runserver 0.0.0.0:8000
+$ python3 manage.py runserver 0.0.0.0:8000
 ~~~
 
 To perform simple reads and writes to the database, you can send HTTP requests to the application.
