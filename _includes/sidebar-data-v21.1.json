@@ -135,9 +135,20 @@
             "items": [
               {
                 "title": "Start a Cluster",
-                "urls": [
-                  "/${VERSION}/secure-a-cluster.html",
-                  "/${VERSION}/start-a-local-cluster.html"
+                "items": [
+                  {
+                    "title": "Start a Local Cluster",
+                    "urls": [
+                      "/${VERSION}/secure-a-cluster.html",
+                      "/${VERSION}/start-a-local-cluster.html"
+                    ]
+                  },
+                  {
+                    "title": "Start a CockroachCloud Cluster",
+                    "urls": [
+                      "/${VERSION}/cockroachcloud/create-your-cluster.html"
+                    ]
+                  }
                 ]
               },
               {
@@ -225,13 +236,13 @@
                     ]
                   },
                   {
-                    "title": "Modify an Object in a Schema",
+                    "title": "Modify an Object in a Cluster",
                     "urls": [
                       "/${VERSION}/schema-update-modify-objects.html"
                     ]
                   },
                   {
-                    "title": "Remove an Object from a Schema",
+                    "title": "Remove an Object from a Cluster",
                     "urls": [
                       "/${VERSION}/schema-update-remove-objects.html"
                     ]
@@ -244,7 +255,7 @@
                   {
                     "title": "Create Computed Columns",
                     "urls": [
-                      "/${VERSION}/schema-design-computed-columns.html"
+                      "/${VERSION}/computed-columns.html"
                     ]
                   },
                   {
@@ -269,6 +280,18 @@
                     "title": "Use Hash-sharded Indexes",
                     "urls": [
                       "/${VERSION}/hash-sharded-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Work with JSON Data",
+                    "urls": [
+                      "/${VERSION}/demo-support-json.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Expression-based Indexes",
+                    "urls": [
+                      "/${VERSION}/expression-based-indexes.html"
                     ]
                   }
                 ]
@@ -318,6 +341,23 @@
                 "title": "Bulk-delete Data",
                 "urls": [
                   "/${VERSION}/bulk-delete-data.html"
+                ]
+              },
+              {
+                "title": "Manage Transactions",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/transactions.html"
+                    ]
+                  },
+                  {
+                    "title": "Retry Transactions",
+                    "urls": [
+                      "/${VERSION}/advanced-client-side-transaction-retries.html"
+                    ]
+                  }
                 ]
               }
             ]
@@ -453,6 +493,12 @@
                 ]
               },
               {
+                "title": "Monitor CockroachDB Apps in the DB Console",
+                "urls": [
+                  "/${VERSION}/ui-overview.html"
+                ]
+              },
+              {
                 "title": "Troubleshoot Common Problems",
                 "urls": [
                   "/${VERSION}/error-handling-and-troubleshooting.html"
@@ -462,8 +508,26 @@
           },
           {
             "title": "Optimize Performance",
-            "urls": [
-              "/${VERSION}/make-queries-fast.html"
+            "items":
+            [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/make-queries-fast.html"
+                ]
+              },
+              {
+                "title": "Performance Best Practices",
+                "urls": [
+                  "/${VERSION}/performance-best-practices-overview.html"
+                ]
+              },
+              {
+                "title": "Use the EXPLAIN statement",
+                "urls": [
+                  "/${VERSION}/sql-tuning-with-explain.html"
+                ]
+              }
             ]
           },
           {
@@ -1232,12 +1296,6 @@
                 "title": "Client Connection Parameters",
                 "urls": [
                   "/${VERSION}/connection-parameters.html"
-                ]
-              },
-              {
-                "title": "SQL Best Practices",
-                "urls": [
-                  "/${VERSION}/performance-best-practices-overview.html"
                 ]
               },
               {
@@ -2189,12 +2247,6 @@
                     ]
                   },
                   {
-                    "title": "Ordering Query Results",
-                    "urls": [
-                      "/${VERSION}/query-order.html"
-                    ]
-                  },
-                  {
                     "title": "Limiting Query Results",
                     "urls": [
                       "/${VERSION}/limit-offset.html"
@@ -2283,12 +2335,6 @@
                       "/${VERSION}/transaction-retry-error-reference.html"
                     ]
                   }
-                ]
-              },
-              {
-                "title": "Views",
-                "urls": [
-                  "/${VERSION}/views.html"
                 ]
               },
               {
@@ -2465,24 +2511,6 @@
                     "title": "Indexes",
                     "urls": [
                       "/${VERSION}/indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Inverted Indexes",
-                    "urls": [
-                      "/${VERSION}/inverted-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Partial Indexes",
-                    "urls": [
-                      "/${VERSION}/partial-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Column Families",
-                    "urls": [
-                      "/${VERSION}/column-families.html"
                     ]
                   },
                   {
@@ -2675,12 +2703,6 @@
                 "title": "Cost-Based Optimizer",
                 "urls": [
                   "/${VERSION}/cost-based-optimizer.html"
-                ]
-              },
-              {
-                "title": "Follower Reads",
-                "urls": [
-                  "/${VERSION}/follower-reads.html"
                 ]
               },
               {
