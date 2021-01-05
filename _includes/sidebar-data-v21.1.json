@@ -279,7 +279,7 @@
                   {
                     "title": "Create Computed Columns",
                     "urls": [
-                      "/${VERSION}/schema-design-computed-columns.html"
+                      "/${VERSION}/computed-columns.html"
                     ]
                   },
                   {
@@ -304,6 +304,18 @@
                     "title": "Use Hash-sharded Indexes",
                     "urls": [
                       "/${VERSION}/hash-sharded-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Work with JSON Data",
+                    "urls": [
+                      "/${VERSION}/demo-support-json.html"
+                    ]
+                  },
+                  {
+                    "title": "Use Expression-based Indexes",
+                    "urls": [
+                      "/${VERSION}/expression-based-indexes.html"
                     ]
                   }
                 ]
