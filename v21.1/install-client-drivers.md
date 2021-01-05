@@ -1,10 +1,10 @@
 ---
-title: Install a Postgres Client
+title: Install a Client Library
 summary: CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers.
 toc: true
 ---
 
-CockroachDB supports the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORMs should work with CockroachDB. Choose a language for supported clients and installation steps.
+CockroachDB supports the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORMs should work with CockroachDB. Choose a language for supported clients and installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
 
 {{site.data.alerts.callout_info}}
 Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
