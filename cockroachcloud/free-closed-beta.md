@@ -6,7 +6,7 @@ toc: true
 
 We have been busy building out and improving the CockroachCloud experience and are excited to invite you to a **closed beta** of a new version that will be permanently free to consume!
 
-We have turned on the ability to create a CockroachCloud Free cluster in your account. Your existing clusters will be unaffected by this additional capability. You will now be able to create up to five free clusters in your organization.
+You are now able to create up to five free clusters in your organization. Creating a CockroachCloud Free cluster will not affect your existing clusters in any way.
 
 ## What is CockroachCloud Free?
 
