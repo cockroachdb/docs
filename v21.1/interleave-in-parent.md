@@ -12,7 +12,9 @@ Interleaving tables does not affect their behavior within SQL.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-Interleaved tables will be deprecated in a future release. We recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables-to-non-interleaved-tables) and replace any existing interleaved secondary indexes with non-interleaved indexes. We do not recommend interleaving tables in new clusters.
+Interleaved tables will be deprecated in a future release, as their performance benefits are limited to a small number of use cases that no longer justify the cost in engineering resources for maintenance.
+
+We recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables-to-non-interleaved-tables) and replace any existing interleaved secondary indexes with non-interleaved indexes. We do not recommend interleaving tables in new clusters.
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
