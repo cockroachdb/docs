@@ -13,7 +13,7 @@ Cockroach Labs runs [full backups](../stable/backup.html#full-backups) daily and
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
 
 {{site.data.alerts.callout_info}}
-Currently, you cannot access the backups that Cockroach Labs runs to restore your data. In the future, you will be able to restore databases and tables from the CockroachCloud Console. If you need to access these backups, please [contact Support](https://support.cockroachlabs.com/hc/en-us).
+Currently, can only restore to the same cluster that the backup was taken from.
 
 In the meantime, you can [back up and restore data manually](#back-up-and-restore-data-manually) or [back up from a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster).
 {{site.data.alerts.end}}
@@ -78,10 +78,6 @@ For each table in the database, the following details display:
 - [Restore a database](#restore-a-database)
 - [Restore a table](#restore-a-table)
 
-{{site.data.alerts.callout_info}}
-At this time, restoring databases and tables in the Console is only available to CockroachCloud clusters running on GCP.
-{{site.data.alerts.end}}
-
 Additional ways to restore data:
 
 - [Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-CockroachDB-cluster-and-restore-into-a-CockroachCloud-cluster)
@@ -106,7 +102,6 @@ To restore a database:
     {{site.data.alerts.end}}  
 
 1. Select any of the **Dependency options** to skip. You can:
-
     - **Skip missing foreign keys**, which will remove [foreign key](../stable/foreign-key.html) constraints before restoring.
     - **Skip missing sequences**, which will ignore [sequence](../stable/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../stable/views.html) that cannot be restored because their dependencies are not being restored at the same time.
@@ -142,7 +137,6 @@ To restore a table:
     {{site.data.alerts.end}}  
 
 1. Select any of the **Dependency options** to skip. You can:
-
     - **Skip missing foreign keys**, which will remove [foreign key](../stable/foreign-key.html) constraints before restoring.
     - **Skip missing sequences**, which will ignore [sequence](../stable/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
     - **Skip missing views**, which will skip restoring [views](../stable/views.html) that cannot be restored because their dependencies are not being restored at the same time.
@@ -165,7 +159,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachCloud will need the `specified` credentials upon `RESTORE`.
     {{site.data.alerts.end}}
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
