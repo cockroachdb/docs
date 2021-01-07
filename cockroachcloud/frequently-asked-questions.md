@@ -22,10 +22,10 @@ We use separate certificate authorities for each cluster, and all connections to
 
 Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
-- For GCP, we use [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
-- For AWS, we use [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
+- Data stored in clusters running in GCP are encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
+- Data stored in clusters running in AWS are encrypted-at-rest using [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-However, we do not enable encryption-at-rest within CockroachDB by default, so encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html) since it is unaware of cloud provider encryption.
+Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../stable/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption.
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
