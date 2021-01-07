@@ -13,7 +13,7 @@ Cockroach Labs runs [full backups](../stable/backup.html#full-backups) daily and
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
 
 {{site.data.alerts.callout_info}}
-Currently, can only restore to the same cluster that the backup was taken from.
+Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
 
 In the meantime, you can [back up and restore data manually](#back-up-and-restore-data-manually) or [back up from a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster).
 {{site.data.alerts.end}}
@@ -80,7 +80,7 @@ For each table in the database, the following details display:
 
 Additional ways to restore data:
 
-- [Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-CockroachDB-cluster-and-restore-into-a-CockroachCloud-cluster)
+- [Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster)
 - [Back up and restore data manually](#backup-and-restore-data-manually)
 
 ### Restore a database
