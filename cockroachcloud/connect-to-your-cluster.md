@@ -20,6 +20,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
 - If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
+- If you have an AWS cluster, you can set up an [AWS PrivateLink](network-authorization.html#aws-privatelink) connection.
 
 ### Add IP addresses to the allowlist
 
@@ -52,11 +53,17 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 1. Click **Apply**.
 
-### Establish a VPC Peering connection
+### Establish VPC Peering or AWS PrivateLink
+VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters.
 
-{{site.data.alerts.callout_info}}
-Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
-{{site.data.alerts.end}}
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="gcp">VPC Peering</button>
+  <button style="width: 15%" class="filter-button" data-scope="aws">AWS PrivateLink</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="gcp">
+
+#### VPC peering
 
 1. Navigate to your cluster's **Networking > VPC Peering** tab.
 1. Click **Set up a VPC peering connection**.
@@ -66,6 +73,22 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 1. Click **Request Connection**.
 1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
 1. On the **Networking** page, verify the connection status is **Active**.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="aws">
+
+#### AWS PrivateLink
+
+1. Navigate to your cluster's **Networking** page and click **PrivateLink**.
+2. Click **Set up a PrivateLink connection**.
+3. Use the service name provided to [create an AWS endpoint](network-authorization.html#create-an-aws-endpoint) in the AWS console.
+4. On the next page, paste the Endpoint ID you created into the **VPC Endpoint ID** field and click **Submit** to verify the ID.
+4. Click **Next** to continue, then return to the AWS console to [enable private DNS](network-authorization#enable-private-dns).
+5. Click **Complete**.
+6. On the **Networking** page, verify the connection status is **Active**.
+
+</section>
 
 ## Step 2. Create a SQL user
 
