@@ -76,7 +76,7 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 - To prevent scheduled backups from falling behind, first determine how long a single backup takes and use that as your starting point for the schedule's cadence.
 - Ensure you are monitoring your backup schedule (e.g., [Prometheus](monitor-cockroachdb-with-prometheus.html)) and alerting metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect.
 - Ensure that your [GC window](configure-replication-zones.html#gc-ttlseconds) is long enough to accommodate your backup schedule, otherwise your incremental backups will fail. For example, if you set up your schedule to be `RECURRING '@daily'` but your GC window is less than 1 day, all your incremental backups will fail.
-- Schedules are created to maintain a particular [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective) (e.g., an hour); therefore, you cannot set the `AS OF SYSTEM TIME` when creating a scheduled backup. CockroachDB will set the appropriate `AS OF SYSTEM TIME` when the schedule executes to meet the specified RPO.
+- The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
 - If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 
 ## View and control backup schedules
