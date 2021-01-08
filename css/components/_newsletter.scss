@@ -257,7 +257,7 @@
 		text-transform: uppercase;
 		&:active,
 		&:hover {
-			background-color: $cl_blue!important;
+			background: $cl_blue!important;
 			border-color: $cl_blue!important;
 		}
 	}

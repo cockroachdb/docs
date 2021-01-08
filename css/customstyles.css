@@ -1680,7 +1680,7 @@ section.footer {
   line-height: 42px;
   text-transform: uppercase; }
   .mkto-install-form.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:active, .mkto-install-form.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:hover {
-    background-color: #152849 !important;
+    background: #152849 !important;
     border-color: #152849 !important; }
 
 .hubspot-install-form .install-form {
