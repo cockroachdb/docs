@@ -1551,14 +1551,16 @@ section.footer {
     -moz-osx-font-smoothing: grayscale;
     color: #FFFFFF;
     line-height: 33px; }
-  #newsletter-footer-popout .popout-form {
+  #newsletter-footer-popout .mktoForm {
     margin-top: 20px;
     float: left; }
-    #newsletter-footer-popout .popout-form > div {
+    #newsletter-footer-popout .mktoForm > div {
       float: left; }
-    #newsletter-footer-popout .popout-form .hs_email label {
+    #newsletter-footer-popout .mktoForm .mktoButtonWrap {
+      margin: 0 !important; }
+    #newsletter-footer-popout .mktoForm .mktoFieldWrap label {
       display: none; }
-    #newsletter-footer-popout .popout-form .hs_email input {
+    #newsletter-footer-popout .mktoForm .mktoFieldWrap #Email {
       border: none;
       outline: none;
       height: 40px;
@@ -1570,11 +1572,11 @@ section.footer {
       -moz-border-bottom-left-radius: 20px;
       border-bottom-left-radius: 20px;
       padding: 0 15px 0 25px;
-      width: 180px; }
-    #newsletter-footer-popout .popout-form .inputs-list {
+      width: 180px !important; }
+    #newsletter-footer-popout .mktoForm .inputs-list {
       display: none !important; }
-    #newsletter-footer-popout .popout-form .hs-button {
-      background-color: #152849;
+    #newsletter-footer-popout .mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
+      background: #152849;
       color: #FFFFFF;
       border: none;
       outline: none;
@@ -1595,9 +1597,9 @@ section.footer {
       line-height: 15px;
       letter-spacing: 1.5px;
       text-transform: uppercase; }
-    #newsletter-footer-popout .popout-form .hs-error-msgs, #newsletter-footer-popout .popout-form .hs-form-required {
+    #newsletter-footer-popout .mktoForm .hs-error-msgs, #newsletter-footer-popout .mktoForm .hs-form-required {
       display: none !important; }
-    #newsletter-footer-popout .popout-form .submitted-message {
+    #newsletter-footer-popout .mktoForm .submitted-message {
       text-align: center;
       width: 100%;
       color: #FFFFFF;
@@ -1616,6 +1618,70 @@ section.footer {
     -ms-transform: translate(0, 0);
     -o-transform: translate(0, 0);
     transform: translate(0, 0); }
+
+#release-mktoForm_1083.mktoForm .mktoLabel,
+#release-mktoForm_1083.mktoForm .mktoGutter,
+#release-mktoForm_1083.mktoForm .mktoOffset {
+  display: none; }
+#release-mktoForm_1083.mktoForm input {
+  height: 40px;
+  font-family: 'AvenirLTStd-Roman', serif;
+  font-size: 14px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 40px;
+  color: #152849;
+  border: 1px solid #DADADA;
+  border-right: none;
+  outline: none;
+  -webkit-border-top-left-radius: 20px;
+  -moz-border-top-left-radius: 20px;
+  border-top-left-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  -moz-border-bottom-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 0 15px 0 25px !important;
+  width: 150px; }
+  #release-mktoForm_1083.mktoForm input::-webkit-input-placeholder {
+    color: #A2A2A2; }
+  #release-mktoForm_1083.mktoForm input:-moz-placeholder {
+    color: #A2A2A2; }
+  #release-mktoForm_1083.mktoForm input::-moz-placeholder {
+    color: #A2A2A2; }
+  #release-mktoForm_1083.mktoForm input:-ms-input-placeholder {
+    color: #A2A2A2; }
+  #release-mktoForm_1083.mktoForm input:placeholder-shown {
+    color: #A2A2A2; }
+  #release-mktoForm_1083.mktoForm input:focus {
+    border-color: #6933FF; }
+#release-mktoForm_1083.mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
+  background: #152849;
+  background-image: #152849;
+  border-color: #152849;
+  color: #FFFFFF;
+  border: none;
+  outline: none;
+  height: 40px;
+  -webkit-border-top-right-radius: 20px;
+  -moz-border-top-right-radius: 20px;
+  border-top-right-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  -moz-border-bottom-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 0 25px 0 20px;
+  font-family: 'AvenirLTStd-Black', serif;
+  font-size: 12px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  line-height: 42px;
+  text-transform: uppercase; }
+  #release-mktoForm_1083.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:active, #release-mktoForm_1083.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:hover {
+    background-color: #152849;
+    border-color: #152849; }
 
 .hubspot-install-form .install-form {
   float: left; }
@@ -1702,13 +1768,16 @@ section.footer {
       -moz-osx-font-smoothing: grayscale;
       line-height: 35px;
       color: #FFFFFF; }
-    #newsletter-footer-popout .popout-form {
+    #newsletter-footer-popout .mktoForm .mktoFieldWrap {
       margin-top: 15px;
       float: left; }
-      #newsletter-footer-popout .popout-form .hs_email input {
-        width: 250px; }
+      #newsletter-footer-popout .mktoForm .mktoFieldWrap #Email {
+        width: 250px !important; }
 
   .hubspot-install-form .install-form .hs_email input {
+    width: 250px; }
+
+  #release-mktoForm_1083.mktoForm input {
     width: 250px; } }
 /* Designed to make items marked as terminal prompts with Rouge syntax highlighter unselectable*/
 .noselect {

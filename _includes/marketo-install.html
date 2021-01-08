@@ -1,0 +1,22 @@
+{% raw %}
+<script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
+<script>
+    const MktoForms21082 = MktoForms2;
+    MktoForms21082.loadForm('//go.cockroachlabs.com', '350-QIN-827', 1082, function (form) {
+        const form_mktoForm_1082 = $('#release-mktoForm_1082');
+        form.render(form_mktoForm_1082)
+        form.onSuccess(function (values, followUpUrl) {
+            form.getFormElem().hide();
+            document.querySelector('.js-ty-mktoForm_1082').style.display = 'block';
+            return false;
+        });
+        // Move button next to input
+        MktoForms21082.whenReady(function (form) {
+            $('#release-mktoForm_1082 input').css('width', '');
+            $('#release-mktoForm_1082 .mktoButtonWrap').css('margin-left', '');
+            $('#release-mktoForm_1082 .mktoButtonRow').insertAfter('#release-mktoForm_1082 #Email');
+        });
+
+    });
+</script>
+{% endraw %}
