@@ -1619,11 +1619,11 @@ section.footer {
     -o-transform: translate(0, 0);
     transform: translate(0, 0); }
 
-#release-mktoForm_1083.mktoForm .mktoLabel,
-#release-mktoForm_1083.mktoForm .mktoGutter,
-#release-mktoForm_1083.mktoForm .mktoOffset {
+.mkto-install-form.mktoForm .mktoLabel,
+.mkto-install-form.mktoForm .mktoGutter,
+.mkto-install-form.mktoForm .mktoOffset {
   display: none; }
-#release-mktoForm_1083.mktoForm input {
+.mkto-install-form.mktoForm input {
   height: 40px;
   font-family: 'AvenirLTStd-Roman', serif;
   font-size: 14px;
@@ -1643,19 +1643,19 @@ section.footer {
   border-bottom-left-radius: 20px;
   padding: 0 15px 0 25px !important;
   width: 150px; }
-  #release-mktoForm_1083.mktoForm input::-webkit-input-placeholder {
+  .mkto-install-form.mktoForm input::-webkit-input-placeholder {
     color: #A2A2A2; }
-  #release-mktoForm_1083.mktoForm input:-moz-placeholder {
+  .mkto-install-form.mktoForm input:-moz-placeholder {
     color: #A2A2A2; }
-  #release-mktoForm_1083.mktoForm input::-moz-placeholder {
+  .mkto-install-form.mktoForm input::-moz-placeholder {
     color: #A2A2A2; }
-  #release-mktoForm_1083.mktoForm input:-ms-input-placeholder {
+  .mkto-install-form.mktoForm input:-ms-input-placeholder {
     color: #A2A2A2; }
-  #release-mktoForm_1083.mktoForm input:placeholder-shown {
+  .mkto-install-form.mktoForm input:placeholder-shown {
     color: #A2A2A2; }
-  #release-mktoForm_1083.mktoForm input:focus {
+  .mkto-install-form.mktoForm input:focus {
     border-color: #6933FF; }
-#release-mktoForm_1083.mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
+.mkto-install-form.mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
   background: #152849;
   background-image: #152849;
   border-color: #152849;
@@ -1679,9 +1679,9 @@ section.footer {
   letter-spacing: 1.5px;
   line-height: 42px;
   text-transform: uppercase; }
-  #release-mktoForm_1083.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:active, #release-mktoForm_1083.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:hover {
-    background-color: #152849;
-    border-color: #152849; }
+  .mkto-install-form.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:active, .mkto-install-form.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:hover {
+    background-color: #152849 !important;
+    border-color: #152849 !important; }
 
 .hubspot-install-form .install-form {
   float: left; }
@@ -1777,7 +1777,7 @@ section.footer {
   .hubspot-install-form .install-form .hs_email input {
     width: 250px; }
 
-  #release-mktoForm_1083.mktoForm input {
+  .mkto-install-form.mktoForm input {
     width: 250px; } }
 /* Designed to make items marked as terminal prompts with Rouge syntax highlighter unselectable*/
 .noselect {

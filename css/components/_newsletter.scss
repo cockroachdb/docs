@@ -191,7 +191,7 @@
 	}
 }
 
-#release-mktoForm_1083.mktoForm {
+.mkto-install-form.mktoForm {
 	.mktoLabel,
 	.mktoGutter,
 	.mktoOffset {
@@ -257,8 +257,8 @@
 		text-transform: uppercase;
 		&:active,
 		&:hover {
-			background-color: $cl_blue;
-			border-color: $cl_blue;
+			background-color: $cl_blue!important;
+			border-color: $cl_blue!important;
 		}
 	}
 	
@@ -389,7 +389,7 @@
 		}
 	}
 
-	#release-mktoForm_1083.mktoForm {
+	.mkto-install-form.mktoForm {
 		input {
 			width: 250px;
 		}
