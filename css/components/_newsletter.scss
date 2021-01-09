@@ -112,20 +112,22 @@
 		line-height: 33px;
 	}
 
-	.popout-form {
+	.mktoForm {
 		margin-top: 20px;
 		float: left;
 
 		> div {
 			float: left;
 		}
-
-		.hs_email {
+		.mktoButtonWrap {
+			margin: 0!important;
+		}
+		.mktoFieldWrap {
 			label {
 				display: none;
 			}
 
-			input {
+			#Email {
 				border:none;
 				outline:none;
 				height: 40px;
@@ -137,7 +139,7 @@
 				-moz-border-bottom-left-radius: 20px;
 				border-bottom-left-radius: 20px;
 				padding: 0 15px 0 25px;
-				width: 180px;
+				width: 180px!important;
 			}
 
 
@@ -147,8 +149,8 @@
 				display: none !important;
 			}
 
-		.hs-button {
-			background-color: $cl_blue;
+		.mktoButtonWrap.mktoSimple .mktoButton {
+			background: $cl_blue;
 			color: #FFFFFF;
 			border:none;
 			outline:none;
@@ -189,8 +191,79 @@
 	}
 }
 
-.hubspot-install-form {
+.mkto-install-form.mktoForm {
+	.mktoLabel,
+	.mktoGutter,
+	.mktoOffset {
+		display: none;
+	}
+	input {
+		height: 40px;
+		@include avenir_r(14px);
+		line-height: 40px;
+		color: $cl_blue;
+		border: 1px solid $cl_gray_medium;
+		border-right: none;
+		outline:none;
+		-webkit-border-top-left-radius: 20px;
+		-moz-border-top-left-radius: 20px;
+		border-top-left-radius: 20px;
+		-webkit-border-bottom-left-radius: 20px;
+		-moz-border-bottom-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+		padding: 0 15px 0 25px!important;
+		width: 150px;
 
+		&::-webkit-input-placeholder {
+			color: $cl_gray;
+		}
+		&:-moz-placeholder {
+			color: $cl_gray;
+		}
+		&::-moz-placeholder {
+			color: $cl_gray;
+		}
+		&:-ms-input-placeholder {
+			color: $cl_gray;
+		}
+		&:placeholder-shown {
+			color: $cl_gray;
+		}
+
+		&:focus {
+			border-color: $electric-purple;
+		}
+	}
+
+	.mktoButtonWrap.mktoSimple .mktoButton {
+		background: $cl_blue;
+		background-image: $cl_blue;
+		border-color: $cl_blue;
+		color: #FFFFFF;
+		// border: 2px solid #DDDDDD;
+		// border-left: none;
+		border: none;
+		outline:none;
+		height: 40px;
+		-webkit-border-top-right-radius: 20px;
+		-moz-border-top-right-radius: 20px;
+		border-top-right-radius: 20px;
+		-webkit-border-bottom-right-radius: 20px;
+		-moz-border-bottom-right-radius: 20px;
+		border-bottom-right-radius: 20px;
+		padding: 0 25px 0 20px;
+		@include button-text;
+		line-height: 42px;
+		text-transform: uppercase;
+		&:active,
+		&:hover {
+			background: $cl_blue!important;
+			border-color: $cl_blue!important;
+		}
+	}
+	
+}
+.hubspot-install-form {
 
 	.install-form {
 		float: left;
@@ -291,16 +364,19 @@
 			color: #FFFFFF;
 		}
 
-		.popout-form {
-			margin-top: 15px;
-			float: left;
-
-			.hs_email {
-				input {
-					width: 250px;
-				}
+		.mktoForm {
+			.mktoFieldWrap {
+				margin-top: 15px;
+				float: left;
+	
+				// .hs_email {
+					#Email {
+						width: 250px!important;
+					}
+				// }
 			}
 		}
+
 	}
 
 	.hubspot-install-form {
@@ -310,6 +386,12 @@
 					width: 250px;
 				}
 			}
+		}
+	}
+
+	.mkto-install-form.mktoForm {
+		input {
+			width: 250px;
 		}
 	}
 }
