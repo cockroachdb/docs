@@ -22,7 +22,11 @@ To create and connect to a 30-day free CockroachCloud cluster and run your first
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+<<<<<<< HEAD
 1. On the **Overview** page, click **Create Cluster**.
+=======
+1. On the **Overview** page, click **Create Cluster**. If there are multiple organization in your account,
+>>>>>>> 70078d22c (formatting and style edits)
 
 ## Step 2. Select the cloud provider
 
