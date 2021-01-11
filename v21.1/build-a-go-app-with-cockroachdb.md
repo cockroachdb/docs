@@ -40,7 +40,7 @@ You can copy the code below, <a href="https://raw.githubusercontent.com/cockroac
 Here are the contents of `main.go`:
 
 {% include copy-clipboard.html %}
-~~~ python
+~~~ go
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/master/main.go %}
 ~~~
 
