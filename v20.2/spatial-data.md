@@ -222,7 +222,7 @@ Clone the data set:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-git clone https://github.com/otan-cockroach/otan-scripts/
+git clone https://github.com/otan-cockroach/otan-scripts
 ~~~
 
 Load the SQL files into your CockroachDB cluster:
