@@ -62,7 +62,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster:
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is also available from the [Red Hat Marketplace](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
+The CockroachDB Kubernetes Operator can also be run on platforms such as [Red Hat OpenShift](https://marketplace.redhat.com/en-us/products/cockroachdb-operator) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
