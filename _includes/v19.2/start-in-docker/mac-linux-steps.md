@@ -252,5 +252,5 @@ If you do not plan to restart the cluster, you may want to remove the Docker vol
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ docker volume rm roachdb1 roachdb2 roachdb3
+$ docker volume rm roach1 roach2 roach3
 ~~~
