@@ -73,7 +73,7 @@ To enable this in Azure, you must create a Resource Group, Virtual Network, and 
 
 ## Step 2. Create VMs
 
-[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
+[Create Linux VMs](https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/quick-create-portal) for each node you plan to have in your cluster. If you plan to run a sample workload against the cluster, create a separate VM for that workload.
 
 - Run at least 3 nodes to [ensure survivability](recommended-production-settings.html#topology).
 
