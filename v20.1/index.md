@@ -9,37 +9,37 @@ cta: false
 
 <div class="home-header mb-xl-5 bg-cover bg-cover__bg-3-1">
   <div class="p-2 p-md-5">
-  <h1 class="m-0 text-white">Documentation</h1>
+  <h1 class="m-0 text-white">CockroachDB Docs</h1>
   <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
     <div class="row d-lg-flex mx-0">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex text-center">
+        <div class="card card-link h-100 d-flex">
         <a href="../cockroachcloud/quickstart.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
-            <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-in-browser.svg' | relative_url }}"/>
-            <h6 class="m-0 text-black">Start a free cloud<br> cluster</h6>
+          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">            
+            <h6 class="mt-2 mt-0 text-black">Start a free cloud<br> cluster</h6>
+            <p class="text-black">Run a multi-node CockroachDB cluster locally.</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
         </div>
       </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex text-center">
-        <a href="../secure-a-cluster.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
-          <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}"/>
-            <h6 class="m-0 text-black">Start a local <br>cluster</h6>
-            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
+        <div class="card card-link h-100 d-flex">
+        <a href="https://www.cockroachlabs.com/docs/stable/start-a-local-cluster" class="h-100">
+          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
+            <h6 class="mt-2 mt-0 text-black">Sample <br>Apps</h6>
+            <p class="text-black">Examples that show you how to build a simple "Hello World" application with CockroachDB</p>
+            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
         </div>
         </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
-        <div class="card card-link h-100 d-flex text-center">
-        <a href="https://www.cockroachlabs.com/docs/dev/hello-world-example-apps.html" class="h-100">
-          <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
-          <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}"/>
-            <h6 class="m-0 text-black">Sample <br>applications</h6>
+        <div class="card card-link h-100 d-flex">
+        <a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html" class="h-100">
+          <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">          
+            <h6 class="m-0 text-black">CockroachDB <br>FAQ</h6>
+            <p class="text-black">Answers to frequently asked questions.</p>
             <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
