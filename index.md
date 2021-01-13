@@ -5,4 +5,5 @@ summary: CockroachDB is the SQL database for building global, scalable cloud ser
 layout: homepage
 homepage: true
 contribute: false
+main_homepage: true
 ---
