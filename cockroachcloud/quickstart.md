@@ -17,49 +17,11 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 1. Create a free cluster
 
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
-1. On the **Clusters** page, click **Create Cluster**.
-1. On the **Create your cluster** page, select the **Free Plan**.
-
-    {{site.data.alerts.callout_info}}
-    This cluster will be free forever.
-    {{site.data.alerts.end}}
-
-1. Click **Create your free cluster**.
-
-Your cluster will be created in approximately 20-30 seconds.
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
 ## Step 2. Set up your cluster connection
 
-Once your cluster is created, the **Connection info** modal displays. Use the information provided in the modal to set up your cluster connection for the SQL user that was created by default:
-
-1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
-1. Create a `certs` directory on your local machine:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
-
-1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mv <path>/<to>/cc-ca.crt <path>/<to>/certs
-    ~~~
-
-    For example:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mv Users/maxroach/Downloads/cc-ca.crt Users/maxroach/certs
-    ~~~    
-
-1. Copy the connection string provided, which will be used in the next steps (and to connect to your cluster in the future).
-
-    {{site.data.alerts.callout_danger}}
-    This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
-    {{site.data.alerts.end}}
+{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
 ## Step 3. Use the built-in SQL client
 
