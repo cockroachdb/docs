@@ -33,14 +33,33 @@ Your cluster will be created in approximately 20-30 seconds.
 
 Once your cluster is created, the **Connection info** modal displays. Use the information provided in the modal to set up your cluster connection for the SQL user that was created by default:
 
-1. Create a `certs` directory on your local machine.
+1. Create a `certs` directory on your local machine:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir certs
+    ~~~
+
 1. In the **Connection info** modal, navigate to the **Your app** tab.
 1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
-1. Move the downloaded `ca.crt` file to the `certs` directory.
+1. Move the downloaded `ca.crt` file to the `certs` directory:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mv <path>/<to>/cc-ca.crt <path>/<to>/certs
+    ~~~
+
+    For example:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mv Users/maxroach/Downloads/cc-ca.crt Users/maxroach/certs
+    ~~~    
+
 1. Copy the connection string provided, which will be used in the next steps (and to connect to your cluster in the future).
 
     {{site.data.alerts.callout_danger}}
-    This connection string contains your password, which will be provided only once. If you forget your password, you will need to reset it.
+    This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
     {{site.data.alerts.end}}
 
 ## Step 3. Use the built-in SQL client
@@ -106,7 +125,12 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     $ cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
     ~~~
 
-    In the connection string copied from the **Connection info** modal, your username and password are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 2](#step-2-set-up-your-cluster-connection).
+    In the connection string copied from the **Connection info** modal, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 2](#step-2-set-up-your-cluster-connection). For example:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --url 'postgres://maxroach:password123@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/test-cluster.defaultdb?sslmode=verify-full&sslrootcert=Users/maxroach/certs/cc-ca.crt'
+    ~~~
 
 1. Using built-in SQL client, you can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
