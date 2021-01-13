@@ -36,9 +36,9 @@ module JekyllVersions
 
         if vp.stable?
           if vp.url != "/stable/" and vp.unversioned_path != ""
-            puts "vp.unversioned_path: #{vp.unversioned_path}"
-            puts "vp.url: #{vp.url}"
-            puts "page. #{page.path}"
+            # puts "vp.unversioned_path: #{vp.unversioned_path}"
+            # puts "vp.url: #{vp.url}"
+            # puts "page. #{page.path}"
             @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
               @site, vp.unversioned_path, vp.url) if vp.stable?
           end
