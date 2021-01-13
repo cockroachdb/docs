@@ -49,10 +49,7 @@ homepage: true
   </div>
 </div>
   <div class="row pt-5 mt-5 pb-5 mb-5">
-    <div class="col-lg-8">
-      <p class="overline">CockroachCloud</p>
-      <h2 class="mt-0">Build fast. Scale fast.</h2>
-      <p class="h4">CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.</p>
+    <div class="col-lg-12 text-center">
       <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
     </div>
   </div>
@@ -141,39 +138,21 @@ homepage: true
           </svg>
         </a>
         <div class="row no-gutters p-3">
-          <div class="col-md-4 m-0">
-            <img
-              src="{{ 'images/disk-spilling.png' | relative_url }}"
-              class="card-img m-0"
-              alt="..."
-            />
+          <div class="col-md-6 m-0">
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe src="https://www.youtube.com/embed/3hxSBeE-1tM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-6">
             <div class="card-body p-0 pl-4">
               <p
                 class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0"
               >
-                Engineering
+                CockroachCloud
               </p>
               <h6 class="card-title font-weight-bold mt-3">
-                Disk Spilling in a Vectorized Execution Engine
+                Getting Started with CockroachCloud
               </h6>
-              <div class="d-flex align-items-center">
-                <div>
-                  <img
-                    class="m-0"
-                    width="40"
-                    src="{{ 'images/alfonso-subioto-marquez.png' | relative_url }}"
-                    alt=""
-                  />
-                </div>
-                <div class="ml-3 d-flex flex-column justify-content-center">
-                  <div class="card-text m-0 lh-n">Alfonso Subioto Marquez</div>
-                  <p class="card-text m-0 lh-n">
-                    <small class="text-muted">June 30, 2020</small>
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
