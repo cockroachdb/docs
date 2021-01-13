@@ -66,14 +66,15 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 ### Create an AWS endpoint
 
 1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/), click **Your VPCs** in the sidebar. 
-1. Locate the VPC ID of the VPC you want to create your endpoint in. <br>
-  This will probably be the same VPC as the VPC your EC2 instances and application are running in. 
-  You can also choose a different VPC, as long as it is peered to the VPC your application is running in.
+1. Locate the VPC ID of the VPC you want to create your endpoint in.
+
+    This will probably be the same VPC as the VPC your EC2 instances and application are running in. You can also choose a different VPC, as long as it is peered to the VPC your application is running in.
+    
 1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 1.
-1. Click **Subnets** in the sidebar. 
+1. Navigate to the **Subnets** page. 
 1. Locate the subnet IDs corresponding to the VPC you chose in Step 1.
 1. Click **Security Groups** in the sidebar. 
-1. **Click Create Security Group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
+1. Click **Create Security Group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
   - In the **Security group name** field, enter a descriptive name for the security group. 
   - From the **VPC** dropdown, select the VPC you chose in Step 1.
   - In the **Inbound rules** section, click **Add rule**. Enter *26257* in the **Port Range** field. In the Source field, enter the CIDR range from Step 3. 
@@ -82,7 +83,11 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    aws ec2 create-vpc-endpoint --region $REGION --vpc-id $VPC_ID --subnet-ids $SUBNET_ID1 $SUBNET_ID2 --vpc-endpoint-type Interface --security-group-ids $SECURITY_GROUP_ID1 $SECURITY_GROUP_ID2 --service-name $SERVICE_NAME_PROVIDED_BY_COCKROACH
+    $ aws ec2 create-vpc-endpoint --region $REGION \
+    --vpc-id $VPC_ID --subnet-ids $SUBNET_ID1 $SUBNET_ID2 \ 
+    --vpc-endpoint-type Interface --security-group-ids \
+    $SECURITY_GROUP_ID1 $SECURITY_GROUP_ID2 --service-name \
+    $SERVICE_NAME_PROVIDED_BY_COCKROACH
     ~~~
 
 
@@ -91,13 +96,15 @@ Alternatively, use the AWS Console to create the endpoint:
 1.  On the VPC Dashboard, click **Endpoints** from the sidebar.
 1.  Click **Create Endpoint**.
 1.  On the **Create Endpoint** page, for the **Service Category** field, select **Find Service by name**.
-1.  In the **Service Name** field, enter the service name copied from Step 1.
+1.  In the **Service Name** field, enter the service name copied from Step 1 in the CockroachCloud Console.
 1.  Click **Verify**.
 1.  In the **VPC** field, enter the ID of the VPC you want to create your endpoint in. 
 1.  Verify that the subnets are pre-populated.
 1.  In the **Security group** section, select the security group you created in Step 4 and uncheck the box for **default** security group. 
-1.  Click **Create Endpoint**. <br>
-  The VPC Endpoint ID displays.  
+1.  Click **Create Endpoint**.
+
+    The VPC Endpoint ID displays.  
+    
 1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
 
 ### Verify the endpoint ID
@@ -110,7 +117,8 @@ After the status changes to Available, run the following AWS CLI command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-`aws ec2 modify-vpc-endpoint --region $REGION --private-dns-enabled --vpc-endpoint-id $VPC_ENDPOINT_ID`
+$ aws ec2 modify-vpc-endpoint --region $REGION \
+--private-dns-enabled --vpc-endpoint-id $VPC_ENDPOINT_ID
 ~~~
 
 Alternatively, use the AWS Console to modify the Private DNS Name:
@@ -118,8 +126,9 @@ Alternatively, use the AWS Console to modify the Private DNS Name:
 1.  On the **Endpoints** page, click **Actions**.
 1.  Click **Modify Private DNS Names**.
 1.  Check the **Enable Private DNS Name** checkbox.
-1.  Click **Modify Private DNS Name**. <br>
-  The endpoint status will change to Pending.
+1.  Click **Modify Private DNS Name**.
+
+The endpoint status will change to Pending.
   
 After a short (less than 5 minute) delay, the status changes to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
 
