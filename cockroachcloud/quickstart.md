@@ -33,6 +33,7 @@ Your cluster will be created in approximately 20-30 seconds.
 
 Once your cluster is created, the **Connection info** modal displays. Use the information provided in the modal to set up your cluster connection for the SQL user that was created by default:
 
+1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:
 
     {% include copy-clipboard.html %}
@@ -40,9 +41,7 @@ Once your cluster is created, the **Connection info** modal displays. Use the in
     $ mkdir certs
     ~~~
 
-1. In the **Connection info** modal, navigate to the **Your app** tab.
-1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
-1. Move the downloaded `ca.crt` file to the `certs` directory:
+1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
