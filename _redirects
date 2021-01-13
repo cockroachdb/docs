@@ -54,8 +54,6 @@ layout: null
 /docs/cockroachcloud/dev/managed-troubleshooting-page.html /docs/cockroachcloud/dev/cockroachcloud-troubleshooting-page.html 301!
 {% endif %}
 
-{% comment %}
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
-{% endcomment %}
