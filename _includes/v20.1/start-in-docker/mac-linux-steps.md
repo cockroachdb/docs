@@ -96,7 +96,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ grep 'node starting' cockroach-data/roach1/logs/cockroach.log -A 11
+    $ docker exec -it roach1 grep 'node starting' cockroach-data/logs/cockroach.log -A 11
     ~~~
 
     The output will look something like this:
