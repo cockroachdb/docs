@@ -1,13 +1,13 @@
 ---
-title: Install a Client Library
-summary: CockroachDB supports the PostgreSQL wire protocol, so you can use any available PostgreSQL client drivers.
+title: Install a Driver or ORM Framework
+summary: CockroachDB supports both native drivers and the PostgreSQL wire protocol, so you can use most available PostgreSQL client drivers and ORM frameworks.
 toc: true
 ---
 
-CockroachDB supports the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORMs should work with CockroachDB. Choose a language for supported clients and installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
+CockroachDB supports both native drivers and the PostgreSQL wire protocol, so most available PostgreSQL client drivers and ORM frameworks should work with CockroachDB. Choose a language for supported clients and installation steps. After you install a client library, you can [connect to the database](connect-to-the-database.html).
 
 {{site.data.alerts.callout_info}}
-Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM framework with **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -26,7 +26,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 
 <section class="filter-content" markdown="1" data-scope="python">
 
-## Drivers
+## Python Drivers
 
 ### psycopg2
 
@@ -43,7 +43,7 @@ For other ways to install psycopg2, see the [official documentation](http://init
 
 For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and psycopg2](build-a-python-app-with-cockroachdb.html).
 
-## ORMs
+## Python ORM frameworks
 
 ### SQLAlchemy
 
@@ -74,7 +74,7 @@ To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install django==3.0.*
+$ pip install django==3.0.*
 ~~~
 
 Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
@@ -89,7 +89,7 @@ After you install the psycopg2 prerequisite, you can install the CockroachDB Dja
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install django-cockroachdb==3.0.*
+$ pip install django-cockroachdb==3.0.*
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -106,7 +106,7 @@ To install PonyORM:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install pony
+$ pip install pony
 ~~~
 
 For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
@@ -119,7 +119,7 @@ To install peewee:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python -m pip install peewee
+$ pip install peewee
 ~~~
 
 For instructions on using peewee with CockroachDB, see the [CockroachDatabase peewee extension documentation](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database).
@@ -132,7 +132,7 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 {% include {{page.version.version}}/app/java-tls-note.md %}
 
-## Drivers
+## Java Drivers
 
 ### JDBC
 
@@ -142,7 +142,7 @@ Download and set up the Java JDBC driver as described in the [official documenta
 
 For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
-## ORMs
+## Java ORM frameworks
 
 ### Hibernate
 
@@ -152,7 +152,7 @@ You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache
 
 If you are using Gradle, add the following to your `dependencies`:
 
-~~~
+~~~ groovy
 implementation 'org.hibernate:hibernate-core:5.4.19.Final'
 implementation 'org.postgresql:postgresql:42.2.9'
 ~~~
@@ -161,7 +161,7 @@ For a simple but complete "Hello World" example app that uses Gradle for depende
 
 If you are using Maven, add the following to your `<dependencies>`:
 
-~~~
+~~~ xml
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-core</artifactId>
@@ -175,9 +175,11 @@ If you are using Maven, add the following to your `<dependencies>`:
 
 For a complete example app that uses Maven for dependency management, see [Build a Spring App with CockroachDB and Spring Data JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html).
 
-You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm). Versions of the Hibernate CockroachDB dialect correspond to the version of CockroachDB installed on your machine. For example, `org.hibernate.dialect.CockroachDB201Dialect` corresponds to CockroachDB v20.1, and `org.hibernate.dialect.CockroachDB192Dialect` corresponds to CockroachDB v19.2.
+You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm). Versions of the Hibernate CockroachDB dialect correspond to the version of CockroachDB installed on your machine. For example, `org.hibernate.dialect.CockroachDB201Dialect` corresponds to CockroachDB v20.1 and later, and `org.hibernate.dialect.CockroachDB192Dialect` corresponds to CockroachDB v19.2 and later.
 
 All dialect versions are forward-compatible (e.g. CockroachDB v20.1 is compatible with `CockroachDB192Dialect`), as long as your application is not affected by any backward-incompatible changes listed in your CockroachDB version's [release notes](../releases/index.html). In the event of a CockroachDB version upgrade, using a previous version of the CockroachDB dialect will not break an application, but, to enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB.
+
+Not all versions of CockroachDB have a corresponding dialect. Use the dialect number that is closest to your installed version of CockroachDB. For example, use `CockroachDB201Dialect` when using CockroachDB v21.1.
 
 ### jOOQ
 
@@ -191,7 +193,7 @@ For a simple but complete "Hello World" example app that uses Maven for dependen
 
 <section class="filter-content" markdown="1" data-scope="go">
 
-## Drivers
+## Go Drivers
 
 ### pgx
 
@@ -219,7 +221,7 @@ $ go get -u github.com/lib/pq
 
 For a simple but complete "Hello World" example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
 
-## ORMs
+## Go ORM frameworks
 
 ### GORM
 
@@ -243,7 +245,7 @@ For a simple but complete "Hello World" example app, see [Build a Go App with Co
 
 <section class="filter-content" markdown="1" data-scope="ruby">
 
-## Drivers
+## Ruby Drivers
 
 ### pg
 
@@ -258,7 +260,7 @@ $ gem install pg
 
 For a simple but complete "Hello World" example app, see [Build a Ruby App with CockroachDB and the Ruby pg Driver](build-a-ruby-app-with-cockroachdb.html).
 
-## ORMs
+## Ruby ORM frameworks
 
 ### ActiveRecord
 
@@ -281,7 +283,7 @@ For a simple but complete "Hello World" example app, see [Build a Ruby App with 
 
 <section class="filter-content" markdown="1" data-scope="node">
 
-## Drivers
+## Node.js Drivers
 
 ### pg
 
@@ -303,7 +305,7 @@ $ npm install async
 
 For a simple but complete "Hello World" example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
 
-## ORMs
+## Node.js ORM frameworks
 
 ### Sequelize
 
@@ -322,7 +324,7 @@ For a simple but complete "Hello World" example app, see [Build a Node.js App wi
 
 <section class="filter-content" markdown="1" data-scope="c">
 
-## Drivers
+## C Drivers
 
 ### libpq
 
@@ -334,7 +336,7 @@ Install the C libpq driver as described in the [official documentation](https://
 
 <section class="filter-content" markdown="1" data-scope="c++">
 
-## Drivers
+## C++ Drivers
 
 ### libpqxx
 
@@ -352,7 +354,7 @@ For a simple but complete "Hello World" example app, see [Build a C++ App with C
 
 <section class="filter-content" markdown="1" data-scope="c-sharp">
 
-## Drivers
+## C# Drivers
 
 ### Npgsql
 
@@ -385,7 +387,7 @@ For a simple but complete "Hello World" example app, see [Build a C# App with Co
 
 <section class="filter-content" markdown="1" data-scope="clojure">
 
-## Drivers
+## Clojure Drivers
 
 ### leiningen
 
@@ -399,7 +401,7 @@ For a simple but complete "Hello World" example app, see [Build a Closure App wi
 
 <section class="filter-content" markdown="1" data-scope="php">
 
-## Drivers
+## PHP Drivers
 
 ### php-pgsql
 
@@ -413,7 +415,7 @@ For a simple but complete "Hello World" example app, see [Build a PHP App with C
 
 <section class="filter-content" markdown="1" data-scope="rust">
 
-## Drivers
+## Rust Drivers
 
 ### postgres
 
@@ -427,7 +429,7 @@ For a simple but complete "Hello World" example app, see [Build a Rust App with 
 
 <section class="filter-content" markdown="1" data-scope="typescript">
 
-## ORMs
+## TypeScript ORM frameworks
 
 ### TypeORM
 
