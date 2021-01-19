@@ -137,14 +137,14 @@
                 "title": "Start a Cluster",
                 "items": [
                   {
-                    "title": "Start a Local Cluster",
+                    "title": "Local",
                     "urls": [
                       "/${VERSION}/secure-a-cluster.html",
                       "/${VERSION}/start-a-local-cluster.html"
                     ]
                   },
                   {
-                    "title": "Start a CockroachCloud Cluster",
+                    "title": "CockroachCloud",
                     "urls": [
                       "/${VERSION}/cockroachcloud/create-your-cluster.html"
                     ]
@@ -177,7 +177,7 @@
             ]
           },
           {
-            "title": "Design a Schema",
+            "title": "Design a Database Schema",
             "items": [
               {
                 "title": "Overview",
@@ -186,49 +186,26 @@
                 ]
               },
               {
-                "title": "Create a Database and Schema",
+                "title": "Create a Database and User-defined Schema",
                 "urls": [
                   "/${VERSION}/schema-design-database-schema.html"
                 ]
               },
               {
-                "title": "Create Tables and Indexes",
-                "items": [
-                  {
-                    "title": "Define Columns",
-                    "urls": [
-                      "/${VERSION}/schema-design-columns.html"
-                    ]
-                  },
-                  {
-                    "title": "Select a Primary Key",
-                    "urls": [
-                      "/${VERSION}/schema-design-primary-key.html"
-                    ]
-                  },
-                  {
-                    "title": "Add Secondary Indexes",
-                    "urls": [
-                      "/${VERSION}/schema-design-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Add Column Constraints",
-                    "urls": [
-                      "/${VERSION}/schema-design-constraints.html"
-                    ]
-                  }
+                "title": "Create a Table",
+                "urls": [
+                  "/${VERSION}/schema-design-table.html"
                 ]
               },
               {
-                "title": "Update a Schema",
+                "title": "Add Secondary Indexes",
+                "urls": [
+                  "/${VERSION}/schema-design-indexes.html"
+                ]
+              },
+              {
+                "title": "Update a Database Schema",
                 "items": [
-                  {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/schema-update-overview.html"
-                    ]
-                  },
                   {
                     "title": "How Schema Changes Work",
                     "urls": [
@@ -236,15 +213,15 @@
                     ]
                   },
                   {
-                    "title": "Modify an Object in a Cluster",
+                    "title": "Alter Objects in a Database Schema",
                     "urls": [
-                      "/${VERSION}/schema-update-modify-objects.html"
+                      "/${VERSION}/schema-update-alter-objects.html"
                     ]
                   },
                   {
-                    "title": "Remove an Object from a Cluster",
+                    "title": "Remove Objects from a Database Schema",
                     "urls": [
-                      "/${VERSION}/schema-update-remove-objects.html"
+                      "/${VERSION}/schema-update-drop-objects.html"
                     ]
                   }
                 ]
@@ -259,25 +236,19 @@
                     ]
                   },
                   {
-                    "title": "Use Column Families",
+                    "title": "Group Columns into Families",
                     "urls": [
                       "/${VERSION}/column-families.html"
                     ]
                   },
                   {
-                    "title": "Use Partial Indexes",
+                    "title": "Index a Subset of Rows",
                     "urls": [
                       "/${VERSION}/partial-indexes.html"
                     ]
                   },
                   {
-                    "title": "Use Inverted Indexes",
-                    "urls": [
-                      "/${VERSION}/inverted-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Use Hash-sharded Indexes",
+                    "title": "Index Sequential Keys",
                     "urls": [
                       "/${VERSION}/hash-sharded-indexes.html"
                     ]
@@ -286,12 +257,6 @@
                     "title": "Work with JSON Data",
                     "urls": [
                       "/${VERSION}/demo-support-json.html"
-                    ]
-                  },
-                  {
-                    "title": "Use Expression-based Indexes",
-                    "urls": [
-                      "/${VERSION}/expression-based-indexes.html"
                     ]
                   }
                 ]
@@ -308,27 +273,9 @@
                 ]
               },
               {
-                "title": "Bulk-insert Data",
-                "urls": [
-                  "/${VERSION}/bulk-insert-data.html"
-                ]
-              },
-              {
-                "title": "Import Data",
-                "urls": [
-                  "/${VERSION}/import-data.html"
-                ]
-              },
-              {
                 "title": "Overwrite Existing Data",
                 "urls": [
                   "/${VERSION}/update-data.html"
-                ]
-              },
-              {
-                "title": "Bulk-update Data",
-                "urls": [
-                  "/${VERSION}/bulk-update-data.html"
                 ]
               },
               {
@@ -347,7 +294,7 @@
                 "title": "Manage Transactions",
                 "items": [
                   {
-                    "title": "Overview",
+                    "title": "How Transactions Work",
                     "urls": [
                       "/${VERSION}/transactions.html"
                     ]
@@ -381,21 +328,9 @@
                     ]
                   },
                   {
-                    "title": "Filter Results",
-                    "urls": [
-                      "/${VERSION}/query-filter.html"
-                    ]
-                  },
-                  {
                     "title": "Limit Results",
                     "urls": [
-                      "/${VERSION}/query-limit.html"
-                    ]
-                  },
-                  {
-                    "title": "Combine Results from Different Queries",
-                    "urls": [
-                      "/${VERSION}/query-combine.html"
+                      "/${VERSION}/limit-offset.html"
                     ]
                   }
                 ]
@@ -404,16 +339,22 @@
                 "title": "Advanced Selection Queries",
                 "items": [
                   {
+                    "title": "Join Queries",
+                    "urls": [
+                      "/${VERSION}/joins.html"
+                    ]
+                  },
+                  {
                     "title": "Refer to Queries by Alias",
                     "items": [
                       {
-                        "title": "Use Table Expressions",
+                        "title": "Table Expressions",
                         "urls": [
                           "/${VERSION}/table-expressions.html"
                         ]
                       },
                       {
-                        "title": "Use Common Table Expressions",
+                        "title": "Common Table Expressions",
                         "urls": [
                           "/${VERSION}/common-table-expressions.html"
                         ]
@@ -424,13 +365,13 @@
                     "title": "Reuse Query Results",
                     "items": [
                       {
-                        "title": "Create Reusable Views",
+                        "title": "Reusable Views",
                         "urls": [
                           "/${VERSION}/views.html"
                         ]
                       },
                       {
-                        "title": "Use Subqueries",
+                        "title": "Subqueries",
                         "urls": [
                           "/${VERSION}/subqueries.html"
                         ]
@@ -447,23 +388,17 @@
                     "title": "Read Historical Data",
                     "items": [
                       {
-                        "title": "Use AS OF SYSTEM TIME",
+                        "title": "AS OF SYSTEM TIME",
                         "urls": [
                           "/${VERSION}/as-of-system-time.html"
                         ]
                       },
                       {
-                        "title": "Use Follower Reads",
+                        "title": "Follower Reads",
                         "urls": [
                           "/${VERSION}/follower-reads.html"
                         ]
                       }
-                    ]
-                  },
-                  {
-                    "title": "Create Complex Joins",
-                    "urls": [
-                      "/${VERSION}/complex-joins.html"
                     ]
                   },
                   {
