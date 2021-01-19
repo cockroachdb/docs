@@ -6,15 +6,32 @@ toc: true
 
 ## Licensing Overview
 
-CockroachDB code is licensed in three ways: the Business Source License (BSL), Cockroach Community License (Free), and Cockroach Community License (Paid). Core features after version 19.1 are licensed under the BSL for three years before converting to the Apache 2.0 license. All enterprise features are licensed under the Cockroach Community License (CCL).
+Current CockroachDB code is licensed in three ways: the Business Source License (BSL), Cockroach Community License (Free), and Cockroach Community License (Paid). Core features released up to and including version 19.1 are licensed under Apache 2.0. After version 19.1, core features are licensed under the BSL for three years before converting to the Apache 2.0 license. All enterprise features are licensed under the Cockroach Community License (CCL).
 
 ### Types of licenses
 
 Type | Description
 -------------|------------
+**Apache 2.0 License** | Core features under the Apache License are free to use and fully open-source. BSL features convert to this license three years after their release. For license conversion dates, see the [Licensing FAQs](licensing-faqs.html).
 **Business Source License** | BSL Features are free to use and the source code is available, but users may not use CockroachDB as a service without an agreement with Cockroach Labs.
 **Cockroach Community License (Free)** | CCL (Free) features are free to use, but the source code is not available to users.
-**Cockroach Community License (Paid)** | CCL (paid) features require an enterprise license key to access.
+**Cockroach Community License (Paid)** | CCL (paid) features require an enterprise license key to access and the source code is not available to users.
+
+### Core feature licensing
+
+The matrix below shows how core features are licensed. For a complete list of enterprise features, see [Enterprise Features](enterprise-licensing.html).
+
+Feature          | BSL | CCL (free)      | CCL (paid) 
+-----------------|-----|-----------------|---------------
+**[Import](import.html)** | | ✓ |
+**[Export](export.html)** | ✓ | |
+**[Restore](restore.html)** | | ✓ |
+**[Full Backups](backup.html)** | | ✓ |
+**[Advanced Backups](backup.html)** | | | ✓
+**[Core Changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
+**[Enterprise Changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
+
+## Obtain a license
 
 All CockroachDB Code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
@@ -24,22 +41,6 @@ All CockroachDB Code is included in the same binary. No license key is required 
 {{site.data.alerts.callout_success}}
 For quick local testing of Enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
 {{site.data.alerts.end}}
-
-### Core feature licensing
-
-The matrix below shows how core features are licensed. For a complete list of enterprise features, see [Enterprise Features](enterprise-licensing.html).
-
-Feature          | BSL | CCL (free)      | CCL (paid) 
------------------|-----|-----------------|---------------
-**Import** | | ✓ |
-**Export** | ✓ | |
-**Restore** | | ✓ |
-**Backup** (full backup) | | ✓ |
-**Backup** (everything else) | | | ✓
-**Core Changefeed** | | ✓ |
-**Enterprise Changefeed** | | | ✓
-
-## Obtain a license
 
 To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
 
@@ -105,3 +106,7 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 After your license expires, the enterprise features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
 
 To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](licensing.html#set-a-license) the new license.
+
+## See also
+
+- [Licensing FAQs](licensing-faqs.html)
