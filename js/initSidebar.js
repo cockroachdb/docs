@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   var navgocoOptions = {
     caretHtml: '',
-    accordion: false,
+    accordion: true,
     openClass: 'active',
     save: false,
     cookie: {
