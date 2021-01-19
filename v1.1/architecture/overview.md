@@ -74,7 +74,7 @@ Any changes made to the data in a range rely on a consensus algorithm to ensure 
 
 Ultimately, data is written to and read from disk using an efficient storage engine, which is able to keep track of the data's timestamp. This has the benefit of letting us support the SQL standard `AS OF SYSTEM TIME` clause, letting you find historical data for a period of time.
 
-However, while that high-level overview gives you a notion of what CockroachDB does, looking at how the `cockroach` process operates on each of these needs will give you much greater understanding of our architecture.
+However, while that high-level overview gives you a notion of what CockroachDB does, looking at how the `cockroach` process operates on each of these nodes will give you much greater understanding of our architecture.
 
 ### Layers
 

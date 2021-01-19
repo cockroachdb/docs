@@ -61,7 +61,7 @@ Parameter | Description
 
 ## Trace Description
 
-CockroachDB's definition of a "trace" is a specialization of [OpenTracing's](http://opentracing.io/documentation/#what-is-a-trace) definition. Internally, CockroachDB uses OpenTracing libraries for tracing, which also means that
+CockroachDB's definition of a "trace" is a specialization of [OpenTracing's](https://opentracing.io/docs/overview/what-is-tracing/#what-is-opentracing) definition. Internally, CockroachDB uses OpenTracing libraries for tracing, which also means that
 it can be easily integrated with OpenTracing-compatible trace collectors; for example, Lightstep and Zipkin are already supported.
 
 Concept | Description

@@ -44,10 +44,10 @@ module JekyllVersions
         #   end
         # end
 
-        if page.data['main_homepage'] != true
-          @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
-            @site, vp.unversioned_path, vp.url) if vp.stable?
-        end
+        # if page.main_homepage != true
+          # @site.pages << JekyllRedirectFrom::RedirectPage.from_paths(
+            # @site, vp.unversioned_path, vp.url) if vp.stable?
+        # end
       end
 
       @config.versions.each do |name, version|

@@ -39,19 +39,49 @@
       </div>
       <div class="col-xs-12 col-sm-6">
         <div id="hubspot-footer-popup-form">
+          <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
+          {% if page.canonical contains "/advisories/"  %}
+          <form id="news-mktoForm_1085"></form>
+          <p class="js-ty_1085" style="display: none;">Thanks!</p>
           <script>
-            hbspt.forms.create({
-              css: "",
-              cssClass: "popout-form",
-			  portalId: "1753393",
-			  {% if page.canonical contains "/advisories/"  %}
-			  formId: "3270abeb-4e49-4513-adc2-e4c7a250d3c3",
-			  {% else %}
-			  formId: "179cc17e-1092-4aa3-be00-e01d9144d066",
-			  {% endif %}
-              target: "#hubspot-footer-popup-form",
+
+          const NewsMktoForms21085 = MktoForms2;
+          const Newsform_mktoForm_1085 = $('#news-mktoForm_1085'); 
+          NewsMktoForms21085.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1085, function(form_1085) {
+            form_1085.render(Newsform_mktoForm_1085);
+            form_1085.onSuccess(function(values, followUpUrl) {
+              form_1085.getFormElem().hide();
+              document.querySelector('.js-ty_1085').style.display = 'block';
+              return false;
             });
+            // Move button next to input
+            NewsMktoForms21085.whenReady(function () {
+              $('#news-mktoForm_1085 .mktoButtonRow').insertAfter('#news-mktoForm_1085 #Email');
+            });
+          });
           </script>
+          {% else %}
+          <form id="news-mktoForm_1083"></form>
+          <p class="js-ty_1083" style="display: none;">Thanks!</p>
+          <script>
+          const NewsMktoForms21083 = MktoForms2;
+          const Newsform_mktoForm_1083 = $('#news-mktoForm_1083'); 
+
+          NewsMktoForms21083.loadForm("//go.cockroachlabs.com", "350-QIN-827", 1083, function(form_1083){
+             form_1083.render(Newsform_mktoForm_1083);
+             form_1083.onSuccess(function(values, followUpUrl) {
+              form_1083.getFormElem().hide();
+              document.querySelector('.js-ty_1083').style.display = 'block';
+              return false;
+            }); 
+            // Move button next to input
+            NewsMktoForms21083.whenReady(function () {
+              $('#news-mktoForm_1083 .mktoButtonRow').insertAfter('#news-mktoForm_1083 #Email');
+            });
+
+          });</script>
+          {% endif %}
+          
         </div>
       </div>
     </div>
