@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   var navgocoOptions = {
     caretHtml: '',
-    accordion: true,
+    accordion: false,
     openClass: 'active',
     save: false,
     cookie: {
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
   // Loop over the left sidebar and top nav mobile version
   $sidebars.each((k, sidebar)=>{
-    console.log(sidebar);
+    // console.log(sidebar);
     // sidebar.navgoco($.extend(navgocoOptions, {
     //   onToggleAfter: function() {
     //     if ($(this.el).attr('id') == 'sidebar' &&
