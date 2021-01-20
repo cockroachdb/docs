@@ -6,6 +6,8 @@ toc: true
 
 This page has instructions for connecting to a CockroachDB or CockroachCloud cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
 
+The connection strings listed on this page set the required authentication options to connect to either [local](authentication.html) or [free CockroachCloud](cockroachcloud/authentication.html) clusters. Local clusters use self-signed SSL certificates. CockroachCloud clusters use a signed certificate generated for your cluster that you download from the CockroachCloud console.
+
 For a reference that lists all of the supported cluster connection parameters, see [Connection Parameters][connection_params].
 
 <div class="filters filters-big clearfix">
@@ -15,7 +17,7 @@ For a reference that lists all of the supported cluster connection parameters, s
 
 ## Before you begin
 
-Make sure you have already:
+Do the following:
 
 - Set up either a local CockroachDB or a CockroachCloud cluster:
 -- [Create](install-cockroachdb.html) and [configure](secure-a-cluster.html) a local cluster.
@@ -34,7 +36,7 @@ Make sure you have already:
 <section class="filter-content" markdown="1" data-scope="sql">
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
-<!-- {% remote_include https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/connect_to_crc.md|<!-- BEGIN CRC free sql -->|<!-- END CRC free sql --> %} -->
+{% remote_include https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/connect_to_crc.md|<!-- BEGIN CRC free sql -->|<!-- END CRC free sql --> %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
@@ -180,10 +182,6 @@ conn = psycopg2.connect(
 {% include {{page.version.version}}/app/for-a-complete-example-python.md %}
 
 </section>
-
-{% include {{page.version.version}}/connection_params.md %}
-
-{% include {{page.version.version}}/authentication.md %}
 
 ## See also
 
