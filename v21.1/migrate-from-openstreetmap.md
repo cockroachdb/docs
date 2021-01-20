@@ -124,6 +124,7 @@ Osm2pgsql took 2879s overall
 - [`IMPORT`][import]
 - [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from GeoPackages](migrate-from-geopackage.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)

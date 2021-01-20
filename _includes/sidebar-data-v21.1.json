@@ -117,6 +117,12 @@
                 "urls": [
                   "/${VERSION}/spatial-data.html"
                 ]
+              },
+              {
+                "title": "Spatial Tutorial",
+                "urls": [
+                  "/${VERSION}/spatial-tutorial.html"
+                ]
               }
             ]
           }
