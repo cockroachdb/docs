@@ -283,19 +283,19 @@
                     ]
                   },
                   {
-                    "title": "Use Column Families",
+                    "title": "Group Columns into Families",
                     "urls": [
                       "/${VERSION}/column-families.html"
                     ]
                   },
                   {
-                    "title": "Use Partial Indexes",
+                    "title": "Index a Subset of Rows",
                     "urls": [
                       "/${VERSION}/partial-indexes.html"
                     ]
                   },
                   {
-                    "title": "Use Inverted Indexes",
+                    "title": "Index Sequential Keys",
                     "urls": [
                       "/${VERSION}/inverted-indexes.html"
                     ]
@@ -310,12 +310,6 @@
                     "title": "Work with JSON Data",
                     "urls": [
                       "/${VERSION}/demo-support-json.html"
-                    ]
-                  },
-                  {
-                    "title": "Use Expression-based Indexes",
-                    "urls": [
-                      "/${VERSION}/expression-based-indexes.html"
                     ]
                   }
                 ]
