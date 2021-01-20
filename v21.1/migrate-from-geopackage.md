@@ -100,6 +100,7 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 - [`IMPORT`][import]
 - [Export Spatial Data](export-spatial-data.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from Shapefiles](migrate-from-shapefiles.html)

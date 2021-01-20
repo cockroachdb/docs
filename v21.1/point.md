@@ -44,6 +44,7 @@ SELECT ST_GeomFromText('POINT(0 0)');
 
 ## See also
 
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial objects](spatial-features.html#spatial-objects)
 - [LINESTRING](linestring.html)
 - [POLYGON](polygon.html)
