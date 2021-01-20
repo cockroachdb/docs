@@ -1,5 +1,5 @@
 ---
-title: Quickstart with CockroachCloud
+title: Quickstart with CockroachCloud Free (beta)
 summary: Learn how to create and use your free CockroachCloud cluster.
 toc: true
 redirect_from:
@@ -7,7 +7,16 @@ redirect_from:
 - create-your-account.html
 ---
 
+<div class="filters clearfix">
+    <a href="quickstart.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud (30-day trial)</strong></button></a>
+</div>
+
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.
+
+{{site.data.alerts.callout_info}}
+CockroachCloud Free (beta) is in limited availability. If you do not have access yet, you can [start your first cluster using a 30-day free trial](quickstart-trial-cluster.html).
+{{site.data.alerts.end}}
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
