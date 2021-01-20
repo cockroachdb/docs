@@ -146,4 +146,5 @@ Saving the `cron` file will install a new job that runs the `cleanup.py` file ev
 
 ## See also
 
+- [Delete data](delete-data.html)
 - [`DELETE`](delete.html)
