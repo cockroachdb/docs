@@ -24,6 +24,7 @@ SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900)
 
 ## See also
 
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial objects](spatial-features.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)

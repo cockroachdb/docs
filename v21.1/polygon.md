@@ -59,6 +59,7 @@ SELECT ST_MakePolygon('LINESTRING(0 0, 0 1024, 1024 1024, 1024 0, 0 0)');
 
 ## See also
 
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial objects](spatial-features.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)

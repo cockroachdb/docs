@@ -194,6 +194,7 @@ Here is the geometry described above as shown on [geojson.io](http://geojson.io)
 
 - [GeoJSON RFC](https://www.rfc-editor.org/rfc/rfc7946.txt)
 - [Spatial features](spatial-features.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Well known text](well-known-text.html)
