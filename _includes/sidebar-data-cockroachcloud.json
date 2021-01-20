@@ -210,8 +210,19 @@
     },
     {
       "title": "FAQs",
-      "urls": [
-	       "/cockroachcloud/frequently-asked-questions.html"
+      "items": [
+      	{
+      	  "title": "CockroachCloud FAQs",
+      	  "urls": [
+      	    "/cockroachcloud/frequently-asked-questions.html"
+      	  ]
+      	},
+      	{
+      	  "title": "CockroachCloud Free FAQs",
+      	  "urls": [
+      	    "/cockroachcloud/free-faqs.html"
+      	  ]
+      	}
       ]
     },
     {
