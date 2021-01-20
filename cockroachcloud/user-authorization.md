@@ -21,22 +21,9 @@ Make sure you have already [connected to the cluster](connect-to-your-cluster.ht
 
 #### Use the Console
 
-{% include cockroachcloud/cockroachcloud-ask-admin.md %}
-
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to create a new user:
 
-1. Navigate to your cluster's **SQL Users** page.
-2. Click the **Add User** button in the top right corner.
-
-    The **Add User** modal displays.
-
-    <img src="{{ 'images/v20.1/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
-
-3. Enter a **Username**.
-4. Enter and confirm the **Password**.
-5. Click **Create**.
-
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
+{% include cockroachcloud/create-a-sql-user.md %}
 
 #### Use the CockroachDB SQL client
 

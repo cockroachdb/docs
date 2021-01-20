@@ -8,6 +8,12 @@
     {
       "title": "Get Started",
       "items": [
+        {
+      	  "title": "Create an Account",
+      	  "urls": [
+      	    "/cockroachcloud/create-an-account.html"
+      	  ]
+      	},
       	{
       	  "title": "Create a CockroachCloud Cluster",
       	  "urls": [

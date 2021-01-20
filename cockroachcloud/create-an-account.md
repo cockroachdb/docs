@@ -1,0 +1,117 @@
+---
+title: Create a CockroachCloud Account
+summary: Learn how to create and delete a CockroachCloud Account
+toc: true
+---
+
+Before you [create a CockroachCloud cluster](create-your-cluster.html), you must first create a CockroachCloud account. You can register for CockroachCloud using a GitHub account or an email address.
+
+## Register a new account
+
+To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs).
+
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="github">Register with GitHub</button>
+  <button class="filter-button page-level" data-scope="email">Register with email</button>
+</div>
+<p></p>
+
+<section class="filter-content" markdown="1" data-scope="github">
+
+{{site.data.alerts.callout_info}}
+This feature is only available to select users at this time. If you do not have access yet, you can register a new account with an email.
+{{site.data.alerts.end}}
+
+If you do not have access yet, you can start your first cluster using a 30-day free trial.
+1. Click **Sign up with GitHub**.
+1. Enter your GitHub **Username or email address** associated with your account.
+1. Enter your GitHub **Password**
+1. Click **Sign in**
+
+{{site.data.alerts.callout_info}}
+GitHub should verify your identity using [GitHub 2FA](https://docs.github.com/en/github/authenticating-to-github/about-two-factor-authentication).
+{{site.data.alerts.end}}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="email">
+1. Enter your **Email address**.
+1. Enter your **First name** and **Last name**.
+1. Enter a **Password**.
+
+    Your password must be at least 12 characters long.
+
+1. Enter your **Organization name (optional)**.
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Click **Get Started**.
+</section>
+
+## Log in to your account
+
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="github">Log in with GitHub</button>
+  <button class="filter-button page-level" data-scope="email">Log in with email</button>
+</div>
+<p></p>
+
+<section class="filter-content" markdown="1" data-scope="github">
+
+If you have already [registered a new CockroachCloud account](#register-a-new-account) using GitHub, you can log in to CockroachCloud:
+
+1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
+1. Click **Log in with GitHub**.
+1. Follow the GitHub prompts to log in.
+
+    The [**Clusters** page](cluster-management.html) displays.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="email">
+If you have already [registered a new CockroachCloud account](#register-a-new-account) using an email address, you can log in to CockroachCloud:
+
+1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
+1. Enter your **Email** and **Password**.
+1. Click **Continue**.
+
+    The [**Clusters** page](cluster-management.html) displays.
+</section>
+
+## Change your account details
+
+- [Change your account name](#change-your-account-name)
+- [Change your email](#change-your-email)
+- [Change your account password](#change-your-account-password)
+
+### Change your account name
+
+To change your account name:
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. To edit your name, click the pencil icon in the **Name** row.
+1. In the **Edit name** modal, enter your **First name** and **Last name**.
+1. Click **Save**.
+
+### Change your email
+
+If you registered with an email address, you can change your account password in the CockroachCloud Console:
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. To change your email, click the pencil icon in the **Email address** row.
+1. In the **Change email address** modal, enter the new **Email address**.
+1. Click **Save**.
+
+    A confirmation email will be sent to the new email address. Click **Verify email** in the email to confirm the change.
+
+### Change your account password
+
+If you registered with an email address, you can change your account password in the CockroachCloud Console:
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. To edit your password, click the pencil icon in the **Password** row.
+1. In the **Change password** modal, enter your **Current password** and **New password**.
+1. Click **Save**.
+
+{{site.data.alerts.callout_info}}
+Changing your account password will _not_ change your [SQL user](user-authorization.html#create-a-sql-user) password.
+{{site.data.alerts.end}}
