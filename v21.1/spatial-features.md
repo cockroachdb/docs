@@ -12,6 +12,7 @@ See the links below for more information about how to use CockroachDB for spatia
 
 - [Install CockroachDB](install-cockroachdb.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 
 ## Migrating spatial data into and out of CockroachDB
 

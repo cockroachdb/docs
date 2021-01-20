@@ -299,6 +299,7 @@ If you encounter behavior that you think is due to a performance issue, please g
 
 - [Install CockroachDB](install-cockroachdb.html)
 - [Spatial Features](spatial-features.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial & GIS Glossary of Terms](spatial-glossary.html)
 - [Working with Spatial Data](spatial-data.html)

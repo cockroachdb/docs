@@ -64,6 +64,7 @@ DROP TABLE tmp_linestrings;
 
 ## See also
 
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial objects](spatial-features.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)
