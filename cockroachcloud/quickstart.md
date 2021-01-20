@@ -41,6 +41,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
       <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="homebrew">Homebrew</button>
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
