@@ -45,11 +45,4 @@
     > CREATE DATABASE bank;
     ~~~
 
-<!-- 1. Give the your user the necessary permissions:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > GRANT ALL ON DATABASE bank TO <username>;
-    ~~~ -->
-
 </section>

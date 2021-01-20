@@ -87,16 +87,16 @@ $ python3 example.py \
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Before running the code, update the connection string that you copied from the [earlier](#set-up-your-cluster-connection) on the **Connection info** modal as follows:
-
-- Replace `defaultdb` with `bank` (the name of the database you created [earlier](#create-a-database)).
-- Replace `<your_certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
-
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
 "postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt"
 ~~~
+
+Before running the code, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal as follows:
+
+- Replace `defaultdb` with `bank` (the name of the database you created [earlier](#step-3-create-a-database)).
+- Replace `<your_certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 
 {{site.data.alerts.callout_info}}
 If you are using the connection string that you [copied from the **Connection info** modal](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.
