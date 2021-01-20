@@ -71,6 +71,7 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.
 ## See also
 
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)

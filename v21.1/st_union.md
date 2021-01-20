@@ -247,6 +247,7 @@ In this example, we will generate a single geometry from many individual points 
 ## See also
 
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
