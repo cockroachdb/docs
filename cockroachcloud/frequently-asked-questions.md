@@ -1,12 +1,12 @@
 ---
 title: Frequently Asked Questions
-summary: CockroachCloud FAQs
+summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-frequently-asked-questions.html
 ---
 
-This page answers the frequently asked questions.
+This page answers the frequently asked questions about the paid version of CockroachCloud. For answers to frequently asked questions about the CockroachCloud Free (beta), see [CockroachCloud Free FAQs](free-faqs.html).
 
 ## Cluster basics
 
@@ -65,7 +65,7 @@ Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your clu
 
 ### How do I add nodes?
 
-To request to add nodes, you can contact [Support](https://support.cockroachlabs.com/hc/en-us). Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
+You can add nodes by accessing the **Clusters** page on the [CockroachCloud Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for.
 
 ### Do you auto-scale?
 
@@ -99,6 +99,10 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
+### Do you have a UI? How can I see details?
+
+All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
+
 ## Cluster troubleshooting
 
 ### What do I do if my queries are too slow?
@@ -118,7 +122,3 @@ Today, we do not have an offering that manages running CockroachDB on customer p
 ### Can I see a demo?
 
 Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happy to show you a demo of our CockroachCloud offering.
-
-### Do you have a UI? How can I see details?
-
-All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
