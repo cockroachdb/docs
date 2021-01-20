@@ -53,11 +53,11 @@ postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
 ----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------
  `<username>`   | The [SQL user](create-user.html) that will own the client session.                                                                                                                            | ✗
  `<password>`   | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that CockroachDB currently does not allow passwords with special characters to be passed in a URL. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35998).<br><br>[Find more detail about how CockroachDB handles passwords](authentication.html#client-authentication). | ✗
- `<host>`       | The host name or address of a CockroachDB node or load balancer.                                                                                                                                          | Required by most client drivers.
- `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt.                                           | Required by most client drivers.
- `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`.                                                                                         | ✗
+ `<host>`       | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
+ `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
+ `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
  `<directory-path>` |  The directory path to the client listening for a socket connection.                                                                                             | Required when specifying a Unix domain socket URI.
- `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings.                                                                                            | ✗
+ `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | `options=--cluster=<cluster name>` required for free CockroachCloud clusters.
 
 
 {{site.data.alerts.callout_info}}
@@ -88,6 +88,7 @@ Parameter | Description | Default value
 `sslrootcert` | Path to the [CA certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslcert` | Path to the [client certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslkey` | Path to the [client private key](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
+`options` | Additional command-line options to be passed to the server. Specify the cluster name when connecting to CockroachCloud free-tier clusters by setting `options=--cluster=<cluster name>`. | Empty string
 
 ### Secure connections with URLs
 
