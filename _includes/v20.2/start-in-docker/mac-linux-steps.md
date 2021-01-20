@@ -96,7 +96,7 @@ We've used `roachnet` as the network name here and in subsequent steps, but feel
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ grep 'node starting' cockroach-data/roach1/logs/cockroach.log -A 11
+    $ docker exec -it roach1 grep 'node starting' cockroach-data/logs/cockroach.log -A 11
     ~~~
 
     The output will look something like this:
@@ -252,5 +252,5 @@ If you do not plan to restart the cluster, you may want to remove the Docker vol
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ docker volume rm roachdb1 roachdb2 roachdb3
+$ docker volume rm roach1 roach2 roach3
 ~~~
