@@ -5,6 +5,7 @@ toc: true
 ---
 
 Current CockroachDB code is licensed in three ways: 
+
 -  Business Source License (BSL)
 -  Cockroach Community License (Free)
 -  Cockroach Community License (Paid)
@@ -31,7 +32,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Restore](restore.html)** | | ✓ |
 **[Full Backups](backup-and-restore.html#perform-core-backup-and-restore)** | | ✓ |
 **[Incremental Backups](backup-and-restore.html#full-and-incremental-backups)** | | | ✓
-**[Other Advanced Backups](backup-and-restore.html#perform-enterprise-backup-and-restore)** | | | ✓
+**[Other Advanced Backup Features](backup-and-restore.html#perform-enterprise-backup-and-restore)** | | | ✓
 **[Core Changefeed](change-data-capture.html#create-a-changefeed-core)** | | ✓ |
 **[Enterprise Changefeed](change-data-capture.html#configure-a-changefeed-enterprise)** | | | ✓
 
