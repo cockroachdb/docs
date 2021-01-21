@@ -1,5 +1,5 @@
 ---
-title: Quickstart with CockroachCloud
+title: Quickstart with CockroachCloud Free (beta)
 summary: Learn how to create and use your free CockroachCloud cluster.
 toc: true
 redirect_from:
@@ -7,7 +7,16 @@ redirect_from:
 - create-your-account.html
 ---
 
+<div class="filters clearfix">
+    <a href="quickstart.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud (30-day trial)</strong></button></a>
+</div>
+
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.
+
+{{site.data.alerts.callout_info}}
+CockroachCloud Free (beta) is in limited availability. If you do not have access yet, you can [start your first cluster using a 30-day free trial](quickstart-trial-cluster.html).
+{{site.data.alerts.end}}
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
@@ -32,7 +41,6 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
       <button class="filter-button page-level" data-scope="linux">Linux</button>
-      <button class="filter-button page-level" data-scope="homebrew">Homebrew</button>
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
@@ -41,6 +49,10 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xJ
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    You can also use Homebrew to install the CockroachDB binary by running `brew install cockroachdb/tap/cockroach`.
+    {{site.data.alerts.end}}
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
@@ -48,13 +60,6 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar  xvz
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="homebrew">
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ brew install cockroachdb/tap/cockroach
     ~~~
     </section>
 
@@ -70,6 +75,10 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    If you used Homebrew, Homebrew will automatically add the CockroachDB binary to your path.
+    {{site.data.alerts.end}}
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
@@ -135,5 +144,5 @@ Learn more:
 
 - Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](connect-to-your-cluster.html#step-2-create-a-sql-user).
-- Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install another client framework](../stable/install-client-drivers.html) for your preferred language.
+- Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Explore our [sample apps](../stable/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
