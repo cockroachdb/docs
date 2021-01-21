@@ -18,15 +18,15 @@ Type | Description
 -------------|------------
 **Apache 2.0 License** | Core features under the Apache License are free to use and fully open-source. BSL features convert to this license three years after their release. For license conversion dates, see the [Licensing FAQs](licensing-faqs.html).
 **Business Source License** | BSL Features are free to use and the source code is available, but users may not use CockroachDB as a service without an agreement with Cockroach Labs.
-**Cockroach Community License (Free)** | CCL (Free) features are free to use, but the source code is not available to users.
-**Cockroach Community License (Paid)** | CCL (Paid) features require an enterprise license key to access and the source code is not available to users.
+**Cockroach <br/> Community License (Free)** | CCL (Free) features are free to use, but the source code is not available to users.
+**Cockroach <br/> Community License (Paid)** | CCL (Paid) features require an enterprise license key to access and the source code is not available to users.
 
 ## Core feature licensing
 
 The table below shows how core features are licensed. For a complete list of enterprise features, see [Enterprise Features](enterprise-licensing.html).
 
 Feature          | BSL | CCL (free)      | CCL (paid) 
------------------|-----|-----------------|---------------
+-----------------|:-----:|:-----------------:|:---------------:
 **[Import](import.html)** | | ✓ |
 **[Export](export.html)** | ✓ | |
 **[Restore](restore.html)** | | ✓ |
