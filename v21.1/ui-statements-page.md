@@ -99,6 +99,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 - **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 - **Transaction Type** displays the type of transaction (implicit or explicit).
 - **Distributed execution?** indicates whether the execution was distributed.
+- **Vectorized execution?** indicates whether the transaction used the vectorized execution engine.
 - **Used cost-based optimizer?** indicates whether the execution used the [cost-based optimizer](cost-based-optimizer.html).
 - **Failed?** indicates whether the execution was successful.
 
