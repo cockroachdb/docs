@@ -17,4 +17,4 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.3](v20.2.3.html).
 ### Bug Fixes
 
 - Fixed a bug where deleting your only organization would prevent your email from being used for a new organization in the future.
-- Fixed a bug where VPC peering appeared to be available on clusters that it wasn't supported on.
+- Fixed a bug where [VPC peering](../cockroachcloud/network-authorization.html#vpc-peering) appeared to be available on clusters that it wasn't supported on.
