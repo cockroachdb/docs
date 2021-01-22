@@ -4,26 +4,47 @@ summary: Index columns in your schema
 toc: true
 ---
 
-This page provides guidance on creating secondary indexes. We briefly discuss syntax and best practices, and then we provide a simple tutorial based on Cockroach Labs' fictional vehicle-sharing company [MovR](movr.html).
+This page provides best-practice guidance on creating indexes, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
 
-Recall that indexes are the logical objects in a cluster that sort the rows in a table, by column. Before you start adding indexes to your cluster, you need to [define the columns in your table](schema-design-database-tables.html).
+{{site.data.alerts.callout_success}}
+For detailed reference documentation on the `CREATE INDEX` statement, including additional examples, see the [`CREATE INDEX` syntax page](create-index.html).
+{{site.data.alerts.end}}
 
-{% include {{page.version.version}}/sql/dev-schema-changes.md %}
+<div class="filters filters-big clearfix">
+  <button class="filter-button" data-scope="local">Local</button>
+  <button class="filter-button" data-scope="cockroachcloud">CockroachCloud</button>
+</div>
 
-## Creating indexes
+## Before you begin
 
-When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself. After a column is indexed, SQL can easily filter its values using the index instead of scanning each row one-by-one.
+Before reading this page, do the following:
 
-Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
+- [Install CockroachDB](install-cockroachdb.html).
+<div class="filter-content" markdown="1" data-scope="local">
+- Start a [local CockroachDB cluster](secure-a-cluster.html).
+</div>
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+- Create a [CockroachCloud cluster](cockroachcloud/create-your-cluster.html).
+</div>
+- Review [the database schema objects](schema-design-overview.html).
+- Create [a database](schema-design-database.html).
+- Create [a user-defined schema](schema-design-schema.html).
+- Create [a table](schema-design-table.html).
 
-The `primary` index helps filter a table's primary key but doesn't help SQL find values in any other columns. You can use secondary indexes to improve the performance of queries using columns not in a table's primary key.
+## Create a secondary index
 
-To create a secondary index, do one of the following:
+Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help CockroachDB queries find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
+
+CockroachDB automatically creates an index on the table's [primary key](primary-key.html) key columns. This index is called the `primary` index. The `primary` index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
+
+To improve the performance of queries that use columns not in a table's primary key, use secondary indexes. To create a secondary index, do one of the following:
 
 - Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
 - Use a [`CREATE INDEX`](create-index.html) statement.
 
 Note that CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
+
+
 
 ### Best practices
 

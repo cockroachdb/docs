@@ -98,6 +98,28 @@ Column definitions give structure to a table by separating the values in each ro
 
 Column definitions generally take the following form:
 
+Column definitions give structure to a table by separating values of different significance and data type. Column definitions generally take the following form:
+
+~~~
+[column_name] [DATA_TYPE] [column_qualification]
+~~~
+
+Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-types.html) of the row values in the column, and `column_qualification` is some column qualification, such as a [constraint](#add-additional-constraints). For a simple example, see [below](#column-definition-examples).
+
+#### Column definition best practices
+
+Here are some best practices to follow when defining table columns:
+
+- Review the supported column [data types](data-types.html), and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
+- Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and cause significant performance degradation.
+- Select a primary key, following the best practices for [selecting primary key columns](#select-the-primary-key-columns). After reviewing the primary key best practices, decide if you need to define any dedicated primary key columns.
+- Review the best practices for [adding additional constraints](#add-additional-constraints), and decide if you need to define a dedicated primary key column.
+
+#### Column definition examples
+
+In the `dbinit.sql` file, add a few column definitions for the users' names and email addresses to the `users` `CREATE TABLE` statement:
+
+{% include copy-clipboard.html %}
 ~~~
 [column_name] [DATA_TYPE] [column_qualification]
 ~~~
@@ -273,7 +295,7 @@ For detailed reference documentation for each supported constraint, see [the con
 
 #### Populate with default values
 
-To set default values on columns, use the `DEFAULT` constraint. Default values enable you to write queries without the need to specify values for every column.
+Primary key columns can also be single columns, if those columns are guaranteed to uniquely identify the row, and their values are well-distributed across the cluster.
 
 When combined with [supported SQL functions](functions-and-operators.html), default values can save resources in your application's persistence layer by offloading computation onto CockroachDB. For example, rather than using an application library to generate unique `UUID` values, you can set a default value to be an automatically-generated `UUID` value with the `gen_random_uuid()` SQL function. Similarly, you could use a default value to populate a `TIMESTAMP` column with the current time of day, using the `now()` function.
 
@@ -298,7 +320,7 @@ For detailed reference documentation on the `DEFAULT` constraint, including addi
 
 #### Reference other tables
 
-To reference values in another table, use a `FOREIGN KEY` constraint. `FOREIGN KEY` constraints enforce [referential integrity](https://en.wikipedia.org/wiki/Referential_integrity), which means that a column can only refer to an existing column.
+### Add additional constraints
 
 For example, suppose you want to add a new table that contains data about the rides that MovR users are taking on vehicles. This table should probably include information about the location and duration of the ride, as well as information about the vehicle used for the ride.
 
@@ -374,7 +396,7 @@ For detailed reference documentation on the `UNIQUE` constraint, including addit
 
 #### Prevent `NULL` values
 
-To prevent `NULL` values in a column, use the `NOT NULL` constraint. If you specify a `NOT NULL` constraint, all queries against the table with that constraint must specify a value for that column, or have a default value specified with a `DEFAULT` constraint.
+For example, in the `vehicles` table definition, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. Now, add a default value to the `creation_time` column:
 
 For example, if you require all users of the MovR platform to have an email on file, you can add a `NOT NULL` constraint to the `email` column of the `users` table:
 
