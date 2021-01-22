@@ -260,7 +260,7 @@ For a simple but complete "Hello World" example app, see [Build a Ruby App with 
 
 ### ActiveRecord
 
-**Support level:** Full
+**Support level:** Full (4.2, 5.2), Beta (6.0)
 
 To install ActiveRecord, the [pg driver](https://rubygems.org/gems/pg), and a [CockroachDB Ruby package](https://github.com/cockroachdb/activerecord-cockroachdb-adapter) that accounts for some minor differences between CockroachDB and PostgreSQL:
 
@@ -270,7 +270,7 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 ~~~
 
 {{site.data.alerts.callout_info}}
-The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 4.2.x of ActiveRecord requires version 0.1.x of the adapter; version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter.
+The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 4.2.x of ActiveRecord requires version 0.1.x of the adapter; version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.0betax of the adapter.
 {{site.data.alerts.end}}
 
 For a simple but complete "Hello World" example app, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
