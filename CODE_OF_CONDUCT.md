@@ -8,7 +8,7 @@ When posting or participating in a community event or online forum, please use t
 - Be specific and detailed. Include relevant details in your inquiries (eg. versions, error messages, deployment environment, etc.), and 
   avoid asking off-topic questions in existing discussion threads.
 - Share experiences and knowledge publicly. Everyone can benefit from the exchange of knowledge, so we encourage all community members to 
-  share their experience in public channels (at events, on the [forum](https://forum.cockroachlabs.com/), [GitHub](https://github.com/cockroachdb), [StackOverflow](https://stackoverflow.com/search?q=cockroachdb), [Slack](https://cockroa.ch/slack), etc.).
+  share their experience in public channels (at events, on the [forum](https://forum.cockroachlabs.com/), [GitHub](https://github.com/cockroachdb), [StackOverflow](https://stackoverflow.com/search?q=cockroachdb), [Slack](https://go.crdb.dev/p/slack), etc.).
 - Collaborate and help each other. If someone lacks knowledge in a particular area, help to educate and collaborate with them.
 - Have patience. Many community members are volunteers, and it may take some time to get a response to your question.
 - Be kind and respectful. Communication should be positive and constructive. Every design or implementation choice carries a trade-off and numerous costs, and there is seldom a right answer.
