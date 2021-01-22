@@ -1,4 +1,4 @@
-This playground gives you an interactive SQL shell connected to a temporary, single-node CockroachDB cluster. It is pre-loaded with a database called `movr`. Run `SHOW TABLES;`{{execute}} for more details.
+This playground gives you an interactive SQL shell to a temporary, single-node CockroachDB cluster running a testing release of v21.1. The cluster is pre-loaded with a sample dataset and configured for CockroachDB's [spatial](https://www.cockroachlabs.com/docs/v20.2/spatial-features.html) functionality.
 
 For the basics of CockroachDB SQL, see [Learn Cockroach SQL](https://www.cockroachlabs.com/docs/stable/learn-cockroachdb-sql.html).
 

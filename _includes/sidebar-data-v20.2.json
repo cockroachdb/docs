@@ -2595,5 +2595,12 @@
       },
       {% include sidebar-releases.json %}
     ]
+  },
+  {
+    "title": "Playground",
+    "is_top_level": true,
+    "urls": [
+      "/${VERSION}/cockroachdb-playground.html"
+    ]
   }
 ]
