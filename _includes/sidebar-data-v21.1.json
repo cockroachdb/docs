@@ -6,6 +6,13 @@
       "/cockroachcloud/quickstart.html"
     ]
   },
+  {
+    "title": "SQL Playground",
+    "is_top_level": true,
+    "urls": [
+      "/tutorials/cockroachdb-playground.html"
+    ]
+  },
   {% include sidebar-data-cockroachcloud.json %},
   {
     "title": "CockroachDB",
