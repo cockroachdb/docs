@@ -8,5 +8,5 @@ cockroach cert create-ca --certs-dir=certs --ca-key=my-safe-directory/ca.key
 cockroach cert create-node localhost $(hostname) --certs-dir=certs --ca-key=my-safe-directory/ca.key
 cockroach cert create-client root --certs-dir=certs --ca-key=my-safe-directory/ca.key
 cockroach start-single-node --certs-dir=certs --listen-addr=localhost:26257 --http-addr=localhost:8080 --background
-cockroach workload init movr 'postgres://root@localhost:26257?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key
+cockroach workload init movr 'postgres://root@localhost:26257?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
 cockroach sql --database=movr --certs-dir=certs
