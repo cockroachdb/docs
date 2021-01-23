@@ -24,21 +24,19 @@ Connection pooling can be a enabled as a feature of the driver, a separate libra
 
 ## Sizing connection pools
 
-Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is higher than the time it takes a smaller number of threads to run sequentially.
+Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-This seems counterintuitive. Shouldn't a pool maintain more threads so each operation can immediately get a connection to the database server, and then let the system process these threads in parallel? Each processor core, however, can only execute one thread at a time. When there are more threads than processor cores, the system will use context switching to time slice the thread execution. For example, if you have a system with a single core and two threads, processing threads 1 and 2 in parallel results in the system context switching to pause execution of thread 1 and begin executing thread 2, and then pause execution of thread 2 to resume executing thread 1. Executing thread 1 completely and then executing thread 2 will be faster because the system doesn't need to context switch, even though thread 2 had to wait until thread 1 fully completed to begin executing.
+Each processor core can only execute one thread at a time. When there are more threads than processor cores, the system will use context switching to [time-slice](https://en.wikipedia.org/wiki/Preemption_(computing)#Time_slice) the thread execution. For example, if you have a system with a single core and two threads, processing threads 1 and 2 in parallel results in the system context switching to pause execution of thread 1 and begin executing thread 2, and then pause execution of thread 2 to resume executing thread 1. Executing thread 1 completely and then executing thread 2 will be faster because the system doesn't need to context switch, even though thread 2 had to wait until thread 1 fully completed to begin executing.
 
-Processor performance isn't the only factor, however. Storage and network performance also will affect the ability of a thread to fully execute. If a thread is blocked by network or storage latency, adding connections to the pool is a good idea so other threads can execute while the original thread is being blocked.
+Storage and network performance also will affect the ability of a thread to fully execute. If a thread is blocked by network or storage latency, adding connections to the pool is a good idea so other threads can execute while the original thread is being blocked.
 
-If your storage system uses disks, disk latency from the spinning disk platters will result in blocking in thread execution. Using non-disk storage like SSDs will usually result in better latency. However like the processor core limitation, using SSDs doesn't mean that you should increase the connection pool size. It means you should keep the connection pool size closer to the number of processor cores.
+If your storage system uses disks, disk latency from the spinning disk platters will result in blocking in thread execution. Using non-disk storage like SSDs will usually result in better latency. However, like the processor core limitation, using SSDs doesn't mean that you should increase the connection pool size. It means you should keep the connection pool size closer to the number of processor cores.
 
 Network latency is typically the least important factor in determining the connection pool size.
 
-The HikariCP project recommends the following formula for sizing your connection pool:
+The [HikariCP](https://github.com/brettwooldridge/HikariCP) project recommends the following formula for sizing your connection pool:
 
-~~~
 connections = ((number of cores * 2)) + effective spindle count)
-~~~
 
 The "effective spindle count" is the number of disks that are active after the storage data has filled any disk cache. If the data is fully cached, the effective spindle count is zero. If there is no disk cache, the effective spindle count is the number of disk spindles.
 
@@ -50,9 +48,7 @@ In this example, a Java application similar to the [basic JDBC example](build-a-
 
 Using the connection pool formula above:
 
-~~~
 connections = ((10 [processor cores] * 2)) + 2 [spindles] )
-~~~
 
 The connection pool size should be 22.
 
