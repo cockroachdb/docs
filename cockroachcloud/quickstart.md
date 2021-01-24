@@ -14,9 +14,7 @@ redirect_from:
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.
 
-{{site.data.alerts.callout_info}}
-CockroachCloud Free (beta) is in limited availability. If you do not have access yet, you can [start your first cluster using a 30-day free trial](quickstart-trial-cluster.html).
-{{site.data.alerts.end}}
+{% include cockroachcloud/limited-availability.md %}
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
 
