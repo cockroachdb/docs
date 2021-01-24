@@ -1,5 +1,5 @@
 ---
-title: CockroachDB Playground
+title: SQL Playground
 summary: Use CockroachDB v20.2 in a sandboxed playground environment
 toc: false
 ---
