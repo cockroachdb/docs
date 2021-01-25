@@ -40,7 +40,7 @@ Before reading this page, do the following:
 
 ## Create a table
 
-Tables are the [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that store data sent from your application's persistence layer. Tables organize records of data in rows and columns.
+Tables are the [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that store data sent from your application's persistence layer. Tables organize records of data with rows and columns.
 
 To create a table, use a [`CREATE TABLE` statement](create-table.html), following the best practices that we have listed in the following sections:
 
@@ -49,6 +49,8 @@ To create a table, use a [`CREATE TABLE` statement](create-table.html), followin
 - [Select primary key columns](#select-primary-key-columns)
 - [Add additional constraints](#add-additional-constraints)
 - [Execute `CREATE TABLE` statements](#execute-create-table-statements)
+
+After reviewing the best practices in each section, see the provided example.
 
 ### Name a table
 
@@ -104,18 +106,18 @@ Column definitions give structure to a table by separating values of different s
 [column_name] [DATA_TYPE] [column_qualification]
 ~~~
 
-Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-types.html) of the row values in the column, and `column_qualification` is some column qualification, such as a [constraint](#add-additional-constraints). For a simple example, see [below](#column-definition-examples).
+Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-types.html) of the row values in the column, and `column_qualification` is some column qualification, such as a [constraint](#add-additional-constraints).
 
 #### Column definition best practices
 
 Here are some best practices to follow when defining table columns:
 
-- Review the supported column [data types](data-types.html), and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
+- Review the column [data types](data-types.html) supported by CockroachDB, and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
 - Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and cause significant performance degradation.
 - Select a primary key, following the best practices for [selecting primary key columns](#select-the-primary-key-columns). After reviewing the primary key best practices, decide if you need to define any dedicated primary key columns.
-- Review the best practices for [adding additional constraints](#add-additional-constraints), and decide if you need to define a dedicated primary key column.
+- Review the best practices for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints.
 
-#### Column definition examples
+#### Column definition example
 
 In the `dbinit.sql` file, add a few column definitions for the users' names and email addresses to the `users` `CREATE TABLE` statement:
 
