@@ -117,7 +117,7 @@ In this module, you'll run a sample workload to simulate multiple client connect
     ~~~
     </div>
 
-2. Run the [`cockroach gen haproxy`](../cockroach-gen.html) command, specifying the port of any node:
+2. Run the [`cockroach gen haproxy`](cockroach-gen.html) command, specifying the port of any node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
