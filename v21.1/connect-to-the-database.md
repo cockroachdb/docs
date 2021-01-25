@@ -4,15 +4,24 @@ summary: How to connect to a CockroachDB cluster from your application
 toc: true
 ---
 
-This page has instructions for connecting to a CockroachDB cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a [secure local cluster][local_secure] to a `bank` database by a user named `maxroach`. Depending on your cluster's configuration, you may need to edit this connection string.
+This page has instructions for connecting to a CockroachDB or CockroachCloud cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
+
+The connection strings listed on this page set the required authentication options to connect to either [local](authentication.html) or [free CockroachCloud](cockroachcloud/authentication.html) clusters. Local clusters use self-signed SSL certificates. CockroachCloud clusters use a signed certificate generated for your cluster that you download from the CockroachCloud console.
 
 For a reference that lists all of the supported cluster connection parameters, see [Connection Parameters][connection_params].
 
+<div class="filters filters-big clearfix">
+  <button class="filter-button" data-scope="local">Local</button>
+  <button class="filter-button" data-scope="cockroachcloud">CockroachCloud</button>
+</div>
+
 ## Before you begin
 
-Make sure you have already:
+Do the following:
 
-- Set up a [local cluster](secure-a-cluster.html).
+- Set up either a local CockroachDB or a CockroachCloud cluster:
+-- [Create](install-cockroachdb.html) and [configure](secure-a-cluster.html) a local cluster.
+-- [Create](cockroachcloud/create-your-cluster.html) and [configure](cockroachcloud/connect-to-your-cluster.html) a CockroachCloud cluster.
 - [Installed a Postgres client](install-client-drivers.html).
 
 ## Connect
@@ -26,10 +35,16 @@ Make sure you have already:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+{% remote_include https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/connect_to_crc.md|<!-- BEGIN CRC free sql -->|<!-- END CRC free sql --> %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs --host=localhost:26257
 ~~~
+</section>
 
 For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
 
@@ -37,6 +52,26 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 <section class="filter-content" markdown="1" data-scope="go">
 
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+{% include copy-clipboard.html %}
+~~~ go
+import (
+    "database/sql"
+    "fmt"
+    "log"
+    _ "github.com/lib/pq"
+)
+
+db, err := sql.Open("postgres",
+        "postgresql://<user>:<password>@<global host>:26257/bank?sslmode=verify-full&sslrootcert=<path to the CA certificate>&options=--cluster=<cluster_name>")
+if err != nil {
+    log.Fatal("error connecting to the database: ", err)
+}
+defer db.Close()
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
 {% include copy-clipboard.html %}
 ~~~ go
 import (
@@ -53,6 +88,7 @@ if err != nil {
 }
 defer db.Close()
 ~~~
+</section>
 
 {% include {{page.version.version}}/app/for-a-complete-example-go.md %}
 
@@ -60,6 +96,27 @@ defer db.Close()
 
 <section class="filter-content" markdown="1" data-scope="java">
 
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+{% include copy-clipboard.html %}
+~~~ java
+import java.sql.*;
+import javax.sql.DataSource;
+
+PGSimpleDataSource ds = new PGSimpleDataSource();
+ds.setServerName("<global host>");
+ds.setPortNumber(26257);
+ds.setDatabaseName("<cluster name>.bank");
+ds.setUser("<username>");
+ds.setPassword("<password>");
+ds.setSsl(true);
+ds.setSslMode("verify-full");
+ds.setSslrootCert("<path to the CA certificate>");
+ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
+ds.setApplicationName("BasicExample");
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
 {% include copy-clipboard.html %}
 ~~~ java
 import java.sql.*;
@@ -78,6 +135,7 @@ ds.setSslKey("certs/client.maxroach.key.pk8");
 ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
 ds.setApplicationName("BasicExample");
 ~~~
+</section>
 
 {% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
@@ -85,6 +143,25 @@ ds.setApplicationName("BasicExample");
 
 <section class="filter-content" markdown="1" data-scope="python">
 
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+{% include copy-clipboard.html %}
+~~~ python
+import psycopg2
+
+conn = psycopg2.connect(
+    database='bank',
+    user='<username>',
+    password='<password>'
+    sslmode='verify-full',
+    sslrootcert='<path to the CA certificate>',
+    port=26257,
+    host='<global host>',
+    options="--cluster=<cluster_name>"
+)
+~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
 {% include copy-clipboard.html %}
 ~~~ python
 import psycopg2
@@ -100,6 +177,7 @@ conn = psycopg2.connect(
     host='localhost'
 )
 ~~~
+</section>
 
 {% include {{page.version.version}}/app/for-a-complete-example-python.md %}
 
