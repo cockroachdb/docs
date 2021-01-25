@@ -94,7 +94,7 @@ homepage: true
       <ul>
         <li><a href="../stable/developer-guide-overview.html">Common Dev Tasks</a></li>
         <li><a href="../stable/hello-world-example-apps.html">Sample Apps</a></li>
-        <li><a href="../stable/sql-feature-support.htm">SQL Reference</a></li>
+        <li><a href="../stable/sql-feature-support.html">SQL Reference</a></li>
         <li><a href="../stable/performance-best-practices-overview.html">SQL Best Practices</a></li>
         <li><a href="../stable/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
         </ul>
@@ -108,7 +108,7 @@ homepage: true
         <li><a href="../stable/frequently-asked-questions.html">CockroachDB FAQs</a></li>
         <li><a href="upgrade-policy.html">Upgrade Policy</a></li>
         <li><a href="deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html">Deploy a Python App</a></li>
-        <li><a href="dstream-changefeed-to-snowflake-aws.html">Stream a Changefeed</a></li>
+        <li><a href="stream-changefeed-to-snowflake-aws.html">Stream a Changefeed</a></li>
         </ul>
       </div>
     </div>
