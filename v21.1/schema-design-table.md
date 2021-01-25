@@ -40,7 +40,7 @@ Before reading this page, do the following:
 
 ## Create a table
 
-Tables are the [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that store data sent from your application's persistence layer. Tables organize records of data with rows and columns.
+Tables are the [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that store data sent from your application's persistence layer. Tables organize records of data in rows and columns.
 
 To create a table, use a [`CREATE TABLE` statement](create-table.html), following the best practices that we have listed in the following sections:
 
@@ -50,7 +50,7 @@ To create a table, use a [`CREATE TABLE` statement](create-table.html), followin
 - [Add additional constraints](#add-additional-constraints)
 - [Execute `CREATE TABLE` statements](#execute-create-table-statements)
 
-After reviewing the best practices in each section, see the provided example.
+After reviewing the best practices in each section, see the example provided in that section.
 
 ### Name a table
 
@@ -115,11 +115,11 @@ Here are some best practices to follow when defining table columns:
 - Review the column [data types](data-types.html) supported by CockroachDB, and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
 - Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and cause significant performance degradation.
 - Select a primary key, following the best practices for [selecting primary key columns](#select-the-primary-key-columns). After reviewing the primary key best practices, decide if you need to define any dedicated primary key columns.
-- Review the best practices for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints.
+- Review the best practices for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints to your columns.
 
-#### Column definition example
+#### Column definition examples
 
-In the `dbinit.sql` file, add a few column definitions for the users' names and email addresses to the `users` `CREATE TABLE` statement:
+Add a few column definitions for the users' names and email addresses to the `users` `CREATE TABLE` statement in the `dbinit.sql` file:
 
 {% include copy-clipboard.html %}
 ~~~
@@ -212,7 +212,7 @@ The `users` and `vehicles` tables now have syntactically valid `CREATE TABLE` st
 
 ### Select primary key columns
 
-A primary key is a column, or set of columns, whose values uniquely identify rows of data. Every table requires a primary key.
+A primary key is a column, or set of columns, whose values uniquely identify rows of data. Every table requires a primary key. When a table is created, CockroachDB creates an index (called the `primary` index) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
 
 Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [column constraint](constraints.html). The `PRIMARY KEY` constraint requires that all the constrained column(s) contain only unique and non-`NULL` values.
 
