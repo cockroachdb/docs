@@ -14,10 +14,10 @@ cta: false
     <div class="row d-lg-flex mx-0">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
-        <a href="../cockroachcloud/quickstart.html" class="h-100">
+        <a href="secure-a-cluster.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">            
-            <h6 class="mt-2 mt-0 text-black">Start a free cloud<br> cluster</h6>
-            <p class="text-black">Run a multi-node CockroachDB cluster locally.</p>
+            <h6 class="mt-2 mt-0 text-black">Start a local cluster<br> cluster</h6>
+            <p class="text-black">Run a multi-node CockroachDB cluster locally</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
@@ -25,9 +25,9 @@ cta: false
       </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
-        <a href="https://www.cockroachlabs.com/docs/stable/start-a-local-cluster" class="h-100">
+        <a href="hello-world-example-apps.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">Sample <br>Apps</h6>
+            <h6 class="mt-2 mt-0 text-black">Sample <br>apps</h6>
             <p class="text-black">Examples that show you how to build a simple "Hello World" application with CockroachDB</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
@@ -36,10 +36,10 @@ cta: false
         </div>
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
-        <a href="https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html" class="h-100">
+        <a href="frequently-asked-questions.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">          
             <h6 class="m-0 text-black">CockroachDB <br>FAQ</h6>
-            <p class="text-black">Answers to frequently asked questions.</p>
+            <p class="text-black">Answers to frequently asked questions</p>
             <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
           </div>
           </a>
@@ -53,7 +53,7 @@ cta: false
 
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-12 text-center">
-      <a class="btn btn-redirect mt-3" href="https://www.cockroachlabs.com/docs/stable/install-cockroachdb-mac.html">Get CockroachDB <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
+      <a class="btn btn-redirect mt-3" href="install-cockroachdb.html">Get CockroachDB <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
     </div>
   </div>
 
@@ -68,95 +68,83 @@ cta: false
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Get Started</p>
       <ul>
-        <li><a href="https://university.cockroachlabs.com/catalog">Online Training</a></li>
-        <li><a href="/docs/v20.2/install-cockroachdb">Install CockroachDB</a></li>
-        <li><a href="/docs/v20.2/start-a-local-cluster">Start a Local Cluster</a></li>
-        <li><a href="/docs/v20.2/learn-cockroachdb-sql">Learn CockroachDB SQL</a></li>
-        <li><a href="/docs/v20.2/build-an-app-with-cockroachdb">Hello, World!</a></li>
-        <li><a href="/docs/v20.2/demo-fault-tolerance-and-recovery">Explore Capabilities</a></li>
+        <li><a href="install-cockroachdb.html">Install CockroachDB</a></li>
+        <li><a href="secure-a-cluster.html">Start a Local Cluster</a></li>
+        <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
+        <li><a href="hello-world-example-apps.html">Hello, World!</a></li>
+        <li><a href="demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Develop</p>
       <ul>
-        <li><a href="/docs/v20.2/install-client-drivers">Client Drivers</a></li>
-        <li><a href="/docs/v20.2/connection-parameters">Connection Parameters</a></li>
-        <li><a href="/docs/v20.2/performance-best-practices-overview">SQL Best Practices</a></li>
-        <li><a href="/docs/v20.2/sql-statements">SQL Statements</a></li>
-        <li><a href="/docs/v20.2/data-types">SQL Data Types</a></li>
-        <li><a href="/docs/v20.2/sql-tuning-with-explain">SQL Tuning</a></li>
+        <li><a href="developer-guide-overview.html">Common Dev Tasks</a></li>
+        <li><a href="hello-world-example-apps.html">Sample Apps</a></li>
+        <li><a href="sql-feature-support.html">SQL Reference</a></li>
+        <li><a href="performance-best-practices-overview.html">SQL Best Practices</a></li>
+        <li><a href="error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Deploy</p>
       <ul>
-        <li><a href="/docs/v20.2/recommended-production-settings">Production Checklist</a></li>
-        <li><a href="/docs/v20.2/topology-patterns">Topology Patterns</a></li>
-        <li><a href="/docs/v20.2/manual-deployment">Manual Deployment</a></li>
-        <li><a href="/docs/v20.2/orchestration">Orchestration</a></li>
-        <li><a href="/docs/v20.2/performance">Performance</a></li>
-        <li><a href="/docs/v20.2/upgrade-cockroach-version">Rolling Upgrade</a></li>
+        <li><a href="recommended-production-settings.html">Production Checklist</a></li>
+        <li><a href="../cockroachcloud/create-your-cluster.html">CockroachCloud Deployment</a></li>
+        <li><a href="orchestration.html">Self-Managed Deployment</a></li>
+        <li><a href="performance.html">Performance Profiles</a></li>
+        <li><a href="upgrade-cockroach-version.html">Cluster Maintenance</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Migrate</p>
       <ul>
-        <li><a href="/docs/v20.2/migration-overview">Overview</a></li>
-        <li><a href="/docs/v20.2/migrate-from-oracle">Migrate from Oracle</a></li>
-        <li><a href="/docs/v20.2/migrate-from-postgres">Migrate from Postgres</a></li>
-        <li><a href="/docs/v20.2/migrate-from-mysql">Migrate from MySQL</a></li>
-        <li><a href="/docs/v20.2/migrate-from-csv">Migrate from CSV</a></li>
+        <li><a href="migration-overview.html">Migration Overview</a></li>
+        <li><a href="migrate-from-oracle.html">Migrate from Oracle</a></li>
+        <li><a href="migrate-from-postgres.html">Migrate from Postgres</a></li>
+        <li><a href="migrate-from-mysql.html">Migrate from MySQL</a></li>
+        <li><a href="migrate-from-csv.html">Migrate from CSV</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Troubleshoot</p>
       <ul>
-        <li><a href="/docs/v20.2/common-errors">Overview</a></li>
-        <li><a href="/docs/v20.2/common-errors">Common Errors</a></li>
-        <li><a href="/docs/v20.2/cluster-setup-troubleshooting">Cluster Setup</a></li>
-        <li><a href="/docs/v20.2/query-behavior-troubleshooting">Query Behavior</a></li>
-        <li><a href="/docs/v20.2/support-resources">Support Resources</a></li>
+        <li><a href="troubleshooting-overview.html">Troubleshooting Overview</a></li>
+        <li><a href="common-errors.html">Common Errors</a></li>
+        <li><a href="cluster-setup-troubleshooting.html">Cluster Setup</a></li>
+        <li><a href="query-behavior-troubleshooting.html">Query Behavior</a></li>
+        <li><a href="support-resources.html">Support Resources</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Reference</p>
       <ul>
-        <li><a href="/docs/v20.2/sql-feature-support">SQL</a></li>
-        <li><a href="/docs/v20.2/cockroach-commands">CLI</a></li>
-        <li><a href="/docs/v20.2/cluster-settings">Cluster Settings</a></li>
-        <li><a href="/docs/v20.2/ui-overview">DB Console</a></li>
-        <li><a href="/docs/v20.2/third-party-database-tools">Third-Party Tools</a></li>
-      </ul>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-      <p class="landing-column-title">Learn More</p>
-      <ul>
-        <li><a href="/docs/v20.2/architecture/overview">Architecture</a></li>
-        <li><a href="/docs/v20.2/sql-feature-support">SQL Feature Support</a></li>
-        <li><a href="https://www.cockroachlabs.com/guides/">Whitepapers</a></li>
-        <li><a href="https://www.cockroachlabs.com/community/tech-talks/">Videos &amp; Webinars</a></li>
-        <li><a href="/docs/v20.2/cockroachdb-in-comparison">DB Comparisons</a></li>
+        <li><a href="architecture/overview.html">Architecture</a></li>
+        <li><a href="sql-feature-support.html">SQL</a></li>
+        <li><a href="cockroach-commands.html">CLI</a></li>
+        <li><a href="ui-overview">DB Console</a></li>
+        <li><a href="third-party-database-tools">Third-Party Tools</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">FAQs</p>
       <ul>
-        <li><a href="/docs/v20.2/frequently-asked-questions">Product FAQs</a></li>
-        <li><a href="/docs/v20.2/sql-faqs">SQL FAQs</a></li>
-        <li><a href="/docs/v20.2/operational-faqs">Operational FAQs</a></li>
-        <li><a href="/docs/v20.2/operational-faqs">Availability FAQs</a></li> 
-        <li><a href="/docs/v20.2/licensing-faqs">Licensing FAQs</a></li>
+        <li><a href="frequently-asked-questions.html">CockroachDB FAQs</a></li>
+        <li><a href="sql-faqs.html">SQL FAQs</a></li>
+        <li><a href="operational-faqs.html">Operational FAQs</a></li>
+        <li><a href="licensing-faqs.html">Licensing FAQs</a></li>
+        <li><a href="cockroachdb-in-comparison.html">DB Comparisons</a></li>
       </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-3">
       <p class="landing-column-title">Releases</p>
       <ul>
-        <li><a href="/docs/releases/v20.2.3">Latest Stable Release</a></li>
+        <li><a href="../releases/{{page.release_info.version}}.html">Latest Stable Release</a></li>
         <li><a href="../releases/#production-releases">All Stable Releases</a></li>
         <li><a href="../releases/#testing-releases">All Testing Releases</a></li>
-        <li><a href="/docs/v20.2/known-limitations">Known Limitations</a></li>
+        <li><a href="../releases/release-support-policy.html">Release Support Policy</a></li>
+        <li><a href="known-limitations.html">Known Limitations</a></li>
       </ul>
     </div>
   </div>
-  
+
 </div>
