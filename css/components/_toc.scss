@@ -120,6 +120,15 @@
     }
   }
 
+  a {
+    color: $neutral-500;
+    &:hover {
+      font-weight: bold;
+      text-decoration: none;
+      border-bottom: none;
+    }
+  }
+
   code {
     color: inherit;
     font-size: inherit;

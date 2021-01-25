@@ -7254,6 +7254,14 @@ section.footer {
     line-height: 24px;
     padding-bottom: 10px;
     display: inline-block; }
+#toc a,
+#toc-right a {
+  color: #7E89A9; }
+  #toc a:hover,
+  #toc-right a:hover {
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: none; }
 #toc code,
 #toc-right code {
   color: inherit;
