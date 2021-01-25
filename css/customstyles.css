@@ -6568,7 +6568,7 @@ body.sidenav-open {
     background-position: 10px center;
     padding-left: 30px; }
 
-@media screen and (min-width: 0) and (max-width: 1200px) {
+@media screen and (max-width: 1199px) {
   #sidebarMenu {
     height: auto;
     position: fixed;
@@ -6592,9 +6592,6 @@ body.sidenav-open {
     .col-sidebar-content {
       height: auto;
       overflow-y: auto; } }
-  @media screen and (min-width: 1200px) {
-    .col-sidebar-content {
-      top: 102px; } }
 
 .nav-docs-mobile {
   position: fixed;
