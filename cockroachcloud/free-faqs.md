@@ -14,6 +14,10 @@ This page answers the frequently asked questions about CockroachCloud Free (beta
 
 CockroachCloud Free delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that also removes the friction of initial cluster sizing and auto-scales based on your application traffic. While we have eliminated the concept of nodes for you, there will be an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
 
+### Do I have to pay for CockroachCloud Free?
+
+CockroachCloud Free is free forever.
+
 ### What can I use CockroachCloud Free for?
 
 CockroachCloud Free can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
@@ -26,19 +30,25 @@ For examples of applications that use CockroachCloud Free, check out the followi
 
 ### What are the limitations of CockroachCloud Free?
 
-CockroachCloud Free is currently in beta and as such, it is not suitable for production use. Specifically, there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. These capabilities and more are coming soon!
+CockroachCloud Free is currently in beta and as such, it is not suitable for heavy production use. Specifically, there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
 ### Can I use a specific region in AWS or GCP?
 
 At this time, CockroachCloud Free is only available in the GCP `us-central-1` region.
 
-### Do I have to pay for CockroachCloud Free?
-
-CockroachCloud Free is free forever. However, it is currently not recommended for production use. For production applications, we recommend using the paid version of [CockroachCloud](create-your-cluster.html).
-
 ### How do I connect to my cluster?
 
 To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+
+## Beta release
+
+### Why is CockroachCloud Free in beta?
+
+CockroachCloud Free is in beta while we work on adding core features like [import](../v20.2/import.html) and [backups](backups-page.html).
+
+### Where can I submit feedback or bugs on the beta?
+
+You can submit feedback or log any bugs you find through [this survey](https://cockroachlabs.typeform.com/to/gvCcF14q).
 
 ## Security
 
@@ -67,21 +77,21 @@ CockroachCloud Free is a multi-tenant offering and resources are shared between 
 
 ### How do I add nodes?
 
-We have eliminated the concept of nodes for CockroachCloud Free. However, there is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
-
-### Who is responsible for backups? Can I backup my cluster?
-
-Currently, backups are not supported on CockroachCloud Free. The ability to enable backups will be supported in the future.
+We have eliminated the concept of nodes for CockroachCloud Free. However, there is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster. If you exceed this limit, you can create a cluster using the paid version of [CockroachCloud](create-your-cluster.html).
 
 ### Can I upgrade my cluster from CockroachCloud Free to the paid version of CockroachCloud?
 
 At this time, a CockroachCloud Free cluster cannot be upgraded. In the future, you will have the ability to move from CockroachCloud Free to a paid version of CockroachCloud.
 
+### Who is responsible for backups? Can I backup my cluster?
+
+Currently, backups are not supported on CockroachCloud Free. The ability to enable backups will be supported in the future.
+
 ## Product features
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-No, enterprise features are not available on CockroachCloud Free clusters. However, all enterprise features are available on the paid version of [CockroachCloud](create-your-cluster.html).
+At this time, change data capture and partitioning are not available on CockroachCloud Free clusters, but will be in the future.
 
 ### Do you have a UI? How can I see details?
 
