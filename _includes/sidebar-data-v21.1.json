@@ -186,9 +186,15 @@
                 ]
               },
               {
-                "title": "Create a Database and User-defined Schema",
+                "title": "Create a Database",
                 "urls": [
-                  "/${VERSION}/schema-design-database-schema.html"
+                  "/${VERSION}/schema-design-database.html"
+                ]
+              },
+              {
+                "title": "Create a User-defined Schema",
+                "urls": [
+                  "/${VERSION}/schema-design-schema.html"
                 ]
               },
               {
