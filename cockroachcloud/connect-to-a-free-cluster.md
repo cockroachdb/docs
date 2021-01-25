@@ -212,7 +212,7 @@ Start by choosing the [Node.js pg driver](https://www.npmjs.com/package/pg) or [
 - [Node.js pg driver](#node-js-pg-driver)
 - [Sequelize ORM](#sequelize-orm)
 
-**Node.js pg driver**
+#### Node.js pg driver
 
 {% include copy-clipboard.html %}
 ~~~ js
