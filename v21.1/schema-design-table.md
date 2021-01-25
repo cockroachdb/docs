@@ -210,9 +210,11 @@ Only values in the set of `vtype` values will be allowed in the `type` column.
 
 The `users` and `vehicles` tables now have syntactically valid `CREATE TABLE` statements. As a best practice, the `CREATE TABLE` statements should explicitly [select primary key columns](#select-primary-key-columns).
 
+The `users` and `vehicles` tables now have syntactically valid column definitions, but, as a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) for the tables.
+
 ### Select primary key columns
 
-A primary key is a column, or set of columns, whose values uniquely identify rows of data. Every table requires a primary key. When a table is created, CockroachDB creates an index (called the `primary` index) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
+A primary key is a column, or set of columns, whose values uniquely identify rows of data. Every table requires a primary key.
 
 Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [column constraint](constraints.html). The `PRIMARY KEY` constraint requires that all the constrained column(s) contain only unique and non-`NULL` values.
 

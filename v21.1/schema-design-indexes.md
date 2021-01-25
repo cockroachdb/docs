@@ -19,17 +19,27 @@ For detailed reference documentation on the `CREATE INDEX` statement, including 
 
 Before reading this page, do the following:
 
-- [Install CockroachDB](install-cockroachdb.html).
-<div class="filter-content" markdown="1" data-scope="local">
-- Start a [local CockroachDB cluster](secure-a-cluster.html).
-</div>
-<div class="filter-content" markdown="1" data-scope="cockroachcloud">
-- Create a [CockroachCloud cluster](cockroachcloud/create-your-cluster.html).
-</div>
-- Review [the database schema objects](schema-design-overview.html).
-- Create [a database](schema-design-database.html).
-- Create [a user-defined schema](schema-design-schema.html).
-- Create [a table](schema-design-table.html).
+<ul>
+  <li>
+    <a href="install-cockroachdb.html">Install CockroachDB.</a>
+  </li>
+  <li>
+    <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
+    <a class="filter-content" data-scope="cockroachcloud" href="cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
+  </li>
+  <li>
+    <a href="schema-design-overview.html">Review the database schema objects.</a>
+  </li>
+  <li>
+    <a href="schema-design-database.html">Create a database.</a>
+  </li>
+  <li>
+    <a href="schema-design-schema.html">Create a user-defined schema.</a>
+  </li>
+  <li>
+    <a href="schema-design-table.html">Create some tables.</a>
+  </li>
+</ul>
 
 ## Create a secondary index
 
@@ -43,8 +53,6 @@ To improve the performance of queries that use columns not in a table's primary 
 - Use a [`CREATE INDEX`](create-index.html) statement.
 
 Note that CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
-
-
 
 ### Best practices
 
