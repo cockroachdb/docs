@@ -369,14 +369,17 @@
       padding-top: 0.28906rem;
       padding-bottom: 0.28906rem;
       margin-right: 1rem;
-      font-size: calc(1.26562rem + 0.1875vw);
+      // font-size: calc(1.26562rem + 0.1875vw);
+      font-size: 1.40625rem;
+      font-size: 100px;
       white-space: nowrap;
     }
-    @media (min-width: 1200px) {
-      .navbar-brand {
-        font-size: 1.40625rem;
-      }
-    }
+    // ...
+    // @media (min-width: 1200px) {
+    //   .navbar-brand {
+    //     font-size: 1.40625rem;
+    //   }
+    // }
     .navbar-nav {
       display: -webkit-box;
       display: -ms-flexbox;

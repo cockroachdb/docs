@@ -192,7 +192,7 @@ header {
 	background: #FFFFFF;
 	height: 60px;
 
-	@include at-query($min, $screen-sm) {
+	@include at-query($min, $screen-md) {
 		// prevent 1px jump when we add border on scroll
 		border-bottom: 1px solid transparent;
 
@@ -206,9 +206,9 @@ header {
 		}
 	}
 
-	@include at-query($min, $screen-md) {
-		height: 70px;
-	}
+	// @include at-query($min, $screen-md) {
+	// 	height: 70px;
+	// }
 
 	&.navbar-fixed-top {
 		display: flex;

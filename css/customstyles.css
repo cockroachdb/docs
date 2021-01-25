@@ -6360,15 +6360,12 @@ header {
   padding: 15px;
   background: #FFFFFF;
   height: 60px; }
-  @media screen and (min-width: 767px) {
+  @media screen and (min-width: 992px) {
     header {
       border-bottom: 1px solid transparent; }
       .single-post header nav.desktop a.blog-nav {
         color: #54B30E;
         text-decoration: none; } }
-  @media screen and (min-width: 992px) {
-    header {
-      height: 70px; } }
   header.navbar-fixed-top {
     display: flex;
     position: fixed;
@@ -6571,7 +6568,7 @@ body.sidenav-open {
     background-position: 10px center;
     padding-left: 30px; }
 
-@media screen and (min-width: 0) and (max-width: 767px) {
+@media screen and (min-width: 0) and (max-width: 1200px) {
   #sidebarMenu {
     height: auto;
     position: fixed;
@@ -6595,7 +6592,7 @@ body.sidenav-open {
     .col-sidebar-content {
       height: auto;
       overflow-y: auto; } }
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 1200px) {
     .col-sidebar-content {
       top: 102px; } }
 
@@ -9665,11 +9662,8 @@ p .version-tag, .clickable-header .version-tag {
     padding-top: 0.28906rem;
     padding-bottom: 0.28906rem;
     margin-right: 1rem;
-    font-size: calc(1.26562rem + 0.1875vw);
+    font-size: 1.40625rem;
     white-space: nowrap; }
-  @media (min-width: 1200px) {
-    #new-header .navbar-brand {
-      font-size: 1.40625rem; } }
   #new-header .navbar-nav {
     display: -webkit-box;
     display: -ms-flexbox;
