@@ -15,7 +15,7 @@
       {% include marketing-menu.html %}
    
       <div class="row" id="maincontent">
-        <div class="nav-docs-mobile d-flex d-md-none w-100 justify-content-between align-items-center px-3 py-2 border-top border-bottom" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu">
+        <div class="nav-docs-mobile d-flex d-xl-none w-100 justify-content-between align-items-center px-3 py-2 border-top border-bottom" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu">
           <div class="h3 m-0">
             Docs Menu
           </div>
@@ -23,7 +23,7 @@
         </div>
         <nav
           id="sidebarMenu"
-          class="col-md-3 col-lg-3 col-xl-2 d-md-block sidebar collapse border-right pt-3 pt-md-0 pr-lg-0"
+          class="col-xl-2 d-xl-block sidebar collapse border-right pt-3 pr-lg-0"
         >
           {% include sidebar.html %}
         </nav>
@@ -31,11 +31,11 @@
         {% if page.toc == true %}
         {% if page.homepage != true %}
         <!-- Smaller column col-xl-8 -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-9 col-xl-8 px-lg-5">
+        <main role="main" class="col-xl-10 ml-sm-auto px-lg-5">
         {% endif %}
         {% else %}
         <!-- larger column col-xl-10 -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-9 col-xl-10 px-lg-5">
+        <main role="main" class="ml-sm-auto col-xl-10 px-lg-5">
         {% endif %}
             {{content}}
         </main>
