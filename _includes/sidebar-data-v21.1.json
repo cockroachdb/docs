@@ -118,6 +118,12 @@
                 ]
               }
             ]
+          },
+          {
+            "title": "Licensing",
+            "urls": [
+              "/${VERSION}/licensing.html"
+            ]
           }
         ]
       },
@@ -2577,12 +2583,6 @@
             "title": "Availability FAQs",
             "urls": [
               "/${VERSION}/multi-active-availability.html"
-            ]
-          },
-          {
-            "title": "Licensing FAQs",
-            "urls": [
-              "/${VERSION}/licensing-faqs.html"
             ]
           },
           {
