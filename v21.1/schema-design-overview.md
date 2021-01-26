@@ -8,7 +8,7 @@ This page provides an overview of database schemas in CockroachDB.
 
 In later [**Design a Database Schema** sections](schema-design-database.html), we provide best practices for designing a database schema that optimizes performance and storage resources.
 
-## Database Schema Objects
+## Database schema objects
 
 The sections below provide a brief overview of the logical objects that make up a database schema in CockroachDB, for the purpose of orienting application developers.
 
@@ -22,9 +22,7 @@ All CockroachDB clusters include a preloaded database named `defaultdb`. Rather 
 
 For guidance on creating databases, see [Create a Database](schema-design-database.html).
 
-{{site.data.alerts.callout_info}}
-To avoid confusion with the general term "[database](https://en.wikipedia.org/wiki/Database)", throughout this guide we refer to the logical object as a *database*, to CockroachDB by name, and to a deployment of CockroachDB as a [*cluster*](architecture/overview.html#terms).
-{{site.data.alerts.end}}
+{% include {{page.version.version}}/sql/db-terms.md %}
 
 ### Schemas
 
@@ -34,9 +32,7 @@ All CockroachDB clusters include a preloaded schema named `public`. Rather than 
 
 For guidance on creating user-defined schemas, see [Create a User-defined Schema](schema-design-schema.html).
 
-{{site.data.alerts.callout_info}}
-To avoid confusion with the general term "[schema](https://en.wiktionary.org/wiki/schema)", in this guide we refer to the logical object as a *user-defined schema*, and to the relationship structure of logical objects in a cluster as a *database schema*.
-{{site.data.alerts.end}}
+{% include {{page.version.version}}/sql/schema-terms.md %}
 
 ### Tables
 
@@ -50,7 +46,7 @@ For guidance on defining tables, see [Tables](schema-design-tables.html).
 
 Indexes, like tables, belong to a single user-defined schema, in the third level of the naming hierarchy.
 
-An index is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the rows values of a particular column.
+An index is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column.
 
 The two main types of indexes are the `primary` index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on columns of your choice.
 
@@ -58,7 +54,12 @@ For guidance on defining primary keys, see [Select Primary Key Columns](schema-d
 
 #### Specialized indexes
 
-CockroachDB supports some specialized types of indexes, designed to improve query performance in specific use cases. For guidance on specialized indexes, see [Index a Subset of Rows](partial-indexes.html) and [Index Sequential Keys](hash-sharded-indexes.html).
+CockroachDB supports some specialized types of indexes, designed to improve query performance in specific use cases. For guidance on specialized indexes, see the following pages:
+
+- [Index a Subset of Rows](partial-indexes.html)
+- [Index Sequential Keys](hash-sharded-indexes.html)
+- [Index JSON and Array Data](inverted-indexes.html)
+- [Index Spatial Data](spatial-indexes.html)
 
 ### Other objects
 

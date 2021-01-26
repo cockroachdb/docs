@@ -45,8 +45,7 @@ Here are some best practices to follow when creating and using databases:
 - Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](sql-name-resolution.html#current-database) by executing a `USE [databasename];` statement, by passing the `--database=[databasename]` flag to the [`cockroach sql` command](cockroach-sql.html#general), or by specifying the `database` parameter in the [connection string](connection-parameters.html#connect-using-a-url) passed to your database schema migration tool.
 - Create databases as the `root` user, and create all other lower-level objects with a [different user](schema-design-overview.html#controlling-access-to-objects), with more limited privileges, following [authorization best practices](authorization.html#authorization-best-practices).
 - Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](#create-a-user-defined-schema) in the same database.
-
-{% include {{page.version.version}}/sql/dev-schema-changes.md %}
+- {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
 ### Example
 
@@ -102,28 +101,28 @@ In the open SQL shell, execute the following `CREATE USER` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER max;
+> CREATE USER maxroach;
 ~~~
 
-This creates a SQL user named `max`, with no privileges.
+This creates a SQL user named `maxroach`, with no privileges.
 
 Use a `GRANT` statements to grant the user `CREATE` privileges on the `cockroachlabs` database.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT CREATE ON DATABASE cockroachlabs TO max;
+> GRANT CREATE ON DATABASE cockroachlabs TO maxroach;
 ~~~
 
-This privilege allows `max` to create objects (i.e., user-defined schemas) in the `cockroachlabs` database.
+This privilege allows `maxroach` to create objects (i.e., user-defined schemas) in the `cockroachlabs` database.
 
-To connect to a secure cluster, the user needs a user certificate. To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
+To connect to a secure cluster, the user needs a user certificate. To create a user certificate for `maxroach`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client max --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+$ cockroach cert create-client maxroach --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
 ~~~
 
-You're now ready to start adding user-defined schemas to the `cockroachlabs` database, as the `max` user.
+You're now ready to start adding user-defined schemas to the `cockroachlabs` database, as the `maxroach` user.
 
 For guidance on creating user-defined schemas, see at [Create a User-defined Schema](schema-design-schema.html).
 
