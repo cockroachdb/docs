@@ -63,7 +63,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     | tar  xvz
     ~~~
     </section>
-
+    
 1. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
 
     <div class="filters clearfix">
