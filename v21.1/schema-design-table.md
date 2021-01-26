@@ -112,14 +112,14 @@ Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-type
 
 Here are some best practices to follow when defining table columns:
 
-- Review the column [data types](data-types.html) supported by CockroachDB, and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
+- Review the supported column [data types](data-types.html), and select the appropriate type for the data you plan to store in a column, following the best practices listed on the data type's reference page.
 - Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and cause significant performance degradation.
-- Select a primary key, following the best practices for [selecting primary key columns](#select-the-primary-key-columns). After reviewing the primary key best practices, decide if you need to define any dedicated primary key columns.
+- Review the [primary key best practices](#select-the-primary-key-columns), decide if you need to define any dedicated primary key columns.
 - Review the best practices for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints to your columns.
 
 #### Column definition examples
 
-Add a few column definitions for the users' names and email addresses to the `users` `CREATE TABLE` statement in the `dbinit.sql` file:
+In the `dbinit.sql` file, add a few column definitions to the `users` table's `CREATE TABLE` statement, for user names and email addresses:
 
 {% include copy-clipboard.html %}
 ~~~
@@ -210,7 +210,7 @@ Only values in the set of `vtype` values will be allowed in the `type` column.
 
 The `users` and `vehicles` tables now have syntactically valid `CREATE TABLE` statements. As a best practice, the `CREATE TABLE` statements should explicitly [select primary key columns](#select-primary-key-columns).
 
-The `users` and `vehicles` tables now have syntactically valid column definitions, but, as a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) for the tables.
+The `users` and `vehicles` tables now have syntactically valid column definitions. As a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) for the tables before executing the `CREATE TABLE` statements.
 
 ### Select primary key columns
 
