@@ -100,3 +100,10 @@ All customers of our CockroachCloud service can view and manage their clusters i
 ### Can I backup my CockroachCloud Free cluster? Does Cockroach Labs take backups of my cluster?
 
 Cockroach Labs takes full cluster backups of all CockroachCloud Free clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CC Free cluster yourself. We expect to support user initiated backup and restore of free clusters in the future.
+
+In the meantime, you can run a [`SELECT`](../v20.2/select.html) statement using the [`--format=csv` flag](/stable/cockroach-sql.html#general) to print the output into a file. For example:
+
+{% include copy-clipboard.html %}
+~~~
+$ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
+~~~
