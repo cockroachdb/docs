@@ -82,7 +82,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
     {{site.data.alerts.end}}
 4. Click **Save**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#granting-privileges) and [Using roles](user-authorization.html#using-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
 
 ## Step 3. Select a connection method
 
