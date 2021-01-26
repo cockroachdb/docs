@@ -362,7 +362,7 @@ $(function() {
   });
 
   //external links
-  $("main").filter(function() {
+  $("main a").filter(function() {
     return this.hostname && this.hostname !== location.hostname;
   }).addClass('external').attr("target","_blank");
 });
