@@ -34,7 +34,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 4. Enter and confirm the **Password**.
 5. Click **Create**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](#granting-privileges) and [Using roles](#using-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Grant privileges](#grant-privileges) and [Use roles](#use-roles).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
@@ -73,7 +73,7 @@ To view a list of all of the users in your cluster, navigate to the **SQL Users*
 
 On the **SQL Users** page, you can do the following:
 
-- [Create a user](#create-a-user)
+- [Create a user](#create-a-sql-user)
 - [Change a user's password](#change-a-users-password)
 - [Remove a user](#remove-a-user)
 
@@ -157,7 +157,7 @@ To remove a user, use the [`DROP USER`](../stable/drop-user.html) statement:
 </section>
 
 {{site.data.alerts.callout_info}}
-All of a user's privileges must be [revoked](#managing-privileges) before the user can be dropped.
+All of a user's privileges must be [revoked](#revoke-a-users-privileges) before the user can be dropped.
 {{site.data.alerts.end}}
 
 ## Grant privileges
@@ -257,7 +257,7 @@ Role-based access control lets you simplify how you manage privileges. In essenc
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#managing-privileges) before the user can be dropped.
+    All of a role's privileges must be [revoked](#revoke-a-users-privileges) before the user can be dropped.
     {{site.data.alerts.end}}
 
 ## See also
