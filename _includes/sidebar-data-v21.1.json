@@ -301,15 +301,15 @@
                     ]
                   },
                   {
-                    "title": "Use Hash-sharded Indexes",
+                    "title": "Index JSON and Array Data",
                     "urls": [
-                      "/${VERSION}/hash-sharded-indexes.html"
+                      "/${VERSION}/inverted-indexes.html"
                     ]
                   },
                   {
-                    "title": "Work with JSON Data",
+                    "title": "Index Spatial Data",
                     "urls": [
-                      "/${VERSION}/demo-support-json.html"
+                      "/${VERSION}/spatial-indexes.html"
                     ]
                   }
                 ]
