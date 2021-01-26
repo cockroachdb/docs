@@ -391,6 +391,12 @@
                     ]
                   },
                   {
+                    "title": "Create Temporary Tables",
+                    "urls": [
+                      "/${VERSION}/temporary-tables.html"
+                    ]
+                  },
+                  {
                     "title": "Paginate Results",
                     "urls": [
                       "/${VERSION}/pagination.html"

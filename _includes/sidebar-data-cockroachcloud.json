@@ -218,6 +218,12 @@
       "title": "Releases",
       "items": [
         {
+          "title": "January 2021",
+          "urls": [
+            "/releases/cockroachcloud-01222021.html"
+          ]
+        },
+        {
           "title": "December 2020",
           "urls": [
             "/releases/cockroachcloud-12112020.html"

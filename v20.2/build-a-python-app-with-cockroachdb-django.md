@@ -90,16 +90,18 @@ INSTALLED_APPS = [
 
 Next, change `DATABASES` to reads as follows:
 
+<section class="filter-content" markdown="1" data-scope="local">
+
 {% include copy-clipboard.html %}
 ~~~ python
 DATABASES = {
     'default': {
         'ENGINE' : 'django_cockroachdb',
-        'NAME' : 'bank',
+        'PORT' : <port>,
         'USER' : '<user>',
         'PASSWORD': '<password>',
         'HOST' : 'localhost',
-        'PORT' : <port>,
+        'NAME' : 'bank',
     }
 }
 ~~~
@@ -109,6 +111,41 @@ Where:
 - `<user>` is the username that you created earlier.
 - `<password>` is the password that you created for the `<user>`.
 - `<port>` is the port listed in the `(sql/tcp)` connection string in the SQL shell welcome text. For example, for the connection string `(sql/tcp) postgres://root:admin@127.0.0.1:61011?sslmode=require`, the port is `61011`.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include copy-clipboard.html %}
+~~~ python
+DATABASES = {
+    'default': {
+        'ENGINE' : 'django_cockroachdb',
+        'USER' : '<user>',
+        'PASSWORD': '<password>',
+        'HOST' : '<globalhost>',
+        'PORT' : 26257,
+        'NAME' : '<cluster_name>.bank',
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'sslrootcert': '<certs_dir>/cc-ca.crt',
+        },
+}
+~~~
+
+Where:
+
+- `<user>` is the username that you created earlier.
+- `<password>` is the password that you created for the `<user>`.
+- `<globalhost>` is the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `<cluster_name>` is the name of your cluster.
+- `<certs_dir>` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+
+{{site.data.alerts.callout_info}}
+If you are using the connection string that you [copied from the **Connection info** modal](#set-up-your-cluster-connection), your username, password, hostname, and cluster name will be pre-populated.
+{{site.data.alerts.end}}
+
+</section>
 
 ## Step 5. Write the application logic
 
