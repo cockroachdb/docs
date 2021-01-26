@@ -33,6 +33,7 @@
 	box-shadow: none;
 	&:hover {
 		color: #fff;
+		box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
 	}
 	&:focus {
 		border: 1px solid #237300;

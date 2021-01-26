@@ -105,7 +105,7 @@ $purple-200: #6933FF;
 $purple-300: #542ABD;
 
 $theme-colors: (
-  "primary": #0074d9,
+  "primary": $electric-purple,
   "danger": #ff4136,
   "electric-purple": $purple-200,
   "black": $black,
@@ -145,3 +145,4 @@ $box-shadow:  0px 7px 13px rgba($neutral-600, 0.301);
 $box-shadow-lg: 0px 12px 24px rgba($neutral-600, 0.54);
 
 $font-weight-bold: 600;
+$font-family-sans-serif: 'SourceSansPro-Regular';

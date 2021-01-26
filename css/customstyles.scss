@@ -1,8 +1,9 @@
 @import "global/variables";
-@import "bs/bootstrap.scss"; 
 
-@import "global/mixins";
+@import "bs/bootstrap.scss"; 
 @import "global/fonts";
+@import "global/mixins";
+
 @import "global/type";
 
 @import "layouts/header";
@@ -97,7 +98,7 @@ h3 {
   }
 
   strong, b {
-    @include avenir_bl(24px);
+    @include sourcesanspro_m(24px);
   }
 
   code {
@@ -190,8 +191,7 @@ a.external:after{
   padding-left: 4px;
 }
 
-a code:hover {
-  text-decoration: underline;
+a code {
   color: $dark-blue;
   &:hover {
     text-decoration: underline;

@@ -17,6 +17,9 @@
       vertical-align: middle;
       margin: 0 8px 4px 0;
     }
+    &:hover {
+      box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+    }
   }
 }
 

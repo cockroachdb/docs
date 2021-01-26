@@ -29,4 +29,15 @@ $(document).ready(function() {
   });
 
   $versionSwitcher.show();
+
+  // Click outside version switcher to close
+  $(document).ready(function () {
+    $(document).click(function (event) {
+        var click = $(event.target);
+        var _open = $("#version-switcher > ul.nav li").hasClass("active");
+        if (_open === true && !click.hasClass("tier-2")) {
+            $versionSwitcher.navgoco('toggle', false);
+        }
+    });
+  });
 });

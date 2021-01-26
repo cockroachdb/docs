@@ -82,7 +82,7 @@ body.sidenav-open{
   padding: 10px 0 5px 15px;
   display: flex;
   flex-direction: column;
-  @include sourcesanspro_r(14px);
+  @include sourcesanspro_r(16px);
 
   &.nav--collapsed{
     padding: 0;
@@ -136,12 +136,12 @@ body.sidenav-open{
 
   .tier-2 {
     a {
-      color: $neutral-500;
+      color: $neutral-800;
     }
 
     a:hover{
       text-decoration: none;
-      color: $neutral-600;
+      color: $electric-purple;
     }
     
   }

@@ -2848,6 +2848,9 @@
     text-transform: capitalize!important;
     transition: background-color .2s ease-out;
     border-radius: 4px;
+    &:hover {
+      box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+    }
   }
   .navbar-light .navbar-nav .nav-link.text-small, .text-small {
     font-size: 13px !important;
