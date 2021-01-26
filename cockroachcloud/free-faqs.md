@@ -101,7 +101,7 @@ All customers of our CockroachCloud service can view and manage their clusters i
 
 Cockroach Labs takes full cluster backups of all CockroachCloud Free clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CC Free cluster yourself. We expect to support user initiated backup and restore of free clusters in the future.
 
-In the meantime, you can run a [`SELECT`](../v20.2/select.html) statement using the [`--format=csv` flag](/v20.2/cockroach-sql.html#general) to print the output into a file. For example:
+In the meantime, you can run a [`SELECT`](../v20.2/select.html) statement using the [`--format=csv` flag](../v20.2/cockroach-sql.html#general) to print the output into a file. For example:
 
 {% include copy-clipboard.html %}
 ~~~
