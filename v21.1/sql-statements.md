@@ -15,6 +15,7 @@ In the [built-in SQL shell](cockroach-sql.html#help), use `\h [statement]` to ge
 Statement | Usage
 ----------|------------
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
+[`COPY FROM`](copy-from.html) | Copy data from a third-party client to a CockroachDB cluster.<br>Note that CockroachDB currently only supports `COPY FROM` statements issued from third-party clients, for compatibility with PostgreSQL drivers and ORMs. `COPY FROM` statements cannot be issued from the [`cockroach` SQL shell](cockroach-sql.html). To import data from files, we use an [`IMPORT`](import.html) statement instead.
 [`DELETE`](delete.html) | Delete specific rows from a table.
 [`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. Note that this statement requires an [enterprise license](enterprise-licensing.html).
 [`IMPORT`](import.html) | Bulk-insert CSV data into a new table.
@@ -90,7 +91,7 @@ Statement | Usage
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
 [`SHOW TYPES`](show-types.html) |   List user-defined [data types](data-types.html) in a database.
 [`SHOW RANGES`](show-ranges.html) | Show range information for all data in a table or index.
-[`SHOW RANGE FOR ROW`](show-range-for-row.html) | Show range information for a single row in a table or index. 
+[`SHOW RANGE FOR ROW`](show-range-for-row.html) | Show range information for a single row in a table or index.
 [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) | List details about existing [replication zones](configure-replication-zones.html).
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the table or index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the table or index.
