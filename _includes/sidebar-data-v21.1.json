@@ -1124,6 +1124,12 @@
                     ]
                   },
                   {
+                    "title": "<code>COPY FROM</code>",
+                    "urls": [
+                      "/${VERSION}/copy-from.html"
+                    ]
+                  },
+                  {
                     "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
                     "urls": [
                       "/${VERSION}/create-changefeed.html"
