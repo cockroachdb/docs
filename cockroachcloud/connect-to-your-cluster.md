@@ -191,7 +191,7 @@ To connect to your cluster with your application:
 
 For examples, see the following:
 
-- [Build a Python App with CockroachDB](../v20.2/build-a-python-app-with-cockroachdb)
+- [Build a Python App with CockroachDB](../v20.2/build-a-python-app-with-cockroachdb.html)
 - [Build a Go App with CockroachDB](../v20.2/build-a-go-app-with-cockroachdb.html)
 - [Build a Java App with CockroachDB](../v20.2/build-a-java-app-with-cockroachdb.html)
 
