@@ -16,7 +16,7 @@
 @import "components/search";
 @import "components/callout";
 @import "components/toc";
-@import "components/filtertabs";
+
 @import "components/newsletter";
 @import "components/codesamples";
 @import "syntax/sql";
@@ -24,6 +24,7 @@
 @import "components/feedback-widget";
 @import "components/back-to-top";
 @import "components/buttons";
+@import "components/filtertabs";
 @import "components/releases";
 @import "components/copy-clipboard";
 @import "components/version-tag";
@@ -178,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-ul {
+ul, ol {
   padding-left: 25px;
   li {
     margin-bottom: 10px;

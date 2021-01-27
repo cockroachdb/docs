@@ -30,6 +30,56 @@
 			border-bottom-color: $electric-purple;
 		}
 	}
+	&.os-tabs_button-outline-primary {
+		a {
+			&.external {
+				position: relative;
+				display: inline-block;
+				&:after {
+					position: absolute;
+					top: 0;
+					right: 20px;
+				}
+			}
+		}
+		button {
+			@include button();
+			color: $electric-purple; 
+			text-align: center;
+			background-color: #FFFFFF;
+			border-color: $electric-purple;
+			border-width: 2px;
+			margin-right: 5px;
+			padding: 10px 0 3px;
+			@include poppins(16px);
+			&:focus {
+				border-color: $electric-purple;
+				background-color: $electric-purple;
+				box-shadow: 0 0 0 $input-focus-width $electric-purple;
+			}
+		
+			&:hover {
+				border-color: $electric-purple;
+				background-color: $electric-purple;
+				color: #fff;
+			}
+		
+			&:not(:disabled):not(.disabled) {
+		
+				&:active {
+					border-color: $electric-purple;
+					background-color: $electric-purple;
+			
+					&:focus {
+						border-color: $electric-purple;
+						background-color: $electric-purple;
+						box-shadow: 0 0 0 $input-focus-width $electric-purple; 
+					  }
+				}
+				
+			}
+		}
+	}
 }
 
 .install-button {
