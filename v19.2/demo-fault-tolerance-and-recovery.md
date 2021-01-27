@@ -232,7 +232,7 @@ When a node fails, the cluster waits for the node to remain offline for 5 minute
     --execute="SET CLUSTER SETTING server.time_until_store_dead = '1m15s';"
     ~~~
 
-2. Then use the [`cockroach quit`](../cockroach-quit.html) command to stop a node:
+2. Then use the [`cockroach quit`](cockroach-quit.html) command to stop a node:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -276,7 +276,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
     --background
     ~~~
 
-2. Use the [`ALTER RANGE ... CONFIGURE ZONE`](../configure-zone.html) command to change the cluster's `default` replication factor to 5:
+2. Use the [`ALTER RANGE ... CONFIGURE ZONE`](configure-zone.html) command to change the cluster's `default` replication factor to 5:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -291,7 +291,7 @@ To be able to tolerate 2 of 5 nodes failing simultaneously without any service i
 
 ## Step 9. Simulate two simultaneous node failures
 
-Use the [`cockroach quit`](../cockroach-quit.html) command to stop two nodes:
+Use the [`cockroach quit`](cockroach-quit.html) command to stop two nodes:
 
 {% include copy-clipboard.html %}
 ~~~ shell

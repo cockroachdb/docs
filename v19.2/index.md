@@ -121,7 +121,7 @@ cta: false
         <li><a href="architecture/overview.html">Architecture</a></li>
         <li><a href="sql-feature-support.html">SQL</a></li>
         <li><a href="cockroach-commands.html">CLI</a></li>
-        <li><a href="ui-overview.html">DB Console</a></li>
+        <li><a href="admin-ui-overview.html">DB Console</a></li>
         <li><a href="third-party-database-tools.html">Third-Party Tools</a></li>
       </ul>
     </div>
