@@ -18,7 +18,7 @@ homepage: true
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">            
             <h6 class="mt-2 mt-0 text-black">Quickstart with<br>CockroachCloud</h6>
             <p class="text-black">Learn how to create and use your CockroachCloud cluster</p>
-            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="mt-2 mt-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
+            <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="mt-2 mt-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>
         </div>
@@ -29,7 +29,7 @@ homepage: true
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="mt-2 mt-0 text-black">Manage your <br>cluster</h6>
             <p class="text-black">Manage your cluster's schema, data, and backups</p>
-            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
+            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>
         </div>
@@ -40,7 +40,7 @@ homepage: true
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
             <h6 class="mt-2 mt-0 text-black">CockroachCloud <br>FAQS</h6>
             <p class="text-black">Answers to frequently asked questions</p>
-            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}"/></h4>
+            <h4 class="mt-auto mb-0  text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>
         </div>
@@ -50,7 +50,7 @@ homepage: true
 </div>
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-12 text-center">
-      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}"/></a>
+      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
     </div>
   </div>
 
