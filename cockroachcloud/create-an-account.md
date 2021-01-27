@@ -22,14 +22,13 @@ To register a new account, navigate to the [CockroachCloud registration page](ht
 This feature is only available to select users at this time. If you do not have access yet, you can register a new account with an email.
 {{site.data.alerts.end}}
 
-If you do not have access yet, you can start your first cluster using a 30-day free trial.
 1. Click **Sign up with GitHub**.
 1. Enter your GitHub **Username or email address** associated with your account.
 1. Enter your GitHub **Password**
 1. Click **Sign in**
 
 {{site.data.alerts.callout_info}}
-GitHub should verify your identity using [GitHub 2FA](https://docs.github.com/en/github/authenticating-to-github/about-two-factor-authentication).
+GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/github/authenticating-to-github/about-two-factor-authentication), if you have it enabled.
 {{site.data.alerts.end}}
 </section>
 
@@ -41,8 +40,13 @@ GitHub should verify your identity using [GitHub 2FA](https://docs.github.com/en
     Your password must be at least 12 characters long.
 
 1. Enter your **Organization name (optional)**.
+
+    This can be [changed](#change-your-organization-name) later.
+
 1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Click **Get Started**.
+
+    A confirmation email will be sent. Click **Verify email** in the email to confirm your account.
 </section>
 
 ## Log in to your account
@@ -59,7 +63,7 @@ If you have already [registered a new CockroachCloud account](#register-a-new-ac
 
 1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
 1. Click **Log in with GitHub**.
-1. Follow the GitHub prompts to log in.
+1. Follow the GitHub prompts to log in. 
 
     The [**Clusters** page](cluster-management.html) displays.
 </section>
@@ -79,6 +83,7 @@ If you have already [registered a new CockroachCloud account](#register-a-new-ac
 - [Change your account name](#change-your-account-name)
 - [Change your email](#change-your-email)
 - [Change your account password](#change-your-account-password)
+- [Change your organization name](#change-your-organization-name)
 
 ### Change your account name
 
@@ -86,7 +91,7 @@ To change your account name:
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
-1. To edit your name, click the pencil icon in the **Name** row.
+1. Click the pencil icon in the **Name** row.
 1. In the **Edit name** modal, enter your **First name** and **Last name**.
 1. Click **Save**.
 
@@ -96,7 +101,7 @@ If you registered with an email address, you can change your account password in
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
-1. To change your email, click the pencil icon in the **Email address** row.
+1. Click the pencil icon in the **Email address** row.
 1. In the **Change email address** modal, enter the new **Email address**.
 1. Click **Save**.
 
@@ -108,10 +113,22 @@ If you registered with an email address, you can change your account password in
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
-1. To edit your password, click the pencil icon in the **Password** row.
+1. Click the pencil icon in the **Password** row.
 1. In the **Change password** modal, enter your **Current password** and **New password**.
 1. Click **Save**.
 
 {{site.data.alerts.callout_info}}
 Changing your account password will _not_ change your [SQL user](user-authorization.html#create-a-sql-user) password.
 {{site.data.alerts.end}}
+
+### Change your organization name
+
+If you are a [Console Admin](console-access-management.html#console-admin), you can change your organization name:
+
+1. Navigate to the **Settings** page.
+
+    <img src="{{ 'images/v20.2/cockroachcloud/settings-page.png' | relative_url }}" alt="Settings page" style="border:1px solid #eee;max-width:100%" />
+
+1. Click the pencil icon in the **Organization name** row.
+1. In the **Edit organization name** modal, enter the new **Organization name**.
+1. Click **Save**.

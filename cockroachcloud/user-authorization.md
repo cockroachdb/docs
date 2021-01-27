@@ -8,11 +8,7 @@ redirect_from:
 
 CockroachCloud requires you to create SQL users to access the cluster.
 
-By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.1/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
-
-### Before you begin
-
-Make sure you have already [connected to the cluster](connect-to-your-cluster.html) with your `admin` SQL user.
+By default, a new SQL user created by a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.1/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 #### Create a SQL user
 
@@ -44,6 +40,8 @@ Be sure to create a password for each new user. Without a password, a user canno
 
 Access to the data in your cluster is controlled by [privileges](../v20.1/authorization.html#assign-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can grant user privileges.
+
 To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../stable/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
 {% include copy-clipboard.html %}
@@ -61,6 +59,8 @@ To assign a user more limited privileges for one table in a database:
 For more details, see [Privileges](../v20.1/authorization.html#assign-privileges) and [`GRANT`](../stable/grant.html).
 
 ### Managing SQL users
+
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can manage users:
 
 - To change a user's password, use the [`ALTER USER`](../stable/alter-user.html) statement:
 
@@ -89,6 +89,8 @@ For more details, see [Privileges](../v20.1/authorization.html#assign-privileges
 
 ### Managing privileges
 
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can manage privileges:
+
 - To show privileges granted to a user, use the [`SHOW GRANTS`](../stable/show-grants.html) statement:
 
     {% include copy-clipboard.html %}
@@ -106,6 +108,8 @@ For more details, see [Privileges](../v20.1/authorization.html#assign-privileges
 ### Using roles
 
 Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
+
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can set up roles:
 
 - To create a role, use the [`CREATE ROLE`](../stable/create-role.html) statement:
 
@@ -157,7 +161,7 @@ Role-based access control lets you simplify how you manage privileges. In essenc
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#managing-privileges) before the user can be dropped.
+    All of a role's privileges must be [revoked](#managing-privileges) before the role can be dropped.
     {{site.data.alerts.end}}
 
 ## See also
