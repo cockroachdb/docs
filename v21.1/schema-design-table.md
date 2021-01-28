@@ -100,8 +100,6 @@ Column definitions give structure to a table by separating the values in each ro
 
 Column definitions generally take the following form:
 
-Column definitions give structure to a table by separating values of different significance and data type. Column definitions generally take the following form:
-
 ~~~
 [column_name] [DATA_TYPE] [column_qualification]
 ~~~

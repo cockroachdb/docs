@@ -54,6 +54,10 @@ CockroachDB automatically creates an index on the table's [primary key](primary-
 - Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
 - Use a [`CREATE INDEX`](create-index.html) statement.
 
+{{site.data.alerts.callout_info}}
+CockroachDB also automatically creates secondary indexes for columns with the [`UNIQUE` column constraint](unique.html).
+{{site.data.alerts.end}}
+
 `CREATE INEX` statements generally take the following form:
 
 ~~~
@@ -68,13 +72,15 @@ If you do not specify a name for the column, CockroachDB will generate a name.
 
 ### Best practices
 
+{{site.data.alerts.callout_success}}
+Review the columns of the tables in your cluster, and take note of the columns on which you plan to sort and filter your queries. If a column, or set of columns, is not in the primary key index, you might need to create an index on it.
+{{site.data.alerts.end}}
+
 Here are some best practices for creating indexes:
 
-As a general best practice the columns of the tables in your cluster, and take note of the columns on which you plan to sort and filter your queries. If a column, or set of columns, is not in the primary key index, you might need to create an index on it.
+- Index all columns on which you plan to [sort](query-order.html#index-order) or [filter](select-clause.html#filter-rows) queries.
 
-- Index all columns that you plan to use in query filters.
-
-    The [`WHERE` clause](select-clause.html#parameters) is used to filter [`SELECT` queries](query-data.html). Columns filtered in the `WHERE` clause with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
+    Note that columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
 - Avoid indexing on sequential values.
 
@@ -88,40 +94,27 @@ As a general best practice the columns of the tables in your cluster, and take n
 
     Note that queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index. This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
 
-    Also note that [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use  Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+    Also note that [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns in common queries that you do not plan to use in query filters.
 
-    The `STORING` clause specifies columns which are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB reads the primary index. `STORING` clauses optimize queries by limiting the need to read the primary index.
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can have a significant impact on performance.
 
-- Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create an specialized index instead of a standard index.
+- Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
 - Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This can be the same user that created the table.
+
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
+
 - Review the [limitations of online schema changes in CockroachDB](online-schema-changes.html#limitations). In specific, note that CockroachDB has [limited support for schema changes within the same explicit transaction](online-schema-changes#limited-support-for-schema-changes-within-transactions).
 
 ### Examples
 
-Suppose you want to search for some email addresses that you have stored for the users of the MovR platform.
+Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.
 
-Recall that the `users` table that you created in [Create a Table](create-a-table.html) stores rows of data for each user. Your application will need to read any data about users into the application's persistence layer from this table.
+Recall that the `vehicles` table that you created in [Create a Table](create-a-table.html) stores rows of data for each vehicle registered with MovR. Your application will need to read any data about vehicles into the application's persistence layer from this table.
 
-{{site.data.alerts.callout_info}}
-CockroachDB also automatically creates secondary indexes for columns with the [`UNIQUE` column constraint](unique.html).
-{{site.data.alerts.end}}
-
-Open `dbinit.sql`, and, under the `CREATE TABLE` statement for the `users` table, add a `CREATE INDEX` statement for an index on the `email` columns of the `users` table:
-
-{% include copy-clipboard.html %}
-~~~
-CREATE INDEX email_idx ON movr.users (email));
-~~~
-
-This statement creates a secondary index named `email_idx`, on the `users` table. CockroachDB will use `email_idx` to improve the performance of queries to the users table that filter or sort on the `email` column.
-
-Now suppose you want the MovR application to display all of the bikes available to users.
-
-The `vehicles` table stores rows of data for each vehicle registered with MovR. The values in the `available` and `type` columns are of interest, in this case.
+The values in the `available` and `type` columns are of interest, in this case.
 
 Under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `available` and `type` columns of the `vehicles` table:
 
@@ -132,24 +125,126 @@ CREATE INDEX available_type_idx ON movr.vehicles (available, type));
 
 This statement creates a secondary index named `available_type_idx`, on the `vehicles` table.
 
-You might also need the vehicle's location and ID, but you won't be filtering or sorting on those values. If any of the returned columns are not in the secondary index, CockroachDB will need to read from the primary index.
+You might also need the vehicle's location and ID, but you won't be filtering or sorting on those values. If any of the returned columns are not in the secondary index, CockroachDB will need to perform a full scan of the table to find the value.
 
-Add `STORING` clause to the index to improve the performance of queries against the `vehicles` table that return `available`, `type`, `id`, and `last_location` values, but don't filter or sort on the `id` or `last_location` columns:
+To improve the performance of queries against the `vehicles` table that return `available`, `type`, `id`, and `last_location` values, but don't filter or sort on the `last_location` columns, add a `STORING` clause to the index:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE INDEX available_type_idx ON movr.vehicles (available, type) STORING (id, last_location);
+CREATE INDEX available_type_idx ON movr.vehicles (available, type) STORING (last_location);
 ~~~
 
+The `dbinit.sql` file should look similar to the following:
 
+{% include copy-clipboard.html %}
+~~~
+CREATE SCHEMA IF NOT EXISTS movr;
+
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
+    first_name STRING,
+    last_name STRING,
+    email STRING UNIQUE NOT NULL,
+    CONSTRAINT "primary" PRIMARY KEY (first_name, last_name)
+);
+
+DROP TYPE cockroachlabs.movr.vtype;
+CREATE TYPE cockroachlabs.movr.vtype AS ENUM ('bike', 'scooter', 'skateboard');
+
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.vehicles (
+      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      type vtype,
+      creation_time TIMESTAMPTZ DEFAULT now(),
+      available BOOL,
+      last_location STRING
+  );
+
+CREATE INDEX available_type_idx ON cockroachlabs.movr.vehicles (available, type) STORING (last_location);
+
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.rides (
+      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      vehicle_id UUID REFERENCES cockroachlabs.movr.vehicles(id),
+      start_address STRING,
+      end_address STRING,
+      start_time TIMESTAMPTZ DEFAULT now(),
+      end_time TIMESTAMPTZ
+  );
+~~~
+
+The `IF NOT EXISTS` clauses allow you to run the file without dropping any existing user-defined schemas or tables of the same name in the current database. The `CREATE TYPE` statement does not support the `IF NOT EXISTS` clause. Add a [`DROP TYPE IF EXISTS`](drop-type.html) statement just before the `CREATE TYPE` statement for `vtype`.
+
+To execute the statements in the `dbinit.sql` file, run the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql \
+--certs-dir=[certs-directory] \
+--user=maxroach \
+--database=cockroachlabs
+< dbinit.sql
+~~~
+
+The SQL client will execute any statements in `dbinit.sql`, with `cockroachlabs` as the database and `maxroach` as the user.
+
+After the statements have been executed, you can see the tables in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).
+
+Open the SQL shell to your cluster, with `cockroachlabs` as the database:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql \
+--certs-dir=[certs-directory] \
+--user=maxroach \
+--database=cockroachlabs
+~~~
+
+To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-indexes.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW INDEXES FROM cockroachlabs.movr.vehicles;
+~~~
+
+~~~
+  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit
+-------------+--------------------+------------+--------------+---------------+-----------+---------+-----------
+  vehicles   | primary            |   false    |            1 | id            | ASC       |  false  |  false
+  vehicles   | available_type_idx |    true    |            1 | available     | ASC       |  false  |  false
+  vehicles   | available_type_idx |    true    |            2 | type          | ASC       |  false  |  false
+  vehicles   | available_type_idx |    true    |            3 | last_location | N/A       |  true   |  false
+  vehicles   | available_type_idx |    true    |            4 | id            | ASC       |  false  |   true
+(5 rows)
+~~~
+
+The output from this `SHOW` statement displays the names and columns of the two indexes on the table (`primary` and `available_type_idx`). Note that the `last_location` column is stored (its `storing` value is `true`) in the `available_type_idx` index, and therefore not sorted (its `direction` value is `N/A`). Also note that the primary key column `id` is implicit in the index.
+
+To see an index definition, use a [`SHOW CREATE`](show-create.html) statement on the table that contains the index:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE cockroachlabs.movr.vehicles;
+~~~
+
+~~~
+          table_name          |                                create_statement
+------------------------------+----------------------------------------------------------------------------------
+  cockroachlabs.movr.vehicles | CREATE TABLE movr.vehicles (
+                              |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                              |     type public.vtype NULL,
+                              |     creation_time TIMESTAMPTZ NULL DEFAULT now():::TIMESTAMPTZ,
+                              |     available BOOL NULL,
+                              |     last_location STRING NULL,
+                              |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+                              |     INDEX available_type_idx (available ASC, type ASC) STORING (last_location),
+                              |     FAMILY "primary" (id, type, creation_time, available, last_location)
+                              | )
+~~~
 
 ## See also
 
-- [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)
+- [`CREATE INDEX`](create-index.html)
+- [Indexes](indexes.html)
 - [Schema Design Overview](schema-design-overview.html)
-- [`CREATE DATABASE`](create-database.html)
-- [`CREATE SCHEMA`](create-schema.html)
-- [Inverted Indexes](inverted-indexes.html)
-- [Spatial Indexes](spatial-indexes.html)
-- [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Select from a specific index](select-clause.html#select-from-a-specific-index)
+- [Create a Database](schema-design-database.html)
+- [Create a User-defined Schema](schema-design-schema.html)
+- [Create a Table](schema-design-table.html)
+- [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

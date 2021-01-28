@@ -26,7 +26,7 @@ For guidance on creating databases, see [Create a Database](schema-design-databa
 
 ### Schemas
 
-Schemas make up the second level of the naming hierarchy. Each schema belongs to a single database. Schemas contain [tables](#tables), [indexes](#indexes), and other objects, like [views](#views) and [sequences](#sequences).
+Schemas make up the second level of the naming hierarchy. Each schema belongs to a single database. Schemas contain [tables](#tables) and other objects, like [views](#views) and [sequences](#sequences).
 
 All CockroachDB clusters include a preloaded schema named `public`. CockroachDB also supports creating your own *user-defined schema*.
 
@@ -44,11 +44,9 @@ For guidance on defining tables, see [Tables](schema-design-tables.html).
 
 ### Indexes
 
-Indexes, like tables, belong to a single user-defined schema, in the third level of the naming hierarchy.
+An index is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column. Each index belongs to a single table.
 
-An index is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to more efficiently find data in a table, given the values of a particular column.
-
-The two main types of indexes are the `primary` index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on columns of your choice.
+The two main types of indexes are the `primary` index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
 
 For guidance on defining primary keys, see [Select Primary Key Columns](schema-design-tables.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Add a Secondary Index](schema-design-indexes.html).
 
