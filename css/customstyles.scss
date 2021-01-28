@@ -52,7 +52,7 @@ p {
   // color: $cl_blue;
 
   strong, b {
-    @include paragraph-type--heavy;
+    @include sourcesanspro_m(16px);
     font-weight: bold;
   }
 

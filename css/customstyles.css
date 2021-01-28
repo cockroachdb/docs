@@ -6188,7 +6188,7 @@ a.text-ice-temple:hover, a.text-ice-temple:focus {
   font-weight: normal;
   font-style: normal; }
 @font-face {
-  font-family: 'SourceSansPro-Medium';
+  font-family: 'SourceSansPro-SemiBold';
   src: url("../fonts/SourceSansPro-SemiBold.ttf");
   font-weight: normal;
   font-style: normal; }
@@ -11669,12 +11669,7 @@ p {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 25px;
     font-weight: bold; }
-    @media screen and (min-width: 992px) {
-      p strong, p b {
-        font-size: 14px;
-        line-height: 24px; } }
   @media screen and (min-width: 992px) {
     p {
       margin: 10px 0; } }
