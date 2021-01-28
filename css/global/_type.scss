@@ -169,7 +169,7 @@
 }
 
 @mixin paragraph-type--heavy {
-  @include graphik_sb(16px);
+  @include sourcesanspro_m(16px);
   line-height: 25px;
 
   @include at-query($min, $screen-md) {

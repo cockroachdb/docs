@@ -188,6 +188,9 @@
 .filters {
 	font-size: 0;
 	border-bottom: 1px solid $neutral-200;
+	& + .filter-content {
+		margin-bottom: 25px;
+	}
 	.filter-button {
 		display: inline-block;
 		border: none;
@@ -213,7 +216,8 @@
 		}
 
 		&.page-level {
-			margin: 15px 15px 0px 0px;
+			margin: 0 15px 0px 0px;
+			padding-top: 0;
 		}
 	}
 
