@@ -11,13 +11,13 @@
       	{
       	  "title": "Create a CockroachCloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-your-cluster.html"
+      	    "/cockroachcloud/create-a-free-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-your-cluster.html"
+      	    "/cockroachcloud/connect-to-a-free-cluster.html"
       	  ]
       	},
       	{

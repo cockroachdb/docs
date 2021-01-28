@@ -1,10 +1,15 @@
 ---
-title: Create Your CockroachCloud Cluster
+title: Create a CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-create-your-cluster.html
 ---
+
+<div class="filters clearfix">
+    <a href="create-your-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud</strong></button></a>
+    <a href="create-a-free-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud Free</strong></button></a>
+</div>
 
 This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
@@ -20,9 +25,9 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
-3. On the **Overview** page, click **Create Cluster**. If there are multiple organization in your account,
+3. On the **Overview** page, click **Create Cluster**.
 
-##Step 2. Select the cloud provider
+## Step 2. Select the cloud provider
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
