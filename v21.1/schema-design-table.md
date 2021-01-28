@@ -64,7 +64,7 @@ CREATE TABLE [schema_name].[table_name] (
   );
 ~~~
 
-Where `[schema_name]` is the name of the user-defined schema, `[table_name]` is the name of the table, and `[elements]` is a comma-separated list of table elements, such as column definitions.
+Where `schema_name` is the name of the user-defined schema, `table_name` is the name of the table, and `elements` is a comma-separated list of table elements, such as column definitions.
 
 #### Table naming best practices
 
