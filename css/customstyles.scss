@@ -48,7 +48,7 @@ body {
 }
 
 strong {
-  @include sourcesanspro_b(16px);
+  @include sourcesanspro_m(16px);
   font-weight: 700;
 }
 
@@ -56,10 +56,10 @@ p {
   @include paragraph-type;
   // color: $cl_blue;
 
-  strong, b {
-    @include sourcesanspro_b(16px);
-    font-weight: 700;
-  }
+  // strong, b {
+  //   @include sourcesanspro_m(16px);
+  //   font-weight: 700;
+  // }
 
   @include at-query($min, $screen-md) {
     margin: 10px 0;
