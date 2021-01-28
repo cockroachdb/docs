@@ -11662,7 +11662,7 @@ strong {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: bold; }
+  font-weight: 700; }
 
 p {
   font-family: 'SourceSansPro-Regular', sans-serif;
@@ -11677,7 +11677,7 @@ p {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-weight: bold; }
+    font-weight: 700; }
   @media screen and (min-width: 992px) {
     p {
       margin: 10px 0; } }

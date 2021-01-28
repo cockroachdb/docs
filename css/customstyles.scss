@@ -49,7 +49,7 @@ body {
 
 strong {
   @include sourcesanspro_m(16px);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 p {
@@ -58,7 +58,7 @@ p {
 
   strong, b {
     @include sourcesanspro_m(16px);
-    font-weight: bold;
+    font-weight: 700;
   }
 
   @include at-query($min, $screen-md) {
