@@ -23,4 +23,4 @@ For docs on our SQL dialect, see <a href="sql-statements.html" target="_blank">S
 
 - [Learn CockroachDB SQL](../tutorials/learn-cockroachdb-sql-interactive.html)
 - [Build a Python App with CockroachDB](../tutorials/build-a-python-app-with-cockroachdb-interactive.html)
-- [Store and Query JSON](..tutorials/demo-json-support-interactive.html)
+- [Store and Query JSON](../tutorials/demo-json-support-interactive.html)
