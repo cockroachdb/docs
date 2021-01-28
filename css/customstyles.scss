@@ -53,6 +53,7 @@ p {
 
   strong, b {
     @include paragraph-type--heavy;
+    font-weight: bold;
   }
 
   @include at-query($min, $screen-md) {

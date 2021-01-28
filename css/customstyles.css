@@ -11669,7 +11669,8 @@ p {
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 25px; }
+    line-height: 25px;
+    font-weight: bold; }
     @media screen and (min-width: 992px) {
       p strong, p b {
         font-size: 14px;

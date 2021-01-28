@@ -363,6 +363,11 @@ $(function() {
 
   //external links
   $("main a").filter(function() {
+
+    if ( $(this).children().length > 0 ) {
+      return
+    }
+ 
     return this.hostname && this.hostname !== location.hostname;
   }).addClass('external').attr("target","_blank");
 });
