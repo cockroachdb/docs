@@ -81,11 +81,11 @@ The file should now look something like this:
 ~~~
 CREATE SCHEMA IF NOT EXISTS cockroachlabs;
 
-CREATE TABLE cockroachlabs.movr.users (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
 );
 ~~~
 
-The `IF NOT EXISTS` clause of the `CREATE SCHEMA` statement will allow you to execute subsequent statements in the file, even if a schema exists.
+The `IF NOT EXISTS` clauses will allow you to execute subsequent statements in the file, even if an object of the same name exists.
 
 Don't execute the file yet. You need to first [define the columns](#define-columns) of the `users` table.
 
@@ -114,7 +114,7 @@ In the `dbinit.sql` file, add a few column definitions to the `users` table's `C
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.users (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
     first_name STRING,
     last_name STRING,
     email STRING
@@ -132,7 +132,7 @@ As a vehicle-sharing platform, MovR needs to store data about its vehicles. In `
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.vehicles (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.vehicles (
       id UUID,
       type STRING,
       creation_time TIMESTAMPTZ,
@@ -166,7 +166,7 @@ You can then use `vtype` as the `type` column's data type:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.vehicles (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.vehicles (
       id UUID,
       type vtype,
       creation_time TIMESTAMPTZ,
@@ -231,7 +231,7 @@ In the `dbinit.sql` file, add a composite primary key on the `first_name` and `l
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.users (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
     first_name STRING,
     last_name STRING,
     email STRING,
@@ -249,7 +249,7 @@ In the `vehicles` table definition, add a `PRIMARY KEY` constraint on the `id` c
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.vehicles (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
       creation_time TIMESTAMPTZ,
@@ -282,7 +282,7 @@ For example, in the `vehicles` table definition in `dbinit.sql`, you added a `DE
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.vehicles (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
@@ -307,7 +307,7 @@ In `dbinit.sql`, under the `CREATE TABLE` statement for `vehicles`, add a defini
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.rides (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.rides (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       vehicle_id UUID REFERENCES cockroachlabs.movr.vehicles(id),
       start_address STRING,
@@ -335,7 +335,7 @@ For example, suppose that you want to ensure that the email addresses of all use
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.users (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE,
@@ -363,7 +363,7 @@ For example, if you require all users of the MovR platform to have an email on f
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE cockroachlabs.movr.users (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE NOT NULL,
@@ -401,7 +401,7 @@ After following the examples provided in the sections above, the `dbinit.sql` fi
 ~~~
 CREATE SCHEMA IF NOT EXISTS movr;
 
-CREATE TABLE cockroachlabs.movr.users (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE NOT NULL,
@@ -410,7 +410,7 @@ CREATE TABLE cockroachlabs.movr.users (
 
 CREATE TYPE vtype AS ENUM ('bike', 'scooter', 'skateboard');
 
-CREATE TABLE cockroachlabs.movr.vehicles (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
@@ -418,7 +418,7 @@ CREATE TABLE cockroachlabs.movr.vehicles (
       last_location STRING
   );
 
-CREATE TABLE cockroachlabs.movr.rides (
+CREATE TABLE IF NOT EXISTS cockroachlabs.movr.rides (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       vehicle_id UUID REFERENCES cockroachlabs.movr.vehicles(id),
       start_address STRING,
