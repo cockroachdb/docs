@@ -124,7 +124,7 @@ If you are a [Console Admin](console-access-management.html#console-admin), you 
 
 1. Navigate to the **Settings** page.
 
-    <img src="{{ 'images/v20.2/cockroachcloud/settings-page.png' | relative_url }}" alt="Settings page" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/cockroachcloud/settings-page.png' | relative_url }}" alt="Settings page" style="border:1px solid #eee;max-width:100%" />
 
 1. Click the pencil icon in the **Organization name** row.
 1. In the **Edit organization name** dialog, enter the new **Organization name**.

@@ -28,8 +28,6 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
     The **Add User** modal displays.
 
-    <img src="{{ 'images/v20.1/cockroachcloud/add-user-modal.png' | relative_url }}" alt="Add user" style="border:1px solid #eee;max-width:100%" />
-
 3. Enter a **Username**.
 4. Enter and confirm the **Password**.
 5. Click **Create**.
@@ -69,7 +67,7 @@ Be sure to create a password for each new user. Without a password, a user canno
 <section class="filter-content" markdown="1" data-scope="console">
 To view a list of all of the users in your cluster, navigate to the **SQL Users** page.
 
-<img src="{{ 'images/v20.2/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL Users page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL Users page" style="border:1px solid #eee;max-width:100%" />
 
 On the **SQL Users** page, you can do the following:
 
@@ -106,7 +104,7 @@ To change a user's password:
 1. Navigate to the **SQL Users** page.
 1. In the row of the user whose password needs to be changed, click the **...** button.
 
-    <img src="{{ 'images/v20.2/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Change SQL password" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Change SQL password" style="border:1px solid #eee;max-width:100%" />
 
 1. From the dropdown, select **Change Password**.
 1. In the **New Password** field, enter the new password.
@@ -139,7 +137,7 @@ To remove a user:
 1. Navigate to the **SQL Users** page.
 1. In the row of the user you want to remove, click the **...** button.
 
-    <img src="{{ 'images/v20.2/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Remove a SQL users" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/cockroachcloud/sql-users-actions.png' | relative_url }}" alt="Remove a SQL users" style="border:1px solid #eee;max-width:100%" />
 
 1. From the dropdown, select **Delete SQL User**.
 1. Click **Delete**.

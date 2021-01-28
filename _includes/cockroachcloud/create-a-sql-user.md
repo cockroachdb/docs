@@ -2,7 +2,7 @@
 
 1. Navigate to your cluster's **SQL Users** page.
 
-    <img src="{{ 'images/v19.2/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
+    <img src="{{ 'images/cockroachcloud/sql-users.png' | relative_url }}" alt="SQL users" style="border:1px solid #eee;max-width:100%" />
 
 1. Click the **Add User** button in the top right corner.
 
