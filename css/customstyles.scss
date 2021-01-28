@@ -48,7 +48,7 @@ body {
 }
 
 strong {
-  @include sourcesanspro_m(16px);
+  @include sourcesanspro_b(16px);
   font-weight: 700;
 }
 
@@ -57,7 +57,7 @@ p {
   // color: $cl_blue;
 
   strong, b {
-    @include sourcesanspro_m(16px);
+    @include sourcesanspro_b(16px);
     font-weight: 700;
   }
 

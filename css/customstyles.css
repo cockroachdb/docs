@@ -11657,7 +11657,7 @@ body {
   color: #242A35; }
 
 strong {
-  font-family: 'SourceSansPro-SemiBold', sans-serif;
+  font-family: 'SourceSansPro-Bold', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -11672,7 +11672,7 @@ p {
   -moz-osx-font-smoothing: grayscale;
   line-height: 22.6px; }
   p strong, p b {
-    font-family: 'SourceSansPro-SemiBold', sans-serif;
+    font-family: 'SourceSansPro-Bold', sans-serif;
     font-size: 16px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
