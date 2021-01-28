@@ -39,7 +39,7 @@ Before reading this page, do the following:
 
 To change an existing object in a database schema, use the `ALTER` statement that corresponds to that object and the substatement that corresponds to the change that you would like to make to that object.
 
-For example, to change the name of an existing database, use `ALTER DATABASE oldname RENAME TO newname`.
+For example, to change the name of an existing database, use `ALTER DATABASE ... RENAME TO ...`.
 
 For best practices and examples for each object, see the following sections:
 
@@ -49,13 +49,28 @@ For best practices and examples for each object, see the following sections:
 - [Alter an index](#alter-an-index)
 - [Alter other objects](#alter-other-objects)
 
+### Database schema change best practices
+
+Because you've already initialized the database schema with the `dbinit.sql` file, it's best to create a separate file, for your new database schema changes.
+
+In Liquibase, these 
+
 ## Alter a database
 
 To alter a database, use the `ALTER DATABASE` statement.
 
-### Best practices for altering databases
+For a list of the supported `ALTER DATABASE` subcommands, see [`ALTER DATABASE` syntax page](alter-database.html).
+
+For reference documentation on each `ALTER DATABASE` subcommands, including examples, see the syntax page for each [`ALTER DATABASE` subcommand](alter-database.html#subcommands).
+
+Suppose you want to rename the database `movr` to something a little more specific, like `movr_database`.
+
 
 ## Alter a user-defined schema
+
+To alter a user-defined schema, use the `ALTER SCHEMA` statement.
+
+For a full list of  `ALTER SCHEMA` statement, including additional examples, see the [`ALTER SCHEMA` syntax page](alter-schema.html).
 
 ### Best practices for altering schemas
 

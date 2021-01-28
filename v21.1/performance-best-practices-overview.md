@@ -273,31 +273,9 @@ However, the performance best practice is to use a `RETURNING` clause with `INSE
 	RETURNING ID1,ID2,ID3;
 ~~~
 
-## Indexes best practices
+## Secondary index best practices
 
-### Use secondary indexes
-
-You can use [secondary indexes](indexes.html) to improve the performance of queries using columns not in a table's primary key. You can create them:
-
-- At the same time as the table with the `INDEX` clause of [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes). In addition to explicitly defined indexes, CockroachDB automatically creates secondary indexes for columns with the [`UNIQUE` constraint](unique.html).
-- For existing tables with [`CREATE INDEX`](create-index.html).
-- By applying the `UNIQUE` constraint to columns with [`ALTER TABLE`](alter-table.html), which automatically creates an index of the constrained columns.
-
-To create the most useful secondary indexes, check out our [best practices](indexes.html#best-practices).
-
-### Use indexes for faster joins
-
-See [Join Performance Best Practices](joins.html#performance-best-practices).
-
-### Drop unused indexes
-
-Though indexes improve read performance, they incur an overhead for every write. In some cases, like the use cases discussed above, the tradeoff is worth it. However, if an index is unused, it slows down DML operations. Therefore, [drop unused indexes](drop-index.html) whenever possible.
-
-### Avoid indexes on sequential keys
-
-Writes to indexes on sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](#unique-id-best-practices), or [multi-column keys](#use-multi-column-primary-keys).
-
-If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](indexes.html#hash-sharded-indexes). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
+See [Secondary Index Best Practices](schema-design-indexes.html#best-practices).
 
 ## Join best practices
 
