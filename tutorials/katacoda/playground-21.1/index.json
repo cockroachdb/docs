@@ -1,12 +1,12 @@
 {
   "noindex": true,
-  "title": "CockroachDB Playground",
-  "description": "Use CockroachDB in a sandboxed playground environment",
+  "title": "CockroachDB v21.1 Playground",
+  "description": "Use a testing release of CockroachDB v21.1 in a playground environment",
   "details": {
     "steps": [
       {
         "text": "step1.md",
-        "code": "foreground.sh"
+        "foreground": "foreground.sh"
       }
     ]
   },
