@@ -272,47 +272,6 @@
                     ]
                   }
                 ]
-              },
-              {
-                "title": "Advanced Schema Design",
-                "items": [
-                  {
-                    "title": "Create Computed Columns",
-                    "urls": [
-                      "/${VERSION}/computed-columns.html"
-                    ]
-                  },
-                  {
-                    "title": "Group Columns into Families",
-                    "urls": [
-                      "/${VERSION}/column-families.html"
-                    ]
-                  },
-                  {
-                    "title": "Index a Subset of Rows",
-                    "urls": [
-                      "/${VERSION}/partial-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Index Sequential Keys",
-                    "urls": [
-                      "/${VERSION}/inverted-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Index JSON and Array Data",
-                    "urls": [
-                      "/${VERSION}/inverted-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Index Spatial Data",
-                    "urls": [
-                      "/${VERSION}/spatial-indexes.html"
-                    ]
-                  }
-                ]
               }
             ]
           },
