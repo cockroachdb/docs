@@ -47,6 +47,11 @@ body {
   color: $neutral-800;
 }
 
+strong {
+  @include sourcesanspro_m(16px);
+  font-weight: bold;
+}
+
 p {
   @include paragraph-type;
   // color: $cl_blue;

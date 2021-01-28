@@ -11656,6 +11656,14 @@ body {
   height: 100%;
   color: #242A35; }
 
+strong {
+  font-family: 'SourceSansPro-SemiBold', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold; }
+
 p {
   font-family: 'SourceSansPro-Regular', sans-serif;
   font-size: 16px;
