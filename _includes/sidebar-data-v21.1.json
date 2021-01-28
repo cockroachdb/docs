@@ -1417,6 +1417,12 @@
                     ]
                   },
                   {
+                    "title": "<code>COPY FROM</code>",
+                    "urls": [
+                      "/${VERSION}/copy-from.html"
+                    ]
+                  },
+                  {
                     "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
                     "urls": [
                       "/${VERSION}/create-changefeed.html"
@@ -2454,12 +2460,6 @@
               {
                 "title": "Performance Optimization",
                 "items": [
-                  {
-                    "title": "SQL Best Practices",
-                    "urls": [
-                      "/${VERSION}/performance-best-practices-overview.html"
-                    ]
-                  },
                   {
                     "title": "Indexes",
                     "urls": [
