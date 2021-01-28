@@ -308,8 +308,6 @@ $(function() {
     // avoids third level item staying active, causing no items to appear on collapse/expand
     // this fires on desktop as well, to prevent an empty menu after resize
     if ($(this).parent('li').parent('#sidebar').length > 0) {
-      console.log('clicked this closing other menus');
-      console.log(this);
       $('li.active').removeClass('active');
     }
   });
