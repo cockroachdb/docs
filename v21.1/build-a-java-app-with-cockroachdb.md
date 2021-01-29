@@ -56,6 +56,7 @@ To run it:
     ~~~ shell
     git clone https://github.com/cockroachlabs/hello-world-java-jdbc
     ~~~
+<section class="filter-content" markdown="1" data-scope="local">
 
 1. In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the demo cluster:
 
@@ -77,6 +78,50 @@ To run it:
         ~~~
 
         Where `{username}` is the database username you created, and `{password}` is the database user's password.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+1. In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the demo cluster:
+
+    1. Set the host in the `PGSimpleDataSource` instance:
+
+        {% include copy-clipboard.html %}
+        ~~~ java
+        ds.setServerNames(new String[]{"{globalhost}"});
+        ~~~
+
+        Where `{globalhost}` is the host from the connection string.
+
+    1. Set the database name in the `PGSimpleDataSource` instance:
+
+        {% include copy-clipboard.html %}
+        ~~~ java
+        ds.setDatabaseName("{cluster_name}.bank");
+        ~~~
+
+        Where `{cluster_name}` is the name of your cluster.
+
+    1. Set the user and password in `PGSimpleDataSource`:
+
+        {% include copy-clipboard.html %}
+        ~~~ java
+        ds.setUser("{user}");
+        ds.setPassword("{password}");
+        ~~~
+
+        Where `{user}` and `{password}` if your username and password.
+
+    1. Set the SSL options in `PGSimpleDataSource`:
+
+        {% include copy-clipboard.html %}
+        ~~~ java
+        ds.setSslMode("verify-full");
+        ds.setSslRootCert("{path to the CA certificate}")
+        ~~~
+
+</section>
 
 1. Compile and run the code:
 
