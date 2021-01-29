@@ -1,5 +1,6 @@
 ---
 title: Orchestrate CockroachDB in a Single Kubernetes Cluster (Insecure)
+breadcrumbs: [guides, get-started, start-a-local-cluster]
 summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
