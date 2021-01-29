@@ -38,7 +38,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="client">
-Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
+Once you have [connected to the cluster's SQL client](connect-to-your-cluster.html), you can create a new user.
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../stable/create-user.html) statement:
 
