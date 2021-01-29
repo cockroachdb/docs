@@ -81,6 +81,7 @@ The following options are available to [`IMPORT ... CSV`][import]:
 + [Column delimiter](#column-delimiter)
 + [Comment syntax](#comment-syntax)
 + [Skip header rows](#skip-header-rows)
++ <span class="version-tag">New in v21.1:</span> [Row limit](#row-limit)
 + [Null strings](#null-strings)
 + [File compression](#file-compression)
 
@@ -142,6 +143,26 @@ Example usage:
   )
   CSV DATA ('s3://acme-co/employees.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
         WITH skip = '2';
+~~~
+
+### Row limit
+
+<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time-consuming import.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees (
+    emp_no INT PRIMARY KEY,
+    birth_date DATE NOT NULL,
+    first_name STRING NOT NULL,
+    last_name STRING NOT NULL,
+    gender STRING NOT NULL,
+    hire_date DATE NOT NULL
+  )
+  CSV DATA ('s3://acme-co/employees.csv?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456')
+        WITH row_limit = '10';
 ~~~
 
 ### Null strings
