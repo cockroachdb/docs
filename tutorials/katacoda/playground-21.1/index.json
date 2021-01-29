@@ -13,7 +13,9 @@
   "environment": {
     "hideintro": true,
     "hidefinish": true,
-    "uilayout": "terminal"
+    "uilayout": "terminal",
+    "showdashboard": true,
+    "dashboards": [{"name": "DB Console", "port": 8080}]
   },
   "backend": {
     "imageid": "ubuntu:1804"
