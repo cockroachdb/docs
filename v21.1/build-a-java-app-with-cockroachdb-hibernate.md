@@ -51,63 +51,60 @@ The contents of `Sample.java`:
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
 
-To run it:
+### Get the code
 
-1. Clone the `hello-world-java-hibernate` repo to your machine:
+Clone the `hello-world-java-hibernate` repo to your machine:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachlabs/hello-world-java-hibernate/
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/hello-world-java-hibernate/
+~~~
 
-    {{site.data.alerts.callout_info}}
-    The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
-    {{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
+{{site.data.alerts.end}}
+
+### Update the connection parameters
+
+Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
+1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
 
-    1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
+    {% include copy-clipboard.html %}
+    ~~~ xml
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:{port}/bank?ssl=true&amp;sslmode=require</property>
+    ~~~
 
-        {% include copy-clipboard.html %}
-        ~~~ xml
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:{port}/bank?ssl=true&amp;sslmode=require</property>
-        ~~~
+    Where `{port}` is the port number on which the CockroachDB demo cluster is listening.
 
-        Where `{port}` is the port number on which the CockroachDB demo cluster is listening.
+1. Set the `hibernate.connection.username` property to the username you created earlier.
 
-    1. Set the `hibernate.connection.username` property to the username you created earlier.
-
-    1. Set the `hibernate.connection.password` property to the user's password.
+1. Set the `hibernate.connection.password` property to the user's password.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
+1. Modify the `hibernate.connection.url` property with the information from the connection string you copied [earlier](#set-up-your-cluster-connection) host, cluster and database name, and path to the SSL certificate:
 
-    1. Modify the `hibernate.connection.url` property with the information from the connection string you copied [earlier](#set-up-your-cluster-connection) host, cluster and database name, and path to the SSL certificate:
-
-      {% include copy-clipboard.html %}
-      ~~~ xml
-      <property name="hibernate.connection.url">jdbc:postgresql://{globalhost}:26257/{cluster_name}.bank?sslmode=verify-full&amp;sslrootcert={path to the CA certificate}</property>
-      ~~~
-
-      {% include {{page.version.version}}/app/cc-free-tier-params.md %}
-
-    1. Set the `hibernate.connection.username` property to your username.
-
-    1. Set the `hibernate.connection.password` property to the user's password.
+  {% include copy-clipboard.html %}
+  ~~~ xml
+  <property name="hibernate.connection.url">jdbc:postgresql://{globalhost}:26257/{cluster_name}.bank?sslmode=verify-full&amp;sslrootcert={path to the CA certificate}</property>
+  ~~~
+  {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
-1. Compile and run the code using `gradlew`, which will also download the dependencies.
+### Run the code
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ ./gradlew run
-    ~~~
+Compile and run the code using `gradlew`, which will also download the dependencies.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ ./gradlew run
+~~~
 
 Toward the end of the output, you should see:
 
