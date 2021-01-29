@@ -11636,6 +11636,13 @@ p .version-tag, .clickable-header .version-tag {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.font-family-poppins {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
 .overline {
   font-family: 'Poppins-SemiBold', sans-serif;
   font-size: 18px;
@@ -11758,6 +11765,10 @@ h6, .h6 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 28px; }
+
+.sub-heading {
+  font-size: 20px;
+  line-height: 30px; }
 
 pre.prettyprint {
   margin-bottom: 20px; }

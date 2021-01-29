@@ -134,6 +134,11 @@ h6, .h6 {
   @include headline-6;
 }
 
+.sub-heading {
+  font-size: 20px;
+  line-height: 30px;
+}
+
 pre.prettyprint {
   margin-bottom: 20px;
 }
