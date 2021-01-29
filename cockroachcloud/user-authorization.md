@@ -23,7 +23,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 #### Use the CockroachDB SQL client
 
-Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can create a new user.
+Once you have [connected to the cluster](), you can create a new user.
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../stable/create-user.html) statement:
 
@@ -40,7 +40,7 @@ Be sure to create a password for each new user. Without a password, a user canno
 
 Access to the data in your cluster is controlled by [privileges](../v20.1/authorization.html#assign-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
-Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can grant user privileges.
+Once you have [connected to the cluster](), you can grant user privileges.
 
 To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../stable/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
@@ -60,7 +60,7 @@ For more details, see [Privileges](../v20.1/authorization.html#assign-privileges
 
 ### Managing SQL users
 
-Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can manage users:
+Once you have [connected to the cluster](), you can manage users:
 
 - To change a user's password, use the [`ALTER USER`](../stable/alter-user.html) statement:
 
@@ -89,7 +89,7 @@ Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-co
 
 ### Managing privileges
 
-Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can manage privileges:
+Once you have [connected to the cluster](), you can manage privileges:
 
 - To show privileges granted to a user, use the [`SHOW GRANTS`](../stable/show-grants.html) statement:
 
@@ -109,7 +109,7 @@ Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-co
 
 Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
 
-Once you have [connected to the cluster](connect-to-your-cluster.html#use-the-cockroachdb-sql-client), you can set up roles:
+Once you have [connected to the cluster](), you can set up roles:
 
 - To create a role, use the [`CREATE ROLE`](../stable/create-role.html) statement:
 
