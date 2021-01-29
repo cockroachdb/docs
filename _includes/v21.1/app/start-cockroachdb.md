@@ -1,4 +1,3 @@
-{% comment %}
 Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachCloud. The instructions below will adjust accordingly.
 
 <div class="filters clearfix">
@@ -6,7 +5,6 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
   <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
 </div>
 <p></p>
-{% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -37,51 +35,10 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
 ### Create a free cluster
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
-1. On the **Overview** page, click **Create Cluster**.
-1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
-1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 1 node.
-1. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).
-1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
-1. Click **Next**.
-1. On the **Summary** page, enter your credit card details.
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-    {{site.data.alerts.callout_info}}
-    You won't be charged until after your free trial expires in 30 days.
-    {{site.data.alerts.end}}
+### Set up your cluster connection
 
-1. In the **Trial Code** field, enter `CRDB30`. Click **Apply**.
-1. Click **Create cluster**.
-
-Your cluster will be created in approximately 20-30 minutes. Watch this [Getting Started with CockroachCloud](https://youtu.be/3hxSBeE-1tM) video while you wait.
-
-Once your cluster is created, you will be redirected to the **Cluster Overview** page.
-
-### Create a SQL user
-
-1. In the left navigation bar, click **SQL Users**.
-1. Click **Add User**. The **Add User** modal displays.
-1. Enter a **Username** and **Password**.
-1. Click **Save**.
-
-### Authorize your network
-
-1. In the left navigation bar, click **Networking**.
-1. Click **Add Network**. The **Add Network** modal displays.
-1. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
-1. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
-1. Click **Apply**.
-
-### Get the connection string
-
-1. In the top-right corner of the Console, click the **Connect** button. The **Connect** modal displays.
-1. From the **User** dropdown, select the SQL user you created [earlier](#create-a-sql-user).
-1. Verify that the `us-west2 GCP` region and `default_db` database are selected.
-1. Click **Continue**. The **Connect** tab is displayed.
-1. Click **Connection string** and take note of the connection string for your cluster. You will use it in your application code later.
-1. Create a `certs` directory on your local workstation.
-1. Click the name of the `ca.crt` file to download the CA certificate to your local machine.
-1. Move the downloaded `ca.crt` file to the `certs` directory.
+{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
 </section>
