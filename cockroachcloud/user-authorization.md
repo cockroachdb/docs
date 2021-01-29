@@ -259,7 +259,7 @@ Once you have [connected to the cluster](), you can set up roles:
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#managing-privileges) before the role can be dropped.
+    All of a role's privileges must be [revoked](#manage-privileges) before the role can be dropped.
     {{site.data.alerts.end}}
 
 ## See also

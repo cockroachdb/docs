@@ -11,4 +11,4 @@
 1. Enter a **Username** and **Password**.
 1. Click **Save**.
 
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#granting-privileges) and [Using roles](user-authorization.html#using-roles).
+    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
