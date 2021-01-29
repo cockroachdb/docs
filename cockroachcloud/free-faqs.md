@@ -1,5 +1,5 @@
 ---
-title: Frequently Asked Questions
+title: CockroachCloud Free (beta) Frequently Asked Questions
 summary: Get answers to frequently asked questions about CockroachCloud Free (beta)
 toc: true
 redirect_from:
@@ -12,11 +12,11 @@ This page answers the frequently asked questions about CockroachCloud Free (beta
 
 ### What is CockroachCloud Free?
 
-CockroachCloud Free delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that also removes the friction of initial cluster sizing and auto-scales based on your application traffic. While we have eliminated the concept of nodes for you, there will be an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
+CockroachCloud Free delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic. There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
 
 ### Do I have to pay for CockroachCloud Free?
 
-CockroachCloud Free is free forever.
+No, you do not have to pay anything. CockroachCloud Free is free forever.
 
 ### What can I use CockroachCloud Free for?
 
@@ -34,7 +34,7 @@ CockroachCloud Free is currently in beta and as such, it is not suitable for hea
 
 ### Can I use a specific region in AWS or GCP?
 
-At this time, CockroachCloud Free is only available in the GCP `us-central-1` region.
+At this time, CockroachCloud Free is only available in the GCP `us-central-1` region. More regions may be available in the future.
 
 ### How do I connect to my cluster?
 
@@ -54,7 +54,7 @@ You can submit feedback or log any bugs you find through [this survey](https://c
 
 ### Is my cluster secure?
 
-We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
+Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
 ### Is encryption-at-rest enabled on CockroachCloud Free?
 
@@ -73,29 +73,25 @@ CockroachCloud Free is a multi-tenant offering and resources are shared between 
 
 ### How do I add nodes?
 
-We have eliminated the concept of nodes for CockroachCloud Free. However, there is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster. If you exceed this limit, you can create a cluster using the paid version of [CockroachCloud](create-your-cluster.html).
+You cannot add nodes to your CockroachCloud Free cluster, and there is an upper limit of usage of up to 1 vCPU and 5GB storage. If you exceed this limit or want a more powerful cluster, you can create a cluster using the paid version of [CockroachCloud](create-your-cluster.html).
 
 ### Can I upgrade my cluster from CockroachCloud Free to the paid version of CockroachCloud?
 
 At this time, a CockroachCloud Free cluster cannot be upgraded. In the future, you will have the ability to move from CockroachCloud Free to a paid version of CockroachCloud.
 
-### Who is responsible for backups? Can I backup my cluster?
-
-Currently, backups are not supported on CockroachCloud Free. The ability to enable backups will be supported in the future.
-
 ## Product features
 
-### Are enterprise features like partitioning or change data capture available to me?
+### Are partitioning or change data capture available to me?
 
-At this time, change data capture and partitioning are not available on CockroachCloud Free clusters, but will be in the future.
+No, change data capture and partitioning are not available on CockroachCloud Free clusters, but will be in the future.
 
 ### Do you have a UI? How can I see details?
 
-All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
+Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/).
 
 ### Can I backup my CockroachCloud Free cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Free clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CC Free cluster yourself. We expect to support user initiated backup and restore of free clusters in the future.
+Cockroach Labs takes full cluster backups of all CockroachCloud Free clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CockroachCloud Free cluster yourself. We expect to support user-initiated backup and restore of free clusters in the future.
 
 In the meantime, you can run a [`SELECT`](../v20.2/select.html) statement using the [`--format=csv` flag](../v20.2/cockroach-sql.html#general) to print the output into a file. For example:
 
