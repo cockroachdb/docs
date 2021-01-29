@@ -1,10 +1,13 @@
 @mixin button() {
 	@include button-text;
-	text-transform: uppercase;
-	@include rounded(5px);
+	text-transform: capitalize;
+	@include rounded(3px);
 	@include groovy(all);
 	display: inline-block;
-	border: 2px solid $electric-purple;
+	border: $btn-border-width solid transparent;
+	// padding: $btn-padding-y $btn-padding-x;
+	line-height: $line-height-base;
+	white-space: nowrap;
 }
 
 .button--primary {
@@ -23,25 +26,100 @@
 	}
 }
 
-.button--secondary {
+.btn-redirect {
 	@include button();
-	color: $electric-purple;
-	line-height: 40px;
-	text-align: center;
-	width: 150px;
-	height: 40px;
-	background-color: #FFFFFF;
-
+	color: #FFFFFF;
+	background: linear-gradient(-90deg, $spanish-roast 0%, #0037A5 48.3%, $electric-purple 100%);
+	box-shadow: none;
+	&:hover {
+		color: #fff;
+		box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+	}
 	&:focus {
-		color: $electric-purple;
+		border: 1px solid #237300;
+		box-shadow: none;
+		color: #FFFFFF;
+	}
+	
+	&:active {
+		&:focus {
+			border: 1px solid #237300;
+			box-shadow: none;
+			color: #FFFFFF;
+		}
+	}
+}
+.btn-outline-primary {
+	@include button();
+	color: $electric-purple; 
+	text-align: center;
+	background-color: #FFFFFF;
+	border-color: $electric-purple;
+	border-width: 2px;
+	@include poppins(16px);
+	&:focus {
+		border-color: $electric-purple;
+		background-color: $electric-purple;
+		box-shadow: 0 0 0 $input-focus-width $electric-purple;
 	}
 
 	&:hover {
+		border-color: $electric-purple;
 		background-color: $electric-purple;
-		color: #FFFFFF;
+		color: #fff;
+	}
+
+	&:not(:disabled):not(.disabled) {
+
+		&:active {
+			border-color: $electric-purple;
+			background-color: $electric-purple;
+	
+			&:focus {
+				border-color: $electric-purple;
+				background-color: $electric-purple;
+				box-shadow: 0 0 0 $input-focus-width $electric-purple; 
+			  }
+		}
+		
+	}
+}
+.btn-outline-secondary {
+	@include button();
+	color: $neutral-700; 
+	text-align: center;
+	background-color: #FFFFFF;
+	border-color: $neutral-400;
+	&:focus {
+		border-color: $neutral-500;
+		background-color: $neutral-100;
+		box-shadow: 0 0 0 $input-focus-width $neutral-100;
+	}
+
+	&:hover {
+		background-color: $neutral-100;
+		color: $neutral-800;
+	}
+
+	&:not(:disabled):not(.disabled) {
+
+		&:active {
+			border-color: $neutral-500;
+			background-color: $neutral-100;
+	
+			&:focus {
+				border-color: $neutral-500;
+				background-color: $neutral-100;
+				box-shadow: 0 0 0 $input-focus-width $neutral-100; 
+			  }
+		}
+		
 	}
 }
 
+.btn--sm {
+	padding: $btn-padding-y-sm $btn-padding-x-sm;
+}
 .button--header {
 	@include button();
 	display: none;
@@ -73,8 +151,8 @@
 
 		&:hover {
 			background-color: #FFFFFF;
-			color: $cl_green;
-			border: 1px solid $cl_green;
+			color: $electric-purple;
+			border: 1px solid $electric-purple;
 		}
 	}
 
@@ -84,15 +162,15 @@
 
 	&--alt {
 		background-color: #FFFFFF;
-		color: $cl_green;
+		color: $electric-purple;
 
 		&:focus, &:hover {
-			color: $cl_green;
+			color: $electric-purple;
 		}
 
 		@include at-query($min, $screen-md) {
 			&:hover {
-				background-color: $cl_green;
+				background-color: $electric-purple;
 				color: #FFFFFF;
 			}
 		}
@@ -171,21 +249,34 @@
 .contribute {
 	.btn-contribute {
 		@include button();
-		background-color: transparent;
-		border: none;
-		color: $cl_gray;
-		line-height: 40px;
-		padding: 0;
+                font-size: 14px;
+                font-weight: 600;
+                font-style: normal;
+		border: 1px solid #D6DBE7;
+                box-sizing: border-box;
+                background: #F5F7FA;
+                color: #242A35;
+		line-height: 24px;
+                letter-spacing: 0.1px;
+                align-items: center;
+                width: 134px;
+                height: 32px;
 		margin-top: 9px;
-		margin-right: 2px;
+		margin-right: 55px;
 		text-align: center;
 
 		&:focus {
-			color: $electric-purple;
+                        outline: 0;
+                        box-shadow: 0 0 0 3px #E7ECF3;
+                        border: 1px solid #7E89A9;
+                        border-radius: 3px;
 		}
 
-		&:hover {
-			color: $electric-purple;
+		@include at-query($min, 571px) {
+			margin-left: 3px;
+		}
+		&:after {
+			display:none;
 		}
 	}
 
@@ -194,44 +285,27 @@
 		box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1), 0 10px 20px 0 rgba(0, 0, 0, 0.1);
 
 		@include at-query($min, 571px) {
-			left: -60px;
+			left: 1px;
 		}
 	}
 
 	.dropdown-menu > li > a {
 		@include caption;
-		color: $cl_blue;
+                font-size: 14px;
+                line-height: 22px;
+		color: #394455;
 		margin: 7px 0 7px;
 
 		&:focus {
 			text-decoration: none;
 			background-color: transparent;
-			color: $electric-purple;
+			color: #394455;
 		}
 
 		&:hover {
 			text-decoration: none;
 			background-color: transparent;
-			color: $electric-purple;
-		}
-	}
-
-	.arrow-up,
-	.arrow-down {
-		border-color: $cl_gray;
-	}
-
-	.arrow-up {
-		display: none;
-	}
-
-	&.open {
-		.arrow-down {
-			display: none;
-		}
-
-		.arrow-up {
-			display: inline-block;
+			color: #394455;
 		}
 	}
 }

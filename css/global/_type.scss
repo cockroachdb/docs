@@ -5,28 +5,38 @@
 // Global header stylings are still declared in _general.scss as a fallback.
 
 @mixin headline-1 { // global h1
-  @include graphik_sb(36px);
-  line-height: 45px;
+  @include poppins_sb(26px);
+  line-height: 35px;
+  @include at-query($min, $screen-md) {
+    @include poppins_sb(50px);
+    line-height: 85px;
+  }
 }
 
 @mixin headline-2 { // global h2
-  @include graphik_sb(30px);
+  @include poppins_sb(36px);
   line-height: 40px;
 }
 
 @mixin headline-3 { // global h3
-  @include graphik_sb(24px);
+  @include poppins_sb(26px);
   line-height: 35px;
 }
 
 @mixin headline-4 { // global h4
-  @include graphik_sb(17px);
+  @include poppins_sb(17px);
   line-height: 30px;
 }
 
-@mixin headline-4--avenir {
+@mixin headline-4--avenir { //
   @include avenir_r(17px);
   line-height: 30px;
+}
+
+
+@mixin headline-6 {
+  @include poppins_sb(24px);
+  line-height: 28px;
 }
 
 @mixin headline-24-30 {
@@ -66,13 +76,14 @@
 // body
 //
 @mixin type-body {
-  @include graphik_r(17px);
-  line-height: 30px;
+  @include sourcesanspro_r(14px);
+  line-height: 22px;
 }
 
 @mixin type-body-medium {
-  @include graphik_r(17px);
-  line-height: 30px;
+  @include sourcesanspro_b(14px);
+  line-height: 24px;
+  letter-spacing: .02em;
 }
 
 //
@@ -95,9 +106,10 @@
 }
 
 @mixin button-text {
-  @include avenir_bl(12px);
-  line-height: 15px;
-  letter-spacing: 1.5px;
+  @include poppins_sb(18px);
+  line-height: $line-height-base;
+  letter-spacing: 0.1px;
+  font-weight: 600;
 }
 
 @mixin button-text--heavy {
@@ -125,48 +137,55 @@
 }
 
 @mixin caption {
-  @include graphik_r(15px);
+  @include sourcesanspro_r(15px);
   line-height: 25px;
 }
 
 @mixin caption--small {
-  @include graphik_r(12px);
-  line-height: 15px;
+  @include sourcesanspro_m(12px);
+  line-height: 20px;
 }
 
 // this matches the name on the hugo site
 // eventually we should consolidate type styles here too
 @mixin type-caption {
-  @include graphik_r(15px);
+  @include sourcesanspro_r(15px);
   line-height: 25px;
 }
 
 @mixin paragraph-type {
-  @include graphik_r(16px);
-  line-height: 25px;
+  @include sourcesanspro_r(16px);
+  line-height: 22.6px;
 
-  @include at-query($min, $screen-md) {
-    font-size: 17px;
-    line-height: 30px;
-  }
+  // @include at-query($min, $screen-md) {
+  //   font-size: 14px;
+  //   line-height: 24px;
+  // }
 }
 
 @mixin paragraph-type--medium {
-  @include graphik_r(17px);
-  line-height: 30px;
+  @include sourcesanspro_r(14px);
+  line-height: 24px;
 }
 
 @mixin paragraph-type--heavy {
-  @include graphik_sb(16px);
+  @include sourcesanspro_m(16px);
   line-height: 25px;
 
   @include at-query($min, $screen-md) {
-    font-size: 17px;
-    line-height: 30px;
+    font-size: 14px;
+    line-height: 24px;
   }
 }
 
 @mixin code-type {
-  @include source_code_r(14px);
-  line-height: 25px;
+  @include source_code_r(15px);
+  line-height: 24px;
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+
+
+@each $color, $value in $grays {
+  @include text-emphasis-variant(".text-gray-#{$color}", $value, true);
 }

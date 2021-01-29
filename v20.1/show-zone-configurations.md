@@ -8,7 +8,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 
 ## Synopsis
 
-<div>
+<div class="horizontal-scroll">
 {% include {{ page.version.version }}/sql/diagrams/show_zone.html %}
 </div>
 

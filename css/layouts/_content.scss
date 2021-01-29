@@ -1,14 +1,20 @@
-#content {
-	background: #fff;
+// #maincontent{
+// 	@include at-query(0, $screen-sm) {
+// 		margin-top:100px;
+// 	}
+// } 
+//TODO: clean up, not sure if it used
+#maincontent {
+	// background: #fff;
 	position: relative;
-	padding-top: 62px;
-	width: 100%;
-	z-index: 1000;
-	@include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
-	overflow: auto;
+	padding-top: 115px;
+	// width: 100%;
+	// z-index: 1000;
+	// @include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
+	// overflow: auto;
 
 	@include at-query($min, $screen-lg){
-		padding-top: 145px;
+		padding-top: 100px;
 	}
 
 	#main-content {
