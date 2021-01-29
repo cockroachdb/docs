@@ -1,6 +1,9 @@
 @import "global/variables";
-@import "global/mixins";
+
+@import "bs/bootstrap.scss"; 
 @import "global/fonts";
+@import "global/mixins";
+
 @import "global/type";
 
 @import "layouts/header";
@@ -8,12 +11,12 @@
 @import "layouts/landing-page";
 @import "layouts/content";
 @import "layouts/footer";
-@import "layouts/version-nav";
+@import "layouts/topnav";
 
 @import "components/search";
 @import "components/callout";
 @import "components/toc";
-@import "components/filtertabs";
+
 @import "components/newsletter";
 @import "components/codesamples";
 @import "syntax/sql";
@@ -21,13 +24,18 @@
 @import "components/feedback-widget";
 @import "components/back-to-top";
 @import "components/buttons";
+@import "components/filtertabs";
 @import "components/releases";
 @import "components/copy-clipboard";
 @import "components/version-tag";
 @import "components/comparison-chart";
 @import "components/algolia";
 @import "components/version-switcher";
-@import "components/marketing-megamenu";
+@import "components/navbar";
+@import "components/badge";
+@import "components/marketing-menu";
+@import "utils/backgrounds";
+@import "utils/type";
 
 html {
   height: 100%;
@@ -35,17 +43,23 @@ html {
 
 body {
   height: 100%;
-  @include paragraph-type;
-  color: $cl_blue;
+  // @include paragraph-type;
+  color: $neutral-800;
+}
+
+strong {
+  @include sourcesanspro_b(16px);
+  font-weight: 700;
 }
 
 p {
   @include paragraph-type;
-  color: $cl_blue;
+  // color: $cl_blue;
 
-  strong, b {
-    @include paragraph-type--heavy;
-  }
+  // strong, b {
+  //   @include sourcesanspro_m(16px);
+  //   font-weight: 700;
+  // }
 
   @include at-query($min, $screen-md) {
     margin: 10px 0;
@@ -67,16 +81,11 @@ h3, h4, h5, h6 {
 }
 
 h1 {
-  @include graphik_sb(36px);
-  line-height: 45px;
-  color: $cl_blue;
+  @include headline-1;
 }
 
 h2 {
-  @include graphik_sb(30px);
-  line-height: 40px;
-  color: $cl_blue;
-
+  @include headline-2;
   &.clickable-header {
     cursor: pointer;
   }
@@ -88,16 +97,15 @@ h2 {
 }
 
 h3 {
-  @include avenir_h(24px);
-  line-height: 35px;
-  color: $cl_blue;
+  @include poppins(20px);
+  line-height: 32px;
 
   &.clickable-header {
     cursor: pointer;
   }
 
   strong, b {
-    @include avenir_bl(24px);
+    @include poppins_sb(24px);
   }
 
   code {
@@ -105,41 +113,97 @@ h3 {
   }
 }
 
-h4 {
-  @include subhead-avenir-sm;
-
+h4, .h4 { 
+  @include poppins_sb(16px);
+  font-weight: bold;
+  line-height: 26px;
   code {
     font-size: 17px;
   }
 }
 
-h5 {
-  @include graphik_ri(17px);
-
+h5, .h5 {
+  @include poppins_sb(16px);
+  line-height: 24px;
   code {
     font-size: 17px;
   }
 }
 
-pre { overflow: auto; }
+h6, .h6 {
+  @include headline-6;
+}
+
+.sub-heading {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+pre.prettyprint {
+  margin-bottom: 20px;
+}
+
+.pre-scrollable {
+  max-height: 340px;
+  overflow-y: scroll;
+}
+
+pre { 
+  overflow: auto; 
+  display: block;
+  padding: 20px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.428571429;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  code {
+    background-color: $neutral-800;
+    color: $neutral-100;
+    padding: 0;
+    font-size: inherit;
+    white-space: pre;
+    word-wrap: normal;
+    border: 0;
+  }
+}
 
 code {
   @include code-type;
-  border: 1px solid $cl_gray_medium;
+  background-color: $neutral-100;
+  color: $neutral-600;
+  @include at-query(0, $screen-sm) {
+    word-break: break-word;
+  }
  }
 
 pre, code {
   @include code-type;
-  background-color: $cl_syntax_gray_light;
   font-size: 14px;
   line-height: 25px;
-  color: $cl_blue;
   hyphens: none;
 }
 
-ul {
-  padding-left: 25px;
+h1, h2, h3, h4, h5, h6 {
+  code {
+    background: none;
+  }
 }
+
+ul, ol {
+  padding-left: 25px;
+  li {
+    margin-bottom: 10px;
+  }
+}
+
+a.external:after{
+  display: inline-block;
+  content: url(../images/external.svg);
+  padding-left: 4px;
+}
+
 a code {
   color: $dark-blue;
   &:hover {
@@ -173,6 +237,29 @@ td a:target:before {
       margin-bottom: 20px;
     }
   }
+
+  h1 {
+    @include poppins_sb(36px);
+    line-height: 48px;
+  }
+
+  h2 {
+    @include poppins_sb(26px);
+    line-height: 32px;
+  }
+  h3 {
+    @include poppins_sb(20px);
+    line-height: 26px;
+  }
+  h4 {
+    @include poppins(18px);
+    line-height: 22.6px;
+  }
+  h5 {
+    @include poppins(16px);
+    line-height: 22.6px;
+  }
+
 }
 
 .post-summary {
@@ -194,15 +281,25 @@ caption {
   text-align: left;
 }
 
+thead,
+tbody,
+tfoot,
+tr,
+td,
 th {
-  @include avenir_h(17px);
-  text-align: left;
-  padding: 15px 8px 15px 8px;
+  @include sourcesanspro_r(14px);
+  border-color: $neutral-300;
+  border-style: solid;
+  border-width: 0;
 }
-
+th,
+td {
+  padding: map-get($spacers, 1) map-get($spacers, 2);
+}
+// @debug map-get($spacers, 2); 
 tbody tr:hover {
   // what is theme-blue.css? overwriting requires important
-  background-color: $cl_gray_light !important;
+  // background-color: $cl_gray_light !important;
 }
 
 
@@ -210,14 +307,50 @@ tbody tr.eol {
   background-color: #fffaea !important;
 }
 
+.table-bordered {
+  > :not(caption) > * {
+    border-width: $table-border-width 0;
+
+    // stylelint-disable-next-line selector-max-universal
+    > * {
+      border-width: 0 $table-border-width;
+    }
+  }
+}
+
+table {
+  border-color: inherit;
+  border-style: solid;
+  border-width: $table-border-width;
+  width: 100%;
+  border-color: $table-border-color;
+
+
+  > tbody {
+    vertical-align: inherit;
+  }
+
+  > thead {
+    vertical-align: bottom;
+  }
+
+  @extend .table-bordered;
+
+}
+
+th {
+  font-weight: 600;
+  // text-align: left;
+  // padding: 15px 8px 15px 8px;
+}
 table > thead > tr > th,
 table > tbody > tr > th,
 table > tfoot > tr > th,
 table > thead > tr > td,
 table > tbody > tr > td,
 table > tfoot > tr > td {
-  vertical-align: top;
-  border-top: 1px solid #ddd;
+  // vertical-align: top;
+  // border-top: 1px solid #ddd;
 }
 
 
@@ -227,7 +360,7 @@ table > thead:first-child > tr:first-child > th,
 table > caption + thead > tr:first-child > td,
 table > colgroup + thead > tr:first-child > td,
 table > thead:first-child > tr:first-child > td {
-  border-top: 0;
+  // border-top: 0;
 }
 
 table col[class*="col-"] {
@@ -244,7 +377,7 @@ table th[class*="col-"] {
 
 
 table td:first-child {
-  min-width: 200px;
+  // min-width: 200px;
 }
 
 
@@ -472,7 +605,8 @@ ol.series li {
   padding-left: 0px;
 }
 
-#sidebar .nav ul {
+#sidebar .nav ul,
+.js-sidebar .nav ul {
   background-color: #FAFAFA;
 }
 .nav ul.series li {
@@ -525,6 +659,10 @@ dd {
   margin-bottom:6px;
 }
 
+.horizontal-scroll {
+  overflow-x:auto;
+}
+
 .note code, .alert code, .warning code, div#toc code {
   color: inherit;
   padding: 0px;
@@ -542,11 +680,9 @@ a.accordion-toggle {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 20px -30px 10px;
-
-  > * {
-    margin-left: 30px;
-    margin-right: 30px;
+  // margin: 20px 0;
+  h1 {
+    @include headline-2;
   }
 }
 
@@ -626,6 +762,34 @@ a.accordion-toggle {
   font-weight: 900;
 }
 
+.caption-sm {
+  @include caption--small;
+}
+
+.bg-white-transparent {
+  background: rgba(255,255,255,0.16);
+}
+
+.bg-purple-transparent {
+  background: rgba(206,192,242,0.16);
+}
+
+.close-card {
+  right: 30px;
+  top: 30px;
+  z-index: 1;
+  @media (min-width: $screen-md){ 
+    right: 15px;
+    top: 15px;
+  }
+}
+
+.text-purple-300 {
+  color: $purple-300;
+}
+.lh-n {
+  line-height: normal;
+}
 .page-not-found {
   width: 60%;
   margin: 0 auto;
@@ -645,4 +809,35 @@ a.accordion-toggle {
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 22px;
+}
+
+.form-control {
+  &:focus {
+    border-color: $electric-purple;
+    box-shadow: none;
+  }
+}
+
+.contribute {
+  li {
+    padding: 0 10px;
+  }
+}
+
+@include at-query($min, $screen-md) {
+  .border-md-left {
+    border-left: 1px solid $neutral-400;
+  }
+}
+
+@include at-query($min, $screen-md) {
+  .border-md-bottom {
+    border-bottom: 1px solid $neutral-400;
+  }
+}
+
+
+
+::marker {
+  color: $neutral-800;
 }

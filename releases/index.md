@@ -33,7 +33,7 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
         <td>
             <a href="{{ release.version }}.html">{{ release.version }}</a>
             {% if release.latest %}
-                <span class="badge">Latest</span>
+                <span class="badge-new">Latest</span
             {% endif %}
         </td>
         <td>{{ release.date }}</td>

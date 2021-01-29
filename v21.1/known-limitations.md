@@ -297,11 +297,14 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/32846)
 
-### Importing data using the PostgreSQL COPY protocol
+### `COPY FROM` statements are not supported in the CockroachDB SQL shell
 
-Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
+{% include {{ page.version.version }}/known-limitations/copy-from-clients.md %}
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
+### `COPY` syntax not supported by CockroachDB
+
+{% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
+
 
 ### Import with a high amount of disk contention
 

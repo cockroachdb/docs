@@ -1,4 +1,4 @@
-echo 'Installing CockroachDB for Linux and supporting spatial libraries...'
+echo 'Installing CockroachDB v20.2 and supporting spatial libraries...'
 
 wget -qO- https://binaries.cockroachdb.com/cockroach-v20.2.4.linux-amd64.tgz | tar  xvz
 cp -i cockroach-v20.2.4.linux-amd64/cockroach /usr/local/bin/
@@ -18,7 +18,7 @@ echo 'Loading a sample database...'
 
 cockroach workload init movr 'postgres://root@localhost:26257?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
 
-echo 'Opening an interactive SQL shell and listing the tables in the sample database...'
+echo 'Opening an interactive SQL shell and listing tables in the sample database...'
 
 cockroach sql --database=movr --certs-dir=certs
 SHOW TABLES;

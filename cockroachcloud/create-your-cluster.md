@@ -1,10 +1,15 @@
 ---
-title: Create Your CockroachCloud Cluster
+title: Create a CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-create-your-cluster.html
 ---
+
+<div class="filters clearfix">
+    <a href="create-your-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud</strong></button></a>
+    <a href="create-a-free-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud Free</strong></button></a>
+</div>
 
 This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
@@ -12,17 +17,14 @@ This page walks you through the process of creating a CockroachCloud cluster. No
 To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart](quickstart.html).
 {{site.data.alerts.end}}
 
-## Before you begin
-
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
-
 ## Step 1. Start the cluster creation process
 
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
-2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
-3. On the **Overview** page, click **Create Cluster**. If there are multiple organization in your account,
+1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+1. On the **Overview** page, click **Create Cluster**.
 
-##Step 2. Select the cloud provider
+## Step 2. Select the cloud provider
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
@@ -86,7 +88,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect your application to the CockroachCloud cluster. To enable VPC peering:
 
 1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
-2. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
+1. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
       -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
       - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
 
@@ -94,22 +96,22 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
 
-3. Click **Next**.
+1. Click **Next**.
 
 ## Step 8. Enter billing details
 
 1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
-2. Verify the hourly estimated cost for the cluster.
+1. Verify the hourly estimated cost for the cluster.
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
     You will be billed on the 1st and 15th of every month.
-3. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
-4. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
+1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
+1. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
       {{site.data.alerts.end}}
-5. Click **Create cluster**.
+1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes.
 

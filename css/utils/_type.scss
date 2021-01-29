@@ -1,0 +1,16 @@
+.font-poppins-sb {
+    @include poppins_sb(16px);
+}
+
+.font-family-poppins {
+    @include poppins(16px);
+}
+
+.overline {
+    @include poppins_sb(18px);
+    margin-bottom: 0;
+}
+
+.text-inherit {
+    text-transform: inherit;
+}

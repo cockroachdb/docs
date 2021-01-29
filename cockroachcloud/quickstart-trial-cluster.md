@@ -124,7 +124,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-4. Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to view the database:
+4. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -172,7 +172,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 Learn more:
 
-- Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../stable/demo-fault-tolerance-and-recovery.html).
 
