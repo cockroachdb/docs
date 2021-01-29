@@ -11720,7 +11720,7 @@ h2 {
     font-size: 17px; }
 
 h3 {
-  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -11729,7 +11729,7 @@ h3 {
   h3.clickable-header {
     cursor: pointer; }
   h3 strong, h3 b {
-    font-family: 'SourceSansPro-SemiBold', sans-serif;
+    font-family: 'Poppins-SemiBold', sans-serif;
     font-size: 24px;
     font-weight: normal;
     -webkit-font-smoothing: antialiased;
@@ -11738,18 +11738,18 @@ h3 {
     font-size: 16px; }
 
 h4, .h4 {
-  font-family: 'SourceSansPro-SemiBold', sans-serif;
-  font-size: 22px;
+  font-family: 'Poppins-SemiBold', sans-serif;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
-  line-height: 24px; }
+  line-height: 26px; }
   h4 code, .h4 code {
     font-size: 17px; }
 
 h5, .h5 {
-  font-family: 'SourceSansPro-SemiBold', sans-serif;
+  font-family: 'Poppins-SemiBold', sans-serif;
   font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;

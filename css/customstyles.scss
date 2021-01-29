@@ -97,7 +97,7 @@ h2 {
 }
 
 h3 {
-  @include sourcesanspro_r(20px);
+  @include poppins(20px);
   line-height: 32px;
 
   &.clickable-header {
@@ -105,7 +105,7 @@ h3 {
   }
 
   strong, b {
-    @include sourcesanspro_m(24px);
+    @include poppins_sb(24px);
   }
 
   code {
@@ -114,16 +114,16 @@ h3 {
 }
 
 h4, .h4 { 
-  @include sourcesanspro_m(22px);
+  @include poppins_sb(16px);
   font-weight: bold;
-  line-height: 24px;
+  line-height: 26px;
   code {
     font-size: 17px;
   }
 }
 
 h5, .h5 {
-  @include sourcesanspro_m(16px);
+  @include poppins_sb(16px);
   line-height: 24px;
   code {
     font-size: 17px;
