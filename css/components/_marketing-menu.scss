@@ -14,10 +14,10 @@
         font-size: 18px!important;
     }
     // Force the padding for desktop
-    @media (min-width: 1200px){
-      padding-left: 30px!important;
-      padding-right: 30px!important;
-    }
+    // @media (min-width: 1200px){
+    //   padding-left: 30px!important;
+    //   padding-right: 30px!important;
+    // }
     h6 {
         font-size: 1.5rem;
        font-weight: 600; 
@@ -356,27 +356,39 @@
       justify-content: space-between;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
+      padding-right: 30px;
+      padding-left: 30px;
+      ul {
+        li {
+          margin: 0;
+        }
+      }
+      .container {
+        display: block;
+      }
     }
     .navbar > .container, .navbar > .container-fluid, .navbar > .container-lg, .navbar > .container-md, .navbar > .container-sm, .navbar > .container-xl, .navbar > .container-xxl {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      flex-wrap: inherit;
-      align-items: center;
-      justify-content: space-between;
+      display: block;
+      // display: -webkit-box;
+      // display: -ms-flexbox;
+      // display: flex;
+      // flex-wrap: inherit;
+      // align-items: center;
+      // justify-content: space-between;
     }
     .navbar-brand {
       padding-top: 0.28906rem;
       padding-bottom: 0.28906rem;
       margin-right: 1rem;
-      font-size: calc(1.26562rem + 0.1875vw);
+      // font-size: calc(1.26562rem + 0.1875vw);
+      font-size: 1.40625rem;
       white-space: nowrap;
     }
-    @media (min-width: 1200px) {
-      .navbar-brand {
-        font-size: 1.40625rem;
-      }
-    }
+    // @media (min-width: 1200px) {
+    //   .navbar-brand {
+    //     font-size: 1.40625rem;
+    //   }
+    // }
     .navbar-nav {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -644,6 +656,7 @@
       position: relative;
       position: fixed;
       top: 0;
+      left: 0;
     }
     @media (min-width: 1200px) {
       .main-navigation {
@@ -2827,14 +2840,17 @@
     color: #fff;
     cursor: pointer;
     font-family: Poppins,sans-serif!important;
-    font-size: 18px!important;
-    font-weight: 400!important;
-    letter-spacing: 0!important;
+    font-size: 16px!important;
+    // font-weight: 400!important;
+    // letter-spacing: 0!important;
     text-align: center;
     text-decoration: none;
     text-transform: capitalize!important;
     transition: background-color .2s ease-out;
     border-radius: 4px;
+    &:hover {
+      box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5);
+    }
   }
   .navbar-light .navbar-nav .nav-link.text-small, .text-small {
     font-size: 13px !important;
@@ -2906,8 +2922,9 @@
 
   }
 
-//   @media (min-width: 768px) { 
-    // .navbar-collapse.collapse {
-    //     display: none!important;
-    // }
-//   }
+    @include at-query($max, $screen-lg) {
+      .navbar-collapse {
+        height: 90vh;
+        overflow: scroll;
+      }
+    }

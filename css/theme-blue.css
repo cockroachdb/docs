@@ -8,23 +8,23 @@ table {
 }
 
 table thead tr {
-    border-bottom: 2px solid #190F33 !important;
-    border: none;
+    /* border-bottom: 2px solid #46a417 !important; */
+    /* border: none; */
     background: #ffffff;
-    color: #190F33;
+    /* color: #46a417; */
 }
 
 table td {
     /*border-right: 0px solid #FFFFFF;*/
-    border-bottom: 1px solid #e8e7e5;
+    /* border-bottom: 1px solid #e8e7e5; */
     /*border-left: 0px solid #FFFFFF;*/
     /*background: white;*/
-    color: #142848;
-    padding: 10px 8px;
+    /* color: #142848; */
+    /* padding: 10px 8px; */
 }
 
 tbody tr:hover {
-    background-color: #e8e7e5;
+    /* background-color: #e8e7e5; */
 }
 
 .summary {
@@ -81,7 +81,7 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     text-decoration: none;
 }
 
-.btn {
+/* .btn {
     background: #46a417;
     border: 2px solid #46a417;
     font-family: Avernir-Black, sans-serif;
@@ -97,7 +97,7 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
 .btn:hover {
     background: #fff;
     color: #46a417;
-}
+} */
 
 .navbar-header-items > ul > li {
     list-style-type: none;
@@ -127,10 +127,10 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     border-color: #347DBE;
 }
 
-.btn-primary:hover,
+/* .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
-.btn-primary.active,
+.btn-primary.active, */
 .open .dropdown-toggle.btn-primary {
    /*background-color: #248ec2;*/
     border-color: #347DBE;

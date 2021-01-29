@@ -17,7 +17,7 @@ The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#ass
 
 ## Synopsis
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/update.html %}
 </div>
 

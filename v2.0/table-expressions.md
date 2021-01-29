@@ -14,8 +14,8 @@ expression.
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/diagrams/table_ref.html %}</div>
-
+<div class="horizontal-scroll">
+  {% include {{ page.version.version }}/sql/diagrams/table_ref.html %}</div>
 <div markdown="1"></div>
 
 ## Parameters

@@ -18,6 +18,10 @@ echo 'Loading a sample database...'
 
 cockroach workload init movr 'postgres://root@localhost:26257?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
 
+echo 'Creating a user for accessing the DB Console...'
+
+cockroach sql --certs-dir=certs --execute="CREATE USER max WITH PASSWORD 'roach'; GRANT admin TO max;"
+
 echo 'Opening an interactive SQL shell and listing tables in the sample database...'
 
 cockroach sql --database=movr --certs-dir=certs

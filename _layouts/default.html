@@ -1,45 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  {% include head.html %}
-</head>
-<body>
-  {% for hash in page.allowed_hashes %}
-    <a id="{{ hash }}" style="display: none"></a>
-  {% endfor %}
-  {% include marketing-menu.html %}
-  <div id="content">
-    {% include version-nav.html %}
-    <div id="main-content">
-      <div class="sidebar-row">
-        {% if page.no_sidebar == true %}
-          <div class="content-col no-sidebar">
-        {% else %}
+  <head>
+    {% include head.html %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    {% for hash in page.allowed_hashes %}
+        <a id="{{ hash }}" style="display: none"></a>
+    {% endfor %}
+
+    <div class="container-fluid">
+     
+      {% include marketing-menu.html %}
+   
+      <div class="row" id="maincontent">
+        <div class="nav-docs-mobile d-flex d-xl-none w-100 justify-content-between align-items-center px-3 py-2 border-top border-bottom" data-toggle="collapse" data-target="#sidebarMenu" aria-expanded="false" aria-controls="sidebarMenu">
+          <div class="h3 m-0">
+            Docs Menu
+          </div>
+          <div class="sidenav-arrow"><div class="arrow-down"></div></div>
+        </div>
+        <nav
+          id="sidebarMenu"
+          class="col-xl-2 d-xl-block sidebar collapse border-right pt-3 pr-lg-0"
+        >
           {% include sidebar.html %}
-          <div class="content-col {% if page.url == '/' %}content-col--landing{% endif %} {% if page.toc != true %}no-toc{% endif %}">
+        </nav>
+        
+        {% if page.toc == true %}
+        {% if page.homepage != true %}
+        <!-- Smaller column col-xl-8 -->
+        <main role="main" class="col-xl-8 ml-sm-auto px-lg-5">
+        {% endif %}
+        {% else %}
+        <!-- larger column col-xl-10 -->
+        <main role="main" class="ml-sm-auto col-xl-10 px-lg-5">
         {% endif %}
             {{content}}
-          </div>
-          {% if page.toc == true %}
-            <div class="toc-col">
-              <div class="toc-col-contents">  <!-- lets all elements scroll -->
-                <div id="toc-right"></div>
-                <div class="cf-5329-area-16738"></div>
-              </div>
+        </main>
+        {% if page.toc == true %}
+        <div class="toc-col col-xl-2">
+            <div class="toc-col-contents">  <!-- lets all elements scroll -->
+              <div id="toc-right"></div>
+              <div class="cf-5329-area-16738"></div>
             </div>
-          {% endif %}
+          </div>
+        {% endif %}
       </div>
     </div>
-    {% include footer.html %}
-  </div>
-  <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}"></script>
-  {% include google_tag_manager.html %}
-  {% include google_remarketing.html %}
-  {% include hubspot_analytics.html %}
-  {% include heap_analytics.html %}
-  {% if page.twitter == true %}
-    {% include twitter_analytics.html %}
-  {% endif %}
-  {% include drift.html %}
-</body>
+
+          {% include footer.html %}
+
+
+    <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}"></script>
+    {% include google_tag_manager.html %}
+    {% include google_remarketing.html %}
+    {% include hubspot_analytics.html %}
+    {% include heap_analytics.html %}
+    {% if page.twitter == true %}
+      {% include twitter_analytics.html %}
+    {% endif %}
+    {% include drift.html %}
+
+  </body>
 </html>
