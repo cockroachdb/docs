@@ -28,7 +28,7 @@ For guidance on creating databases, see [Create a Database](schema-design-databa
 
 Schemas make up the second level of the naming hierarchy. Each schema belongs to a single database. Schemas contain [tables](#tables), [indexes](#indexes), and other objects, like [views](#views) and [sequences](#sequences).
 
-All CockroachDB clusters include a preloaded schema named `public`. Rather than using the `public` schema, we recommend creating your own *user-defined schema*.
+All CockroachDB clusters include a preloaded schema named `public`. CockroachDB also supports creating your own *user-defined schema*.
 
 For guidance on creating user-defined schemas, see [Create a User-defined Schema](schema-design-schema.html).
 
@@ -104,9 +104,13 @@ We do not recommend using client drivers or ORM frameworks to execute database s
     The CockroachDB SQL client allows you to execute commands from the command line, or through the [CockroachDB SQL shell](cockroach-sql.html#sql-shell) interface. From the command line, you can pass a string to the client for execution, or you can pass a `.sql` file populated with SQL commands. From the SQL shell, you can execute SQL commands directly. Throughout the guide, we pass a `.sql` file to the SQL client to perform most database schema changes.
 
 
-## See also
+## What's next?
 
 - [Create a Database](schema-design-database.html)
+- [Create a User-defined Schema](schema-design-database.html)
+
+You might also be interested in the following pages:
+
 - [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)
 - [Authorization](authorization.html)
 - [Liquibase](liquibase.html)
