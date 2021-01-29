@@ -23,7 +23,7 @@ You can also use the `require` SSL mode, although we do not recommend using it s
 
 CockroachCloud uses password authentication for verifying a client’s identity. If no password has been set up for a user, password authentication will always fail for that user and you won’t be able to connect to the cluster.
 
-To set a password for a SQL user, [use the Console](user-authorization.html#use-the-console) or the  [`ALTER USER`](../stable/alter-user.html) command.
+For more information about creating SQL users and passwords, see [User Authorization](user-authorization.html).
 
 ## See also
 
