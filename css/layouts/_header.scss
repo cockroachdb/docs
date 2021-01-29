@@ -184,6 +184,7 @@ nav.mobile_expanded {
 	}
 }
 
+// TODO: Cleanup may not be used, not un source or built site files
 header {
 	width:100%;
 	float:left;
@@ -191,7 +192,7 @@ header {
 	background: #FFFFFF;
 	height: 60px;
 
-	@include at-query($min, $screen-sm) {
+	@include at-query($min, $screen-md) {
 		// prevent 1px jump when we add border on scroll
 		border-bottom: 1px solid transparent;
 
@@ -205,9 +206,9 @@ header {
 		}
 	}
 
-	@include at-query($min, $screen-md) {
-		height: 70px;
-	}
+	// @include at-query($min, $screen-md) {
+	// 	height: 70px;
+	// }
 
 	&.navbar-fixed-top {
 		display: flex;
@@ -381,4 +382,53 @@ header {
 			}
 		}
 	}
+}
+
+.home-header {
+	height: auto;
+	@media (min-width: $screen-md){
+			
+	}
+	@include media-breakpoint-up(xl) {
+		height:405px;
+		.card-header-overlap {
+			min-height: 268px;
+		}
+		.card-header-overlap-text {
+			min-height: 250px;
+		}
+	}
+
+	@media (min-width: $screen-md){
+		margin-left: -3rem;
+		margin-right: -3rem;
+	}
+	background: linear-gradient(102.66deg, #37A806 33.41%, #0788FF 106.55%);
+}
+
+.card-link {
+	box-shadow: $box-shadow;
+	&:hover {
+		box-shadow: $box-shadow-lg;
+		transition: $transition-base;
+	}
+	a {
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.bg-blackk-texture-logo {
+	background: url(../images/bg-black-texture-logo.png);
+    background-size: cover;
+}
+
+.bg-dark-wing {
+	background: url(../images/bg-dark-wing.png);
+    background-size: cover;
+}
+
+.navbar-brand {
+		// width: 180px;	
 }

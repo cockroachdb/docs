@@ -17,8 +17,8 @@ twitter: false
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
 
-<div class="filters clearfix">
-  <a href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+<div class=" clearfix">
+  <a class="btn btn-outline-primary" href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank">Run this in your browser &rarr;</a>
 </div>
 
 ## Step 1. Install the psycopg2 driver
@@ -68,20 +68,20 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 ### Run the code
 
-The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument.
+The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument:
 
 <section class="filter-content" markdown="1" data-scope="local">
-
-Before running the code, update the connection string as follows:
-
-- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
-'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
+"postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require"
 ~~~
+
+Before running the command, update the connection string as follows:
+
+- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
 
 </section>
 
@@ -90,13 +90,15 @@ $ python3 example.py \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
-"postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt"
+"postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
 ~~~
 
-Before running the code, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal as follows:
+Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal as follows:
 
-- Replace `defaultdb` with `bank` (the name of the database you created [earlier](#step-3-create-a-database)).
-- Replace `<your_certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
+- Replace `<globalhost>` with the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- Replace `<cluster-name>` with the name of your cluster.
+- Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 
 {{site.data.alerts.callout_info}}
 If you are using the connection string that you [copied from the **Connection info** modal](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.

@@ -8,7 +8,7 @@ toc: true
 
 ## Synopsis
 
-<div>
+<div class="horizontal-scroll">
 {% include {{ page.version.version }}/sql/diagrams/show_zone.html %}
 </div>
 

@@ -46,10 +46,29 @@ Here are the contents of `main.go`:
 
 ### Update the connection parameters
 
+<section class="filter-content" markdown="1" data-scope="local">
+
 Edit the connection string passed to `sql.Open()` so that:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
 - `{hostname}` and `{port}` specify the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+Replace the string passed to `sql.Open()` with the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal.
+
+The function call should look similar to the following:
+
+{% include copy-clipboard.html %}
+~~~ go
+db, err := sql.Open("postgres", "postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}")
+~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
+</section>
 
 ### Run the code
 

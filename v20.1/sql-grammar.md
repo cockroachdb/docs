@@ -39,6 +39,6 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="target_name"></a>
 <a id="timestamp"></a>
 
-<div>
+<div class="horizontal-scroll">
 	{% include {{ page.version.version }}/sql/diagrams/stmt_block.html %}
 </div>

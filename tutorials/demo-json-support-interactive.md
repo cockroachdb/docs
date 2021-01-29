@@ -6,8 +6,8 @@ layout: tutorial
 
 <div
   data-katacoda-id="cockroachlabs/json-support"
-  data-katacoda-color="#222"
-  data-katacoda-secondary="#37A806"  
+  data-katacoda-color="#242A35"
+  data-katacoda-secondary="#6933FF"
   style="height: 91vh; width: 100%;">
 </div>
 

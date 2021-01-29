@@ -1,35 +1,14 @@
 ---
 title: Frequently Asked Questions
-summary: CockroachCloud FAQs
+summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-frequently-asked-questions.html
 ---
 
-This page answers the frequently asked questions.
+This page answers the frequently asked questions about the paid version of CockroachCloud. For answers to frequently asked questions about the CockroachCloud Free (beta), see [CockroachCloud Free FAQs](free-faqs.html).
 
 ## Cluster basics
-
-### Is my cluster secure?
-
-Yes. We create individual sub-accounts and VPCs for each cluster within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless allowlisted for SQL and Web UI ports.
-
-The allowlist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from an allowlisted IP address, which protects against both compromised passwords and any potential bugs in the server.
-
-We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
-
-## Is encryption-at-rest enabled on CockroachCloud?
-
-Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
-
-- Data stored in clusters running in GCP are encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
-- Data stored in clusters running in AWS are encrypted-at-rest using [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
-
-Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../v20.2/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption.
-
-### Is my cluster isolated? Does it share resources with any other clusters?
-
-CockroachCloud is a single-tenant offering and resources are not shared between clusters.
 
 ### Why can't I use certain regions in AWS and  GCP?
 
@@ -57,6 +36,29 @@ Once the 30-day period is over, your trial cluster can be scaled beyond 4 nodes.
 
 To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
+## Security
+
+### Is my cluster secure?
+
+Yes. We create individual sub-accounts and VPCs for each cluster within the cloud provider. These VPCs are firewalled from each other and any other outside connection, unless allowlisted for SQL and Web UI ports.
+
+The allowlist is comprised of IP addresses that you provide to us, and is an additional layer of protection for your cluster. Connections will only be accepted if they come from an allowlisted IP address, which protects against both compromised passwords and any potential bugs in the server.
+
+We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
+
+## Is encryption-at-rest enabled on CockroachCloud?
+
+Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
+
+- Data stored in clusters running in GCP are encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
+- Data stored in clusters running in AWS are encrypted-at-rest using [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
+
+Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../v20.2/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption.
+
+### Is my cluster isolated? Does it share resources with any other clusters?
+
+CockroachCloud is a single-tenant offering and resources are not shared between clusters.
+
 ## Cluster maintenance
 
 ### How do I change the configurations on my cluster?
@@ -65,7 +67,7 @@ Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your clu
 
 ### How do I add nodes?
 
-To request to add nodes, you can contact [Support](https://support.cockroachlabs.com/hc/en-us). Our team will work with you to update your cluster configurations. We expect this to be self-service next year.
+You can add nodes by accessing the **Clusters** page on the [CockroachCloud Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for.
 
 ### Do you auto-scale?
 
@@ -99,6 +101,10 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
+### Do you have a UI? How can I see details?
+
+All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
+
 ## Cluster troubleshooting
 
 ### What do I do if my queries are too slow?
@@ -118,7 +124,3 @@ Today, we do not have an offering that manages running CockroachDB on customer p
 ### Can I see a demo?
 
 Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happy to show you a demo of our CockroachCloud offering.
-
-### Do you have a UI? How can I see details?
-
-All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
