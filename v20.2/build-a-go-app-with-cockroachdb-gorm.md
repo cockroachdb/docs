@@ -59,7 +59,7 @@ Edit the `addr` constant so that:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Replace the string given for the `addr` constant definition with the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal.
+Replace the string given for the `addr` constant definition with the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog.
 
 The constant definition should look similar to the following:
 

@@ -36,9 +36,6 @@ GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/g
 1. Enter your **Email address**.
 1. Enter your **First name** and **Last name**.
 1. Enter a **Password**.
-
-    Your password must be at least 12 characters long.
-
 1. Enter your **Organization name (optional)**.
 
     This can be [changed](#change-your-organization-name) later.
@@ -63,7 +60,7 @@ If you have already [registered a new CockroachCloud account](#register-a-new-ac
 
 1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
 1. Click **Log in with GitHub**.
-1. Follow the GitHub prompts to log in. 
+1. Follow the GitHub prompts to log in.
 
     The [**Clusters** page](cluster-management.html) displays.
 </section>
@@ -92,7 +89,7 @@ To change your account name:
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
 1. Click the pencil icon in the **Name** row.
-1. In the **Edit name** modal, enter your **First name** and **Last name**.
+1. In the **Edit name** dialog, enter your **First name** and **Last name**.
 1. Click **Save**.
 
 ### Change your email
@@ -102,7 +99,7 @@ If you registered with an email address, you can change your account password in
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
 1. Click the pencil icon in the **Email address** row.
-1. In the **Change email address** modal, enter the new **Email address**.
+1. In the **Change email address** dialog, enter the new **Email address**.
 1. Click **Save**.
 
     A confirmation email will be sent to the new email address. Click **Verify email** in the email to confirm the change.
@@ -114,7 +111,7 @@ If you registered with an email address, you can change your account password in
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
 1. Click the pencil icon in the **Password** row.
-1. In the **Change password** modal, enter your **Current password** and **New password**.
+1. In the **Change password** dialog, enter your **Current password** and **New password**.
 1. Click **Save**.
 
 {{site.data.alerts.callout_info}}
@@ -130,5 +127,5 @@ If you are a [Console Admin](console-access-management.html#console-admin), you 
     <img src="{{ 'images/v20.2/cockroachcloud/settings-page.png' | relative_url }}" alt="Settings page" style="border:1px solid #eee;max-width:100%" />
 
 1. Click the pencil icon in the **Organization name** row.
-1. In the **Edit organization name** modal, enter the new **Organization name**.
+1. In the **Edit organization name** dialog, enter the new **Organization name**.
 1. Click **Save**.

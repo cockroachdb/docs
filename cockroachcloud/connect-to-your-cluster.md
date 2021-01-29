@@ -28,7 +28,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 3. Click the **Add Network** button in the top right corner.
 
-    The **Add Network** modal displays.
+    The **Add Network** dialog displays.
 
     <img src="{{ 'images/v19.2/cockroachcloud/add-network-modal.png' | relative_url }}" alt="Add network" style="border:1px solid #eee;max-width:50%" />
 
@@ -72,7 +72,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 
 1. In the top right corner of the Console, click the **Connect** button.
 
-    The **Connect** modal displays.
+    The **Connect** dialog displays.
 
     <img src="{{ 'images/v19.2/cockroachcloud/connect-modal.png' | relative_url }}" alt="Connect to cluster" style="border:1px solid #eee;max-width:50%" />    
 

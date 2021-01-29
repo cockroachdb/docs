@@ -6,5 +6,5 @@ Where:
 - `{cluster_name}` is the name of your cluster.
 
 {{site.data.alerts.callout_info}}
-If you are using the connection string that you [copied from the **Connection info** modal](#set-up-your-cluster-connection), your username, password, hostname, and cluster name will be pre-populated.
+If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, hostname, and cluster name will be pre-populated.
 {{site.data.alerts.end}}

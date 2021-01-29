@@ -57,7 +57,7 @@ Edit the connection string passed to `pgx.ParseConfig()` so that:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Replace the string passed to `pgx.ParseConfig()` with the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal.
+Replace the string passed to `pgx.ParseConfig()` with the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog.
 
 The function call should look similar to the following:
 

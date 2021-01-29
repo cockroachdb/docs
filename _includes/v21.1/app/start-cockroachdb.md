@@ -62,21 +62,21 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 ### Create a SQL user
 
 1. In the left navigation bar, click **SQL Users**.
-1. Click **Add User**. The **Add User** modal displays.
+1. Click **Add User**. The **Add User** dialog displays.
 1. Enter a **Username** and **Password**.
 1. Click **Save**.
 
 ### Authorize your network
 
 1. In the left navigation bar, click **Networking**.
-1. Click **Add Network**. The **Add Network** modal displays.
+1. Click **Add Network**. The **Add Network** dialog displays.
 1. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
 1. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 1. Click **Apply**.
 
 ### Get the connection string
 
-1. In the top-right corner of the Console, click the **Connect** button. The **Connect** modal displays.
+1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog displays.
 1. From the **User** dropdown, select the SQL user you created [earlier](#create-a-sql-user).
 1. Verify that the `us-west2 GCP` region and `default_db` database are selected.
 1. Click **Continue**. The **Connect** tab is displayed.
