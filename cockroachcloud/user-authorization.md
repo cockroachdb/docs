@@ -173,7 +173,7 @@ Role-based access control lets you simplify how you manage privileges. In essenc
     All of a role's privileges must be [revoked](#managing-privileges) before the user can be dropped.
     {{site.data.alerts.end}}
 
-## See also
+### See also
 
 - [Client Connection Parameters](../stable/connection-parameters.html)
 - [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)

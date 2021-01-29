@@ -114,7 +114,8 @@ h3 {
 }
 
 h4, .h4 { 
-  @include sourcesanspro_r(16px);
+  @include sourcesanspro_m(22px);
+  font-weight: bold;
   line-height: 24px;
   code {
     font-size: 17px;
