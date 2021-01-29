@@ -11864,27 +11864,41 @@ td a:target:before {
 @media screen and (min-width: 992px) {
   .post-content ul, .post-content ol {
     margin-bottom: 20px; } }
+.post-content h1 {
+  font-family: 'Poppins-SemiBold', sans-serif;
+  font-size: 36px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 48px; }
 .post-content h2 {
   font-family: 'Poppins-SemiBold', sans-serif;
   font-size: 26px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 35px; }
+  line-height: 32px; }
 .post-content h3 {
   font-family: 'Poppins-SemiBold', sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 30px; }
+  line-height: 26px; }
+.post-content h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 22.6px; }
 .post-content h5 {
-  font-family: 'Poppins-SemiBold', sans-serif;
-  font-size: 24px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 28px; }
+  line-height: 22.6px; }
 
 .post-summary {
   margin-bottom: 12px; }

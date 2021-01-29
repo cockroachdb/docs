@@ -238,17 +238,26 @@ td a:target:before {
     }
   }
 
+  h1 {
+    @include poppins_sb(36px);
+    line-height: 48px;
+  }
+
   h2 {
-    @include headline-3;
+    @include poppins_sb(26px);
+    line-height: 32px;
   }
   h3 {
-    @include headline-4;
+    @include poppins_sb(16px);
+    line-height: 26px;
   }
   h4 {
-    // no h5
+    @include poppins(18px);
+    line-height: 22.6px;
   }
   h5 {
-    @include headline-6;
+    @include poppins(16px);
+    line-height: 22.6px;
   }
 
 }
