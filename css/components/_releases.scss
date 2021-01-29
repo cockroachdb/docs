@@ -1,18 +1,23 @@
 .release-table {
+    thead {
+        td {
+            font-weight: bold;
+        }
+    }
     .fa {
         margin-right: 2px;
     }
 
     .latest {
-        background-color: #fafdf6;
+        background-color: $neutral-100;
     }
 
-    .badge {
-        background-color: #4eb21d;
-        font-size: 10px;
-        text-transform: uppercase;
-        vertical-align: middle;
-    }
+    // .badge {
+    //     background-color: #4eb21d;
+    //     font-size: 10px;
+    //     text-transform: uppercase;
+    //     vertical-align: middle;
+    // }
 
     .badge-gray {
         background-color: #959797;

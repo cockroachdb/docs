@@ -1124,6 +1124,12 @@
                     ]
                   },
                   {
+                    "title": "<code>COPY FROM</code>",
+                    "urls": [
+                      "/${VERSION}/copy-from.html"
+                    ]
+                  },
+                  {
                     "title": "<code>CREATE CHANGEFEED</code> (Enterprise)",
                     "urls": [
                       "/${VERSION}/create-changefeed.html"
@@ -2594,6 +2600,13 @@
         ]
       },
       {% include sidebar-releases.json %}
+    ]
+  },
+  {
+    "title": "SQL Playground",
+    "is_top_level": true,
+    "urls": [
+      "/${VERSION}/sql-playground.html"
     ]
   }
 ]

@@ -14,7 +14,9 @@ Join expressions define a data source in the `FROM` sub-clause of [simple `SELEC
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/diagrams/joined_table.html %}</div>
+<div class="horizontal-scroll">
+  {% include {{ page.version.version }}/sql/diagrams/joined_table.html %}
+</div>
 
 <div markdown="1"></div>
 

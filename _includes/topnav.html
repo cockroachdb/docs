@@ -1,130 +1,66 @@
-<!-- Mobile Side Navigation -->
-<nav class="mobile_expanded">
-	<div class="close-wrap">
-		<a class="logo" href="https://www.cockroachlabs.com/" title="Cockroach Labs">
-			<img src="{{ 'images/cockroach-labs-logo-dark-398.svg' | relative_url }}" width="100%" alt="Cockroach Labs" />
-		</a>
-		<div class="hamburger">
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
-	</div>
-	<div class="mobile-menu-dropdown">
-		<span class="blue-arrow blue-arrow--down"></span>
-		<span class="mobile-nav__dropdown-label">Products</span>
-		<div class="mobile-subnav">
-			<div class="mobile-subnav__section">
-					<span class="mobile-subnav__label">Products</span>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/">CockroachDB</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/cockroachcloud/">CockroachCloud</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/compare/">Compare Products</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/pricing/">Pricing</a>
-				</div>
-				<div class="mobile-subnav-section">
-					<span class="mobile-subnav__label">Capabilities</span>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/sql/">SQL</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/scale/">Scale</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/resilience/">Resilience</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/geo-distributed">Geo-Partitioning</a>
-					<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/product/cloud-native/">Cloud Native</a>
-				</div>
-		</div>
-	</div>
-	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/customers/">Customers</a>
-	<div class="mobile-menu-dropdown">
-		<span class="blue-arrow blue-arrow--down"></span>
-		<span class="mobile-nav__dropdown-label">Learn</span>
-		<div class="mobile-subnav">
-			<div class="mobile-subnav-section">
-				<span class="mobile-subnav__label"></span>
-				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
-				<a class="mobile-subnav__link" href="https://university.cockroachlabs.com/catalog">University</a>
-			</div>
-		</div>
-	</div>
-	<div class="mobile-menu-dropdown">
-		<span class="blue-arrow blue-arrow--down"></span>
-		<span class="mobile-nav__dropdown-label">Resources</span>
-		<div class="mobile-subnav">
-			<div class="mobile-subnav-section">
-				<span class="mobile-subnav__label"></span>
-				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/guides/">Guides</a>
-				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/community/tech-talks/">Videos &amp; Webinars</a>
-				<a class="mobile-subnav__link" href="https://www.cockroachlabs.com/partners/">Partners</a>
-				<a class="mobile-subnav__link" href="https://forum.cockroachlabs.com/">Forum</a>
-			</div>
-		</div>
-	</div>
-	<!-- <a class="mobile-nav__link" href="https://cockroachlabs.cloud/" itemprop="url" style="color:#54B30E;">Sign In &#8594;</a> -->
-	<a class="mobile-nav__link" href="https://www.cockroachlabs.com/blog/" itemprop="url">Blog</a>
-  <a class="mobile-nav__link" href="https://www.cockroachlabs.com/get-cockroachdb/" itemprop="url">Get CockroachDB</a>
-  <a class="mobile-nav__link" href="https://www.cockroachlabs.com/contact/" itemprop="url">Contact Us</a>
-</nav>
+<div class="row" id="topnav">
+  <div class="col-md-12">
+    <!-- Mobile Side Navigation -->
+    <nav class="mobile_expanded">
+      <div class="close-wrap">
+        <a
+          class="logo"
+          href="https://www.cockroachlabs.com/"
+          title="Cockroach Labs"
+        >
+          <img
+            src="{{ 'images/cockroachdb-docs.svg' | relative_url }}"
+            width="100%"
+            alt="Cockroach Labs"
+          />
+        </a>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <a
+        class="mobile-nav__link"
+        href="https://www.cockroachlabs.com/contact/"
+        itemprop="url"
+        >Contact Us</a
+      >
+    </nav>
+    <!-- Desktop / Tablet Navigation -->
+    <nav class="navbar navbar-default flex-md-nowrap p-0 row">
+      <a
+        class="navbar-brand col-md-3 col-lg-3 col-xl-2 mr-0 pl-3 pr-2 border-right d-flex justify-content-center h-100"
+        href="https://www.cockroachlabs.com/"
+        title="Cockroach Labs"
+      >
+        <img
+          src="{{ 'images/Full-Logo-Horizontal_Full-Color-Light-BG.svg' | relative_url }}"
+          alt="Cockroach Labs"
+          width="199"
+          class="img-fluid"
+        />
+      </a>
 
-<!-- Desktop / Tablet Navigation -->
-<header class="navbar-fixed-top">
-	<div class="navbar-fixed-top--inner">
-		<a class="logo" href="https://www.cockroachlabs.com/" title="Cockroach Labs">
-			<img src="{{ 'images/cockroach-labs-logo-dark-398.svg' | relative_url }}" width="100%" alt="Cockroach Labs" />
-		</a>
-		<nav class="desktop">
-				<div class='desktop-menu__item'>
-					<div class="desktop-menu__item-link"><a href="https://www.cockroachlabs.com/product/" data-proofer-ignore>Products</a></div>
-					<div class="desktop-menu__dropdown-container">
-						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--product">
-							<span class="desktop-menu__subnav-label">Products</span>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/" data-proofer-ignore>CockroachDB</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/cockroachcloud/" data-proofer-ignore>CockroachCloud</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/compare/" data-proofer-ignore>Compare Products</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/pricing/" data-proofer-ignore>Pricing</a>
-						</div>
-						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--capabilities">
-							<span class="desktop-menu__subnav-label">Capabilities</span>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/sql/" data-proofer-ignore>SQL</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/scale/" data-proofer-ignore>Scale</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/resilience/" data-proofer-ignore>Resilience</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/geo-distributed" data-proofer-ignore>Geo-Partitioning</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/product/cloud-native/" data-proofer-ignore>Cloud Native</a>
-						</div>
-					</div>
-				</div>
-				<a class="desktop-menu__item-link" href="https://www.cockroachlabs.com/customers/" data-proofer-ignore>Customers</a>
-				<div class="desktop-menu__item">
-					<div class="desktop-menu__item-link">Learn</div>
-					<div class="desktop-menu__dropdown-container">
-						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--learn">
-							<a class="desktop-menu__subnav-link" href="{{ "/stable/" | relative_url }}" itemprop="url" data-proofer-ignore>Docs</a>
-							<a class="desktop-menu__subnav-link" href="https://university.cockroachlabs.com/catalog" data-proofer-ignore>University</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/developers/" data-proofer-ignore>Developers</a>
-						</div>
-					</div>
-				</div>
-				<div class='desktop-menu__item'>
-					<div class="desktop-menu__item-link"><a href="https://resources.cockroachlabs.com" data-proofer-ignore>Resources</a></div>
-					<div class="desktop-menu__dropdown-container">
-						<div class="desktop-menu__subnav-section desktop-menu__subnav-section--resources">
-							<a class="desktop-menu__subnav-link" href="https://resources.cockroachlabs.com/guides/" data-proofer-ignore>Guides</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/community/tech-talks/" data-proofer-ignore>Webinars</a>
-							<a class="desktop-menu__subnav-link" href="https://resources.cockroachlabs.com/videos" data-proofer-ignore>Videos</a>
-							<a class="desktop-menu__subnav-link" href="https://www.cockroachlabs.com/partners/" data-proofer-ignore>Partners</a>
-							<a class="desktop-menu__subnav-link" href="https://forum.cockroachlabs.com/" data-proofer-ignore>Forum</a>
-						</div>
-					</div>
-				</div>
-				<a class="desktop-menu__item-link" href="https://www.cockroachlabs.com/blog/" itemprop="url" data-proofer-ignore>Blog</a>
-				<!-- <a class="desktop-menu__item-link" href="https://cockroachlabs.cloud/" itemprop="url" style="color:#54B30E;" data-proofer-ignore>Sign In &#8594;</a> -->
-				<a href="https://www.cockroachlabs.com/get-cockroachdb/" itemprop="url" class="button--header menu-item" data-proofer-ignore>Get CockroachDB</a>
-        <a href="https://www.cockroachlabs.com/contact/" itemprop="url" class="button--header button--header--alt menu-item" data-proofer-ignore>Contact Us</a>
-			</nav>
-			<nav class="mobile">
-				<a href="#" title="Expand Menu" class="hamburger">
-					<span></span>
-					<span></span>
-					<span></span>
-					<span></span>
-				</a>
-			</nav>
-	</div>
-</header>
+      <div 
+        id="topnav-form"
+        class="col-lg-9 col-xl-10 d-flex justify-content-center align-items-center h-100 border-bottom"
+      >
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text border-0 bg-white pl-4 ml-1" id="basic-addon1">
+              <img width="16" src="{{ 'images/icon-search.svg' | relative_url }}" alt="search">
+            </span>
+          </div>
+          <input type="text" class="form-control border-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
+        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item text-nowrap mb-0">
+            <a class="btn btn-sm btn-outline-secondary" href="#">Contact Support</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>

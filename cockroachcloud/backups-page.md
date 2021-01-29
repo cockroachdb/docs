@@ -203,7 +203,7 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
 
 ### Resolve a database naming conflict
 
-The databases you want to restore cannot have the same name as an existing database in the target cluster. Before you restore a database, verify that the database name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) and run the following:
+The databases you want to restore cannot have the same name as an existing database in the target cluster. Before you restore a database, verify that the database name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and run the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -226,7 +226,7 @@ Or [change the existing database's name](../v20.2/rename-database.html):
 
 ### Resolve a table naming conflict
 
-The table you want to restore cannot have the same name as an existing table in the target database. Before you restore a table, verify that the table name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) and run the following:
+The table you want to restore cannot have the same name as an existing table in the target database. Before you restore a table, verify that the table name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and run the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql

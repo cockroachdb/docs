@@ -1,12 +1,13 @@
+<div class="mt-3 mb-4">
 <div id="version-switcher">
   <script src="{{ 'js/initVersionSwitcher.js' | relative_url }}"></script>
   <ul class="nav" style="display: none">
     <li class="tier-1">
       <a href="#">
-        Version: <span class="version-name">{{ page.version.name }}</span>
-        <div class="arrow-down"></div>
+        Version <span class="version-name">{{ page.version.name }}</span>
+        <div class="arrow"></div>
       </a>
-      <ul>
+      <ul class="list-unstyled">
         {% for v in page.versions %}
         <li class="tier-2 {% if v.version == page.version %}active{% endif %}">
           <a
@@ -40,4 +41,5 @@
       </ul>
     </li>
   </ul>
+</div>
 </div>

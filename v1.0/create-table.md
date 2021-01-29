@@ -32,7 +32,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **col_qual_list ::=**
 
-{% include {{ page.version.version }}/sql/diagrams/col_qual_list.html %}
+<div class="horizontal-scroll">
+  {% include {{ page.version.version }}/sql/diagrams/col_qual_list.html %}
+</div>
 
 **index_def ::=**
 
@@ -44,7 +46,9 @@ The user must have the `CREATE` [privilege](privileges.html) on the parent datab
 
 **table_constraint ::=**
 
-{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
+<div class="horizontal-scroll">
+  {% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
+</div>
 
 **opt_interleave ::=**
 

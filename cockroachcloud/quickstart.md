@@ -14,15 +14,9 @@ redirect_from:
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.
 
-{{site.data.alerts.callout_info}}
-CockroachCloud Free (beta) is in limited availability. If you do not have access yet, you can [start your first cluster using a 30-day free trial](quickstart-trial-cluster.html).
-{{site.data.alerts.end}}
+{% include cockroachcloud/limited-availability.md %}
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
-
-## Before you begin
-
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Create a free cluster
 
@@ -142,7 +136,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
 
 Learn more:
 
-- Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- [Create and manage SQL users](connect-to-your-cluster.html#step-2-create-a-sql-user).
+- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- [Create and manage SQL users](user-authorization.html).
 - Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Explore our [sample apps](../stable/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
