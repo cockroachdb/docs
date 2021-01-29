@@ -64,6 +64,8 @@ To run it:
     The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](install-client-drivers.html).
     {{site.data.alerts.end}}
 
+<section class="filter-content" markdown="1" data-scope="local">
+
 1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
     1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
@@ -79,7 +81,26 @@ To run it:
 
     1. Set the `hibernate.connection.password` property to the user's password.
 
+</section>
 
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+1. Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
+
+    1. Modify the `hibernate.connection.url` property with the information from the connection string you copied [earlier](#set-up-your-cluster-connection) host, cluster and database name, and path to the SSL certificate:
+
+      {% include copy-clipboard.html %}
+      ~~~ xml
+      <property name="hibernate.connection.url">jdbc:postgresql://{globalhost}:26257/{cluster_name}.bank?sslmode=verify-full&amp;sslrootcert={path to the CA certificate}</property>
+      ~~~
+
+      {% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
+    1. Set the `hibernate.connection.username` property to your username.
+
+    1. Set the `hibernate.connection.password` property to the user's password.
+
+</section>
 
 1. Compile and run the code using `gradlew`, which will also download the dependencies.
 
