@@ -93,7 +93,7 @@ $ python3 example.py \
 "postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
 ~~~
 
-Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal as follows:
+Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
 - Replace `<globalhost>` with the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
@@ -101,7 +101,7 @@ Before running the command, update the connection string that you copied [earlie
 - Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 
 {{site.data.alerts.callout_info}}
-If you are using the connection string that you [copied from the **Connection info** modal](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.
+If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.
 {{site.data.alerts.end}}
 
 </section>

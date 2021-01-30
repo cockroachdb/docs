@@ -207,6 +207,8 @@ To revoke privileges from a user, use the [`REVOKE`](../stable/revoke.html) stat
 
 Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
 
+Once you have [connected to the cluster](connect-to-your-cluster.html), you can set up roles:
+
 - To create a role, use the [`CREATE ROLE`](../stable/create-role.html) statement:
 
     {% include copy-clipboard.html %}
@@ -257,7 +259,7 @@ Role-based access control lets you simplify how you manage privileges. In essenc
     ~~~
 
     {{site.data.alerts.callout_info}}
-    All of a role's privileges must be [revoked](#revoke-a-users-privileges) before the user can be dropped.
+    All of a role's privileges must be [revoked](#manage-privileges) before the role can be dropped.
     {{site.data.alerts.end}}
 
 ## See also

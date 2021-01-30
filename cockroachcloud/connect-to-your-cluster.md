@@ -31,7 +31,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 1. Click the **Add Network** button.
 
-    The **Add Network** modal displays.
+    The **Add Network** dialog displays.
 
 1. _(Optional)_ Enter a **Network name**.
 
@@ -69,28 +69,13 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 
 ## Step 2. Create a SQL user
 
-{% include cockroachcloud/cockroachcloud-ask-admin.md %}
-
-1. Navigate to your cluster's **SQL Users** page.
-1. Click the **Add User** button in the top right corner.
-
-    The **Add User** modal displays.
-
-1. Enter a **Username** and **Password**.
-
-    {{site.data.alerts.callout_info}}
-    Password must be at least 12 characters long.
-    {{site.data.alerts.end}}
-
-1. Click **Save**.
-
-    Currently, all new users are created with full privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
+{% include cockroachcloud/create-a-sql-user.md %}
 
 ## Step 3. Select a connection method
 
 1. In the top right corner of the Console, click the **Connect** button.
 
-    The **Connect** modal displays.
+    The **Connect** dialog displays.
 
 1. **IP Allowlist** is selected by default as the **Network Security** option. Select **VPC Peering** if you have already:
     - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional) for your GCP cluster
