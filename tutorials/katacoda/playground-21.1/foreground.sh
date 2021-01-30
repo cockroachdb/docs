@@ -20,5 +20,5 @@ cockroach workload init movr 'postgres://root@localhost:26257?sslmode=verify-ful
 
 echo 'Opening an interactive SQL shell and listing tables in the sample database...'
 
-cockroach sql --database=movr --certs-dir=certs
+exec cockroach sql --database=movr --certs-dir=certs
 SHOW TABLES;
