@@ -54,13 +54,6 @@
   },
   "environment": {
     "hideintro": true,
-    "showdashboard": true,
-    "dashboards": [
-      {
-        "name": "DB Console",
-        "port": 8080
-      }
-    ],
     "uilayout": "terminal"
   },
   "backend": {
