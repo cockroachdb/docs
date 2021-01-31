@@ -48,11 +48,11 @@
         "text": "finish.md"
     }
   },
-    "environment": {
-      "hideintro": true,
-      "uilayout": "editor-terminal"
-    },
-    "backend": {
-      "imageid": "ubuntu:1804-4gb"
-    }
+  "environment": {
+    "hideintro": true,
+    "uilayout": "editor-terminal"
+  },
+  "backend": {
+    "imageid": "ubuntu:1804"
   }
+}
