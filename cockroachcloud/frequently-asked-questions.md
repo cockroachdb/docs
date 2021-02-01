@@ -6,7 +6,7 @@ redirect_from:
 - ../stable/cockroachcloud-frequently-asked-questions.html
 ---
 
-This page answers the frequently asked questions about the paid version of CockroachCloud. For answers to frequently asked questions about the CockroachCloud Free (beta), see [CockroachCloud Free FAQs](free-faqs.html).
+This page answers the frequently asked questions about the paid version of CockroachCloud. For answers to frequently asked questions about the CockroachCloud Free (beta), see [CockroachCloud Free (beta) FAQs](free-faqs.html).
 
 ## Cluster basics
 
