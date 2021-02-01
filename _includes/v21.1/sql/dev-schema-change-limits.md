@@ -1,0 +1,3 @@
+Review the [limitations of online schema changes in CockroachDB](online-schema-changes.html#limitations). In specific, note that CockroachDB has [limited support for schema changes within the same explicit transaction](online-schema-changes#limited-support-for-schema-changes-within-transactions).
+
+    We recommend doing schema changes outside explicit transactions, where possible. When a database schema management tool manages transactions on your behalf, we recommend only including one schema change operation per transaction.

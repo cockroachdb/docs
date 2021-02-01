@@ -213,21 +213,15 @@
                 "title": "Update a Database Schema",
                 "items": [
                   {
-                    "title": "How Schema Changes Work",
+                    "title": "Change and Remove Objects",
+                    "urls": [
+                      "/${VERSION}/schema-design-update.html"
+                    ]
+                  },
+                  {
+                    "title": "Online Schema Changes",
                     "urls": [
                       "/${VERSION}/online-schema-changes.html"
-                    ]
-                  },
-                  {
-                    "title": "Alter Objects in a Database Schema",
-                    "urls": [
-                      "/${VERSION}/schema-update-alter-objects.html"
-                    ]
-                  },
-                  {
-                    "title": "Remove Objects from a Database Schema",
-                    "urls": [
-                      "/${VERSION}/schema-update-drop-objects.html"
                     ]
                   }
                 ]

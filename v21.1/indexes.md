@@ -57,13 +57,6 @@ To maximize your indexes' performance, we recommend following the [secondary ind
 For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html) and the [Performance Tuning](performance-tuning.html) tutorial.
 {{site.data.alerts.end}}
 
-## Best practices
-
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `SELECT` clauses, and create indexes that:
-
-- [Index all columns](#indexing-columns) in the `WHERE` clause.
-- [Store columns](#storing-columns) that are _only_ in the `SELECT` clause.
-
 ### Storing columns
 
 The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries which retrieve those columns without filtering on them, because it prevents the need to read the primary index.
@@ -119,6 +112,11 @@ However, if we store `col3` in the index, the index join is no longer necessary.
        | spans         | [/10/2 - /10]
 (6 rows)
 ~~~
+
+### Best practices
+
+For best practices, see [Add a Secondary Index: Best Practices](schema-design-indexes.html#best-practices)
+
 
 ## See also
 

@@ -1,12 +1,12 @@
 ---
-title: Database Schema Design Overview
+title: Database Schemas
 summary: An overview of the objects that make up a logical schema
 toc: true
 ---
 
 This page provides an overview of database schemas in CockroachDB.
 
-In later [**Design a Database Schema** sections](schema-design-database.html), we provide best practices for designing a database schema that optimizes performance and storage resources.
+In later **Design a Database Schema** sections, we provide best practices for designing a database schema that optimizes performance and storage resources.
 
 ## Database schema objects
 
