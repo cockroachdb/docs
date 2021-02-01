@@ -1,18 +1,18 @@
 ---
-title: Connect to a CockroachCloud Free Cluster
+title: Connect to a CockroachCloud Free (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 ---
 
 <div class="filters clearfix">
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud</strong></button></a>
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud Free</strong></button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
 </div>
 <p></p>
 
 This page shows you how to connect to your CockroachCloud Free (beta) cluster.
 
-{% include cockroachcloud/limited-availability.md %}
+{% include cockroachcloud/free-limitations.md %}
 
 ## Before you start
 

@@ -1,17 +1,17 @@
 ---
-title: Create a CockroachCloud Free Cluster
-summary: Learn how to create a cluster using CockroachCloud Free.
+title: Create a CockroachCloud Free (beta) Cluster
+summary: Learn how to create a cluster using CockroachCloud Free (beta).
 toc: true
 ---
 
 <div class="filters clearfix">
     <a href="create-your-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud</strong></button></a>
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud Free</strong></button></a>
+    <a href="create-a-free-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
 </div>
 
 This page walks you through the process of creating a cluster using CockroachCloud Free (beta). Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
-{% include cockroachcloud/limited-availability.md %}
+{% include cockroachcloud/free-limitations.md %}
 
 ## Before you begin
 
@@ -30,6 +30,8 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
     {{site.data.alerts.callout_info}}
     This cluster will be free forever.
     {{site.data.alerts.end}}
+
+1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Additional configuration** section.
 
 1. Click **Create your free cluster**.
 

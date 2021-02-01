@@ -38,7 +38,7 @@ Before you connect to your CockroachCloud cluster, you need to authorize your ne
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
 1. In the left navigation bar, click **Networking**.
-2. Click the **Add Network** button in the right corner. The **Add Network** modal displays.
+2. Click the **Add Network** button in the right corner. The **Add Network** dialog displays.
 3. (Optional) Enter a descriptive name for the network.
 4. From the **Network** dropdown, select **Current Network**. Your local machine's IP address will be auto-populated in the box.
 5. Select both networks: **DB Console to monitor the cluster** and **CockroachDB Client to access the databases**.
@@ -52,15 +52,15 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 {% include cockroachcloud/cockroachcloud-ask-admin.md %}
 
 1. Navigate to your cluster's **SQL Users** page.
-2. Click the **Add User** button in the top right corner. The **Add User** modal displays.
+2. Click the **Add User** button in the top right corner. The **Add User** dialog displays.
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
-    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#granting-privileges) and [Using roles](user-authorization.html#using-roles).
+    Currently, all new users are created with admin privileges. For more information and to change the default settings, see [Granting privileges](user-authorization.html#grant-privileges) and [Using roles](user-authorization.html#use-roles).
 
 ### Step 3. Generate the CockroachDB client connection string
 
-1. In the top right corner of the Console, click the **Connect** button. The **Connect** modal displays.
+1. In the top right corner of the Console, click the **Connect** button. The **Connect** dialog displays.
 3. From the **User** dropdown, select the user you created in [Step 2](#step-2-create-a-sql-user).
 4. Select a **Region** to connect to.
 5. From the **Database** dropdown, select `defaultdb`.
@@ -157,9 +157,7 @@ On your local workstation's terminal:
 
   1. In the top right corner of the Console, click the **Connect** button.
 
-      The **Connect** modal displays.
-
-        <img src="{{ 'images/v20.1/cockroachcloud/connect-from-app.png' | relative_url }}" alt="Connect from app" style="border:1px solid #eee;max-width:100%" />
+      The **Connect** dialog displays.
 
   2. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
   3. Select a **Region** to connect to.

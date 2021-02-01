@@ -4,7 +4,7 @@ summary: Use CockroachDB v20.2 in a sandboxed playground environment
 toc: false
 ---
 
-This playground gives you an interactive SQL shell to a single-node CockroachDB cluster running v20.2. The cluster is pre-loaded with a sample dataset and configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality.
+This playground gives you an interactive SQL shell to a single-node CockroachDB cluster running v20.2. The cluster is pre-loaded with a sample dataset, configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality, and set up with a DB Console user (login: max/roach).
 
 For docs on our SQL dialect, see <a href="sql-statements.html" target="_blank">SQL Reference</a>. For a more guided experience, see our [interactive tutorials](#interactive-tutorials).
 

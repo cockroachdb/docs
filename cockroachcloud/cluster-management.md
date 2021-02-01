@@ -27,20 +27,20 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 Select the type of cluster you are viewing (and page content below will change accordingly):
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="free">CockroachCloud Free</button>
+  <button class="filter-button page-level" data-scope="free">CockroachCloud Free (beta)</button>
   <button class="filter-button page-level" data-scope="dedicated">CockroachCloud</button>
 </div>
 
 ## View cluster overview
 
 <section class="filter-content" markdown="1" data-scope="free">
-The **Overview** page displays details about the selected CockroachCloud Free cluster:
+The **Overview** page displays details about the selected CockroachCloud Free (beta) cluster:
 
 - The **Plan** that the cluster was created with
 - The cluster's **Cloud** provider
 - The amount of **Storage** the cluster is using
 
-    There is an upper limit of 5GB storage per CockroachCloud Free cluster.
+    There is an upper limit of 5GB storage per CockroachCloud Free (beta) cluster.
 
 - The cluster's **Throughput**
 
