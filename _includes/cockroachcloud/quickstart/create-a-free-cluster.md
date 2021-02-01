@@ -7,6 +7,7 @@
     This cluster will be free forever.
     {{site.data.alerts.end}}
 
+1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Additional configuration** section.
 1. Click **Create your free cluster**.
 
 Your cluster will be created in approximately 20-30 seconds.

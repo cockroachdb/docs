@@ -8,7 +8,7 @@ redirect_from:
 
 <div class="filters clearfix">
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud</strong></button></a>
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud Free</strong></button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
 </div>
 <p></p>
 This page shows you how to connect to your CockroachCloud cluster.
