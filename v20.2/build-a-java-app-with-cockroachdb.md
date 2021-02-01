@@ -48,42 +48,60 @@ It performs the following steps which roughly correspond to method calls in the 
 
 It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
 
-To run it:
+### Get the code
 
-1. Clone the `hello-world-java-hibernate` repo to your machine:
+Clone the `hello-world-java-hibernate` repo to your machine:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachlabs/hello-world-java-jdbc
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+git clone https://github.com/cockroachlabs/hello-world-java-jdbc
+~~~
 
-1. In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the demo cluster:
+### Update the connection parameters
 
-    1. Set the port number in the `PGSimpleDataSource` instance:
+<section class="filter-content" markdown="1" data-scope="local">
 
-        {% include copy-clipboard.html %}
-        ~~~ java
-        ds.setPortNumber({port});
-        ~~~
+In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the demo cluster:
 
-        Where `{port}` is the port number from the connection string you noted earlier.
+Modify the options in the `PGSimpleDataSource` instance:
 
-    1. Set the username and password in the `PGSimpleDataSource` instance:
+{% include copy-clipboard.html %}
+~~~ java
+ds.setPortNumber({port});
+ds.setUser("{username}");
+ds.setPassword("{password}");
+~~~
 
-        {% include copy-clipboard.html %}
-        ~~~ java
-        ds.setUser("{username}");
-        ds.setPassword("{password}");
-        ~~~
+Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
 
-        Where `{username}` is the database username you created, and `{password}` is the database user's password.
+</section>
 
-1. Compile and run the code:
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    ./gradlew run
-    ~~~
+In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
+
+{% include copy-clipboard.html %}
+~~~ java
+ds.setServerNames(new String[]{"{globalhost}"});
+ds.setDatabaseName("{cluster_name}.bank");
+ds.setUser("{user}");
+ds.setPassword("{password}");
+ds.setSslMode("verify-full");
+ds.setSslRootCert("{path to the CA certificate}")
+~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
+</section>
+
+### Run the code
+
+Compile and run the code:
+
+{% include copy-clipboard.html %}
+~~~ shell
+./gradlew run
+~~~
 
 The contents of `BasicExample.java`:
 
