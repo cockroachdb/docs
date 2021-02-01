@@ -11,18 +11,18 @@ Current CockroachDB code is licensed in three ways:
 -  [Cockroach Community License (Free)](#ccl-free)
 -  [Cockroach Community License (Paid)](#ccl-paid)
 
-[Core features](#core-feature-licensing) released up to and including version 19.1 are licensed under [Apache 2.0](#apache). After version 19.1, core features are licensed under the BSL for three years before converting to the Apache 2.0 license.
+Some core [features](#feature-licensing) released up to and including version 19.1 are licensed under [Apache 2.0](#apache). Beginning with version 19.2, these features are licensed under the BSL for three years before converting to the Apache 2.0 license.
 
-All enterprise features are licensed under the Cockroach Community License (CCL).
+Other core features and all enterprise features are licensed under the Cockroach Community License (CCL).
 
 ## Types of licenses
 
 Type | Description
 -------------|------------
 <a name="apache"></a>**Apache 2.0 License** | Core features under the Apache License are free to use and fully open-source. BSL features convert to this license three years after their release. For license conversion dates, see the [table below](#license-conversion-timeline).
-<a name="bsl"></a>**Business Source License**| BSL features are free to use and the source code is available, but users may not use CockroachDB [as a service](#what-constitutes-hosting-cockroachdb-as-a-service) without an agreement with Cockroach Labs. Outside of this usage, BSL features will continue to be free to use and source code will continue to be available. Although MariaDB has not certified the BSL as complying to the [Open Source Definition](https://en.wikipedia.org/wiki/The_Open_Source_Definition) by the [Open Source Initiative](https://en.wikipedia.org/wiki/Open_Source_Initiative) (OSI), most of the OSI criteria are met.
-<a name="ccl-free"></a>**Cockroach <br/> Community License (Free)** | CCL (Free) features are free to use and the source code is available to view, but the source code cannot be used without an agreement with Cockroach Labs.
-<a name="ccl-paid"></a>**Cockroach <br/> Community License (Paid)** | CCL (Paid) features require an enterprise license key to access and the source code is not available to use without an agreement with Cockroach Labs.
+<a name="bsl"></a>**Business Source License**| BSL features are free to use and the source code is available, but users may not use CockroachDB [as a service](#what-constitutes-hosting-cockroachdb-as-a-service) without an agreement with Cockroach Labs. The BSL is not certified as an open-source license, but most of the [Open Source Initiative](https://en.wikipedia.org/wiki/Open_Source_Initiative) (OSI) criteria are met.
+<a name="ccl-free"></a>**Cockroach <br/> Community License (Free)** | CCL (Free) features are free to use. The source code is available to view and modify, but it cannot be reused without an agreement with Cockroach Labs.
+<a name="ccl-paid"></a>**Cockroach <br/> Community License (Paid)** | CCL (Paid) features require an enterprise license key to access. The source code is available to view and modify, but it cannot be used without an agreement with Cockroach Labs.
 
 For additional custom licensing options, [contact us](https://support.cockroachlabs.com/hc/en-us).
 
@@ -39,24 +39,37 @@ CockroachDB version | License | Converts to Apache 2.0
 2.1 | Apache 2.0 | -
 2.0 | Apache 2.0 | -
 
-## Core feature licensing
+## Feature licensing
 
-The table below shows how certain core features are licensed:
+The table below shows how certain core and enterprise features are licensed:
 
 Feature          | BSL | CCL (free)      | CCL (paid) 
 -----------------|:-----:|:-----------------:|:---------------:
 **[Import](import.html)** | | ✓ |
 **[Export](export.html)** | ✓ | |
-**[Restore](restore.html)** | | ✓ |
-**[Full backups](take-full-and-incremental-backups.html#full-backups)** | | ✓ |
+**[Restore](restore.html)** <span class="version-tag">Now a core feature in v20.2</span> | | ✓ |
+**[Full backups](take-full-and-incremental-backups.html#full-backups)** <span class="version-tag">Now a core feature in v20.2</span> | | ✓ |
 **[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
 **[Other advanced backup features](backup.html)** | | | ✓
 **[Core changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
 **[Enterprise changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
+**[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
+**[Geo-partitioning](topology-geo-partitioned-replicas.html)** | | | ✓
+**[Follower reads](follower-reads.html)** | | | ✓
+**[Node map](enable-node-map.html)** | | | ✓
+**[Locality-aware index selection](cost-based-optimizer.html#preferring-the-nearest-index)** | | | ✓
+**[Encryption at rest](encryption.html#encryption-at-rest-enterprise)** | | | ✓
+**[Role-based access management](authorization.html#roles)** | ✓ | |
+**[Password and certificate authentication](authentication.html)** | ✓ | |
+**[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
 **[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
 
 {{site.data.alerts.callout_info}}
-[All enterprise features](enterprise-licensing.html) are included in CCL (Paid). See [Obtain a license](#obtain-a-license) for more information.
+Individual feature licensing may change with each release of CockroachDB. You can use the dropdown menu at the top of the page to view documentation for other versions of CockroachDB.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+More information about all enterprise features can be found [here](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## Obtain a license
