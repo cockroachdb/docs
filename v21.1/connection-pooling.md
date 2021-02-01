@@ -30,27 +30,21 @@ Each processor core can only execute one thread at a time. When there are more t
 
 Storage and network performance also will affect the ability of a thread to fully execute. If a thread is blocked by network or storage latency, adding connections to the pool is a good idea so other threads can execute while the original thread is being blocked.
 
-If your storage system uses disks, disk latency from the spinning disk platters will result in blocking in thread execution. Using non-disk storage like SSDs will usually result in better latency. However, like the processor core limitation, using SSDs doesn't mean that you should increase the connection pool size. It means you should keep the connection pool size closer to the number of processor cores.
+Cockroach Labs performed lab testing of various customer workloads and found no improvement in scalability beyond:
 
-Network latency is typically the least important factor in determining the connection pool size.
+connections = (number of cores * 4)
 
-The [HikariCP](https://github.com/brettwooldridge/HikariCP) project recommends the following formula for sizing your connection pool:
-
-connections = ((number of cores * 2)) + effective spindle count)
-
-The "effective spindle count" is the number of disks that are active after the storage data has filled any disk cache. If the data is fully cached, the effective spindle count is zero. If there is no disk cache, the effective spindle count is the number of disk spindles.
-
-This formula is a good starting point for testing your application performance.
+Many workloads perform best when the number of connections was between 2 and 4 times the number of CPU cores in the cluster.
 
 ## Example using HikariCP and JDBC
 
-In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the PostgreSQL JDBC driver and HikariCP as the connection pool layer to connect to a CockroachDB cluster. The application is being run on a 10 core server that uses 2 disks as storage.
+In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
 Using the connection pool formula above:
 
-connections = ((10 [processor cores] * 2)) + 2 [spindles] )
+connections = (10 [processor cores] * 3)
 
-The connection pool size should be 22.
+The connection pool size should be 30.
 
 ~~~ java
 HikariConfig config = new HikariConfig();
@@ -61,7 +55,7 @@ config.addDataSourceProperty("ssl", "true");
 config.addDataSourceProperty("sslMode", "require")
 config.addDataSourceProperty("reWriteBatchedInserts", "true");
 config.setAutoCommit(false);
-config.setMaximumPoolSize(22);
+config.setMaximumPoolSize(30);
 
 HikariDataSource ds = new HikariDataSource(config);
 
