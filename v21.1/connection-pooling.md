@@ -36,6 +36,12 @@ connections = (number of cores * 4)
 
 Many workloads perform best when the number of connections was between 2 and 4 times the number of CPU cores in the cluster.
 
+## Validating connections in a pool
+
+After a connection pool initializes connections to CockroachDB clusters, those connections can occasionally break. This could be due to changes in the cluster topography, or rolling upgrades and restarts, or network disruptions. CockroachCloud clusters periodically are restarted for minor version updates, for example, so previously established connections would be invalid after the restart.
+
+Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
+
 ## Example using HikariCP and JDBC
 
 In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
@@ -56,6 +62,7 @@ config.addDataSourceProperty("sslMode", "require")
 config.addDataSourceProperty("reWriteBatchedInserts", "true");
 config.setAutoCommit(false);
 config.setMaximumPoolSize(30);
+config.setKeepaliveTime(150000);
 
 HikariDataSource ds = new HikariDataSource(config);
 
