@@ -1,7 +1,7 @@
 - advisory: 58932
-  summary: HTTP requests can cause full cluster DoS
+  summary: HTTP requests can cause full-cluster denial of service (DoS)
   versions: 19.2.0-19.2.11,20.1.0-20.1.10,20.2.0-20.2.3
-  date: February 1, 2020
+  date: February 2, 2021
 - advisory: 56116
   summary: Incorrect timezone calculations with "slim" zoneinfo format
   versions: All
