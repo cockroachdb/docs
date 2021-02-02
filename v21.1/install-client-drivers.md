@@ -439,7 +439,12 @@ Install TypeORM as described in the [official documentation](https://typeorm.io/
 
 </section>
 
-## See also
+## What's next?
+
+- [Connect to CockroachDB](connect-to-the-database.html)
+- [Design a Database Schema](schema-design-overview.html)
+
+You might also be interested in the following pages:
 
 - [Third party database tools](third-party-database-tools.html)
 - [Connection parameters](connection-parameters.html)

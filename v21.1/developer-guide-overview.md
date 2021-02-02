@@ -49,19 +49,20 @@ CockroachDB supports the PostgreSQL wire protocol, and CockroachDB supports [mos
 
 A growing number of popular third-party database tools offer full support for CockroachDB, but, CockroachDB uses the PostgreSQL wire protocol and supports PostgreSQL syntax, most PostgreSQL-compatible third-party tools are also compatible with CockroachDB. For a list of libraries and tools that we have tested against CockroachDB, see [Third-party Database Tools](third-party-database-tools.html).
 
-## Sample Apps and Tutorials
+## What's next?
 
-For simple but complete sample apps and tutorials, see [Hello World](hello-world-example-apps.html).
+- [Start a Local Cluster](secure-a-cluster.html)
+- [Install a Driver or ORM Framework](install-client-drivers.html)
+- [Connect to CockroachDB](connect-to-the-database.html)
 
-For more advanced sample apps and tutorials, see [Build a Spring App with CockroachDB](build-a-spring-app-with-cockroachdb-jdbc.html) and [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html).
+You might also be interested in the following pages:
 
-{% include cockroach_u_pydev.md %}
-
-## See also
-
-- [Start a local cluster](secure-a-cluster.html)
-- [Install a client library](install-client-drivers.html)
-- [Migrate to CockroachDB](migration-overview.html)
-- [PostgreSQL compatibility](postgresql-compatibility.html)
 - [Architecture Overview](architecture/overview.html)
 - [Transactions](transactions.html)
+- [CockroachDB Migration](migration-overview.html)
+- [PostgreSQL Compatibility](postgresql-compatibility.html)
+- [Hello World Example Apps](hello-world-example-apps.html)
+- [Build a Spring App with CockroachDB](build-a-spring-app-with-cockroachdb-jdbc.html)
+- [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html)
+
+{% include cockroach_u_pydev.md %}

@@ -4,7 +4,7 @@ summary: Create a database for your CockroachDB cluster
 toc: true
 ---
 
-This page provides best-practice guidance on creating databases, with a simple example.
+This page provides best-practice guidance on creating databases, with a couple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
 
 {{site.data.alerts.callout_success}}
 For reference documentation on the `CREATE DATABASE` statement, including additional examples, see the [`CREATE DATABASE` syntax page](create-database.html).
@@ -36,15 +36,18 @@ Before reading this page, do the following:
 
 Database objects make up the first level of the [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy).
 
-To create a database, use a [`CREATE DATABASE` statement](create-database.html), following [the database best practices](#database-best-practices). After reviewing the best practices, see the example we provide [below](#example).
+To create a database, use a [`CREATE DATABASE` statement](create-database.html), following [the database best practices](#database-best-practices). After reviewing the best practices, see the examples we provide [below](#examples).
 
 ### Database best practices
 
 Here are some best practices to follow when creating and using databases:
 
 - Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](sql-name-resolution.html#current-database) by executing a `USE [databasename];` statement, by passing the `--database=[databasename]` flag to the [`cockroach sql` command](cockroach-sql.html#general), or by specifying the `database` parameter in the [connection string](connection-parameters.html#connect-using-a-url) passed to your database schema migration tool.
-- Create databases as the `root` user, and create all other lower-level objects with a [different user](schema-design-overview.html#controlling-access-to-objects), with more limited privileges, following [authorization best practices](authorization.html#authorization-best-practices).
-- Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](#create-a-user-defined-schema) in the same database.
+
+- Create databases as the `root` user, and create all other lower-level objects with a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
+
+- Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](#create-a-user-defined-schema), in the same database.
+
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
 ### Example
@@ -73,10 +76,10 @@ To create a database as `root`, issue a `CREATE DATABASE` statement in the SQL s
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE DATABASE cockroachlabs;
+> CREATE DATABASE movr;
 ~~~
 
-This statement creates a database object with the name `cockroachlabs`.
+This statement creates a database object with the name `movr`. This database will store all of the data for the MovR application.
 
 To view the database in the cluster, use a [`SHOW DATABASES`](show-databases.html) statement:
 
@@ -88,47 +91,69 @@ To view the database in the cluster, use a [`SHOW DATABASES`](show-databases.htm
 ~~~
   database_name
 -----------------
-  cockroachlabs
   defaultdb
+  movr
   postgres
   system
 (4 rows)
 ~~~
 
-To follow [authorization best practices](authorization.html#authorization-best-practices), after you create a new database, you should also create a new SQL user to manage the lower-level objects in the new database.
+To follow [authorization best practices](authorization.html#authorization-best-practices), after you create a new database, you should also create some new SQL users to manage the lower-level objects in the new database.
 
 In the open SQL shell, execute the following `CREATE USER` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE USER maxroach;
+> CREATE USER max;
 ~~~
 
-This creates a SQL user named `maxroach`, with no privileges.
+This creates a SQL user named `max`, with no privileges.
 
-Use a `GRANT` statements to grant the user `CREATE` privileges on the `cockroachlabs` database.
+Use a `GRANT` statements to grant the user `CREATE` privileges on the `movr` database.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> GRANT CREATE ON DATABASE cockroachlabs TO maxroach;
+> GRANT CREATE ON DATABASE movr TO max;
 ~~~
 
-This privilege allows `maxroach` to create objects (i.e., user-defined schemas) in the `cockroachlabs` database.
+This privilege allows `max` to create objects (i.e., user-defined schemas) in the `movr` database.
 
-To connect to a secure cluster, the user needs a user certificate. To create a user certificate for `maxroach`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
+In the same SQL shell, create a second user named `abbey`, and grant them the same privileges.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER abbey;
+> GRANT CREATE ON DATABASE movr TO abbey;
+~~~
+
+This creates a second SQL user named `abbey`, with `CREATE` privileges on the database.
+
+To connect to a secure cluster and execute SQL statements, users need [user certificates](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+$ cockroach cert create-client max --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
 ~~~
 
-You're now ready to start adding user-defined schemas to the `cockroachlabs` database, as the `maxroach` user.
+Create a user certificate for `abbey` as well:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach cert create-client abbey --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+~~~
+
+You're now ready to start adding user-defined schemas to the `movr` database for the `max` and `abbey` users.
 
 For guidance on creating user-defined schemas, see at [Create a User-defined Schema](schema-design-schema.html).
 
-## See also
+## What's next?
 
 - [Create a User-defined Schema](schema-design-schema.html)
-- [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)
-- [Schema Design Overview](schema-design-overview.html)
+- [Create a Table](schema-design-table.html)
+
+You might also be interested in the following pages:
+
 - [`CREATE DATABASE`](create-database.html)
+- [Cockroach Commands](cockroach-commands.html)
+- [Schema Design Overview](schema-design-overview.html)
+- [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy)

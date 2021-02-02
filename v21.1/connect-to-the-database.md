@@ -183,27 +183,26 @@ conn = psycopg2.connect(
 
 </section>
 
-## See also
-
-Reference information related to this task:
-
-- [Connection parameters][connection_params]
-- [Manual deployments][manual]
-- [Orchestrated deployments][orchestrated]
-- [Start a local cluster (secure)][local_secure]
+## What's next?
 
 <a name="tasks"></a>
 
-Other common tasks:
-
+- [Design a Database Schema](schema-design-overview.html)
 - [Insert Data](insert-data.html)
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
+
+You might also be interested in the following pages:
+
+- [Connection Pooling](connection-pooling.html)
+- [Connection Parameters][connection_params]
+- [Manual Deployments][manual]
+- [Orchestrated Deployments][orchestrated]
+- [Start a Local Cluster][local_secure]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Make Queries Fast](make-queries-fast.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Hello World example apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->
 
