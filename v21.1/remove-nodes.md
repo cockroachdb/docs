@@ -212,10 +212,6 @@ Within 5 minutes, you'll see the node move from the Node List to the **Recently 
 
 At this point, the node is `DECOMMISSIONED` and will no longer appear in timeseries graphs unless you view a time range during which the node was live. However, it will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
 
-{{site.data.alerts.callout_info}}
-If you want to utilize a decommissioned node again, first [recommission](#recommission-nodes) the node to have the cluster rebalance data to the node. Then restart the node so that it accepts new SQL connections.
-{{site.data.alerts.end}}
-
 ## Remove multiple nodes
 
 <div class="filters clearfix">
@@ -316,10 +312,6 @@ After the duration configured via [`server.time_until_store_dead`](cluster-setti
 <div style="text-align: center;"><img src="{{ 'images/v21.1/decommission-multiple7.png' | relative_url }}" alt="Decommission multiple nodes" style="border:1px solid #eee;max-width:100%" /></div>
 
 At this point, the nodes are `DECOMMISSIONED` and will no longer appear in timeseries graphs unless you view a time range during which the nodes were live. However, they will never disappear from the historical list of decommissioned nodes, linked beneath Recently Decommissioned Nodes.
-
-{{site.data.alerts.callout_info}}
-If you want to utilize a decommissioned node again, first [recommission](#recommission-nodes) the node to have the cluster rebalance data to the node. Then restart the node so that it accepts new SQL connections.
-{{site.data.alerts.end}}
 
 ## Recommission nodes
 
