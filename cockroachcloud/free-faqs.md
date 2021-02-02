@@ -31,7 +31,7 @@ For examples of applications that use CockroachCloud Free (beta), check out the 
 
 ### What are the limitations of CockroachCloud Free (beta)?
 
-CockroachCloud Free is currently in beta and as such, it is not suitable for heavy production use. Specifically, there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
+CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
 ### Can I use a specific region in AWS or GCP?
 
