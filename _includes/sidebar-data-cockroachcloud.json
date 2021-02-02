@@ -215,18 +215,18 @@
       ]
     },
     {
-      "title": "Releases",
+      "title": "Release Notes",
       "items": [
         {
-          "title": "Latest Release",
+          "title": "Latest Release Notes",
           "urls": [
             "/releases/cockroachcloud-01222021.html"
           ]
         },
         {
-          "title": "All Releases",
+          "title": "All Release Notes",
           "urls": [
-            "/releases/index-cc.html"
+            "/releases/index-cockroachcloud.html"
           ]
         }
       ]
