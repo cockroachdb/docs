@@ -147,7 +147,7 @@ Example usage:
 
 ### Row limit
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time-consuming import.
+<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import from a table. It is useful for finding errors quickly before executing a more time- and resource-consuming import.
 
 Example usage:
 
