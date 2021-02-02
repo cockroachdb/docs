@@ -1,4 +1,4 @@
----
+../stable---
 title: Connect to a CockroachCloud Free (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
@@ -43,7 +43,7 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster.
 
 <section class="filter-content" markdown="1" data-scope="cockroachdb-client">
 
-To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql.html):
+To connect to your cluster with the [built-in SQL client](../stable/cockroach-sql.html):
 
 1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:
@@ -68,8 +68,8 @@ To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql
     ~~~    
 
 1. If you have not done so already, [install the CockroachDB binary](../stable/install-cockroachdb.html).
-1. Copy the [`cockroach sql`](../v20.2/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../v20.2/cockroach-sql.html).
+1. Copy the [`cockroach sql`](../stable/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../stable/cockroach-sql.html).
 
     Be sure to replace the `<your_certs_ directory>` placeholder with the path to the `certs` directory you created earlier.
 
@@ -118,13 +118,13 @@ To connect to your cluster with your application:
 
 For examples, see the following:
 
-- [Build a Python App with CockroachDB](../v20.2/build-a-python-app-with-cockroachdb.html)
-- [Build a Go App with CockroachDB](../v20.2/build-a-go-app-with-cockroachdb.html)
-- [Build a Java App with CockroachDB](../v20.2/build-a-java-app-with-cockroachdb.html)
+- [Build a Python App with CockroachDB](../stable/build-a-python-app-with-cockroachdb.html)
+- [Build a Go App with CockroachDB](../stable/build-a-go-app-with-cockroachdb.html)
+- [Build a Java App with CockroachDB](../stable/build-a-java-app-with-cockroachdb.html)
 </section>
 
 <section class="filter-content" markdown="1" data-scope="your-tool">
-To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-party-database-tools.html), use the connection parameters provided in the Console.
+To connect to your cluster with a [CockroachDB-compatible tool](../stable/third-party-database-tools.html), use the connection parameters provided in the Console.
 </section>
 
 ## What's next

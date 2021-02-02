@@ -12,7 +12,7 @@ redirect_from:
     <a href="quickstart.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
 </div>
 
-This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.
+This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../stable/cockroach-sql.html), and run sample SQL statements.
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -96,7 +96,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     $ cockroach sql --url 'postgres://maxroach:password123@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/test-cluster.defaultdb?sslmode=verify-full&sslrootcert=/Users/maxroach/certs/cc-ca.crt'
     ~~~
 
-1. Using the [built-in SQL client](../v20.2/cockroach-sql.html), you can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Using the [built-in SQL client](../stable/cockroach-sql.html), you can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -136,7 +136,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
 
 Learn more:
 
-- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Use the [built-in SQL client](../stable/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
 - Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Explore our [sample apps](../stable/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
