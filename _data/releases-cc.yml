@@ -1,18 +1,27 @@
 - title: CockroachCloud releases
   releases:
-    - date: January 2021
+    - name: January 2021
+      date: Jan 22, 2021
       link: cockroachcloud-01222021
-    - date: December 2020
+      latest: true
+    - name: December 2020
+      date: Dec 11, 2020
       link: cockroachcloud-12112020
-    - date: November 2020
+    - name: November 2020
+      date: Nov 19, 2020
       link: cockroachcloud-11192020
-    - date: July 2020
+    - name: July 2020
+      date: Jul 6, 2020
       link: cockroachcloud-07062020
-    - date: June 2020
+    - name: June 2020
+      date: Jun 11, 2020
       link: cockroachcloud-06112020
-    - date: May 2020
+    - name: May 2020
+      date: May 4, 2020
       link: cockroachcloud-05042020 
-    - date: April 2020
+    - name: April 2020
+      date: Apr 6, 2020
       link: cockroachcloud-04062020
-    - date: March 2020
+    - name: March 2020
+      date: Mar 2, 2020
       link: cockroachcloud-03022020
