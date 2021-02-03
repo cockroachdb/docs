@@ -1,4 +1,4 @@
-../stable---
+---
 title: Quickstart with CockroachCloud (30-day trial)
 summary: Learn how to create and use your CockroachCloud cluster.
 toc: true

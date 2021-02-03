@@ -1,4 +1,4 @@
-../stable---
+---
 title: Build a Python App with CockroachDB and Django
 summary: Learn how to use CockroachDB from a simple Django application.
 toc: true

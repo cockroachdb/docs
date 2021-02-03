@@ -1,4 +1,4 @@
-../stable---
+---
 title: Connect to a CockroachCloud Free (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true

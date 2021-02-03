@@ -1,4 +1,4 @@
-../stable---
+---
 title: Stream a Changefeed to Snowflake
 summary: Use a CockroachCloud cluster to stream changefeed messages to a Snowflake cluster.
 toc: true

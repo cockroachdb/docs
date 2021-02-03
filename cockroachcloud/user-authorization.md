@@ -1,4 +1,4 @@
-../stable---
+---
 title: User Authorization
 summary: Learn about the user authorization features for CockroachCloud CockroachDB clusters.
 toc: true
