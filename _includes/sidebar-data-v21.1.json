@@ -384,6 +384,17 @@
             ]
           },
           {
+            "title": "Multi-region Clusters",
+            "items": [
+              {
+                "title": "Multi-region Overview",
+                "urls": [
+                  "/${VERSION}/multiregion-overview.html"
+                ]
+              }
+            ]
+          },
+          {
             "title": "Topology Patterns",
             "items": [
               {
