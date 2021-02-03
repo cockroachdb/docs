@@ -61,7 +61,7 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 1.  Use the CockroachCloud Console to [create your CockroachCloud cluster](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html) on AWS in the same region as your application. 
 1.  Navigate to the **Networking** page.
 1.  Select the **PrivateLink** tab. 
-1.Click **Set up a PrivateLink connection** to open the connection modal.
+1.  Click **Set up a PrivateLink connection** to open the connection modal.
 
 ### Create an AWS endpoint
 
