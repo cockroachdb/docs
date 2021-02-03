@@ -251,7 +251,7 @@ CREATE TABLE movr.max_schema.users (
 
 This primary key will uniquely identify rows of user data.
 
-Note that, because `PRIMARY KEY` constraints imply `UNIQUE` indexes, only one unique combination of `first_name` and `last_name` will be allowed in rows of the `users` table. Additionally, because `PRIMARY KEY` implies the `NOT NULL` constraint, all rows of data inserted into the `users` table must include values for `first_name` and `last_name`.
+Because `PRIMARY KEY` constraints imply `UNIQUE` indexes, only one unique combination of `first_name` and `last_name` will be allowed in rows of the `users` table. Additionally, because `PRIMARY KEY` implies the `NOT NULL` constraint, all rows of data inserted into the `users` table must include values for `first_name` and `last_name`.
 
 Primary key columns can also be single columns, if those columns are guaranteed to uniquely identify the row. Their values should also be well-distributed across the cluster.
 
