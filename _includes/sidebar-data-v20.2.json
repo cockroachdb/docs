@@ -266,6 +266,12 @@
                     "urls": [
                       "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
                     ]
+                  },
+                  {
+                    "title": "TypeScript",
+                    "urls": [
+                      "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+                    ]
                   }
                 ]
               },
