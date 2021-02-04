@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud (30-day trial)</strong></button></a>
+    <a href="quickstart.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
@@ -43,21 +43,21 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 ## Step 2. Create a SQL user
 
 1. In the left navigation bar, click **SQL Users**.
-2. Click **Add User**. The **Add User** modal displays.
+2. Click **Add User**. The **Add User** dialog displays.
 3. Enter a **Username** and **Password**.
 4. Click **Save**.
 
 ## Step 3. Authorize your network
 
 1. In the left navigation bar, click **Networking**.
-2. Click **Add Network**. The **Add Network** modal displays.
+2. Click **Add Network**. The **Add Network** dialog displays.
 3. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
 4. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 5. Click **Apply**.
 
 ## Step 4. Get the connection string
 
-1. In the top-right corner of the Console, click the **Connect** button. The **Connect** modal displays.
+1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog displays.
 2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 3. Verify that the `us-west2 GCP` region and `default_db` database are selected.
 4. Click **Continue**. The **Connect** tab is displayed.
@@ -124,7 +124,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-4. Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to view the database:
+4. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -172,7 +172,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 Learn more:
 
-- Use the [built-in SQL client](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../stable/demo-fault-tolerance-and-recovery.html).
 

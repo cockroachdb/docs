@@ -8,16 +8,24 @@
     {
       "title": "Get Started",
       "items": [
+        {
+      	  "title": "Create an Account",
+      	  "urls": [
+      	    "/cockroachcloud/create-an-account.html"
+      	  ]
+      	},
       	{
       	  "title": "Create a CockroachCloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-your-cluster.html"
+      	    "/cockroachcloud/create-a-free-cluster.html",
+            "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-your-cluster.html"
+      	    "/cockroachcloud/connect-to-a-free-cluster.html",
+            "/cockroachcloud/connect-to-your-cluster.html"
       	  ]
       	},
       	{
@@ -210,8 +218,19 @@
     },
     {
       "title": "FAQs",
-      "urls": [
-	       "/cockroachcloud/frequently-asked-questions.html"
+      "items": [
+      	{
+      	  "title": "CockroachCloud FAQs",
+      	  "urls": [
+      	    "/cockroachcloud/frequently-asked-questions.html"
+      	  ]
+      	},
+      	{
+      	  "title": "CockroachCloud Free (beta) FAQs",
+      	  "urls": [
+      	    "/cockroachcloud/free-faqs.html"
+      	  ]
+      	}
       ]
     },
     {

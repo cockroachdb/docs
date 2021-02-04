@@ -45,7 +45,7 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 ## Step 2: Connect to your CockroachCloud cluster and create the `django` user and `bank` database
 
-Connect to your CockroachCloud cluster using the [SQL shell](connect-to-your-cluster.html#use-the-cockroachdb-sql-client).
+Connect to your CockroachCloud cluster using the [SQL shell](connect-to-your-cluster.html#step-4-connect-to-your-cluster).
 
 In the SQL shell, issue the following statements to create the `django` user and `bank` database:
 
@@ -218,7 +218,7 @@ $ python manage.py migrate
 
 This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
 
-To verify that the migration succeeded, connect to your CockroachCloud cluster using the [SQL shell](connect-to-your-cluster.html#use-the-cockroachdb-sql-client) and issue the following statements:
+To verify that the migration succeeded, connect to your CockroachCloud cluster using the [SQL shell](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and issue the following statements:
 
 {% include copy-clipboard.html %}
 ~~~ sql

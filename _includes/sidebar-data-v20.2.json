@@ -3,8 +3,8 @@
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart.html"
-    ]
+      "/cockroachcloud/quickstart-trial-cluster.html",
+      "/cockroachcloud/quickstart.html"  ]
   },
   {% include sidebar-data-cockroachcloud.json %},
   {
@@ -2600,6 +2600,13 @@
         ]
       },
       {% include sidebar-releases.json %}
+    ]
+  },
+  {
+    "title": "SQL Playground",
+    "is_top_level": true,
+    "urls": [
+      "/${VERSION}/sql-playground.html"
     ]
   }
 ]

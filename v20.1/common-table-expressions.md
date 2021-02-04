@@ -17,8 +17,9 @@ clauses](select-clause.html) and [`INSERT`](insert.html),
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/diagrams/with_clause.html %}</div>
-
+<div class="horizontal-scroll">
+  {% include {{ page.version.version }}/sql/diagrams/with_clause.html %}
+</div>
 <div markdown="1"></div>
 
 ## Parameters

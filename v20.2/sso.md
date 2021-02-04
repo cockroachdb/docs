@@ -22,7 +22,7 @@ SSO authentication is an [enterprise-only](enterprise-licensing.html) feature.
 
 This SSO implementation uses the [authorization code grant type](https://tools.ietf.org/html/rfc6749#section-4.1) to authenticate a user.
 
-1. A user opens the DB Console and clicks on the OAuth login button. 
+1. A user opens the DB Console and clicks on the OAuth login button.
 1. The user is redirected to an external identity provider.
 1. The user successfully authenticates with the provider, completing the OAuth flow.
 1. The user is redirected to the CockroachDB cluster via a callback URL.
@@ -66,11 +66,11 @@ These steps demonstrate how to enable SSO authentication for the DB Console on a
 
 1. Click **+ CREATE CREDENTIALS** and select **OAuth client ID**. Specify a **web application** from the pulldown menu.
 
-1. Note the *client ID* and *client secret* of the OAuth 2.0 client. You can find these in the modal that appears after you create the client, or in the details view for the client:
+1. Note the *client ID* and *client secret* of the OAuth 2.0 client. You can find these in the dialog that appears after you create the client, or in the details view for the client:
 
 	<img src="{{ 'images/v20.2/google-oidc-client.png' | relative_url }}" alt="Google OAuth 2.0 client details" style="border:1px solid #eee;max-width:100%" />
 
-1. Add the callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. You will later set `server.oidc_authentication.redirect_url` to the same value. 
+1. Add the callback URL to the list of **Authorized redirect URIs**. On a local cluster, this will be `https://localhost:8080/oidc/v1/callback`. You will later set `server.oidc_authentication.redirect_url` to the same value.
 
 1. Open a SQL shell to the cluster on node 1:
 

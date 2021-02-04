@@ -162,7 +162,7 @@ Field | Description
 `build` | The version of CockroachDB you are running.
 `webui` | The URL for accessing the Admin UI.
 `sql` | The connection URL for your client.
-`client flags` | The flags to use when connecting to the node via [`cockroach` client commands](../cockroach-commands.html).
+`client flags` | The flags to use when connecting to the node via [`cockroach` client commands](cockroach-commands.html).
 `logs` | The directory containing debug log data.
 `temp dir` | The temporary store directory of the node.
 `external I/O path` | The external IO directory with which the local file access paths are prefixed while performing [backup](backup.html) and [restore](restore.html) operations using local node directories or NFS drives.

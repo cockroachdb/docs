@@ -17,8 +17,8 @@ twitter: false
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
 
-<div class="filters clearfix">
-  <a href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank"><button class="filter-button current">Run this in your browser &rarr;</button></a>
+<div class=" clearfix">
+  <a class="btn btn-outline-primary" href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank">Run this in your browser &rarr;</a>
 </div>
 
 ## Step 1. Install the psycopg2 driver
@@ -93,15 +93,15 @@ $ python3 example.py \
 "postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
 ~~~
 
-Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** modal as follows:
+Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<globalhost>` with the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- Replace `<globalhost>` with the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - Replace `<cluster-name>` with the name of your cluster.
 - Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 
 {{site.data.alerts.callout_info}}
-If you are using the connection string that you [copied from the **Connection info** modal](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.
+If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.
 {{site.data.alerts.end}}
 
 </section>

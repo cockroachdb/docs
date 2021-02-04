@@ -16,25 +16,25 @@ Adding replication zones for rows and secondary indexes is an [enterprise-only](
 
 **alter_zone_range_stmt ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/alter_zone_range.html %}
 </div>
 
 **alter_zone_database_stmt ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/alter_zone_database.html %}
 </div>
 
 **alter_zone_table_stmt ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/alter_zone_table.html %}
 </div>
 
 **alter_zone_index_stmt ::=**
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
 </div>
 

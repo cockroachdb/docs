@@ -1,40 +1,40 @@
-<section class="footer">
-  {% if page.back_to_top == true %} {% include back-to-top.html %} {% endif %}
+<div class="footer py-5">
   <div class="container">
-    <div class="footer__flex-wrap">
-      <ul class="footer-nav">
-        <li class="header">
-          Product<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
-          <li>
-            <a href="https://www.cockroachlabs.com/product/">CockroachDB</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/product/cockroachcloud/">CockroachCloud</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/compare/">Compare</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/pricing/">Pricing</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/product/whats-new/">What's New</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/get-cockroachdb/">Get CockroachDB</a>
-          </li>
-          <li>
-            <a href="https://cockroachlabs.cloud/">Sign In</a>
-          </li>
+    <div class="row">
+      <div class="col-6 col-sm-3 col-lg-2">
+        <p class="font-weight-bold pb-2">Product</p>
+        <ul class="footer-nav p-0">
+          <ul class="p-0">
+            <li>
+              <a href="https://www.cockroachlabs.com/product/">CockroachDB</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/product/cockroachcloud/"
+                >CockroachCloud</a
+              >
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/compare/">Compare</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/pricing/">Pricing</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/product/whats-new/">What's New</a>
+            </li>
+            <li>
+              <a href="https://www.cockroachlabs.com/get-cockroachdb/">Get CockroachDB</a>
+            </li>
+            <li>
+              <a href="https://cockroachlabs.cloud/">Sign In</a>
+            </li>
+          </ul>
         </ul>
-      </ul>
-      <ul class="footer-nav">
-        <li class="header">
-          Resources<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
+      </div>
+      <div class="col-6 col-sm-3 col-lg-2">
+        <p class="font-weight-bold pb-2">Resources</p>
+        <ul class="footer-nav p-0">
+          <li><a href="https://www.cockroachlabs.com/guides/">Guides</a></li>
           <li>
             <a href="https://resources.cockroachlabs.com/guides/">Guides</a>
           </li>
@@ -54,15 +54,11 @@
             <a href="https://www.cockroachlabs.com/security/">Security</a>
           </li>
         </ul>
-      </ul>
-      <ul class="footer-nav">
-        <li class="header">
-          Learn<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
-          <li>
-            <a href="https://www.cockroachlabs.com/docs/stable/">Docs</a>
-          </li>
+      </div>
+      <div class="col-6 col-sm-3 col-lg-2">
+        <p class="font-weight-bold pb-2">Learn</p>
+        <ul class="footer-nav p-0">
+          <li><a href="https://www.cockroachlabs.com/docs/stable/">Docs</a></li>
           <li>
             <a href="https://university.cockroachlabs.com/catalog">University</a>
           </li>
@@ -70,13 +66,9 @@
             <a href="https://www.cockroachlabs.com/developers/">Developers</a>
           </li>
         </ul>
-        <br>
-        <li class="header">
-          Support Channels<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
-          <li>
-            <a href="https://forum.cockroachlabs.com/">Forum</a></li>
+        <p class="font-weight-bold py-2 mb-0 mb-md-2">Support Channels</p>
+        <ul class="footer-nav p-0">
+          <li><a href="https://forum.cockroachlabs.com/">Forum</a></li>
           <li>
             <a href="https://cockroa.ch/slack">Slack</a>
           </li>
@@ -87,23 +79,13 @@
             <a href="https://www.cockroachlabs.com/contact/">Contact Us</a>
           </li>
         </ul>
-      </ul>
-    </div>
-    <div class="footer__right">
-      <ul class="footer-nav">
-        <li class="header">
-          Company<span class="blue-arrow blue-arrow--down"></span>
-        </li>
-        <ul class="footer-sub-nav">
-          <li>
-            <a href="https://www.cockroachlabs.com/about/">About</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/blog/">Blog</a>
-          </li>
-          <li>
-            <a href="https://www.cockroachlabs.com/careers/">Careers</a>
-          </li>
+      </div>
+      <div class="col-6 col-sm-3 col-lg-2">
+        <p class="font-weight-bold pb-2">Company</li>
+        <ul class="footer-nav p-0">
+          <li><a href="https://www.cockroachlabs.com/about/">About</a></li>
+          <li><a href="https://www.cockroachlabs.com/blog/">Blog</a></li>
+          <li><a href="https://www.cockroachlabs.com/careers/">Careers</a></li>
           <li>
             <a href="https://www.cockroachlabs.com/customers/">Customers</a>
           </li>
@@ -118,11 +100,36 @@
           </li>
         </ul>
       </ul>
-    </div>
-    <div class="copyright">
-      <span class="year">&copy; 2020 </span>Cockroach Labs
+      </div>
+      <div class="col-12 col-lg-4 pt-lg-3 border-md-left">
+        <div class="pl-xl-5 pl-0">
+          <p class="font-weight-bold pb-2 mt-0">Get developer news</p>
+          <form id="footer-mktoForm_1083" class="mkto-install-form mkto-footer-form"></form>
+            <p class="js-ty-mktoForm_1083" style="display: none;">Thanks!</p>
+            <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
+            <script>
+                const MktoForms21083 = MktoForms2;
+                MktoForms21083.loadForm('//go.cockroachlabs.com', '350-QIN-827', 1083, function (form) {
+                    const form_mktoForm_1083 = $('#footer-mktoForm_1083');
+                    form.render(form_mktoForm_1083)
+                    form.onSuccess(function (values, followUpUrl) {
+                        form.getFormElem().hide();
+                        document.querySelector('.js-ty-mktoForm_1083').style.display = 'block';
+                        return false;
+                    });
+                    // Move button next to input
+                    MktoForms21083.whenReady(function (form) {
+                        $('#footer-mktoForm_1083 input').css('width', '');
+                        $('#footer-mktoForm_1083 .mktoButtonWrap').css('margin-left', '');
+                        $('#footer-mktoForm_1083 .mktoButtonRow').css('display', 'flex');
+                        $('#footer-mktoForm_1083 .mktoButtonRow').insertAfter('#footer-mktoForm_1083 #Email');
+                    });
+                });
+            </script>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 {% include newsletter-popout.html %}

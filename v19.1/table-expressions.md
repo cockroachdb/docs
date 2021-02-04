@@ -14,7 +14,7 @@ expression.
 
 ## Synopsis
 
-<div>
+<div class="horizontal-scroll">
   {% include {{ page.version.version }}/sql/diagrams/table_ref.html %}
 </div>
 
