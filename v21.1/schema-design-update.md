@@ -107,7 +107,7 @@ Under that first `ALTER TABLE` statement, add another `ALTER TABLE` statement fo
 ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (username, email);
 ~~~
 
-In order to add a column to an existing table's primary key index, the column must have an existing [`NOT NULL` constraint](not-null.html). Neither the `username` nor the `email` tables have `NOT NULL` constraints.
+In order to add a column to an existing table's primary key index, the column must have an existing [`NOT NULL` constraint](not-null.html). Neither the `username` nor the `email` columns have `NOT NULL` constraints.
 
 Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand](alter-column.html) to set the `NOT NULL` constraint on the `email` column:
 

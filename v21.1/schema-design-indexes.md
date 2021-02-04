@@ -63,7 +63,7 @@ To add a secondary index to a table, do one of the following, following the [bes
 
 - Use a [`CREATE INDEX`](create-index.html) statement.
 
-    `CREATE INEX` statements generally take the following form:
+    `CREATE INDEX` statements generally take the following form:
 
     ~~~
     CREATE INDEX [index_name] ON [table_name] ([column_names]);
@@ -101,7 +101,7 @@ Here are some best practices for creating indexes:
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 
-    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can have a significant impact on performance. For an example, see [below](#examples).
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#examples).
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 

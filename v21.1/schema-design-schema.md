@@ -83,10 +83,10 @@ Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` s
 {% include copy-clipboard.html %}
 ~~~
 DROP SCHEMA IF EXISTS max_schema CASCADE;
-CREATE SCHEMA IF NOT EXISTS max_schema AUTHORIZATION max;
+CREATE SCHEMA max_schema AUTHORIZATION max;
 
 DROP SCHEMA IF EXISTS abbey_schema CASCADE;
-CREATE SCHEMA IF NOT EXISTS abbey_schema AUTHORIZATION abbey;
+CREATE SCHEMA abbey_schema AUTHORIZATION abbey;
 ~~~
 
 The first set of statement clears the database of any existing schema named `max_schema`, and then creates a schema named `max_schema` with the owner `max`. The next set of statements does the same, but for `abbey_schema`, with `abbey` as the owner.
@@ -110,11 +110,11 @@ CREATE USER IF NOT EXISTS abbey;
 GRANT CREATE ON DATABASE movr TO abbey;
 
 DROP SCHEMA IF EXISTS max_schema CASCADE;
-CREATE SCHEMA IF NOT EXISTS max_schema AUTHORIZATION max;
+CREATE SCHEMA max_schema AUTHORIZATION max;
 GRANT USAGE ON SCHEMA max_schema TO abbey;
 
 DROP SCHEMA IF EXISTS abbey_schema CASCADE;
-CREATE SCHEMA IF NOT EXISTS abbey_schema AUTHORIZATION abbey;
+CREATE SCHEMA abbey_schema AUTHORIZATION abbey;
 GRANT USAGE ON SCHEMA abbey_schema TO max;
 ~~~
 
