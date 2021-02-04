@@ -289,13 +289,13 @@ To stop the CockroachDB cluster, on the instance running your manager node, remo
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ sudo docker service rm cockroachdb-0 cockroachdb-1 cockroachdb-2
+$ sudo docker service rm cockroachdb-1 cockroachdb-2 cockroachdb-3
 ~~~
 
 ~~~
-cockroachdb-0
 cockroachdb-1
 cockroachdb-2
+cockroachdb-3
 ~~~
 
 You may want to remove the persistent volumes used by the services as well. To do this, on each instance:
@@ -307,13 +307,13 @@ $ sudo docker volume ls
 ~~~
 
 ~~~
-cockroachdb-0
+cockroachdb-1
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
 # Remove the local volume:
-$ sudo docker volume rm cockroachdb-0
+$ sudo docker volume rm cockroachdb-1
 ~~~
 
 ## See also
