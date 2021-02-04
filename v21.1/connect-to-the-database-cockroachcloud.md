@@ -20,7 +20,7 @@ For a reference that lists all of the supported cluster connection parameters, s
 Do the following:
 
 - Set up a CockroachCloud cluster:
--- [Create](cockroachcloud/create-your-cluster.html) and [configure](cockroachcloud/connect-to-your-cluster.html) a CockroachCloud cluster.
+  - [Create](cockroachcloud/create-your-cluster.html) and [configure](cockroachcloud/connect-to-your-cluster.html) a CockroachCloud cluster.
 - [Install a Postgres client](install-client-drivers.html).
 
 ## Connect
@@ -37,7 +37,7 @@ Do the following:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
+--url='postgres://<username>:<password>@<globalhost>:26257/<cluster_name>.<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
 ~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
@@ -58,7 +58,7 @@ import (
 )
 
 db, err := sql.Open("postgres",
-        "postgresql://<user>:<password>@<global host>:26257/bank?sslmode=verify-full&sslrootcert=<path to the CA certificate>&options=--cluster=<cluster_name>")
+        "postgresql://<username>:<password>@<globalhost>:26257/bank?sslmode=verify-full&sslrootcert=<path to the CA certificate>&options=--cluster=<cluster_name>")
 if err != nil {
     log.Fatal("error connecting to the database: ", err)
 }
@@ -79,9 +79,9 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setServerName("<global host>");
+ds.setServerName("<globalhost>");
 ds.setPortNumber(26257);
-ds.setDatabaseName("<cluster name>.bank");
+ds.setDatabaseName("<cluster_name>.bank");
 ds.setUser("<username>");
 ds.setPassword("<password>");
 ds.setSsl(true);
@@ -110,7 +110,7 @@ conn = psycopg2.connect(
     sslmode='verify-full',
     sslrootcert='<path to the CA certificate>',
     port=26257,
-    host='<global host>',
+    host='<globalhost>',
     options="--cluster=<cluster_name>"
 )
 ~~~
