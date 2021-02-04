@@ -22,6 +22,8 @@ toc: true
 
 - The secondary index created by `ALTER PRIMARY KEY` will not be partitioned, even if a partition is defined on [a column in the original primary key](partitioning.html#partition-using-primary-key). To ensure that the table is partitioned correctly, you must create a partition on the secondary index, or drop the secondary index.
 
+- Any new primary key column set by `ALTER PRIMARY KEY` must have an existing [`NOT NULL` constraint](not-null.html). To add a `NOT NULL` constraint to an existing column, use [`ALTER TABLE ... ALTER COLUMN ... SET NOT NULL`](alter-column.html#set-not-null-constraint).
+
 {{site.data.alerts.callout_success}}
 To change an existing primary key without creating a secondary index from that primary key, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key). For examples, see the [`ADD CONSTRAINT`](add-constraint.html#examples) and [`DROP CONSTRAINT`](drop-constraint.html#examples) pages.
 {{site.data.alerts.end}}
