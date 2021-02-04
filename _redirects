@@ -57,3 +57,8 @@ layout: null
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
+
+/docs/install-cockroachdb.html  /docs/stable/install-cockroachdb.html   301!
+/docs/start-a-local-cluster-in-docker.html  /docs/stable/start-a-local-cluster-in-docker.html   301!
+/docs/orchestrate-cockroachdb-with-kubernetes.html  /docs/stable/orchestrate-cockroachdb-with-kubernetes.html   301!
+/docs/orchestrate-cockroachdb-with-docker-swarm.html    /docs/orchestrate-cockroachdb-with-docker-swarm.html    301!
