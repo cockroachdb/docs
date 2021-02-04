@@ -4,7 +4,7 @@ summary: Create a user-defined schema for your CockroachDB cluster
 toc: true
 ---
 
-This page provides best-practice guidance on creating user-defined schemas, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+This page provides best-practice guidance on creating user-defined schemas, with some simple examples based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
 
 {{site.data.alerts.callout_success}}
 For detailed reference documentation on the `CREATE SCHEMA` statement, including additional examples, see the [`CREATE SCHEMA` syntax page](create-schema.html).
@@ -39,7 +39,7 @@ Before reading this page, do the following:
 
 User-defined schemas belong to the second level of the [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy).
 
-To create a user-defined schema, use a [`CREATE SCHEMA` statement](create-schema.html), following [the user-defined schema best practices](#user-defined-schema-best-practices). After reviewing the best practices, see the example we provide [below](#example).
+To create a user-defined schema, use a [`CREATE SCHEMA` statement](create-schema.html), following [the user-defined schema best practices](#user-defined-schema-best-practices). After reviewing the best practices, see the example we provide [below](#examples).
 
 ### User-defined schema best practices
 
@@ -47,11 +47,11 @@ Here are some best practices to follow when creating and using user-defined sche
 
 - If you want to create multiple objects (e.g., tables or views) with the same name in your cluster, do so in different user-defined schemas in the same database.
 
-- If you want to separate lower-level objects (e.g., a set of [tables](create-a-table.html) or [views](views.html)) for access or organizational purposes, do not create those objects in the preloaded [`public` schema](sql-name-resolution.html#naming-hierarchy). Instead, create user-defined schemas, and then create the objects in the user-defined schemas.
+- If you want to separate lower-level objects (e.g., a set of [tables](schema-design-table.html) or [views](views.html)) for access or organizational purposes, do not create those objects in the preloaded [`public` schema](sql-name-resolution.html#naming-hierarchy). Instead, create user-defined schemas, and then create the objects in the user-defined schemas.
 
-- Do not create user-defined schemas as the `root` user. Instead, create them as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges on the database, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create user-defined schemas as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and then give ownership of them to a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges across the database, following [authorization best practices](authorization.html#authorization-best-practices).
 
-- When you create a user-defined schema, take note of the [object's owner](authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the `AUTHORIZATION` keyword. If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema. We recommend creating user-defined schemas as the user that will create and use the lower-level objects of the database schema (e.g., tables and indexes).
+- When you create a user-defined schema, take note of the [object's owner](authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
 
 - Do not create user-defined schemas in the preloaded `defaultdb` database. Instead, use a database [you have created](schema-design-database.html). User-defined schemas can only be created in your SQL session's [current database](sql-name-resolution.html#current-database), so be sure to [change the session's database](schema-design-database.html#database-best-practices) to a database that you have created before creating a user-defined schema.
 
@@ -59,95 +59,110 @@ Here are some best practices to follow when creating and using user-defined sche
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
-### Example
+### Examples
 
-For the examples in the rest of the **Design a Database Schema** sections, you'll add database schema change statements to `.sql` files, and then pass the files to the [SQL client](cockroach-sql.html) to be executed as a specific user.
+Suppose you want to separate the tables and indexes in your cluster such that one user manages a group of tables, and another user manages a different group of tables. You can do this with two different user-defined schemas, owned by two different SQL users, with fewer privileges than the `root` user.
 
-For each user that you created in the `movr` database in [Create a Database](schema-design-database.html) (i.e., `max` and `abbey`), create an empty file with the `.sql` file extension at the end of the filename. For example:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ touch max_dbinit.sql
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ touch abbey_dbinit.sql
-~~~
-
-These files will initialize the objects in the `movr` database, for each user.
-
-Open `max_dbinit.sql` in a text editor of your choice, and add a `CREATE SCHEMA` statement to the top of the file:
+Open the `dbinit.sql` file that you created in the [Create a Database](schema-design-database.html) example, and add the following statements under the `CREATE DATABASE` statement:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE SCHEMA IF NOT EXISTS max_schema;
+USE movr;
+
+CREATE USER IF NOT EXISTS max;
+GRANT CREATE ON DATABASE movr TO max;
+
+CREATE USER IF NOT EXISTS abbey;
+GRANT CREATE ON DATABASE movr TO abbey;
 ~~~
 
-This statement will create a user-defined schema named `max_schema` in the [current database](sql-name-resolution.html#current-database), if one does not already exist. This schema will hold all of the objects in the database schema [owned by](authorization.html#object-ownership) `max`.
+The first statement sets the `movr` database as the [current database](sql-name-resolution.html#current-database). The next two sets of statements create SQL users named `max` and `abbey` in the `movr` database, with [`CREATE` privileges on the database](authorization.html#supported-privileges). `CREATE` privileges will allow each user to create tables in the database.
 
-Now, open `abbey_dbinit.sql` in a text editor of your choice, and add a `CREATE SCHEMA` statement to the top of the file:
+Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` statements for each user's user-defined schema:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE SCHEMA IF NOT EXISTS abbey_schema;
+DROP SCHEMA IF EXISTS max_schema CASCADE;
+CREATE SCHEMA max_schema AUTHORIZATION max;
+
+DROP SCHEMA IF EXISTS abbey_schema CASCADE;
+CREATE SCHEMA abbey_schema AUTHORIZATION abbey;
 ~~~
 
-This statement will create a user-defined schema named `abbey_schema` in the current database, if one does not already exist. This schema will hold all of the objects in the database schema accessible to `abbey`.
+The first set of statement clears the database of any existing schema named `max_schema`, and then creates a schema named `max_schema` with the owner `max`. The next set of statements does the same, but for `abbey_schema`, with `abbey` as the owner.
 
-To execute the statements in the `max_dbinit.sql` file as `max`, run the following command:
+It might also be a good idea to [grant the `USAGE` privilege](grant.html#supported-privileges) on each schema to the other user in the database. This will allow the other user to access objects in the schema, but it won't let them delete the schema, or create objects inside of it.
+
+Under the `CREATE SCHEMA` statements for each user-defined schema, add a `GRANT` statement granting `USAGE` privileges on the schema to the other user.
+
+The `dbinit.sql` file should now look something link this:
+
+{% include copy-clipboard.html %}
+~~~
+CREATE DATABASE IF NOT EXISTS movr;
+
+USE movr;
+
+CREATE USER IF NOT EXISTS max;
+GRANT CREATE ON DATABASE movr TO max;
+
+CREATE USER IF NOT EXISTS abbey;
+GRANT CREATE ON DATABASE movr TO abbey;
+
+DROP SCHEMA IF EXISTS max_schema CASCADE;
+CREATE SCHEMA max_schema AUTHORIZATION max;
+GRANT USAGE ON SCHEMA max_schema TO abbey;
+
+DROP SCHEMA IF EXISTS abbey_schema CASCADE;
+CREATE SCHEMA abbey_schema AUTHORIZATION abbey;
+GRANT USAGE ON SCHEMA abbey_schema TO max;
+~~~
+
+To execute the statements in the `dbinit.sql` file as the `root` user, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=[certs-directory] \
---user=max \
---database=movr
-< max_dbinit.sql
+--user=root \
+< dbinit.sql
 ~~~
 
-The SQL client will execute any statements in `max_dbinit.sql`, with `movr` as the database and `max` as the user. `max` will be the [owner](authorization.html#object-ownership) of any objects created by the statements in the file.
+Before the new users can connect to the cluster and start creating objects, they each need a [user certificate](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
 
-To execute the statements in the `abbey_dbinit.sql` file as `abbey`, run the following command:
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach cert create-client max --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+~~~
+
+Create a user certificate for `abbey` as well:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach cert create-client abbey --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+~~~
+
+As one of the new users, use a [`SHOW SCHEMAS` statement](show-schemas.html) to show the preloaded and user-defined schemas in the `movr` database:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
 --certs-dir=[certs-directory] \
 --user=abbey \
---database=movr
-< abbey_dbinit.sql
-~~~
-
-`abbey` will be the owner of any objects created by the statements in the file.
-
-After you have executed the statements in both files, you can see the user-defined schemas in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell), as either user:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql \
---certs-dir=[certs-directory] \
---user=max \
---database=movr
-~~~
-
-To view the user-defined schemas in the current database, issue a [`SHOW SCHEMAS`](show-schemas.html) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW SCHEMAS;
+--database=movr \
+--execute="SHOW SCHEMAS;"
 ~~~
 
 ~~~
-     schema_name
-----------------------
-  abbey_schema
-  crdb_internal
-  information_schema
-  max_schema
-  pg_catalog
-  pg_extension
-  public
+     schema_name     | owner
+---------------------+--------
+  abbey_schema       | abbey
+  crdb_internal      | NULL
+  information_schema | NULL
+  max_schema         | max
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
 (7 rows)
 ~~~
 

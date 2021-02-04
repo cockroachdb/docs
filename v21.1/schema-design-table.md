@@ -50,6 +50,8 @@ To create a table, use a [`CREATE TABLE` statement](create-table.html), followin
 - [Add additional constraints](#add-additional-constraints)
 - [Execute `CREATE TABLE` statements](#execute-create-table-statements)
 
+After reviewing the best practices in each section, see the example provided in that section.
+
 ### Name a table
 
 Naming a table is the first step in table creation.
@@ -64,6 +66,8 @@ CREATE TABLE [schema_name].[table_name] (
 
 Where `schema_name` is the name of the user-defined schema, `table_name` is the name of the table, and `elements` is a comma-separated list of table elements, such as column definitions.
 
+For an example, see [below](#table-naming-example).
+
 #### Table naming best practices
 
 Here are some best practices to follow when naming tables:
@@ -74,23 +78,26 @@ Here are some best practices to follow when naming tables:
 
 #### Table naming example
 
-Suppose you want to create a table to store information about users of the [MovR](movr.html) platform.
+Suppose you want to create a table to store information about users of the [MovR](movr.html) platform, and you want the SQL user `max` to manage that table.
 
-In a text editor, open the `max_dbinit.sql` file that you used to create the `max_schema` user-defined schema in [Create a User-defined Schema](schema-design-schema.html). Under the `CREATE SCHEMA` statement, add an empty `CREATE TABLE` statement for the `users` table.
+Create an empty `.sql` file for `max`:
 
-The file should now look something like this:
+{% include copy-clipboard.html %}
+~~~ shell
+$ touch max_init.sql
+~~~
+
+This file will initialize the objects in the `max_schema` user-defined schema that you created in [Create a Schema](schema-design-schema.html), starting with a `users` table.
+
+In a text editor, open `max_init.sql`, and add an empty `CREATE TABLE` statement for the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE SCHEMA IF NOT EXISTS movr;
-
-CREATE TABLE IF NOT EXISTS movr.max_schema.users (
+CREATE TABLE movr.max_schema.users (
 );
 ~~~
 
-The `IF NOT EXISTS` clauses will allow you to execute subsequent statements in the file, even if an object of the same name exists.
-
-Don't execute the file yet. You need to first [define the columns](#define-columns) of the `users` table.
+Next, [define the table's columns](#define-columns).
 
 ### Define columns
 
@@ -102,7 +109,9 @@ Column definitions generally take the following form:
 [column_name] [DATA_TYPE] [column_qualification]
 ~~~
 
-Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-types.html) of the row values in the column, and `column_qualification` is some column qualification, such as a [column-level constraint](#add-additional-constraints).
+Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-types.html) of the row values in the column, and `column_qualification` is some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause](computed-columns.html).
+
+For examples, see [below](#column-definition-examples).
 
 #### Column definition best practices
 
@@ -118,11 +127,11 @@ Here are some best practices to follow when defining table columns:
 
 #### Column definition examples
 
-In the `max_dbinit.sql` file, add a few column definitions to the `users` table's `CREATE TABLE` statement, for user names and email addresses:
+In the `max_init.sql` file, add a few column definitions to the `users` table's `CREATE TABLE` statement, for user names and email addresses:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.users (
+CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
     email STRING
@@ -135,11 +144,11 @@ CockroachDB supports a number of other column data types, including [`DECIMAL`](
 
 Let's add another example table to our `max_schema` schema, with more column data types.
 
-As a vehicle-sharing platform, MovR needs to store data about its vehicles. In `max_dbinit.sql`, add a `CREATE TABLE` statement for a `vehicles` table, under the `CREATE TABLE` statement for `users`. This table should probably include information about the type of vehicle, when it was created, what its availability is, and where it is located:
+As a vehicle-sharing platform, MovR needs to store data about its vehicles. In `max_init.sql`, add a `CREATE TABLE` statement for a `vehicles` table, under the `CREATE TABLE` statement for `users`. This table should probably include information about the type of vehicle, when it was created, what its availability is, and where it is located:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
+CREATE TABLE movr.max_schema.vehicles (
       id UUID,
       type STRING,
       creation_time TIMESTAMPTZ,
@@ -173,7 +182,7 @@ You can then use `vtype` as the `type` column's data type:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
+CREATE TABLE movr.max_schema.vehicles (
       id UUID,
       type vtype,
       creation_time TIMESTAMPTZ,
@@ -184,7 +193,7 @@ CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
 
 Only values in the set of `vtype` values will be allowed in the `type` column.
 
-The `users` and `vehicles` tables now have syntactically valid `CREATE TABLE` statements. As a best practice, the `CREATE TABLE` statements should explicitly [select primary key columns](#select-primary-key-columns).
+The `users` and `vehicles` tables now have syntactically valid column definitions. As a best practice, you should explicitly [select primary key columns](#select-primary-key-columns) and add any [additional constraints](#add-additional-constraints) before executing the `CREATE TABLE` statements.
 
 ### Select primary key columns
 
@@ -194,7 +203,9 @@ Primary keys are defined in `CREATE TABLE` statements with the `PRIMARY KEY` [co
 
 When a table is created, CockroachDB creates an index (called the `primary` index) on the column(s) constrained by the `PRIMARY KEY` constraint. CockroachDB uses this [index](indexes.html) to find rows in a table more efficiently.
 
-To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://en.wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement. For examples, see [below](#primary-key-examples).
+To add a single column to a primary key, add the `PRIMARY KEY` keyword to the end of the column definition. To add multiple columns to a primary key (i.e., to create a [composite primary key](https://en.wikipedia.org/wiki/Composite_key)), add a separate `CONSTRAINT "primary" PRIMARY KEY` clause after the column definitions in the `CREATE TABLE` statement.
+
+For examples, see [below](#primary-key-examples).
 
 {{site.data.alerts.callout_success}}
 For detailed reference documentation on the `PRIMARY KEY` constraint, including additional examples, see the [`PRIMARY KEY` constraint page](primary-key.html).
@@ -224,13 +235,13 @@ Here are some best practices to follow when selecting primary key columns:
 
 #### Primary key examples
 
-To follow a [primary key best practice](#primary-key-best-practices), the `CREATE TABLE` statements in `max_dbinit.sql` for the `users` and `vehicles` tables need to explicitly define a primary key.
+To follow a [primary key best practice](#primary-key-best-practices), the `CREATE TABLE` statements in `max_init.sql` for the `users` and `vehicles` tables need to explicitly define a primary key.
 
-In the `max_dbinit.sql` file, add a composite primary key on the `first_name` and `last_name` columns of the `users` table:
+In the `max_init.sql` file, add a composite primary key on the `first_name` and `last_name` columns of the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.users (
+CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
     email STRING,
@@ -240,7 +251,7 @@ CREATE TABLE IF NOT EXISTS movr.max_schema.users (
 
 This primary key will uniquely identify rows of user data.
 
-Note that, because `PRIMARY KEY` constraints imply `UNIQUE` indexes, only one unique combination of `first_name` and `last_name` will be allowed in rows of the `users` table. Additionally, because `PRIMARY KEY` implies the `NOT NULL` constraint, all rows of data inserted into the `users` table must include values for `first_name` and `last_name`.
+Because `PRIMARY KEY` constraints imply `UNIQUE` indexes, only one unique combination of `first_name` and `last_name` will be allowed in rows of the `users` table. Additionally, because `PRIMARY KEY` implies the `NOT NULL` constraint, all rows of data inserted into the `users` table must include values for `first_name` and `last_name`.
 
 Primary key columns can also be single columns, if those columns are guaranteed to uniquely identify the row. Their values should also be well-distributed across the cluster.
 
@@ -248,7 +259,7 @@ In the `vehicles` table definition, add a `PRIMARY KEY` constraint on the `id` c
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
+CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
       creation_time TIMESTAMPTZ,
@@ -277,11 +288,11 @@ To set default values on columns, use the `DEFAULT` constraint. Default values e
 
 When combined with [supported SQL functions](functions-and-operators.html), default values can save resources in your application's persistence layer by offloading computation onto CockroachDB. For example, rather than using an application library to generate unique `UUID` values, you can set a default value to be an automatically-generated `UUID` value with the `gen_random_uuid()` SQL function. Similarly, you could use a default value to populate a `TIMESTAMP` column with the current time of day, using the `now()` function.
 
-For example, in the `vehicles` table definition in `max_dbinit.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. Now, add a default value to the `creation_time` column:
+For example, in the `vehicles` table definition in `max_init.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. This set the default value to a generated `UUID` value. Now, add a default value to the `creation_time` column:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
+CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
@@ -302,11 +313,11 @@ To reference values in another table, use a `FOREIGN KEY` constraint. `FOREIGN K
 
 For example, suppose you want to add a new table that contains data about the rides that MovR users are taking on vehicles. This table should probably include information about the location and duration of the ride, as well as information about the vehicle used for the ride.
 
-In `max_dbinit.sql`, under the `CREATE TABLE` statement for `vehicles`, add a definition for a `rides` table, with a foreign key dependency on the `vehicles` table. To define a foreign key constraint, use the `REFERENCES` keyword:
+In `max_init.sql`, under the `CREATE TABLE` statement for `vehicles`, add a definition for a `rides` table, with a foreign key dependency on the `vehicles` table. To define a foreign key constraint, use the `REFERENCES` keyword:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.rides (
+CREATE TABLE movr.max_schema.rides (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       vehicle_id UUID REFERENCES movr.max_schema.vehicles(id),
       start_address STRING,
@@ -320,9 +331,18 @@ The `vehicle_id` column will be identical to the `id` column in the `vehicles` t
 
 Foreign keys cannot reference tables in a different database. They can, however reference tables in a different schema.
 
-Suppose that you want to introduce promotional codes for users on the MovR platform, but you want to limit access to the user promo code data to the `abbey` user that you created in [Create a Database](schema-design-database.html).
+Suppose that you want to introduce promotional codes for users on the MovR platform, but you want the user promo code data to be managed by the `abbey` user that you created in [Create a Database](schema-design-database.html).
 
-Open the `abbey_dbinit.sql` file that you used to create the `abbey_schema` user-defined schema in [Create a User-defined Schema](schema-design-schema.html), and add a `CREATE TABLE` statement for a table called `user_promo_codes`:
+Create an empty `.sql` initialization file for `abbey`.
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ touch abbey_init.sql
+~~~
+
+This file will initialize the objects in the `abbey_schema` user-defined schema that you created in [Create a Schema](schema-design-schema.html).
+
+In a text editor, open `abbey_init.sql`, and add a `CREATE TABLE` statement for a table called `user_promo_codes`:
 
 {% include copy-clipboard.html %}
 ~~~
@@ -334,7 +354,7 @@ CREATE TABLE movr.abbey_schema.user_promo_codes (
   );
 ~~~
 
-This new table references the `email` column of the `users` table in `max_schema`. Note that, because the `user_promo_codes` table depends on the `users` table, you'll need to execute `max_dbinit.sql` before `abbey_dbinit.sql`.
+This new table references the `email` column of the `users` table in `max_schema`. Because the `user_promo_codes` table depends on the `users` table, you'll need to execute `max_init.sql` before `abbey_init.sql`.
 
 {{site.data.alerts.callout_info}}
 Foreign key dependencies can significantly impact query performance, as queries involving tables with foreign keys, or tables referenced by foreign keys, require CockroachDB to check two separate tables. We recommend using them sparingly.
@@ -352,7 +372,7 @@ For example, suppose that you want to ensure that the email addresses of all use
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.users (
+CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE,
@@ -360,7 +380,7 @@ CREATE TABLE IF NOT EXISTS movr.max_schema.users (
 );
 ~~~
 
-Queries that insert `email` values that already exist in the `users` table will return an error.
+Attempting to insert `email` values that already exist in the `users` table will return an error.
 
 {{site.data.alerts.callout_info}}
 When you add a `UNIQUE` constraint to a column, CockroachDB creates a secondary index on that column, to help speed up checks on a column value's uniqueness.
@@ -380,7 +400,7 @@ For example, if you require all users of the MovR platform to have an email on f
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE TABLE IF NOT EXISTS movr.max_schema.users (
+CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE NOT NULL,
@@ -404,32 +424,28 @@ After you have defined `CREATE TABLE` statements for your tables, you can execut
 
 Here are some general best practices to follow when executing `CREATE TABLE` statements:
 
-- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This can be the same user that created the user-defined schema to which the tables belong.
+- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](authorization.html#object-ownership).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
-- Review the [limitations of online schema changes in CockroachDB](online-schema-changes.html#limitations). In specific, note that CockroachDB has [limited support for schema changes within the same explicit transaction](online-schema-changes#limited-support-for-schema-changes-within-transactions).
-
-  We recommend doing schema changes (including `CREATE TABLE` statements) outside explicit transactions, where possible. When a database schema management tool manages transactions on your behalf, we recommend only including one schema change operation per transaction.
+- {% include {{page.version.version}}/sql/dev-schema-change-limits.md %}
 
 #### Execute the example `CREATE TABLE` statements
 
-After following the examples provided in the sections above, the `max_dbinit.sql` file should look similar to the following:
+After following the examples provided in the sections above, the `max_init.sql` file should look similar to the following:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE SCHEMA IF NOT EXISTS max_schema;
-
-CREATE TABLE IF NOT EXISTS movr.max_schema.users (
+CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
     email STRING UNIQUE NOT NULL,
     CONSTRAINT "primary" PRIMARY KEY (first_name, last_name)
-);
+  );
 
 CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 
-CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
+CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type movr.max_schema.vtype,
       creation_time TIMESTAMPTZ DEFAULT now(),
@@ -437,7 +453,7 @@ CREATE TABLE IF NOT EXISTS movr.max_schema.vehicles (
       last_location STRING
   );
 
-CREATE TABLE IF NOT EXISTS movr.max_schema.rides (
+CREATE TABLE movr.max_schema.rides (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       vehicle_id UUID REFERENCES movr.max_schema.vehicles(id),
       start_address STRING,
@@ -447,7 +463,7 @@ CREATE TABLE IF NOT EXISTS movr.max_schema.rides (
   );
 ~~~
 
-To execute the statements in the `max_dbinit.sql` file, run the following command:
+To execute the statements in the `max_init.sql` file, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -455,14 +471,14 @@ $ cockroach sql \
 --certs-dir=[certs-directory] \
 --user=max \
 --database=movr
-< dbinit_max.sql
+< max_init.sql
 ~~~
 
-The SQL client will execute any statements in `max_dbinit.sql`, with `movr` as the database and `max` as the user. `max` is now the owner of all objects created by the statements in the `max_dbinit.sql` file.
+The SQL client will execute any statements in `max_init.sql`, with `movr` as the database and `max` as the user. `max` is now the owner of all objects created by the statements in the `max_init.sql` file.
 
 After the statements have been executed, you can see the tables in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).
 
-Open the SQL shell to your cluster, with `movr` as the database as `max` as the user:
+Open the SQL shell to your cluster, with `movr` as the database and `max` as the user:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -510,12 +526,10 @@ To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CRE
 (1 row)
 ~~~
 
-After following the examples provided in the sections above, the `abbey_dbinit.sql` file should look similar to the following:
+After following the examples provided in the sections above, the `abbey_init.sql` file should look similar to the following:
 
 {% include copy-clipboard.html %}
 ~~~
-CREATE SCHEMA IF NOT EXISTS abbey_schema;
-
 CREATE TABLE movr.abbey_schema.user_promo_codes (
     code STRING,
     user_email STRING REFERENCES movr.max_schema.users(email),
@@ -524,7 +538,7 @@ CREATE TABLE movr.abbey_schema.user_promo_codes (
   );
 ~~~
 
-To execute the statements in the `abbey_dbinit.sql` file, run the following command:
+To execute the statement in the `abbey_init.sql` file, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -532,12 +546,12 @@ $ cockroach sql \
 --certs-dir=[certs-directory] \
 --user=abbey \
 --database=movr
-< dbinit_abbey.sql
+< abbey_init.sql
 ~~~
 
 After the statements have been executed, you can see the table in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).
 
-Open the SQL shell to your cluster, with `movr` as the database as `abbey` as the user:
+Open the SQL shell to your cluster, with `movr` as the database and `abbey` as the user, and view the table:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -546,8 +560,6 @@ $ cockroach sql \
 --user=abbey \
 --database=movr
 ~~~
-
-To view the table in the `abbey_schema` user-defined schema, issue a [`SHOW TABLES`](show-tables.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -560,8 +572,6 @@ To view the table in the `abbey_schema` user-defined schema, issue a [`SHOW TABL
   abbey_schema | user_promo_codes | table | abbey |                   0
 (1 row
 ~~~
-
-Show the `CREATE TABLE` statement for `user_promo_codes`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -591,6 +601,8 @@ Note that none of the tables that you have created thus far have secondary index
 
 You might also be interested in the following pages:
 
+- [Computed Columns](computed-columns.html)
+- [Column Families](column-families.html)
 - [`CREATE TABLE`](create-table.html)
 - [Data Types](data-types.html)
 - [`PRIMARY KEY`](primary-key.html)

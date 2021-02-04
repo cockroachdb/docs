@@ -51,36 +51,17 @@ Tables are not locked during index creation thanks to CockroachDB's [schema chan
 
 Indexes create a trade-off: they greatly improve the speed of queries, but may slightly slow down writes to an affected column (because new values have to be written for both the table _and_ the index).
 
-To maximize your indexes' performance, we recommend following a few [best practices](#best-practices).
-
-## Best practices
-
-We recommend creating indexes for all of your common queries. To design the most useful indexes, look at each query's `WHERE` and `SELECT` clauses, and create indexes that:
-
-- [Index all columns](#indexing-columns) in the `WHERE` clause.
-- [Store columns](#storing-columns) that are _only_ in the `SELECT` clause.
+To maximize your indexes' performance, we recommend following the [secondary index best practices](schema-design-indexes.html#best-practices).
 
 {{site.data.alerts.callout_success}}
 For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html) and the [Performance Tuning](performance-tuning.html) tutorial.
 {{site.data.alerts.end}}
 
-### Indexing columns
-
-When designing indexes, it's important to consider which columns you index and the order in which you list them. Here are a few guidelines to help you make the best choices:
-
-- Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index.<br><br>This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
-- Columns filtered in the `WHERE` clause with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
-- Indexes of the same columns in different orders can produce different results for each query. For more information, see [our blog post on index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/)&mdash;specifically the section "Restricting the search space."
-- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices), or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
-- Avoid creating secondary indexes that you do not need, as they can slow down write performance and take up node memory. For example, if you want to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use [`ALTER PRIMARY KEY`](alter-primary-key.html), which creates a secondary index from the old primary key. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
-
 ### Storing columns
 
 The `STORING` clause specifies columns which are not part of the index key but should be stored in the index. This optimizes queries which retrieve those columns without filtering on them, because it prevents the need to read the primary index.
 
-### Example
-
-Say we have a table with three columns, two of which are indexed:
+For example, say we have a table with three columns, two of which are indexed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -132,13 +113,18 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 (6 rows)
 ~~~
 
+### Best practices
+
+For best practices, see [Add a Secondary Index: Best Practices](schema-design-indexes.html#best-practices)
+
+
 ## See also
 
+- [`CREATE INDEX`](create-index.html)
+- [Schema Design: Add Secondary Indexes](schema-design-indexes.html)
 - [Inverted Indexes](inverted-indexes.html)
 - [Spatial Indexes](spatial-indexes.html)
-- [SQL Performance Best Practices](performance-best-practices-overview.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
-- [`CREATE INDEX`](create-index.html)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
 - [`SHOW INDEX`](show-index.html)

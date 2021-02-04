@@ -44,7 +44,7 @@ Here are some best practices to follow when creating and using databases:
 
 - Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](sql-name-resolution.html#current-database) by executing a `USE [databasename];` statement, by passing the `--database=[databasename]` flag to the [`cockroach sql` command](cockroach-sql.html#general), or by specifying the `database` parameter in the [connection string](connection-parameters.html#connect-using-a-url) passed to your database schema migration tool.
 
-- Create databases as the `root` user, and create all other lower-level objects with a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
+- Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
 
 - Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](#create-a-user-defined-schema), in the same database.
 
@@ -52,97 +52,55 @@ Here are some best practices to follow when creating and using databases:
 
 ### Example
 
-Open a terminal window, and use the CockroachDB [SQL client](cockroach-sql.html) to open the [CockroachDB SQL shell](cockroach-sql.html#sql-shell) to your cluster:
+Create an empty file with the `.sql` file extension at the end of the filename. This file will initialize the database that will store all of the data for the MovR application.
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+For example:
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/connect_to_crc.md|<!-- BEGIN CRC free sql -->|<!-- END CRC free sql --> %}
+{% include copy-clipboard.html %}
+~~~ shell
+$ touch dbinit.sql
+~~~
 
-</section>
+Open `dbinit.sql` in a text editor, and, at the top of the file, add a `CREATE DATABASE` statement:
 
-<section class="filter-content" markdown="1" data-scope="local">
+{% include copy-clipboard.html %}
+~~~
+CREATE DATABASE IF NOT EXISTS movr;
+~~~
+
+This statement will create a database named `movr`, if one does not already exist.
+
+To execute the statement in the `dbinit.sql` file as the `root` user, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory]
+--certs-dir=[certs-directory] \
+--user=root \
+< dbinit.sql
 ~~~
 
-</section>
-
-This command opens a SQL shell as the `root` user. Any statements executed from the shell will be executed by this user.
-
-To create a database as `root`, issue a `CREATE DATABASE` statement in the SQL shell:
+To view the database in the cluster, execute a [`SHOW DATABASES`](show-databases.html) statement from the command line:
 
 {% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE movr;
-~~~
-
-This statement creates a database object with the name `movr`. This database will store all of the data for the MovR application.
-
-To view the database in the cluster, use a [`SHOW DATABASES`](show-databases.html) statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW DATABASES;
+~~~ shell
+$ cockroach sql \
+--certs-dir=[certs-directory] \
+--user=root \
+--execute="SHOW DATABASES;"
 ~~~
 
 ~~~
-  database_name
------------------
-  defaultdb
-  movr
-  postgres
-  system
+  database_name | owner | primary_region | regions | survival_goal
+----------------+-------+----------------+---------+----------------
+  defaultdb     | root  | NULL           | {}      | NULL
+  movr          | root  | NULL           | {}      | NULL
+  postgres      | root  | NULL           | {}      | NULL
+  system        | node  | NULL           | {}      | NULL
 (4 rows)
 ~~~
 
-To follow [authorization best practices](authorization.html#authorization-best-practices), after you create a new database, you should also create some new SQL users to manage the lower-level objects in the new database.
-
-In the open SQL shell, execute the following `CREATE USER` statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER max;
-~~~
-
-This creates a SQL user named `max`, with no privileges.
-
-Use a `GRANT` statements to grant the user `CREATE` privileges on the `movr` database.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT CREATE ON DATABASE movr TO max;
-~~~
-
-This privilege allows `max` to create objects (i.e., user-defined schemas) in the `movr` database.
-
-In the same SQL shell, create a second user named `abbey`, and grant them the same privileges.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER abbey;
-> GRANT CREATE ON DATABASE movr TO abbey;
-~~~
-
-This creates a second SQL user named `abbey`, with `CREATE` privileges on the database.
-
-To connect to a secure cluster and execute SQL statements, users need [user certificates](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client max --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
-~~~
-
-Create a user certificate for `abbey` as well:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client abbey --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
-~~~
-
-You're now ready to start adding user-defined schemas to the `movr` database for the `max` and `abbey` users.
+You're now ready to start adding user-defined schemas to the `movr` database.
 
 For guidance on creating user-defined schemas, see at [Create a User-defined Schema](schema-design-schema.html).
 
