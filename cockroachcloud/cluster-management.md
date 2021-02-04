@@ -1,6 +1,6 @@
 ---
 title: Cluster Management
-summary: Manage your cluster's schema, data, and backups.
+summary: Manage your cluster's schema, data, and more.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-cluster-management.html
@@ -15,19 +15,44 @@ On [logging in to the Console](https://cockroachlabs.cloud/), the **Clusters** p
 For each cluster, the following details display:
 
 - The cluster's **Name**
-- The **Version** of CockroachDB the cluster is running
-- The number of **Nodes** in the cluster
+- The cluster's **Plan Type**, either Free or Paid
 - The date and time the cluster was **Created**
+- The cluster's current **State**
+- The **Version** of CockroachDB the cluster is running
+- The **Action** button, which is used to:
+    - [**Add/remove nodes**](#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
+    - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
 
+Select the type of cluster you are viewing (and page content below will change accordingly):
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="free">CockroachCloud Free (beta)</button>
+  <button class="filter-button page-level" data-scope="dedicated">CockroachCloud</button>
+</div>
+
 ## View cluster overview
 
-The **Cluster Overview** page displays a list of the selected cluster's nodes.
+<section class="filter-content" markdown="1" data-scope="free">
+The **Overview** page displays details about the selected CockroachCloud Free (beta) cluster:
+
+- The **Plan** that the cluster was created with
+- The cluster's **Cloud** provider
+- The amount of **Storage** the cluster is using
+
+    There is an upper limit of 5GB storage per CockroachCloud Free (beta) cluster.
+
+- The cluster's **Throughput**
+
+    Throughput is measured in queries per second.
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+The **Overview** page displays a list of the selected cluster's nodes.
 
 For each node, the page displays the node's `Name`, nested under its region.
 
-From the **Cluster Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
 ## Add or remove nodes from a cluster
 
@@ -45,10 +70,16 @@ At this time, you cannot use the Console to scale up a single-node cluster or sc
 
 To add or remove nodes from your cluster:
 
-1. On the **Cluster Overview** page, from the **Actions** dropdown in the right corner, select **Add/remove nodes**. The **Edit <cluster name>** page is displayed.
-2. From the **Nodes** dropdown, select the number of nodes you want in your cluster. Click **Next**.
-3. On the **Summary** page, verify the hourly estimated cost for the cluster.
-4. Click **Add/remove nodes**.
+1. Navigate to the cluster's **Overview** page
+1. Click the **Actions** button in the top right corner.
+1. Select **Add/remove nodes**.
+
+    The **Edit <cluster name>** page displays.
+
+1. From the **Nodes** dropdown, select the number of nodes you want in your cluster.
+1. Click **Next**.
+1. On the **Summary** page, verify the hourly estimated cost for the cluster.
+1. Click **Add/remove nodes**.
 
 ## Restore data from a backup
 
@@ -61,6 +92,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
 Additionally, you can [backup and restore](../stable/backup-and-restore.html) data on your own.
+</section>
 
 ## Delete cluster
 
@@ -70,6 +102,8 @@ Deleting a cluster will delete all cluster data.
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
 
-1. Navigate to the **Cluster Overview** page for the cluster you want to delete.
-2. On the right-hand side, select **Delete cluster** from the **Actions** drop-down.
-3. In the confirmation window, enter the name of the cluster and click **Delete**.
+1. Navigate to the **Overview** page for the cluster you want to delete.
+1. Click the **Actions** button in the top right corner.
+1. Select **Delete cluster**.
+1. In the confirmation window, enter the name of the cluster.
+1. Click **Delete**.

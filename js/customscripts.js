@@ -18,6 +18,14 @@ function renderTOC() {
     showSpeed: 0,
     headers: pageConfig.tocNotNested ? 'h2:visible' : 'h2:visible,h3:visible'
   });
+
+  // Set class on top level elements
+  if(document.getElementById('toc-right') && (document.getElementById('toc-right').children.length > 0)){
+    var list = document.getElementById('toc-right').children[0].childNodes;
+    for (let li of list) {
+      li.classList.add('toc-li-top');
+    }
+  }
 }
 
 var $versionSwitcher, versionSwitcherBottom = Infinity;
@@ -28,15 +36,13 @@ $(function() {
       $mobile_menu = $('nav.mobile_expanded'),
       $colSidebar = $('.col-sidebar'),
       $sidebar = $('#sidebar'),
-      $footer = $('section.footer'),
-      sideNavHeight = ($('.nav--home').length > 0) ? '40px' : '60px';
+      $footer = $('.footer'),
       $versionSwitcher = $('#version-switcher'),
       $tocColContents = $('.toc-col-contents');
 
   function collapseSideNav() {
     $('.collapsed-header').fadeIn(250);
     $sidebar.addClass('nav--collapsed');
-    $sidebar.css({height: sideNavHeight});
     $('#sidebar li').hide();
     $('#version-switcher .tier-1 ul').slideUp();
     $versionSwitcher.removeClass('open');
@@ -47,26 +53,20 @@ $(function() {
   function sidenavOnResize(winWidth) {
     $('body').removeClass('sidenav-open');
 
-    if (winWidth >= 1199) {
+    if (winWidth >= 768) {
       $('#sidebar li').show();
       $('.collapsed-header').hide();
       $sidebar.removeClass('nav--collapsed');
-      $sidebar.css('height', '');
     } else {
       $('.collapsed-header').show();
       $sidebar.addClass('nav--collapsed');
-      $sidebar.css({height: sideNavHeight});
       $('#sidebar li').hide();
     }
   }
 
-  // Collapse side nav on load depending on window width
-  if (_viewport_width < 1199) {
-    collapseSideNav();
-  }
-
   if (_viewport_width <= 768) {
     $mobile_menu.css('visibility', 'visible');
+    // collapseSideNav();
   }
 
   $('header nav.mobile').on('click', '.hamburger', function(e){
@@ -100,7 +100,8 @@ $(function() {
     // chrome on android fires a resize event on scroll, this will make sure
     // these only fire on an actual resize event
     if (_viewport_width != cachedWidth) {
-      sidenavOnResize(_viewport_width);
+      
+      // sidenavOnResize(_viewport_width);
       $(window).scroll();
     }
 
@@ -131,8 +132,6 @@ $(function() {
     var tocHeightInColumn = tocHeight + parseInt($tocColContents.css('top')),
     _viewport_width = window.innerWidth;
 
-    $sidebar.css('padding-top', '');
-
     // handle show/hide behavior & positoning of sidebar and version switcher when scrolling window
     if (_viewport_width > 1199) {
       if (scrollTop + windowHeight >= footerOffset) {
@@ -143,16 +142,10 @@ $(function() {
         $colSidebar.css('bottom', '0');
       }
     } else { // mobile
-      $sidebar.css('padding-top', 10);
-      $colSidebar.css('bottom', '');
+      
       $versionSwitcher.css({'bottom': '0'});
-
-      var scrolled = $colSidebar.hasClass('col-sidebar--scrolled');
       if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
-        $colSidebar.addClass('col-sidebar--scrolled');
-        $('.collapsed-header__pre').slideUp(250);
-        sideNavHeight = '40px';
-        $sidebar.animate({height: sideNavHeight}, {duration: 250});
+        //$sidebar.animate({height: 0}, {duration: 250});
       }
     }
 
@@ -160,8 +153,8 @@ $(function() {
     if (_viewport_width >= 1072 && scrollTop >= 31) {
       $tocColContents.css({
         position: 'fixed',
-        top: 165,
-        width: '260px'
+        top: 100,
+        // width: '260px'
       });
 
       // if footer in view and TOC overruns top of footer, set bottom property to top of footer
@@ -256,7 +249,6 @@ $(function() {
         $('.collapsed-header').hide();
         $('body').addClass('sidenav-open');
         $sidebar.removeClass('nav--collapsed');
-        $sidebar.css('height', '');
 
         var $active = $('#sidebar .active');
         if ($active.length > 0) {
@@ -289,10 +281,10 @@ $(function() {
     }
   };
 
-  $('.sidenav-arrow').on('click', function(e) {
-    e.stopPropagation();
-    toggleSideNav();
-  });
+  // $('.sidenav-arrow').on('click', function(e) {
+  //   e.stopPropagation();
+  //   toggleSideNav();
+  // });
 
   $sidebar.on('click', function(e) {
     // we only want this firing when collapsed, otherwise search won't work
@@ -324,8 +316,8 @@ $(function() {
   var clipboard = new Clipboard('.copy-clipboard', {
     target: function(trigger) {
       // revert any previously copied snippets
-      $('.copy-clipboard--copied').removeClass('copy-clipboard--copied')
-        .find('.copy-clipboard__text').text('copy');
+      $('.copy-clipboard--copied').removeClass('copy-clipboard--copied');
+        // .find('.copy-clipboard__text').text('copy');
       return $(trigger).next().find('code')[0];
     },
     text: function(trigger) {
@@ -337,7 +329,7 @@ $(function() {
 
   clipboard.on('success', function(e) {
     $(e.trigger).addClass('copy-clipboard--copied');
-    $(e.trigger).find('.copy-clipboard__text').text('copied');
+    // $(e.trigger).find('.copy-clipboard__text').text('copied');
   });
 
   $('[data-tooltip]').tooltip();
@@ -366,4 +358,19 @@ $(function() {
     $(this).find('.mobile-subnav').slideToggle(200);
     flipArrow($(this));
   });
+
+  //external links
+  $("main a").filter(function() {
+
+    if ( $(this).children().length > 0 ) {
+      return
+    }
+ 
+    return this.hostname && this.hostname !== location.hostname;
+  }).addClass('external').attr("target","_blank");
 });
+
+
+// $('.nav-docs-mobile').on('click', function(){
+//   $('#sidebarMenu').collapse();
+// });

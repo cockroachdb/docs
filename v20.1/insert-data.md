@@ -20,7 +20,7 @@ Make sure you have already:
 
 When inserting multiple rows, a single [multi-row insert statement](insert.html#insert-multiple-rows-into-an-existing-table) is faster than multiple single-row statements.
 
-<div class="filters clearfix">
+<div class="filters filters__code clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>

@@ -1,4 +1,4 @@
-Once your cluster is created, the **Connection info** modal displays. Use the information provided in the modal to set up your cluster connection for the SQL user that was created by default:
+Once your cluster is created, the **Connection info** dialog displays. Use the information provided in the dialog to set up your cluster connection for the SQL user that was created by default:
 
 1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:

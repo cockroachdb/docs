@@ -41,6 +41,6 @@ Get future release notes emailed to you:
 
 ### Doc updates
 
-- Added language-specific connection string examples to the [Connect to your cluster](../cockroachcloud/connect-to-your-cluster.html#use-a-postgres-driver-or-orm) document.
+- Added language-specific connection string examples to the [Connect to your cluster](../cockroachcloud/connect-to-your-cluster.html) document.
 - Added a tutorial on [streaming an enterprise changefeed from CockroachCloud to Snowflake](../cockroachcloud/stream-changefeed-to-snowflake-aws.html).
 - Added a tutorial on [developing and deploying a multi-region web application](../v20.1/multi-region-overview.html).

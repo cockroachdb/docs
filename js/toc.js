@@ -78,5 +78,6 @@
     }
 
     render[settings.showEffect]();
+
   };
 })(jQuery);

@@ -23,9 +23,9 @@ Every CockroachCloud user is either a Developer or a Console Admin for the Organ
 
 ### Developer
 
-A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or access databases.
+A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users.
 
-To access a database, you need to ask a Console Admin for details of a SQL user. To find out who's your Console Admin, check the **Access** page.
+To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who's your Console Admin, check the **Access** page.
 
 ### Console Admin
 
@@ -50,6 +50,10 @@ As a Console Admin, you can invite Team Members to CockroachCloud. To invite Tea
 4. From the **Role** dropdown list, assign either the **Developer** role or the **Admin** role.
 5. (Optional) Click **Add another** to invite another team member.
 6. Click **Invite**.
+
+{{site.data.alerts.callout_success}}
+We recommend [creating a SQL user](user-authorization.html) for each Team Member you invite.
+{{site.data.alerts.end}}
 
 ### Manage Team Members
 

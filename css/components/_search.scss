@@ -37,7 +37,8 @@
   }
 }
 
-#sidebar li.search-wrap {
+#sidebar li.search-wrap,
+.js-sidebar li.search-wrap {
   margin-bottom: 0;
 
   @include at-query($min, $screen-lg) {
@@ -91,5 +92,11 @@
 
   &:after {
     transform: rotate(-45deg);
+  }
+}
+
+.col-sidebar {
+  .form-control {
+    height: 40px;
   }
 }

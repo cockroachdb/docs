@@ -18,7 +18,7 @@
 	left: 50%;
 	top: 50%;
 	z-index: 2001;
-	background-color: $cl_green;
+	background-color: $electric-purple;
 	width: 600px;
 
 	.news-header {
@@ -61,7 +61,7 @@
 					-moz-border-bottom-left-radius: 20px;
 					border-bottom-left-radius: 20px;
 					padding: 0 15px 0 25px;
-					width: 250px;
+					width: 224px;
 				}
 			}
 
@@ -70,7 +70,7 @@
 				}
 
 			.hs-button {
-				background-color: $cl_blue;
+				background-color: $electric-purple;
 				color: #FFFFFF;
 				border:none;
 				outline:none;
@@ -102,7 +102,9 @@
 	position: fixed;
 	z-index: 1999;
 	bottom: 0;
+	left: 0;
 	width: 100%;
+	color: #fff;
 	@include translate(0, 100%);
 	@include groovy(all);
 
@@ -164,7 +166,7 @@
 			border-bottom-right-radius: 20px;
 			padding: 0 25px 0 15px;
 			@include button-text;
-			text-transform: uppercase;
+			text-transform: capitalize;
 		}
 
 		.hs-error-msgs, .hs-form-required {
@@ -267,6 +269,9 @@
 
 	.install-form {
 		float: left;
+		border: 1px solid $neutral-400;
+		border-radius: $border-radius;
+		padding: 4px;
 
 		> div {
 			float: left;
@@ -279,39 +284,38 @@
 
 			input {
 				height: 40px;
-				@include avenir_r(14px);
+				@include sourcesanspro_m(14px);
 				line-height: 40px;
-				color: $cl_blue;
-				border: 1px solid $cl_gray_medium;
-				border-right: none;
+				// color: $cl_blue;
+				border: 1px solid transparent;
 				outline:none;
-				-webkit-border-top-left-radius: 20px;
-				-moz-border-top-left-radius: 20px;
-				border-top-left-radius: 20px;
-				-webkit-border-bottom-left-radius: 20px;
-				-moz-border-bottom-left-radius: 20px;
-				border-bottom-left-radius: 20px;
-				padding: 0 15px 0 25px;
+				// -webkit-border-top-left-radius: 20px;
+				// -moz-border-top-left-radius: 20px;
+				// border-top-left-radius: 20px;
+				// -webkit-border-bottom-left-radius: 20px;
+				// -moz-border-bottom-left-radius: 20px;
+				// border-bottom-left-radius: 20px;
+				padding: 0 15px;
 				width: 150px;
 
 				&::-webkit-input-placeholder {
-					color: $cl_gray;
+					color: $neutral-600;
 				}
 				&:-moz-placeholder {
-					color: $cl_gray;
+					color: $neutral-600;
 				}
 				&::-moz-placeholder {
-					color: $cl_gray;
+					color: $neutral-600;
 				}
 				&:-ms-input-placeholder {
-					color: $cl_gray;
+					color: $neutral-600;
 				}
 				&:placeholder-shown {
-					color: $cl_gray;
+					color: $neutral-600;
 				}
 
 				&:focus {
-					border-color: $electric-purple;
+					border-color: transparent;
 				}
 			}
 		}
@@ -321,23 +325,24 @@
 		}
 
 		.hs-button {
-			background-color: $cl_blue;
+			background-color: $electric-purple;
 			color: #FFFFFF;
 			// border: 2px solid #DDDDDD;
 			// border-left: none;
 			border: none;
 			outline:none;
 			height: 40px;
-			-webkit-border-top-right-radius: 20px;
-			-moz-border-top-right-radius: 20px;
-			border-top-right-radius: 20px;
-			-webkit-border-bottom-right-radius: 20px;
-			-moz-border-bottom-right-radius: 20px;
-			border-bottom-right-radius: 20px;
-			padding: 0 25px 0 20px;
-			@include button-text;
+			// -webkit-border-top-right-radius: 20px;
+			// -moz-border-top-right-radius: 20px;
+			// border-top-right-radius: 20px;
+			// -webkit-border-bottom-right-radius: 20px;
+			// -moz-border-bottom-right-radius: 20px;
+			// border-bottom-right-radius: 20px;
+			padding: 0 16px;
+			@include sourcesanspro_m(14px);
 			line-height: 42px;
-			text-transform: uppercase;
+			text-transform: capitalize;
+			border-radius: $border-radius;
 
 		}
 
@@ -383,7 +388,7 @@
 		.install-form {
 			.hs_email {
 				input {
-					width: 250px;
+					width: 140px;
 				}
 			}
 		}
