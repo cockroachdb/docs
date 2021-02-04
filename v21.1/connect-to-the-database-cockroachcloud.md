@@ -34,7 +34,13 @@ Do the following:
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/cockroachcloud/connect_to_crc.md|<!-- BEGIN CRC free sql -->|<!-- END CRC free sql --> %}
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql \
+--url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
+~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
 For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
 
@@ -58,6 +64,8 @@ if err != nil {
 }
 defer db.Close()
 ~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
 {% include {{page.version.version}}/app/for-a-complete-example-go.md %}
 
@@ -83,6 +91,8 @@ ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg con
 ds.setApplicationName("BasicExample");
 ~~~
 
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
 {% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
 </section>
@@ -104,6 +114,8 @@ conn = psycopg2.connect(
     options="--cluster=<cluster_name>"
 )
 ~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
 {% include {{page.version.version}}/app/for-a-complete-example-python.md %}
 
