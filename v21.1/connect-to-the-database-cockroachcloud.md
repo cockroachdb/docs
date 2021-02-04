@@ -11,7 +11,7 @@ toc: true
 
 This page has instructions for connecting to a CockroachCloud cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
 
-The connection strings listed on this page set the required authentication options to connect to [free CockroachCloud](cockroachcloud/authentication.html) clusters. CockroachCloud clusters use a signed certificate generated for your cluster that you download from the CockroachCloud console.
+The connection strings listed on this page set the required authentication options to connect to [free CockroachCloud](../cockroachcloud/authentication.html) clusters. CockroachCloud clusters use a signed certificate generated for your cluster that you download from the CockroachCloud console.
 
 For a reference that lists all of the supported cluster connection parameters, see [Connection Parameters][connection_params].
 
@@ -20,8 +20,9 @@ For a reference that lists all of the supported cluster connection parameters, s
 Do the following:
 
 - Set up a CockroachCloud cluster:
-  - [Create](cockroachcloud/create-your-cluster.html) and [configure](cockroachcloud/connect-to-your-cluster.html) a CockroachCloud cluster.
-- [Install a Postgres client](install-client-drivers.html).
+  - [Create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+  - [Connect to the CockroachCloud cluster](../cockroachcloud/connect-to-your-cluster.html).
+- [Install a client driver or ORM framework](install-client-drivers.html).
 
 ## Connect
 
@@ -37,7 +38,7 @@ Do the following:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---url='postgres://<username>:<password>@<globalhost>:26257/<cluster_name>.<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
+--url='postgres://{username}:{password}@{globalhost}:26257/{cluster_name}.{database}?sslmode=verify-full&sslrootcert={path to the CA certificate}'
 ~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
@@ -58,7 +59,7 @@ import (
 )
 
 db, err := sql.Open("postgres",
-        "postgresql://<username>:<password>@<globalhost>:26257/bank?sslmode=verify-full&sslrootcert=<path to the CA certificate>&options=--cluster=<cluster_name>")
+        "postgresql://{username}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}")
 if err != nil {
     log.Fatal("error connecting to the database: ", err)
 }
@@ -79,14 +80,14 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setServerName("<globalhost>");
+ds.setServerName("{globalhost}");
 ds.setPortNumber(26257);
-ds.setDatabaseName("<cluster_name>.bank");
-ds.setUser("<username>");
-ds.setPassword("<password>");
+ds.setDatabaseName("{cluster_name}.bank");
+ds.setUser("{username}");
+ds.setPassword("{password}");
 ds.setSsl(true);
 ds.setSslMode("verify-full");
-ds.setSslrootCert("<path to the CA certificate>");
+ds.setSslrootCert("{path to the CA certificate}");
 ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
 ds.setApplicationName("BasicExample");
 ~~~
@@ -105,13 +106,13 @@ import psycopg2
 
 conn = psycopg2.connect(
     database='bank',
-    user='<username>',
-    password='<password>'
+    user='{username}',
+    password='{password}'
     sslmode='verify-full',
-    sslrootcert='<path to the CA certificate>',
+    sslrootcert='{path to the CA certificate}',
     port=26257,
-    host='<globalhost>',
-    options="--cluster=<cluster_name>"
+    host='{globalhost}',
+    options="--cluster={cluster_name}"
 )
 ~~~
 

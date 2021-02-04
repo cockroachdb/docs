@@ -20,8 +20,9 @@ For a reference that lists all of the supported cluster connection parameters, s
 Do the following:
 
 - Set up a local CockroachDB cluster:
-  - [Create](install-cockroachdb.html) and [configure](secure-a-cluster.html) a local cluster.
-- [Install a Postgres client](install-client-drivers.html).
+  - [Install CockroachDB](install-cockroachdb.html).
+  - [Start a local cluster](secure-a-cluster.html).
+- [Install a client driver or ORM framework](install-client-drivers.html).
 
 ## Connect
 
