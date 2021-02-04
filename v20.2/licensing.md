@@ -47,8 +47,8 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 -----------------|:-----:|:-----------------:|:---------------:
 **[Import](import.html)** | | ✓ |
 **[Export](export.html)** | ✓ | |
-**[Restore](restore.html)** <span class="version-tag">Now a core feature in v20.2</span> | | ✓ |
-**[Full backups](take-full-and-incremental-backups.html#full-backups)** <span class="version-tag">Now a core feature in v20.2</span> | | ✓ |
+**[Restore](restore.html)[*](#footnotes)** | | ✓ |
+**[Full backups](take-full-and-incremental-backups.html#full-backups)[*](#footnotes)** | | ✓ |
 **[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
 **[Other advanced backup features](backup.html)** | | | ✓
 **[Core changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
@@ -63,6 +63,8 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Password and certificate authentication](authentication.html)** | ✓ | |
 **[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
 **[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
+
+<a name="footnotes"></a><sup>* Now a core feature in v20.2.</sup>
 
 {{site.data.alerts.callout_info}}
 Individual feature licensing may change with each release of CockroachDB. You can use the dropdown menu at the top of the page to view documentation for other versions of CockroachDB.
@@ -141,6 +143,10 @@ $ cat cockroach.log | grep license
 ~~~
 I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root,n1] Event: "set_cluster_setting", target: 0, info: {SettingName:enterprise.license Value:xxxxxxxxxxxx User:root}
 ~~~
+
+## Monitoring for license expiry
+
+<span class="version-tag">New in v20.2</span> You can monitor the time until your license expires with [Prometheus](monitor-cockroachdb-with-prometheus.html). The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the enterprise license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting](monitoring-and-alerting.html).
 
 ## Renew an expired license
 

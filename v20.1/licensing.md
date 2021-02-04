@@ -58,10 +58,12 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Node map](enable-node-map.html)** | | | ✓
 **[Locality-aware index selection](cost-based-optimizer.html#preferring-the-nearest-index)** | | | ✓
 **[Encryption at rest](encryption.html#encryption-at-rest-enterprise)** | | | ✓
-**[Role-based access management](authorization.html#roles)** <span class="version-tag">Now a core feature in v20.1</span>| ✓ | |
+**[Role-based access management](authorization.html#roles)[*](#footnotes)** | ✓ | |
 **[Password and certificate authentication](authentication.html)** | ✓ | |
 **[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
 **[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
+
+<a name="footnotes"></a><sup>* Now a core feature in v20.1.</sup>
 
 {{site.data.alerts.callout_info}}
 Individual feature licensing may change with each release of CockroachDB. You can use the dropdown menu at the top of the page to view documentation for other versions of CockroachDB.
