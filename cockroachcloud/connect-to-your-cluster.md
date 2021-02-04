@@ -80,17 +80,16 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 
 <a name="aws-privatelink"></a>
 
-1. Navigate to your cluster's **Networking** page.
-1. Click **PrivateLink**.
+1. Navigate to your cluster's **Networking > PrivateLink** tab.
 1. Click **Set up a PrivateLink connection**.
 1. Use the service name provided to [create an AWS endpoint](network-authorization.html#create-an-aws-endpoint) in the AWS console.
-1. Click **Create Endpoint**
+1. Click **Next**
 1. Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
 1. Click **Verify** to verify the ID.
 1. Click **Next** to continue to the third step.
 1. Return to the AWS console to [enable private DNS](network-authorization.html#enable-private-dns).
 1. Click **Complete**.
-1. On the **Networking** page, verify the connection status is **Active**.
+1. On the **Networking** page, verify the connection status is Active.
 
 </section>
 

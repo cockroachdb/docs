@@ -58,45 +58,58 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 
 ### Set up a cluster
 
-1.  Use the CockroachCloud Console to [create your CockroachCloud cluster](https://www.cockroachlabs.com/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html) on AWS in the same region as your application. 
+1.  Use the CockroachCloud Console to [create your CockroachCloud cluster](create-your-cluster.html) on AWS in the same region as your application. 
 1.  Navigate to the **Networking** page.
 1.  Select the **PrivateLink** tab. 
 1.  Click **Set up a PrivateLink connection** to open the connection modal.
 
 ### Create an AWS endpoint
 
-1.  Copy the service name shown in the connection modal.
-1.  On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/), click **Endpoints** in the sidebar.
-1.  Click **Create Endpoint**.
-1.  On the **Create Endpoint** page, for the **Service Category** field, select **Find Service by name**.
-1.  In the **Service Name** field, enter the service name copied from Step 1 in the CockroachCloud Console.
-1.  Click **Verify**.
-1.  In the **VPC** field, enter the ID of the VPC you want to create your endpoint in. 
-1.  Verify that the subnets are pre-populated.
-1.  In the **Security group** section, select the security group you created in Step 4 and uncheck the box for **default** security group. 
-1.  Click **Create Endpoint**.
-
-    The VPC Endpoint ID displays.  
-    
-1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
-
-Alternatively, use the [AWS Command Line Interface](https://aws.amazon.com/cli/) to create the endpoint:
-
+1. <a name="step-1"></a> Copy the service name shown in the connection modal.
 1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/), click **Your VPCs** in the sidebar. 
 1. Locate the VPC ID of the VPC you want to create your endpoint in.
 
-    This will probably be the same VPC as the VPC your EC2 instances and application are running in. You can also choose a different VPC, as long as it is peered to the VPC your application is running in.
+    This will probably be the same VPC as the VPC your EC2 instances and application are running in. You can also choose a different VPC as long as it is peered to the VPC your application is running in.
     
-1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 2.
-1. Navigate to the **Subnets** page. 
-1. Locate the subnet IDs corresponding to the VPC you chose in Step 1.
+1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 3.
+1. Click **Subnets** in the sidebar. 
+1. Locate the subnet IDs corresponding to the VPC you chose in Step 3.
 1. Click **Security Groups** in the sidebar. 
-1. Click **Create Security Group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
-  - In the **Security group name** field, enter a descriptive name for the security group. 
-  - From the **VPC** dropdown, select the VPC you chose in Step 1.
-  - In the **Inbound rules** section, click **Add rule**. Enter *26257* in the **Port Range** field. In the Source field, enter the CIDR range from Step 3. 
-  - Click Create security group.
-  - Substitute the values from Steps 2 and 3 and run the following AWS CLI command:
+1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
+  - In the **Security group name** field, enter a name for the security group.
+  - In the **Description** field, enter a description for the security group. 
+  - From the **VPC** dropdown, select the VPC you chose in Step 3.
+  - In the **Inbound rules** section, click **Add rule**. Enter *26257* in the **Port range** field. In the **Source** field, enter the CIDR range from Step 4. 
+  - Click **Create security group**.
+
+Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
+
+  <div class="filters clearfix">
+    <button style="width: 15%" class="filter-button" data-scope="aws-console">AWS Console</button>
+    <button style="width: 15%" class="filter-button" data-scope="aws-cli">AWS CLI</button>
+  </div>
+
+<section class="filter-content" markdown="1" data-scope="aws-console">
+
+1.  Click **Endpoints** in the sidebar.
+1.  Click **Create Endpoint**.
+1.  On the **Create Endpoint** page, for the **Service Category** field, select **Find service by name**.
+1.  In the **Service Name** field, enter the service name copied from the connection modal in [Step 1](#step-1).
+1.  Click **Verify**.
+1.  In the **VPC** field, enter the ID of the VPC you want to create your endpoint in. 
+1.  Verify that the subnets are pre-populated.
+1.  In the **Security group** section, select the security group you created in [Step 8](#step-8) and uncheck the box for **default** security group. 
+1.  Click **Create Endpoint**.
+
+      The VPC Endpoint ID displays.  
+      
+1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
+  
+  </section>
+  
+  <section class="filter-content" markdown="1" data-scope="aws-cli">
+  
+1.  Substitute the values from the previous steps and run the following AWS CLI command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -106,31 +119,40 @@ Alternatively, use the [AWS Command Line Interface](https://aws.amazon.com/cli/)
     $SECURITY_GROUP_ID1 $SECURITY_GROUP_ID2 --service-name \
     $SERVICE_NAME_PROVIDED_BY_COCKROACH
     ~~~
+    
+1.  Locate the VPC Endpoint ID in the CLI output.
+    
+1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
+    
+  </section>
 
 ### Verify the endpoint ID
 
-CockroachCloud will accept the endpoint request. You can verify the request acceptance by checking if the status is listed as Available on the **Endpoints** page.
+1.  Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
+1.  Click **Verify**.
+1.  CockroachCloud will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
 
 ### Enable private DNS
 
-1.  On the **Endpoints** page, click **Actions**.
+1.  On the Amazon VPC Console **Endpoints** page, select the endpoint you created.
+1.  Click **Actions**.
 1.  Click **Modify Private DNS Names**.
 1.  Check the **Enable Private DNS Name** checkbox.
 1.  Click **Modify Private DNS Name**.
 
 Alternatively, use the AWS CLI to modify the Private DNS Name:
 
-After the status changes to Available, run the following AWS CLI command:
+1.  After the endpoint status changes to Available, run the following AWS CLI command:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ aws ec2 modify-vpc-endpoint --region $REGION \
---private-dns-enabled --vpc-endpoint-id $VPC_ENDPOINT_ID
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ aws ec2 modify-vpc-endpoint --region $REGION \
+    --private-dns-enabled --vpc-endpoint-id $VPC_ENDPOINT_ID
+    ~~~
 
 The endpoint status will change to Pending.
   
-After a short (less than 5 minute) delay, the status changes to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
+After a short (less than 5 minute) delay, the status will change to Available. You can now [connect to your cluster](connect-to-your-cluster.html).
 
 ## See also
 
