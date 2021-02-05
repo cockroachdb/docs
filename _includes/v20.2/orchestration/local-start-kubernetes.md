@@ -16,7 +16,7 @@ Feature | Description
 
     {{site.data.alerts.callout_info}}Make sure you install <code>minikube</code> version 0.21.0 or later. Earlier versions do not include a Kubernetes server that supports the <code>maxUnavailability</code> field and <code>PodDisruptionBudget</code> resource type used in the CockroachDB StatefulSet configuration.{{site.data.alerts.end}}
 
-1. Depending on the CPU and memory resources you allocate to CockroachDB in the [next section](#configure-the-cluster), you may need to change the `minikube` settings. The following values will work with the default 2 CPUs and 8Gi of memory that are specified in our [example manifest](https://github.com/cockroachdb/cockroach-operator/blob/master/examples/example.yaml).
+1. Depending on the CPU and memory resources you allocate to CockroachDB in the next section, you may need to change the `minikube` settings before starting. When using the Operator, the following values will work with the default 2 CPUs and 8Gi of memory that are specified in our [example manifest](https://github.com/cockroachdb/cockroach-operator/blob/master/examples/example.yaml).
 
     {% include copy-clipboard.html %}
 	~~~ shell
