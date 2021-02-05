@@ -56,7 +56,7 @@ Without `ON`, two rows are considered duplicates if they are equal on
 all the results computed by `SELECT`.
 
 With `ON`, two rows are considered duplicates if they are equal only
-using the [scalar expressions](scalar-expressions.html) listed with `ON`. When two rows are considered duplicates according to `DISTINCT ON`, the values from the first `FROM` row in the order specified by [`ORDER BY`](query-order.html) are used to compute the remaining target expressions. If `ORDER BY` is not specified, CockroachDB will pick any one of the duplicate rows as first row, non-deterministically.
+using the [scalar expressions](scalar-expressions.html) listed with `ON`. When two rows are considered duplicates according to `DISTINCT ON`, the values from the first `FROM` row in the order specified by [`ORDER BY`](order-by.html) are used to compute the remaining target expressions. If `ORDER BY` is not specified, CockroachDB will pick any one of the duplicate rows as first row, non-deterministically.
 
 ## Examples
 
@@ -421,7 +421,7 @@ GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
 
 #### Order aggregate function input rows by column
 
-Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding `SELECT` clause. To specify the order in which input rows are processed, you can add an [`ORDER BY`](query-order.html) clause within the function argument list.
+Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding `SELECT` clause. To specify the order in which input rows are processed, you can add an [`ORDER BY`](order-by.html) clause within the function argument list.
 
 For example, suppose you want to create an array of `name` values, ordered alphabetically, and grouped by `city`. You can use the following statement to do so:
 
@@ -538,7 +538,7 @@ in the result, you can combine it with `ORDER BY` or `LIMIT` /
 `OFFSET` to form a [selection query](selection-queries.html) or
 [subquery](table-expressions.html#subqueries-as-table-expressions).
 
-See [Ordering Query Results](query-order.html) and [Limiting Query
+See [Ordering Query Results](order-by.html) and [Limiting Query
 Results](limit-offset.html) for more details.
 
 {{site.data.alerts.callout_info}}When <code>ORDER BY</code> is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them.<br><br>Also, CockroachDB sorts <a href="null-handling.html#nulls-and-sorting"><code>NULL</code> values</a> first with <code>ASC</code> and last with <code>DESC</code>. This differs from PostgreSQL, which sorts <code>NULL</code> values last with <code>ASC</code> and first with <code>DESC</code>.{{site.data.alerts.end}}
@@ -565,6 +565,6 @@ For an example showing how to use it, see  [`SELECT FOR UPDATE`](select-for-upda
 - [`SELECT FOR UPDATE`](select-for-update.html)
 - [Set Operations](selection-queries.html#set-operations)
 - [Table Expressions](table-expressions.html)
-- [Ordering Query Results](query-order.html)
+- [Ordering Query Results](order-by.html)
 - [Limiting Query Results](limit-offset.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)

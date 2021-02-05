@@ -38,9 +38,9 @@ For guidance on creating user-defined schemas, see [Create a User-defined Schema
 
 Tables, belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [user-defined schema](#schemas).
 
-Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints](column-constraints.html), or computed with [scalar expressions](computed-columns.html).
+Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints](constraints.html), or computed with [scalar expressions](computed-columns.html).
 
-For guidance on defining tables, see [Tables](schema-design-tables.html).
+For guidance on defining tables, see [Tables](schema-design-table.html).
 
 ### Indexes
 
@@ -48,7 +48,7 @@ An index is a copy of the rows in a single table, sorted by a column or set of c
 
 The two main types of indexes are the `primary` index, an index on the row-identifying [primary key columns](primary-key.html), and the secondary index, an index created on non-primary-key columns of your choice.
 
-For guidance on defining primary keys, see [Select Primary Key Columns](schema-design-tables.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Add a Secondary Index](schema-design-indexes.html).
+For guidance on defining primary keys, see [Select Primary Key Columns](schema-design-table.html#select-primary-key-columns). For guidance on defining secondary indexes, see [Add a Secondary Index](schema-design-indexes.html).
 
 #### Specialized indexes
 
@@ -83,7 +83,7 @@ For guidance on using temporary objects, see [Temporary Tables](temporary-tables
 
 ## Controlling access to objects
 
-CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](authorization#sql-users) the [privileges](authorization,html#privileges) required to view, modify, and delete database schema objects.
+CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](authorization.html#sql-users) the [privileges](authorization.html#privileges) required to view, modify, and delete database schema objects.
 
 By default, the user that creates an object is that object's *owner*. [Object owners](authorization.html#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
 

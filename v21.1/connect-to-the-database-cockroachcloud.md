@@ -19,6 +19,8 @@ For a reference that lists all of the supported cluster connection parameters, s
 
 Do the following:
 
+ <a name="set-up-your-cluster-connection"></a>
+
 - Set up a CockroachCloud cluster:
   - [Create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
   - [Connect to the CockroachCloud cluster](../cockroachcloud/connect-to-your-cluster.html).

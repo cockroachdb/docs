@@ -17,15 +17,15 @@ Exercise caution when batch deleting rows from tables with foreign key constrain
 For high-performance batch deletes, we recommending filtering the `DELETE` query on an [indexed column](indexes.html).
 
 {{site.data.alerts.callout_info}}
-Having an indexed filtering column can make delete operations faster, but it might lead to bottlenecks in execution, especially if the filtering column is a [timestamp](timestamp.html). To reduce bottlenecks, we recommend using a [hash-sharded index](indexes.html#hash-sharded-indexes).
+Having an indexed filtering column can make delete operations faster, but it might lead to bottlenecks in execution, especially if the filtering column is a [timestamp](timestamp.html). To reduce bottlenecks, we recommend using a [hash-sharded index](hash-sharded-indexes.html).
 {{site.data.alerts.end}}
 
 Each iteration of a batch-delete loop should execute a transaction containing a single `DELETE` query. When writing this `DELETE` query:
 
 - Use a `WHERE` clause to filter on a column that identifies the unwanted rows. If the filtering column is not the primary key, the column should have [a secondary index](indexes.html). Note that if the filtering column is not already indexed, it is not beneficial to add an index just to speed up batch deletes. Instead, consider [batch deleting on non-indexed columns](#batch-delete-on-a-non-indexed-column).
-- To ensure that rows are efficiently scanned in the `DELETE` query, add an [`ORDER BY`](query-order.html) clause on the filtering column.
+- To ensure that rows are efficiently scanned in the `DELETE` query, add an [`ORDER BY`](order-by.html) clause on the filtering column.
 - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows to the desired batch size. To determine the optimal batch size, try out different batch sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.) and monitor the change in performance.
-- Add a `RETURNING` clause to the end of the query that returns the filtering column values of the deleted rows. Then, using the values of the deleted rows, update the filter to match only the subset of remaining rows to delete. This narrows each query's scan to the fewest rows possible, and [preserves the performance of the deletes over time](#preserving-delete-performance-over-time). This pattern assumes that no new rows are generated that match on the `DELETE` filter during the time that it takes to perform the delete.
+- Add a `RETURNING` clause to the end of the query that returns the filtering column values of the deleted rows. Then, using the values of the deleted rows, update the filter to match only the subset of remaining rows to delete. This narrows each query's scan to the fewest rows possible, and [preserves the performance of the deletes over time](delete.html#preserving-delete-performance-over-time). This pattern assumes that no new rows are generated that match on the `DELETE` filter during the time that it takes to perform the delete.
 
 For example, suppose that you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `new_order` table where `no_w_id` is less than `5`, in batches of 5,000 rows. To do this, you can write a script that loops over batches of 5,000 rows, following the `DELETE` query guidance provided above. Note that in this case, `no_w_id` is the first column in the primary index, and, as a result, you do not need to create a secondary index on the column.
 
@@ -68,7 +68,7 @@ If you cannot index the column that identifies the unwanted rows, we recommend d
     - Use a `WHERE` clause that filters on the column identifying the rows.
     - Add an [`AS OF SYSTEM TIME` clause](as-of-system-time.html) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`](as-of-system-time.html#using-as-of-system-time-in-transactions). This helps to reduce [transaction contention](transactions.html#transaction-contention).
     - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows queried to a subset of the rows that you want to delete. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 100,000 rows, 1,000,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are deleted in the subsequent `DELETE` query.
-    - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`](query-order.html) clause on the primary key.
+    - To ensure that rows are efficiently scanned in the subsequent `DELETE` query, include an [`ORDER BY`](order-by.html) clause on the primary key.
 
 2. Write a nested `DELETE` loop over the primary key values returned by the `SELECT` query, in batches smaller than the initial `SELECT` batch size. To determine the optimal `DELETE` batch size, try out different sizes (1,000 rows, 10,000 rows, 100,000 rows, etc.), and monitor the change in performance. Where possible, we recommend executing each `DELETE` in a separate transaction.
 

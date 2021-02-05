@@ -34,7 +34,7 @@ table td:first-child {
  `table_name` | The name of the table that contains the rows you want to update.
  `AS table_alias_name` | An alias for the table name. When an alias is provided, it completely hides the actual table name.
 `WHERE a_expr`| `a_expr` must be an expression that returns Boolean values using columns (e.g., `<column> = <value>`). Delete rows that return   `TRUE`.<br><br/>__Without a `WHERE` clause in your statement, `DELETE` removes all rows from the table. To delete all rows in a table, we recommend using [`TRUNCATE`](truncate.html) instead of `DELETE`.__
- `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](query-order.html#ordering-rows-in-dml-statements) for more details.
+ `sort_clause` | An `ORDER BY` clause. <br /><br />See [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements) for more details.
  `limit_clause` | A `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for more details.
  `RETURNING target_list` | Return values based on rows deleted, where `target_list` can be specific column names from the table, `*` for all columns, or computations using [scalar expressions](scalar-expressions.html). <br><br>To return nothing in the response, not even the number of rows updated, use `RETURNING NOTHING`.
  `ONLY ... *` |  Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.
@@ -74,8 +74,8 @@ deleted rows more frequently.
 {% include {{page.version.version}}/misc/sorting-delete-output.md %}
 
 For more information about ordering query results in general, see
-[Ordering Query Results](query-order.html) and [Ordering of rows in
-DML statements](query-order.html#ordering-rows-in-dml-statements).
+[Ordering Query Results](order-by.html) and [Ordering of rows in
+DML statements](order-by.html#ordering-rows-in-dml-statements).
 
 ## Force index selection for deletes
 
@@ -111,8 +111,8 @@ This means that with the default settings, each iteration of your `DELETE` state
 
 To preserve performance over iterative `DELETE` queries, we recommend taking one of the following approaches:
 
-- At each iteration, update the `WHERE` clause to filter only the rows that have not yet been marked for deletion. For an example, see [Batch-delete on an indexed filter](#batch-delete-on-an-indexed-column) above.
-- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a nested `DELETE` loop over a smaller batch size, filtering on the primary key values. For an example, see [Batch delete on a non-indexed column](#batch-delete-on-a-non-indexed-column) above.
+- At each iteration, update the `WHERE` clause to filter only the rows that have not yet been marked for deletion. For an example, see [Batch-delete on an indexed filter](bulk-delete-data.html).
+- At each iteration, first use a `SELECT` statement to return primary key values on rows that are not yet deleted. Rows marked for deletion will not be returned. Then, use a nested `DELETE` loop over a smaller batch size, filtering on the primary key values. For an example, see [Batch delete on a non-indexed column](bulk-delete-data.html).
 - To iteratively delete rows in constant time, using a simple `DELETE` loop, you can [alter your zone configuration](configure-replication-zones.html#overview) and change `gc.ttlseconds` to a low value like 5 minutes (i.e., `300`), and then run your `DELETE` statement once per GC interval.
 
 ## Examples

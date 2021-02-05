@@ -2,7 +2,6 @@
 title: ORDER BY
 summary: The ORDER BY clause controls the order of rows.
 toc: true
-redirect_from: query-order.html
 ---
 
 The `ORDER BY` clause controls the order in which rows are returned or

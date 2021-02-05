@@ -25,7 +25,7 @@ Before reading this page, do the following:
   </li>
   <li>
     <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
+    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
   </li>
   <li>
     <a href="schema-design-overview.html">Review the database schema objects.</a>
@@ -78,7 +78,7 @@ To add a secondary index to a table, do one of the following, following the [bes
     `[table_name]` | The name of the table.
     `[column_names]` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
-For an example, see [below](#table-naming-example).
+For an example, see [below](#example).
 
 {{site.data.alerts.callout_info}}
 If you do not specify a name for an index, CockroachDB will generate a name.
@@ -90,7 +90,7 @@ After creation, the notation for referring to indexes in CockroachDB is `[table_
 
 Here are some best practices for creating indexes:
 
-- Index all columns that you plan to use for [sorting](query-order.html#index-order) or [filtering](select-clause.html#filter-rows) data.
+- Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
     Note that columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
@@ -108,7 +108,7 @@ Here are some best practices for creating indexes:
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 
-    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#examples).
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index, without being sorted. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB will perform a full scan of the table, which can result in poor performance. For an example, see [below](#example).
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
@@ -122,7 +122,7 @@ Here are some best practices for creating indexes:
 
 Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.
 
-Recall that the `vehicles` table that you created in [Create a Table](create-a-table.html) stores rows of data for each vehicle registered with MovR. Your application will need to read any data about vehicles into the application's persistence layer from this table. To display available bikes, the reads will need to filter on the `available` and `type` columns.
+Recall that the `vehicles` table that you created in [Create a Table](schema-design-table.html) stores rows of data for each vehicle registered with MovR. Your application will need to read any data about vehicles into the application's persistence layer from this table. To display available bikes, the reads will need to filter on the `available` and `type` columns.
 
 Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
 
@@ -219,7 +219,7 @@ $ cockroach sql \
 --database=movr
 ~~~
 
-To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-indexes.html) statement:
+To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](show-index.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql

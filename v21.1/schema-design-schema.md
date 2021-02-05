@@ -25,7 +25,7 @@ Before reading this page, do the following:
   </li>
   <li>
     <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
+    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
   </li>
   <li>
     <a href="schema-design-overview.html">Review the database schema objects.</a>

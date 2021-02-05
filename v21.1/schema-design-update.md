@@ -16,7 +16,7 @@ Before reading this page, do the following:
   </li>
   <li>
     <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
+    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
   </li>
   <li>
     <a href="schema-design-overview.html">Review the database schema objects.</a>
@@ -57,7 +57,7 @@ CockroachDB supports the following `ALTER` statements:
 
 - [`ALTER DATABASE`](alter-database.html)
 - [`ALTER SCHEMA`](alter-schema.html)
-- [`ALTER TABLE`](alter-table)
+- [`ALTER TABLE`](alter-table.html)
 - [`ALTER INDEX`](alter-index.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
@@ -76,7 +76,7 @@ CockroachDB supports the following `ALTER` statements:
 
 ### Altering objects examples
 
-Suppose you want to make some changes to the `users` table that you created in [Create a Table](schema-design-tables.html). In specific, you want to do the following:
+Suppose you want to make some changes to the `users` table that you created in [Create a Table](schema-design-table.html). In specific, you want to do the following:
 
 - Add a new `username` column.
 - Change the columns in the table's primary key to `username` column and `email`.
@@ -244,7 +244,7 @@ CockroachDB supports the following `DROP` statements:
 - [`DROP DATABASE`](drop-database.html)
 - [`DROP SCHEMA`](drop-schema.html)
 - [`DROP TABLE`](drop-table.html)
-- [`DROP INDEX`](drop-index)
+- [`DROP INDEX`](drop-index.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`DROP VIEW`](drop-view.html)
 - [`DROP USER/ROLE`](drop-user.html)

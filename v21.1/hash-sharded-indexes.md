@@ -26,7 +26,7 @@ Hash-sharded indexes cannot be [interleaved](interleave-in-parent.html).
 
 ## Examples
 
-For an example of a hash-sharded index, see [Create a hash-sharded secondary index](create-index.html#hash-sharded-index).
+For an example of a hash-sharded index, see [Create a hash-sharded secondary index](create-index.html#create-a-hash-sharded-secondary-index).
 
 ## See also
 

@@ -25,7 +25,7 @@ Before reading this page, do the following:
   </li>
   <li>
     <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
+    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
   </li>
   <li>
     <a href="schema-design-overview.html">Review the database schema objects.</a>
@@ -36,7 +36,7 @@ Before reading this page, do the following:
 
 Database objects make up the first level of the [CockroachDB naming hierarchy](sql-name-resolution.html#naming-hierarchy).
 
-To create a database, use a [`CREATE DATABASE` statement](create-database.html), following [the database best practices](#database-best-practices). After reviewing the best practices, see the examples we provide [below](#examples).
+To create a database, use a [`CREATE DATABASE` statement](create-database.html), following [the database best practices](#database-best-practices). After reviewing the best practices, see the examples we provide [below](#example).
 
 ### Database best practices
 
@@ -46,7 +46,7 @@ Here are some best practices to follow when creating and using databases:
 
 - Create databases and [user-defined schemas](schema-design-schema.html) as a member of [the `admin` role](authorization.html#admin-role) (e.g., as the [`root` user](authorization.html#root-user)), and create all other lower-level objects as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices).
 
-- Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](#create-a-user-defined-schema), in the same database.
+- Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](schema-design-schema.html), in the same database.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 

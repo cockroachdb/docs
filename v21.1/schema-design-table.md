@@ -25,7 +25,7 @@ Before reading this page, do the following:
   </li>
   <li>
     <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
+    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
   </li>
   <li>
     <a href="schema-design-overview.html">Review the database schema objects.</a>
@@ -129,7 +129,7 @@ Here are some best practices to follow when defining table columns:
 
 - Use column data types with a fixed size limit, or set a maximum size limit on column data types of variable size (e.g., [`VARBIT(n)`](bit.html#size)). Values exceeding 1MB can lead to [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and cause significant performance degradation.
 
-- Review the [primary key best practices](#select-the-primary-key-columns) and [examples](#primary-key-examples), decide if you need to define any dedicated primary key columns.
+- Review the [primary key best practices](#select-primary-key-columns) and [examples](#primary-key-examples), decide if you need to define any dedicated primary key columns.
 
 - Review the best practices and examples for [adding additional constraints](#add-additional-constraints), and decide if you need to add any additional constraints to your columns.
 
@@ -148,7 +148,7 @@ CREATE TABLE movr.max_schema.users (
 
 All of the columns shown above use the [`STRING`](string.html) data type, meaning that any value in any of the columns must be of the data type `STRING`.
 
-CockroachDB supports a number of other column data types, including [`DECIMAL`](decimal.html), [`INT`](integer.html), [`TIMESTAMP`](timestamp.html), [`UUID`](uuid.html), and [enumerated data types](#user-defined-types) and [spatial data types](#spatial-data-types). We recommend that you review the [supported types](data-types.html), and create columns with data types that correspond to the types of data that you intend to persist to the cluster from your application.
+CockroachDB supports a number of other column data types, including [`DECIMAL`](decimal.html), [`INT`](int.html), [`TIMESTAMP`](timestamp.html), [`UUID`](uuid.html), and [enumerated data types](enum.html) and [spatial data types](spatial-data.html). We recommend that you review the [supported types](data-types.html), and create columns with data types that correspond to the types of data that you intend to persist to the cluster from your application.
 
 Let's add another example table to our `max_schema` schema, with more column data types.
 
@@ -183,7 +183,7 @@ CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 ~~~
 
 {{site.data.alerts.callout_success}}
-For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page](create-tyoe.html).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`](enum.html).
+For detailed reference documentation on the `CREATE TYPE` statement, including additional examples, see the [`CREATE TYPE` syntax page](create-type.html).<br>For detailed reference documentation on enumerated data types, including additional examples, see [`ENUM`](enum.html).
 {{site.data.alerts.end}}
 
 You can then use `vtype` as the `type` column's data type:
@@ -235,7 +235,7 @@ Here are some best practices to follow when selecting primary key columns:
 
 - When possible, define primary key constraints over multiple columns (i.e., use [composite primary keys](https://en.wikipedia.org/wiki/Composite_key)).
 
-    When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries](query-order.html), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [below](#primary-key-examples).
+    When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries](order-by.html), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [below](#primary-key-examples).
 
 - For single-column primary keys, use [`UUID`](uuid.html)-typed columns with default values randomly-generated, using the `gen_random_uuid()` [SQL function](functions-and-operators.html#id-generation-functions).
 
