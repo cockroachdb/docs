@@ -115,7 +115,7 @@ By default, the Operator uses the built-in Kubernetes CA to generate and approve
 	NAME                                  READY   STATUS    RESTARTS   AGE
 	cockroach-operator-6f7b86ffc4-9t9zb   1/1     Running   0          3m22s
 	cockroachdb-0                         1/1     Running   0          2m31s
-	cockroachdb-1                         1/1     Running   1          102s
+	cockroachdb-1                         1/1     Running   0          102s
 	cockroachdb-2                         1/1     Running   0          46s
 	~~~
 
