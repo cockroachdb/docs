@@ -64,7 +64,11 @@ CREATE TABLE [schema_name].[table_name] (
   );
 ~~~
 
-Where `schema_name` is the name of the user-defined schema, `table_name` is the name of the table, and `elements` is a comma-separated list of table elements, such as column definitions.
+Parameter | Description
+----------|------------
+`[schema_name]` | The name of the user-defined schema.
+`[table_name]` | The name of the table.
+`[elements]` | A comma-separated list of table elements, such as column definitions.
 
 For an example, see [below](#table-naming-example).
 
@@ -109,7 +113,11 @@ Column definitions generally take the following form:
 [column_name] [DATA_TYPE] [column_qualification]
 ~~~
 
-Where `column_name` is the column name, `DATA_TYPE` is the [data type](data-types.html) of the row values in the column, and `column_qualification` is some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause](computed-columns.html).
+Parameter | Description
+----------|------------
+`[column_name]` | The name of the column.
+`[DATA_TYPE]` | The [data type](data-types.html) of the row values in the column.
+`[column_qualification]` | Some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause](computed-columns.html).
 
 For examples, see [below](#column-definition-examples).
 

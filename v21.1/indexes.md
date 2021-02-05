@@ -113,10 +113,9 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 (6 rows)
 ~~~
 
-### Best practices
+## Best practices
 
 For best practices, see [Add a Secondary Index: Best Practices](schema-design-indexes.html#best-practices)
-
 
 ## See also
 

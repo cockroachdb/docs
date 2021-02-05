@@ -9,6 +9,8 @@ To iterate through a table one "page" of results at a time (also known as pagina
 - Keyset pagination (**fast, recommended**)
 - `LIMIT` / `OFFSET` pagination (slow, not recommended)
 
+## Keyset pagination
+
 Keyset pagination (also known as the "seek method") is used to fetch a subset of records from a table quickly. It does this by restricting the set of records returned with a combination of `WHERE` and [`LIMIT`](limit-offset.html) clauses. To get the next page, you check the value of the column in the `WHERE` clause against the last row returned in the previous page of results.
 
 The general pattern for keyset pagination queries is:

@@ -34,7 +34,7 @@ OFFSET <offset_value> [ ROW | ROWS ]
 
 ## Examples
 
-For example uses with `SELECT`, see [Limiting Row Count(selection-queries.html#limiting-row-count).
+For example uses with `SELECT`, see [Limiting Row Count](selection-queries.html#limiting-row-count).
 
 ## See also
 

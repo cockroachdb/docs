@@ -59,7 +59,10 @@ To add a secondary index to a table, do one of the following, following the [bes
     INDEX [index_name] ([column_names]);
     ~~~
 
-    Where `[index_name]` is the name of the index, and `[column_names]` is the name of the column to index, or a comma-separated list of names of the columns to index.
+    Parameter | Description
+    ----------|------------
+    `[index_name]` | The name of the index.
+    `[column_names]` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
 - Use a [`CREATE INDEX`](create-index.html) statement.
 
@@ -69,7 +72,11 @@ To add a secondary index to a table, do one of the following, following the [bes
     CREATE INDEX [index_name] ON [table_name] ([column_names]);
     ~~~
 
-    Where `[index_name]` is the name of the index, `[table_name]` is the name of the table, and `[column_names]` is the name of the column to index, or a comma-separated list of names of the columns to index.
+    Parameter | Description
+    ----------|------------
+    `[index_name]` | The name of the index.
+    `[table_name]` | The name of the table.
+    `[column_names]` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
 For an example, see [below](#table-naming-example).
 

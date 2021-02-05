@@ -45,7 +45,11 @@ To change an existing object in a database schema, use an `ALTER` statement.
 ALTER [OBJECT_TYPE] [object_name] [SUBCOMMAND];
 ~~~
 
-Where the `[OBJECT_TYPE]` is the type of the object, the object name is the name of the object, and `[SUBCOMMAND]` is the subcommand for the change that you would like to make.
+Parameter | Description
+----------|------------
+`[OBJECT_TYPE]` | The type of the object.
+`[object_name]` | The name of the object.
+`[SUBCOMMAND]` | The subcommand for the change that you would like to make.
 
 For examples, see [below](#altering-objects-examples).
 
@@ -227,7 +231,11 @@ To drop an object from a database schema, use a `DROP` statement.
 DROP [OBJECT_TYPE] [object_name] CASCADE;
 ~~~
 
-Where the `[OBJECT_TYPE]` is the type of the object, `[object_name]` is the name of the object, and `CASCADE` is an optional keyword that will drop all objects dependent on the object being dropped.
+Parameter | Description
+----------|------------
+`[OBJECT_TYPE]` | The type of the object.
+`[object_name]` | The name of the object.
+`[CASCADE]` | An optional keyword that will drop all objects dependent on the object being dropped.
 
 For examples, see [below](#altering-objects-examples).
 

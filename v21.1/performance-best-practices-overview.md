@@ -4,7 +4,7 @@ summary: Best practices for optimizing SQL performance in CockroachDB.
 toc: true
 ---
 
-This page provides best practices for optimizing SQL performance in CockroachDB.
+This page provides best practices for optimizing query performance in CockroachDB.
 
 {{site.data.alerts.callout_success}}
 For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html). For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).

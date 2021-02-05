@@ -132,7 +132,7 @@
             ]
           },
           {
-            "title": "Connect to a Cluster",
+            "title": "Connect to CockroachDB",
             "items": [
               {
                 "title": "Start a Cluster",
@@ -147,7 +147,7 @@
                   {
                     "title": "CockroachCloud",
                     "urls": [
-                      "/${VERSION}/cockroachcloud/create-your-cluster.html"
+                      "/cockroachcloud/create-a-free-cluster.html"
                     ]
                   }
                 ]
@@ -159,7 +159,7 @@
                 ]
               },
               {
-                "title": "Connect to CockroachDB",
+                "title": "Connect to a Cluster",
                 "urls": [
                   "/${VERSION}/connect-to-the-database.html",
                   "/${VERSION}/connect-to-the-database-cockroachcloud.html"
@@ -300,19 +300,8 @@
               },
               {
                 "title": "Manage Transactions",
-                "items": [
-                  {
-                    "title": "How Transactions Work",
-                    "urls": [
-                      "/${VERSION}/transactions.html"
-                    ]
-                  },
-                  {
-                    "title": "Retry Transactions",
-                    "urls": [
-                      "/${VERSION}/advanced-client-side-transaction-retries.html"
-                    ]
-                  }
+                "urls": [
+                  "/${VERSION}/transactions.html"
                 ]
               }
             ]
@@ -321,110 +310,53 @@
             "title": "Read Data",
             "items": [
               {
-                "title": "Simple Selection Queries",
+                "title": "Select Rows of Data",
+                "urls": [
+                  "/${VERSION}/query-data.html"
+                ]
+              },
+              {
+                "title": "Reuse Query Results",
                 "items": [
                   {
-                    "title": "Select Rows of Data",
+                    "title": "Reusable Views",
                     "urls": [
-                      "/${VERSION}/query-data.html"
+                      "/${VERSION}/views.html"
                     ]
                   },
                   {
-                    "title": "Order Results",
+                    "title": "Subqueries",
                     "urls": [
-                      "/${VERSION}/query-order.html"
-                    ]
-                  },
-                  {
-                    "title": "Limit Results",
-                    "urls": [
-                      "/${VERSION}/limit-offset.html"
+                      "/${VERSION}/subqueries.html"
                     ]
                   }
                 ]
               },
               {
-                "title": "Advanced Selection Queries",
+                "title": "Create Temporary Tables",
+                "urls": [
+                  "/${VERSION}/temporary-tables.html"
+                ]
+              },
+              {
+                "title": "Paginate Results",
+                "urls": [
+                  "/${VERSION}/pagination.html"
+                ]
+              },
+              {
+                "title": "Read Historical Data",
                 "items": [
                   {
-                    "title": "Join Queries",
+                    "title": "AS OF SYSTEM TIME",
                     "urls": [
-                      "/${VERSION}/joins.html"
+                      "/${VERSION}/as-of-system-time.html"
                     ]
                   },
                   {
-                    "title": "Refer to Queries by Alias",
-                    "items": [
-                      {
-                        "title": "Table Expressions",
-                        "urls": [
-                          "/${VERSION}/table-expressions.html"
-                        ]
-                      },
-                      {
-                        "title": "Common Table Expressions",
-                        "urls": [
-                          "/${VERSION}/common-table-expressions.html"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "title": "Reuse Query Results",
-                    "items": [
-                      {
-                        "title": "Reusable Views",
-                        "urls": [
-                          "/${VERSION}/views.html"
-                        ]
-                      },
-                      {
-                        "title": "Subqueries",
-                        "urls": [
-                          "/${VERSION}/subqueries.html"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "title": "Create Temporary Tables",
+                    "title": "Follower Reads",
                     "urls": [
-                      "/${VERSION}/temporary-tables.html"
-                    ]
-                  },
-                  {
-                    "title": "Paginate Results",
-                    "urls": [
-                      "/${VERSION}/pagination.html"
-                    ]
-                  },
-                  {
-                    "title": "Read Historical Data",
-                    "items": [
-                      {
-                        "title": "AS OF SYSTEM TIME",
-                        "urls": [
-                          "/${VERSION}/as-of-system-time.html"
-                        ]
-                      },
-                      {
-                        "title": "Follower Reads",
-                        "urls": [
-                          "/${VERSION}/follower-reads.html"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "title": "Use SQL Functions in Queries",
-                    "urls": [
-                      "/${VERSION}/functions-in-queries.html"
-                    ]
-                  },
-                  {
-                    "title": "Force Index Selection",
-                    "urls": [
-                      "/${VERSION}/force-index-selection.html"
+                      "/${VERSION}/follower-reads.html"
                     ]
                   }
                 ]
@@ -582,42 +514,53 @@
                 ]
               },
               {
-                "title": "Multi-Region",
+                "title": "MovR",
                 "items": [
                   {
                     "title": "Overview",
                     "urls": [
-                      "/${VERSION}/multi-region-overview.html"
+                      "/${VERSION}/movr.html"
                     ]
                   },
                   {
-                    "title": "Use-Case",
-                    "urls": [
-                      "/${VERSION}/multi-region-use-case.html"
-                    ]
-                  },
-                  {
-                    "title": "Database Schema",
-                    "urls": [
-                      "/${VERSION}/multi-region-database.html"
-                    ]
-                  },
-                  {
-                    "title": "Setup",
-                    "urls": [
-                      "/${VERSION}/multi-region-setup.html"
-                    ]
-                  },
-                  {
-                    "title": "Application",
-                    "urls": [
-                      "/${VERSION}/multi-region-application.html"
-                    ]
-                  },
-                  {
-                    "title": "Deployment",
-                    "urls": [
-                      "/${VERSION}/multi-region-deployment.html"
+                    "title": "Multi-Region",
+                    "items": [
+                      {
+                        "title": "Overview",
+                        "urls": [
+                          "/${VERSION}/multi-region-overview.html"
+                        ]
+                      },
+                      {
+                        "title": "Use-Case",
+                        "urls": [
+                          "/${VERSION}/multi-region-use-case.html"
+                        ]
+                      },
+                      {
+                        "title": "Database Schema",
+                        "urls": [
+                          "/${VERSION}/multi-region-database.html"
+                        ]
+                      },
+                      {
+                        "title": "Setup",
+                        "urls": [
+                          "/${VERSION}/multi-region-setup.html"
+                        ]
+                      },
+                      {
+                        "title": "Application",
+                        "urls": [
+                          "/${VERSION}/multi-region-application.html"
+                        ]
+                      },
+                      {
+                        "title": "Deployment",
+                        "urls": [
+                          "/${VERSION}/multi-region-deployment.html"
+                        ]
+                      }
                     ]
                   }
                 ]
@@ -1242,15 +1185,15 @@
                 ]
               },
               {
-                "title": "Client Connection Parameters",
-                "urls": [
-                  "/${VERSION}/connection-parameters.html"
-                ]
-              },
-              {
                 "title": "SQL Feature Support",
                 "urls": [
                   "/${VERSION}/sql-feature-support.html"
+                ]
+              },
+              {
+                "title": "Name Resolution",
+                "urls": [
+                  "/${VERSION}/sql-name-resolution.html"
                 ]
               },
               {
@@ -1344,6 +1287,12 @@
                     "title": "<code>ALTER USER</code>",
                     "urls": [
                       "/${VERSION}/alter-user.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>AS OF SYSTEM TIME</code>",
+                    "urls": [
+                      "/${VERSION}/as-of-system-time.html"
                     ]
                   },
                   {
@@ -1626,6 +1575,24 @@
                     "title": "<code>INSERT</code>",
                     "urls": [
                       "/${VERSION}/insert.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>JOIN</code>",
+                    "urls": [
+                      "/${VERSION}/joins.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>LIMIT</code>/<code>OFFSET</code>",
+                    "urls": [
+                      "/${VERSION}/limit-offset.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ORDER BY</code>",
+                    "urls": [
+                      "/${VERSION}/order-by.html"
                     ]
                   },
                   {
@@ -2175,6 +2142,12 @@
                 ]
               },
               {
+                "title": "Window Functions",
+                "urls": [
+                  "/${VERSION}/window-functions.html"
+                ]
+              },
+              {
                 "title": "SQL Syntax",
                 "items": [
                   {
@@ -2202,12 +2175,6 @@
                     ]
                   },
                   {
-                    "title": "Limiting Query Results",
-                    "urls": [
-                      "/${VERSION}/limit-offset.html"
-                    ]
-                  },
-                  {
                     "title": "Table Expressions",
                     "urls": [
                       "/${VERSION}/table-expressions.html"
@@ -2220,45 +2187,9 @@
                     ]
                   },
                   {
-                    "title": "Join Expressions",
-                    "urls": [
-                      "/${VERSION}/joins.html"
-                    ]
-                  },
-                  {
-                    "title": "Computed Columns",
-                    "urls": [
-                      "/${VERSION}/computed-columns.html"
-                    ]
-                  },
-                  {
                     "title": "Scalar Expressions",
                     "urls": [
                       "/${VERSION}/scalar-expressions.html"
-                    ]
-                  },
-                  {
-                    "title": "Subqueries",
-                    "urls": [
-                      "/${VERSION}/subqueries.html"
-                    ]
-                  },
-                  {
-                    "title": "Temporary Tables",
-                    "urls": [
-                      "/${VERSION}/temporary-tables.html"
-                    ]
-                  },
-                  {
-                    "title": "Name Resolution",
-                    "urls": [
-                      "/${VERSION}/sql-name-resolution.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>AS OF SYSTEM TIME</code>",
-                    "urls": [
-                      "/${VERSION}/as-of-system-time.html"
                     ]
                   },
                   {
@@ -2290,12 +2221,6 @@
                       "/${VERSION}/transaction-retry-error-reference.html"
                     ]
                   }
-                ]
-              },
-              {
-                "title": "Window Functions",
-                "urls": [
-                  "/${VERSION}/window-functions.html"
                 ]
               },
               {
@@ -2503,6 +2428,12 @@
                 "title": "Overview",
                 "urls": [
                   "/${VERSION}/cockroach-commands.html"
+                ]
+              },
+              {
+                "title": "Client Connection Parameters",
+                "urls": [
+                  "/${VERSION}/connection-parameters.html"
                 ]
               },
               {
@@ -2784,17 +2715,6 @@
             "title": "Diagnostics Reporting",
             "urls": [
               "/${VERSION}/diagnostics-reporting.html"
-            ]
-          },
-          {
-            "title": "Sample Applications",
-            "items": [
-              {
-                "title": "MovR: Vehicle-Sharing App",
-                "urls": [
-                  "/${VERSION}/movr.html"
-                ]
-              }
             ]
           }
         ]

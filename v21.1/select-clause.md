@@ -547,7 +547,7 @@ Results](limit-offset.html) for more details.
 
 Results from two or more queries can be combined together as follows:
 
-- Using [join expressions](joins.html) to combine rows
+- Using [`JOIN` expressions](joins.html) to combine rows
   according to conditions on specific columns.
 - Using [set operations](selection-queries.html#set-operations) to combine rows
   using inclusion/exclusion rules.
