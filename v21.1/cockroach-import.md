@@ -4,7 +4,7 @@ summary: Import a local file to a cluster
 toc: true
 ---
 
- <span class="version-tag">New in v21.1:</span> The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
+<span class="version-tag">New in v21.1:</span> The `cockroach import` [command](cockroach-commands.html) imports a database or table from a local dump file into a running cluster. `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
 
 Behind the scenes, this command [uploads a userfile](cockroach-userfile-upload.html), imports its data, then [deletes the userfile](cockroach-userfile-delete.html).
 
