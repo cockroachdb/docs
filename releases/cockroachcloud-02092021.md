@@ -20,4 +20,4 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.4.html).
 
 - You can now [restore databases and tables](../cockroachcloud/backups-page.html) from backups of CockroachCloud clusters. This feature is only available to clusters running the paid version of CockroachCloud.
 - [reCAPTCHA](https://www.google.com/recaptcha/about/) has been added to the sign up process for new users signing up with an email and password. Some users may need to complete an image challenge.
-- An email will now be sent to [Console Admins](console-access-management.html#console-admin) when a [30-day free trial of CockroachCloud](../cockroachcloud/quickstart-trial-cluster.html) is nearing its end.
+- An email will now be sent to [Console Admins](../cockroachcloud/console-access-management.html#console-admin) when a [30-day free trial of CockroachCloud](../cockroachcloud/quickstart-trial-cluster.html) is nearing its end.
