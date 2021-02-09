@@ -127,8 +127,15 @@ body.sidenav-open{
     }
   }
 
-  .tier-1 a{
-    color: $neutral-800;
+  .tier-1 {
+    a {
+      color: $neutral-800;
+    }
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
   }
 
   .tier-2 {

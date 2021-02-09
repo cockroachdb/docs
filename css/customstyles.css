@@ -6744,6 +6744,9 @@ body.sidenav-open {
   #sidebar .tier-1 a,
   .js-sidebar .tier-1 a {
     color: #242A35; }
+  #sidebar .tier-1.active > a,
+  .js-sidebar .tier-1.active > a {
+    color: #6933FF; }
   #sidebar .tier-2 a,
   .js-sidebar .tier-2 a {
     color: #242A35; }
