@@ -234,56 +234,20 @@
       ]
     },
     {
-      "title": "Releases",
+      "title": "Release Notes",
       "items": [
         {
-          "title": "January 2021",
+          "title": "Latest Release Notes",
           "urls": [
             "/releases/cockroachcloud-01222021.html"
           ]
         },
         {
-          "title": "December 2020",
+          "title": "All Release Notes",
           "urls": [
-            "/releases/cockroachcloud-12112020.html"
+            "/releases/index-cockroachcloud.html"
           ]
-        },
-        {
-          "title": "November 2020",
-          "urls": [
-            "/releases/cockroachcloud-11192020.html"
-          ]
-        },
-      	{
-      	  "title": "July 2020",
-      	  "urls": [
-      	    "/releases/cockroachcloud-07062020.html"
-      	  ]
-      	},
-      	{
-      	  "title": "June 2020",
-      	  "urls": [
-      	    "/releases/cockroachcloud-06112020.html"
-      	  ]
-      	},
-      	{
-      	  "title": "May 2020",
-      	  "urls": [
-      	    "/releases/cockroachcloud-05042020.html"
-      	  ]
-      	},
-      	{
-      	  "title": "April 2020",
-      	  "urls": [
-      	    "/releases/cockroachcloud-04062020.html"
-      	  ]
-      	},
-      	{
-      	  "title": "March 2020",
-      	  "urls": [
-      	    "/releases/cockroachcloud-03022020.html"
-      	  ]
-      	}
+        }
       ]
     }
   ]

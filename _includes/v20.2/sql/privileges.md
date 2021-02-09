@@ -4,7 +4,7 @@ Privilege | Levels
 `CREATE` | Database, Schema, Table
 `DROP` | Database, Table
 `GRANT` | Database, Schema, Table, Type
-`SELECT` | Table
+`SELECT` | Table, Database
 `INSERT` | Table
 `DELETE` | Table
 `UPDATE` | Table
