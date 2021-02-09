@@ -10,7 +10,7 @@ For more information, see the [CockroachCloud Upgrade Policy](../cockroachcloud/
 
 ## Past release notes
 
-<ul>
+<ul class="release-table">
   {% for section in site.data.releases-cc %}
     {% for release in section.releases %}
       <li>
