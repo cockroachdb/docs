@@ -11,7 +11,7 @@ cta: false
   <div class="p-2 p-md-5">
   <h1 class="m-0 text-white">CockroachDB Docs</h1>
   <p class="mt-0 pb-4 text-white">CockroachDB is the SQL database for building global, scalable cloud services that survive disasters.</p>
-    <div class="row d-lg-flex mx-0">
+    <div class="row d-lg-flex mx-0 pt-lg-5">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex">
         <a href="secure-a-cluster.html" class="h-100">
