@@ -10,13 +10,13 @@ For more information, see the [CockroachCloud Upgrade Policy](../cockroachcloud/
 
 ## Past release notes 
 
-<ul>
+<ul class="release-table">
   {% for section in site.data.releases-cc %}
     {% for release in section.releases %}
       <li>
         <a href="{{ release.link }}.html">{{ release.name }}</a>
         {% if release.latest %}
-            <span class="badge" style="background-color: #4eb21d; font-size: 10px; text-transform: uppercase; vertical-align: middle">Latest</span>
+            <span class="badge">Latest</span>
         {% endif %}
       </li>
     {% endfor %}
