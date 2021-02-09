@@ -40,7 +40,7 @@ Only members of the `admin` role can run `EXPORT`. By default, the `root` user b
 
 You can specify the base directory where you want to store the exported .csv files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., `exportabc123-n1.1.csv`, `exportabc123-n1.2.csv`, `exportabc123-n2.1.csv`, ...). Each export should use a unique destination directory to avoid collision with other exports.
 
-The `EXPORT` command [returns](#success-responses) the list files to which the data was exported. You may wish to record these for use in subsequent imports.
+The `EXPORT` command [returns](#success-responses) the list of files to which the data was exported. You may wish to record these for use in subsequent imports.
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.2:</span>
