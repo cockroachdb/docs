@@ -1874,6 +1874,12 @@
                     "urls": [
                       "/${VERSION}/information-schema.html"
                     ]
+                  },
+                  {
+                    "title": "<code>pg_catalog</code>",
+                    "urls": [
+                      "/${VERSION}/pg-catalog.html"
+                    ]
                   }
                 ]
               },

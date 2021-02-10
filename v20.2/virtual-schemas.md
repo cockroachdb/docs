@@ -8,7 +8,7 @@ In addition to the `public` schema, CockroachDB includes set of virtual schemas,
 
 The following virtual schemas are included with CockroachDB:
 
-- `pg_catalog`, provided for compatibility with PostgreSQL.
+- [`pg_catalog`](pg-catalog.html), provided for compatibility with PostgreSQL.
 - [`information_schema`](information-schema.html), provided for compatibility with the SQL standard.
 - [`crdb_internal`](crdb-internal.html), provided for introspection into CockroachDB internals.
 - <span class="version-tag">New in v20.2</span>: `pg_extension`, provided for compatibility with PostgreSQL.
