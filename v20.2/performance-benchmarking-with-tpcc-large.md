@@ -208,7 +208,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload fixtures import tpcc \
+    $ ./workload init tpcc \
     --warehouses 140000 \
     --partitions 81 \
     --replicate-static-columns

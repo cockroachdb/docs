@@ -133,7 +133,7 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload fixtures import tpcc \
+    $ ./workload init tpcc \
     --warehouses 2500 \
     "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
     ~~~
