@@ -103,7 +103,7 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 
 To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql.html):
 
-1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine.
+1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine. Alternatively, you can set [`sslmode=require`](#security-risks-of-ssl-mode-settings).
 1. Create a `certs` directory on your local machine:
 
     {% include copy-clipboard.html %}
@@ -185,6 +185,15 @@ For examples, see the following:
 <section class="filter-content" markdown="1" data-scope="your-tool">
 To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-party-database-tools.html), use the connection parameters provided in the Console.
 </section>
+
+## Security risks for SSL Mode settings
+
+The table below lists the `ssl-mode` settings you can use to connect to your cluster. Other settings are not recommend.
+
+`ssl-mode` | Eavesdropping protection | MITM protection | Description
+-------------|------------|------------|------------
+`require` | Yes | No | Less secure than using a CA certificate. This may leave your cluster vulnerable to attacks and is only recommended for testing or unimportant data.
+`verify-full` | Yes | Yes | Ensures that you connect to the trusted server of your choice. A CA certificate is still required.
 
 ## What's next
 
