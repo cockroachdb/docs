@@ -17,7 +17,7 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 ### Step 3. Get the code
 
-Clone [the code's GitHub repository](https://github.com/typeorm/cockroachdb-example).
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-typescript-typeorm).
 
 ### Step 4. Update the connection parameters
 
