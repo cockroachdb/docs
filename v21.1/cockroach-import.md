@@ -27,7 +27,7 @@ $ cockroach import db <format> <location/of/file> [flags]
 Import a table:
 
 ~~~ shell
-$ cockroach import table <table name> <format> <location/of/file> [flags]
+$ cockroach import table <table_name> <format> <location/of/file> [flags]
 ~~~
 
 View help:
