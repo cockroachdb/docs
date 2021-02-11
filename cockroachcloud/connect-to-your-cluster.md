@@ -188,7 +188,7 @@ To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-p
 
 ## Security risks for SSL Mode settings
 
-The table below lists the `ssl-mode` settings you can use to connect to your cluster. Other settings are not recommend.
+The table below lists the `ssl-mode` settings you can use to connect to your cluster. Other settings are not recommended.
 
 `ssl-mode` | Eavesdropping protection | MITM protection | Description
 -------------|------------|------------|------------
