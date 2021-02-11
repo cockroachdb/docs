@@ -15,13 +15,12 @@ To shut down the CockroachDB cluster:
     $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
     ~~~
 
-1. Delete the persistent volumes and persistent volume claims:
+    This will delete the StatefulSet but will not delete the persistent volumes that were attached to the pods. 
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete pv,pvc --all
-    ~~~
-
+    {{site.data.alerts.callout_danger}}
+    If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
+    {{site.data.alerts.end}}
+    
 1. Get the names of any CSRs for the cluster:
 
     {% include copy-clipboard.html %}
@@ -50,11 +49,15 @@ To shut down the CockroachDB cluster:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-1. Delete all of the resources associated with the `cockroachdb` label, including the logs, remote persistent volumes, and Prometheus and Alertmanager resources:
+1. Delete all of the resources associated with the `cockroachdb` label, including the logs and Prometheus and Alertmanager resources:
+
+    {{site.data.alerts.callout_danger}}
+    This does not include deleting the persistent volumes that were attached to the pods. If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
+    $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
 
     ~~~
@@ -66,10 +69,6 @@ To shut down the CockroachDB cluster:
     service "alertmanager-cockroachdb" deleted
     service "cockroachdb" deleted
     service "cockroachdb-public" deleted
-    persistentvolumeclaim "datadir-cockroachdb-0" deleted
-    persistentvolumeclaim "datadir-cockroachdb-1" deleted
-    persistentvolumeclaim "datadir-cockroachdb-2" deleted
-    persistentvolumeclaim "datadir-cockroachdb-3" deleted
     poddisruptionbudget.policy "cockroachdb-budget" deleted
     job.batch "cluster-init-secure" deleted
     rolebinding.rbac.authorization.k8s.io "cockroachdb" deleted
