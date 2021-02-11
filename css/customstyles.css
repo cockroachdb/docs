@@ -6671,10 +6671,9 @@ body.sidenav-open {
   /* Safari */
   position: sticky;
   top: 0; }
-  @media screen and (min-width: 0) and (max-width: 767px) {
+  @media (min-width: 992px) {
     .col-sidebar-content {
-      height: auto;
-      overflow-y: auto; } }
+      top: 110px; } }
 
 .nav-docs-mobile {
   position: fixed;
@@ -6745,6 +6744,9 @@ body.sidenav-open {
   #sidebar .tier-1 a,
   .js-sidebar .tier-1 a {
     color: #242A35; }
+  #sidebar .tier-1.active > a,
+  .js-sidebar .tier-1.active > a {
+    color: #6933FF; }
   #sidebar .tier-2 a,
   .js-sidebar .tier-2 a {
     color: #242A35; }
