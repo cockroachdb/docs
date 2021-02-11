@@ -129,5 +129,5 @@ To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-p
 
 ## What's next
 
-- [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)
+- [Build a "Hello, World" app](../v20.2/build-a-python-app-with-cockroachdb-django.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
