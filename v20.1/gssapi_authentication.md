@@ -131,7 +131,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. [Enable an enterprise license](licensing.html#obtain-a-license).
+6. [Enable an enterprise license](licensing-faqs.html#obtain-a-license).
     {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you don't need to enable an enterprise license. {{site.data.alerts.end}}
 
 7. Enable GSSAPI authentication:

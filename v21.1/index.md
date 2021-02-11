@@ -109,7 +109,6 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="https://www.cockroachlabs.com/guides/">Whitepapers</a></p>
         <p><a href="https://www.cockroachlabs.com/community/tech-talks/">Videos & Webinars</a></p>
         <p><a href="cockroachdb-in-comparison.html">DB Comparisons</a></p>
-        <p><a href="licensing.html">Licensing</a></p>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">
@@ -118,7 +117,8 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
         <p><a href="frequently-asked-questions.html">Product FAQs</a></p>
         <p><a href="sql-faqs.html">SQL FAQs</a></p>
         <p><a href="operational-faqs.html">Operational FAQs</a></p>
-        <p><a href="operational-faqs.html">Availability FAQs</a></p>        
+        <p><a href="operational-faqs.html">Availability FAQs</a></p>  
+        <p><a href="licensing-faqs.html">Licensing FAQs</a></p>       
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">

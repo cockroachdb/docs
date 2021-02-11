@@ -1,8 +1,7 @@
 ---
-title: Licensing
+title: Licensing FAQs
 summary: Overview of Licensing for CockroachDB.
 toc: true
-redirect_from: licensing-faqs.html
 ---
 
 Current CockroachDB code is licensed in three ways: 
@@ -150,7 +149,7 @@ You can monitor the time until your license expires with [Prometheus](monitor-co
 
 After your license expires, the enterprise features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
 
-To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](licensing.html#set-a-license) the new license.
+To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](#set-a-license) the new license.
 
 ## FAQs
 

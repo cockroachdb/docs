@@ -181,7 +181,7 @@ Our past outlook on the right business model relied on a crucial norm in the OSS
 
 Recently, however, OSS companies have seen the rise of highly-integrated providers take advantage of their unique position to offer “as-a-service” versions of OSS products, and offer a superior user experience as a consequence of their integrations. We’ve most recently seen it happen with Amazon’s forked version of ElasticSearch.
 
-To respond to this breed of competitor, we changed our software licensing terms. To learn more about our motivations, see [Licensing](licensing.html) as well as our [blog post](https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/) about the license change.
+To respond to this breed of competitor, we changed our software licensing terms. To learn more about our motivations, see the [Licensing FAQs](licensing-faqs.html) as well as our [blog post](https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/) about the license change.
 
 ## Have questions that weren’t answered?
 
