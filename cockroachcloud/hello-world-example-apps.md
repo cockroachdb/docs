@@ -8,8 +8,6 @@ redirect_from: build-an-app-with-cockroachdb.html
 
 The examples in this section show you how to build simple "Hello World" applications **using CockroachCloud**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)](../v20.2/hello-world-example-apps.html).
 
-## Apps
-
 Click the links in the table below to see simple but complete example applications for each supported language and library combination.
 
 If you are looking to do a specific task such as connect to the database, insert data, or run multi-statement transactions, see [this list of tasks](#tasks).
