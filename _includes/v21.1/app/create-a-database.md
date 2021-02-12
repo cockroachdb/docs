@@ -33,7 +33,7 @@
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url='postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
+    --url='postgres://<username>:<password>@<global host>:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
     ~~~
 
     In the connection string copied from the CockroachCloud Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created [earlier](#set-up-your-cluster-connection).
