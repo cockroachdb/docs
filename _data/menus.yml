@@ -1,0 +1,207 @@
+---
+why:
+  - identifier: familiar_sql
+    pre: "Build fast & build to last"
+    name: Familiar SQL
+    url: /product/sql/
+    weight: 100
+  - identifier: elastic_sql
+    pre: "Elastic Scale"
+    name: Grow locally and/or globally
+    url: /product/scale/
+    weight: 110
+
+survive:
+  - identifier: elastic_sql
+    pre: "Bulletproof Resilience"
+    name: Survive any failure
+    url: /product/resilience/
+    weight: 110
+  - identifier: consistency
+    pre: "Consistent Transactions"
+    name: Guarantee data correctness
+    url: /product/consistency
+    weight: 120
+
+thrive:
+  - identifier: consistency
+    pre: "Geo-partitioned data"
+    name: Performance & Regulatory Compliance
+    url: /product/geo-partitioning/
+    weight: 110
+  - identifier: elastic_sql
+    pre: "Hybrid and multi-cloud"
+    name: Deploy on and across any cloud
+    url: /product/cloud-native/
+    weight: 120
+
+product_quicklinks:
+  - identifier: compare
+    pre: "Compare Products"
+    name: CockroachDB, Enterprise & Cloud
+    url: /compare/
+    weight: 110
+  - identifier: Pricing
+    pre: "Pricing"
+    name: Pricing breakdown
+    url: /pricing/
+    weight: 120
+  - identifier: latest
+    pre: "The Latest"
+    name: What's New
+    url: /blog/cockroachdb-20-2-release/
+    weight: 130
+  - identifier: k8s
+    pre: "CockroachDB on Kubernetes"
+    name: "Cloud native distributed SQL"
+    url: "/product/kubernetes/"
+
+resources_started:
+  - identifier: get_crdb
+    pre: ""
+    name: Get CockroachDB
+    url: /get-cockroachdb/
+    weight: 110
+  - identifier: architecture
+    pre: ""
+    name: Architecture Overview
+    url: /docs/stable/architecture/overview.html
+    weight: 120
+  - identifier: quickstart
+    pre: ""
+    name: Quickstart
+    url: /docs/cockroachcloud/quickstart.html
+    weight: 130
+  - identifier: faq
+    pre: ""
+    name: FAQ
+    url: /docs/stable/frequently-asked-questions.html
+    weight: 140
+resources_technical:
+  - identifier: docs
+    pre: ""
+    name: Docs
+    url: /docs/
+    weight: 110
+  - identifier: developers
+    pre: ""
+    name: Developers
+    url: /developers/
+    weight: 120
+  - identifier: webinars
+    pre: ""
+    name: Webinars
+    url: /community/tech-talks/
+    weight: 130
+  - identifier: guides
+    pre: ""
+    name: Guides
+    url: https://resources.cockroachlabs.com/guides-briefs
+    weight: 140
+
+resources_learn:
+  - identifier: university
+    pre: ""
+    name: Cockroach University
+    url: /cockroach-university/
+    weight: 110
+  - identifier: library
+    pre: ""
+    name: Resource library
+    url: https://resources.cockroachlabs.com/
+    weight: 120
+  - identifier: videos
+    pre: ""
+    name: Videos
+    url: https://resources.cockroachlabs.com/videos
+    weight: 130
+  - identifier: company
+    pre: ""
+    name: Company
+    url: /about/
+    weight: 140
+  - identifier: partners
+    pre: ""
+    name: Partners
+    url: /partners/
+    weight: 150
+# c
+main_right:
+  - identifier: contact
+    pre: ""
+    name: Contact Us
+    url: /contact/
+    weight: 100
+  - identifier: sign_in
+    pre: ""
+    name: Sign In
+    url: https://cockroachlabs.cloud/
+    weight: 110
+  - identifier: get_started
+    pre: ""
+    name: Get CockroachDB
+    url: /get-started-cockroachdb/
+    weight: 120
+blog_sub:
+  - identifier: blog
+    pre: ""
+    name: Blog
+    url: /blog/
+    weight: -100
+  - identifier: culture
+    pre: ""
+    name: Company + Culture
+    url: /blog/culture/
+    weight: -100
+  - identifier: engineering
+    pre: ""
+    name: Engineering
+    url: /blog/engineering/
+    weight: -100
+  - identifier: product
+    pre: ""
+    name: Product
+    url: /blog/product/
+    weight: -100
+  - identifier: customer-stories
+    pre: ""
+    name: Customer Stories
+    url: /blog/customer-stories/
+    weight: -100
+careers_sub:
+  - identifier: careers
+    pre: ""
+    name: Careers
+    url: /careers/
+    weight: -100
+  - identifier: open-positions
+    pre: ""
+    name: Open Positions
+    url: /careers/open-positions/
+    weight: -100
+  - identifier: meet-the-team
+    pre: ""
+    name: Meet The Team
+    url: /careers/meet-the-team/
+    weight: -100
+solutions_sub:
+  - identifier: solutions
+    pre: ""
+    name: Solutions
+    url: /solutions/
+    weight: -200
+  - identifier: initiatives
+    pre: ""
+    name: Initiatives
+    url: /solutions/initiatives/
+    weight: -100
+  - identifier: use-cases
+    pre: ""
+    name: Use Cases
+    url: /solutions/use-cases/
+    weight: -100
+  - identifier: verticals
+    pre: ""
+    name: Verticals
+    url: /solutions/Verticals/
+    weight: -100

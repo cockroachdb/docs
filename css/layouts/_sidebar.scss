@@ -32,12 +32,12 @@ body.sidenav-open{
   }
 }
 #sidebarMenu{
-  @include at-query('max-width', $screen-lg) {
+  @include at-query('max-width', $screen-md) {
     height: auto;
     position: fixed;
     z-index: 10;
     background-color: $white;
-    top: 114px;
+    top: 108px;
     border-top: 1px solid $neutral-300;
     border-bottom: 1px solid $neutral-300;
     height: 60%;
@@ -56,14 +56,14 @@ body.sidenav-open{
     height: auto;
     overflow-y: auto;
   }
-  // @include at-query($min, $screen-lg) {
-  //   top: 102px;
-  // }
+  @include at-query($min, $screen-md) {
+    top: 118px;
+  }
 }
 
 .nav-docs-mobile {
   position: fixed;
-  top: 60px;
+  top: 54px;
   z-index: 999;
   background: #fff;
   .h3 {

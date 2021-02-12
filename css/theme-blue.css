@@ -121,11 +121,11 @@ a[data-toggle="tooltip"], a:hover[data-toggle="tooltip"] {
     border-color: #248ec2 !important;
 }
 
-.btn-primary {
+/* .btn-primary {
     color: #ffffff;
     background-color: #347DBE;
     border-color: #347DBE;
-}
+} */
 
 /* .btn-primary:hover,
 .btn-primary:focus,
