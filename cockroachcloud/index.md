@@ -11,7 +11,7 @@ homepage: true
   <div class="p-2 p-md-5">
   <h1 class="m-0 text-white">CockroachCloud Docs</h1>
   <p class="mt-0 pb-4 text-white">Get your applications to market faster with a fully managed CockroachDB instance.</p>
-    <div class="row d-lg-flex mx-0">
+    <div class="row d-lg-flex mx-0 pt-lg-5">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex ">
         <a href="quickstart.html" class="h-100">
@@ -72,7 +72,7 @@ homepage: true
         <li><a href="create-your-cluster.html">Start a Dedicated Cluster</a></li>
         <li><a href="connect-to-your-cluster.html">Connect to Your Cluster</a></li>
         <li><a href="learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-        <li><a href="build-a-python-app-with-cockroachdb-django.html">Hello, World!</a></li>
+        <li><a href="../v20.2/build-a-python-app-with-cockroachdb-django.html">Hello, World!</a></li>
         </ul>
       </div>
     </div>

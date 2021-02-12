@@ -131,7 +131,7 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 - `ABORTED`, this operation discards the write intent and reads the next-most-recent value from RocksDB.
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e.,  ahead of this transaction's timestamp); however, this only succeeds if the write intent's transaction has become inactive.
   	- If the push succeeds, the operation continues.
-  	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](https:www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
+  	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
 - `MISSING`, the resolver consults the write intent's timestamp. 
 	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created. 
 	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior. 

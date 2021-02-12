@@ -52,10 +52,7 @@ body.sidenav-open{
   position: -webkit-sticky; /* Safari */  
   position: sticky;
   top: 0;
-  @include at-query(0, $screen-sm) {
-    height: auto;
-    overflow-y: auto;
-  }
+  // Desktop fix sidebar lower to show search
   @include at-query($min, $screen-md) {
     top: 118px;
   }
@@ -130,8 +127,15 @@ body.sidenav-open{
     }
   }
 
-  .tier-1 a{
-    color: $neutral-800;
+  .tier-1 {
+    a {
+      color: $neutral-800;
+    }
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
   }
 
   .tier-2 {

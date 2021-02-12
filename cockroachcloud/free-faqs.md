@@ -49,7 +49,7 @@ CockroachCloud Free is in beta while we work on adding core features like [impor
 
 ### Where can I submit feedback or bugs on the beta?
 
-You can submit feedback or log any bugs you find through [this survey](https://cockroachlabs.typeform.com/to/gvCcF14q).
+You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
 
 ## Security
 
