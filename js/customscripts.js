@@ -100,7 +100,7 @@ $(function() {
     // chrome on android fires a resize event on scroll, this will make sure
     // these only fire on an actual resize event
     if (_viewport_width != cachedWidth) {
-      
+
       // sidenavOnResize(_viewport_width);
       $(window).scroll();
     }
@@ -142,7 +142,7 @@ $(function() {
         $colSidebar.css('bottom', '0');
       }
     } else { // mobile
-      
+
       $versionSwitcher.css({'bottom': '0'});
       if ($sidebar.hasClass('nav--collapsed') && scrollTop > 0 && !scrolled) {
         //$sidebar.animate({height: 0}, {duration: 250});
@@ -205,31 +205,84 @@ $(function() {
   // Render the TOC on DOM ready by default.
   renderTOC();
 
+  // Map to store the scopes of the page filters
+  let scopes = new Map();
+
   // Activate a new filter scope by setting the `current` class on only
   // elements with the desired scope and re-rendering the TOC to reflect any
   // changes in visibility.
   function setFilterScope(scope) {
-    $('[data-scope].current').removeClass('current');
+    // find the filter set with this scope
+    $('[data-scope].current').each(function(index) {
+      // if the target scope is in the same group as the current scope for that group, remove current
+      if (scopes.get($(this).attr('data-scope')) === scopes.get(scope)) {
+        console.log("current scope is in target scope " + scope + "'s group.");
+        $(this).removeClass('current');
+      } else {
+        console.log("current scope " + scope + " in different group.");
+      }
+    });
+    // add target scope to current
     $('[data-scope="' + scope + '"]').addClass('current');
     renderTOC();
   }
 
+  // convenience function to get filter query parameters
+  function getFilterParams() {
+    var qd = {};
+    if (location.search) location.search.substr(1).split("&").forEach(function(item) {
+      var s = item.split("="),
+          k = s[0],
+          v = s[1] && decodeURIComponent(s[1]); //  null-coalescing / short-circuit
+      (qd[k] = qd[k] || []).push(v) // null-coalescing / short-circuit
+    })
+    return qd["filters"];
+  }
+
   // Handle clicks on filter buttons by activating the scope named by that
   // button and updating the URL hash.
-  $('.filter-button').on('click', function() {
-    var scope = $(this).data('scope');
-    var url = window.location.pathname + window.location.search +
-        ($(this).is(':first-child') ? '' : '#' + scope);
-    setFilterScope(scope);
-    history && history.replaceState(null, null, url);
+  $('.filters').each(function(index) {
+    $(this).find('.filter-button').each(function(i){
+      // add the scope and group to the Map if it isn't already there
+      var scope = $(this).data('scope');
+      console.log("adding scope: " + scope);
+      scopes.set(scope, index);
+    });
+    // when the user clicks the filter button, add it to the query params and set the scope
+    $(this).find('.filter-button').on('click', function() {
+      var scope = $(this).data('scope');
+      var queryParams = "?";
+      var filterParams = getFilterParams();
+      // if there are current query params, construct the new filters query params
+      if (typeof(filterParams) !== 'undefined') {
+        getFilterParams().forEach((item, i) => {
+          if (scopes.get(scope) !== scopes.get(item) )
+          queryParams = queryParams + "filters=" + item + "&";
+        });
+      }
+      var url = window.location.pathname + queryParams +
+          ($(this).is(':first-child') ? '' : 'filters=' + scope );
+      setFilterScope(scope);
+      history && history.replaceState(null, null, url);
+    });
   });
 
-  // On page load, activate the scope named in the URL hash, if any. If the
-  // URL doesn't name a scope, activate the first scope discovered on the
-  // page.
-  setFilterScope(window.location.hash.substring(1));
-  if ($('[data-scope].current').length == 0) {
-    setFilterScope($('[data-scope]').first().data('scope'));
+  // On page load, activate the scope named in the query params, if any. If the
+  // URL doesn't name a scope, activate the first scope discovered in the
+  // filter group.
+  var filterParams = getFilterParams();
+  if (typeof(filterParams) === 'undefined') {
+    // no filter query params, set the defaults
+    $('.filters').each(function(index) {
+      var s = $(this).children().first().data('scope');
+      console.log("setting scope to: " + s);
+      setFilterScope(s);
+    });
+  } else {
+    filterParams.forEach((item, i) => {
+      console.log("setting the scope to: " + item + " from existing filter query param.");
+      setFilterScope(item);
+    });
   }
 
   // On page load, update last list item style to match siblings
@@ -365,7 +418,7 @@ $(function() {
     if ( $(this).children().length > 0 ) {
       return
     }
- 
+
     return this.hostname && this.hostname !== location.hostname;
   }).addClass('external').attr("target","_blank");
 });
