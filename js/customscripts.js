@@ -271,20 +271,20 @@ $(function() {
   // URL doesn't name a scope, activate the first scope discovered in the
   // filter group.
   var filterParams = getFilterParams();
-  if (typeof(filterParams) === 'undefined') {
-    // no filter query params, set the defaults
-    $('.filters').each(function(index) {
-      var s = $(this).children().first().data('scope');
-      console.log("setting scope to: " + s);
-      setFilterScope(s);
-    });
-  } else {
+  // set the default filter scopes
+  $('.filters').each(function(index) {
+    var s = $(this).children().first().data('scope');
+    console.log("setting scope to: " + s);
+    setFilterScope(s);
+  });
+  if (typeof(filterParams) !== 'undefined') {
+    // filter query params, override the defaults
     filterParams.forEach((item, i) => {
       console.log("setting the scope to: " + item + " from existing filter query param.");
       setFilterScope(item);
     });
   }
-
+  
   // On page load, update last list item style to match siblings
   if (_viewport_width <= 1199) {
     $('li.active:last a').css({
