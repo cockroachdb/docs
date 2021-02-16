@@ -10,7 +10,7 @@ CockroachCloud uses TLS 1.2 for inter-node and client-node communication, digita
 
 ## Node identity verification
 
-The [connection string](connect-to-your-cluster.html) generated to connect to your application uses the `verify-full` [SSL mode](https://www.postgresql.org/docs/11/libpq-ssl.html) by default to verify a node’s identity. This mode encrypts the data in-flight as well as verifies the identity of the CockroachDB node, thus ensuring a secure connection to your cluster. Using this mode prevents MITM (Man in the Middle) attacks, impersonation attacks, and eavesdropping.
+The [connection string](connect-to-your-cluster.html) generated to connect to your application uses the `verify-full` [SSL mode](#ssl-mode-settings) by default to verify a node’s identity. This mode encrypts the data in-flight as well as verifies the identity of the CockroachDB node, thus ensuring a secure connection to your cluster. Using this mode prevents MITM (Man in the Middle) attacks, impersonation attacks, and eavesdropping.
 
 To connect securely to your cluster using the `verify-full` mode:
 
@@ -25,14 +25,14 @@ CockroachCloud uses password authentication for verifying a client’s identity.
 
 For more information about creating SQL users and passwords, see [User Authorization](user-authorization.html).
 
-## SSL Mode settings
+## SSL mode settings
 
-The table below lists the `ssl-mode` settings you can use to [connect to your cluster](connect-to-your-cluster.html) and their associated security risks. Other settings are not recommended.
+The table below lists the `sslmode` settings you can use to [connect to your cluster](connect-to-your-cluster.html) and their associated security risks. Other settings are not recommended.
 
-`ssl-mode` | Eavesdropping protection | MITM protection | Description
+`sslmode` | Eavesdropping protection | MITM protection | Description
 -------------|------------|------------|------------
-`require` | Yes | No | Less secure than using a CA certificate. This may leave your cluster vulnerable to attacks and is only recommended for testing or unimportant data.
-`verify-full` | Yes | Yes | Ensures that you connect to the trusted server of your choice. A CA certificate is required.
+`require` | Yes | No | 	Force a secure connection. An error occurs if the secure connection cannot be established. This is less secure than using a CA certificate and is only recommended for testing or unimportant data.
+`verify-full` | Yes | Yes | Force a secure connection, verify that the server certificate is signed by a known CA, and verify that the server address matches that specified in the certificate.
 
 ## See also
 
