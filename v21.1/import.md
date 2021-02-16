@@ -167,7 +167,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
--  [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
+- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ### Table users and privileges
@@ -525,7 +525,7 @@ WITH
 
 ### Import a limited number of rows
 
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. 
+<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
 
 The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
 
