@@ -1,6 +1,6 @@
 @import "global/variables";
 
-@import "bs/bootstrap.scss"; 
+@import "bs/bootstrap.scss";
 @import "global/fonts";
 @import "global/mixins";
 
@@ -62,7 +62,7 @@ p {
   // }
 
   @include at-query($min, $screen-md) {
-    margin: 10px 0;
+     margin: 0;
   }
 }
 
@@ -113,7 +113,7 @@ h3 {
   }
 }
 
-h4, .h4 { 
+h4, .h4 {
   @include poppins_sb(16px);
   font-weight: bold;
   line-height: 26px;
@@ -148,8 +148,8 @@ pre.prettyprint {
   overflow-y: scroll;
 }
 
-pre { 
-  overflow: auto; 
+pre {
+  overflow: auto;
   display: block;
   padding: 20px;
   margin: 0 0 10px;
@@ -296,14 +296,14 @@ th,
 td {
   padding: map-get($spacers, 1) map-get($spacers, 2);
 }
-// @debug map-get($spacers, 2); 
+// @debug map-get($spacers, 2);
 tbody tr:hover {
   // what is theme-blue.css? overwriting requires important
   // background-color: $cl_gray_light !important;
 }
 
 
-tbody tr.eol {  
+tbody tr.eol {
   background-color: #fffaea !important;
 }
 
@@ -778,7 +778,7 @@ a.accordion-toggle {
   right: 30px;
   top: 30px;
   z-index: 1;
-  @media (min-width: $screen-md){ 
+  @media (min-width: $screen-md){
     right: 15px;
     top: 15px;
   }
