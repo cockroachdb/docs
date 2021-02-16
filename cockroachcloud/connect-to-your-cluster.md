@@ -20,6 +20,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
 - If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
+- If you have an AWS cluster, you can set up an [AWS PrivateLink](network-authorization.html#aws-privatelink) connection.
 
 ### Add IP addresses to the allowlist
 
@@ -52,11 +53,17 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 
 1. Click **Apply**.
 
-### Establish a VPC Peering connection
+### Establish VPC Peering or AWS PrivateLink
+VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters.
 
-{{site.data.alerts.callout_info}}
-Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
-{{site.data.alerts.end}}
+<div class="filters clearfix">
+  <button style="width: 15%" class="filter-button" data-scope="gcp"> <br> VPC Peering </button>
+  <button style="width: 15%" class="filter-button" data-scope="aws">AWS PrivateLink</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="gcp">
+
+<a name="vpc-peering"></a>
 
 1. Navigate to your cluster's **Networking > VPC Peering** tab.
 1. Click **Set up a VPC peering connection**.
@@ -67,6 +74,25 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
 1. On the **Networking** page, verify the connection status is **Active**.
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="aws">
+
+<a name="aws-privatelink"></a>
+
+1. Navigate to your cluster's **Networking > PrivateLink** tab.
+1. Click **Set up a PrivateLink connection**.
+1. Use the service name provided in the dialog to [create an AWS endpoint](network-authorization.html#create-an-aws-endpoint) in the AWS console.
+1. Click **Next**
+1. Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
+1. Click **Verify** to verify the ID.
+1. Click **Next** to continue to the third step.
+1. Return to the AWS console to [enable private DNS](network-authorization.html#enable-private-dns).
+1. Click **Complete**.
+1. On the **Networking** page, verify the connection status is Available.
+
+</section>
+
 ## Step 2. Create a SQL user
 
 {% include cockroachcloud/create-a-sql-user.md %}
@@ -75,11 +101,18 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 
 1. In the top right corner of the Console, click the **Connect** button.
 
-    The **Connect** dialog displays.
+    The **Connect** dialog displays with **IP Allowlist** selected by default.
 
-1. **IP Allowlist** is selected by default as the **Network Security** option. Select **VPC Peering** if you have already:
-    - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional) for your GCP cluster
-    - [Established a VPC Peering connection](#establish-a-vpc-peering-connection)
+1.  Select a **Network Security** option:
+    
+      You can use the **IP Allowlist** option if you have already [added an IP address to your allowlist.](#add-ip-addresses-to-the-allowlist)
+
+      For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-vpc-peering-or-aws-privatelink).
+
+      For GCP clusters, you can select **VPC Peering** if you have already:
+    - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
+    - [Established a VPC Peering connection](#establish-vpc-peering-or-aws-privatelink)
+  
 1. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
 1. From the **Database** dropdown, select the database you want to connect to.
@@ -190,3 +223,4 @@ To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-p
 
 - [Build a "Hello, World" app](../v20.2/build-a-python-app-with-cockroachdb-django.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+
