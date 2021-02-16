@@ -11,6 +11,20 @@ User authorization is the act of defining access policies for authenticated Cock
  Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
 {{site.data.alerts.end}}
 
+## Users and Roles
+
+There is no technical distinction between a role or user in CockroachDB. A role/user can:
+  - be permitted to log in to the SQL shell.
+  - be granted privileges to specific actions and database objects.
+  - be a member of other users/roles, inheriting their privileges.
+  - have other users/roles as members.
+
+We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
+
+The SQL statements `CREATE USER` and `CREATE ROLE` will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Othwerise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+
+Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
+
 ## SQL users
 
 A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
@@ -101,7 +115,7 @@ Example: A is a member of C ... is a member of B where "..." is an arbitrary num
 
 <span class="version-tag">New in v20.2</span> All CockroachDB objects (such as databases, tables, schemas, and types) must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
 
-All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner except system objects. System objects without owners have `node` as their owner.
+All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner, with the exception of system objects. System objects without owners have `node` as their owner.
 
 To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 
