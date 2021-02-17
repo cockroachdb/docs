@@ -14,6 +14,8 @@ Some core [features](#feature-licensing) released up to and including version 19
 
 Other core features and all enterprise features are licensed under the Cockroach Community License (CCL).
 
+Any code used in CockroachDB from other open-source projects is subject to the applicable license from that project.
+
 ## Types of licenses
 
 Type | Description

@@ -113,13 +113,13 @@ CockroachDB is the SQL database for building global, scalable cloud services tha
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="landing-column-title">FAQs</p>
-      <div class="landing-column-content">
-        <p><a href="frequently-asked-questions.html">Product FAQs</a></p>
-        <p><a href="sql-faqs.html">SQL FAQs</a></p>
-        <p><a href="operational-faqs.html">Operational FAQs</a></p>
-        <p><a href="operational-faqs.html">Availability FAQs</a></p>  
-        <p><a href="licensing-faqs.html">Licensing FAQs</a></p>       
-      </div>
+      <ul>
+        <li><a href="frequently-asked-questions.html">CockroachDB FAQs</a></li>
+        <li><a href="sql-faqs.html">SQL FAQs</a></li>
+        <li><a href="operational-faqs.html">Operational FAQs</a></li>
+        <li><a href="licensing-faqs.html">Licensing FAQs</a></li>
+        <li><a href="cockroachdb-in-comparison.html">DB Comparisons</a></li>
+      </ul>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-4">
       <p class="landing-column-title">Releases</p>
