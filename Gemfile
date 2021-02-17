@@ -6,7 +6,7 @@ source "https://rubygems.org"
 # instructions.
 
 # Jekyll v4.1.0
-gem "jekyll", github: "jekyll", ref: "930c65f"
+gem "jekyll", "~> 4.2"
 gem "jekyll-redirect-from", "~> 0.15"
 gem "jekyll-sitemap", "~> 1.3.1"
 gem "liquid-c", "~> 4.0.0"
