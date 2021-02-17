@@ -1,5 +1,12 @@
 [
   {
+    "title": "Docs Home",
+    "is_top_level": true,
+    "urls": [
+      "/"
+    ]
+  },
+  {
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
