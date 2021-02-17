@@ -15,7 +15,7 @@ User authorization is the act of defining access policies for authenticated Cock
 
 There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
-- be permitted to log in to the [SQL shell](cockroach-sql.html)
+- be permitted to log in to the [SQL shell](cockroach-sql.html).
 - be granted [privileges](#privileges) to specific actions and database objects.
 - be a member of other users/roles, inheriting their privileges.
 - have other users/roles as members that inherit its privileges.
