@@ -7,18 +7,18 @@ redirect_from: [create-and-manage-users.html, roles.html]
 
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
-## Users and Roles
+## Users and roles
 
 There is no technical distinction between a role or user in CockroachDB. A role/user can:
 
-- be permitted to log in to the SQL shell.
-- be granted privileges to specific actions and database objects.
+- be permitted to log in to the [SQL shell](cockroach-sql.html)
+- be granted [privileges](#privileges) to specific actions and database objects.
 - be a member of other users/roles, inheriting their privileges.
-- have other users/roles as members.
+- have other users/roles as members that inherit its privileges.
 
 We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
 
-The SQL statements `CREATE USER` and `CREATE ROLE` will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Othwerise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
 Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
 
