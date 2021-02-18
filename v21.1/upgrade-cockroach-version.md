@@ -209,7 +209,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades within the v21.1.x series, skip this step.
 {{site.data.alerts.end}}
 
-If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day) and remember to prevent new schema changes and changes to user privileges. If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
+If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
 Once you are satisfied with the new version:
 
