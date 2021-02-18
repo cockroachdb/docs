@@ -124,10 +124,13 @@
       },
       {
         "title": "Develop",
-        "urls": [
-          "/${VERSION}/developer-guide-overview.html"
-        ],
         "items": [
+          {
+            "title": "Overview",
+            "urls": [
+              "/${VERSION}/developer-guide-overview.html"
+            ]
+          },
           {
             "title": "Connect to CockroachDB",
             "items": [
@@ -154,10 +157,13 @@
           },
           {
             "title": "Design a Database Schema",
-            "urls": [
-              "/${VERSION}/schema-design-overview.html"
-            ],
             "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/schema-design-overview.html"
+                ]
+              },
               {
                 "title": "Create a Database",
                 "urls": [
@@ -360,11 +366,14 @@
           },
           {
             "title": "Optimize Performance",
-            "urls": [
-              "/${VERSION}/make-queries-fast.html"
-            ],
             "items":
             [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/make-queries-fast.html"
+                ]
+              },
               {
                 "title": "Performance Best Practices",
                 "urls": [
@@ -384,10 +393,13 @@
             "items": [
               {
                 "title": "Hello World",
-                "urls": [
-                  "/${VERSION}/hello-world-example-apps.html"
-                ],
                 "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/hello-world-example-apps.html"
+                    ]
+                  },
                   {
                     "title": "Go",
                     "urls": [
@@ -480,16 +492,22 @@
               },
               {
                 "title": "MovR",
-                "urls": [
-                  "/${VERSION}/movr.html"
-                ],
                 "items": [
                   {
-                    "title": "Multi-Region",
+                    "title": "Overview",
                     "urls": [
-                      "/${VERSION}/multi-region-overview.html"
-                    ],
+                      "/${VERSION}/movr.html"
+                    ]
+                  },
+                  {
+                    "title": "Multi-Region",
                     "items": [
+                      {
+                        "title": "Overview",
+                        "urls": [
+                          "/${VERSION}/multi-region-overview.html"
+                        ]
+                      },
                       {
                         "title": "Use-Case",
                         "urls": [
@@ -528,10 +546,13 @@
           },
           {
             "title": "Third-Party Database Tools",
-            "urls": [
-              "/${VERSION}/third-party-database-tools.html"
-            ],
             "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/third-party-database-tools.html"
+                ]
+              },
               {
                 "title": "Schema Migration Tools",
                 "items": [
