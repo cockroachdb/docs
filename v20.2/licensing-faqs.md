@@ -4,17 +4,16 @@ summary: Overview of Licensing for CockroachDB.
 toc: true
 ---
 
-Current CockroachDB code is licensed in three ways: 
+Current CockroachDB code is licensed in two ways: 
 
 -  [Business Source License (BSL)](#bsl)
--  [Cockroach Community License (Free)](#ccl-free)
--  [Cockroach Community License (Paid)](#ccl-paid)
+-  [Cockroach Community License (CCL)](#ccl)
 
-Some core [features](#feature-licensing) released up to and including version 19.1 are licensed under [Apache 2.0](#apache). Beginning with version 19.2, these features are licensed under the BSL for three years before converting to the Apache 2.0 license.
+Free users have access to all core features, which include all BSL features and certain CCL [features](#feature-licensing). Paid users have access to all core and [enterprise features](enterprise-licensing.html).
 
-Other core features and all enterprise features are licensed under the Cockroach Community License (CCL).
+Some core features released up to and including version 19.1 are licensed under [Apache 2.0](#apache). Beginning with version 19.2, these features are licensed under the BSL for three years before converting to the Apache 2.0 license.
 
-Any code used in CockroachDB from other open-source projects is subject to the applicable license from that project.
+Other core features and all enterprise features are licensed under the Cockroach Community License.
 
 ## Types of licenses
 
@@ -22,8 +21,11 @@ Type | Description
 -------------|------------
 <a name="apache"></a>**Apache 2.0 License** | Core features under the Apache License are free to use and fully open-source. BSL features convert to this license three years after their release. For license conversion dates, see the [table below](#license-conversion-timeline).
 <a name="bsl"></a>**Business Source License**| BSL features are free to use and the source code is available, but users may not use CockroachDB [as a service](#what-constitutes-hosting-cockroachdb-as-a-service) without an agreement with Cockroach Labs. The BSL is not certified as an open-source license, but most of the [Open Source Initiative](https://en.wikipedia.org/wiki/Open_Source_Initiative) (OSI) criteria are met.
-<a name="ccl-free"></a>**Cockroach <br/> Community License (Free)** | CCL (Free) features are free to use. The source code is available to view and modify, but it cannot be reused without an agreement with Cockroach Labs.
-<a name="ccl-paid"></a>**Cockroach <br/> Community License (Paid)** | CCL (Paid) features require an enterprise license key to access. The source code is available to view and modify, but it cannot be used without an agreement with Cockroach Labs.
+<a name="ccl"></a>**Cockroach <br/> Community License** | <ul><li> CCL (Free) features are free to use. The source code is available to view and modify, but it cannot be reused without an agreement with Cockroach Labs. </li><li> CCL (Paid) features require an enterprise license key to access. The source code is available to view and modify, but it cannot be used without an agreement with Cockroach Labs. </li></ul>
+
+{{site.data.alerts.callout_info}}
+Any code used in CockroachDB from other open-source projects is subject to the applicable license from that project. You can find the license for any feature in the CockroachDB repository by checking the comments at the top of each file.
+{{site.data.alerts.end}}
 
 For additional custom licensing options, [contact us](https://support.cockroachlabs.com/hc/en-us).
 
