@@ -31,7 +31,26 @@ For each initial node of your cluster, complete the following steps:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. Run the [`cockroach start`](cockroach-start.html) command:
+4. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir -p /usr/local/lib/cockroach
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos.so /usr/local/lib/cockroach/
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos_c.so /usr/local/lib/cockroach/
+    ~~~
+
+    If you get a permissions error, prefix the command with `sudo`.
+
+5. Run the [`cockroach start`](cockroach-start.html) command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -58,7 +77,7 @@ For each initial node of your cluster, complete the following steps:
 
 	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
-5. Repeat these steps for each additional node that you want in your cluster.
+6. Repeat these steps for each additional node that you want in your cluster.
 
 </section>
 
@@ -87,35 +106,54 @@ For each initial node of your cluster, complete the following steps:
 
     If you get a permissions error, prefix the command with `sudo`.
 
-4. Create the Cockroach directory:
+4. CockroachDB uses custom-built versions of the [GEOS](spatial-glossary.html#geos) libraries. Copy these libraries to the location where CockroachDB expects to find them:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ mkdir -p /usr/local/lib/cockroach
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos.so /usr/local/lib/cockroach/
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/lib/libgeos_c.so /usr/local/lib/cockroach/
+    ~~~
+
+    If you get a permissions error, prefix the command with `sudo`.
+
+5. Create the Cockroach directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mkdir /var/lib/cockroach
     ~~~
 
-5. Create a Unix user named `cockroach`:
+6. Create a Unix user named `cockroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ useradd cockroach
     ~~~
 
-6.  Move the `certs` directory to the `cockroach` directory.
+7.  Move the `certs` directory to the `cockroach` directory.
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ mv certs /var/lib/cockroach/
     ~~~
 
-7.  Change the ownership of `Cockroach` directory to the user `cockroach`:
+8.  Change the ownership of `Cockroach` directory to the user `cockroach`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ chown -R cockroach.cockroach /var/lib/cockroach
     ~~~
 
-8.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
+9.  Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -129,7 +167,7 @@ For each initial node of your cluster, complete the following steps:
     {% include {{ page.version.version }}/prod-deployment/securecockroachdb.service %}
     ~~~
 
-9. In the sample configuration template, specify values for the following flags:
+10. In the sample configuration template, specify values for the following flags:
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
@@ -137,7 +175,7 @@ For each initial node of your cluster, complete the following steps:
 
  	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
-10. Start the CockroachDB cluster:
+11. Start the CockroachDB cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
