@@ -10,13 +10,13 @@ This page has information on planning, configuring, and using connection pools w
 
 A typical database operation consists of several steps.
 
-1. The driver uses a configuration to start a connection the database server.
+1. The driver uses a configuration to start a connection to the database server.
 1. A network socket is opened on the client that connects to the database server.
 1. Data is read or written through the network socket.
 1. The connection is closed down.
-1. The network socket is closed down and its resources freed.
+1. The network socket is closed down and its resources are freed.
 
-For simple database operations, these steps are not expensive, but as an application scales up the performance of the application will suffer as each connection is created and destroyed. One pattern for improving performance is a connection pool, a group of already configured and established network connections between the client and database that can be reused for data operations within an application.
+For simple database operations, these steps are not expensive, but as an application scales up, the performance of the application will suffer as each connection is created and destroyed. One pattern for improving performance is a connection pool, a group of already configured and established network connections between the client and database that can be reused for data operations within an application.
 
 Each time an application reads or writes data, it will request one of the connections in the pool. After the data operation completes, the connection is returned to the pool so other operations can use it.
 
@@ -32,7 +32,7 @@ Storage and network performance also will affect the ability of a thread to full
 
 Cockroach Labs performed lab testing of various customer workloads and found no improvement in scalability beyond:
 
-connections = (number of cores * 4)
+**connections = (number of cores * 4)**
 
 Many workloads perform best when the number of connections was between 2 and 4 times the number of CPU cores in the cluster.
 
@@ -48,7 +48,7 @@ In this example, a Java application similar to the [basic JDBC example](build-a-
 
 Using the connection pool formula above:
 
-connections = (10 [processor cores] * 3)
+**connections = (10 [processor cores] * 3)**
 
 The connection pool size should be 30.
 

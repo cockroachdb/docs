@@ -124,34 +124,13 @@
       },
       {
         "title": "Develop",
+        "urls": [
+          "/${VERSION}/developer-guide-overview.html"
+        ],
         "items": [
-          {
-            "title": "Overview",
-            "urls": [
-              "/${VERSION}/developer-guide-overview.html"
-            ]
-          },
           {
             "title": "Connect to CockroachDB",
             "items": [
-              {
-                "title": "Start a Cluster",
-                "items": [
-                  {
-                    "title": "Local",
-                    "urls": [
-                      "/${VERSION}/secure-a-cluster.html",
-                      "/${VERSION}/start-a-local-cluster.html"
-                    ]
-                  },
-                  {
-                    "title": "CockroachCloud",
-                    "urls": [
-                      "/cockroachcloud/create-a-free-cluster.html"
-                    ]
-                  }
-                ]
-              },
               {
                 "title": "Install a driver or ORM",
                 "urls": [
@@ -166,27 +145,19 @@
                 ]
               },
               {
-                "title": "Advanced Connection Topics",
-                "items": [
-                  {
-                    "title": "Connection Pooling",
-                    "urls": [
-                      "/${VERSION}/connection-pooling.html"
-                    ]
-                  }
+                "title": "Use Connection Pools",
+                "urls": [
+                  "/${VERSION}/connection-pooling.html"
                 ]
               }
             ]
           },
           {
             "title": "Design a Database Schema",
+            "urls": [
+              "/${VERSION}/schema-design-overview.html"
+            ],
             "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/schema-design-overview.html"
-                ]
-              },
               {
                 "title": "Create a Database",
                 "urls": [
@@ -232,7 +203,7 @@
                 "title": "Advanced Schema Design",
                 "items": [
                   {
-                    "title": "Create Computed Columns",
+                    "title": "Use Computed Columns",
                     "urls": [
                       "/${VERSION}/computed-columns.html"
                     ]
@@ -297,12 +268,6 @@
                 "urls": [
                   "/${VERSION}/bulk-delete-data.html"
                 ]
-              },
-              {
-                "title": "Manage Transactions",
-                "urls": [
-                  "/${VERSION}/transactions.html"
-                ]
               }
             ]
           },
@@ -364,6 +329,12 @@
             ]
           },
           {
+            "title": "Manage Transactions",
+            "urls": [
+              "/${VERSION}/transactions.html"
+            ]
+          },
+          {
             "title": "Debug Your Application",
             "items":
             [
@@ -389,14 +360,11 @@
           },
           {
             "title": "Optimize Performance",
+            "urls": [
+              "/${VERSION}/make-queries-fast.html"
+            ],
             "items":
             [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/make-queries-fast.html"
-                ]
-              },
               {
                 "title": "Performance Best Practices",
                 "urls": [
@@ -416,13 +384,10 @@
             "items": [
               {
                 "title": "Hello World",
+                "urls": [
+                  "/${VERSION}/hello-world-example-apps.html"
+                ],
                 "items": [
-                  {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/hello-world-example-apps.html"
-                    ]
-                  },
                   {
                     "title": "Go",
                     "urls": [
@@ -515,22 +480,16 @@
               },
               {
                 "title": "MovR",
+                "urls": [
+                  "/${VERSION}/movr.html"
+                ],
                 "items": [
                   {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/movr.html"
-                    ]
-                  },
-                  {
                     "title": "Multi-Region",
+                    "urls": [
+                      "/${VERSION}/multi-region-overview.html"
+                    ],
                     "items": [
-                      {
-                        "title": "Overview",
-                        "urls": [
-                          "/${VERSION}/multi-region-overview.html"
-                        ]
-                      },
                       {
                         "title": "Use-Case",
                         "urls": [

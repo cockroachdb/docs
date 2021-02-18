@@ -10,30 +10,13 @@ This page provides an overview on changing and removing the objects in a databas
 
 Before reading this page, do the following:
 
-<ul>
-  <li>
-    <a href="install-cockroachdb.html">Install CockroachDB.</a>
-  </li>
-  <li>
-    <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
-  </li>
-  <li>
-    <a href="schema-design-overview.html">Review the database schema objects.</a>
-  </li>
-  <li>
-    <a href="schema-design-database.html">Create a database.</a>
-  </li>
-  <li>
-    <a href="schema-design-schema.html">Create a user-defined schema.</a>
-  </li>
-  <li>
-    <a href="schema-design-table.html">Create a table.</a>
-  </li>
-  <li>
-    <a href="schema-design-table.html">Add secondary indexes.</a>
-  </li>
-</ul>
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Review the database schema objects](schema-design-overview.html).
+- [Create a database](schema-design-database.html).
+- [Create a user-defined schema](schema-design-schema.html).
+- [Create a table](schema-design-table.html).
+- [Add secondary indexes](schema-design-indexes.html).
 
 ## Alter database schema objects
 
@@ -42,14 +25,14 @@ To change an existing object in a database schema, use an `ALTER` statement.
 `ALTER` statements generally take the following form:
 
 ~~~
-ALTER [OBJECT_TYPE] [object_name] [SUBCOMMAND];
+ALTER {OBJECT_TYPE} {object_name} {SUBCOMMAND};
 ~~~
 
 Parameter | Description
 ----------|------------
-`[OBJECT_TYPE]` | The type of the object.
-`[object_name]` | The name of the object.
-`[SUBCOMMAND]` | The subcommand for the change that you would like to make.
+`{OBJECT_TYPE}` | The type of the object.
+`{object_name}` | The name of the object.
+`{SUBCOMMAND}` | The subcommand for the change that you would like to make.
 
 For examples, see [below](#altering-objects-examples).
 
@@ -100,14 +83,14 @@ $ touch update_users_table.sql
 Open `update_users_table.sql` in a text editor, and add the `ALTER TABLE` statement for adding the `username` column:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users ADD COLUMN username STRING;
 ~~~
 
 Under that first `ALTER TABLE` statement, add another `ALTER TABLE` statement for changing the primary key columns to `username` and `email`:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users ALTER PRIMARY KEY USING COLUMNS (username, email);
 ~~~
 
@@ -116,7 +99,7 @@ In order to add a column to an existing table's primary key index, the column mu
 Add a `NOT NULL` constraint to the `ADD COLUMN` subcommand for `username`. In the same `ALTER TABLE` statement, add an [`ALTER COLUMN` subcommand](alter-column.html) to set the `NOT NULL` constraint on the `email` column:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users
   ADD COLUMN username STRING NOT NULL,
   ALTER COLUMN email SET NOT NULL;
@@ -125,7 +108,7 @@ ALTER TABLE IF EXISTS movr.max_schema.users
 The file should now look something like this:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users
   ADD COLUMN username STRING NOT NULL,
   ALTER COLUMN email SET NOT NULL;
@@ -145,7 +128,7 @@ $ touch update_users_owner.sql
 Add the following statements to the file:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 ALTER TABLE IF EXISTS movr.max_schema.users SET SCHEMA abbey_schema;
 
 ALTER TABLE IF EXISTS movr.abbey_schema.users OWNER TO abbey;
@@ -156,7 +139,7 @@ To execute the statements in the `update_users_table.sql` file as `max`, run the
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=max \
 --database=movr
 < update_users_table.sql
@@ -167,7 +150,7 @@ To execute the statements in the `update_users_owner.sql` file as `root`, run th
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=root \
 --database=movr
 < update_users_owner.sql
@@ -180,7 +163,7 @@ You can verify with some `SHOW` statements:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr \
 --execute="SHOW SCHEMAS; SHOW TABLES; SHOW CREATE TABLE movr.abbey_schema.users;"
@@ -228,14 +211,14 @@ To drop an object from a database schema, use a `DROP` statement.
 `DROP` statements generally take the following form:
 
 ~~~
-DROP [OBJECT_TYPE] [object_name] CASCADE;
+DROP {OBJECT_TYPE} {object_name} CASCADE;
 ~~~
 
 Parameter | Description
 ----------|------------
-`[OBJECT_TYPE]` | The type of the object.
-`[object_name]` | The name of the object.
-`[CASCADE]` | An optional keyword that will drop all objects dependent on the object being dropped.
+`{OBJECT_TYPE}` | The type of the object.
+`{object_name}` | The name of the object.
+`{CASCADE}` | An optional keyword that will drop all objects dependent on the object being dropped.
 
 For examples, see [below](#altering-objects-examples).
 
@@ -264,7 +247,7 @@ Suppose that you want to drop an index that isn't being used very much. In parti
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr \
 --execute="SHOW INDEXES FROM movr.abbey_schema.users; SHOW CREATE TABLE movr.abbey_schema.users;"
@@ -321,7 +304,7 @@ To drop the index, execute the file:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr
 < drop_unique_users_idx.sql
@@ -330,7 +313,7 @@ $ cockroach sql \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr \
 --execute="SHOW INDEXES FROM movr.abbey_schema.users;"

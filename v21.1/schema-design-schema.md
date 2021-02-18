@@ -10,30 +10,14 @@ This page provides best-practice guidance on creating user-defined schemas, with
 For detailed reference documentation on the `CREATE SCHEMA` statement, including additional examples, see the [`CREATE SCHEMA` syntax page](create-schema.html).
 {{site.data.alerts.end}}
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button" data-scope="local">Local</button>
-  <button class="filter-button" data-scope="cockroachcloud">CockroachCloud</button>
-</div>
-
 ## Before you begin
 
 Before reading this page, do the following:
 
-<ul>
-  <li>
-    <a href="install-cockroachdb.html">Install CockroachDB.</a>
-  </li>
-  <li>
-    <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
-  </li>
-  <li>
-    <a href="schema-design-overview.html">Review the database schema objects.</a>
-  </li>
-  <li>
-    <a href="schema-design-database.html">Create a database.</a>
-  </li>
-</ul>
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Review the database schema objects](schema-design-overview.html).
+- [Create a database](schema-design-database.html).
 
 ## Create a user-defined schema
 
@@ -66,7 +50,7 @@ Suppose you want to separate the tables and indexes in your cluster such that on
 Open the `dbinit.sql` file that you created in the [Create a Database](schema-design-database.html) example, and add the following statements under the `CREATE DATABASE` statement:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 USE movr;
 
 CREATE USER IF NOT EXISTS max;
@@ -81,7 +65,7 @@ The first statement sets the `movr` database as the [current database](sql-name-
 Now, under the `CREATE USER` statements, add `DROP SCHEMA` and `CREATE SCHEMA` statements for each user's user-defined schema:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 DROP SCHEMA IF EXISTS max_schema CASCADE;
 CREATE SCHEMA max_schema AUTHORIZATION max;
 
@@ -98,7 +82,7 @@ Under the `CREATE SCHEMA` statements for each user-defined schema, add a `GRANT`
 The `dbinit.sql` file should now look something link this:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE DATABASE IF NOT EXISTS movr;
 
 USE movr;
@@ -123,7 +107,7 @@ To execute the statements in the `dbinit.sql` file as the `root` user, run the f
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=root \
 < dbinit.sql
 ~~~
@@ -132,14 +116,14 @@ Before the new users can connect to the cluster and start creating objects, they
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client max --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+$ cockroach cert create-client max --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 Create a user certificate for `abbey` as well:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client abbey --certs-dir=[certs-directory] --ca-key=[my-safe-directory]/ca.key
+$ cockroach cert create-client abbey --certs-dir={certs-directory} --ca-key={my-safe-directory}/ca.key
 ~~~
 
 As one of the new users, use a [`SHOW SCHEMAS` statement](show-schemas.html) to show the preloaded and user-defined schemas in the `movr` database:
@@ -147,7 +131,7 @@ As one of the new users, use a [`SHOW SCHEMAS` statement](show-schemas.html) to 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr \
 --execute="SHOW SCHEMAS;"

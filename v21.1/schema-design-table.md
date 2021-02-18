@@ -10,33 +10,15 @@ This page provides best-practice guidance on creating tables, with some simple e
 For detailed reference documentation on the `CREATE TABLE` statement, including additional examples, see the [`CREATE TABLE` syntax page](create-table.html).
 {{site.data.alerts.end}}
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button" data-scope="local">Local</button>
-  <button class="filter-button" data-scope="cockroachcloud">CockroachCloud</button>
-</div>
-
 ## Before you begin
 
 Before reading this page, do the following:
 
-<ul>
-  <li>
-    <a href="install-cockroachdb.html">Install CockroachDB.</a>
-  </li>
-  <li>
-    <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
-  </li>
-  <li>
-    <a href="schema-design-overview.html">Review the database schema objects.</a>
-  </li>
-  <li>
-    <a href="schema-design-database.html">Create a database.</a>
-  </li>
-  <li>
-    <a href="schema-design-schema.html">Create a user-defined schema.</a>
-  </li>
-</ul>
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Review the database schema objects](schema-design-overview.html).
+- [Create a database](schema-design-database.html).
+- [Create a user-defined schema](schema-design-schema.html).
 
 ## Create a table
 
@@ -59,16 +41,16 @@ Naming a table is the first step in table creation.
 `CREATE TABLE` statements generally take the form:
 
 ~~~
-CREATE TABLE [schema_name].[table_name] (
-  [elements]
+CREATE TABLE {schema_name}.{table_name} (
+  {elements}
   );
 ~~~
 
 Parameter | Description
 ----------|------------
-`[schema_name]` | The name of the user-defined schema.
-`[table_name]` | The name of the table.
-`[elements]` | A comma-separated list of table elements, such as column definitions.
+`{schema_name}` | The name of the user-defined schema.
+`{table_name}` | The name of the table.
+`{elements}` | A comma-separated list of table elements, such as column definitions.
 
 For an example, see [below](#table-naming-example).
 
@@ -96,7 +78,7 @@ This file will initialize the objects in the `max_schema` user-defined schema th
 In a text editor, open `max_init.sql`, and add an empty `CREATE TABLE` statement for the `users` table:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
 );
 ~~~
@@ -110,14 +92,14 @@ Column definitions give structure to a table by separating the values in each ro
 Column definitions generally take the following form:
 
 ~~~
-[column_name] [DATA_TYPE] [column_qualification]
+{column_name} {DATA_TYPE} {column_qualification}
 ~~~
 
 Parameter | Description
 ----------|------------
-`[column_name]` | The name of the column.
-`[DATA_TYPE]` | The [data type](data-types.html) of the row values in the column.
-`[column_qualification]` | Some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause](computed-columns.html).
+`{column_name}` | The name of the column.
+`{DATA_TYPE}` | The [data type](data-types.html) of the row values in the column.
+`{column_qualification}` | Some column qualification, such as a [column-level constraint](#add-additional-constraints), or a [computed column clause](computed-columns.html).
 
 For examples, see [below](#column-definition-examples).
 
@@ -138,7 +120,7 @@ Here are some best practices to follow when defining table columns:
 In the `max_init.sql` file, add a few column definitions to the `users` table's `CREATE TABLE` statement, for user names and email addresses:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
@@ -155,7 +137,7 @@ Let's add another example table to our `max_schema` schema, with more column dat
 As a vehicle-sharing platform, MovR needs to store data about its vehicles. In `max_init.sql`, add a `CREATE TABLE` statement for a `vehicles` table, under the `CREATE TABLE` statement for `users`. This table should probably include information about the type of vehicle, when it was created, what its availability is, and where it is located:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID,
       type STRING,
@@ -178,7 +160,7 @@ Note that values in the `type` column will likely only be `STRING` values from a
 To create a user-defined type, use a `CREATE TYPE` statement. For example, above the `CREATE TABLE` statement for the `vehicles` table, add the following statements:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
 ~~~
 
@@ -189,7 +171,7 @@ For detailed reference documentation on the `CREATE TYPE` statement, including a
 You can then use `vtype` as the `type` column's data type:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID,
       type vtype,
@@ -248,7 +230,7 @@ To follow a [primary key best practice](#primary-key-best-practices), the `CREAT
 In the `max_init.sql` file, add a composite primary key on the `first_name` and `last_name` columns of the `users` table:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
@@ -266,7 +248,7 @@ Primary key columns can also be single columns, if those columns are guaranteed 
 In the `vehicles` table definition, add a `PRIMARY KEY` constraint on the `id` column:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
@@ -299,7 +281,7 @@ When combined with [supported SQL functions](functions-and-operators.html), defa
 For example, in the `vehicles` table definition in `max_init.sql`, you added a `DEFAULT gen_random_uuid()` clause to the `id` column definition. This set the default value to a generated `UUID` value. Now, add a default value to the `creation_time` column:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.vehicles (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       type vtype,
@@ -324,7 +306,7 @@ For example, suppose you want to add a new table that contains data about the ri
 In `max_init.sql`, under the `CREATE TABLE` statement for `vehicles`, add a definition for a `rides` table, with a foreign key dependency on the `vehicles` table. To define a foreign key constraint, use the `REFERENCES` keyword:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.rides (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       vehicle_id UUID REFERENCES movr.max_schema.vehicles(id),
@@ -353,7 +335,7 @@ This file will initialize the objects in the `abbey_schema` user-defined schema 
 In a text editor, open `abbey_init.sql`, and add a `CREATE TABLE` statement for a table called `user_promo_codes`:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.abbey_schema.user_promo_codes (
     code STRING,
     user_email STRING REFERENCES movr.max_schema.users(email),
@@ -379,7 +361,7 @@ To prevent duplicate values in a column, use the `UNIQUE` constraint.
 For example, suppose that you want to ensure that the email addresses of all users are different, to prevent users from registering for two accounts with the same email address. Add a `UNIQUE` constraint to the `email` column of the `users` table:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
@@ -407,7 +389,7 @@ To prevent `NULL` values in a column, use the `NOT NULL` constraint. If you spec
 For example, if you require all users of the MovR platform to have an email on file, you can add a `NOT NULL` constraint to the `email` column of the `users` table:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
@@ -443,7 +425,7 @@ Here are some general best practices to follow when executing `CREATE TABLE` sta
 After following the examples provided in the sections above, the `max_init.sql` file should look similar to the following:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
@@ -476,7 +458,7 @@ To execute the statements in the `max_init.sql` file, run the following command:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=max \
 --database=movr
 < max_init.sql
@@ -491,7 +473,7 @@ Open the SQL shell to your cluster, with `movr` as the database and `max` as the
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=max \
 --database=movr
 ~~~
@@ -537,7 +519,7 @@ To see the individual `CREATE TABLE` statements for each table, use a [`SHOW CRE
 After following the examples provided in the sections above, the `abbey_init.sql` file should look similar to the following:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.abbey_schema.user_promo_codes (
     code STRING,
     user_email STRING REFERENCES movr.max_schema.users(email),
@@ -551,7 +533,7 @@ To execute the statement in the `abbey_init.sql` file, run the following command
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr
 < abbey_init.sql
@@ -564,7 +546,7 @@ Open the SQL shell to your cluster, with `movr` as the database and `abbey` as t
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr
 ~~~

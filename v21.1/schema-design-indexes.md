@@ -10,36 +10,16 @@ This page provides best-practice guidance on creating indexes, with a simple exa
 For detailed reference documentation on the `CREATE INDEX` statement, including additional examples, see the [`CREATE INDEX` syntax page](create-index.html).
 {{site.data.alerts.end}}
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button" data-scope="local">Local</button>
-  <button class="filter-button" data-scope="cockroachcloud">CockroachCloud</button>
-</div>
-
 ## Before you begin
 
 Before reading this page, do the following:
 
-<ul>
-  <li>
-    <a href="install-cockroachdb.html">Install CockroachDB.</a>
-  </li>
-  <li>
-    <a class="filter-content" data-scope="local" href="secure-a-cluster.html">Start a local CockroachDB cluster.</a>
-    <a class="filter-content" data-scope="cockroachcloud" href="../cockroachcloud/create-your-cluster.html">Create a CockroachCloud cluster.</a>
-  </li>
-  <li>
-    <a href="schema-design-overview.html">Review the database schema objects.</a>
-  </li>
-  <li>
-    <a href="schema-design-database.html">Create a database.</a>
-  </li>
-  <li>
-    <a href="schema-design-schema.html">Create a user-defined schema.</a>
-  </li>
-  <li>
-    <a href="schema-design-table.html">Create a table.</a>
-  </li>
-</ul>
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Review the database schema objects](schema-design-overview.html).
+- [Create a database](schema-design-database.html).
+- [Create a user-defined schema](schema-design-schema.html).
+- [Create a table](schema-design-table.html).
 
 ## Create a secondary index
 
@@ -56,34 +36,34 @@ To add a secondary index to a table, do one of the following, following the [bes
     `INDEX` clauses generally take the following form:
 
     ~~~
-    INDEX [index_name] ([column_names]);
+    INDEX {index_name} ({column_names});
     ~~~
 
     Parameter | Description
     ----------|------------
-    `[index_name]` | The name of the index.
-    `[column_names]` | The name of the column to index, or a comma-separated list of names of the columns to index.
+    `{index_name}` | The name of the index.
+    `{column_names}` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
 - Use a [`CREATE INDEX`](create-index.html) statement.
 
     `CREATE INDEX` statements generally take the following form:
 
     ~~~
-    CREATE INDEX [index_name] ON [table_name] ([column_names]);
+    CREATE INDEX {index_name} ON {table_name} ({column_names});
     ~~~
 
     Parameter | Description
     ----------|------------
-    `[index_name]` | The name of the index.
-    `[table_name]` | The name of the table.
-    `[column_names]` | The name of the column to index, or a comma-separated list of names of the columns to index.
+    `{index_name}` | The name of the index.
+    `{table_name}` | The name of the table.
+    `{column_names}` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
 For an example, see [below](#example).
 
 {{site.data.alerts.callout_info}}
 If you do not specify a name for an index, CockroachDB will generate a name.
 
-After creation, the notation for referring to indexes in CockroachDB is `[table_name]@[index_name]`.
+After creation, the notation for referring to indexes in CockroachDB is `{table_name}@{index_name}`.
 {{site.data.alerts.end}}
 
 ### Best practices
@@ -127,7 +107,7 @@ Recall that the `vehicles` table that you created in [Create a Table](schema-des
 Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available));
 ~~~
 
@@ -138,7 +118,7 @@ The MovR app might also need to display the vehicle's location and ID, but the a
 To help avoid unnecessary full table scans, add a `STORING` clause to the index:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE INDEX type_available_idx ON movr.vehicles (type, available) STORING (last_location);
 ~~~
 
@@ -147,7 +127,7 @@ The index will now store the values in `last_location`, which will improve the p
 The `max_init.sql` file should now look similar to the following:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 CREATE TABLE movr.max_schema.users (
     first_name STRING,
     last_name STRING,
@@ -182,7 +162,7 @@ If you executed this file when following the [Create a Table](schema-design-tabl
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=root \
 < dbinit.sql
 ~~~
@@ -192,7 +172,7 @@ Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=max \
 --database=movr
 < max_init.sql
@@ -201,7 +181,7 @@ $ cockroach sql \
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=abbey \
 --database=movr
 < abbey_init.sql
@@ -214,7 +194,7 @@ Open the SQL shell to your cluster:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql \
---certs-dir=[certs-directory] \
+--certs-dir={certs-directory} \
 --user=max \
 --database=movr
 ~~~
