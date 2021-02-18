@@ -8,12 +8,13 @@ This page has instructions for making SQL [selection queries][selection] against
 
 ## Before you begin
 
-Make sure you have already:
+Before reading this page, do the following:
 
-- Set up a [local cluster](secure-a-cluster.html).
-- [Installed a Postgres client](install-client-drivers.html).
-- [Connected to the database](connect-to-the-database.html).
-- [Inserted data](insert-data.html) that you now want to run queries against.
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Install a Postgres client](install-client-drivers.html).
+- [Connect to the database](connect-to-the-database.html).
+- [Insert data](insert-data.html) that you now want to run queries against.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
