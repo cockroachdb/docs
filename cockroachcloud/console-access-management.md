@@ -132,6 +132,7 @@ If you are sure you want to delete the Organization, proceed with the following 
 1. Navigate to the **Settings** page for the Organization you want to delete.
 1. Click **Delete**.
 1. Enter the name of the Organization.
-1. Click **Delete**
+1. Click **Delete**.
+
     You will be automatically logged out of your account.
 
