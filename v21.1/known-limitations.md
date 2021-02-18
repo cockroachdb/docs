@@ -8,18 +8,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
-### Upgrading to v20.2 with 100 or more non-terminal jobs
-
-Clusters with 100 or more jobs in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`) are unable to upgrade to v20.2. The v20.2 node will hang and never successfully start, and the [logs](debug-and-error-logs.html) will show `checked 100 jobs for existence of deprecated schema change jobs` in a tight loop.
-
-To avoid this limitation:
-
-1. Before starting the upgrade to v20.2, check the [Jobs page](ui-jobs-page.html#jobs-list) in the DB Console or run `SELECT count(*) FROM crdb_internal.jobs WHERE status NOT IN ('succeeded', 'canceled', 'failed')` to ensure that fewer than 100 jobs are in a non-terminal state.
-
-1. You can then [start the rolling upgrade](upgrade-cockroach-version.html#step-4-perform-the-rolling-upgrade) and wait for the log message `done ensuring all necessary migrations have run` to appear on the first upgraded node, at which point there are no further restrictions on jobs.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56859)
-
 ### Partitioning on `ENUM` values
 
 [Partitions](partitioning.html) cannot be created on columns of type [`ENUM`](enum.html).
