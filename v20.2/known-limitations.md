@@ -281,7 +281,7 @@ When CockroachDB is run in a containerized environment (e.g., Kubernetes), the D
 
 ### Ordering tables by `JSONB`/`JSON`-typed columns
 
-CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](query-order.html) [`JSONB`/`JSON`](jsonb.html)-typed columns.
+CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) [`JSONB`/`JSON`](jsonb.html)-typed columns.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 

@@ -445,7 +445,7 @@ Adding capacity is as simple as starting more nodes with `cockroach start`.
 ## What's next?
 
 - [Install the client driver](install-client-drivers.html) for your preferred language
-- [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [geo-partitioning](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)
 
 You might also be interested in the following pages:
