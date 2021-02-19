@@ -1,4 +1,4 @@
-### (6) What are the bookstores that lie within the Loon's habitat range in NY state?
+**What are the bookstores that lie within the Loon's habitat range in NY state?**
 
 Now that you have asked (and answered) some exploratory questions that may inform your birdwatching activities while on vacation, it would be good to start thinking about what bookstores to visit as part of your travels.
 
@@ -35,21 +35,7 @@ ORDER BY
 	geom;
 ```{{execute}}
 
-```
-                        name                       |        street         |      city      | state |                       url                       |     phone
----------------------------------------------------+-----------------------+----------------+-------+-------------------------------------------------+-----------------
-  Blacktree Books                                  | 5006 State Highway 23 | Oneonta        | NY    | https://blacktreeoneonta.square.site/           | 6074321200
-  The Green Toad Bookstore                         | 198 Main St           | Oneonta        | NY    | http://www.greentoadbookstore.com               | (607) 433-8898
-  The Treehouse Reading and Arts Center            | 587 Main St Ste 304   | New York Mills | NY    | http://treehousebookshop.com                    | 315-765-6262
-  Gansevoort House Books at Gems Along the Mohawk  | 800 Mohawk St         | Herkimer       | NY    |                                                 |
-  Gansevoort House Books at The Shoppes at 25 West | 25 W Mill Street      | Little Falls   | NY    | http://www.gansevoorthouse.com/bookstore/       |
-  Mysteries On Main Street                         | 144 W Main St         | Johnstown      | NY    | https://www.facebook.com/MysteriesOnMainStreet/ | (518) 736-2665
-  The Bookstore Plus Music &amp; Art               | 2491 Main St          | Lake Placid    | NY    | http://www.thebookstoreplus.com                 | (518) 523-2950
-  The Book Nook (Saranac Lake, NY)                 | 7 Broadway            | Saranac Lake   | NY    | https://www.facebook.com/slbooknook/            | 6315999511
-(8 rows)
-```
-
-### (7) How many different species of bird habitats contain the location of the Book Nook in Saranac Lake, NY?
+**How many different species of bird habitats contain the location of the Book Nook in Saranac Lake, NY?**
 
 As a birdwatcher, you probably don't want to only see the Common Loon. As long as you are spending time outside, it would be nice to see what other species of bird are in the area. This may provide even more birdwatching fun.
 
@@ -120,7 +106,7 @@ SELECT COUNT(name) FROM birds.birds;
 (1 row)
 ```
 
-### (8) Which 25 birds were most often sighted within 10 miles of the Book Nook in Saranac Lake, NY during the 2000-2019 observation period?
+**Which 25 birds were most often sighted within 10 miles of the Book Nook in Saranac Lake, NY during the 2000-2019 observation period?**
 
 It's great that you know how many bird species may be near a given bookstore; however, that query didn't tell you which birds you have the best chance of seeing. Therefore, you'd like to figure out what birds are the most commonly seen in the area near a bookstore you want to visit: The Book Nook in Saranac Lake, NY.
 
@@ -167,38 +153,7 @@ LIMIT
 
 Perhaps surprisingly, the [Red-eyed Vireo](https://ebird.org/species/reevir1/US-NY) is the "winner", followed by a number of other fairly common birds. If you want a birdwatching challenge, you can reverse the sort order of the above query to find the rarest birds.
 
-```
-                   name                  | sightings
------------------------------------------+------------
-  Red-eyed Vireo                         |      2557
-  White-throated Sparrow                 |       928
-  Hermit Thrush                          |       924
-  American Robin                         |       691
-  Ovenbird                               |       650
-  American Crow                          |       528
-  (Myrtle Warbler) Yellow-rumped Warbler |       506
-  Chipping Sparrow                       |       465
-  Black-capped Chickadee                 |       390
-  Yellow-bellied Sapsucker               |       359
-  Blue-headed Vireo                      |       357
-  Blue Jay                               |       345
-  Winter Wren                            |       344
-  Cedar Waxwing                          |       272
-  Blackburnian Warbler                   |       248
-  Magnolia Warbler                       |       236
-  Black-throated Green Warbler           |       226
-  Common Grackle                         |       218
-  Red-breasted Nuthatch                  |       209
-  Common Yellowthroat                    |       184
-  Northern Parula                        |       175
-  Nashville Warbler                      |       164
-  Red-winged Blackbird                   |       152
-  Least Flycatcher                       |       128
-  American Redstart                      |       123
-(25 rows)
-```
-
-### (9) What does the shape of all bookstore locations that lie within the Loon's habitat look like?
+**What does the shape of all bookstore locations that lie within the Loon's habitat look like?**
 
 You already discovered which bookstores are located within loon habitat. However, you can't really tell where these stores are located based on reading that query's output. You need to see them on the map. Therefore, for trip planning purposes, you decide you would like to look at the shape of the convex hull of the store locations.
 
@@ -234,14 +189,14 @@ WHERE
 
 Paste the result into <https://geojson.io> and you should see the shape of the convex hull of the store locations on a map.
 
-### (10) What is the area of the shape of all bookstore locations that are in the Loon's habitat range within NY state?
+**What is the area of the shape of all bookstore locations that are in the Loon's habitat range within NY state?**
 
 You have already visualized the convex hull, but now you would like to calculate its area in square miles.
 
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](https://www.cockroachlabs.com/docs/stable/st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE with a query against [the `bookstores` table](https://www.cockroachlabs.com/docs/stable/spatial-tutorial.html#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat.
+2. Join the results of the above CTE with a query against [the `bookstores` table](https://www.cockroachlabs.com/docs/stable/spatial-tutorial.html#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is contained by the loon habitat.
 2. Get the area of the [convex hull](https://www.cockroachlabs.com/docs/stable/st_convexhull.html) of the resulting geometry.
 3. Collect the geometries that result from the step above into a single geometry, calculate its convex hull, and calculate the area of the hull. As in previous examples, note that because the `birds.routes` data uses [SRID 4326](https://www.cockroachlabs.com/docs/stable/srid-4326.html), the resulting area is measured in degrees, which is converted to square miles by casting the data to a `GEOGRAPHY` type and dividing by 1609 (the number of meters in a mile) squared.
 

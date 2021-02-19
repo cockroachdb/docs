@@ -1,4 +1,4 @@
-### (11) How long is the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY?
+**How long is the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY?**
 
 So far, you have written queries that ask questions about bird habitats, bookstore locations, or some combination of the two. Because you are planning a trip, you want to think about how to travel between the bookstores in the loon habitat area. Depending on how far apart the bookstores are, you may want to visit more than one of them in a day, perhaps doing some birdwatching along the way.
 
@@ -44,7 +44,7 @@ The answer is: these two stores are about 132 miles apart, measured in road mile
 (1 row)
 ```
 
-### (12) What does the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY look like?
+**What does the route from Mysteries on Main Street in Johnstown, NY to The Book Nook in Saranac Lake, NY look like?**
 
 You have determined how long the drive between these two stores will be, but you would like to see what it looks like on the map.
 
@@ -78,7 +78,7 @@ WHERE
 
 The result is a very large chunk of JSON. Paste it into <https://geojson.io> to see the drive between these two stores on a map.
 
-### (13) What were the 25 most-commonly-sighted birds in 2019 within 10 miles of the route between Mysteries on Main Street in Johnstown, NY and The Bookstore Plus in Lake Placid, NY?
+**What were the 25 most-commonly-sighted birds in 2019 within 10 miles of the route between Mysteries on Main Street in Johnstown, NY and The Bookstore Plus in Lake Placid, NY?**
 
 A natural question that arises once you start traveling between stores is: if I decide to visit two of these stores in a day, and do some birdwatching in between, what are some of the bird species I may expect to find? In this case you are looking at what species are near the route between [Mysteries on Main Street in Johnstown, NY](https://www.facebook.com/MysteriesOnMainStreet), and [The Bookstore Plus in Lake Placid, NY](http://www.thebookstoreplus.com).
 
@@ -144,38 +144,7 @@ LIMIT
 	25;
 ```{{execute}}
 
-```
-                   name                  | sightings
------------------------------------------+------------
-  Red-eyed Vireo                         |       124
-  Ovenbird                               |        98
-  Blue Jay                               |        56
-  Black-capped Chickadee                 |        44
-  American Robin                         |        43
-  American Crow                          |        31
-  White-throated Sparrow                 |        26
-  Common Yellowthroat                    |        25
-  Red-breasted Nuthatch                  |        19
-  Blue-headed Vireo                      |        18
-  Red-winged Blackbird                   |        16
-  Veery                                  |        16
-  Winter Wren                            |        16
-  American Redstart                      |        15
-  Blackburnian Warbler                   |        15
-  Chipping Sparrow                       |        14
-  Least Flycatcher                       |        13
-  Northern Parula                        |        13
-  American Goldfinch                     |        13
-  Magnolia Warbler                       |        12
-  Cedar Waxwing                          |        12
-  Song Sparrow                           |        11
-  Hermit Thrush                          |        11
-  Common Raven                           |        10
-  (Myrtle Warbler) Yellow-rumped Warbler |        10
-(25 rows)
-```
-
-### (14) What are the 25 least often sighted other species of birds in the loon's sightings range?
+**What are the 25 least often sighted other species of birds in the loon's sightings range?**
 
 Since you are already looking for loons, you would like to know if there are other, more challenging birdwatching opportunities available within the loon habitat you are already visiting. Specifically, you would like to know: What are the least-often-observed bird species in the loon's habitat?
 
@@ -218,34 +187,3 @@ ORDER BY
 LIMIT
 	25;
 ```{{execute}}
-
-```
-                        name                       | sightings
----------------------------------------------------+------------
-  Vesper Sparrow                                   |         1
-  Northern Saw-whet Owl                            |         1
-  Sora                                             |         1
-  Least Bittern                                    |         1
-  Palm Warbler                                     |         1
-  Ring-necked Duck                                 |         1
-  American Three-toed Woodpecker                   |         1
-  unid. Yellow-billed Cuckoo / Black-billed Cuckoo |         1
-  unid. Accipiter hawk                             |         1
-  Eastern Whip-poor-will                           |         1
-  Golden-winged Warbler                            |         1
-  Eastern Screech-Owl                              |         1
-  Northern Goshawk                                 |         1
-  Upland Sandpiper                                 |         1
-  Hooded Warbler                                   |         2
-  Grasshopper Sparrow                              |         2
-  Gadwall                                          |         2
-  Brewster Warbler (Golden-winged x Blue-winged)   |         2
-  Double-crested Cormorant                         |         3
-  White-winged Crossbill                           |         3
-  Marsh Wren                                       |         3
-  Pine Siskin                                      |         3
-  Great Horned Owl                                 |         3
-  Northern Mockingbird                             |         3
-  Red-shouldered Hawk                              |         4
-(25 rows)
-```
