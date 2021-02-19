@@ -12,7 +12,7 @@ We recommend using `cockroach import` for quick imports from your client (about 
 
 ## Required privileges
 
-Only members of the `admin` role can run `cockroach import`. By default, the `root` user belongs to the `admin` role.
+The user must have `CREATE` [privileges](authorization.html#assign-privileges) on the default database.
 
 ## Synopsis
 
