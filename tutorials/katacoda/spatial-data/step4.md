@@ -1,4 +1,4 @@
-### (1) Where has the Common Loon been sighted by the NABBS in the years 2000-2019 in NY state?
+**Where has the Common Loon been sighted by the NABBS in the years 2000-2019 in NY state?**
 
 As a first step, you'd like to know where exactly the Common Loon has been sighted in New York State. You know that many of the loon sightings will have taken place in the Adirondacks (our overall destination) due to the nature of the loon's preferred habitat of northern lakes and ponds, but it will be useful to know the precise locations for trip planning, and for asking further related questions about other bird habitats as well as nearby bookstores you'd like to visit.
 
@@ -36,7 +36,7 @@ FROM
 
 Paste the result into <https://geojson.io> and you will see a map with gray markers for each loon sighting from the bird survey.
 
-### (2) What is the total area of Loon sightings?
+**What is the total area of Loon sightings?**
 
 Now that you have some sense of how loon sightings are distributed across the state, you may wonder: What is the area of the loon's approximate habitat (per these sightings) in New York State?
 
@@ -76,7 +76,7 @@ The result is an area of about 10,000 square miles, which can be visualized by a
 (1 row)
 ```
 
-### (3) How many Loon sightings have there been in NY state in the years 2000-2019?
+**How many Loon sightings have there been in NY state in the years 2000-2019?**
 
 In addition to the loon observation point locations and the area of those observations (which you can take as a proxy for the size of the loon's local habitat), you may want to know exactly how many times a loon has been sighted in the area.
 
@@ -104,7 +104,7 @@ GROUP BY
 (1 row)
 ```
 
-### (4) How many Loon sightings were there in NY state in just the year 2019?
+**How many Loon sightings were there in NY state in just the year 2019?**
 
 You might like to get a sense of how many of the loon sightings were more recent. For example, if there have been fewer sightings of loons in recent years, you might wonder if the population were declining in NY State.
 
@@ -132,7 +132,7 @@ If the sightings are evenly distributed, you might expect this to yield about 13
 (1 row)
 ```
 
-### (5) What is the density of Loon sightings per square mile in its range as defined by this data set in 2019?
+**What is the density of Loon sightings per square mile in its range as defined by this data set in 2019?**
 
 Since you are planning to do some hiking back into the woods to find the actual loons, you may get curious as to how densely the loon population is scattered over its habitat. From a practical perspective, the distribution is not actually even, since loons are most frequently located on lakes and ponds. Even so, it may serve as a useful proxy for the general areas in which to focus your birdwatching travels.
 

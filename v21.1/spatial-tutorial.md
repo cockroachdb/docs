@@ -14,6 +14,10 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 + Performing [joins](joins.html) on spatial data, and using [`EXPLAIN`](explain.html) to make sure indexes are effective.
 + Visualizing the output of your queries using free tools like <https://geojson.io>
 
+<div class="clearfix">
+  <a class="btn btn-outline-primary" href="../tutorials/spatial-tutorial-interactive.html" target="_blank">Run this in your browser &rarr;</a>
+</div>
+
 ## Step 1. Review the scenario
 
 You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the [Common Loon](https://ebird.org/species/comloo), a bird that can be found near the lakes and ponds of the north woods.
@@ -315,7 +319,7 @@ A natural question that arises is: given that you are looking for loon habitat, 
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat. Note that the query below [orders by](query-order.html) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works](spatial-indexes.html#how-cockroachdbs-spatial-indexing-works).
+2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat. Note that the query below [orders by](order-by.html) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works](spatial-indexes.html#how-cockroachdbs-spatial-indexing-works).
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -1,4 +1,4 @@
-### (18) What are the hawks sighted in the same region as the Common Loon?
+**What are the hawks sighted in the same region as the Common Loon?**
 
 If you get tired of looking for Common Loons (and it's understandable that you might), you may want to widen your search to other types of birds. You have already looked at different bird species based on frequency of observation. Now you turn your attention to a specific type of bird: hawks.
 
@@ -62,7 +62,7 @@ Based on this data, it looks like the most commonly sighted hawk by far in the a
 (9 rows)
 ```
 
-### (19) What if you also want to look for owls as well as hawks?
+**What if you also want to look for owls as well as hawks?**
 
 If you are a fan of owls as well as hawks, you can make several updates to the previous query, which just looked for hawks. In particular, you want to group the hawks together and the owls together.
 
@@ -111,22 +111,3 @@ GROUP BY
 ORDER BY
 	birds.family, sightings DESC;
 ```{{execute}}
-
-```
-          name          |    family    | sightings
-------------------------+--------------+------------
-  Broad-winged Hawk     | Accipitridae |       115
-  Red-tailed Hawk       | Accipitridae |        33
-  Northern Harrier      | Accipitridae |        12
-  Red-shouldered Hawk   | Accipitridae |        11
-  Sharp-shinned Hawk    | Accipitridae |         9
-  Bald Eagle            | Accipitridae |         9
-  Cooper Hawk           | Accipitridae |         7
-  Northern Goshawk      | Accipitridae |         5
-  unid. Accipiter hawk  | Accipitridae |         1
-  Barred Owl            | Strigidae    |        44
-  Eastern Screech-Owl   | Strigidae    |         3
-  Great Horned Owl      | Strigidae    |         1
-  Northern Saw-whet Owl | Strigidae    |         1
-(13 rows)
-```

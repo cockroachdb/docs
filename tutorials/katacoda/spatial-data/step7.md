@@ -1,4 +1,4 @@
-### (15) What are the top 10 roads nearest to a Loon sighting location in NY?
+**What are the top 10 roads nearest to a Loon sighting location in NY?**
 
 So far, you have learned where the birds are, where the overlaps are between birds and bookstores, and how to travel between bookstores while finding birds.
 
@@ -58,25 +58,7 @@ LIMIT
 	10;
 ```{{execute}}
 
-```
-      prime_name
------------------------
-  US Route 9
-  State Route 30
-  State Route 22 Spur
-  State Route 22
-  State Route 28
-  State Route 86
-  State Route 28N
-  Interstate 87
-  US Route 11
-  State Route 421
-(10 rows)
-
-Time: 1.447s total (execution 1.446s / network 0.000s)
-```
-
-Unfortunately, this query is a bit slower than you would like: about 1.5 seconds on a single-node `cockroach demo` cluster on a VM. There are several reasons for this:
+Unfortunately, this query is a bit slower than you would like. There are several reasons for this:
 
 1. You haven't created any indexes at all yet. The query is likely to be doing full table scans, which you will need to hunt down with `EXPLAIN`.
 2. CockroachDB does not yet have built-in support for index-based nearest neighbor queries. If this feature is important to you, please comment with some information about your use case on [cockroachdb/cockroach#55227](https://github.com/cockroachdb/cockroach/issues/55227).
@@ -166,24 +148,6 @@ LIMIT
 
 It looks like the answer is yes; you have sped up this query by about 30%:
 
-```
-      prime_name
------------------------
-  US Route 9
-  State Route 30
-  State Route 22 Spur
-  State Route 22
-  State Route 28
-  State Route 86
-  State Route 28N
-  Interstate 87
-  US Route 11
-  State Route 421
-(10 rows)
-
-Time: 998ms total (execution 998ms / network 0ms)
-```
-
 To see why, look at the `EXPLAIN` output:
 
 ```sql
@@ -196,7 +160,7 @@ In the output, you'll notice the following improvements:
 - You no longer appear to be scanning all ~85,000 rows of the `birds.observations` table thanks to the index on the `birds.observations.bird_id` column.
 - You are probably getting a small speedup from the index on `birds.birds.name` (although that table is not very large, only about 750 rows).
 
-### (16) How many miles of roads are contained within the portion of the Loon habitat that lies within NY state?
+**How many miles of roads are contained within the portion of the Loon habitat that lies within NY state?**
 
 It may not be immediately relevant to your birdwatching or book-buying travels, but a question of general interest that could arise is: How many miles of roads are contained within loon habitat?
 
@@ -244,7 +208,7 @@ The answer to your question is that there are about 1,700 miles of roads within 
 (1 row)
 ```
 
-### (17) Which bookstore in the Loon's region in NY has the fewest miles of roads within a 10 mile radius of the store?
+**Which bookstore in the Loon's region in NY has the fewest miles of roads within a 10 mile radius of the store?**
 
 As you are driving around the Adirondacks, searching for loons as well as your next great read, the question occurs to you: Which bookstore is the most remotely located?  This is important since one of your goals for this vacation is to "get away from it all." You don't have population density data, but you do have road data. Therefore you decide to use "miles of roads near the store" as a rough proxy for which store location is the most remote: the fewer miles of roads near the store, the more remote you can assume it is.
 
@@ -302,23 +266,7 @@ ORDER BY
 	nearby_road_miles ASC;
 ```{{execute}}
 
-You get an answer, but unfortunately it's rather slow: about 6 seconds!
-
-```
-                        name                       |                    address                     | nearby_road_miles
----------------------------------------------------+------------------------------------------------+--------------------
-  The Bookstore Plus Music &amp; Art               | 2491 Main St, Lake Placid, NY, 12946           |                40
-  The Book Nook (Saranac Lake, NY)                 | 7 Broadway, Saranac Lake, NY, 12983            |                81
-  Blacktree Books                                  | 5006 State Highway 23, Oneonta, NY, 13820      |               106
-  The Green Toad Bookstore                         | 198 Main St, Oneonta, NY, 13820                |               107
-  Gansevoort House Books at Gems Along the Mohawk  | 800 Mohawk St, Herkimer, NY, 13350             |               136
-  Gansevoort House Books at The Shoppes at 25 West | 25 W Mill Street, Little Falls, NY, 13365      |               155
-  The Treehouse Reading and Arts Center            | 587 Main St Ste 304, New York Mills, NY, 13417 |               156
-  Mysteries On Main Street                         | 144 W Main St, Johnstown, NY, 12095            |               172
-(8 rows)
-
-Time: 6.214s total (execution 6.214s / network 0.000s)
-```
+You get an answer, but unfortunately it's rather slow.
 
 Let's look at the `EXPLAIN` output to see if there is something that can be done to improve this query's performance:
 
@@ -390,22 +338,6 @@ ORDER BY
 ```{{execute}}
 
 The steps above brings your query execution down to about 400ms!
-
-```
-                        name                       |                    address                     | nearby_road_miles
----------------------------------------------------+------------------------------------------------+--------------------
-  The Bookstore Plus Music &amp; Art               | 2491 Main St, Lake Placid, NY, 12946           |                40
-  The Book Nook (Saranac Lake, NY)                 | 7 Broadway, Saranac Lake, NY, 12983            |                81
-  Blacktree Books                                  | 5006 State Highway 23, Oneonta, NY, 13820      |               106
-  The Green Toad Bookstore                         | 198 Main St, Oneonta, NY, 13820                |               107
-  Gansevoort House Books at Gems Along the Mohawk  | 800 Mohawk St, Herkimer, NY, 13350             |               136
-  Gansevoort House Books at The Shoppes at 25 West | 25 W Mill Street, Little Falls, NY, 13365      |               155
-  The Treehouse Reading and Arts Center            | 587 Main St Ste 304, New York Mills, NY, 13417 |               156
-  Mysteries On Main Street                         | 144 W Main St, Johnstown, NY, 12095            |               172
-(8 rows)
-
-Time: 376ms total (execution 376ms / network 0ms)
-```
 
 When you look at `EXPLAIN` for the modified query, you see why: the filter on `roads.state='NY'` means you are scanning far fewer columns of the `roads` table (~8,900), and the index on `bookstores.geom` means you are using that index now as well:
 
