@@ -2571,6 +2571,12 @@
                 "urls": [
                   "/${VERSION}/cockroach-workload.html"
                 ]
+              },
+              {
+                "title": "<code>cockroach import</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-import.html"
+                ]
               }
             ]
           },
