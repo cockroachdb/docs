@@ -319,7 +319,7 @@ A natural question that arises is: given that you are looking for loon habitat, 
 To answer this question:
 
 1. Build a CTE that returns the [convex hull](st_convexhull.html) of Common Loon habitat.
-2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat. Note that the query below [orders by](query-order.html) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works](spatial-indexes.html#how-cockroachdbs-spatial-indexing-works).
+2. Join the results of the above CTE with a query against [the `bookstores` table](#the-bookstores-and-bookstore_routes-tables) that checks whether a bookstore's location is [contained](st_contains.html) by the loon habitat. Note that the query below [orders by](order-by.html) the store geometries so that stores in the list are clustered by location. This ordering may be useful if you want to travel between nearby stores. For more information about how this ordering is calculated, see [How CockroachDB's spatial indexing works](spatial-indexes.html#how-cockroachdbs-spatial-indexing-works).
 
 {% include copy-clipboard.html %}
 ~~~ sql
