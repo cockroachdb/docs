@@ -96,6 +96,12 @@
                 ]
               },
               {
+                "title": "Spatial Data",
+                "urls": [
+                  "/${VERSION}/spatial-tutorial.html"
+                ]
+              },
+              {
                 "title": "Cross-Cloud Migration",
                 "urls": [
                   "/${VERSION}/demo-automatic-cloud-migration.html"
@@ -117,12 +123,6 @@
                 "title": "SQL Tuning with <code>EXPLAIN</code>",
                 "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
-                ]
-              },
-              {
-                "title": "Working with Spatial Data",
-                "urls": [
-                  "/${VERSION}/spatial-data.html"
                 ]
               }
             ]
@@ -2228,6 +2228,12 @@
                     "title": "Overview",
                     "urls": [
                       "/${VERSION}/spatial-features.html"
+                    ]
+                  },
+                  {
+                    "title": "Working with Spatial Data",
+                    "urls": [
+                      "/${VERSION}/spatial-data.html"
                     ]
                   },
                   {

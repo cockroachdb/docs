@@ -71,6 +71,7 @@ SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.
 ## See also
 
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial indexes](spatial-indexes.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
