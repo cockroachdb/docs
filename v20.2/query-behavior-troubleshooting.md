@@ -117,7 +117,7 @@ The common reasons for a sub-optimal `SELECT` performance are inefficient scans,
 
 -  [Table scan best practices](performance-best-practices-overview.html#table-scans-best-practices)
 
--  [Indexes best practices](performance-best-practices-overview.html#indexes-best-practices)
+-  [Indexes best practices](schema-design-indexes.html#best-practices)
 
 ## Query is always slow
 

@@ -38,7 +38,7 @@ Parameter | Description
 `window_name` | The name of the new window frame.
 `opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
 `opt_partition_clause`  | An optional `PARTITION BY` clause.
-`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](query-order.html) for details.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](order-by.html) for details.
 `opt_frame_clause`  | An optional frame clause, which contains a frame boundary and/or an `EXCLUDE` clause.
 
 </div>
@@ -62,7 +62,7 @@ Parameter | Description
 `window_name` | The name of the new window frame.
 `opt_existing_window_name` | An optional name of an existing window frame, defined in a different window definition.
 `opt_partition_clause`  | An optional `PARTITION BY` clause.
-`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](query-order.html) for details.
+`opt_sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](order-by.html) for details.
 `frame_bound` | An optional frame boundary.<br>Valid start boundaries include `UNBOUNDED PRECEDING`, `<offset> PRECEDING`, and `CURRENT ROW`.<br>Valid end boundaries include `UNBOUNDED FOLLOWING`, `<offset> FOLLOWING`, and `CURRENT ROW`.
 `opt_frame_exclusion` | An optional frame `EXCLUDE` clause.<br>Valid exclusions include `CURRENT ROW`, `GROUP`, `TIES`, and `NO OTHERS`.
 
