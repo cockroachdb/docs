@@ -24,7 +24,7 @@ After the export has been initiated, you can cancel it with [`CANCEL QUERY`](can
 
 ## Required privileges
 
-Only members of the `admin` role can run `EXPORT`. By default, the `root` user belongs to the `admin` role.
+<span class="version-tag">New in v21.1:</span> The user must have the `SELECT` [privilege](authorization.html#assign-privileges) on the table being exported, unless the destination URI requires `admin` privileges.
 
 ## Parameters
 
