@@ -89,7 +89,7 @@ As a Console Admin, you can change your own access to a Developer role; however,
 
 #### Delete an email address
 
-This is not currently an option in the Console. To remove the record of an email address, [contact Support](https://support.cockroachlabs.com).
+This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
 
 ### Manage billing for the Organization
 

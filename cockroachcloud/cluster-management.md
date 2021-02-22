@@ -97,7 +97,11 @@ Additionally, you can [backup and restore](../stable/backup-and-restore.html) da
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
-Deleting a cluster will delete all cluster data. CockroachCloud Free (beta) clusters are subject to deletion after 6 months of no activity.
+Deleting a cluster will delete all cluster data.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+CockroachCloud Free (beta) clusters are subject to deletion after 6 months of no activity.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
