@@ -15,11 +15,11 @@ This tutorial shows you how run a simple application built with [TypeORM](https:
 
 {% include {{page.version.version}}/app/create-a-database.md %}
 
-### Step 3. Get the code
+## Step 3. Get the code
 
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-typescript-typeorm).
 
-### Step 4. Update the connection parameters
+## Step 4. Update the connection parameters
 
 Open the `ormconfig.ts` file, and edit the ORM configuration parameters:
 
@@ -47,7 +47,7 @@ Open the `ormconfig.ts` file, and edit the ORM configuration parameters:
 
 </section>
 
-### Step 5. Run the code
+## Step 5. Run the code
 
 Open a terminal window, and install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
