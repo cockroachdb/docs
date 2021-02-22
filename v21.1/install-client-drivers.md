@@ -433,9 +433,11 @@ For a simple but complete "Hello World" example app, see [Build a Rust App with 
 
 ### TypeORM
 
-**Support level:** Beta
+**Support level:** Full
 
 Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
+
+For a simple but complete "Hello World" example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
 
 </section>
 
