@@ -1,10 +1,10 @@
 ---
-title: Make Queries Fast
+title: Optimize Query Performance
 summary: How to make your queries run faster during application development
 toc: true
 ---
 
-This page describes how to get good SQL query performance from CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
+This page provides an overview for optimizing query performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
 
 - [SQL query performance](#sql-query-performance): This is the most common cause of performance problems, and where most developers should start.
 - [Schema design](#schema-design): Depending on your SQL schema and the data access patterns of your workload, you may need to make changes to avoid creating "hotspots".
@@ -458,8 +458,8 @@ For more information about how to choose the cluster topology that is right for 
 
 Reference information:
 
-- [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
+- [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Joins](joins.html)
 - [CockroachDB Performance](performance.html)
 - [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)

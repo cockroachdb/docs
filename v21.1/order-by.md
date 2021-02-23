@@ -1,5 +1,5 @@
 ---
-title: Ordering Query Results
+title: ORDER BY
 summary: The ORDER BY clause controls the order of rows.
 toc: true
 ---

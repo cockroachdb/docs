@@ -88,7 +88,7 @@ No, change data capture and partitioning are not available on CockroachCloud Fre
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/).
+Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../v20.2/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for CockroachCloud Free (beta) clusters.
 
 ### Can I backup my CockroachCloud Free (beta) cluster? Does Cockroach Labs take backups of my cluster?
 

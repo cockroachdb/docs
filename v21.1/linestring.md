@@ -28,6 +28,7 @@ You can also make a LineString using the [aggregate function form](functions-and
 
 ## See also
 
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial objects](spatial-features.html#spatial-objects)
 - [POINT](point.html)
 - [POLYGON](polygon.html)
