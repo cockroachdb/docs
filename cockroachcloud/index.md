@@ -68,10 +68,10 @@ homepage: true
       <h3 class="mt-3">Get Started</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{{ '/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
-        <li><a href="{{ '/create-your-cluster.html' | relative_url }}">Start a Dedicated Cluster</a></li>
-        <li><a href="{{ '/connect-to-your-cluster.html' | relative_url }}">Connect to Your Cluster</a></li>
-        <li><a href="{{ '/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
+        <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
+        <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">Start a Dedicated Cluster</a></li>
+        <li><a href="{{ '/cockroachcloud/connect-to-your-cluster.html' | relative_url }}">Connect to Your Cluster</a></li>
+        <li><a href="{{ '/cockroachcloud/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
         <li><a href="{{ '/v20.2/build-a-python-app-with-cockroachdb-django.html' | relative_url }}">Hello, World!</a></li>
         </ul>
       </div>
@@ -82,9 +82,9 @@ homepage: true
       <ul>
         <li><a href="{{ '/stable/migration-overview.html' | relative_url }}">Migrate Data</a></li>
         <li><a href="{{ '/stable/performance-best-practices-overview.html' | relative_url }}">Tune Performance</a></li>
-        <li><a href="{{ '/production-checklist.html' | relative_url }}">Move into Production</a></li>
-        <li><a href="{{ '/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
-        <li><a href="{{ '/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
+        <li><a href="{{ '/cockroachcloud/production-checklist.html' | relative_url }}">Move into Production</a></li>
+        <li><a href="{{ '/cockroachcloud/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
+        <li><a href="{{ '/cockroachcloud/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
         </ul>
       </div>
     </div>
@@ -104,11 +104,11 @@ homepage: true
       <h3 class="mt-3">Learn More</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{{ '/frequently-asked-questions.html' | relative_url }}">CockroachCloud FAQs</a></li>
+        <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachCloud FAQs</a></li>
         <li><a href="{{ '/stable/frequently-asked-questions.html' | relative_url }}">CockroachDB FAQs</a></li>
-        <li><a href="{{ '/upgrade-policy.html' | relative_url }}">Upgrade Policy</a></li>
-        <li><a href="{{ '/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html' | relative_url }}">Deploy a Python App</a></li>
-        <li><a href="{{ '/stream-changefeed-to-snowflake-aws.html' | relative_url }}">Stream a Changefeed</a></li>
+        <li><a href="{{ '/cockroachcloud/upgrade-policy.html' | relative_url }}">Upgrade Policy</a></li>
+        <li><a href="{{ '/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html' | relative_url }}">Deploy a Python App</a></li>
+        <li><a href="{{ '/cockroachcloud/stream-changefeed-to-snowflake-aws.html' | relative_url }}">Stream a Changefeed</a></li>
         </ul>
       </div>
     </div>
