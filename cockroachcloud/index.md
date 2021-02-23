@@ -71,7 +71,7 @@ homepage: true
         <li><a href="{{ '/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
         <li><a href="{{ '/create-your-cluster.html' | relative_url }}">Start a Dedicated Cluster</a></li>
         <li><a href="{{ '/connect-to-your-cluster.html' | relative_url }}">Connect to Your Cluster</a></li>
-        <li><a href="l{{ '/earn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
+        <li><a href="{{ '/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
         <li><a href="{{ '/v20.2/build-a-python-app-with-cockroachdb-django.html' | relative_url }}">Hello, World!</a></li>
         </ul>
       </div>
@@ -84,7 +84,7 @@ homepage: true
         <li><a href="{{ '/stable/performance-best-practices-overview.html' | relative_url }}">Tune Performance</a></li>
         <li><a href="{{ '/production-checklist.html' | relative_url }}">Move into Production</a></li>
         <li><a href="{{ '/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
-        <li><a href="c{{ '/onsole-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
+        <li><a href="{{ '/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
         </ul>
       </div>
     </div>
