@@ -1,5 +1,5 @@
 ---
-title: Licensing FAQS
+title: Licensing FAQs
 summary: Overview of Licensing for CockroachDB.
 toc: true
 ---
