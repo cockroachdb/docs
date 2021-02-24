@@ -91,19 +91,22 @@ Self-service VPC peering is a limited-availability feature for GCP clusters. For
 1. Select a connection method (the instructions below will adjust accordingly):
 
     <div class="filters clearfix">
-        <button class="filter-button page-level" data-scope="cockroachdb-client">CockroachDB client</button>
-        <button class="filter-button page-level" data-scope="your-app">Your app</button>
-        <button class="filter-button page-level" data-scope="your-tool">Your tool</button>
+        <button class="filter-button page-level" data-scope="command-line">Command line</button>
+        <button class="filter-button page-level" data-scope="connection-string">Connection string</button>
+        <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
     </div>
 <p></p>
 
 ## Step 4. Connect to your cluster
 
-<section class="filter-content" markdown="1" data-scope="cockroachdb-client">
+<section class="filter-content" markdown="1" data-scope="command-line">
 
 To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql.html):
 
 1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine.
+
+    Alternatively, you can set [`sslmode=require`](authentication.html#ssl-mode-settings). This is less secure than using a CA certificate and should not be used with sensitive data.
+    
 1. Create a `certs` directory on your local machine:
 
     {% include copy-clipboard.html %}
@@ -140,8 +143,8 @@ To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
 </section>
 
-<section class="filter-content" markdown="1" data-scope="your-app">
-To connect to your cluster with your application:
+<section class="filter-content" markdown="1" data-scope="connection-string">
+To connect to your cluster with your application, use the connection string provided in the Console:
 
 1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:
@@ -182,11 +185,11 @@ For examples, see the following:
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="your-tool">
+<section class="filter-content" markdown="1" data-scope="connection-parameters">
 To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-party-database-tools.html), use the connection parameters provided in the Console.
 </section>
 
 ## What's next
 
-- [Build a "Hello, World" app](build-a-python-app-with-cockroachdb-django.html)
+- [Build a "Hello, World" app](../v20.2/build-a-python-app-with-cockroachdb-django.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)

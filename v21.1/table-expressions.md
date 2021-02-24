@@ -275,12 +275,12 @@ For example:
 `WITH ORDINALITY` necessarily prevents some optimizations of the surrounding query. Use it sparingly if performance is a concern, and always check the output of [`EXPLAIN`](explain.html) in case of doubt.
 {{site.data.alerts.end}}
 
-## Join expressions
+## `JOIN` expressions
 
-Join expressions combine the results of two or more table expressions
+`JOIN` expressions combine the results of two or more table expressions
 based on conditions on the values of particular columns.
 
-See [Join Expressions](joins.html) for more details.
+See [`JOIN` expressions](joins.html) for more details.
 
 ## Using other queries as table expressions
 

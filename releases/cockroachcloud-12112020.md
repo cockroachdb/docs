@@ -1,7 +1,7 @@
 ---
 title: What&#39;s New in CockroachCloud
 toc: true
-summary: Additions and changes in CockroachCloud.
+summary: Additions and changes in CockroachCloud since November 19, 2020.
 ---
 
 ## December 11, 2020

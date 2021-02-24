@@ -30,14 +30,20 @@ Only members of the `admin` role can run `EXPORT`. By default, the `root` user b
 
  Parameter | Description
 -----------|-------------
- `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: Exports do not generate unique names across exports, so each export should have a unique destination to avoid overwriting.
+ `file_location` | Specify the [URL of the file location](#export-file-url) where you want to store the exported CSV data.<br><br>Note: It is best practice to use a unique destination for each export, to avoid mixing files from different exports in one directory.
  `WITH kv_option` | Control your export's behavior with [these options](#export-options).
  `select_stmt` | Specify the query whose result you want to export to CSV format.
  `table_name` | Specify the name of the table you want to export to CSV format.
 
 ### Export file URL
 
-You can specify the base directory where you want to store the exported .csv files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., n1.1.csv, n1.2.csv, n2.1.csv, ...). Each export should have a unique destination to avoid overwriting other exports.
+You can specify the base directory where you want to store the exported .csv files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., `exportabc123-n1.1.csv`, `exportabc123-n1.2.csv`, `exportabc123-n2.1.csv`, ...). Each export should use a unique destination directory to avoid collision with other exports.
+
+The `EXPORT` command [returns](#success-responses) the list of files to which the data was exported. You may wish to record these for use in subsequent imports.
+
+{{site.data.alerts.callout_info}}
+A hexadecimal hash code (`abc123...` in the file names above) uniquely identifies each export _run_; files sharing the same hash are part of the same export. If you see multiple hash codes within a single destination directory, then the directory contains multiple exports, which will likely cause confusion (duplication) on import. We recommend that you manually clean up the directory, to ensure that it contains only a single export run.
+{{site.data.alerts.end}}
 
 For more information, see the following:
 
@@ -97,6 +103,16 @@ Convert SQL *NULL* values so they match the specified string.
 		</tr>
 	</tbody>
 </table>
+
+## Success responses
+
+Successful `EXPORT` returns a table of (perhaps multiple) files to which the data was exported:
+
+| Response | Description |
+|-----------|-------------|
+`filename` | The file to which the data was exported.
+`rows` | The number of rows exported to this file.
+`bytes` | The file size in bytes.
 
 ## Examples
 

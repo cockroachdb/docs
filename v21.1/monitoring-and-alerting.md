@@ -80,13 +80,11 @@ The `/health` endpoint no longer returns details about the node such as its priv
 
 The `http://<node-host>:<http-port>/health?ready=1` endpoint returns an HTTP `503 Service Unavailable` status response code with an error in the following scenarios:
 
-- The node is draining open SQL connections and rejecting new SQL connections because it is in the process of shutting down. This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
+- The node is draining open SQL connections and rejecting new SQL connections because it is in the process of shutting down (e.g., after being [decommissioned](remove-nodes.html#how-it-works)). This is especially useful for making sure load balancers do not direct traffic to nodes that are live but not "ready", which is a necessary check during [rolling upgrades](upgrade-cockroach-version.html).
 
     {{site.data.alerts.callout_success}}
     If you find that your load balancer's health check is not always recognizing a node as unready before the node shuts down, you can increase the `server.shutdown.drain_wait` [cluster setting](cluster-settings.html) to cause a node to return `503 Service Unavailable` even before it has started shutting down.
     {{site.data.alerts.end}}
-
-     In previous releases, nodes in the process of [decommissioning](remove-nodes.html) or already fully decommissioned would be considered unready and return `503 Service Unavailable`. This is no longer the case. Although such nodes no longer store replicas after decommissioning, they can still function as gateways to route SQL connections to relevant data.  
 
 - The node is unable to communicate with a majority of the other nodes in the cluster, likely because the cluster is unavailable due to too many nodes being down.
 

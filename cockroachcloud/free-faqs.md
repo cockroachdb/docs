@@ -31,7 +31,7 @@ For examples of applications that use CockroachCloud Free (beta), check out the 
 
 ### What are the limitations of CockroachCloud Free (beta)?
 
-CockroachCloud Free is currently in beta and as such, it is not suitable for heavy production use. Specifically, there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
+CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
 ### Can I use a specific region in AWS or GCP?
 
@@ -49,7 +49,7 @@ CockroachCloud Free is in beta while we work on adding core features like [impor
 
 ### Where can I submit feedback or bugs on the beta?
 
-You can submit feedback or log any bugs you find through [this survey](https://cockroachlabs.typeform.com/to/gvCcF14q).
+You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
 
 ## Security
 
@@ -88,7 +88,7 @@ No, change data capture and partitioning are not available on CockroachCloud Fre
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/).
+Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../v20.2/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for CockroachCloud Free (beta) clusters.
 
 ### Can I backup my CockroachCloud Free (beta) cluster? Does Cockroach Labs take backups of my cluster?
 

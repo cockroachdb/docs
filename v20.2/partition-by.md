@@ -16,7 +16,7 @@ toc: true
 
 The [primary key required for partitioning](partitioning.html#partition-using-primary-key) is different from the conventional primary key: The unique identifier in the primary key must be prefixed with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions.
 
-You cannot alter the primary key after it has been defined while [creating the table](create-table.html#create-a-table-with-partitions). If the primary key in your existing table does not meet the requirements, you will not be able to use the `ALTER TABLE` or `ALTER INDEX` statement to define partitions or subpartitions on the existing table or index.
+If the primary key in your existing table does not meet the requirements, you can change the primary key with an [`ALTER TABLE ... PRIMARY KEY` statement](alter-primary-key.html).
 
 ## Synopsis
 

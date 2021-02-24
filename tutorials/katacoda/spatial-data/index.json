@@ -1,0 +1,54 @@
+{
+  "noindex": true,
+  "title": "Spatial Data",
+  "description": "Learn how to use CockroachDB's spatial capabilities using an interactive SQL shell connected to a temporary, single-node CockroachDB cluster",
+  "difficulty": "Beginner",
+  "time": "10 minutes",
+  "details": {
+    "steps": [
+      {
+        "title": "Start CockroachDB",
+        "text": "step1.md",
+        "foreground": "foreground.sh"
+      },
+      {
+        "title": "Review the scenario",
+        "text": "step2.md"
+      },
+      {
+        "title": "Load the data set",
+        "text": "step3.md"
+      },
+      {
+        "title": "Scout loon locations",
+        "text": "step4.md"
+      },
+      {
+        "title": "Find bookstores to visit",
+        "text": "step5.md"
+      },
+      {
+        "title": "Plan your route",
+        "text": "step6.md"
+      },
+      {
+        "title": "Get road and travel info",
+        "text": "step7.md"
+      },
+      {
+        "title": "Find other birds",
+        "text": "step8.md"
+      }
+    ],
+    "finish": {
+        "text": "finish.md"
+    }
+  },
+  "environment": {
+    "hideintro": true,
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "ubuntu:1804"
+  }
+}

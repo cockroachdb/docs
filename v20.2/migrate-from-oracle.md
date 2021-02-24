@@ -287,7 +287,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
    CSV DATA (
         'https://your-bucket-name.s3.us-east-2.amazonaws.com/CUSTOMERS.csv.gz'
        )
-  WITH delimiter = '|',
+  WITH delimiter = e'\t',
        "nullif" = '',
        decompress = 'gzip';
 ~~~

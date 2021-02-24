@@ -91,7 +91,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 1. Access the Jaeger UI at [http://localhost:16686/search](http://localhost:16686/search).
 
-1. Click on **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right. 
+1. Click on **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
     <img src="{{ 'images/v21.1/jaeger-trace-json.png' | relative_url }}" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
 
@@ -117,7 +117,7 @@ The common reasons for a sub-optimal `SELECT` performance are inefficient scans,
 
 -  [Table scan best practices](performance-best-practices-overview.html#table-scans-best-practices)
 
--  [Indexes best practices](performance-best-practices-overview.html#indexes-best-practices)
+-  [Indexes best practices](schema-design-indexes.html#best-practices)
 
 ## Query is always slow
 

@@ -8,18 +8,19 @@ This page has instructions for making SQL [selection queries][selection] against
 
 ## Before you begin
 
-Make sure you have already:
+Before reading this page, do the following:
 
-- Set up a [local cluster](secure-a-cluster.html).
-- [Installed a Postgres client](install-client-drivers.html).
-- [Connected to the database](connect-to-the-database.html).
-- [Inserted data](insert-data.html) that you now want to run queries against.
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Install a Postgres client](install-client-drivers.html).
+- [Connect to the database](connect-to-the-database.html).
+- [Insert data](insert-data.html) that you now want to run queries against.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
 ## Simple selects
 
-<div class="filters filters__code clearfix">
+<div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
@@ -106,6 +107,54 @@ with conn.cursor() as cur:
 
 </section>
 
+## Order results
+
+To order the results of a query, use an `ORDER BY` clause.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT * FROM bank ORDER BY balance;
+~~~
+
+~~~
+  id | balance |                                               payload
+-----+---------+-------------------------------------------------------------------------------------------------------
+   0 |    -500 | initial-dTqnRurXztAPkykhZWvsCmeJkMwRNcJAvTlNbgUEYfagEQJaHmfPsquKZUBOGwpAjPtATpGXFJkrtQCEJODSlmQctvyh
+   1 |    -499 | initial-PCLGABqTvrtRNyhAyOhQdyLfVtCmRykQJSsdwqUFABkPOMQayVEhiAwzZKHpJUiNmVaWYZnReMKfONZvRKbTETaIDccE
+   2 |    -498 | initial-VNfyUJHfCmMeAUoTgoSVvnByDyvpHNPHDfVoNWdXBFQpwMOBgNVtNijyTjmecvFqyeLHlDbIBRrbCzSeiHWSLmWbhIvh
+   3 |    -497 | initial-llflzsVuQYUlfwlyoaqjdwKUNgNFVgvlnINeOUUVyfxyvmOiAelxqkTBfpBBziYVHgQLLEuCazSXmURnXBlCCfsOqeji
+   4 |    -496 | initial-rmGzVVucMqbYnBaccWilErbWvcatqBsWSXvrbxYUUEhmOnccXzvqcsGuMVJNBjmzKErJzEzzfCzNTmLQqhkrDUxdgqDD
+(5 rows)
+~~~
+
+For reference documentation and more examples, see the [`ORDER BY`](order-by.html) syntax page.
+
+## Limit results
+
+To limit the results of a query, use a `LIMIT` clause.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT * FROM bank LIMIT 5;
+~~~
+
+~~~
+  id | balance |                                               payload
+-----+---------+-------------------------------------------------------------------------------------------------------
+   0 |       0 | initial-dTqnRurXztAPkykhZWvsCmeJkMwRNcJAvTlNbgUEYfagEQJaHmfPsquKZUBOGwpAjPtATpGXFJkrtQCEJODSlmQctvyh
+   1 |       0 | initial-PCLGABqTvrtRNyhAyOhQdyLfVtCmRykQJSsdwqUFABkPOMQayVEhiAwzZKHpJUiNmVaWYZnReMKfONZvRKbTETaIDccE
+   2 |       0 | initial-VNfyUJHfCmMeAUoTgoSVvnByDyvpHNPHDfVoNWdXBFQpwMOBgNVtNijyTjmecvFqyeLHlDbIBRrbCzSeiHWSLmWbhIvh
+   3 |       0 | initial-llflzsVuQYUlfwlyoaqjdwKUNgNFVgvlnINeOUUVyfxyvmOiAelxqkTBfpBBziYVHgQLLEuCazSXmURnXBlCCfsOqeji
+   4 |       0 | initial-rmGzVVucMqbYnBaccWilErbWvcatqBsWSXvrbxYUUEhmOnccXzvqcsGuMVJNBjmzKErJzEzzfCzNTmLQqhkrDUxdgqDD
+(5 rows)
+~~~
+
+For reference documentation and more examples, see the [`LIMIT`/`OFFSET`](limit-offset.html) syntax page.
+
 ## Joins
 
 The syntax for a [selection query][selection] with a two-way [join][joins] is shown below.
@@ -129,24 +178,6 @@ LIMIT
 ~~~
 
 Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Make queries fast][fast].
-
-## Pagination
-
-For pagination queries, we strongly recommend keyset pagination (also known as "the seek method").  The syntax for a keyset pagination query is shown below.
-
-{% include copy-clipboard.html %}
-~~~ sql
-SELECT * FROM t AS OF SYSTEM TIME ${time}
-  WHERE key > ${value}
-  ORDER BY key
-  LIMIT ${amount};
-~~~
-
-For a tutorial explaining keyset pagination queries and showing how to write them, see [Paginate through limited results][paginate].
-
-## Query optimization
-
-For instructions showing how to optimize your SQL queries, see [Make queries fast][fast].
 
 ## See also
 
@@ -175,5 +206,5 @@ Other common tasks:
 [manual]: manual-deployment.html
 [orchestrated]: orchestration.html
 [fast]: make-queries-fast.html
-[paginate]: selection-queries.html#paginate-through-limited-results
+[paginate]: pagination.html
 [joins]: joins.html

@@ -66,6 +66,7 @@ SELECT ST_GeomFromText('MULTIPOINT (-87.738258999999999 42.010930999999999, -87.
 
 ## See also
 
+- [Spatial tutorial](spatial-tutorial.html)
 - [Spatial objects](spatial-features.html#spatial-objects)
 - [POINT](point.html)
 - [LINESTRING](linestring.html)

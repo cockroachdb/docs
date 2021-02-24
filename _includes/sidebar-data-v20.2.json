@@ -1,10 +1,17 @@
 [
   {
+    "title": "Docs Home",
+    "is_top_level": true,
+    "urls": [
+      "/"
+    ]
+  },
+  {
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart.html",
-      "/cockroachcloud/quickstart-trial-cluster.html"
+      "/cockroachcloud/quickstart-trial-cluster.html",
+      "/cockroachcloud/quickstart.html"
     ]
   },
   {% include sidebar-data-cockroachcloud.json %},
@@ -89,6 +96,12 @@
                 ]
               },
               {
+                "title": "Spatial Data",
+                "urls": [
+                  "/${VERSION}/spatial-tutorial.html"
+                ]
+              },
+              {
                 "title": "Cross-Cloud Migration",
                 "urls": [
                   "/${VERSION}/demo-automatic-cloud-migration.html"
@@ -111,12 +124,6 @@
                 "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
                 ]
-              },
-              {
-                "title": "Working with Spatial Data",
-                "urls": [
-                  "/${VERSION}/spatial-data.html"
-                ]
               }
             ]
           }
@@ -132,57 +139,260 @@
             ]
           },
           {
-            "title": "Install a Postgres Client",
-            "urls": [
-              "/${VERSION}/install-client-drivers.html"
+            "title": "Connect to CockroachDB",
+            "items": [
+              {
+                "title": "Install a driver or ORM",
+                "urls": [
+                  "/${VERSION}/install-client-drivers.html"
+                ]
+              },
+              {
+                "title": "Connect to a Cluster",
+                "urls": [
+                  "/${VERSION}/connect-to-the-database.html",
+                  "/${VERSION}/connect-to-the-database-cockroachcloud.html"
+                ]
+              },
+              {
+                "title": "Use Connection Pools",
+                "urls": [
+                  "/${VERSION}/connection-pooling.html"
+                ]
+              }
             ]
           },
           {
-            "title": "Connect to the Database",
-            "urls": [
-              "/${VERSION}/connect-to-the-database.html"
+            "title": "Design a Database Schema",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/schema-design-overview.html"
+                ]
+              },
+              {
+                "title": "Create a Database",
+                "urls": [
+                  "/${VERSION}/schema-design-database.html"
+                ]
+              },
+              {
+                "title": "Create a User-defined Schema",
+                "urls": [
+                  "/${VERSION}/schema-design-schema.html"
+                ]
+              },
+              {
+                "title": "Create a Table",
+                "urls": [
+                  "/${VERSION}/schema-design-table.html"
+                ]
+              },
+              {
+                "title": "Add Secondary Indexes",
+                "urls": [
+                  "/${VERSION}/schema-design-indexes.html"
+                ]
+              },
+              {
+                "title": "Update a Database Schema",
+                "items": [
+                  {
+                    "title": "Change and Remove Objects",
+                    "urls": [
+                      "/${VERSION}/schema-design-update.html"
+                    ]
+                  },
+                  {
+                    "title": "Online Schema Changes",
+                    "urls": [
+                      "/${VERSION}/online-schema-changes.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Advanced Schema Design",
+                "items": [
+                  {
+                    "title": "Use Computed Columns",
+                    "urls": [
+                      "/${VERSION}/computed-columns.html"
+                    ]
+                  },
+                  {
+                    "title": "Group Columns into Families",
+                    "urls": [
+                      "/${VERSION}/column-families.html"
+                    ]
+                  },
+                  {
+                    "title": "Index a Subset of Rows",
+                    "urls": [
+                      "/${VERSION}/partial-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Index Sequential Keys",
+                    "urls": [
+                      "/${VERSION}/hash-sharded-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Index JSON and Array Data",
+                    "urls": [
+                      "/${VERSION}/inverted-indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Index Spatial Data",
+                    "urls": [
+                      "/${VERSION}/spatial-indexes.html"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "title": "Insert Data",
-            "urls": [
-              "/${VERSION}/insert-data.html"
+            "title": "Write Data",
+            "items": [
+              {
+                "title": "Insert Data",
+                "urls": [
+                  "/${VERSION}/insert-data.html"
+                ]
+              },
+              {
+                "title": "Overwrite Existing Data",
+                "urls": [
+                  "/${VERSION}/update-data.html"
+                ]
+              },
+              {
+                "title": "Delete Data",
+                "urls": [
+                  "/${VERSION}/delete-data.html"
+                ]
+              },
+              {
+                "title": "Bulk-delete Data",
+                "urls": [
+                  "/${VERSION}/bulk-delete-data.html"
+                ]
+              }
             ]
           },
           {
-            "title": "Query Data",
-            "urls": [
-              "/${VERSION}/query-data.html"
+            "title": "Read Data",
+            "items": [
+              {
+                "title": "Select Rows of Data",
+                "urls": [
+                  "/${VERSION}/query-data.html"
+                ]
+              },
+              {
+                "title": "Reuse Query Results",
+                "items": [
+                  {
+                    "title": "Reusable Views",
+                    "urls": [
+                      "/${VERSION}/views.html"
+                    ]
+                  },
+                  {
+                    "title": "Subqueries",
+                    "urls": [
+                      "/${VERSION}/subqueries.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Create Temporary Tables",
+                "urls": [
+                  "/${VERSION}/temporary-tables.html"
+                ]
+              },
+              {
+                "title": "Paginate Results",
+                "urls": [
+                  "/${VERSION}/pagination.html"
+                ]
+              },
+              {
+                "title": "Read Historical Data",
+                "items": [
+                  {
+                    "title": "AS OF SYSTEM TIME",
+                    "urls": [
+                      "/${VERSION}/as-of-system-time.html"
+                    ]
+                  },
+                  {
+                    "title": "Follower Reads",
+                    "urls": [
+                      "/${VERSION}/follower-reads.html"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "title": "Update Data",
+            "title": "Manage Transactions",
             "urls": [
-              "/${VERSION}/update-data.html"
+              "/${VERSION}/transactions.html"
             ]
           },
           {
-            "title": "Delete Data",
-            "urls": [
-              "/${VERSION}/delete-data.html"
+            "title": "Debug Your Application",
+            "items":
+            [
+              {
+                "title": "Log Events",
+                "urls": [
+                  "/${VERSION}/debug-and-error-logs.html"
+                ]
+              },
+              {
+                "title": "Monitor CockroachDB Apps in the DB Console",
+                "urls": [
+                  "/${VERSION}/ui-overview.html"
+                ]
+              },
+              {
+                "title": "Troubleshoot Common Problems",
+                "urls": [
+                  "/${VERSION}/error-handling-and-troubleshooting.html"
+                ]
+              }
             ]
           },
           {
-            "title": "Run Multi-Statement Transactions",
-            "urls": [
-              "/${VERSION}/run-multi-statement-transactions.html"
-            ]
-          },
-          {
-            "title": "Error Handling & Troubleshooting",
-            "urls": [
-              "/${VERSION}/error-handling-and-troubleshooting.html"
-            ]
-          },
-          {
-            "title": "Make Queries Fast",
-            "urls": [
-              "/${VERSION}/make-queries-fast.html"
+            "title": "Optimize Performance",
+            "items":
+            [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/make-queries-fast.html"
+                ]
+              },
+              {
+                "title": "Performance Best Practices",
+                "urls": [
+                  "/${VERSION}/performance-best-practices-overview.html"
+                ]
+              },
+              {
+                "title": "Use the EXPLAIN statement",
+                "urls": [
+                  "/${VERSION}/sql-tuning-with-explain.html"
+                ]
+              }
             ]
           },
           {
@@ -267,6 +477,12 @@
                     "urls": [
                       "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
                     ]
+                  },
+                  {
+                    "title": "TypeScript",
+                    "urls": [
+                      "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+                    ]
                   }
                 ]
               },
@@ -288,42 +504,53 @@
                 ]
               },
               {
-                "title": "Multi-Region",
+                "title": "MovR",
                 "items": [
                   {
                     "title": "Overview",
                     "urls": [
-                      "/${VERSION}/multi-region-overview.html"
+                      "/${VERSION}/movr.html"
                     ]
                   },
                   {
-                    "title": "Use-Case",
-                    "urls": [
-                      "/${VERSION}/multi-region-use-case.html"
-                    ]
-                  },
-                  {
-                    "title": "Database Schema",
-                    "urls": [
-                      "/${VERSION}/multi-region-database.html"
-                    ]
-                  },
-                  {
-                    "title": "Setup",
-                    "urls": [
-                      "/${VERSION}/multi-region-setup.html"
-                    ]
-                  },
-                  {
-                    "title": "Application",
-                    "urls": [
-                      "/${VERSION}/multi-region-application.html"
-                    ]
-                  },
-                  {
-                    "title": "Deployment",
-                    "urls": [
-                      "/${VERSION}/multi-region-deployment.html"
+                    "title": "Multi-Region",
+                    "items": [
+                      {
+                        "title": "Overview",
+                        "urls": [
+                          "/${VERSION}/multi-region-overview.html"
+                        ]
+                      },
+                      {
+                        "title": "Use-Case",
+                        "urls": [
+                          "/${VERSION}/multi-region-use-case.html"
+                        ]
+                      },
+                      {
+                        "title": "Database Schema",
+                        "urls": [
+                          "/${VERSION}/multi-region-database.html"
+                        ]
+                      },
+                      {
+                        "title": "Setup",
+                        "urls": [
+                          "/${VERSION}/multi-region-setup.html"
+                        ]
+                      },
+                      {
+                        "title": "Application",
+                        "urls": [
+                          "/${VERSION}/multi-region-application.html"
+                        ]
+                      },
+                      {
+                        "title": "Deployment",
+                        "urls": [
+                          "/${VERSION}/multi-region-deployment.html"
+                        ]
+                      }
                     ]
                   }
                 ]
@@ -332,10 +559,13 @@
           },
           {
             "title": "Third-Party Database Tools",
-            "urls": [
-              "/${VERSION}/third-party-database-tools.html"
-            ],
             "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/third-party-database-tools.html"
+                ]
+              },
               {
                 "title": "Schema Migration Tools",
                 "items": [
@@ -948,21 +1178,15 @@
                 ]
               },
               {
-                "title": "Client Connection Parameters",
-                "urls": [
-                  "/${VERSION}/connection-parameters.html"
-                ]
-              },
-              {
-                "title": "SQL Best Practices",
-                "urls": [
-                  "/${VERSION}/performance-best-practices-overview.html"
-                ]
-              },
-              {
                 "title": "SQL Feature Support",
                 "urls": [
                   "/${VERSION}/sql-feature-support.html"
+                ]
+              },
+              {
+                "title": "Name Resolution",
+                "urls": [
+                  "/${VERSION}/sql-name-resolution.html"
                 ]
               },
               {
@@ -1056,6 +1280,12 @@
                     "title": "<code>ALTER USER</code>",
                     "urls": [
                       "/${VERSION}/alter-user.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>AS OF SYSTEM TIME</code>",
+                    "urls": [
+                      "/${VERSION}/as-of-system-time.html"
                     ]
                   },
                   {
@@ -1338,6 +1568,24 @@
                     "title": "<code>INSERT</code>",
                     "urls": [
                       "/${VERSION}/insert.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>JOIN</code>",
+                    "urls": [
+                      "/${VERSION}/joins.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>LIMIT</code>/<code>OFFSET</code>",
+                    "urls": [
+                      "/${VERSION}/limit-offset.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ORDER BY</code>",
+                    "urls": [
+                      "/${VERSION}/order-by.html"
                     ]
                   },
                   {
@@ -1887,6 +2135,12 @@
                 ]
               },
               {
+                "title": "Window Functions",
+                "urls": [
+                  "/${VERSION}/window-functions.html"
+                ]
+              },
+              {
                 "title": "SQL Syntax",
                 "items": [
                   {
@@ -1914,18 +2168,6 @@
                     ]
                   },
                   {
-                    "title": "Ordering Query Results",
-                    "urls": [
-                      "/${VERSION}/query-order.html"
-                    ]
-                  },
-                  {
-                    "title": "Limiting Query Results",
-                    "urls": [
-                      "/${VERSION}/limit-offset.html"
-                    ]
-                  },
-                  {
                     "title": "Table Expressions",
                     "urls": [
                       "/${VERSION}/table-expressions.html"
@@ -1938,45 +2180,9 @@
                     ]
                   },
                   {
-                    "title": "Join Expressions",
-                    "urls": [
-                      "/${VERSION}/joins.html"
-                    ]
-                  },
-                  {
-                    "title": "Computed Columns",
-                    "urls": [
-                      "/${VERSION}/computed-columns.html"
-                    ]
-                  },
-                  {
                     "title": "Scalar Expressions",
                     "urls": [
                       "/${VERSION}/scalar-expressions.html"
-                    ]
-                  },
-                  {
-                    "title": "Subqueries",
-                    "urls": [
-                      "/${VERSION}/subqueries.html"
-                    ]
-                  },
-                  {
-                    "title": "Temporary Tables",
-                    "urls": [
-                      "/${VERSION}/temporary-tables.html"
-                    ]
-                  },
-                  {
-                    "title": "Name Resolution",
-                    "urls": [
-                      "/${VERSION}/sql-name-resolution.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>AS OF SYSTEM TIME</code>",
-                    "urls": [
-                      "/${VERSION}/as-of-system-time.html"
                     ]
                   },
                   {
@@ -2011,24 +2217,18 @@
                 ]
               },
               {
-                "title": "Views",
-                "urls": [
-                  "/${VERSION}/views.html"
-                ]
-              },
-              {
-                "title": "Window Functions",
-                "urls": [
-                  "/${VERSION}/window-functions.html"
-                ]
-              },
-              {
                 "title": "Spatial Features",
                 "items": [
                   {
                     "title": "Overview",
                     "urls": [
                       "/${VERSION}/spatial-features.html"
+                    ]
+                  },
+                  {
+                    "title": "Working with Spatial Data",
+                    "urls": [
+                      "/${VERSION}/spatial-data.html"
                     ]
                   },
                   {
@@ -2181,33 +2381,9 @@
                 "title": "Performance Optimization",
                 "items": [
                   {
-                    "title": "SQL Best Practices",
-                    "urls": [
-                      "/${VERSION}/performance-best-practices-overview.html"
-                    ]
-                  },
-                  {
                     "title": "Indexes",
                     "urls": [
                       "/${VERSION}/indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Inverted Indexes",
-                    "urls": [
-                      "/${VERSION}/inverted-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Partial Indexes",
-                    "urls": [
-                      "/${VERSION}/partial-indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Column Families",
-                    "urls": [
-                      "/${VERSION}/column-families.html"
                     ]
                   },
                   {
@@ -2251,6 +2427,12 @@
                 "title": "Overview",
                 "urls": [
                   "/${VERSION}/cockroach-commands.html"
+                ]
+              },
+              {
+                "title": "Client Connection Parameters",
+                "urls": [
+                  "/${VERSION}/connection-parameters.html"
                 ]
               },
               {
@@ -2403,12 +2585,6 @@
                 ]
               },
               {
-                "title": "Follower Reads",
-                "urls": [
-                  "/${VERSION}/follower-reads.html"
-                ]
-              },
-              {
                 "title": "Load-Based Splitting",
                 "urls": [
                   "/${VERSION}/load-based-splitting.html"
@@ -2535,26 +2711,9 @@
             ]
           },
           {
-            "title": "Third-Party Database Tools",
-            "urls": [
-              "/${VERSION}/third-party-database-tools.html"
-            ]
-          },
-          {
             "title": "Diagnostics Reporting",
             "urls": [
               "/${VERSION}/diagnostics-reporting.html"
-            ]
-          },
-          {
-            "title": "Sample Applications",
-            "items": [
-              {
-                "title": "MovR: Vehicle-Sharing App",
-                "urls": [
-                  "/${VERSION}/movr.html"
-                ]
-              }
             ]
           }
         ]

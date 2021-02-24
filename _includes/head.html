@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
 <meta name="robots" content="noindex">
@@ -40,14 +41,12 @@ var pageConfig = {
 <script src="{{ 'js/customscripts.js' | relative_url }}"></script>
 <script src="{{ 'js/setDocsContext.js' | relative_url }}"></script>
 <script src="{{ 'js/anchor.js' | relative_url }}"></script>
-<script src="//js.hsforms.net/forms/v2.js"></script>
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
 {% endif %}
 {% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}
 {% if page.license == true %}<script src="{{ 'js/license-on-page.js' | relative_url }}"></script>{% endif %}
-<script src="//js.hsforms.net/forms/v2.js"></script>
 <script async src="//js.convertflow.co/production/websites/5329.js"></script>
 <script src="https://kit.fontawesome.com/4e4d5754e5.js" crossorigin="anonymous"></script>
 <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>

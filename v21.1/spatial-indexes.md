@@ -245,6 +245,7 @@ CREATE INDEX
 - [S2 Geometry Library](https://s2geometry.io/)
 - [Indexes](indexes.html)
 - [Spatial Features](spatial-features.html)
+- [Spatial tutorial](spatial-tutorial.html)
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
