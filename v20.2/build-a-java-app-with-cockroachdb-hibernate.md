@@ -165,6 +165,16 @@ id |  balance
 
 ## Recommended Practices
 
+### Generate PKCS8 keys for client authentication
+
+{% include {{page.version.version}}/app/pkcs8-gen.md %}
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include cockroachcloud/cc-no-user-certs.md %}
+
+</section>
+
 ### Use `IMPORT` to read in large data sets
 
 If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html). It bypasses the [SQL layer](architecture/sql-layer.html) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
