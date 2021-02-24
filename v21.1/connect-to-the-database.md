@@ -88,6 +88,10 @@ ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg con
 ds.setApplicationName("BasicExample");
 ~~~
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/app/pkcs8-gen.md %}
+{{site.data.alerts.end}}
+
 {% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
 </section>

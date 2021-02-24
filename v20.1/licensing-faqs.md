@@ -1,80 +1,171 @@
 ---
 title: Licensing FAQs
-summary: Get answers to frequently asked questions about CockroachDB's Licenses.
+summary: Overview of Licensing for CockroachDB.
 toc: true
-toc_not_nested: true
 ---
 
-## What licenses does CockroachDB use?
+Current CockroachDB code is primarily licensed in two ways: 
 
-- Apache 2.0 for core features released up to and including the 19.1 release
-- Time-limited Business Source License (BSL) for core features released in and after the 19.2 release. After three years, the license converts to the standard Apache 2.0 license. The three-year restriction is applied on a rolling basis for each release.
-- Cockroach Community License (CCL) for enterprise features in perpetuity
+-  [Business Source License (BSL)](#bsl)
+-  [Cockroach Community License (CCL)](#ccl)
 
-The following table lists the current license for non-CCL features for each published release:
+CockroachDB core is free to use.  Most [core features](#feature-licensing) are licensed under the BSL, but some core features are subject to the CCL or third-party licenses. 
 
+Non-CCL core features from version 19.1 and earlier are licensed under [Apache 2.0](#apache); however, some features remain under third-party licenses. Beginning in version 19.2, these non-CCL features are licensed under the BSL for three years before [converting](#license-conversion-timeline) to the Apache 2.0 license.
+
+CockroachDB [enterprise features](enterprise-licensing.html) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License. 
+
+{{site.data.alerts.callout_info}}
+You can find any feature's license by checking the code's file header in the [CockroachDB repository](https://github.com/cockroachdb/cockroach).
+{{site.data.alerts.end}}
+
+## Types of licenses
+
+Type | Description
+-------------|------------
+<a name="apache"></a>**Apache 2.0 License** | Core features under the Apache License are free to use and fully open-source. BSL features convert to this license three years after their release. For license conversion dates, see the [table below](#license-conversion-timeline).
+<a name="bsl"></a>**Business Source License**| BSL features are free to use and the source code is available, but users may not use CockroachDB [as a service](#what-constitutes-hosting-cockroachdb-as-a-service) without an agreement with Cockroach Labs. The BSL is not certified as an open-source license, but most of the [Open Source Initiative](https://en.wikipedia.org/wiki/Open_Source_Initiative) (OSI) criteria are met.
+<a name="ccl"></a>**Cockroach <br/> Community License** | <ul><li> CCL (Free) features are free to use. The source code is available to view and modify, but it cannot be reused without an agreement with Cockroach Labs. </li><li> CCL (Paid) features require an enterprise license key to access. The source code is available to view and modify, but it cannot be used without an agreement with Cockroach Labs. </li></ul>
+
+For additional custom licensing options, [contact us](https://support.cockroachlabs.com/hc/en-us).
+
+For each BSL release all associated alpha, beta, major, and minor (point) releases will become Apache 2.0 on the same day three years after the major release date. Once a release is published under the BSL, the license cannot be changed to prevent code from becoming open-source at the specified change date. The following table lists the current license for non-CCL features for each published release:
+
+### License conversion timeline
 
 CockroachDB version | License | Converts to Apache 2.0   
 --------------------|---------|----------------------------
+20.2 | Business Source License | Nov 10, 2023 
+20.1 | Business Source License | May 12, 2023  
 19.2 | Business Source License | Oct 01, 2022
 19.1 | Apache 2.0 | -                          
 2.1 | Apache 2.0 | -
 2.0 | Apache 2.0 | -
 
-## How does the change to the BSL affect me as a CockroachDB user?
+## Feature licensing
 
-It likely does not. As a CockroachDB user, you can freely use CockroachDB or embed it in your applications (irrespective of whether you ship those applications to customers or run them as a service). The only thing you cannot do is offer CockroachDB as a service without buying a license.
+The table below shows how certain core and enterprise features are licensed:
 
-## Is the date for conversion to Apache 2.0 license different for alphas, betas, and point releases compared to major releases?
+Feature          | BSL | CCL (free)      | CCL (paid) 
+-----------------|:-----:|:-----------------:|:---------------:
+**[Import](import.html)** | | ✓ |
+**[Export](export.html)** | ✓ | |
+**[Core backup and restore](backup-and-restore.html#perform-core-backup-and-restore)** | | ✓ |
+**[Enterprise backup and restore](backup-and-restore.html#perform-enterprise-backup-and-restore)** | | | ✓
+**[Incremental backups](backup-and-restore.html#full-and-incremental-backups)** | | | ✓
+**[Core changefeed](change-data-capture.html#create-a-changefeed-core)** | | ✓ |
+**[Enterprise changefeed](change-data-capture.html#configure-a-changefeed-enterprise)** | | | ✓
+**[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
+**[Geo-partitioning](topology-geo-partitioned-replicas.html)** | | | ✓
+**[Follower reads](follower-reads.html)** | | | ✓
+**[Node map](enable-node-map.html)** | | | ✓
+**[Locality-aware index selection](cost-based-optimizer.html#preferring-the-nearest-index)** | | | ✓
+**[Encryption at rest](encryption.html#encryption-at-rest-enterprise)** | | | ✓
+**[Role-based access management](authorization.html#roles)[*](#footnotes)** | ✓ | |
+**[Password and certificate authentication](authentication.html)** | ✓ | |
+**[GSSAPI with Kerberos authentication](gssapi_authentication.html)** | | | ✓
+**[All other core features](https://www.cockroachlabs.com/compare)** | ✓ | |
 
-No, for each release all associated alpha, beta, major, and minor (point) releases will become Apache 2.0 on the same day three years after the major release date.
+<a name="footnotes"></a><sup>* Now a core feature in v20.1.</sup>
 
-## Can I still contribute code to CockroachDB?
+{{site.data.alerts.callout_info}}
+Individual feature licensing may change with each release of CockroachDB. You can use the dropdown menu at the top of the page to view documentation for other versions of CockroachDB.
+{{site.data.alerts.end}}
 
-Yes, you can. Contributing code will follow the same process and requires the same Contributor License Agreement as before.
+{{site.data.alerts.callout_info}}
+More information about all enterprise features can be found [here](enterprise-licensing.html).
+{{site.data.alerts.end}}
 
-## What about enterprise features?
+## Obtain a license
 
-CockroachDB’s enterprise features have always been licensed under the Cockroach Community License (CCL) and will continue to be licensed this way in our 19.2 release and beyond. The Cockroach Community License does not convert to Apache 2.0.
+All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
-There are two categories of features in under the CCL: CCL (Paid) and CCL (Free). Access to CCL (Paid) features requires access to an enterprise license with Cockroach Labs. You can grab a 30-day free trial enterprise license [here](https://www.cockroachlabs.com/get-cockroachdb). CCL (Free) features are included without an enterprise license.
+- An **Enterprise License** enables you to use CockroachDB enterprise features for longer periods (one year or more). To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
+- A **Trial License** enables you to try out CockroachDB enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
 
-## What is the major difference between the Apache 2.0 license and the BSL?
+{{site.data.alerts.callout_success}}
+For quick local testing of enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
+{{site.data.alerts.end}}
 
-The BSL license prevents hosting CockroachDB as a service without an agreement with Cockroach Labs. Outside of this usage, BSL features will continue to be free to use and source code for features under both the BSL and CCL will continue to be available.
+{{site.data.alerts.callout_info}}
+Cockroach Labs is willing to offer self-hosted CockroachDB enterprise features free of charge and discounted prices for CockroachCloud to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
+{{site.data.alerts.end}}
 
-## Can I host CockroachDB as a service for internal use at my organization?
+## Set a license
+
+As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the [`SET CLUSTER SETTING`](set-cluster-setting.html) command to set the name of your organization and the license key:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+>  SET CLUSTER SETTING cluster.organization = 'Acme Company';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+>  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
+~~~
+
+## Verify a license
+
+To verify a license, open the [built-in SQL shell](cockroach-sql.html) and use the [`SHOW CLUSTER SETTING`](show-cluster-setting.html) command to check the organization name and license key:
+
+{% include copy-clipboard.html %}
+~~~ sql
+>  SHOW CLUSTER SETTING cluster.organization;
+~~~
+~~~
+  cluster.organization
++----------------------+
+  Acme Company
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+>  SHOW CLUSTER SETTING enterprise.license;
+~~~
+~~~
+             enterprise.license
++-------------------------------------------+
+  crl-0-ChB1x...
+(1 row)
+~~~
+
+The license setting is also logged in the cockroach.log on the node where the command is run:
+
+{% include copy-clipboard.html %}
+~~~ sql
+$ cat cockroach.log | grep license
+~~~
+~~~
+I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root,n1] Event: "set_cluster_setting", target: 0, info: {SettingName:enterprise.license Value:xxxxxxxxxxxx User:root}
+~~~
+
+## Renew an expired license
+
+After your license expires, the enterprise features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
+
+To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](#set-a-license) the new license.
+
+## FAQs
+
+### Can I host CockroachDB as a service for internal use at my organization?
 
 Yes, employees and contractors can use your internal CockroachDB instance as a service, but no people outside of your organization will be able to use it without purchasing a license. Use of enterprise features will always require a license.
 
-## What constitutes hosting CockroachDB as a service?
+### What constitutes hosting CockroachDB as a service?
 
 Hosting CockroachDB as a service means creating an offering that allows third parties (other than your employees and contractors) to operate a database. Specifically, third parties cannot modify table schemas.
 
-## What are the differences between the BSL for CockroachDB and MariaDB’s MaxScale?
+### I would like to reuse a single component from the CockroachDB project in my own software, which uses the AGPL or another open-source license. Is this possible?
 
-MariaDB’s MaxScale restricts production usage to “a total of less than three server instances for any purpose” while CockroachDB does not place any such restrictions. The only restriction with CockroachDB’s BSL is that CockroachDB cannot be deployed as a service without buying an enterprise license.
+The CockroachDB team is committed to supporting the open-source community and willing to consider extracting specific internal components that are generally useful as a separate project with its own license, for example APL. For more details, feel free to [contact us](https://support.cockroachlabs.com/hc/en-us).
 
-## Is the Business Source License an open source license?
-
-MariaDB has not certified the BSL as complying to the [Open Source Definition](https://en.wikipedia.org/wiki/The_Open_Source_Definition) by the [Open Source Initiative](https://en.wikipedia.org/wiki/Open_Source_Initiative) (OSI). However, all source code is available from the start and most of the OSI criteria are met. As long as the software is used within the usage limitations, it’s free to use at no cost.
-
-## Can Cockroach Labs change the license to prevent code under the BSL from becoming open source?
-
-No, once a release is published under the new license, all code under the BSL will become open source at the specified change date. A new release can have a new license, but published releases must adhere to the license terms.
-
-## I would like to reuse a single component from the CockroachDB project in my own software, which uses the AGPL or another open source license. Is this possible?
-
-The CockroachDB team is committed to support the open source community and willing to  consider extracting specific internal components that are generally useful as a separate project with its own license, for example APL. For more details, feel free to [contact us](https://support.cockroachlabs.com/hc/en-us).
-
-## Can I fork the CockroachDB project pre-BSL and create my own CockroachDB derivative with a different license?
+### Can I fork the CockroachDB project pre-BSL and create my own CockroachDB derivative with a different license?
 
 You can fork any historical version of CockroachDB in your own project, as allowed by the license available for that version, and modify it for your purpose. Note however that only the copyright holder (Cockroach Labs) can relicense the components that you forked from: your derivative will need to keep the original license at the time of the fork. Any component you copy from a BSL-licensed CockroachDB into your project will make the BSL apply to your project as well.
-
-## Are there additional dual-licensing options? Can Cockroach Labs issue a custom license for my use of CockroachDB?
-
-[Contact us](https://support.cockroachlabs.com/hc/en-us).
-
-## I work for a non-profit, as a student, or in academia, and I would like to use CockroachDB. Do I need a license to access enterprise features?
-
-Cockroach Labs is willing to offer self-hosted CockroachDB enterprise features free of charge and discounted prices for CockroachCloud to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).

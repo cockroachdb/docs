@@ -124,6 +124,8 @@ conn = psycopg2.connect(
 
 </section>
 
+{% include cockroachcloud/cc-no-user-certs.md %}
+
 ## What's next?
 
 <a name="tasks"></a>
