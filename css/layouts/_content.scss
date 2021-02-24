@@ -13,14 +13,14 @@
 	// @include box-shadow(5px, 0, 4px, 0, rgba(0, 0, 0, 0.1));
 	// overflow: auto;
 
-	@include at-query($min, $screen-lg){
-		padding-top: 100px;
+	@include at-query($min, $screen-md){
+		padding-top: 95px;
 	}
 
 	#main-content {
 		margin: 0 15px;
 
-		@include at-query($min, $screen-lg) {
+		@include at-query($min, $screen-md) {
 			margin: 0 auto;
 			min-height: 625px;
 			max-width: $max-width;
@@ -33,7 +33,7 @@
 			padding-top: 105px;
 			overflow-x: scroll;
 
-			@include at-query($min, $screen-lg) {
+			@include at-query($min, $screen-md) {
 				padding-top: 0;
 				min-height: 625px;
 				margin-left: 310px;
