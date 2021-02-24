@@ -216,15 +216,15 @@ Where:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-      ~~~ yml
-      ...
-      datasource:
-        url: jdbc:postgresql://{globalhost}:{port}/{cluster_name}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
-        username: {username}
-        password: {password}
-        driver-class-name: org.postgresql.Driver
-      ...
-      ~~~
+~~~ yml
+...
+datasource:
+  url: jdbc:postgresql://{globalhost}:{port}/{cluster_name}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
+  username: {username}
+  password: {password}
+  driver-class-name: org.postgresql.Driver
+...
+~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 

@@ -189,13 +189,13 @@ Open the `roach-data/roach-data-jdbc/src/main/resources/application.yml` file an
 <section class="filter-content" markdown="1" data-scope="local">
 
 ~~~ yml
-...
+  ...
 datasource:
   url: jdbc:postgresql://localhost:{port}/roach_data?ssl=true&sslmode=require&sslrootcert={certs-dir}/ca.crt&sslkey={certs-dir}/client.{username}.key.pk8&sslcert={certs-dir}/client.{username}.crt
   username: {username}
   password: {password}
   driver-class-name: org.postgresql.Driver
-...
+  ...
 ~~~
 
 Where:
@@ -208,15 +208,15 @@ Where:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-      ~~~ yml
-      ...
-      datasource:
-        url: jdbc:postgresql://{globalhost}:{port}/{cluster_name}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
-        username: {username}
-        password: {password}
-        driver-class-name: org.postgresql.Driver
-      ...
-      ~~~
+~~~ yml
+...
+datasource:
+  url: jdbc:postgresql://{globalhost}:{port}/{cluster_name}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
+  username: {username}
+  password: {password}
+  driver-class-name: org.postgresql.Driver
+...
+~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
@@ -224,24 +224,24 @@ Where:
 
 Open a terminal, and navigate to the `roach-data-jdbc` project subfolder:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cd <path>/roach-data/roach-data-jdbc
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ cd <path>/roach-data/roach-data-jdbc
+~~~
 
 Use Maven to download the application dependencies and compile the code:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mvn clean install
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ mvn clean install
+~~~
 
 From the `roach-data-jdbc` directory, run the application JAR file:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ java -jar target/roach-data-jdbc.jar
-    ~~~
+{% include copy-clipboard.html %}
+~~~ shell
+$ java -jar target/roach-data-jdbc.jar
+~~~
 
 The output should look like the following:
 
