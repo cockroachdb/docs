@@ -45,6 +45,15 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 <section class="filter-content" markdown="1" data-scope="local">
 
+1. Open a SQL shell to your local cluster using the [`cockroach sql`](cockroach-sql.html) command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir={certs-dir} --host=localhost:{port}
+    ~~~
+
+    Where `{certs_dir}` is the full path to the `certs` directory that you created when setting up the cluster, and `{port}` is the port at which the cluster is listening for incoming connections.
+
 1. In the SQL shell, create the `roach_data` database that your application will use:
 
     {% include copy-clipboard.html %}
@@ -72,7 +81,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client {user} --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
+$ cockroach cert create-client {user} --certs-dir=certs --ca-key={certs-dir}/ca.key --also-generate-pkcs8-key
 ~~~
 
 The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.{user}.key.pk8`.
@@ -91,6 +100,8 @@ The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates
     ~~~
 
     In the connection string copied from the CockroachCloud Console, your username, password and cluster name are pre-populated. Replace the `{certs_dir}` placeholder with the path to the `certs` directory that you created [earlier](#set-up-your-cluster-connection).
+
+    {% include cockroachcloud/cc-no-user-certs.md %}
 
 1. In the SQL shell, create the `roach_data` database that your application will use:
 
