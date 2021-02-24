@@ -38,16 +38,16 @@ git checkout cockroachcloud
 ## Step 4. Configure the dependencies
 
 1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
-  {% include copy-clipboard.html %}
-  ```shell
-  brew install libpq
-  ```
+    {% include copy-clipboard.html %}
+    ```shell
+    brew install libpq
+    ```
 1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
-  {% include copy-clipboard.html %}
-  ```shell
-  bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
-  ```
-  Set `--with-opt-dir` to the location of `libpq` on your OS.
+    {% include copy-clipboard.html %}
+    ```shell
+    bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
+    ```
+    Set `--with-opt-dir` to the location of `libpq` on your OS.
 
 ## Step 5. Install the dependencies
 
