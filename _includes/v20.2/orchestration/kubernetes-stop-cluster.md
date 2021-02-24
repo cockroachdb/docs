@@ -46,6 +46,10 @@ To shut down the CockroachDB cluster:
     ~~~ shell
     $ kubectl delete csr node.cockroachdb.default.svc.cluster.local root.cockroachdb.default.svc.cluster.local 
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    This does not delete the secrets you created. For more information on managing secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl).
+    {{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -130,40 +134,9 @@ To shut down the CockroachDB cluster:
     certificatesigningrequest "default.node.cockroachdb-3" deleted
     ~~~
 
-1. Get the names of the secrets for the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get secrets
-    ~~~
-
-    ~~~
-    NAME                              TYPE                                  DATA      AGE
-    alertmanager-cockroachdb          Opaque                                1         1h
-    default-token-d9gff               kubernetes.io/service-account-token   3         5h
-    default.client.root               Opaque                                2         5h
-    default.node.cockroachdb-0        Opaque                                2         5h
-    default.node.cockroachdb-1        Opaque                                2         5h
-    default.node.cockroachdb-2        Opaque                                2         5h
-    default.node.cockroachdb-3        Opaque                                2         5h
-    prometheus-operator-token-bpdv8   kubernetes.io/service-account-token   3         3h    
-    ~~~
-
-1. Delete the secrets that you created:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    secret "alertmanager-cockroachdb" deleted
-    secret "default.client.root" deleted
-    secret "default.node.cockroachdb-0" deleted
-    secret "default.node.cockroachdb-1" deleted
-    secret "default.node.cockroachdb-2" deleted
-    secret "default.node.cockroachdb-3" deleted
-    ~~~
+    {{site.data.alerts.callout_info}}
+    This does not delete the secrets you created. For more information on managing secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl).
+    {{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -224,38 +197,7 @@ To shut down the CockroachDB cluster:
     certificatesigningrequest "default.node.my-release-cockroachdb-3" deleted
     ~~~
 
-1. Get the names of the secrets for the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get secrets
-    ~~~
-
-    ~~~
-    NAME                                     TYPE                                  DATA      AGE
-    alertmanager-cockroachdb                 Opaque                                1         1h
-    default-token-d9gff                      kubernetes.io/service-account-token   3         5h
-    default.client.root                      Opaque                                2         5h
-    default.node.my-release-cockroachdb-0    Opaque                                2         5h
-    default.node.my-release-cockroachdb-1    Opaque                                2         5h
-    default.node.my-release-cockroachdb-2    Opaque                                2         5h
-    default.node.my-release-cockroachdb-3    Opaque                                2         5h
-    prometheus-operator-token-bpdv8          kubernetes.io/service-account-token   3         3h
-    ~~~
-
-1. Delete the secrets that you created:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.my-release-cockroachdb-0 default.node.my-release-cockroachdb-1 default.node.my-release-cockroachdb-2 default.node.my-release-cockroachdb-3
-    ~~~
-
-    ~~~
-    secret "alertmanager-cockroachdb" deleted
-    secret "default.client.root" deleted
-    secret "default.node.my-release-cockroachdb-0" deleted
-    secret "default.node.my-release-cockroachdb-1" deleted
-    secret "default.node.my-release-cockroachdb-2" deleted
-    secret "default.node.my-release-cockroachdb-3" deleted
-    ~~~
+    {{site.data.alerts.callout_info}}
+    This does not delete the secrets you created. For more information on managing secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl).
+    {{site.data.alerts.end}}
 </section>
