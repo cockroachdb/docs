@@ -340,9 +340,9 @@
                 ]
               },
               {
-                "title": "Work with Spatial Data",
+                "title": "Query Spatial Data",
                 "urls": [
-                  "/${VERSION}/spatial-data.html"
+                  "/${VERSION}/query-spatial-data.html"
                 ]
               }
             ]
@@ -2229,6 +2229,12 @@
                     "title": "Overview",
                     "urls": [
                       "/${VERSION}/spatial-features.html"
+                    ]
+                  },
+                  {
+                    "title": "Working with Spatial Data",
+                    "urls": [
+                      "/${VERSION}/spatial-data.html"
                     ]
                   },
                   {
