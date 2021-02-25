@@ -16,154 +16,132 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 {{site.data.alerts.end}}
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Install PostgreSQL
+## Step 2. Create a database
 
-[`pg`](ttps://github.com/ged/ruby-pg) and [`activerecord`](https://guides.rubyonrails.org/active_record_postgresql.html) are both dependencies of `activerecord-cockroachdb-adapter`. Both libraries require a [PostgreSQL](https://www.postgresql.org/) installation.
+{% include {{page.version.version}}/app/create-a-database.md %}
 
-To install PostgreSQL from source code, follow [the instructions on their documentation website](https://www.postgresql.org/docs/current/installation.html).
+## Step 3. Get the code
 
-You can also use a package manager to install PostgreSQL. For example, to install PostgreSQL on macOS, run the following command:
+<div class="filters filters-big clearfix">
+  <button class="filter-button page-level" data-scope="ar61">Active Record 6.1</button>
+  <button class="filter-button page-level" data-scope="ar52">Active Record 5.2</button>
+</div>
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ brew install postgresql
-~~~
-
-To install PostgreSQL on a Debian-based Linux distribution (e.g., Ubuntu), run the following command:
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-activerecord).
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ apt-get install postgresql
+git clone https://github.com/cockroachlabs/hello-world-ruby-activerecord
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="secure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
+<div class="filter-content" markdown="1" data-scope="local">
+<div class="filter-content" markdown="1" data-scope="ar52">
+Check out the `5.2` branch:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
+git checkout 5.2
+~~~
+</div>
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+<div class="filter-content" markdown="1" data-scope="ar61">
+Check out the `cockroachcloud` branch:
+
+{% include copy-clipboard.html %}
+~~~shell
+git checkout cockroachcloud
 ~~~
 
-## Step 4. Run the Ruby code
+</div>
+<div class="filter-content" markdown="1" data-scope="ar52">
+Check out the `cockroachcloud-5.2` branch:
 
-The following code uses [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) to map Ruby-specific objects to SQL operations. Specifically, `Schema.new.change()` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
+{% include copy-clipboard.html %}
+~~~ shell
+git checkout cockroachcloud-5.2
+~~~
+</div>
 
-Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/activerecord-basic-sample.rb" download>download it directly</a>.
+</div>
+
+## Step 4. Configure the dependencies
+
+1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
+    {% include copy-clipboard.html %}
+    ```shell
+    brew install libpq
+    ```
+1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
+    {% include copy-clipboard.html %}
+    ```shell
+    bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
+    ```
+    Set `--with-opt-dir` to the location of `libpq` on your OS.
+
+## Step 5. Install the dependencies
+
+{% include copy-clipboard.html %}
+```shell
+bundle install
+```
+
+## Step 5. Update the connection parameters
+
+Update the connection parameters to connect to your cluster.
+
+<section class="filter-content" markdown="1" data-scope="local">
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include {{page.version.version}}/app/activerecord-basic-sample.rb %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-activerecord/main/main.rb|# BEGIN connect|# END connect %}
 ~~~
 
-Then run the code:
+Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
+
+</section>
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include copy-clipboard.html %}
+~~~ ruby
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-activerecord/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
+~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
+</section>
+
+## Step 6. Run the Ruby code
+
+Run the code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ruby activerecord-basic-sample.rb
+ruby main.rb
 ~~~
 
 The output should be:
 
-~~~ shell
+~~~
 -- create_table(:accounts, {:force=>true, :id=>:integer})
-   -> 0.0883s
+   -> 0.3951s
 account: 1 balance: 1000
 account: 2 balance: 250
 ~~~
 
-To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
+The full code example is below.
 
 {% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank
+~~~ruby
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-activerecord/main/main.rb %}
 ~~~
-
-Then, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-  id | balance
------+----------
-   1 |    1000
-   2 |     250
-(2 rows)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Run the Ruby code
-
-The following code uses [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) to map Ruby-specific objects to database tables. Specifically, `Schema.new.change()` creates an `accounts` table based on the `Account` model (or drops and recreates the table if it already exists), `Account.create()` inserts rows into the table, and `Account.all` selects from the table so that balances can be printed.
-
-Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/activerecord-basic-sample.rb" download>download it directly</a>.
-
-{% include copy-clipboard.html %}
-~~~ ruby
-{% include {{page.version.version}}/app/insecure/activerecord-basic-sample.rb %}
-~~~
-
-Then run the code (no need to run bundler first):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ ruby activerecord-basic-sample.rb
-~~~
-
-The output should be:
-
-~~~ shell
--- create_table(:accounts, {:force=>true, :id=>:integer})
-   -> 0.0883s
-account: 1 balance: 1000
-account: 2 balance: 250
-~~~
-
-To verify that the table and rows were created successfully, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --database=bank
-~~~
-
-Then, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-  id | balance
------+----------
-   1 |    1000
-   2 |     250
-(2 rows)
-~~~
-
-</section>
 
 ## What's next?
 
