@@ -54,7 +54,7 @@ To shut down the CockroachDB cluster:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-1. Delete all of the resources associated with the `cockroachdb` label, including the logs and Prometheus and Alertmanager resources:
+1. Delete the resources associated with the `cockroachdb` label, including the logs and Prometheus and Alertmanager resources:
 
     {{site.data.alerts.callout_danger}}
     This does not include deleting the persistent volumes that were attached to the pods. If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).

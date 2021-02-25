@@ -103,7 +103,7 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 To shut down the CockroachDB cluster:
 
-1. Delete all of the resources you created, including the logs:
+1. Delete the resources you created, including the logs:
 
     {{site.data.alerts.callout_danger}}
     This does not include deleting the persistent volumes that were attached to the pods. If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
