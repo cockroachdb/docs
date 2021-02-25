@@ -22,7 +22,12 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 
 ## Step 3. Get the code
 
-<a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/main/main.rb">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
+
+{% include copy-clipboard.html %}
+```shell
+git checkout https://github.com/cockroachlabs/hello-world-ruby-pg
+```
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
