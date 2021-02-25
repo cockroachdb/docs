@@ -15,12 +15,11 @@ To shut down the CockroachDB cluster:
     $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
     ~~~
 
-1. Delete the persistent volumes and persistent volume claims:
+    This will delete the StatefulSet but will not delete the persistent volumes that were attached to the pods. 
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete pv,pvc --all
-    ~~~
+    {{site.data.alerts.callout_danger}}
+    If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
+    {{site.data.alerts.end}}
 
 1. Get the names of any CSRs for the cluster:
 
@@ -47,14 +46,23 @@ To shut down the CockroachDB cluster:
     ~~~ shell
     $ kubectl delete csr node.cockroachdb.default.svc.cluster.local root.cockroachdb.default.svc.cluster.local 
     ~~~
+
+    {{site.data.alerts.callout_info}}
+    This does not delete the secrets you created. For more information on managing secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl).
+    {{site.data.alerts.end}}
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-1. Delete all of the resources associated with the `cockroachdb` label, including the logs, remote persistent volumes, and Prometheus and Alertmanager resources:
+1. Delete the resources associated with the `cockroachdb` label, including the logs and Prometheus and Alertmanager resources:
+
+    {{site.data.alerts.callout_danger}}
+    This does not include deleting the persistent volumes that were attached to the pods. If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
+    {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
+    $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
 
     ~~~
@@ -66,10 +74,6 @@ To shut down the CockroachDB cluster:
     service "alertmanager-cockroachdb" deleted
     service "cockroachdb" deleted
     service "cockroachdb-public" deleted
-    persistentvolumeclaim "datadir-cockroachdb-0" deleted
-    persistentvolumeclaim "datadir-cockroachdb-1" deleted
-    persistentvolumeclaim "datadir-cockroachdb-2" deleted
-    persistentvolumeclaim "datadir-cockroachdb-3" deleted
     poddisruptionbudget.policy "cockroachdb-budget" deleted
     job.batch "cluster-init-secure" deleted
     rolebinding.rbac.authorization.k8s.io "cockroachdb" deleted
@@ -131,40 +135,9 @@ To shut down the CockroachDB cluster:
     certificatesigningrequest "default.node.cockroachdb-3" deleted
     ~~~
 
-1. Get the names of the secrets for the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get secrets
-    ~~~
-
-    ~~~
-    NAME                              TYPE                                  DATA      AGE
-    alertmanager-cockroachdb          Opaque                                1         1h
-    default-token-d9gff               kubernetes.io/service-account-token   3         5h
-    default.client.root               Opaque                                2         5h
-    default.node.cockroachdb-0        Opaque                                2         5h
-    default.node.cockroachdb-1        Opaque                                2         5h
-    default.node.cockroachdb-2        Opaque                                2         5h
-    default.node.cockroachdb-3        Opaque                                2         5h
-    prometheus-operator-token-bpdv8   kubernetes.io/service-account-token   3         3h    
-    ~~~
-
-1. Delete the secrets that you created:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.cockroachdb-0 default.node.cockroachdb-1 default.node.cockroachdb-2 default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    secret "alertmanager-cockroachdb" deleted
-    secret "default.client.root" deleted
-    secret "default.node.cockroachdb-0" deleted
-    secret "default.node.cockroachdb-1" deleted
-    secret "default.node.cockroachdb-2" deleted
-    secret "default.node.cockroachdb-3" deleted
-    ~~~
+    {{site.data.alerts.callout_info}}
+    This does not delete the secrets you created. For more information on managing secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl).
+    {{site.data.alerts.end}}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -225,38 +198,7 @@ To shut down the CockroachDB cluster:
     certificatesigningrequest "default.node.my-release-cockroachdb-3" deleted
     ~~~
 
-1. Get the names of the secrets for the cluster:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get secrets
-    ~~~
-
-    ~~~
-    NAME                                     TYPE                                  DATA      AGE
-    alertmanager-cockroachdb                 Opaque                                1         1h
-    default-token-d9gff                      kubernetes.io/service-account-token   3         5h
-    default.client.root                      Opaque                                2         5h
-    default.node.my-release-cockroachdb-0    Opaque                                2         5h
-    default.node.my-release-cockroachdb-1    Opaque                                2         5h
-    default.node.my-release-cockroachdb-2    Opaque                                2         5h
-    default.node.my-release-cockroachdb-3    Opaque                                2         5h
-    prometheus-operator-token-bpdv8          kubernetes.io/service-account-token   3         3h
-    ~~~
-
-1. Delete the secrets that you created:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete secrets alertmanager-cockroachdb default.client.root default.node.my-release-cockroachdb-0 default.node.my-release-cockroachdb-1 default.node.my-release-cockroachdb-2 default.node.my-release-cockroachdb-3
-    ~~~
-
-    ~~~
-    secret "alertmanager-cockroachdb" deleted
-    secret "default.client.root" deleted
-    secret "default.node.my-release-cockroachdb-0" deleted
-    secret "default.node.my-release-cockroachdb-1" deleted
-    secret "default.node.my-release-cockroachdb-2" deleted
-    secret "default.node.my-release-cockroachdb-3" deleted
-    ~~~
+    {{site.data.alerts.callout_info}}
+    This does not delete the secrets you created. For more information on managing secrets, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl).
+    {{site.data.alerts.end}}    
 </section>
