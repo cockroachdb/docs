@@ -10,7 +10,7 @@ twitter: false
     <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button">Use <strong>ActiveRecord</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Ruby application with CockroachDB and the Ruby pg driver.
+This tutorial shows you how build a simple Ruby application with CockroachDB and the [Ruby pg driver](https://deveiate.org/code/pg/PG/Connection.html).
 
 ## Step 1. Start CockroachDB
 
@@ -25,9 +25,11 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
 
 {% include copy-clipboard.html %}
-```shell
-git checkout https://github.com/cockroachlabs/hello-world-ruby-pg
-```
+~~~shell
+git clone https://github.com/cockroachlabs/hello-world-ruby-pg
+~~~
+
+The code connects as the user you created and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
@@ -44,24 +46,24 @@ git checkout cockroachcloud
 
 1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
     {% include copy-clipboard.html %}
-    ```shell
+    ~~~shell
     brew install libpq
-    ```
+    ~~~
 1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
     {% include copy-clipboard.html %}
-    ```shell
+    ~~~shell
     bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
-    ```
+    ~~~
     Set `--with-opt-dir` to the location of `libpq` on your OS.
 
 ## Step 5. Install the dependencies
 
 {% include copy-clipboard.html %}
-```shell
+~~~shell
 bundle install
-```
+~~~
 
-## Step 5. Update the connection parameters
+## Step 6. Update the connection parameters
 
 Update the connection parameters to connect to your cluster.
 
@@ -69,7 +71,7 @@ Update the connection parameters to connect to your cluster.
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/master/main.rb|# BEGIN connect|# END connect %}
 ~~~
 
 Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
@@ -86,7 +88,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 
 </section>
 
-## Step 6. Run the Ruby code
+## Step 7. Run the Ruby code
 
 Run the code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
@@ -108,13 +110,6 @@ transfer_funds(): Trying to transfer 100 from account 1 to account 2
 print_balances(): Balances as of '2021-02-23 11:56:55 -0800':
 {"id"=>"1", "balance"=>"900"}
 {"id"=>"2", "balance"=>"350"}
-~~~
-
-The following code connects as the user you created and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
-
-{% include copy-clipboard.html %}
-~~~ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/master/main.rb %}
 ~~~
 
 ## What's next?

@@ -76,24 +76,24 @@ git checkout cockroachcloud-5.2
 
 1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
     {% include copy-clipboard.html %}
-    ```shell
+    ~~~shell
     brew install libpq
-    ```
+    ~~~
 1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
     {% include copy-clipboard.html %}
-    ```shell
+    ~~~shell
     bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
-    ```
+    ~~~
     Set `--with-opt-dir` to the location of `libpq` on your OS.
 
 ## Step 5. Install the dependencies
 
 {% include copy-clipboard.html %}
-```shell
+~~~shell
 bundle install
-```
+~~~
 
-## Step 5. Update the connection parameters
+## Step 6. Update the connection parameters
 
 Update the connection parameters to connect to your cluster.
 
@@ -118,7 +118,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 
 </section>
 
-## Step 6. Run the Ruby code
+## Step 7. Run the Ruby code
 
 Run the code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
@@ -134,13 +134,6 @@ The output should be:
    -> 0.3951s
 account: 1 balance: 1000
 account: 2 balance: 250
-~~~
-
-The full code example is below.
-
-{% include copy-clipboard.html %}
-~~~ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-activerecord/main/main.rb %}
 ~~~
 
 ## What's next?
