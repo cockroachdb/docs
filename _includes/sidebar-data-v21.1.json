@@ -340,11 +340,11 @@
                 ]
               },
               {
-                "title": "Working with Spatial Data",
+                "title": "Work with Spatial Data",
                 "urls": [
                   "/${VERSION}/spatial-data.html"
                 ]
-              },
+              }
             ]
           },
           {
@@ -2240,12 +2240,6 @@
                     "title": "Overview",
                     "urls": [
                       "/${VERSION}/spatial-features.html"
-                    ]
-                  },
-                  {
-                    "title": "Working with Spatial Data",
-                    "urls": [
-                      "/${VERSION}/spatial-data.html"
                     ]
                   },
                   {

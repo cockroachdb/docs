@@ -1,5 +1,5 @@
 ---
-title: Working with Spatial Data
+title: Work with Spatial Data
 summary: CockroachDB has special support for efficiently storing and querying spatial data.
 toc: true
 ---
