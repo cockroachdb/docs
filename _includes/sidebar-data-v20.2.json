@@ -338,6 +338,12 @@
                     ]
                   }
                 ]
+              },
+              {
+                "title": "Working with Spatial Data",
+                "urls": [
+                  "/${VERSION}/spatial-data.html"
+                ]
               }
             ]
           },
