@@ -1,0 +1,33 @@
+---
+title: When to use ZONE vs. REGION survival goals
+summary: Learn how to use CockroachDB's improved multi-region user experience.
+toc: true
+---
+
+<span class="version-tag">New in v21.1:</span> [_Survival Goals_](multiregion-overview.html#survival-goals) dictate how many simultaneous failure(s) a [multi-region database](multiregion-overview.html) can survive.  All tables within the same database operate with the same survival goal. Each database is allowed to have its own survival goal setting.
+
+Allowed survival goals include:
+
+- `ZONE` (default)
+- `REGION`
+
+Set a [`ZONE` survival goal](multiregion-overview.html#surviving-zone-failures) if:
+
+- You can accept that if multiple zones fail in the same region, the database may be unavailable.
+
+Set a [`REGION` survival goal](multiregion-overview.html#surviving-region-failures) if:
+
+- The database must remain available, even if a region goes down.
+- You can accept the performance cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected.
+
+{{site.data.alerts.callout_success}}
+For more information about how to choose a multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
+{{site.data.alerts.end}}
+
+## See also
+
++ [Multi-region overview](multiregion-overview.html)
++ [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
++ [When to use `REGIONAL` vs `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
+- [Topology Patterns](topology-patterns.html)
+- [Disaster Recovery](disaster-recovery.html)
