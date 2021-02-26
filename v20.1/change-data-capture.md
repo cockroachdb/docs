@@ -157,8 +157,10 @@ To create an enterprise changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO 'scheme://host:port';
+> CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
 ~~~
+
+{% include {{ page.version.version }}/cdc/url-encoding.md %}
 
 For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
