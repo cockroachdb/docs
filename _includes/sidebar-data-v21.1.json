@@ -1222,6 +1222,12 @@
                     ]
                   },
                   {
+                    "title": "<code>ADD REGION</code>",
+                    "urls": [
+                      "/${VERSION}/add-region.html"
+                    ]
+                  },
+                  {
                     "title": "<code>ALTER COLUMN</code>",
                     "urls": [
                       "/${VERSION}/alter-column.html"
@@ -1750,6 +1756,12 @@
                     ]
                   },
                   {
+                    "title": "<code>SET LOCALITY</code>",
+                    "urls": [
+                      "/${VERSION}/set-locality.html"
+                    ]
+                  },
+                  {
                     "title": "<code>SET SCHEMA</code>",
                     "urls": [
                       "/${VERSION}/set-schema.html"
@@ -1939,6 +1951,12 @@
                     "title": "<code>SPLIT AT</code>",
                     "urls": [
                       "/${VERSION}/split-at.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
+                    "urls": [
+                      "/${VERSION}/survive-failure.html"
                     ]
                   },
                   {
