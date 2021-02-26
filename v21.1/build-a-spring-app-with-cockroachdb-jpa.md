@@ -12,15 +12,111 @@ twitter: false
 
 This tutorial shows you how to build a [Spring Boot](https://spring.io/projects/spring-boot) web application with CockroachDB, using the [Spring Data JPA](https://spring.io/projects/spring-data-jpa) module for data access. The code for the example application is available for download from [GitHub](https://github.com/cockroachlabs/roach-data/tree/master), along with identical examples that use [JDBC](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jdbc), [jOOQ](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-jooq), and [MyBatis](https://github.com/cockroachlabs/roach-data/tree/master/roach-data-mybatis) for data access.
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+Choose whether to run a local cluster or a free CockroachDB cluster on CockroachCloud.
 
-## Step 1. Install JDK
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+</div>
+<p></p>
 
-Download and install a Java Development Kit. Spring Boot supports Java versions 8, 11, and 14. In this tutorial, we use [JDK 8 from OpenJDK](https://openjdk.java.net/install/).
+<section class="filter-content" markdown="1" data-scope="local">
 
-## Step 2. Install Maven
+1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
+1. [Start a local, secure cluster](secure-a-cluster.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Create a free cluster
+
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+
+### Set up your cluster connection
+
+{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
+
+</section>
+
+## Step 2. Create a database and a user
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+1. Open a SQL shell to your local cluster using the [`cockroach sql`](cockroach-sql.html) command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir={certs-dir} --host=localhost:{port}
+    ~~~
+
+    Where `{certs_dir}` is the full path to the `certs` directory that you created when setting up the cluster, and `{port}` is the port at which the cluster is listening for incoming connections.
+
+1. In the SQL shell, create the `roach_data` database that your application will use:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE roach_data;
+    ~~~
+
+1. Create a SQL user for your app:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE USER {username} WITH PASSWORD {password};
+    ~~~
+
+    Take note of the username and password. You will use it to connect to the database later.
+
+1. Give the user the necessary permissions:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > GRANT ALL ON DATABASE roach_data TO {username};
+    ~~~
+
+1. Exit the shell, and generate a certificate and key for your user by running the following command:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach cert create-client {user} --certs-dir=certs --ca-key={certs-dir}/ca.key --also-generate-pkcs8-key
+~~~
+
+The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.{user}.key.pk8`.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
+1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the CockroachCloud Console [earlier](#set-up-your-cluster-connection):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --url='postgres://{username}:{password}@{global host}:26257/{cluster_name}.defaultdb?sslmode=verify-full&sslrootcert={certs_dir}/cc-ca.crt'
+    ~~~
+
+    In the connection string copied from the CockroachCloud Console, your username, password and cluster name are pre-populated. Replace the `{certs_dir}` placeholder with the path to the `certs` directory that you created [earlier](#set-up-your-cluster-connection).
+
+    {% include cockroachcloud/cc-no-user-certs.md %}
+
+1. In the SQL shell, create the `roach_data` database that your application will use:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > CREATE DATABASE roach_data;
+    ~~~
+
+</section>
+
+## Step 3. Install JDK
+
+Download and install a Java Development Kit on your machine. Spring Boot supports Java versions 8, 11, and 14. In this tutorial, we use [JDK 8 from OpenJDK](https://openjdk.java.net/install/).
+
+## Step 4. Install Maven
 
 This example application uses [Maven](http://maven.apache.org/) to manage all application dependencies. Spring supports Maven versions 3.2 and later.
 
@@ -47,7 +143,7 @@ $ dnf install maven
 
 For other ways to install Maven, see [its official documentation](http://maven.apache.org/install.html).
 
-## Step 3. Get the application code
+## Step 5. Get the application code
 
 To get the application code, download or clone the [`roach-data` repository](https://github.com/cockroachlabs/roach-data). The code for the example JPA application is located under the `roach-data-jpa` directory.
 
@@ -92,76 +188,47 @@ The [Hibernate CockroachDB dialect](https://in.relation.to/2020/07/27/hibernate-
 </dependency>
 ~~~
 
-## Step 4. Create the `maxroach` user and `roach_data` database
-
-<section class="filter-content" markdown="1" data-scope="secure">
-
-Start the [built-in SQL shell](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs
-~~~
-
-In the SQL shell, issue the following statements to create the `maxroach` user and `roach_data` database:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER IF NOT EXISTS maxroach;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE roach_data;
-~~~
-
-Give the `maxroach` user the necessary permissions:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT ALL ON DATABASE roach_data TO maxroach;
-~~~
-
-Exit the SQL shell:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> \q
-~~~
-
-## Step 5. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
-~~~
-
-The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
-
 ## Step 6. Run the application
 
 Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some requests to the app's REST API that result in [atomic database transactions](transactions.html) on the running CockroachDB cluster. For details about the application code, see [Implementation details](#implementation-details).
 
-Open the `roach-data/roach-data-jpa` project folder in a text editor or IDE, and edit the `roach-data/roach-data-jpa/src/main/resources/application.yml` file so that:
+Open the `roach-data/roach-data-jpa/src/main/resources/application.yml` file and edit the `datasource` settings to connect to your running database cluster:
 
-  - The `url` field specifies the full [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). To connect to a secure cluster, this connection string must set the `sslmode` connection parameter to `require`, and specify the full path to the client, node, and use certificates in the connection parameters. For example:
+<section class="filter-content" markdown="1" data-scope="local">
 
-      ~~~ yml
-      ...
-      datasource:
-        url: jdbc:postgresql://localhost:26257/roach_data?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key.pk8&sslcert=certs/client.maxroach.crt
-      ...
-      ~~~
+~~~ yml
+...
+datasource:
+  url: jdbc:postgresql://localhost:{port}/roach_data?ssl=true&sslmode=require&sslrootcert={certs-dir}/ca.crt&sslkey={certs-dir}/client.{username}.key.pk8&sslcert={certs-dir}/client.{username}.crt
+  username: {username}
+  password: {password}
+  driver-class-name: org.postgresql.Driver
+...
+~~~
 
-  - The `username` field specifies `maxroach` as the user:
+Where:
 
-      ~~~ yml
-      ...
-        username: maxroach
-      ...
-      ~~~
+- `{port}` is the port number.
+- `{certs-dir}` is the full path to the certificates directory containing the authentication certificates that you created earlier.
+- `{username}` and `{password}` specify the SQL username and password that you created earlier.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+~~~ yml
+...
+datasource:
+  url: jdbc:postgresql://{globalhost}:{port}/{cluster_name}.roach_data?sslmode=verify-full&sslrootcert={path to the CA certificate}/cc-ca.crt
+  username: {username}
+  password: {password}
+  driver-class-name: org.postgresql.Driver
+...
+~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
+</section>
 
 Open a terminal, and navigate to the `roach-data-jpa` project subfolder:
 
@@ -183,89 +250,6 @@ From the `roach-data-jpa` directory, run the application JAR file:
 ~~~ shell
 $ java -jar target/roach-data-jpa.jar
 ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-Start the [built-in SQL shell](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure
-~~~
-
-In the SQL shell, issue the following statements to create the `maxroach` user and `roach_data` database:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER IF NOT EXISTS maxroach;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE DATABASE roach_data;
-~~~
-
-Give the `maxroach` user the necessary permissions:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT ALL ON DATABASE roach_data TO maxroach;
-~~~
-
-Exit the SQL shell:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> \q
-~~~
-
-## Step 6. Run the application
-
-Compiling and running the application code will start a web application, initialize the `accounts` table in the `roach_data` database, and submit some requests to the app's REST API that result in database transactions on the running CockroachDB cluster. For details about the application code, [see below](#implementation-details).
-
-Open the `roach-data/roach-data-jpa` project folder in a text editor or IDE, and edit the `roach-data/roach-data-jpa/src/main/resources/application.yml` file so that:
-
-  - The `url` field specifies the correct [connection string](connection-parameters.html#connect-using-a-url) to the [running CockroachDB cluster](#before-you-begin). For example:
-
-      ~~~ yml
-      ...
-      datasource:
-        url: jdbc:postgresql://localhost:26257/roach_data?ssl=true&sslmode=disable
-      ...
-      ~~~
-
-  - The `username` field specifies `maxroach` as the user:
-
-      ~~~ yml
-      ...
-        username: maxroach
-      ...
-      ~~~
-
-Open a terminal, and navigate to the `roach-data-jpa` project subfolder:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cd <path>/roach-data/roach-data-jpa
-~~~
-
-Use Maven to download the application dependencies and compile the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ mvn clean install
-~~~
-
-From the `roach-data-jpa` directory, run the application JAR file:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ java -jar target/roach-data-jpa.jar
-~~~
-
-</section>
 
 The output should look like the following:
 
@@ -574,23 +558,11 @@ When the application is started, all of the queries specified by the changesets 
 
 To see the completed changesets, open a new terminal, start the [built-in SQL shell](cockroach-sql.html), and query the `databasechangelog` table:
 
-<section class="filter-content" markdown="1" data-scope="secure">
-
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir=certs
 ~~~
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure
-~~~
-
-</section>
 
 {% include copy-clipboard.html %}
 ~~~ sql
