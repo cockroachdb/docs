@@ -231,23 +231,13 @@ To optimize read access to the data in a table from any region (that is, globall
 ALTER TABLE <table> SET LOCALITY GLOBAL;
 ~~~
 
-## Choosing a multi-region configuration
+## Next steps
 
-In this section we will try to explain how to change [the default settings](#default-settings) of your multi-region cluster to meet your application's needs.
-
-The options for changing your multi-region cluster's configuration include:
-
-- _Change nothing_: Using the [default settings](#default-settings), you get zone survival, low-latency single-region writes, and multi-region stale reads.
-
-- _Change only [survival](#survival-goals)_: In this configuration, you upgrade from availability zone (AZ) to get region survival, single-region writes, and multi-region stale reads. This configuration is useful for single-region apps that need higher levels of survival.
-
-- _Change only [table locality](#table-locality)_: In this configuration, you accept the default zone survival, and optimize for low-latency multi-region reads and writes. This is useful for multi-region apps that want low-latency writes and are not concerned with surviving a region failure.
-
-- _Change both [survival](#survival-goals) and [table locality](#table-locality)_: In this configuration, you upgrade from zone to region survival, and optimize for low-latency multi-region reads. Single-region writes can be made low-latency with the right settings, but multi-region writes are higher-latency because they have to move across the network. This is useful for multi-region apps that want a high level of survival.
-
-Finally, note that different databases within the same cluster can each use different combinations of the settings above.
++ [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
 
 ## See also
 
+- [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
+- [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)

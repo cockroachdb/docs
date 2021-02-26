@@ -1,0 +1,35 @@
+---
+title: When to use REGIONAL vs. GLOBAL tables
+summary: Learn how to use CockroachDB's improved multi-region user experience.
+toc: true
+---
+
+<span class="version-tag">New in v21.1:</span> [_Table Localities_](multiregion-overview.html#table-locality)tell CockroachDB how to optimize access to a table's data in a multi-region cluster.  CockroachDB uses the table locality setting to determine how to optimize access to the table's data from that locality.
+
+The following table localities are available:
+
+- `REGIONAL`
+- `GLOBAL`
+
+Use [`REGIONAL` tables](multiregion-overview.html#regional-by-row-tables) if:
+
+- Your application requires low-latency reads and writes from a single region.
+- Access to the table's data can be slower (higher latency) from other regions.
+- You would like finer-grained control of where specific data is located (either at the [row level](multiregion-overview.html#regional-by-row-tables) or the [table level](multiregion-overview.html#regional-tables)).
+
+Use [`GLOBAL` tables](multiregion-overview.html#global-tables) if:
+
+- Your application has a "read-mostly" table of reference data that is rarely updated, and that needs to be available to all regions.
+- You can accept that writes to the table will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible.
+
+{{site.data.alerts.callout_success}}
+For more information about how to choose an overall multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
+{{site.data.alerts.end}}
+
+## See also
+
+- [Multi-region Overview](multiregion-overview.html)
+- [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
+- [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
+- [Topology Patterns](topology-patterns.html)
+- [Disaster Recovery](disaster-recovery.html)

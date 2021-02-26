@@ -621,6 +621,24 @@
                 "urls": [
                   "/${VERSION}/multiregion-overview.html"
                 ]
+              },
+              {
+                "title": "Choosing a multi-region configuration",
+                "urls": [
+                  "/${VERSION}/multiregion-overview.html"
+                ]
+              },
+              {
+                "title": "When to use ZONE vs. REGION Survival Goals",
+                "urls": [
+                  "/${VERSION}/when-to-use-zone-vs-region-survival-goals.html"
+                ]
+              },
+              {
+                "title": "When to use REGIONAL vs. GLOBAL tables",
+                "urls": [
+                  "/${VERSION}/when-to-use-regional-vs-global-tables.html"
+                ]
               }
             ]
           },
