@@ -73,13 +73,14 @@ Query parameters include:
 Parameter          | <div style="width:100px">Sink Type</div>     | Description
 -------------------+----------------------------------------------+-------------------------------------------------------------------
 `topic_prefix`     | [Kafka](#kafka), [cloud](#cloud-storage-sink) | Type: [`STRING`](string.html) <br><br>Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
-`tls_enabled=true` | [Kafka](#kafka)                               | Type: [`BOOL`](bool.html) <br><br>If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
+`tls_enabled`      | [Kafka](#kafka)                               | Type: [`BOOL`](bool.html) <br><br>If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below).
 `ca_cert`          | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
 `client_cert`      | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
 `sasl_enabled`     | [Kafka](#kafka)                               | Type: [`BOOL`](bool.html) <br><br>If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below).
 `sasl_user`        | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>Your SASL username.
 `sasl_password`    | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>Your SASL password.
+`sasl_mechanism`   | [Kafka](#kafka)                               | Type: [`STRING`](string.html) <br><br>SASL mechanism to use during authentication. The supported mechanisms are `PLAIN`, `SCRAM-SHA-256`, and `SCRAM-SHA-512`. <br><br>**Default:** `PLAIN`
 `file_size`        | [cloud](#cloud-storage-sink)                  | Type: [`STRING`](string.html) <br><br>The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
 
 ### Options
