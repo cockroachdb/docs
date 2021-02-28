@@ -491,7 +491,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent stop
+    $ ./bin/confluent local services stop
     ~~~
 
 ### Create a changefeed connected to Kafka using Avro
@@ -688,7 +688,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent stop
+    $ ./bin/confluent local services stop
     ~~~
 
 ### Create a changefeed connected to a cloud storage sink
