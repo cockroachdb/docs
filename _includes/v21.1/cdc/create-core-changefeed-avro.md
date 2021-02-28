@@ -93,12 +93,12 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent stop
+    $ ./bin/confluent local services stop
     ~~~
 
     To terminate all Confluent processes, use:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent destroy
+    $ ./bin/confluent local destroy
     ~~~
