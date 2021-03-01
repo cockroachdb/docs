@@ -64,7 +64,13 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Currently, cloud storage sinks only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-For more information on the sink URL structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+Example of a cloud storage sink URI:
+
+~~~
+`experimental-s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+~~~
+
+Cloud storage sink URIs must be prepended with `experimental-` when working with core changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
 
 #### Query parameters
 
