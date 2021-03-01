@@ -14,11 +14,15 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Install Node.js packages
+## Step 2. Create a database
+
+{% include {{page.version.version}}/app/create-a-database.md %}
+
+## Step 3. Install client driver
 
 To let your application communicate with CockroachDB, install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
@@ -27,201 +31,69 @@ To let your application communicate with CockroachDB, install the [Node.js pg dr
 $ npm install pg
 ~~~
 
-The example app on this page also requires [`async`](https://www.npmjs.com/package/async):
+## Step 4. Get the code
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ npm install async
-~~~
+<a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-node-pg/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-node-pg).
 
-<section class="filter-content" markdown="1" data-scope="secure">
+## Step 5. Update the connection parameters
 
-## Step 2. Create the `maxroach` user and `bank` database
+Open the `app.js` file, and edit the connection configuration parameters:
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+<section class="filter-content" markdown="1" data-scope="local">
 
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
-
-## Step 4. Run the Node.js code
-
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
-
-### Basic statements
-
-First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
-
-Download the [`basic-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.js) file, or create the file yourself and copy the code into it.
-
-{% include copy-clipboard.html %}
-~~~ js
-{% include {{page.version.version}}/app/basic-sample.js %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ node basic-sample.js
-~~~
-
-The output should be:
-
-~~~
-Initial balances:
-{ id: '1', balance: '1000' }
-{ id: '2', balance: '250' }
-~~~
-
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another and then read the updated values, where all included statements are either committed or aborted.
-
-Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.js) file, or create the file yourself and copy the code into it.
-
-{% include {{ page.version.version }}/client-transaction-retry.md %}
-
-{% include copy-clipboard.html %}
-~~~ js
-{% include {{page.version.version}}/app/txn-sample.js %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ node txn-sample.js
-~~~
-
-The output should be:
-
-~~~
-Balances after transfer:
-{ id: '1', balance: '900' }
-{ id: '2', balance: '350' }
-~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank
-~~~
-
-To check the account balances, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |     900 |
-|  2 |     350 |
-+----+---------+
-(2 rows)
-~~~
+- Replace the value for `user` with the user you created earlier.
+- Replace the value for `password` with the password you created for your user.
+- Replace the value for `port` with the port to your cluster.
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="insecure">
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-## Step 2. Create the `maxroach` user and `bank` database
+- At the top of the file, uncomment the `const fs = require('fs');` line.
 
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
+    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the CockroachCloud Console.
+- Replace the value for `user` with the user you created earlier.
+- Replace the value for `password` with the password you created for your user.
+- Replace the value for `host` with the name of the CockroachCloud Free host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
+- Replace the value for `port` with the port to your cluster.
+- Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
+- Remove the existing `ssl` object and its contents.
+- Uncomment the `ssl` object with the `ca` key-value pair, and edit the `fs.readFileSync('/certs/ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 
-## Step 3. Run the Node.js code
+</section>
 
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+## Step 6. Run the code
 
-### Basic statements
+The sample code creates a table, inserts some rows, and then reads and updates values as an atomic [transaction](transactions.html).
 
-First, use the following code to connect as the `maxroach` user and execute some basic SQL statements, creating a table, inserting rows, and reading and printing the rows.
-
-Download the [`basic-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.js) file, or create the file yourself and copy the code into it.
+Here are the contents of `app.js`:
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% include {{page.version.version}}/app/insecure/basic-sample.js %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-pg/main/app.js %}
 ~~~
 
-Then run the code:
+Note that all of the database operations are wrapped in the `retryTxn` function. This function attempts to commit statements in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+
+To run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ node basic-sample.js
+$ node app.js
 ~~~
 
 The output should be:
 
 ~~~
-Initial balances:
+Initializing table...
+New account balances:
 { id: '1', balance: '1000' }
 { id: '2', balance: '250' }
-~~~
-
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another and then read the updated values, where all included statements are either committed or aborted.
-
-Download the [`txn-sample.js`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.js) file, or create the file yourself and copy the code into it.
-
-{% include {{ page.version.version }}/client-transaction-retry.md %}
-
-{% include copy-clipboard.html %}
-~~~ js
-{% include {{page.version.version}}/app/insecure/txn-sample.js %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ node txn-sample.js
-~~~
-
-The output should be:
-
-~~~
-Balances after transfer:
+Transferring funds...
+New account balances:
 { id: '1', balance: '900' }
 { id: '2', balance: '350' }
 ~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --database=bank
-~~~
-
-To check the account balances, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |     900 |
-|  2 |     350 |
-+----+---------+
-(2 rows)
-~~~
-
-</section>
 
 ## What's next?
 

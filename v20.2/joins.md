@@ -1,12 +1,12 @@
 ---
-title: Join Expressions
-summary: Join expressions combine data from two or more table expressions.
+title: JOIN Expressions
+summary: JOIN expressions combine data from two or more table expressions.
 toc: true
 ---
 
-Join expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
+`JOIN` expressions, also called "joins", combine the results of two or more table expressions based on conditions on the values of particular columns (i.e., equality columns).
 
-Join expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
+`JOIN` expressions define a data source in the `FROM` sub-clause of [simple `SELECT` clauses](select-clause.html), or as parameter to [`TABLE`](selection-queries.html#table-clause). Joins are a particular kind of [table expression](table-expressions.html).
 
 {{site.data.alerts.callout_success}}
 The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to force the use of a specific join algorithm.  For more information, see [Join hints](cost-based-optimizer.html#join-hints).

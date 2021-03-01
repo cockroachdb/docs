@@ -42,7 +42,7 @@ Parameter | Description
 The sink URI follows the basic format of:
 
 ~~~
-'[scheme]://[host]:[port]?[query_parameters]'
+'{scheme}://{host}:{port}?{query_parameters}'
 ~~~
 
 URI Component      | Description
@@ -77,6 +77,8 @@ The `scheme` for a cloud storage sink should be prepended with `experimental-`.
 {% include {{ page.version.version }}/cdc/external-urls.md %}
 
 #### Query parameters
+
+{% include {{ page.version.version }}/cdc/url-encoding.md %}
 
 Query parameters include:
 

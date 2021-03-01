@@ -1,0 +1,10 @@
+- identifier: familiar_sql
+  pre: "Build fast & build to last"
+  name: Familiar SQL
+  url: /product/sql/
+  weight: 100
+- identifier: elastic_sql
+  pre: "Elastic Scale"
+  name: Grow locally and/or globally
+  url: /product/scale/
+  weight: 110

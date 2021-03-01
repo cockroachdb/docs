@@ -97,5 +97,5 @@ Other common tasks:
 [manual]: manual-deployment.html
 [orchestrated]: orchestration.html
 [fast]: make-queries-fast.html
-[paginate]: selection-queries.html#paginate-through-limited-results
+[paginate]: pagination.html
 [joins]: joins.html

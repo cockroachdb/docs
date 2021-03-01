@@ -1,7 +1,8 @@
 ---
 title: Serializable Transactions
-summary:
+summary: Walk through a demonstration of the importance of SERIALIZABLE isolation for data correctness
 toc: true
+toc_not_nested: true
 ---
 
 In contrast to most databases, CockroachDB always uses `SERIALIZABLE` isolation, which is the strongest of the four [transaction isolation levels](https://en.wikipedia.org/wiki/Isolation_(database_systems)) defined by the SQL standard and is stronger than the `SNAPSHOT` isolation level developed later. `SERIALIZABLE` isolation guarantees that even though transactions may execute in parallel, the result is the same as if they had executed one at a time, without any concurrency. This ensures data correctness by preventing all "anomalies" allowed by weaker isolation levels.
@@ -34,9 +35,7 @@ When write skew happens, a transaction reads something, makes a decision based o
 
 <img src="{{ 'images/v21.1/serializable_schema.png' | relative_url }}" alt="Schema for serializable transaction tutorial" style="max-width:100%" />
 
-## Scenario on Postgres
-
-### Step 1. Start Postgres
+## Step 1. Set up the scenario on Postgres
 
 1. If you haven't already, install Postgres locally. On Mac, you can use [Homebrew](https://brew.sh/):
 
@@ -45,14 +44,12 @@ When write skew happens, a transaction reads something, makes a decision based o
     $ brew install postgres
     ~~~
 
-2. [Start Postgres](https://www.postgresql.org/docs/10/static/server-start.html):
+1. [Start Postgres](https://www.postgresql.org/docs/10/static/server-start.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ postgres -D /usr/local/var/postgres &
     ~~~
-
-### Step 2. Create the schema
 
 1. Open a SQL connection to Postgres:
 
@@ -61,7 +58,7 @@ When write skew happens, a transaction reads something, makes a decision based o
     $ psql
     ~~~
 
-2. Create the `doctors` table:
+1. Create the `doctors` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -71,7 +68,7 @@ When write skew happens, a transaction reads something, makes a decision based o
     );
     ~~~
 
-3. Create the `schedules` table:
+1. Create the `schedules` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -83,8 +80,6 @@ When write skew happens, a transaction reads something, makes a decision based o
     );
     ~~~
 
-### Step 3. Insert data
-
 1. Add two doctors to the `doctors` table:
 
     {% include copy-clipboard.html %}
@@ -94,7 +89,7 @@ When write skew happens, a transaction reads something, makes a decision based o
         (2, 'Betty');
     ~~~
 
-2. Insert one week's worth of data into the `schedules` table:
+1. Insert one week's worth of data into the `schedules` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -115,7 +110,7 @@ When write skew happens, a transaction reads something, makes a decision based o
         ('2018-10-07', 2, true);
     ~~~
 
-3. Confirm that at least one doctor is on call each day of the week:
+1. Confirm that at least one doctor is on call each day of the week:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -138,18 +133,16 @@ When write skew happens, a transaction reads something, makes a decision based o
     (7 rows)
     ~~~
 
-### Step 4. Doctor 1 requests leave
+## Step 2. Run the scenario on Postgres
 
-Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application.
-
-1. The application starts a transaction:
+1. Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application. The application starts a transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-2. The application checks to make sure at least one other doctor is on call for the requested date:
+1. The application checks to make sure at least one other doctor is on call for the requested date:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -166,25 +159,21 @@ Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule
     (1 row)
     ~~~
 
-### Step 5. Doctor 2 requests leave
-
-Around the same time, doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application.
-
-1. In a new terminal, start a second SQL session:
+1. Around the same time, doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. In a new terminal, start a second SQL session:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ psql
     ~~~
 
-2. The application starts a transaction:
+1. The application starts a transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-3. The application checks to make sure at least one other doctor is on call for the requested date:
+1. The application checks to make sure at least one other doctor is on call for the requested date:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -200,8 +189,6 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
          1
     (1 row)
     ~~~
-
-### Step 6. Leave is incorrectly booked for both doctors
 
 1. In the terminal for doctor 1, since the previous check confirmed that another doctor is on call for 10/5/18, the application tries to update doctor 1's schedule:
 
@@ -235,7 +222,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     > COMMIT;
     ~~~
 
-### Step 7. Check data correctness
+## Step 3. Check data correctness on Postgres
 
 So what just happened? Each transaction started by reading a value that, before the end of the transaction, became incorrect. Despite that fact, each transaction was allowed to commit. This is known as write skew, and the result is that 0 doctors are scheduled to be on call on 10/5/18.  
 
@@ -268,24 +255,20 @@ Again, this anomaly is the result of Postgres' default isolation level of `READ 
 (1 row)
 ~~~
 
-### Step 8. Terminate Postgres
-
-Exit each SQL shell with `\q` and then terminate the Postgres server:
+Exit each SQL shell with `\q` and then stop the Postgres server:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ pkill -9 postgres
 ~~~
 
-## Scenario on CockroachDB
+## Step 4. Set up the scenario on CockroachDB
 
 When you repeat the scenario on CockroachDB, you'll see that the anomaly is prevented by CockroachDB's `SERIALIZABLE` transaction isolation.
 
-### Step 1. Start CockroachDB
-
 1. If you haven't already, [install CockroachDB](install-cockroachdb.html) locally.
 
-2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a one-node CockroachDB cluster in insecure mode:
+1. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a one-node CockroachDB cluster in insecure mode:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -296,8 +279,6 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     --background
     ~~~
 
-### Step 2. Create the schema
-
 1. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
@@ -305,7 +286,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     $ cockroach sql --insecure --host=localhost
     ~~~
 
-2. Create the `doctors` table:
+1. Create the `doctors` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -315,7 +296,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     );
     ~~~
 
-3. Create the `schedules` table:
+1. Create the `schedules` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -327,8 +308,6 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     );
     ~~~
 
-### Step 3. Insert data
-
 1. Add two doctors to the `doctors` table:
 
     {% include copy-clipboard.html %}
@@ -338,7 +317,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
         (2, 'Betty');
     ~~~
 
-2. Insert one week's worth of data into the `schedules` table:
+1. Insert one week's worth of data into the `schedules` table:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -359,7 +338,7 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
         ('2018-10-07', 2, true);
     ~~~
 
-3. Confirm that at least one doctor is on call each day of the week:
+1. Confirm that at least one doctor is on call each day of the week:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -382,18 +361,16 @@ When you repeat the scenario on CockroachDB, you'll see that the anomaly is prev
     (7 rows)
     ~~~
 
-### Step 4. Doctor 1 requests leave
+## Step 5. Run the scenario on CockroachDB
 
-Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application.
-
-1. The application starts a transaction:
+1. Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule management application. The application starts a transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-2. The application checks to make sure at least one other doctor is on call for the requested date:
+1. The application checks to make sure at least one other doctor is on call for the requested date:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -412,25 +389,21 @@ Doctor 1, Abe, starts to request leave for 10/5/18 using the hospital's schedule
     (1 row)    
     ~~~
 
-### Step 5. Doctor 2 requests leave
-
-Around the same time, doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application.
-
-1. In a new terminal, start a second SQL session:
+1. Around the same time, doctor 2, Betty, starts to request leave for the same day using the hospital's schedule management application. In a new terminal, start a second SQL session:
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --insecure --host=localhost
     ~~~
 
-2. The application starts a transaction:
+1. The application starts a transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
     ~~~
 
-3. The application checks to make sure at least one other doctor is on call for the requested date:
+1. The application checks to make sure at least one other doctor is on call for the requested date:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -449,8 +422,6 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     (1 row)    
     ~~~
 
-### Step 6. Leave is booked for only 1 doctor
-
 1. In the terminal for doctor 1, since the previous check confirmed that another doctor is on call for 10/5/18, the application tries to update doctor 1's schedule:
 
     {% include copy-clipboard.html %}
@@ -460,7 +431,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
       AND doctor_id = 1;
     ~~~
 
-2. In the terminal for doctor 2, since the previous check confirmed the same thing, the application tries to update doctor 2's schedule:
+1. In the terminal for doctor 2, since the previous check confirmed the same thing, the application tries to update doctor 2's schedule:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -469,7 +440,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
       AND doctor_id = 2;
     ~~~
 
-3. In the terminal for doctor 1, the application tries to commit the transaction:
+1. In the terminal for doctor 1, the application tries to commit the transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -486,7 +457,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](build-an-app-with-cockroachdb.html) tutorials.
     {{site.data.alerts.end}}
 
-4. In the terminal for doctor 2, the application tries to commit the transaction:
+1. In the terminal for doctor 2, the application tries to commit the transaction:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -495,7 +466,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
 
     Since the transaction for doctor 1 failed, the transaction for doctor 2 can commit without causing any data correctness problems.
 
-### Step 7. Check data correctness
+## Step 6. Check data correctness on CockroachDB
 
 1. In either terminal, confirm that one doctor is still on call for 10/5/18:
 
@@ -512,7 +483,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     (2 rows)
     ~~~
 
-2. Again, the write skew anomaly was prevented by CockroachDB using the `SERIALIZABLE` isolation level:
+1. Again, the write skew anomaly was prevented by CockroachDB using the `SERIALIZABLE` isolation level:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -526,28 +497,27 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     (1 row)
     ~~~
 
-3. Exit the SQL shell in each terminal:
+1. Exit the SQL shell in each terminal:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~
 
-### Step 8. Stop CockroachDB
 
-Once you're done with your test cluster, exit each SQL shell with `\q` and then stop the node:
+1. Exit each SQL shell with `\q` and then stop the node:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach quit --insecure --host=localhost
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach quit --insecure --host=localhost
+    ~~~
 
-If you do not plan to restart the cluster, you may want to remove the node's data store:
+    If you do not plan to restart the cluster, you may want to remove the node's data store:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ rm -rf serializable-demo
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ rm -rf serializable-demo
+    ~~~
 
 ## What's next?
 

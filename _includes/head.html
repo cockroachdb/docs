@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
 <meta name="robots" content="noindex">
@@ -49,3 +50,4 @@ var pageConfig = {
 <script async src="//js.convertflow.co/production/websites/5329.js"></script>
 <script src="https://kit.fontawesome.com/4e4d5754e5.js" crossorigin="anonymous"></script>
 <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,200;1,300;1,400&Source+Code+Pro&display=swap" rel="stylesheet">

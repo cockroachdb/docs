@@ -18,11 +18,15 @@ We have tested the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/) enou
 For a more realistic use of Sequelize with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms)repository.
 {{site.data.alerts.end}}
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Install the Sequelize ORM
+## Step 2. Create a database
+
+{% include {{page.version.version}}/app/create-a-database.md %}
+
+## Step 3. Install the Sequelize ORM
 
 To install Sequelize, as well as a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
@@ -31,38 +35,51 @@ To install Sequelize, as well as a [CockroachDB Node.js package](https://github.
 $ npm install sequelize sequelize-cockroachdb
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="secure">
+## Step 4. Get the code
 
-## Step 2. Create the `maxroach` user and `bank` database
+<a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-node-sequelize).
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+## Step 5. Update the connection parameters
 
-## Step 3. Generate a certificate for the `maxroach` user
+Open `app.js`, and edit the connection configuration parameters:
 
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+<section class="filter-content" markdown="1" data-scope="local">
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
+- Replace the value for `username` with the user you created earlier.
+- Replace the value for `password` with the password you created for your user.
+- Replace the value for `port` with the port to your cluster.
 
-## Step 4. Run the Node.js code
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+- At the top of the file, uncomment the `const fs = require('fs');` line.
+
+    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the CockroachCloud Console.
+- Replace the value for `username` with the user you created earlier.
+- Replace the value for `password` with the password you created for your user.
+- Replace the value for `host` with the name of the CockroachCloud Free host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
+- Replace the value for `port` with the port to your cluster.
+- Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
+- Remove the `rejectUnauthorized` key-value pair.
+- Uncomment the `ca` key-value pair, and edit the `fs.readFileSync('certs/ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+
+</section>
+
+## Step 6. Run the code
 
 The following code uses the [Sequelize](https://sequelize.readthedocs.io/en/v3/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
 
-Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/sequelize-basic-sample.js" download>download it directly</a>.
-
 {% include copy-clipboard.html %}
 ~~~ js
-{% include {{ page.version.version }}/app/sequelize-basic-sample.js %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js %}
 ~~~
 
-Then run the code:
+To run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ node sequelize-basic-sample.js
+$ node app.js
 ~~~
 
 The output should be:
@@ -71,92 +88,6 @@ The output should be:
 1 1000
 2 250
 ~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=/tmp/certs -e 'SELECT id, balance FROM accounts' --database=bank
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
-(2 rows)
-~~~
-
-</section>
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Run the Node.js code
-
-The following code uses the [Sequelize](https://sequelize.readthedocs.io/en/v3/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
-
-Copy the code or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/sequelize-basic-sample.js" download>download it directly</a>.
-
-{% include copy-clipboard.html %}
-~~~ js
-{% include {{ page.version.version }}/app/insecure/sequelize-basic-sample.js %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ node sequelize-basic-sample.js
-~~~
-
-The output should be:
-
-~~~ shell
-1 1000
-2 250
-~~~
-
-To verify that the table and rows were created successfully, you can again use the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure -e 'SHOW TABLES' --database=bank
-~~~
-
-~~~
-+------------+
-| table_name |
-+------------+
-| accounts   |
-+------------+
-(1 row)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |    1000 |
-|  2 |     250 |
-+----+---------+
-(2 rows)
-~~~
-
-</section>
 
 ## What's next?
 

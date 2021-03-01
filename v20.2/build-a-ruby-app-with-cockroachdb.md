@@ -10,193 +10,107 @@ twitter: false
     <a href="build-a-ruby-app-with-cockroachdb-activerecord.html"><button style="width: 28%" class="filter-button">Use <strong>ActiveRecord</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Ruby application with CockroachDB and the Ruby pg driver.
+This tutorial shows you how build a simple Ruby application with CockroachDB and the [Ruby pg driver](https://deveiate.org/code/pg/PG/Connection.html).
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Install the Ruby pg driver
+## Step 2. Create a database
 
-To install the [Ruby pg driver](https://rubygems.org/gems/pg), run the following command:
+{% include {{page.version.version}}/app/create-a-database.md %}
+
+## Step 3. Get the code
+
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
+
+{% include copy-clipboard.html %}
+~~~shell
+git clone https://github.com/cockroachlabs/hello-world-ruby-pg
+~~~
+
+The code connects as the user you created and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+Check out the `cockroachcloud` branch:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ gem install pg
+git checkout cockroachcloud
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="secure">
+</section>
 
-## Step 2. Create the `maxroach` user and `bank` database
+## Step 4. Configure the dependencies
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
+    {% include copy-clipboard.html %}
+    ~~~shell
+    brew install libpq
+    ~~~
+1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
+    {% include copy-clipboard.html %}
+    ~~~shell
+    bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
+    ~~~
+    Set `--with-opt-dir` to the location of `libpq` on your OS.
 
-## Step 3. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
+## Step 5. Install the dependencies
 
 {% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
+~~~shell
+bundle install
 ~~~
 
-## Step 4. Run the Ruby code
+## Step 6. Update the connection parameters
 
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
+Update the connection parameters to connect to your cluster.
 
-### Basic statements
-
-The following code connects as the `maxroach` user and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
+<section class="filter-content" markdown="1" data-scope="local">
 
 {% include copy-clipboard.html %}
 ~~~ ruby
-{% include {{page.version.version}}/app/basic-sample.rb %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/master/main.rb|# BEGIN connect|# END connect %}
 ~~~
 
-Then run the code:
+Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
+
+</section>
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include copy-clipboard.html %}
+~~~ ruby
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
+~~~
+
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+
+</section>
+
+## Step 7. Run the Ruby code
+
+Run the code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ ruby basic-sample.rb
+ruby main.rb
 ~~~
 
 The output should be:
 
 ~~~
-Initial balances:
-id: 1 balance: 1000
-id: 2 balance: 250
+------------------------------------------------
+print_balances(): Balances as of '2021-02-23 11:56:54 -0800':
+{"id"=>"1", "balance"=>"1000"}
+{"id"=>"2", "balance"=>"250"}
+------------------------------------------------
+transfer_funds(): Trying to transfer 100 from account 1 to account 2
+------------------------------------------------
+print_balances(): Balances as of '2021-02-23 11:56:55 -0800':
+{"id"=>"1", "balance"=>"900"}
+{"id"=>"2", "balance"=>"350"}
 ~~~
-
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
-
-{% include {{ page.version.version }}/client-transaction-retry.md %}
-
-{% include copy-clipboard.html %}
-~~~ ruby
-{% include {{page.version.version}}/app/txn-sample.rb %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ ruby txn-sample.rb
-~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank
-~~~
-
-To check the account balances, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |     900 |
-|  2 |     350 |
-+----+---------+
-(2 rows)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="insecure">
-
-## Step 2. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 3. Run the Ruby code
-
-Now that you have a database and a user, you'll run code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
-
-### Basic statements
-
-The following code connects as the `maxroach` user and executes some basic SQL statements: creating a table, inserting rows, and reading and printing the rows.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/basic-sample.rb" download><code>basic-sample.rb</code></a> file, or create the file yourself and copy the code into it.
-
-{% include copy-clipboard.html %}
-~~~ ruby
-{% include {{page.version.version}}/app/insecure/basic-sample.rb %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ ruby basic-sample.rb
-~~~
-
-The output should be:
-
-~~~
-Initial balances:
-id: 1 balance: 1000
-id: 2 balance: 250
-~~~
-
-### Transaction (with retry logic)
-
-Next, use the following code to again connect as the `maxroach` user but this time execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted.
-
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{ page.version.version }}/app/insecure/txn-sample.rb" download><code>txn-sample.rb</code></a> file, or create the file yourself and copy the code into it.
-
-{% include {{ page.version.version }}/client-transaction-retry.md %}
-
-{% include copy-clipboard.html %}
-~~~ ruby
-{% include {{page.version.version}}/app/insecure/txn-sample.rb %}
-~~~
-
-Then run the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ ruby txn-sample.rb
-~~~
-
-To verify that funds were transferred from one account to another, start the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --database=bank
-~~~
-
-To check the account balances, issue the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
-
-~~~
-+----+---------+
-| id | balance |
-+----+---------+
-|  1 |     900 |
-|  2 |     350 |
-+----+---------+
-(2 rows)
-~~~
-
-</section>
 
 ## What's next?
 
