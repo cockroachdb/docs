@@ -8,7 +8,20 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 ## Required privileges
 
-`SHOW BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
+`SHOW BACKUP` requires read permissions to its target destination.
+
+The source file URL does _not_ require the `ADMIN` role in the following scenarios:
+
+- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
+- [Userfile](use-userfile-for-bulk-operations.html)
+
+The source file URL _does_ require the `ADMIN` role in the following scenarios:
+
+- S3 or GS using `IMPLICIT` credentials
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+
+Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Synopsis
 
