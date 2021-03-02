@@ -1,10 +1,14 @@
 ---
-title: Update Data
+title: Overwrite Existing Data
 summary: How to update the data in CockroachDB from various programming languages
 toc: true
 ---
 
-This page has instructions for updating rows of data (using the [`UPDATE`](update.html) statement) in CockroachDB from various programming languages.
+This page has instructions for overwriting existing rows of data in CockroachDB, using the following statements:
+
+- `UPSERT`
+- `INSERT ON CONFLICT`
+- `UPDATE`
 
 ## Before you begin
 
@@ -18,7 +22,14 @@ Before reading this page, do the following:
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
-## Update a row
+## Use `UPSERT`
+
+## Use `INSERT ON CONFLICT`
+
+## Use `UPDATE`
+
+## Force index selection
+
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
