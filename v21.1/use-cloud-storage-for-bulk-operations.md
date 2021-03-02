@@ -18,7 +18,7 @@ Location                                                    | Scheme      | Host
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
 Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` <br><br>For more information, see [Authentication - AWS](#aws).                               
 Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` <br><br>**Deprecation notice:** The default authentication behavior has changed for GCS in v21.1. For more information, see [Authentication - GCS](#gcs).
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` <br><br>**Deprecation notice:** In v21.1, we suggest you do not use the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), as the default behavior will be changing in v21.2. For more information, see [Authentication - GCS](#gcs).
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#http).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services)                                     | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#s3-compatible-services).   
@@ -78,12 +78,16 @@ Authentication behavior differs by cloud provider:
 
 ### GCS
 
-- <span class="version-tag">New in v21.1:</span> If the `AUTH` parameter is not provided (or is `AUTH=default`), GCS connections default to `specified` and are authenticated on a per-statement basis. This allows the JSON key object to be sent in the `CREDENTIALS` parameter. The JSON key object should be base64-encoded (using the standard encoding in [RFC 4648](https://tools.ietf.org/html/rfc4648)).
-- If the `AUTH` parameter is `implicit`, all GCS connections use Google's [default authentication strategy](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application).
+If the `AUTH` parameter is set to:
 
-{{site.data.alerts.callout_info}}
-Previously, GCS connections defaulted to the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html). If you are relying on this previous default behavior, we recommend adjusting your queries and scripts to now specify the `AUTH` parameter you want to use. Similarly, if you are using the `cloudstorage.gs.default.key` cluster setting to authorize your GCS connection, we recommend switching to use machine credentials or `AUTH=specified`.
-{{site.data.alerts.end}}
+- `default`: GCS connections only use the key provided in the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), and will error if not present.
+- `specified`: The JSON object for authentication is given by the `CREDENTIALS` parameter. The JSON key object should be base64-encoded (using the standard encoding in [RFC 4648](https://tools.ietf.org/html/rfc4648)).
+- `implicit`: Only use the [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application).
+- If `AUTH` is not provided, use the key provided in the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html). Otherwise, use environment data.
+
+    {{site.data.alerts.callout_info}}
+    **Deprecation notice:** Currently, GCS connections default to the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html). This default behavior will no longer be supported in v21.2. If you are relying on this default behavior, we recommend adjusting your queries and scripts to now specify the `AUTH` parameter you want to use. Similarly, if you are using the `cloudstorage.gs.default.key` cluster setting to authorize your GCS connection, we recommend switching to use `AUTH=specified` or `AUTH=implicit`. `AUTH=specified` will be the default behavior in v21.2 and beyond.
+    {{site.data.alerts.end}}
 
 ### HTTP
 
