@@ -58,14 +58,20 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 
 ### Set up a cluster
 
-1.  Use the CockroachCloud Console to [create your CockroachCloud cluster](create-your-cluster.html) on AWS in the same region as your application. 
+1.  Use the CockroachCloud Console to [create your CockroachCloud cluster](create-your-cluster.html) on AWS in the same region as your application.
+ 
+    {{site.data.alerts.callout_info}}
+    If you have a multi-region cluster, you will have to create a PrivateLink connection for each region you are operating in.
+    {{site.data.alerts.end}}
+
 1.  Navigate to the **Networking** page.
 1.  Select the **PrivateLink** tab. 
 1.  Click **Set up a PrivateLink connection** to open the connection modal.
 
 ### Create an AWS endpoint
 
-1. <a name="step-1"></a> Copy the service name shown in the connection modal.
+1. If you have a multi-region cluster, select the region to create a connection in. Skip this step if you have a single-region cluster.
+1. <a name="step-1"></a> Copy the **Service Name** shown in the connection modal.
 1. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc/), click **Your VPCs** in the sidebar. 
 1. Locate the VPC ID of the VPC you want to create your endpoint in.
 
@@ -94,7 +100,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 1.  Click **Endpoints** in the sidebar.
 1.  Click **Create Endpoint**.
 1.  On the **Create Endpoint** page, for the **Service Category** field, select **Find service by name**.
-1.  In the **Service Name** field, enter the service name copied from the connection modal in [Step 1](#step-1).
+1.  In the **Service Name** field, enter the **Service Name** copied from the connection modal in [Step 1](#step-1).
 1.  Click **Verify**.
 1.  In the **VPC** field, enter the ID of the VPC you want to create your endpoint in. 
 1.  Verify that the subnets are pre-populated.
