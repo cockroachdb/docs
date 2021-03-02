@@ -1,0 +1,12 @@
+- Role names (also known as usernames):
+    - Are case-insensitive.
+    - Can contain only letters, numbers, underscores, and periods. When a period is present, quotes around the name are required in SQL commands.
+    - Must start with a letter or underscore.
+    - Can be 1 to 63 characters long.
+    - Must be unique. Note that roles and users share the same namespace.
+- After creating roles, you can [grant them privileges to databases and tables](grant.html) and later [revoke](revoke.html) privileges.
+- Roles can be members of other roles. All privileges of a role are inherited by all of its members.
+- All roles belong to the `public` role, to which you can likewise [grant](grant.html) and [revoke](revoke.html) privileges.
+- There is no limit to the number of members in a role.
+- Membership loops are not allowed (whether direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
+- On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
