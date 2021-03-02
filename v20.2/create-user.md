@@ -4,26 +4,24 @@ summary: The CREATE USER statement creates SQL users, which let you control priv
 toc: true
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
+The `CREATE USER` [statement](sql-statements.html) creates a SQL role which can be used to log in to a database or manage the [privileges](authorization.html#assign-privileges) of member roles/users. There is no distinct "user" entity in CockroachDB, however, a role with login privileges may be called a user.
+
+`CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. `CREATE USER` does not set `NOLOGIN`, so the role inherits the login capability from any parent role, including the default `public` role. Otherwise, the `LOGIN` option may be set explicitly. 
+
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `CREATE USER` is now an alias for [`CREATE ROLE`](create-role.html).
+ Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created a disctinct entity type called a role. As of v20.1, this feature is now freely available in the core version of CockroachDB, and the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility.
 {{site.data.alerts.end}}
+
+For more information, see the [Authorization](authorization.html) documentation on roles.
 
 ## Considerations
 
-- Usernames:
-    - Are case-insensitive
-    - Must start with a letter, number, or underscore
-    - Must contain only letters, numbers, periods, or underscores
-    - Must be between 1 and 63 characters.
-- After creating users, you must [grant them privileges to databases and tables](grant.html).
-- All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
-- On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+{% include {{ page.version.version }}/sql/role-considerations.md %}
 
 ## Required privileges
 
- To create other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+ To create other roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 
 ## Synopsis
 
@@ -51,20 +49,6 @@ table td:first-child {
 `VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other users' [queries](show-queries.html) and [sessions](show-sessions.html) using `SHOW QUERIES`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and **Transactions** pages in the DB Console. Without this privilege, the `SHOW` commands only show the user's own data and the DB Console pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin users.
 `CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin users.
 `MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the user to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin users.
-
-## User authentication
-
-Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers three methods for this:
-
-- [Client certificate and key authentication](authentication.html#client-authentication), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
-
-- [Password authentication](#create-a-user-with-a-password), which is available to users and roles who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
-
-    Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
-
-    Password creation is supported only in secure clusters.
-
-- [GSSAPI authentication](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
 ## Examples
 

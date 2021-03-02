@@ -4,26 +4,21 @@ summary: The CREATE ROLE statement creates SQL roles, which are groups containin
 toc: true
 ---
 
-The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
+The `CREATE ROLE` statement creates a new SQL role. A role acts as a database user or a group of other users/roles. You can assign priviliges to the role and set other roles as members of the role. A role's privileges are inherited by its members, by its members' members, and so on.
+
+A role with login permissions is often called a user. Such a user may still have members that inherit its permissions.
+
+The `CREATE USER` statement produces the same result as `CREATE ROLE` with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database, and `CREATE USER` does not. 
 
 {{site.data.alerts.callout_info}}
- <code>CREATE ROLE</code> is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `CREATE ROLE` is now an alias for [`CREATE USER`](create-user.html).
+ Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created a disctinct entity type called a role. As of v20.1, this feature is now freely available in the core version of CockroachDB, and the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility.
 {{site.data.alerts.end}}
+
+For more information, see the [Authorization](authorization.html) documentation on roles.
 
 ## Considerations
 
-- Role names:
-    - Are case-insensitive
-    - Must start with either a letter or underscore
-    - Must contain only letters, numbers, periods, or underscores
-    - Must be between 1 and 63 characters.
-- After creating roles, you must [grant them privileges to databases and tables](grant.html).
-- Roles and users can be members of roles.
-- Roles and users share the same namespace and must be unique.
-- All privileges of a role are inherited by all of its members.
-- There is no limit to the number of members in a role.
-- Roles cannot log in. They do not have a password and cannot use certificates.
-- Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
+{% include {{ page.version.version }}/sql/role-considerations.md %}
 
 ## Required privileges
 
@@ -35,11 +30,17 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
 
 ## Parameters
 
+<style>
+table td:first-child {
+    min-width: 225px;
+}
+</style>
+
 | Parameter | Description |
 ------------|--------------
-`name` | The name of the role you want to create. Role names are case-insensitive; must start with either a letter or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.<br><br>Note that roles and [users](create-user.html) share the same namespace and must be unique.
+`name` | The name of the role/user you want to create. See the [Considerations](#considerations) section for important naming guidelines.
 `CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
-`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the role from logging in using any authentication method.
+`LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the role from logging in using any authentication method. `NOLOGIN` is set by default when using `CREATE ROLE`, but not when using the otherwise equivalent `CREATE USER` statement.
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
 `VALID UNTIL` |  The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
 `CREATEROLE`/`NOCREATEROLE` |  Allow or disallow the new role to create, [alter](alter-role.html), and [drop](drop-role.html) other non-admin roles. <br><br>By default, the parameter is set to `NOCREATEROLE` for all non-admin users.
