@@ -338,6 +338,12 @@
                     ]
                   }
                 ]
+              },
+              {
+                "title": "Query Spatial Data",
+                "urls": [
+                  "/${VERSION}/query-spatial-data.html"
+                ]
               }
             ]
           },
