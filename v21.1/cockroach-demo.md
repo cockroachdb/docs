@@ -82,7 +82,7 @@ ctrl-d
 ## Datasets
 
 {{site.data.alerts.callout_success}}
-By default, the `movr` dataset is pre-loaded into a demo cluster. To load a different dataset, use [`cockroach demo <dataset>`](#load-a-sample-dataset-into-a-demo-cluster). To start a demo cluster without a pre-loaded dataset, pass the `--empty` flag.
+By default, the `movr` dataset is pre-loaded into a demo cluster. To load a different dataset, use [`cockroach demo <dataset>`](#load-a-sample-dataset-into-a-demo-cluster). To start a demo cluster without a pre-loaded dataset, pass the `--empty-database` flag.
 
 {{site.data.alerts.end}}
 
@@ -108,7 +108,7 @@ Flag | Description
 `--demo-locality` | Specify [locality](cockroach-start.html#locality) information for each demo node. The input is a colon-separated list of key-value pairs, where the i<sup>th</sup> pair is the locality setting for the i<sup>th</sup> demo cockroach node.<br><br>For example, the following option assigns node 1's region to `us-east1` and availability zone to `1`, node 2's region to `us-east2` and availability zone to `2`, and node 3's region to `us-east3` and availability zone to `3`:<br><br>`--demo-locality=region=us-east1,az=1:region=us-east1,az=2:region=us-east1,az=3`<br><br>By default, `cockroach demo` uses sample region (`region`) and availability zone (`az`) replica localities for each node specified with the `--nodes` flag.
 `--disable-demo-license` |  Start the demo cluster without loading a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour.<br><br>Setting the `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING` environment variable will also prevent the loading of a temporary license, along with preventing the sharing of anonymized [diagnostic details](diagnostics-reporting.html) with Cockroach Labs.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#commands).
-`--empty` | Start the demo cluster without a pre-loaded dataset.
+`--empty-database` | Start the demo cluster without a pre-loaded dataset.<br><br> Setting the `COCKROACH_EMPTY_DATABASE` environment variable will also start the demo cluster without a pre-loaded dataset.
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
 `--geo-partitioned-replicas` | Start a 9-node demo cluster with the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern applied to the [`movr`](movr.html) database.
