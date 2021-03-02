@@ -69,3 +69,4 @@ bootstrap: Gemfile Gemfile.lock | vendor
 
 clean:
 	rm -rf vendor
+	rm -rf _site
