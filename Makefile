@@ -20,7 +20,7 @@
 # Note that we also amend the path to include /usr/local/opt/ruby/bin, which
 # is where Homebrew will install a more up-to-date version of Ruby on macOS.
 export GEM_HOME := vendor
-export PATH := $(GEM_HOME)/bin:/usr/local/opt/ruby/bin:$(PATH)
+export PATH := $(GEM_HOME)/bin:$(HOME)/.rbenv/shims:/usr/local/opt/ruby/bin:$(PATH)
 # HACK: Make has a fast path and a slow path for command execution,
 # but the fast path uses the PATH variable from when make was started,
 # not the one we set on the previous line. In order for the above
@@ -62,7 +62,10 @@ test:
 
 vendor:
 	gem install bundler
+	bundle install
 
 bootstrap: Gemfile Gemfile.lock | vendor
-	bundle install
 	touch $@
+
+clean:
+	rm -rf vendor
