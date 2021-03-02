@@ -37,11 +37,11 @@ functions but have special evaluation rules:
 
 ## Built-in Functions
 
-{% include {{ page.version.version }}/sql/functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.0/docs/generated/sql/functions.md %}
 
 ## Aggregate Functions
 
-{% include {{ page.version.version }}/sql/aggregates.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.0/docs/generated/sql/aggregates.md %}
 
 ## Operators
 
@@ -75,7 +75,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 |    | `[NOT] LIKE ANY`, `[NOT] LIKE SOME`, `[NOT] LIKE ALL` | [Multi-valued] `LIKE` comparison | binary |
 |    | `[NOT] ILIKE ANY`, `[NOT] ILIKE SOME`, `[NOT] ILIKE ALL` | [Multi-valued] `ILIKE` comparison | binary |
 | 12 | `[NOT] BETWEEN` | Value is [not] within the range specified | binary |
-|  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary | 
+|  | `[NOT] BETWEEN SYMMETRIC` | Like `[NOT] BETWEEN`, but in non-sorted order. For example, whereas `a BETWEEN b AND c` means `b <= a <= c`, `a BETWEEN SYMMETRIC b AND c` means `(b <= a <= c) OR (c <= a <= b)`. | binary |
 |  | `[NOT] IN` | Value is [not] in the set of values specified | binary |
 |  | `[NOT] LIKE` | Matches [or not] LIKE expression, case sensitive  | binary |
 |  | `[NOT] ILIKE` | Matches [or not] LIKE expression, case insensitive | binary |
@@ -103,7 +103,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported Operations
 
-{% include {{ page.version.version }}/sql/operators.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.0/docs/generated/sql/operators.md %}
 
 <!--
 ## `CAST()`
