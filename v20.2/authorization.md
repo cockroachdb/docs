@@ -8,7 +8,7 @@ redirect_from: [create-and-manage-users.html, roles.html]
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 {{site.data.alerts.callout_info}}
- Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
+ Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements as the two represent the same type of entity. A role can be used as a group of database roles/users or as an individual user. For more information, see [Users and roles](#users-and-roles).
 {{site.data.alerts.end}}
 
 ## Users and roles
@@ -24,7 +24,7 @@ We refer to these as "roles" when they are created for managing the privileges o
 
 The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
-Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
+Throughout the documentation, however, we refer to a "user" or "role" based on the intended purpose of the entity, and we default to using the term "role" when we want to include both possibilities for how the role may be used.
 
 ## SQL users
 
@@ -53,6 +53,8 @@ For secure clusters, in addition to [generating the client certificate](authenti
 {{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
+
+A user may be considered a special type of role. See [Users and roles](#users-and-roles).
 
 ### Create and manage roles
 
