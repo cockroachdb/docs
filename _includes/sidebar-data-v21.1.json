@@ -271,6 +271,12 @@
                 ]
               },
               {
+                "title": "Bulk-update Data",
+                "urls": [
+                  "/${VERSION}/bulk-update-data.html"
+                ]
+              },
+              {
                 "title": "Delete Data",
                 "urls": [
                   "/${VERSION}/delete-data.html"
