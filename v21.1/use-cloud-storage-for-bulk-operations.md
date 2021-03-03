@@ -4,7 +4,17 @@ summary: Import data into your CockroachDB cluster.
 toc: true
 ---
 
-CockroachDB uses the URL provided in a [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`IMPORT`](import.html), [`EXPORT`](export.html), or [`CREATE CHANGEFEED`](create-changefeed.html) statement to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. We strongly recommend using cloud/remote storage.
+CockroachDB constructs a secure API call to the cloud storage specify in a URL passed to one of the following statements:
+
+- [`BACKUP`](backup.html)
+- [`RESTORE`](restore.html)
+- [`IMPORT`](import.html)
+- [`EXPORT`](export.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)
+
+{{site.data.alerts.callout_success}}
+We strongly recommend using cloud/remote storage.
+{{site.data.alerts.end}}
 
 ## URL format
 
@@ -96,3 +106,12 @@ You can create your own HTTP server with [Caddy or nginx](use-a-local-file-serve
 ### S3-compatible services
 
 A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
+
+## See also
+
+- [`BACKUP`](backup.html)
+- [`RESTORE`](restore.html)
+- [`IMPORT`](import.html)
+- [`EXPORT`](export.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)
+- [](cluster-settings.html)
