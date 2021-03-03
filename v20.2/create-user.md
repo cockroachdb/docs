@@ -1,13 +1,14 @@
 ---
 title: CREATE USER
-summary: The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables.
+summary: The CREATE USER statement creates SQL roles that are preconfigured to act as database users. Privileges assigned to a role are inherited by its member roles.
 toc: true
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates a SQL role which can be used to log in to a database or manage the [privileges](authorization.html#assign-privileges) of member roles/users. There is no distinct "user" entity in CockroachDB, however, a role with login privileges may be called a user.
+The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can be used to log in to a database. There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled may be called a user and can log in to the SQL shell.
 
-`CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. `CREATE USER` does not set `NOLOGIN`, so the role inherits the login capability from any parent role, including the default `public` role. Otherwise, the `LOGIN` option may be set explicitly. 
+`CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database.
 
+You can [assign privileges](authorization.html#assign-privileges) to the user and [set it as a member](grant-roles.html) of other roles, inheriting their privileges.
 
 {{site.data.alerts.callout_info}}
  Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created a disctinct entity type called a role. As of v20.1, this feature is now freely available in the core version of CockroachDB, and the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility.
@@ -37,7 +38,7 @@ table td:first-child {
 
  Parameter | Description
 -----------|-------------
-`user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+`user_name` | The name of the user you want to create. See the [Considerations](#considerations) section for important naming guidelines.
 `CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the user from logging in using any authentication method.
 `password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
@@ -76,7 +77,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Create a user
 
-Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+Note the [considerations](#considerations) for role/user names.
 
 ~~~ sql
 root@:26257/defaultdb> CREATE USER no_options;

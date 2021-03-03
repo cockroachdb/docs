@@ -1,12 +1,13 @@
 ---
 title: CREATE ROLE
-summary: The CREATE ROLE statement creates SQL roles, which are groups containing any number of roles and users as members.
+summary: The CREATE ROLE statement creates SQL roles, which can act as database users or groups of users and be used to manage database access and privileges.
 toc: true
 ---
 
-The `CREATE ROLE` statement creates a new SQL role. A role acts as a database user or a group of other users/roles. You can assign priviliges to the role and set other roles as members of the role. A role's privileges are inherited by its members, by its members' members, and so on.
+The `CREATE ROLE` statement creates a new SQL role. A role acts as a database user or a group of other roles/users. There is no distinct "user" entity in CockroachDB, however, a role with `LOGIN` option enabled may be called a user and can log in to the SQL shell.
 
-A role with login permissions is often called a user. Such a user may still have members that inherit its permissions.
+
+You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members, by its members' members ([indirect members](authorization.html#indirect-members)), and so on.
 
 The `CREATE USER` statement produces the same result as `CREATE ROLE` with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database, and `CREATE USER` does not. 
 
@@ -77,7 +78,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Create a role
 
-Role names are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+Note the [considerations](#considerations) for role names.
 
 ~~~ sql
 root@:26257/defaultdb> CREATE ROLE no_options;

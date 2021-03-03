@@ -9,4 +9,4 @@
 - All roles belong to the `public` role, to which you can likewise [grant](grant.html) and [revoke](revoke.html) privileges.
 - There is no limit to the number of members in a role.
 - Membership loops are not allowed (whether direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
-- On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+- On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](authentication.html#client-authentication).
