@@ -5,7 +5,7 @@ toc: true
 redirect_from: [create-and-manage-users.html, roles.html]
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#users-and-roles) and assign SQL-level [privileges](#assign-privileges) to them. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
 {{site.data.alerts.callout_info}}
  Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements as the two represent the same type of entity. A role can be used as a group of database roles/users or as an individual user. For more information, see [Users and roles](#users-and-roles).
@@ -13,32 +13,34 @@ User authorization is the act of defining access policies for authenticated Cock
 
 ## Users and roles
 
-There is no technical distinction between a role or user in CockroachDB. A role/user can:
+There is no technical distinction between a SQL role or user in CockroachDB. A role/user can:
 
-- be permitted to log in to the [SQL shell](cockroach-sql.html).
+- be permitted to log in to the [SQL shell](cockroach-sql.html) or other applications that connect to a database.
 - be granted [privileges](#privileges) to specific actions and database objects.
 - be a member of other users/roles, inheriting their privileges.
 - have other users/roles as members that inherit its privileges.
 
-We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
+We refer to these as "roles" when they are created for managing the privileges of their member "users". We often refer to roles that are enabled to direclty log in to a database using the [built-in SQL shell](cockroach-sql.html) or an application as "users".
 
 The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
 Throughout the documentation, however, we refer to a "user" or "role" based on the intended purpose of the entity, and we default to using the term "role" when we want to include both possibilities for how the role may be used.
 
-## SQL users
+## Users
 
 A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
 
 ### Create and manage users
 
-Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
+You can use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, and the [`SHOW USERS`](show-users.html) statement to list users.
 
-A new user must be granted the required privileges for each database and table that the user needs to access.
+The statements `CREATE ROLE`, `DROP ROLE`, `ALTER ROLE`, AND `SHOW ROLES` are equivalent to these, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
 
-{{site.data.alerts.callout_info}}
+Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges. 
+
+For each database and table that the user needs to access, a user must be granted the required privileges or granted membership to roles that confer these privileges.
+
 By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role. For more information, see [Public role](#public-role).
-{{site.data.alerts.end}}
 
 ### `root` user
 
@@ -54,7 +56,7 @@ For secure clusters, in addition to [generating the client certificate](authenti
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
-A user may be considered a special type of role. See [Users and roles](#users-and-roles).
+Users and roles and technically the same type of entity. See [Users and roles](#users-and-roles).
 
 ### Create and manage roles
 
@@ -90,7 +92,7 @@ To assign a user to the `admin` role:
 
 #### `public` role
 
-All new users and roles belong to the `public` role by default. You can grant and revoke the privileges on the `public` role.
+All new users and roles belong to the `public` role by default. You can grant and revoke privileges on the `public` role.
 
 ### Terminology
 
@@ -155,7 +157,7 @@ Take the following points into consideration while granting privileges to roles 
 
 We recommend the following best practices to set up access control for your clusters:
 
-- Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
+- Use the `root` user only for database administration tasks such as creating and managing other [users](#users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
 - Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
 
 ## Example
