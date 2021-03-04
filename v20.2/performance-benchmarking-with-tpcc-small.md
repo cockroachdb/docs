@@ -3,6 +3,7 @@ title: Performance Benchmarking with TPC-C
 summary: Learn how to benchmark CockroachDB against TPC-C with 3 nodes on `c5d.4xlarge` machines
 toc: true
 toc_not_nested: true
+key: performance-benchmarking-with-tpc-c-1k-warehouses.html
 redirect_from:
 - performance-benchmarking-with-tpc-c-1k-warehouses.html
 ---
@@ -118,24 +119,32 @@ CockroachDB requires TCP communication on two ports:
 
 ## Step 3. Import the TPC-C dataset
 
-CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC-C benchmark. You'll need to put this binary on the VM for importing the dataset and running TPC-C.
+CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 1. SSH to the VM where you want to run TPC-C.
 
-2. Download the `workload` binary for Linux and make it executable:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST -O workload; chmod 755 workload
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar  xvz
     ~~~
 
-3. Import the TPC-C dataset:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
+    ~~~
+
+    If you get a permissions error, prefix the command with `sudo`.
+
+1. Import the TPC-C dataset:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload fixtures import tpcc \
-    --warehouses 2500 \
-    "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
+    $ cockroach workload fixtures import tpcc \
+    --warehouses=2500 \
+    'postgres://root@<address of any CockroachDB node>:26257?sslmode=disable'
     ~~~
 
     This will load 200 GB of data for 2500 "warehouses". This can take a while to complete.
@@ -144,26 +153,26 @@ CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC
 
 ## Step 4. Run the benchmark
 
-1. Still on the VM with the `workload` binary, create an `addrs` file containing connection strings to the 3 CockroachDB nodes:
+1. Still on the same VM, create an `addrs` file containing connection strings to the 3 CockroachDB nodes:
 
     ~~~
     postgres://root@<node 1 internal address>:26257?sslmode=disable postgres://root@<node 2 internal address>:26257?sslmode=disable postgres://root@<node 3 internal address>:26257?sslmode=disable
     ~~~
 
-2. Run TPC-C for 30 minutes:
+1. Run TPC-C for 30 minutes:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload run tpcc \
-    --warehouses 2500 \
-    --ramp 1m \
-    --duration 30m \
+    $ cockroach workload run tpcc \
+    --warehouses=2500 \
+    --ramp=1m \
+    --duration=30m \
     $(cat addrs)
     ~~~
 
 ## Step 5. Interpret the results
 
-Once the `workload` has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
+Once the workload has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
 
 ~~~
 _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)

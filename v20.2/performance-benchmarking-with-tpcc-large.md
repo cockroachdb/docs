@@ -3,7 +3,8 @@ title: Performance Benchmarking with TPC-C
 summary: Learn how to benchmark CockroachDB against TPC-C with 81 nodes on `c5d.9xlarge` machines
 toc: true
 toc_not_nested: true
-redirect_from: 
+key: performance-benchmarking-with-tpc-c-100k-warehouses.html
+redirect_from:
 - performance-benchmarking-with-tpc-c.html
 - performance-benchmarking-with-tpc-c-100k-warehouses.html
 ---
@@ -191,32 +192,38 @@ You'll be importing a large TPC-C data set. To speed that up, you can temporaril
 
 ## Step 4. Import the TPC-C dataset
 
-CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC-C benchmark. You'll need to put the binary on the VMs for importing the dataset and running TPC-C.
+CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
-1. SSH to one of the VMs where you want to run TPC-C.
+1. SSH to the VM where you want to run TPC-C.
 
-2. Download the `workload` binary for Linux and make it executable:
-
-    {% include copy-clipboard.html %}
-     ~~~ shell
-    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST -O workload; chmod 755 workload
-    ~~~
-
-3. Repeat steps 1 and 2 for the other 4 VMs where you'll run TPC-C.
-
-4. On one of the VMs with the `workload` binary, import the TPC-C dataset:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload fixtures import tpcc \
-    --warehouses 140000 \
-    --partitions 81 \
-    --replicate-static-columns
-    --partition-strategy=leases
-    "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar  xvz
     ~~~
 
-    This will load the data for 140,000 warehouses. This can take up to 8 hours to complete.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
+    ~~~
+
+    If you get a permissions error, prefix the command with `sudo`.
+
+1. Import the TPC-C dataset:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload fixtures import tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --replicate-static-columns \
+    --partition-strategy=leases \
+    'postgres://root@<address of any CockroachDB node>:26257?sslmode=disable'
+    ~~~
+
+    This will load 11.2 TB of data for 140,000 "warehouses". This can take up to 8 hours to complete.
 
     You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
@@ -273,27 +280,61 @@ Before running the benchmark, it's important to allocate partitions to workload 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 --ramp 30m --duration 1ms --histograms workload1.histogram.ndjson $(cat addrs)
+    ulimit -n 500000 && cockroach workload run tpcc --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload1.histogram.ndjson \
+    $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 --ramp 30m --duration 1ms --histograms workload2.histogram.ndjson $(cat addrs)
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions 81 \
+    --warehouses 140000 \
+    --partition-affinity=17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload2.histogram.ndjson \
+    $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 --ramp 30m --duration 1ms --histograms workload3.histogram.ndjson $(cat addrs)
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload3.histogram.ndjson \
+    $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 --ramp 30m --duration 1ms --histograms workload4.histogram.ndjson $(cat addrs)
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload4.histogram.ndjson \
+    $(cat addrs)
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 --ramp 30m --duration 1ms --histograms workload5.histogram.ndjson $(cat addrs)
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload5.histogram.ndjson \
+    $(cat addrs)
     ~~~
 
 ## Step 8. Run the benchmark
@@ -306,27 +347,62 @@ It is critical to run the benchmark from the workload nodes in parallel, so star
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 --ramp 4m --duration 30m --histograms workload1.histogram.ndjson $(cat addrs)
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload1.histogram.ndjson \
+$(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 --ramp 4m --duration 30m --histograms workload2.histogram.ndjson $(cat addrs)
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload2.histogram.ndjson \
+$(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 --ramp 4m --duration 30m --histograms workload3.histogram.ndjson $(cat addrs)
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload3.histogram.ndjson \
+$(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 --ramp 4m --duration 30m --histograms workload4.histogram.ndjson $(cat addrs)
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload4.histogram.ndjson \
+$(cat addrs)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ shell
-ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --partition-affinity 65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 --ramp 4m --duration 30m --histograms workload5.histogram.ndjson $(cat addrs)
+ulimit -n 500000 && cockroach workload run tpcc \
+--partition=81 \
+--warehouses=140000 \
+--partition-affinity=65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload5.histogram.ndjson \
+$(cat addrs)
 ~~~
 
 ## Step 9. Interpret the results
@@ -390,7 +466,9 @@ ulimit -n 500000 && ./workload run tpcc --partitions 81 --warehouses 140000 --pa
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    ./workload debug tpcc-merge-results --warehouses 140000  workload*.histogram.ndjson
+    cockroach workload debug tpcc-merge-results \
+    --warehouses=140000 \
+    workload*.histogram.ndjson
     ~~~
 
     You'll should see results similar to the following, with **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%**:
