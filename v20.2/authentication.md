@@ -44,55 +44,51 @@ CockroachDB offers the following methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
-   Example:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --certs-dir=certs --user=jpointsman
-   ~~~
+    Example:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --user=jpointsman
+    ~~~
 
-Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
+- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters. While users can use passwords to authenticate without supplying client certificates and keys, we recommend using certificate-based authentication whenever possible.
 
-Password creation is supported only in secure clusters.
+    Example:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --user=jpointsman
+    ~~~
 
-- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters.
-
-   Example:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --certs-dir=certs --user=jpointsman
-   ~~~
-
-   ~~~
+    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
     Enter password:
-  ~~~
+    ~~~
 
-   Note that the client still needs the CA certificate to validate the nodes' certificates.
+    Note that the client still needs the CA certificate to validate the nodes' certificates.
 
-   To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) OR `CREATE USER`(create-user.html). To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) OR [`ALTER USER`](alter-user.html) statement.
+    To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) OR `CREATE USER`(create-user.html). To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) OR [`ALTER USER`](alter-user.html) statement.
 
 - **Password authentication without TLS**
 
-   <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
+    <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
 
-   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+    With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
 
-   Example:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --user=jpointsman --insecure
-   ~~~
+    Example:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --user=jpointsman --insecure
+    ~~~
 
-   ~~~
+    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
     Enter password:
-  ~~~
+    ~~~
 
 - [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the DB Console.
 

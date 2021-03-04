@@ -1,19 +1,19 @@
 ---
 title: CREATE USER
-summary: The CREATE USER statement creates SQL roles that are preconfigured to act as database users. Privileges assigned to a role are inherited by its member roles.
+summary: The CREATE USER statement creates SQL roles that are preconfigured with the necessary login permission to act as database users.
 toc: true
 ---
 
 The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can be used to log in to a database.
 
- There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled may be called a user and can log in to the SQL shell.
+ There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled can log in to the SQL shell and is often called a user.
  
  You can [assign privileges](authorization.html#assign-privileges) to the user and [set it as a member](grant-roles.html) of other roles, inheriting their privileges.
 
 {{site.data.alerts.callout_info}}
  `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
 
- Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to a singular entity type.
+ Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
 {{site.data.alerts.end}}
 
 For more information, see the [Authorization](authorization.html) documentation on roles and users.
@@ -24,8 +24,8 @@ For more information, see the [Authorization](authorization.html) documentation 
 
 ## Required privileges
 
- To create other roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
-
+- To create other roles, a role must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+- To be able to grant or revoke membership to a role for additional roles/users, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
