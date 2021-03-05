@@ -31,7 +31,7 @@ Before reading this page, do the following:
 ## Write a batch-update loop
 
 1. At the top level of a loop in your application, or in a script, execute a `SELECT` query that returns a large batch of primary key values for the rows that you want to update. When defining the `SELECT` query:
-    - Use a `WHERE` clause that filters on the column identifying the rows.
+    - Use a `WHERE` clause that filters on the column identifying the rows that you want to update. This clause should also filter out the rows that have been updated by previous iterations of the `UPDATE` loop.
     - Add an [`AS OF SYSTEM TIME` clause](as-of-system-time.html) to the end of the selection subquery, or run the selection query in a separate, read-only transaction with [`SET TRANSACTION AS OF SYSTEM TIME`](as-of-system-time.html#using-as-of-system-time-in-transactions). This helps to reduce [transaction contention](transactions.html#transaction-contention).
     - Use a [`LIMIT`](limit-offset.html) clause to limit the number of rows queried to a subset of the rows that you want to update. To determine the optimal `SELECT` batch size, try out different sizes (10,000 rows, 20,000 rows, etc.), and monitor the change in performance. Note that this `SELECT` batch size can be much larger than the batch size of rows that are updated in the subsequent `UPDATE` query.
     - To ensure that rows are efficiently scanned in the subsequent `UPDATE` query, include an [`ORDER BY`](order-by.html) clause on the primary key.
@@ -40,9 +40,22 @@ Before reading this page, do the following:
 
 ## Example
 
-Suppose that you have recorded hundreds of thousands of [MovR](movr.html) rides in a cluster loaded with the [`movr`](cockroach-workload.html#movr) database. And suppose that you want to apply a discount to all of the rides that cost more than 70¤. To do this, you need to update all of the rows in the `rides` table where the `revenue` column is greater than `70`. You can create a script that loops over the data and updates the relevant rows in batches, following the query guidance provided above.
+Suppose that over the past year, you've recorded hundreds of thousands of [MovR](movr.html) rides in a cluster loaded with the [`movr`](cockroach-workload.html) database. And suppose that, for the last week of December, you applied a 10% discount to all ride charges billed to users, but you didn't update the `rides` table to reflect the discounts.
 
-In Python, the script would look similar to the following:
+To get the `rides` table up-to-date, you can create a loop that updates the relevant rows of the `rides` table in batches, following the query guidance provided [above](#write-a-batch-update-loop).
+
+In this case, you will also need to add a new column to the `rides` table that signals whether or not a row has been updated. Using this column, the top-level `SELECT` query can filter out rows that have already been updated, which will prevent rows from being updated more than once.
+
+For example, you could create a column named `discounted`, of data type [`BOOL`](bool.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE rides ADD COLUMN discounted BOOL DEFAULT false;
+~~~
+
+{% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
+
+In Python, a batch-update script might look similar to the following:
 
 {% include copy-clipboard.html %}
 ~~~ python
@@ -54,27 +67,21 @@ import time
 
 def main():
     conn = psycopg2.connect(os.environ.get('DB_URI'))
-    usedpks = []
 
     while True:
         with conn:
             with conn.cursor() as cur:
                 cur.execute("SET TRANSACTION AS OF SYSTEM TIME '-5s'")
-                if len(usedpks) > 0:
-                    cur.execute("SELECT id FROM rides WHERE id != ANY %s AND revenue > 70 ORDER BY id LIMIT 10000", (usedpks,))
-                else:
-                    cur.execute("SELECT id FROM rides WHERE revenue > 70 ORDER BY id LIMIT 10000")
+                cur.execute("SELECT id FROM rides WHERE discounted != true AND extract('month', start_time) = 12 AND extract('day', start_time) > 23 ORDER BY id LIMIT 10000")
                 pkvals = list(cur)
         if not pkvals:
             return
-        else:
-            usedpks.extend(pkvals)
         while pkvals:
             batch = pkvals[:2000]
             pkvals = pkvals[2000:]
             with conn:
                 with conn.cursor() as cur:
-                    cur.execute("UPDATE rides SET revenue = CASE WHEN revenue <= 77.78 THEN 70 ELSE revenue*.9 END WHERE id = ANY %s", (batch,))
+                    cur.execute("UPDATE rides SET discounted = true, revenue = revenue*.9 WHERE id = ANY %s", (batch,))
                     print(cur.statusmessage)
         del batch
         del pkvals
@@ -86,8 +93,6 @@ if __name__ == '__main__':
 ~~~
 
 At each iteration, the `SELECT` query returns the primary key values of up to 10,000 rows of matching historical data from 5 seconds in the past, in a read-only transaction. Then, a nested loop iterates over the returned primary key values in smaller batches of 2,000 rows. At each iteration of the nested `UPDATE` loop, a batch of rows is updated. After the nested `UPDATE` loop updates all of the rows from the initial selection query, a time delay ensures that the next selection query reads historical data from the table after the last iteration's `UPDATE` final update.
-
-Note that after primary key values are returned by the `SELECT` query, they are added to a list of primary key values that have already been used.
 
 ## See also
 
