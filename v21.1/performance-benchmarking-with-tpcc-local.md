@@ -3,6 +3,7 @@ title: Performance Benchmarking with TPC-C
 summary: Learn how to benchmark CockroachDB against TPC-C 13k on 3 nodes on your laptop
 toc: true
 toc_not_nested: true
+key: performance-benchmarking-with-tpc-c-10-warehouses.html
 redirect_from:
 - performance-benchmarking-with-tpc-c-10-warehouses.html
 ---
@@ -79,30 +80,18 @@ This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarki
 
 ## Step 2. Import the TPC-C dataset
 
-CockroachDB comes with built-in load generators for simulating different types of client workloads, printing out per-operation statistics every second and totals after a specific duration or max number of operations. This step features CockroachDB's version of the TPC-C workload.
+CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 Use [`cockroach workload`](cockroach-workload.html) to load the initial schema and data:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach workload init tpcc \
+$ cockroach workload fixtures import tpcc \
 --warehouses=10 \
 'postgresql://root@localhost:26257?sslmode=disable'
 ~~~
 
-This will take about ten minutes to load, after which you'll see the following output:
-
-~~~
-I191024 03:41:34.308865 1 workload/workloadsql/dataload.go:135  imported warehouse (0s, 10 rows)
-I191024 03:41:34.353839 1 workload/workloadsql/dataload.go:135  imported district (0s, 100 rows)
-I191024 03:42:00.865733 1 workload/workloadsql/dataload.go:135  imported customer (27s, 300000 rows)
-I191024 03:42:13.233536 1 workload/workloadsql/dataload.go:135  imported history (12s, 300000 rows)
-I191024 03:42:20.893806 1 workload/workloadsql/dataload.go:135  imported order (8s, 300000 rows)
-I191024 03:42:21.716409 1 workload/workloadsql/dataload.go:135  imported new_order (1s, 90000 rows)
-I191024 03:42:23.483713 1 workload/workloadsql/dataload.go:135  imported item (2s, 100000 rows)
-I191024 03:43:37.660918 1 workload/workloadsql/dataload.go:135  imported stock (1m14s, 1000000 rows)
-I191024 03:46:51.682670 1 workload/workloadsql/dataload.go:135  imported order_line (3m14s, 3001222 rows)
-~~~
+This will load 2 GB of data for 10 "warehouses".
 
 ## Step 3. Run the benchmark
 
