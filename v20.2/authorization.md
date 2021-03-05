@@ -34,7 +34,7 @@ A SQL user can interact with a CockroachDB database using the [built-in SQL shel
 
 You can use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, and the [`SHOW USERS`](show-users.html) statement to list users.
 
-The statements `CREATE ROLE`, `DROP ROLE`, `ALTER ROLE`, AND `SHOW ROLES` are equivalent to these, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
+The statements `CREATE ROLE`, `DROP ROLE`, `ALTER ROLE`, AND `SHOW ROLES` are equivalent to these, respectively, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
 
 Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges. 
 
