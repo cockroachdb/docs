@@ -16,7 +16,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.5](v20.2.5.html).
 
 ### Console changes
 
-- Self-service [AWS PrivateLink](../cockroachcloud/connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) is now generally available for CockroachCloud clusters running on AWS.
+- Self-service [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) is now generally available for CockroachCloud clusters running on AWS.
 - On the [**Clusters** page](../cockroachcloud/cluster-management.html#view-clusters-page), clusters that are running unsupported versions now have a warning in the **Version** column.
 
 ### Security updates
