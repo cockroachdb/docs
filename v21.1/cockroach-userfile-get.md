@@ -1,29 +1,29 @@
 ---
-title: cockroach userfile list
-summary: List the files stored in the user-scoped file storage.
+title: cockroach userfile get
+summary: Fetch files stored in the user-scoped file storage.
 toc: true
 ---
 
- The `cockroach userfile list` [command](cockroach-commands.html) lists the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the [provided pattern](cockroach-userfile-upload.html#file-destination), using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be listed.
+<span class="version-tag">New in v21.1:</span> The `cockroach userfile get` command fetches a file stored in the user-scoped file storage which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be fetched.
 
 ## Required privileges
 
 The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
-A user can only view files in their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role.
+A user can only fetch files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role and users explicitly granted access.
 
 ## Synopsis
 
-View files:
+Fetch a file:
 
 ~~~ shell
-$ cockroach userfile list <file | dir> [flags]
+$ cockroach userfile get <file> [flags]
 ~~~
 
 View help:
 
 ~~~ shell
-$ cockroach userfile list --help
+$ cockroach userfile get --help
 ~~~
 
 ## Flags
@@ -38,70 +38,46 @@ $ cockroach userfile list --help
 
 ## Examples
 
-### List all files in the default storage
+### Get a specific file
 
-If the file or directory is not specified, all files in the default user-scoped storage (`userfile://defaultdb.public.userfiles_$user/`) will be listed:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach userfile list --certs-dir=certs
-~~~
-
-~~~
-userfile://defaultdb.public.userfiles_root/test-data-2.csv
-userfile://defaultdb.public.userfiles_root/test-data.csv
-userfile://defaultdb.public.userfiles_root/test-upload/test-data.csv
-~~~
-
-### List a specific file
-
-To list all files in a specified directory:
+To get the file named test-data.csv from the default user-scoped storage location for the current user:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach userfile list test-data.csv --certs-dir=certs
+$ cockroach userfile get test-data.csv --certs-dir=certs
 ~~~
 
-~~~
-userfile://defaultdb.public.userfiles_root/test-data.csv
-~~~
+### Get a file saved to an explicit local file name
 
-### List files that match the provided pattern
-
-To list all files that match a pattern, use `*`:
+To get a file named test-data.csv from a local directory:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach userfile list '*.csv' --certs-dir=certs
+$ cockroach userfile get test-data.csv /Users/maxroach/Desktop/test-data.csv --certs-dir=certs
 ~~~
 
-~~~
-userfile://defaultdb.public.userfiles_root/test-data-2.csv
-userfile://defaultdb.public.userfiles_root/test-data.csv
-~~~
+### Get a file from a non-default userfile URI
 
-### List files from a non-default userfile URI
-
-If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`):
+If you [uploaded a file to a non-default userfile URI](cockroach-userfile-upload.html#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`), use the same URI to fetch it:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testdb.public.uploads/test-data.csv
+cockroach userfile get userfile://testdb.public.uploads/test-data.csv --certs-dir=certs
 ~~~
 
-Use the same URI to view it:
+### Get files that match the provided pattern
+
+To get all files that match a pattern, use *:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cockroach userfile list userfile://testdb.public.uploads
+$ cockroach userfile get '*.csv' --certs-dir=certs
 ~~~
 
 ## See also
 
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
-- [`cockroach userfile get`](cockroach-userfile-get.html)
+- [`cockroach userfile list`](cockroach-userfile-list.html)
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Other Cockroach Commands](cockroach-commands.html)
-- [`IMPORT`](import.html)
-- [`IMPORT INTO`](import-into.html)
