@@ -125,3 +125,32 @@ If you are a [Console Admin](console-access-management.html#console-admin), you 
 1. Click the pencil icon in the **Organization name** row.
 1. In the **Edit organization name** dialog, enter the new **Organization name**.
 1. Click **Save**.
+
+## Change your login method
+
+If you want to change your login method, you can do so at any time:
+
+- [Switch from a GitHub login to email](#switch-from-github-login-to-email)
+- [Switch from an email login to GitHub](#switch-from-email-login-to-github)
+
+### Switch from a GitHub login to email
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. Click **Switch to email login**.
+1. Click **Continue** in the **Log in with email and password** dialog.
+1. Enter a **Password**.
+1. Click **Save**.
+
+    A confirmation email will be sent to your email address.
+
+### Switch from an email login to GitHub
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. Click **Switch to GitHub login**.
+1. In the **Log in with GitHub** dialog, enter your password.
+1. Click **Continue**.
+1. You will be prompted to log in to GitHub if you haven't already.
+
+    A confirmation email will be sent to your email address.
