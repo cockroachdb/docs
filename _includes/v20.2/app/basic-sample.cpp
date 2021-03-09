@@ -10,7 +10,7 @@ using namespace std;
 int main() {
   try {
     // Connect to the "bank" database.
-    pqxx::connection c("postgresql://{username}:{password}@{host}:{port}");
+    pqxx::connection c("postgresql://{username}:{password}@{host}:{port}/bank");
 
     pqxx::nontransaction w(c);
 

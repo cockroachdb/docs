@@ -17,13 +17,20 @@ We have tested the [C++ libpqxx driver](https://github.com/jtv/libpqxx) enough t
 
 {% include {{page.version.version}}/app/create-a-database.md %}
 
-## Step 3. Install the libpqxx driver
+## Step 3. Install the libpq and libpqxx drivers
 
-Install the C++ libpqxx driver as described in the [official documentation](https://github.com/jtv/libpqxx).
+1. Install `libpq` on your machine. For example, on macOS:
 
-{{site.data.alerts.callout_info}}
-If you are running macOS, you need to install version 4.0.1 or higher of the libpqxx driver.
-{{site.data.alerts.end}}
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    brew install libpq
+    ~~~
+
+1. Install the libpqxx driver, using [CMake](https://github.com/jtv/libpqxx/blob/master/BUILDING-cmake.md) or the [configure script](https://github.com/jtv/libpqxx/blob/master/configure) provided in the [`libpqxx` repo](https://github.com/jtv/libpqxx).
+
+    {{site.data.alerts.callout_info}}
+    If you are running macOS, you need to install version 4.0.1 or higher of the libpqxx driver.
+    {{site.data.alerts.end}}
 
 ## Step 4. Get the C++ code
 
@@ -133,7 +140,7 @@ After running the code, use the [built-in SQL client](cockroach-sql.html) to ver
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
+$ cockroach sql --url 'postgresql://{username}:{password}@{host}:{port}/{cluster_name}.bank?sslmode=verify-full&sslrootcert={path/to/ca.crt}' -e 'SELECT id, balance FROM accounts'
 ~~~
 
 ~~~
