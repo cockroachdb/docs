@@ -1,47 +1,56 @@
 ---
-title: pg_catalog
-summary: The pg_catalog schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
+title: pg_extension
+summary: The pg_extension schema contains information about CockroachDB extensions.
 toc: true
 ---
 
-For PostgreSQL compatibility, CockroachDB provides a [virtual schema](virtual-schemas.html) called `pg_catalog`. The read-only tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/10/catalogs-overview.html).
+<span class="version-tag">New in v20.2</span>: The `pg_extension` [virtual schema](virtual-schemas.html) provides information about CockroachDB extensions.
+
+## Data exposed by `pg_extension`
+
+In CockroachDB {{ page.version.version }}, `pg_extension` contains the following tables, all of which provide information about CockroachDB's [spatial extension](spatial-features.html):
+
+- `geography_columns`
+- `geometry_columns`
+- `spatial_ref_sys`
 
 {{site.data.alerts.callout_info}}
-To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+`pg_extension` tables are read-only.
 {{site.data.alerts.end}}
 
-## Data exposed by `pg_catalog`
-
-As stated above, the tables in `pg_catalog` roughly correspond to the PostgreSQL system catalogs. However, not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and not all `pg_catalog` tables correspond to a PostgreSQL system catalog.
-
-To see the list of tables in `pg_catalog`, use the following [`SHOW TABLES`](show-tables.html) statement:
+To see the list of tables in `pg_extension` for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM SCHEMA pg_catalog;
+> SHOW TABLES FROM pg_extension;
 ~~~
 
 ~~~
-  schema_name |       table_name        | type  | owner | estimated_row_count
---------------+-------------------------+-------+-------+----------------------
-  pg_catalog  | pg_aggregate            | table | NULL  |                NULL
-  pg_catalog  | pg_am                   | table | NULL  |                NULL
-  pg_catalog  | pg_attrdef              | table | NULL  |                NULL
-  pg_catalog  | pg_attribute            | table | NULL  |                NULL
-  ...
+  schema_name  |    table_name     | type  | owner | estimated_row_count
+---------------+-------------------+-------+-------+----------------------
+  pg_extension | geography_columns | table | NULL  |                NULL
+  pg_extension | geometry_columns  | table | NULL  |                NULL
+  pg_extension | spatial_ref_sys   | table | NULL  |                NULL
+(3 rows)
 ~~~
 
-{{site.data.alerts.callout_info}}
-Unless specified otherwise, queries to `pg_catalog` assume the [current database](sql-name-resolution.html#current-database).
+## Querying `pg_extension` tables
+
+You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_extension`.
+
+{{site.data.alerts.callout_success}}
+To ensure that you can view all of the tables in `pg_extension`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
 {{site.data.alerts.end}}
 
-The `pg_catalog` tables with no corresponding PostgreSQL system catalog offer additional information about the objects in a database.
+{{site.data.alerts.callout_info}}
+Unless specified otherwise, queries to `pg_extension` assume the [current database](sql-name-resolution.html#current-database).
+{{site.data.alerts.end}}
 
-For example, if the current database is set as [`movr`](movr.html), to return the `pg_catalog` table with additional information about indexes in `movr` database, you can query the `pg_catalog.pg_indexes` table:
+For example, to return the `pg_extension` table with additional information about indexes in the `movr` database, you can query the `pg_extension.pg_indexes` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM movr.pg_catalog.pg_indexes;
+> SELECT * FROM movr.pg_extension.pg_indexes;
 ~~~
 
 ~~~
