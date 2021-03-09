@@ -18,10 +18,6 @@ To register a new account, navigate to the [CockroachCloud registration page](ht
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-{{site.data.alerts.callout_info}}
-This feature is only available to select users at this time. If you do not have access yet, you can register a new account with an email.
-{{site.data.alerts.end}}
-
 1. Click **Sign up with GitHub**.
 1. Enter your GitHub **Username or email address** associated with your account.
 1. Enter your GitHub **Password**
