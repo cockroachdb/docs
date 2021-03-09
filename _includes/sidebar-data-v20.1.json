@@ -1855,32 +1855,9 @@
                 ]
               },
               {
-                "title": "Virtual Schemas",
-                "items": [
-                  {
-                    "title": "Overview",
-                    "urls": [
-                      "/${VERSION}/virtual-schemas.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>crdb_internal</code>",
-                    "urls": [
-                      "/${VERSION}/crdb-internal.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>information_schema</code>",
-                    "urls": [
-                      "/${VERSION}/information-schema.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>pg_catalog</code>",
-                    "urls": [
-                      "/${VERSION}/pg-catalog.html"
-                    ]
-                  }
+                "title": "Information Schema",
+                "urls": [
+                  "/${VERSION}/information-schema.html"
                 ]
               },
               {

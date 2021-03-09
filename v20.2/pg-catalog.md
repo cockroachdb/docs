@@ -1,24 +1,117 @@
 ---
 title: pg_catalog
-summary: The pg_catalog schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
+summary: The pg_catalog schema contains read-only views that you can use for introspection into your database.
 toc: true
 ---
 
-For PostgreSQL compatibility, CockroachDB provides a [virtual schema](virtual-schemas.html) called `pg_catalog`. The read-only tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/10/catalogs-overview.html).
-
-{{site.data.alerts.callout_info}}
-To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
-{{site.data.alerts.end}}
+For PostgreSQL compatibility, CockroachDB includes a [virtual schema](virtual-schemas.html) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/10/catalogs-overview.html). `pg_catalog` tables are read-only.
 
 ## Data exposed by `pg_catalog`
 
-As stated above, the tables in `pg_catalog` roughly correspond to the PostgreSQL system catalogs. However, not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and not all `pg_catalog` tables correspond to a PostgreSQL system catalog.
+The tables in `pg_catalog` roughly correspond to the PostgreSQL system catalogs. However, not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and not all `pg_catalog` tables correspond to a PostgreSQL system catalog. See the table below for a detailed comparison between `pg_catalog` and the PostgreSQL 13 system catalog.
 
-To see the list of tables in `pg_catalog`, use the following [`SHOW TABLES`](show-tables.html) statement:
+PostgreSQL 13 system catalog | `pg_catalog` table  
+-----------------------------|--------------
+`pg_aggregate` | `pg_aggregate`
+`pg_am` | `pg_am`
+`pg_amop` | None
+`pg_amproc` | None
+`pg_attrdef` | `pg_attrdef`
+`pg_attribute` | `pg_attribute`
+`pg_auth_members` | `pg_auth_members`
+`pg_authid` | `pg_authid`
+`pg_available_extension_versions` | None
+`pg_available_extensions` | `pg_available_extensions`
+`pg_cast` | `pg_cast`
+`pg_class` | `pg_class`
+`pg_collation` | `pg_collation`
+`pg_config` | None
+`pg_constraint` | `pg_constraint`
+`pg_conversion` | `pg_conversion`
+`pg_cursors` | None
+`pg_database` | `pg_database`
+`pg_db_role_setting` | None
+`pg_default_acl` | `pg_default_acl`
+`pg_depend` | `pg_depend`
+`pg_description` | `pg_description`
+`pg_enum` | `pg_enum`
+`pg_event_trigger` | `pg_event_trigger`
+`pg_extension` | `pg_extension`
+`pg_file_settings` | None
+`pg_foreign_data_wrapper` | `pg_foreign_data_wrapper`
+`pg_foreign_server` | `pg_foreign_server`
+`pg_foreign_table` | `pg_foreign_table`
+`pg_group` | None
+`pg_hba_file_rules` | None
+`pg_index` | `pg_index`
+`pg_indexes` | `pg_indexes`
+`pg_inherits` | `pg_inherits`
+`pg_init_privs` | None
+`pg_language` | None
+`pg_largeobject` | None
+`pg_largeobject_metadata` | None
+`pg_locks` | `pg_locks`
+`pg_matviews` | `pg_matviews`
+`pg_namespace` | `pg_namespace`
+`pg_opclass` | None
+`pg_operator` | `pg_operator`
+`pg_opfamily` | None
+`pg_partitioned_table` | None
+`pg_policies` | None
+`pg_policy` | None
+`pg_prepared_statements` | `pg_prepared_statements`
+`pg_prepared_xacts` | `pg_prepared_xacts`
+`pg_proc` | `pg_proc`
+`pg_publication` | None
+`pg_publication_rel` | None
+`pg_publication_tables` | None
+`pg_range` | `pg_range`
+`pg_replication_origin` | None
+`pg_replication_origin_status` | None
+`pg_replication_slots` | None
+`pg_rewrite` | `pg_rewrite`
+`pg_roles` | `pg_roles`
+`pg_rules` | None
+`pg_seclabel` | `pg_seclabel`
+`pg_seclabels` | `pg_seclabels`
+`pg_sequence` | `pg_sequence`
+`pg_sequences` | None
+`pg_settings` | `pg_settings`
+`pg_shadow` | None
+`pg_shdepend` | `pg_shdepend`
+`pg_shdescription` | `pg_shdescription`
+`pg_shmem_allocations` | None
+`pg_shseclabel` | `pg_shseclabel`
+None | `pg_stat_activity`
+`pg_statistic` | None
+`pg_statistic_ext` | None
+`pg_statistic_ext_data` | None
+`pg_stats` | None
+`pg_stats_ext` | None
+`pg_subscription` | None
+`pg_subscription_rel` | None
+`pg_tables` | `pg_tables`
+`pg_tablespace` | `pg_tablespace`
+`pg_timezone_abbrevs` | None
+`pg_timezone_names` | None
+`pg_transform` | None
+`pg_trigger` | `pg_trigger`
+`pg_ts_config` | None
+`pg_ts_config_map` | None
+`pg_ts_dict` | None
+`pg_ts_parser` | None
+`pg_ts_template` | None
+`pg_type` | `pg_type`
+`pg_user` | `pg_user`
+`pg_user_mapping` | `pg_user_mapping`
+`pg_user_mappings` | None
+`pg_views` | `pg_views`
+
+To list the tables in `pg_catalog` for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW TABLES FROM SCHEMA pg_catalog;
+> SHOW TABLES FROM pg_catalog;
 ~~~
 
 ~~~
@@ -31,13 +124,19 @@ To see the list of tables in `pg_catalog`, use the following [`SHOW TABLES`](sho
   ...
 ~~~
 
+## Querying `pg_catalog` tables
+
+You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.
+
+{{site.data.alerts.callout_success}}
+To ensure that you can view all of the tables in `pg_catalog`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_info}}
 Unless specified otherwise, queries to `pg_catalog` assume the [current database](sql-name-resolution.html#current-database).
 {{site.data.alerts.end}}
 
-The `pg_catalog` tables with no corresponding PostgreSQL system catalog offer additional information about the objects in a database.
-
-For example, if the current database is set as [`movr`](movr.html), to return the `pg_catalog` table with additional information about indexes in `movr` database, you can query the `pg_catalog.pg_indexes` table:
+For example, to return the `pg_catalog` table with additional information about indexes in [`movr` database](movr.html), you can query the `pg_catalog.pg_indexes` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql

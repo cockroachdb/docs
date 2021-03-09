@@ -1,31 +1,56 @@
 ---
 title: crdb_internal
-summary: The crdb_internal schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
+summary: The crdb_internal schema contains read-only views that you can use for introspection into CockroachDB internals.
 toc: true
 ---
 
-CockroachDB provides a [virtual schema](virtual-schemas.html) called `crdb_internal` that contains information about CockroachDB internals related to a specific cluster. `crdb_internal` tables are read-only.
-
-{{site.data.alerts.callout_info}}
-The `crdb_internal` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](authorization.html#admin-role).
-{{site.data.alerts.end}}
+The `crdb_internal` [virtual schema](virtual-schemas.html) contains information about internal objects, processes, and metrics related to a specific database.
 
 {{site.data.alerts.callout_danger}}
 We do not recommend using `crdb_internal` tables in production environments for the following reasons:
-- The contents of `crdb_internal` schema are unstable, and subject to change in new releases of CockroachDB.
+- The contents of `crdb_internal` are unstable, and subject to change in new releases of CockroachDB.
 - There are memory and latency costs associated with each table in `crdb_internal`. Accessing the tables in the schema can impact cluster stability and performance.
 {{site.data.alerts.end}}
 
 ## Data exposed by `crdb_internal`
 
-To perform introspection on objects related to your database, you can read from the `crdb_internal` table that corresponds to the object of interest. For example, to get information about the status of long-running [jobs](show-jobs.html) on your cluster, you can query the `crdb_internal.jobs` table, which includes detailed information about all jobs running on your cluster. Similarly, to get information about [table partitions](partitioning.html), you would query the `crdb_internal.partitions` table, or for [zone constraints](configure-replication-zones.html), the `crdb_internal.zones` table.
+Each table in `crdb_internal` corresponds to an internal object, process, or metric, for a specific database. `crdb_internal` tables are read-only.
 
-Unless specified otherwise, queries to `crdb_internal` assume the [current database](sql-name-resolution.html#current-database). For example, if the current database is set as [`movr`](movr.html), to return the `crdb_internal` table for the ranges of the `movr` database, you can use the following statement:
+To see the `crdb_internal` tables for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM crdb_internal.ranges;
+> SHOW TABLES FROM crdb_internal;
 ~~~
+
+~~~
+   schema_name  |         table_name          | type  | owner | estimated_row_count
+----------------+-----------------------------+-------+-------+----------------------
+  crdb_internal | backward_dependencies       | table | NULL  |                NULL
+  crdb_internal | builtin_functions           | table | NULL  |                NULL
+  crdb_internal | cluster_database_privileges | table | NULL  |                NULL
+  ...
+~~~
+
+## Querying `crdb_internal` tables
+
+To get detailed information about objects, processes, or metrics related to your database, you can read from the `crdb_internal` table that corresponds to the item of interest.
+
+{{site.data.alerts.callout_success}}
+To ensure that you can view all of the tables in `crdb_internal`, query the tables as a user with [`admin` privileges](authorization.html#admin-role).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Unless specified otherwise, queries to `crdb_internal` assume the [current database](sql-name-resolution.html#current-database).
+{{site.data.alerts.end}}
+
+For example, to return the `crdb_internal` table for the ranges of the [`movr`](movr.html) database, you can use the following statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM movr.crdb_internal.ranges;
+~~~
+
 ~~~
   range_id |                                                                         start_key                                                                          |                                        start_pretty                                         |                                                                          end_key                                                                           |                                         end_pretty                                          | database_name |           table_name            | index_name | replicas |    replica_localities    | learner_replicas |       split_enforced_until       | lease_holder | range_size
 -----------+------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+---------------+---------------------------------+------------+----------+--------------------------+------------------+----------------------------------+--------------+-------------
@@ -35,7 +60,6 @@ Unless specified otherwise, queries to `crdb_internal` assume the [current datab
          4 | \004tsd                                                                                                                                                    | /System/tsd                                                                                 | \004tse                                                                                                                                                    | /System/"tse"                                                                               |               |                                 |            | {1}      | {"region=us-east1,az=b"} | {}               | NULL                             |            1 |    4067446
 (65 rows)
 ~~~
-
 
 ## See also
 

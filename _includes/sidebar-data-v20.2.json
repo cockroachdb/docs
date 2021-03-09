@@ -2444,6 +2444,12 @@
                     "urls": [
                       "/${VERSION}/pg-catalog.html"
                     ]
+                  },
+                  {
+                    "title": "<code>pg_extension</code>",
+                    "urls": [
+                      "/${VERSION}/pg-extension.html"
+                    ]
                   }
                 ]
               },

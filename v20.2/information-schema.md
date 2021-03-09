@@ -4,17 +4,13 @@ summary: The information_schema virtual schema contains read-only views that you
 toc: true
 ---
 
-CockroachDB provides a [virtual schema](virtual-schemas.html) called `information_schema` that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
+The `information_schema` [virtual schema](virtual-schemas.html) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
 The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema [`crdb_internal`](crdb-internal.html), which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
 
-{{site.data.alerts.callout_info}}
-The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as the `root` user.
-{{site.data.alerts.end}}
-
 ## Data exposed by `information_schema`
 
-To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements.
+To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements. `information_schema` tables are read-only.
 
 Object | `information_schema` Table | Corresponding `SHOW` Statement
 -------|--------------|--------
@@ -328,16 +324,25 @@ Column | Description
 `is_trigger_deletable` | Always `NULL` (unsupported by CockroachDB).
 `is_trigger_insertable_into` | Always `NULL` (unsupported by CockroachDB).
 
-## Examples
+## Querying `information_schema` tables
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
+You can run [`SELECT` queries](selection-queries.html) on the tables in `information_schema`.
 
-### Retrieve all columns from an `information_schema` table
+{{site.data.alerts.callout_success}}
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](authorization.html#admin-role).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Unless specified otherwise, queries to `information_schema` assume the [current database](sql-name-resolution.html#current-database).
+{{site.data.alerts.end}}
+
+For example, to retrieve all columns from the `table_constraints` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.information_schema.table_constraints;
 ~~~
+
 ~~~
   constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
 ---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
@@ -369,12 +374,13 @@ Column | Description
 (25 rows)
 ~~~
 
-### Retrieve specific columns from an `information_schema` table
+And to retrieve specific columns from the `table_constraints` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~
+
 ~~~
           table_name         |       constraint_name
 -----------------------------+-------------------------------
@@ -408,6 +414,7 @@ Column | Description
 
 ## See also
 
+- [Virtual Schemas](virtual-schemas.html)
 - [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
