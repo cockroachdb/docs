@@ -9850,7 +9850,7 @@ p {
   line-height: 22.6px; }
   @media screen and (min-width: 992px) {
     p {
-      margin: 0; } }
+      margin-bottom: 10px; } }
 
 h1, h2 {
   margin-top: 30px;
