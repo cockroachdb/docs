@@ -9850,7 +9850,7 @@ p {
   line-height: 22.6px; }
   @media screen and (min-width: 992px) {
     p {
-      margin: 0; } }
+      margin-bottom: 12px; } }
 
 h1, h2 {
   margin-top: 30px;
@@ -10000,6 +10000,12 @@ h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
   background: none; }
 
 ul, ol {
+  font-family: 'SourceSansPro-Regular', sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 22.6px;
   padding-left: 25px; }
   ul li, ol li {
     margin-bottom: 10px; }

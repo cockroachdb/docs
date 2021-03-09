@@ -34,7 +34,7 @@
 @import "components/navbar";
 @import "components/badge";
 // @import "components/marketing-menu";
-@import "components/main-menu"; 
+@import "components/main-menu";
 @import "utils/backgrounds";
 @import "utils/type";
 
@@ -63,7 +63,7 @@ p {
   // }
 
   @include at-query($min, $screen-md) {
-     margin: 0;
+     margin-bottom: 12px;
   }
 }
 
@@ -193,6 +193,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ul, ol {
+  @include paragraph-type;
   padding-left: 25px;
   li {
     margin-bottom: 10px;
