@@ -8,7 +8,7 @@ toc: true
  `RESTORE` no longer requires an enterprise license, regardless of the options passed to it or to the backup it is restoring.
 {{site.data.alerts.end}}
 
-The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`][backup] stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
+The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
 
 Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -20,7 +20,12 @@ You can restore:
 
 ## Required privileges
 
-Only members of the `admin` role can run `RESTORE`. By default, the `root` user belongs to the `admin` role.
+- Full cluster restores can only be run by members of the `admin` role. By default, the `root` user belongs to the `admin` role.
+- For all other restores, the user must have write access (`CREATE` or `INSERT`) on all objects affected.
+
+### Source privileges
+
+{% include {{ page.version.version }}/misc/source-privileges.md %}
 
 ## Synopsis
 
@@ -88,19 +93,14 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 #### Databases
 
-Restoring a database will create a new database and restore all of its tables and views.
+Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
 
-The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
+~~~ sql
+RESTORE DATABASE backup_database_name FROM 'your_backup_location';
+~~~
 
-If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database:
-
-```sql
-RESTORE backup_database_name.* FROM 'your_backup_location'
-WITH into_db = 'your_target_db'
-```
-
-{{site.data.alerts.callout_info}}
-The [`into_db`](#into_db) option only applies to [table restores](#tables).
+{{site.data.alerts.callout_success}}
+If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database by using the [`WITH into_db` option](#options).
 {{site.data.alerts.end}}
 
 #### Tables
@@ -129,7 +129,6 @@ In general, two types are compatible if they are the same kind (e.g., an enum is
 - `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes', 'no')` are compatible.
 - `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('no', 'yes')` are not compatible.
 - `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes'); ALTER TYPE t2 ADD VALUE ('no')` are not compatible because they were not created in the same way.
-
 
 ### Object dependencies
 
@@ -177,21 +176,45 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 ## Examples
 
-### Restore a cluster
+### View the backup subdirectories
 
- To restore a full cluster:
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`]:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 'gs://acme-co-backup/test-cluster';
+> SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
+
+~~~
+        path
+------------------------
+2021/03/23-213101.37
+2021/03/24-172553.85
+2021/03/24-210532.53
+(3 rows)
+~~~
+
+When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23-213101.37`) to the storage URL.
+
+### Restore a cluster
+
+To restore a full cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
 ### Restore a database
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE DATABASE bank FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
 {{site.data.alerts.callout_info}}
 `RESTORE DATABASE` can only be used if the entire database was backed up.
@@ -203,15 +226,17 @@ To restore a single table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE TABLE bank.customers FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
 To restore multiple tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE bank.customers, bank.accounts FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly';
+> RESTORE TABLE bank.customers, bank.accounts FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
 ### Restore from incremental backups
 
@@ -219,7 +244,7 @@ Restoring from incremental backups requires previous full and incremental backup
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 'gs://acme-co-backup/test-cluster';
+> RESTORE FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
 To explicitly point to where your incremental backups are, provide the previous full and incremental backup locations in a comma-separated list. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
@@ -230,18 +255,14 @@ To explicitly point to where your incremental backups are, provide the previous 
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
-{{site.data.alerts.callout_info}}
-If you are restoring from HTTP storage, provide the previous full and incremental backup locations in a comma-separated list. You cannot use the simplified syntax.
-{{site.data.alerts.end}}
-
 ### Restore a backup asynchronously
 
- Use the `detached` [option](#options) to execute the restore job asynchronously:
+Use the `detached` [option](#options) to execute the restore job asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM \
-'gs://acme-co-backup/test-cluster' \
+'s3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 WITH detached;
 ~~~
 
@@ -263,7 +284,7 @@ By default, tables and views are restored to the database they originally belong
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 WITH into_db = 'newdb';
 ~~~
 
@@ -274,7 +295,7 @@ By default, tables with [Foreign Key](foreign-key.html) constraints must be rest
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.accounts \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 WITH skip_missing_foreign_keys;
 ~~~
 
@@ -292,7 +313,7 @@ After it's restored into a new database, you can write the restored `users` tabl
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE system.users \
-FROM 'azure://acme-co-backup/table-users-2017-03-27-full?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' \
+FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 WITH into_db = 'newdb';
 ~~~
 
@@ -308,18 +329,13 @@ WITH into_db = 'newdb';
 
 ## See also
 
-- [`BACKUP`][backup]
+- [`BACKUP`](backup.html)
 - [Take Full and Incremental Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
--  [Manage a Backup Schedule](manage-a-backup-schedule.html)
+- [Manage a Backup Schedule](manage-a-backup-schedule.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`ENUM`](enum.html)
 - [`CREATE TYPE`](create-type.html)
 - [`DROP TYPE`](drop-type.html)
-
-<!-- Reference links -->
-
-[backup]:  backup.html
-[restore]: restore.html

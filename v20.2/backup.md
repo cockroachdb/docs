@@ -35,8 +35,13 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-- Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- Full cluster backups can only be run by members of the `admin` role. By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have read access (`SELECT` or `USAGE`) on all objects being backed up.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
+
+### Destination privileges
+
+{% include {{ page.version.version }}/backups/destination-file-privileges.md %}
 
 ## Synopsis
 
