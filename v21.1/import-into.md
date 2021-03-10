@@ -4,7 +4,7 @@ summary: Import CSV data into an existing CockroachDB table.
 toc: true
 ---
 
-The `IMPORT INTO` [statement](sql-statements.html) imports CSV or Avro data into an [existing table](create-table.html), by appending new rows into the table.
+The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimited data into an [existing table](create-table.html), by appending new rows into the table.
 
 ## Considerations
 
@@ -28,7 +28,7 @@ The source file URL does _not_ require the `ADMIN` role in the following scenari
 
 The source file URL _does_ require the `ADMIN` role in the following scenarios:
 
-- S3 or GS using IMPLICIT credentials
+- S3 or GS using `IMPLICIT` credentials
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
 - [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
 
@@ -51,34 +51,46 @@ Parameter | Description
 `table_name` | The name of the table you want to import into.
 `column_name` | The table columns you want to import.<br><br>Note: Currently, target columns are not enforced.
 `file_location` | The [URL](#import-file-location) of a CSV or Avro file containing the table data. This can be a comma-separated list of URLs. For an example, see [Import into an existing table from multiple CSV files](#import-into-an-existing-table-from-multiple-csv-files) below.
-`<option> [= <value>]` | Control your import's behavior with [CSV import options](#csv-import-options) or [Avro import options](#avro-import-options).
+`<option> [= <value>]` | Control your import's behavior with [import options](#import-options).
 
-### CSV import options
+#### Delimited data files
+
+The `DELIMITED DATA` format can be used to import delimited data from any text file type, while ignoring characters that need to be escaped, like the following:
+
+- The file's delimiter (`\t` by default)
+- Double quotes (`"`)
+- Newline (`\n`)
+- Carriage return (`\r`)
+
+For examples showing how to use the `DELIMITED DATA` format, see the [Examples](#import-into-an-existing-table-from-a-delimited-data-file) section below.
+
+### Import options
 
 You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `<option>  [= <value>]`.
 
- Option         | Value   | Example
--------------+---------+---------
-`delimiter`  | The unicode character that delimits columns in your rows.<br><br>**Default: `,`**. | To use tab-delimited values: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t';`
-`comment`    | The unicode character that identifies rows to skip. | `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH comment = '#';`
-`nullif`     | The string that should be converted to *NULL*. | To use empty columns as *NULL*: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH nullif = '';`
-`skip`       | The number of rows to be skipped while importing a file.<br><br>**Default: `'0'`**. | To import CSV files with column headers: `IMPORT INTO ... CSV DATA ('file.csv') WITH skip = '1';`
-`decompress` | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.<br><br>**Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression. | `IMPORT INTO ... WITH decompress = 'bzip';`
+<a name="delimiter"></a>
+
+Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             
+--------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**. <br><br> Example: To use tab-delimited values: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t';`
+`comment`              | `CSV DATA `     | The unicode character that identifies rows to skip. <br><br> Example: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH comment = '#';`
+`nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*. <br><br> Example: To use empty columns as *NULL*: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH nullif = '';`
+`skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**. <br><br> Example: To import CSV files with column headers: `IMPORT INTO ... CSV DATA ('file.csv') WITH skip = '1';`
+`decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression. <br><br> Example: `IMPORT INTO ... WITH decompress = 'bzip';`
+`rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n` <br><br> Example: `IMPORT INTO ... WITH rows_terminated_by='\m';`
+`fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t` <br><br> Example: `IMPORT INTO ... WITH fields_terminated_by='.';`
+`fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"` <br><br> Example: `IMPORT INTO ... WITH fields_enclosed_by='"';`
+`fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally. <br><br> Example: `IMPORT INTO ... WITH fields_escaped_by='"';`
+`strict_validation`    | `AVRO DATA`    | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type][datatypes]; otherwise, it will report an error. <br><br> Example: `IMPORT INTO foo (..) AVRO DATA ('file.avro') WITH strict_validation;`
+`records_terminated_by` | `AVRO DATA`   | The unicode character to indicate new lines in the input binary or JSON file. This is not needed for Avro OCF. **Default:** `\n` <br><br> Example: To use tab-terminated records: `IMPORT INTO foo (..) AVRO DATA ('file.csv') WITH records_terminated_by = e'\t';`
+`data_as_binary_records` | `AVRO DATA`  | Use when [importing a binary file containing Avro records](migrate-from-avro.html#import-binary-or-json-records).  The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option. <br><br> Example: `IMPORT INTO foo (..) AVRO DATA ('file.bjson') WITH data_as_binary_records, schema_uri='..';`
+`data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option. <br><br> Example: `IMPORT INTO foo (..) AVRO DATA ('file.bjson') WITH data_as_json_records, schema='{ "type": "record",..}';`
+`schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF. <br> See `data_as_json_records` example above.
+`schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF. <br> See `data_as_binary_records` example above.
 
 For examples showing how to use these options, see the [`IMPORT` - Examples section](import.html#examples).
 
 For instructions and working examples showing how to migrate data from other databases and formats, see the [Migration Overview](migration-overview.html). For information on how to import data into new tables, see [`IMPORT`](import.html).
-
-### Avro import options
-
- Option  | Description   | Example
- --------+---------------+----------
-`strict_validation`      | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type](migrate-from-avro.html#data-type-mapping); otherwise, it will report an error. | `IMPORT INTO foo (..) AVRO DATA ('file.avro') WITH strict_validation;`
-`records_terminated_by`  | The unicode character to indicate new lines in the input binary or JSON file. This is not needed for Avro OCF. <br><br>**Default:** `\n` | To use tab-terminated records: `IMPORT INTO foo (..) AVRO DATA ('file.csv') WITH records_terminated_by = e'\t';`
-`data_as_binary_records` | Use when [importing a binary file containing Avro records](migrate-from-avro.html#import-binary-or-json-records).  The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option. | `IMPORT INTO foo (..) AVRO DATA ('file.bjson') WITH data_as_binary_records, schema_uri='..';`
-`data_as_json_records`   | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option. | `IMPORT INTO foo (..) AVRO DATA ('file.bjson') WITH data_as_json_records, schema='{ "type": "record",..}';`
-`schema`                 | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF. | See `data_as_json_records` example above.
-`schema_uri`             | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF. | See `data_as_binary_records` example above.
 
 ## Requirements
 
@@ -265,6 +277,50 @@ Google Cloud:
 ~~~
 
 For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+### Import a table from a delimited data file
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers
+    DELIMITED DATA (
+      's3://your-external-storage/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+    )
+    WITH
+      fields_terminated_by='|',
+      fields_enclosed_by='"',
+      fields_escaped_by='"';
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers
+    DELIMITED DATA (
+      'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+    )
+    WITH
+      fields_terminated_by='|',
+      fields_enclosed_by='"',
+      fields_escaped_by='"';
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers
+    DELIMITED DATA (
+      'gs://acme-co/employees.csv'
+    )
+    WITH
+      fields_terminated_by='|',
+      fields_enclosed_by='"',
+      fields_escaped_by='"';
+~~~
 
 ## Known limitations
 
