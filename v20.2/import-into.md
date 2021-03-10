@@ -30,7 +30,7 @@ The source file URL _does_ require the `ADMIN` role in the following scenarios:
 
 - S3 or GS using `IMPLICIT` credentials
 - Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
+- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html), or [HTTPS](use-a-local-file-server-for-bulk-operations.html)
 
 Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
 
@@ -278,7 +278,7 @@ Google Cloud:
 
 For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
 
-### Import a table from a delimited data file
+### Import into an existing table from a delimited data file
 
 Amazon S3:
 
