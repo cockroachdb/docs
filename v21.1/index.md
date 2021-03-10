@@ -16,7 +16,7 @@ cta: false
         <div class="card card-link h-100 d-flex">
         <a href="secure-a-cluster.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">            
-            <h6 class="mt-2 mt-0 text-black">Start a local cluster<br> cluster</h6>
+            <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
             <p class="text-black">Run a multi-node CockroachDB cluster locally</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
