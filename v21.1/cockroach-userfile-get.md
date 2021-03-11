@@ -8,9 +8,13 @@ toc: true
 
 ## Required privileges
 
-The user must have `SELECT` [privileges](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+The user must have `SELECT` [privileges](authorization.html#assign-privileges) on the target database.
 
 A user can only fetch files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role and users explicitly granted access.
+
+{{site.data.alerts.callout_info}}
+If this is your first interaction with user-scoped file storage, you may see an error indicating that you need `CREATE` privileges on the database. You must first [upload a file](cockroach-userfile-upload.html) or run a [`BACKUP`](backup.html) to `userfile` before attempting to `get` a file.
+{{site.data.alerts.end}}
 
 ## Synopsis
 
