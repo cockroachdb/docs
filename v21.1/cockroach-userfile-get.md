@@ -4,11 +4,11 @@ summary: Fetch files stored in the user-scoped file storage.
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `cockroach userfile get` command fetches a file stored in the user-scoped file storage which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user scoped file storage will be fetched.
+<span class="version-tag">New in v21.1:</span> The `cockroach userfile get` [command](cockroach-commands.html) fetches the files stored in the [user-scoped file storage](use-userfile-for-bulk-operations.html) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
+The user must have `SELECT` [privileges](authorization.html#assign-privileges) on the target database. CockroachDB will proactively grant the user `GRANT`, `SELECT`, `INSERT`, `DROP`, `DELETE` on the metadata and file tables.
 
 A user can only fetch files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role and users explicitly granted access.
 
