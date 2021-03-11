@@ -1,14 +1,16 @@
 ---
-title: Overwrite Existing Data
+title: Update Data
 summary: How to update the data in CockroachDB from various programming languages
 toc: true
 ---
 
-This page has instructions for overwriting existing rows of data in CockroachDB, using the following statements:
+This page has instructions for updating existing rows of data in CockroachDB, using the following [SQL statements](sql-statements.html):
 
-- `UPSERT`
-- `INSERT ON CONFLICT`
-- `UPDATE`
+- [`UPDATE`](#update), which updates existing rows in a table.
+- [`UPSERT`](#upsert), which inserts new rows in a table, updating existing rows that conflict on a primary key.
+- [`INSERT ... ON CONFLICT ... DO UPDATE`](#insert-on-conflict-do-update), which inserts new rows in a table, updating existing rows in the event of a conflict on specified, `UNIQUE` constrained columns.
+
+{% include {{page.version.version}}/app/retry-errors.md %}
 
 ## Before you begin
 
@@ -18,34 +20,56 @@ Before reading this page, do the following:
 - [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
-- [Insert data](insert-data.html) that you now want to update.
+- [Create a database schema](schema-design-overview.html).
+- [Insert data](insert-data.html) that you now want to update. In the examples on this page, we use sample [`movr`](movr.html) data imported with the [`cockroach workload` command](cockroach-workload.html).
 
-{% include {{page.version.version}}/app/retry-errors.md %}
+## `UPDATE`
 
-## Use `UPSERT`
+To update existing rows in a table, use an [`UPDATE` statement](update.html) with a `WHERE` clause that filters on the columns that identify the rows that you want to update.
 
-## Use `INSERT ON CONFLICT`
+{{site.data.alerts.callout_info}}
+To update a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively updating subsets of the rows that you want to update, until all of the rows have been updated. You can write a script to do this, or you can write a loop into your application.
 
-## Use `UPDATE`
+For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
+{{site.data.alerts.end}}
 
-## Force index selection
+### SQL syntax
 
+In SQL, `UPDATE` statements generally take the following form:
+
+~~~
+UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {filter_value}
+~~~
+
+Where:
+
+- `{table}` is the table to update.
+- `{update_column}` is the column to update.
+- `{update_value}` is the new value of the column in the matching row.
+- `{filter_column}` is the column to filter on.
+- `{filter_value}` is the matching value for the filter.
+
+{{site.data.alerts.callout_success}}
+For detailed reference documentation on the `UPDATE` statement, including additional examples, see the [`UPDATE` syntax page](update.html).
+{{site.data.alerts.end}}
+
+### Example
+
+Suppose you want to change the status of all of the vehicles owned by a particular MovR user. To update all rows in the `vehicles` table with the `owner_id` equal to `bd70a3d7-0a3d-4000-8000-000000000025`:
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
-  <button class="filter-button" data-scope="go">Go</button>
-  <button class="filter-button" data-scope="java">Java</button>
-  <button class="filter-button" data-scope="python">Python</button>
+  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
+  <button class="filter-button" data-scope="java">Java (JDBC)</button>
+  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE accounts SET balance = 900 WHERE id = 1;
+UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8000-000000000025';
 ~~~
-
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
 
 </section>
 
@@ -55,15 +79,12 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 ~~~ go
 // tx is a *sql.Tx from "database/sql"
 
-transferAmount := 100
-fromID := 1
+ownerID := "bd70a3d7-0a3d-4000-8000-000000000025"
 
-if _, err := tx.Exec("UPDATE accounts SET balance = balance - $1 WHERE id = $2", transferAmount, fromID); err != nil {
+if _, err := tx.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = '$1'", ownerID); err != nil {
     return err
 }
 ~~~
-
-{% include {{page.version.version}}/app/for-a-complete-example-go.md %}
 
 </section>
 
@@ -73,20 +94,16 @@ if _, err := tx.Exec("UPDATE accounts SET balance = balance - $1 WHERE id = $2",
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
-int transferAmount = 100;
-int fromID = 1;
+String ownerID = "bd70a3d7-0a3d-4000-8000-000000000025";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("UPDATE accounts SET balance = balance - "
-                                               + transferAmount + " where id = " + fromID);
+    connection.createStatement().executeUpdate("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = " + ownerID);
 
 } catch (SQLException e) {
     System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
                       e.getSQLState(), e.getCause(), e.getMessage());
 }
 ~~~
-
-{% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
 </section>
 
@@ -96,16 +113,256 @@ try (Connection connection = ds.getConnection()) {
 ~~~ python
 # conn is a psycopg2 connection
 
-transferAmount = 100
-fromID = 1
+ownerID = 'bd70a3d7-0a3d-4000-8000-000000000025'
 
 with conn.cursor() as cur:
-    cur.execute("UPDATE accounts SET balance = balance - %s WHERE id = %s",
-                (transferAmount, fromID));
+    cur.execute("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = %s",
+                (ownerID));
 conn.commit()
 ~~~
 
-{% include {{page.version.version}}/app/for-a-complete-example-python.md %}
+</section>
+
+## `UPSERT`
+
+To insert new rows into a table, and update rows that conflict with the primary key value(s) of the new rows, use an [`UPSERT` statement](upsert.html).
+
+### SQL syntax
+
+In SQL, `UPSERT` statements take the following form:
+
+~~~
+UPSERT INTO {table} ({upsert_columns}) VALUES ({upsert_values});
+~~~
+
+Where:
+
+- `{table}` is the table to update.
+- `{upsert_columns}` is a comma-separated list of the columns to which you want to insert values.
+- `{upsert_values}` is a comma-separated list of values that you want to insert.
+
+{{site.data.alerts.callout_success}}
+For detailed reference documentation on the `UPSERT` statement, including additional examples, see the [`UPSERT` syntax page](upsert.html).
+{{site.data.alerts.end}}
+
+### Example
+
+Suppose you want to add some promo codes to the MovR platform, and overwrite any existing promos with the same code. To insert new rows into the `promo_codes` table, and update any rows that have the same primary key `code` value:
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="sql">SQL</button>
+  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
+  <button class="filter-button" data-scope="java">Java (JDBC)</button>
+  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="sql">
+
+{% include copy-clipboard.html %}
+~~~ sql
+UPSERT INTO promo_codes (code, description, rules)
+  VALUES ('0_explain_theory_something','Fifteen percent off.', '{"type": "percent_discount", "value": "15%"}'),
+    ('100_address_garden_certain','Twenty percent off.','{"type": "percent_discount", "value": "20%"}'),
+    ('1000_do_write_words','Twenty-five percent off.','{"type": "percent_discount", "value": "25%"}');
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+{% include copy-clipboard.html %}
+~~~ go
+// tx is a *sql.Tx from "database/sql"
+
+codeOne := "0_explain_theory_something"
+descriptionOne := "Fifteen percent off."
+rulesOne := "{\"type\": \"percent_discount\", \"value\": \"15%\"}"
+codeTwo := "100_address_garden_certain"
+descriptionTwo := "Twenty percent off."
+rulesTwo := "{\"type\": \"percent_discount\", \"value\": \"20%\"}"
+codeThree := "1000_do_write_words"
+descriptionThree := "Twenty-five percent off."
+rulesThree := "{\"type\": \"percent_discount\", \"value\": \"25%\"}"
+
+if _, err := tx.Exec("UPSERT INTO promo_codes (code, description, rules)"
+                    + "values ('$1','$2','$3'), ('$4','$5','$6'), ('$7','$8','$9')",
+                    codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo,
+                    rulesTwo, codeThree, descriptionThree, rulesThree); err != nil {
+    return err
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include copy-clipboard.html %}
+~~~ java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+
+String codeOne = "0_explain_theory_something"
+String descriptionOne = "Fifteen percent off."
+String rulesOne = "{\"type\": \"percent_discount\", \"value\": \"15%\"}"
+String codeTwo = "100_address_garden_certain"
+String descriptionTwo = "Twenty percent off."
+String rulesTwo = "{\"type\": \"percent_discount\", \"value\": \"20%\"}"
+String codeThree = "1000_do_write_words"
+String descriptionThree = "Twenty-five percent off."
+String rulesThree = "{\"type\": \"percent_discount\", \"value\": \"25%\"}"
+
+try (Connection connection = ds.getConnection()) {
+    connection.createStatement().executeUpdate("UPSERT INTO promo_codes (code, description, rules) values('"
+                                              + codeOne + "','" + descriptionOne + "','" + rulesOne + "'),('"
+                                              + codeTwo + "','" + descriptionTwo + "','" + rulesTwo + "'),('"
+                                              + codeThree + "','" + descriptionThree + "','" + rulesThree + "')");
+
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
+                      e.getSQLState(), e.getCause(), e.getMessage());
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+{% include copy-clipboard.html %}
+~~~ python
+# conn is a psycopg2 connection
+
+codeOne = '0_explain_theory_something'
+descriptionOne = 'Fifteen percent off.'
+rulesOne = '{"type": "percent_discount", "value": "15%"}'
+codeTwo = '100_address_garden_certain'
+descriptionTwo = 'Twenty percent off.'
+rulesTwo = '{"type": "percent_discount", "value": "20%"}'
+codeThree = '1000_do_write_words'
+descriptionThree = 'Twenty-five percent off.'
+rulesThree = '{"type": "percent_discount", "value": "25%"}'
+
+with conn.cursor() as cur:
+    cur.execute("UPSERT INTO promo_codes (code, description, rules) values ('%s','%s','%s'), ('%s','%s','%s'), ('%s','%s','%s')",
+                (codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo, rulesTwo, codeThree, descriptionThree, rulesThree));
+conn.commit()
+~~~
+
+</section>
+
+## `INSERT ... ON CONFLICT ... DO UPDATE`
+
+To insert new rows into a table, and update rows with `UNIQUE`-constrained values that conflict with any values of the new rows, use an `INSERT ... ON CONFLICT ... DO UPDATE` statement.
+
+`INSERT ... ON CONFLICT ... DO UPDATE` is semantically identical to `UPSERT`, when the conflicting values are in the primary key and the action to take on conflict is to update the conflicting rows with the new rows. `INSERT ... ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. With `INSERT ... ON CONFLICT`, you can also control how to update rows in the event of a conflict (as opposed to just overwriting the rows with the new rows, as is done by `UPSERT` statements).
+
+### SQL syntax
+
+In SQL, `INSERT ... ON CONFLICT ... DO UPDATE` statements take the following form:
+
+~~~
+INSERT INTO {table} ({insert_columns}) VALUES ({insert_values})
+  ON CONFLICT ({conflict_columns}) DO UPDATE SET {update_column} = {update value};
+~~~
+
+Where:
+
+- `{table}` is the table to update.
+- `{insert_columns}` is a comma-separated list of the columns to which you want to insert values.
+- `{insert_values}` is a comma-separated list of values that you want to insert.
+- `{conflict_columns}` is a comma-separated list of the columns to evaluate for a conflict.
+- `{update_column}` is the column to update, on conflict.
+- `{update_values}` is the value to assign the update column.
+
+Note that the statement contains an `UPDATE` clause, which is semantically identical to an `UPDATE` statement.
+
+### Example
+
+Suppose you want to record a particular user's promo code usage count. The `user_promo_codes` table keeps track of user promo usage. If no usage counter exists, you want to insert a new row, and if one does exist, you want to update only the `usage_count` column, with an increment of 1.
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="sql">SQL</button>
+  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
+  <button class="filter-button" data-scope="java">Java (JDBC)</button>
+  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="sql">
+
+{% include copy-clipboard.html %}
+~~~ sql
+INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
+    VALUES ('new york', '147ae147-ae14-4b00-8000-000000000004', 'promo_code', now(), 1)
+    ON CONFLICT (city, user_id, code)
+    DO UPDATE SET usage_count = user_promo_codes.usage_count;
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+{% include copy-clipboard.html %}
+~~~ go
+// tx is a *sql.Tx from "database/sql"
+
+city := "new york"
+userId := "147ae147-ae14-4b00-8000-000000000004"
+code := "promo_code"
+ts := "now()"
+usageCount := 1
+
+if _, err := tx.Exec("INSERT INTO user_promo_codes"
+                    + "VALUES ('$1', '$2', '$3', $4, $5) ON CONFLICT (city, user_id, code)"
+                    + "DO UPDATE SET usage_count = user_promo_codes.usage_count+1",
+                    city, userId, code, ts, usageCount); err != nil {
+    return err
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include copy-clipboard.html %}
+~~~ java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+
+String city = "new york"
+String userId = "147ae147-ae14-4b00-8000-000000000004"
+String code = "promo_code"
+String ts = "now()"
+int usageCount = 1
+
+try (Connection connection = ds.getConnection()) {
+    connection.createStatement().executeUpdate("INSERT INTO user_promo_codes VALUES ('"
+                                              + city + "','" + userId + "','" + code + "','" + ts + "','" + usageCount
+                                              + "') ON CONFLICT (city, user_id, code) DO UPDATE SET usage_count = user_promo_codes.usage_count+1");
+
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
+                      e.getSQLState(), e.getCause(), e.getMessage());
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+{% include copy-clipboard.html %}
+~~~ python
+# conn is a psycopg2 connection
+
+city = 'new york'
+userId = '147ae147-ae14-4b00-8000-000000000004'
+code = 'promo_code'
+ts = 'now()'
+usageCount = 1
+
+with conn.cursor() as cur:
+    cur.execute("INSERT INTO user_promo_codes VALUES ('%s', '%s', '%s', %s, %s) ON CONFLICT (city, user_id, code)" \
+                "DO UPDATE SET usage_count = user_promo_codes.usage_count+1", (city, userId, code, ts, usageCount));
+conn.commit()
+~~~
 
 </section>
 
@@ -115,8 +372,9 @@ Reference information related to this task:
 
 - [`UPDATE`](update.html)
 - [Bulk-update Data](bulk-update-data.html)
+- [`UPSERT`](update.html)
+- [`INSERT ... ON CONFLICT`](insert.html#on-conflict-clause)
 - [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
-- [Selection queries][selection]
 
 Other common tasks:
 
@@ -124,6 +382,7 @@ Other common tasks:
 - [Insert Data](insert-data.html)
 - [Query Data](query-data.html)
 - [Delete Data](delete-data.html)
+- [Bulk-update Data](bulk-update-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting][error_handling]
 - [Make Queries Fast](make-queries-fast.html)
