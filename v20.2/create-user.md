@@ -24,7 +24,10 @@ For more information, see the [Authorization](authorization.html) documentation 
 
 ## Required privileges
 
-- To create other roles, a role must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+Unless a role is a member of the admin role, additional [priviliges](#parameters) are required to manage other roles.
+
+- To create other roles, a role must have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set. 
 - To be able to grant or revoke membership to a role for additional roles/users, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
 ## Synopsis
 

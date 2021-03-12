@@ -13,16 +13,17 @@ User authorization is the act of defining access policies for authenticated Cock
 
 ## Users and roles
 
-There is no technical distinction between a SQL role or user in CockroachDB. A role/user can:
+There is no technical distinction between a SQL role or user in CockroachDB. Depending on its configuration, a role/user can:
 
-- be permitted to log in to the [SQL shell](cockroach-sql.html) or other applications that connect to a database.
+- log in via the [SQL shell](cockroach-sql.html).
+- be used by applications to connect to the database.
 - be granted [privileges](#privileges) to specific actions and database objects.
 - be a member of other users/roles, inheriting their privileges.
 - have other users/roles as members that inherit its privileges.
 
-We refer to these as "roles" when they are created for managing the privileges of their member "users". We often refer to roles that are enabled to direclty log in to a database using the [built-in SQL shell](cockroach-sql.html) or an application as "users".
+We refer to these as "roles" when they are created for managing the privileges of their member "users". We often refer to roles that are enabled to log in to a database as "users".
 
-The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the [`NOLOGIN`](create-user.html#parameters) option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
 Throughout the documentation, however, we refer to a "user" or "role" based on the intended purpose of the entity, and we default to using the term "role" when we want to include both possibilities for how the role may be used.
 

@@ -8,7 +8,7 @@ The `CREATE ROLE` statement creates a new SQL role. A role acts as a database us
 There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled can log in to the SQL shell and is often called a user.
 
 
-You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members, by their members ([indirect members](authorization.html#indirect-member)), and so on.
+You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members and any further [indirect members](authorization.html#indirect-member).
 
 {{site.data.alerts.callout_info}}
  `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
@@ -24,7 +24,10 @@ For more information, see the [Authorization](authorization.html) documentation 
 
 ## Required privileges
 
-- To create other roles, a role must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+Unless a role is a member of the admin role, additional [priviliges](#parameters) are required to manage other roles.
+
+- To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set. 
 - To be able to grant or revoke membership to a role for additional roles/users, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role. 
 
 ## Synopsis
