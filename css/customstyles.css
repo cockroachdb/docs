@@ -6737,6 +6737,9 @@ body.sidenav-open {
       #sidebar ul li.visited a,
       .js-sidebar ul li.visited a {
         color: #6933FF; }
+      #sidebar ul li.visited code,
+      .js-sidebar ul li.visited code {
+        color: #6933FF; }
       #sidebar ul li.active > a .nav-expand,
       .js-sidebar ul li.active > a .nav-expand {
         transform: rotate(-180deg);
@@ -6747,12 +6750,17 @@ body.sidenav-open {
   #sidebar .tier-1.active > a,
   .js-sidebar .tier-1.active > a {
     color: #6933FF; }
-  #sidebar .tier-2 a,
-  .js-sidebar .tier-2 a {
+  #sidebar .tier-2 a, #sidebar .tier-2 code,
+  .js-sidebar .tier-2 a,
+  .js-sidebar .tier-2 code {
     color: #242A35; }
-  #sidebar .tier-2 a:hover,
-  .js-sidebar .tier-2 a:hover {
+  #sidebar .tier-2 a:hover, #sidebar .tier-2 code:hover,
+  .js-sidebar .tier-2 a:hover,
+  .js-sidebar .tier-2 code:hover {
     text-decoration: none;
+    color: #6933FF; }
+  #sidebar .tier-2.active > a,
+  .js-sidebar .tier-2.active > a {
     color: #6933FF; }
 
 .landing-page .landing-page__tutorial {
