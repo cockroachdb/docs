@@ -68,7 +68,7 @@ CockroachDB offers the following methods for client authentication:
 
     Note that the client still needs the CA certificate to validate the nodes' certificates.
 
-    To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) OR `CREATE USER`(create-user.html). To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) OR [`ALTER USER`](alter-user.html) statement.
+    To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) OR `CREATE USER`(create-user.html). To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) OR [`ALTER USER`](alter-user.html) statement. Note that the user performing these actions [must have the `CREATEROLE` and `CREATELOGIN` permissions](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) or be a member of the `admin` role.
 
 - **Password authentication without TLS**
 
