@@ -6,12 +6,12 @@ toc: true
 
 The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can be used to log in to a database.
 
- There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled can log in to the SQL shell and is often called a user.
+ There is no distinct "user" entity in CockroachDB, however, a role with the [`LOGIN`](#parameters) option enabled can log in to the SQL shell and is often called a user.
  
  You can [assign privileges](authorization.html#assign-privileges) to the user and [set it as a member](grant-roles.html) of other roles, inheriting their privileges.
 
 {{site.data.alerts.callout_info}}
- `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
+ `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
 
  Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
 {{site.data.alerts.end}}

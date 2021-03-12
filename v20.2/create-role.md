@@ -5,10 +5,10 @@ toc: true
 ---
 
 The `CREATE ROLE` statement creates a new SQL role. A role acts as a database user or a group of member roles/users.
-There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled can log in to the SQL shell and is often called a user.
+There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled can log in to the database and is often called a user.
 
 
-You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members and any further [indirect members](authorization.html#indirect-member).
+You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members and any further members of members ([indirect members](authorization.html#indirect-member)).
 
 {{site.data.alerts.callout_info}}
  `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
