@@ -103,6 +103,7 @@ conn.commit()
 Reference information related to this task:
 
 - [`UPDATE`](update.html)
+- [Bulk-update Data](bulk-update-data.html)
 - [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
 - [Selection queries][selection]
 
