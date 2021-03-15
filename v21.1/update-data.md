@@ -8,9 +8,7 @@ This page has instructions for updating existing rows of data in CockroachDB, us
 
 - [`UPDATE`](#update), which updates existing rows in a table.
 - [`UPSERT`](#upsert), which inserts new rows in a table, updating existing rows that conflict on a primary key.
-- [`INSERT ... ON CONFLICT ... DO UPDATE`](#insert-on-conflict-do-update), which inserts new rows in a table, updating existing rows in the event of a conflict on specified, `UNIQUE` constrained columns.
-
-{% include {{page.version.version}}/app/retry-errors.md %}
+- [`INSERT ... ON CONFLICT ... DO UPDATE`](#insert-on-conflict), which inserts new rows in a table, updating existing rows in the event of a conflict on specified, `UNIQUE`-constrained columns.
 
 ## Before you begin
 
@@ -21,9 +19,11 @@ Before reading this page, do the following:
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Create a database schema](schema-design-overview.html).
-- [Insert data](insert-data.html) that you now want to update. In the examples on this page, we use sample [`movr`](movr.html) data imported with the [`cockroach workload` command](cockroach-workload.html).
+- [Insert data](insert-data.html) that you now want to update.
 
-## `UPDATE`
+    In the examples on this page, we use sample [`movr`](movr.html) data imported with the [`cockroach workload` command](cockroach-workload.html).
+
+## UPDATE
 
 To update existing rows in a table, use an [`UPDATE` statement](update.html) with a `WHERE` clause that filters on the columns that identify the rows that you want to update.
 
@@ -123,7 +123,7 @@ conn.commit()
 
 </section>
 
-## `UPSERT`
+## UPSERT
 
 To insert new rows into a table, and update rows that conflict with the primary key value(s) of the new rows, use an [`UPSERT` statement](upsert.html).
 
@@ -249,11 +249,11 @@ conn.commit()
 
 </section>
 
-## `INSERT ... ON CONFLICT ... DO UPDATE`
+## INSERT ON CONFLICT
 
-To insert new rows into a table, and update rows with `UNIQUE`-constrained values that conflict with any values of the new rows, use an `INSERT ... ON CONFLICT ... DO UPDATE` statement.
+To insert new rows into a table, and to update rows with `UNIQUE`-constrained values that conflict with any values of the new rows, use an `INSERT ... ON CONFLICT ... DO UPDATE` statement.
 
-`INSERT ... ON CONFLICT ... DO UPDATE` is semantically identical to `UPSERT`, when the conflicting values are in the primary key and the action to take on conflict is to update the conflicting rows with the new rows. `INSERT ... ON CONFLICT` is more flexible and can be used to consider uniqueness for columns not in the primary key. With `INSERT ... ON CONFLICT`, you can also control how to update rows in the event of a conflict (as opposed to just overwriting the rows with the new rows, as is done by `UPSERT` statements).
+`INSERT ... ON CONFLICT ... DO UPDATE` is semantically identical to `UPSERT`, when the conflicting values are in the primary key and the action to take on conflict is to update the conflicting rows with the new rows. `INSERT ... ON CONFLICT` is more flexible than `UPSERT`, and can be used to consider uniqueness for columns not in the primary key. With `INSERT ... ON CONFLICT`, you can also control how to update rows in the event of a conflict. This contrasts with the behavior of an `UPSERT` statement, which just overwrites conflicting rows with new rows.
 
 ### SQL syntax
 
@@ -277,7 +277,7 @@ Note that the statement contains an `UPDATE` clause, which is semantically ident
 
 ### Example
 
-Suppose you want to record a particular user's promo code usage count. The `user_promo_codes` table keeps track of user promo usage. If no usage counter exists, you want to insert a new row, and if one does exist, you want to update only the `usage_count` column, with an increment of 1.
+Suppose you want to record a particular user's promo code usage count. The `user_promo_codes` table keeps track of user promo usage. If no usage counter exists, you want to insert a new row, and if one does exist, you want to increment the `usage_count` column by 1.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
