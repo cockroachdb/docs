@@ -224,7 +224,7 @@ h4:target:before,
 h5:target:before,
 h6:target:before,
 td a:target:before,
-p a[name] {
+p a[name]:target:before {
   content: '';
   display: block;
   height: 155px;
