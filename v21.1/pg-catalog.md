@@ -8,7 +8,7 @@ For PostgreSQL compatibility, CockroachDB includes a [virtual schema](virtual-sc
 
 ## Data exposed by `pg_catalog`
 
-For compatibility, `pg_catalog` includes a table for every PostgreSQL system catalog, but not all `pg_catalog` tables have been fully implemented. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
+The tables in `pg_catalog` correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and not all `pg_catalog` tables have been fully implemented. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
 
 PostgreSQL 13 system catalog | `pg_catalog` table  
 -----------------------------|--------------
@@ -49,16 +49,16 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_init_privs` | `pg_init_privs` (unimplemented)
 `pg_language` | `pg_language` (unimplemented)
 `pg_largeobject` | `pg_largeobject` (unimplemented)
-`pg_largeobject_metadata` | `pg_largeobject_metadata` (unimplemented)
+`pg_largeobject_metadata` | None
 `pg_locks` | `pg_locks`
 `pg_matviews` | `pg_matviews`
 `pg_namespace` | `pg_namespace`
 `pg_opclass` | `pg_opclass` (unimplemented)
 `pg_operator` | `pg_operator`
 `pg_opfamily` | `pg_opfamily` (unimplemented)
-`pg_partitioned_table` | `pg_partitioned_table` (unimplemented)
+`pg_partitioned_table` | None
 `pg_policies` | `pg_policies` (unimplemented)
-`pg_policy` | `pg_policy` (unimplemented)
+`pg_policy` | None
 `pg_prepared_statements` | `pg_prepared_statements`
 `pg_prepared_xacts` | `pg_prepared_xacts`
 `pg_proc` | `pg_proc`
@@ -67,29 +67,29 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_publication_tables` | `pg_publication_tables` (unimplemented)
 `pg_range` | `pg_range`
 `pg_replication_origin` | `pg_replication_origin` (unimplemented)
-`pg_replication_origin_status` | `pg_replication_origin_status` (unimplemented)
-`pg_replication_slots` | `pg_replication_slots` (unimplemented)
+`pg_replication_origin_status` | None
+`pg_replication_slots` | None
 `pg_rewrite` | `pg_rewrite`
 `pg_roles` | `pg_roles`
 `pg_rules` | `pg_rules` (unimplemented)
 `pg_seclabel` | `pg_seclabel`
 `pg_seclabels` | `pg_seclabels`
 `pg_sequence` | `pg_sequence`
-`pg_sequences` | `pg_sequences` (unimplemented)
+`pg_sequences` | None
 `pg_settings` | `pg_settings`
 `pg_shadow` | `pg_shadow` (unimplemented)
 `pg_shdepend` | `pg_shdepend`
 `pg_shdescription` | `pg_shdescription`
 `pg_shmem_allocations` | `pg_shmem_allocations` (unimplemented)
 `pg_shseclabel` | `pg_shseclabel`
-`pg_stat_activity` (system view) | `pg_stat_activity`
-`pg_statistic` | `pg_statistic` (unimplemented)
+`pg_stat_activity` | `pg_stat_activity`
+`pg_statistic` | None
 `pg_statistic_ext` | `pg_statistic_ext` (unimplemented)
-`pg_statistic_ext_data` | `pg_statistic_ext_data` (unimplemented)
-`pg_stats` | `pg_stats` (unimplemented)
-`pg_stats_ext` | `pg_stats_ext` (unimplemented)
+`pg_statistic_ext_data` | None
+`pg_stats` | None
+`pg_stats_ext` | None
 `pg_subscription` | `pg_subscription` (unimplemented)
-`pg_subscription_rel` | `pg_subscription_rel` (unimplemented)
+`pg_subscription_rel` | None
 `pg_tables` | `pg_tables`
 `pg_tablespace` | `pg_tablespace`
 `pg_timezone_abbrevs` | `pg_timezone_abbrevs` (unimplemented)
@@ -119,8 +119,6 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
 --------------+-------------------------+-------+-------+----------------------
   pg_catalog  | pg_aggregate            | table | NULL  |                NULL
   pg_catalog  | pg_am                   | table | NULL  |                NULL
-  pg_catalog  | pg_attrdef              | table | NULL  |                NULL
-  pg_catalog  | pg_attribute            | table | NULL  |                NULL
   ...
 ~~~
 

@@ -8,7 +8,7 @@ For PostgreSQL compatibility, CockroachDB includes a [virtual schema](virtual-sc
 
 ## Data exposed by `pg_catalog`
 
-The tables in `pg_catalog` correspond to a subset of the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
+The tables in `pg_catalog` correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
 
 PostgreSQL 13 system catalog | `pg_catalog` table  
 -----------------------------|--------------
@@ -82,7 +82,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_shdescription` | `pg_shdescription`
 `pg_shmem_allocations` | None
 `pg_shseclabel` | `pg_shseclabel`
-`pg_stat_activity` (system view) | `pg_stat_activity`
+`pg_stat_activity` | `pg_stat_activity`
 `pg_statistic` | None
 `pg_statistic_ext` | None
 `pg_statistic_ext_data` | None
@@ -120,7 +120,6 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
   pg_catalog  | pg_aggregate            | table | NULL  |                NULL
   pg_catalog  | pg_am                   | table | NULL  |                NULL
   pg_catalog  | pg_attrdef              | table | NULL  |                NULL
-  pg_catalog  | pg_attribute            | table | NULL  |                NULL
   ...
 ~~~
 
