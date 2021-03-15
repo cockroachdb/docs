@@ -11,7 +11,7 @@ The following virtual schemas are available in every database:
 - [`information_schema`](information-schema.html), a virtual schema provided for compatibility with the SQL standard.
 - [`crdb_internal`](crdb-internal.html), a virtual schema with information about CockroachDB internals.
 - [`pg_catalog`](pg-catalog.html),  a virtual schema provided for compatibility with PostgreSQL.
-- <span class="version-tag">New in v20.2</span>: [`pg_extension`](pg-extension.html), a virtual schema with information about CockroachDB extensions.
+- [`pg_extension`](pg-extension.html), a virtual schema with information about CockroachDB extensions.
 
 {{site.data.alerts.callout_danger}}
 Tables in virtual schemas have varying levels of stability. Not all virtual schema tables are meant for programmatic purposes.

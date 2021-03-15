@@ -4,7 +4,7 @@ summary: The pg_extension schema contains information about CockroachDB extensio
 toc: true
 ---
 
-<span class="version-tag">New in v20.2</span>: The `pg_extension` [virtual schema](virtual-schemas.html) provides information about CockroachDB extensions.
+The `pg_extension` [virtual schema](virtual-schemas.html) provides information about CockroachDB extensions.
 
 ## Data exposed by `pg_extension`
 
