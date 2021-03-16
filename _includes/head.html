@@ -5,9 +5,6 @@
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
 <meta name="robots" content="noindex">
-<meta name="robots" content="nofollow">
-<meta name="robots" content="noarchive">
-<meta name="robots" content="nocache">
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
 <link rel="canonical" href="{{ page.canonical | absolute_url }}">
