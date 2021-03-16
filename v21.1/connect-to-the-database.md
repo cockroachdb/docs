@@ -4,16 +4,25 @@ summary: How to connect to a CockroachDB cluster from your application
 toc: true
 ---
 
-This page has instructions for connecting to a CockroachDB cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a [secure local cluster][local_secure] to a `bank` database by a user named `maxroach`. Depending on your cluster's configuration, you may need to edit this connection string.
+<div class="filters filters-big clearfix">
+  <button class="filter-button current">Local</button>
+  <a href="connect-to-the-database-cockroachcloud.html"><button class="filter-button">CockroachCloud</button></a>
+</div>
+
+This page has instructions for connecting to a CockroachDB cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
+
+The connection strings listed on this page set the required authentication options to connect to [local](authentication.html) clusters. Local clusters use self-signed SSL certificates.
 
 For a reference that lists all of the supported cluster connection parameters, see [Connection Parameters][connection_params].
 
 ## Before you begin
 
-Make sure you have already:
+Do the following:
 
-- Set up a [local cluster](secure-a-cluster.html).
-- [Installed a Postgres client](install-client-drivers.html).
+- Set up a local CockroachDB cluster:
+  - [Install CockroachDB](install-cockroachdb.html).
+  - [Start a local cluster](secure-a-cluster.html).
+- [Install a client driver or ORM framework](install-client-drivers.html).
 
 ## Connect
 
@@ -79,6 +88,10 @@ ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg con
 ds.setApplicationName("BasicExample");
 ~~~
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/app/pkcs8-gen.md %}
+{{site.data.alerts.end}}
+
 {% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
 </section>
@@ -105,27 +118,26 @@ conn = psycopg2.connect(
 
 </section>
 
-## See also
-
-Reference information related to this task:
-
-- [Connection parameters][connection_params]
-- [Manual deployments][manual]
-- [Orchestrated deployments][orchestrated]
-- [Start a local cluster (secure)][local_secure]
+## What's next?
 
 <a name="tasks"></a>
 
-Other common tasks:
-
+- [Design a Database Schema](schema-design-overview.html)
 - [Insert Data](insert-data.html)
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
+
+You might also be interested in the following pages:
+
+- [Connection Pooling](connection-pooling.html)
+- [Connection Parameters][connection_params]
+- [Manual Deployments][manual]
+- [Orchestrated Deployments][orchestrated]
+- [Start a Local Cluster][local_secure]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Make Queries Fast](make-queries-fast.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Hello World example apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->
 

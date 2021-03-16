@@ -1,0 +1,9 @@
+main_nav_global:
+  customer_top:
+    image: https://crl2020.imgix.net/img/lush-22.png?h=0.5
+    text: CockroachDB gives Lush a global database for 950 stores across 49 countries
+    link: https://resources.cockroachlabs.com/case-study/lush-case-study
+  customer_bottom:
+    image: https://crl2020.imgix.net/img/nubank_logo_purple-44.png?h=0.5
+    text: Nubank serves 34 million customers with banking apps powered by CockroachDB
+    link: https://www.cockroachlabs.com/blog/nubank/

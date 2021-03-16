@@ -98,7 +98,7 @@ Yes. For more details, see [`UUID`](uuid.html).
 
 ## How does CockroachDB sort results when `ORDER BY` is not used?
 
-When an [`ORDER BY`](query-order.html) clause is not used in a query, rows are processed or returned in a
+When an [`ORDER BY`](order-by.html) clause is not used in a query, rows are processed or returned in a
 non-deterministic order. "Non-deterministic" means that the actual order
 can depend on the logical plan, the order of data on disk, the topology
 of the CockroachDB cluster, and is generally variable over time.

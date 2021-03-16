@@ -15,7 +15,7 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Create a free cluster
 
@@ -173,7 +173,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 Learn more:
 
 - Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- Build a ["Hello World" app with the Django framework](build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
+- Build a ["Hello World" app with the Django framework](../v20.2/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../stable/demo-fault-tolerance-and-recovery.html).
 
 Before you move into production:

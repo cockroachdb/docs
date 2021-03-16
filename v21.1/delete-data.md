@@ -8,12 +8,13 @@ This page has instructions for deleting data from CockroachDB (using the [`DELET
 
 ## Before you begin
 
-Make sure you have already:
+Before reading this page, do the following:
 
-- Set up a [local cluster](secure-a-cluster.html).
-- [Installed a Postgres client](install-client-drivers.html).
-- [Connected to the database](connect-to-the-database.html).
-- [Inserted data](insert-data.html) that you now want to delete.
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Install a Postgres client](install-client-drivers.html).
+- [Connect to the database](connect-to-the-database.html).
+- [Insert data](insert-data.html) that you now want to delete.
 
 {% include {{page.version.version}}/app/retry-errors.md %}
 
@@ -149,5 +150,5 @@ Other common tasks:
 [manual]: manual-deployment.html
 [orchestrated]: orchestration.html
 [fast]: make-queries-fast.html
-[paginate]: selection-queries.html#paginate-through-limited-results
+[paginate]: pagination.html
 [joins]: joins.html

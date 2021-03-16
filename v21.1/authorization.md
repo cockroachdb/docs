@@ -5,11 +5,22 @@ toc: true
 redirect_from: [create-and-manage-users.html, roles.html]
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
 
-{{site.data.alerts.callout_info}}
- Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements. Note that even though the keywords are now interchangeable, it is still helpful to understand the distinction between the concepts (a "user" refers to an individual database user and a "role" refers to a group of database users).
-{{site.data.alerts.end}}
+## Users and roles
+
+There is no technical distinction between a role or user in CockroachDB. A role/user can:
+
+- be permitted to log in to the [SQL shell](cockroach-sql.html).
+- be granted [privileges](#privileges) to specific actions and database objects.
+- be a member of other users/roles, inheriting their privileges.
+- have other users/roles as members that inherit its privileges.
+
+We refer to these as "roles" when they are created for managing the privileges of their member "users" and not for logging in directly, which is typically reserved for "users".
+
+The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the `NOLOGIN` option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+
+Throughout the documentation, however, we will refer to a "user" or "role" based on the intended purpose of the entity.
 
 ## SQL users
 
@@ -32,10 +43,6 @@ The `root` user is created by default for each cluster. The `root` user is assig
 For secure clusters, in addition to [generating the client certificate](authentication.html#client-authentication) for the `root` user, you can assign or change the password for the `root` user using the [`ALTER USER`](alter-user.html) statement.
 
 ## Roles
-
-{{site.data.alerts.callout_info}}
- Role-based access management is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
-{{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
@@ -101,7 +108,7 @@ Example: A is a member of C ... is a member of B where "..." is an arbitrary num
 
 All CockroachDB objects (such as databases, tables, schemas, and types) must have owners. The user that created the object is the default owner of the object and has `ALL` privileges on the object. Similarly, any roles that are members of the owner role also have all privileges on the object.
 
-All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner except system objects. System objects without owners have `node` as their owner.
+All objects that do not have owners (for example, objects created before upgrading to v20.2) have `admin` set as the default owner, with the exception of system objects. System objects without owners have `node` as their owner.
 
 To allow another user to use the object, the owner can [assign privileges](#assign-privileges) to the other user. Members of the `admin` role have `ALL` privileges on all objects.
 

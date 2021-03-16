@@ -3,7 +3,7 @@
 .toc-col {
   display: none;
 
-  @include at-query($min, $screen-lg) {
+  @include at-query($min, $screen-md) {
     
     padding: 34px 0;
     // min-width: 260px;
@@ -19,7 +19,7 @@
   padding-left: 0px;
   margin: 0;
 
-  @include at-query($min, $screen-lg) {
+  @include at-query($min, $screen-md) {
     display: none;
   }
 }

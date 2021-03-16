@@ -4,7 +4,7 @@ Similar to [indexes](indexes.html), partitions can improve query performance by 
 
 ### Filtering on an indexed column
 
-If you filter the query of a partitioned table on a [column in the index directly following the partition prefix](indexes.html#indexing-columns), the [cost-based optimizer](cost-based-optimizer.html) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
+If you filter the query of a partitioned table on a [column in the index directly following the partition prefix](indexes.html), the [cost-based optimizer](cost-based-optimizer.html) creates a query plan that scans each partition in parallel, rather than performing a costly sequential scan of the entire table.
 
 For example, suppose that the tables in the [`movr`](movr.html) database are geo-partitioned by region, and you want to query the `users` table for information about a specific user.
 

@@ -52,7 +52,7 @@ To [handle transaction retry errors](error-handling-and-troubleshooting.html#tra
 
 ### Get the code
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/psycopg2/example.py" download><code>example.py</code></a> file, or create the file yourself and copy the code into it.
+Download the [`example.py`](https://raw.githubusercontent.com/cockroachlabs/hello-world-python-psycopg2/master/example.py) file, or create the file yourself and copy the code into it.
 
 If you prefer, you can also clone a version of the code:
 
@@ -68,36 +68,43 @@ $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 
 ### Run the code
 
-The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument. Before running the code, update the connection string as follows:
+The Python code is a command-line utility that accepts the connection string to CockroachDB as a command-line argument:
 
 <section class="filter-content" markdown="1" data-scope="local">
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python3 example.py \
+"postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require"
+~~~
+
+Before running the command, update the connection string as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
 - Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ python3 example.py \
-'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require'
-~~~
-
 </section>
 
-{% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-- Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
-- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the CockroachCloud Console.
-- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
-
 {% include copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
-'postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt'
+"postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
 ~~~
 
+Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog as follows:
+
+- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
+- Replace `<globalhost>` with the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- Replace `<cluster-name>` with the name of your cluster.
+- Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+
+{{site.data.alerts.callout_info}}
+If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.
+{{site.data.alerts.end}}
+
 </section>
-{% endcomment %}
 
 The output should show the account balances before and after the funds transfer:
 

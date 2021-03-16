@@ -8,7 +8,7 @@ The `ARRAY` data type stores one-dimensional, 1-indexed, homogeneous arrays of a
 
 The `ARRAY` data type is useful for ensuring compatibility with ORMs and other tools. However, if such compatibility is not a concern, it's more flexible to design your schema with normalized tables.
 
-<span class="version-tag">New in v20.1:</span> CockroachDB supports indexing array columns with [inverted indexes](inverted-indexes.html). This permits accelerating containment queries ([`@>`](functions-and-operators.html#operator-contains) and [`<@`](functions-and-operators.html#operator-is-contained-by)) on array columns by adding an index to them.
+<span class="version-tag">New in v20.1:</span> CockroachDB supports indexing array columns with [inverted indexes](inverted-indexes.html). This permits accelerating containment queries (`@>` and `<@`) on array columns by adding an index to them.
 
 {{site.data.alerts.callout_info}}
 CockroachDB does not support nested arrays or ordering by arrays.

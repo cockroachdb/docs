@@ -165,6 +165,16 @@ id |  balance
 
 ## Recommended Practices
 
+### Generate PKCS8 keys for client authentication
+
+{% include {{page.version.version}}/app/pkcs8-gen.md %}
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include cockroachcloud/cc-no-user-certs.md %}
+
+</section>
+
 ### Use `IMPORT` to read in large data sets
 
 If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT`](import.html) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](insert.html) and [`UPDATE`s](update.html). It bypasses the [SQL layer](architecture/sql-layer.html) altogether and writes directly to the [storage layer](architecture/storage-layer.html) of the database.
@@ -181,7 +191,7 @@ We strongly recommend setting `rewriteBatchedInserts=true`; we have seen 2-3x pe
 
 ### Retrieve large data sets in chunks using cursors
 
-CockroachDB now supports the Postgres wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](selection-queries.html#paginate-through-limited-results).
+CockroachDB now supports the Postgres wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT .. OFFSET`](pagination.html).
 
 For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor) from the PGJDBC documentation.
 

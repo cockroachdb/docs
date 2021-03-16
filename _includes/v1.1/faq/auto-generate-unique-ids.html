@@ -1,4 +1,4 @@
-To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` function as the [default value](default-value.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -56,7 +56,7 @@ Alternatively, you can use the [`BYTES`](bytes.html) column with the `uuid_v4()`
 
 In either case, generated IDs will be 128-bit, large enough for there to be virtually no chance of generating non-unique values. Also, once the table grows beyond a single key-value range (more than 64MB by default), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
 
-If it's important for generated IDs to be stored in the same key-value range, you can use the [`SERIAL`](serial.html) data type, which is an alias for [`INT`](int.html) with the `unique_rowid()` [function](functions-and-operators.html#id-generation-functions) as the default value:
+If it's important for generated IDs to be stored in the same key-value range, you can use the [`SERIAL`](serial.html) data type, which is an alias for [`INT`](int.html) with the `unique_rowid()` function as the default value:
 
 {% include copy-clipboard.html %}
 ~~~ sql

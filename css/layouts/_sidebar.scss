@@ -32,16 +32,16 @@ body.sidenav-open{
   }
 }
 #sidebarMenu{
-  @include at-query('max-width', $screen-lg) {
+  @include at-query('max-width', $screen-md) {
     height: auto;
     position: fixed;
     z-index: 10;
     background-color: $white;
-    top: 114px;
+    top: 108px;
     border-top: 1px solid $neutral-300;
     border-bottom: 1px solid $neutral-300;
     height: 60%;
-    overflow: scroll; 
+    overflow: scroll;
     padding-bottom: 15px;
 	}
 }
@@ -49,21 +49,18 @@ body.sidenav-open{
 .col-sidebar-content{
   max-height: calc(100vh - 50px);
   overflow-y: scroll;
-  position: -webkit-sticky; /* Safari */  
+  position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
-  @include at-query(0, $screen-sm) {
-    height: auto;
-    overflow-y: auto;
+  // Desktop fix sidebar lower to show search
+  @include at-query($min, $screen-md) {
+    top: 118px;
   }
-  // @include at-query($min, $screen-lg) {
-  //   top: 102px;
-  // }
 }
 
 .nav-docs-mobile {
   position: fixed;
-  top: 60px;
+  top: 54px;
   z-index: 999;
   background: #fff;
   .h3 {
@@ -119,7 +116,11 @@ body.sidenav-open{
         left: 2px;
       }
 
-      &.visited a{
+      &.visited a {
+        color: $electric-purple;
+      }
+
+      &.visited code {
         color: $electric-purple;
       }
 
@@ -130,19 +131,32 @@ body.sidenav-open{
     }
   }
 
-  .tier-1 a{
-    color: $neutral-800;
-  }
-
-  .tier-2 {
+  .tier-1 {
     a {
       color: $neutral-800;
     }
 
-    a:hover{
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
+  }
+
+  .tier-2 {
+    a, code {
+      color: $neutral-800;
+    }
+
+    a:hover, code:hover{
       text-decoration: none;
       color: $electric-purple;
     }
-    
+
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
   }
 }

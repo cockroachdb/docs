@@ -20,7 +20,7 @@ layout: default
         </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="stable/secure-a-cluster.html" class="h-100">
+          <a href="{{ '/stable/secure-a-cluster.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}" alt="sample app" />
               <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
@@ -32,7 +32,7 @@ layout: default
           </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="stable/hello-world-example-apps.html" class="h-100">
+          <a href="{{ '/stable/hello-world-example-apps.html' | relative_url }}" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}" alt="icon cloud" />
               <h6 class="m-0 text-black">Sample <br>apps</h6>
@@ -53,7 +53,7 @@ layout: default
         <p class="overline">CockroachCloud</p>
         <h2 class="mt-0">Build fast. Scale fast.</h2>
         <p class="sub-heading">CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.</p>
-        <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arro left" /></a>
+        <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_homepage">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arro left" /></a>
       </div>
     </div>
 
@@ -69,11 +69,11 @@ layout: default
         <h3 class="mt-3">Get Started</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="cockroachcloud/quickstart.html">Start a Free Cloud Cluster</a></li>
-            <li><a href="stable/secure-a-cluster.html">Start a Local Cluster</a></li>
-            <li><a href="stable/learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
-            <li><a href="stable/hello-world-example-apps.html">Hello, World!</a></li>
-            <li><a href="stable/demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
+            <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
+            <li><a href="{{ '/stable/secure-a-cluster.html' | relative_url }}">Start a Local Cluster</a></li>
+            <li><a href="{{ '/stable/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
+            <li><a href="{{ '/stable/hello-world-example-apps.html' | relative_url }}">Hello, World!</a></li>
+            <li><a href="{{ '/stable/demo-fault-tolerance-and-recovery.html' | relative_url }}">Explore Capabilities</a></li>
           </ul>
         </div>
       </div>
@@ -81,11 +81,11 @@ layout: default
         <h3 class="mt-3">Develop</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="stable/developer-guide-overview.html">Common Dev Tasks</a></li>
-            <li><a href="stable/hello-world-example-apps.html">Sample Apps</a></li>
-            <li><a href="stable/sql-feature-support.html">SQL Reference</a></li>
-            <li><a href="stable/performance-best-practices-overview.html">SQL Best Practices</a></li>
-            <li><a href="stable/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
+            <li><a href="{{ '/stable/developer-guide-overview.html' | relative_url }}">Common Dev Tasks</a></li>
+            <li><a href="{{ '/stable/hello-world-example-apps.html' | relative_url }}">Sample Apps</a></li>
+            <li><a href="{{ '/stable/sql-feature-support.html' | relative_url }}">SQL Reference</a></li>
+            <li><a href="{{ '/stable/performance-best-practices-overview.html' | relative_url }}">SQL Best Practices</a></li>
+            <li><a href="{{ '/stable/error-handling-and-troubleshooting.html' | relative_url }}">SQL Troubleshooting</a></li>
           </ul>
         </div>
       </div>
@@ -93,11 +93,11 @@ layout: default
         <h3 class="mt-3">Deploy</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="cockroachcloud/create-your-cluster.html">CockroachCloud Deployment</a></li>
-            <li><a href="stable/orchestration.html">Self-Managed Deployment</a></li>
-            <li><a href="stable/recommended-production-settings.html">Production Checklist</a></li>
-            <li><a href="stable/performance.html">Performance Profiles</a></li>
-            <li><a href="stable/upgrade-cockroach-version.html">Cluster Maintenance</a></li>
+            <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">CockroachCloud Deployment</a></li>
+            <li><a href="{{ '/stable/orchestration.html' | relative_url }}">Self-Managed Deployment</a></li>
+            <li><a href="{{ '/stable/recommended-production-settings.html' | relative_url }}">Production Checklist</a></li>
+            <li><a href="{{ '/stable/performance.html' | relative_url }}">Performance Profiles</a></li>
+            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | relative_url }}">Cluster Maintenance</a></li>
           </ul>
         </div>
       </div>
@@ -105,11 +105,11 @@ layout: default
         <h3 class="mt-3">FAQs</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="stable/frequently-asked-questions.html">CockroachDB FAQs</a></li>
-            <li><a href="cockroachcloud/frequently-asked-questions.html">CockroachCloud FAQs</a></li>
-            <li><a href="stable/sql-faqs.html">SQL FAQs</a></li>
-            <li><a href="stable/licensing-faqs.html">Licensing FAQs</a></li>
-            <li><a href="stable/cockroachdb-in-comparison.html">DB Comparisons</a></li>
+            <li><a href="{{ '/stable/frequently-asked-questions.html' | relative_url }}">CockroachDB FAQs</a></li>
+            <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachCloud FAQs</a></li>
+            <li><a href="{{ '/stable/sql-faqs.html' | relative_url }}">SQL FAQs</a></li>
+            <li><a href="{{ '/stable/licensing-faqs.html' | relative_url }}">Licensing FAQs</a></li>
+            <li><a href="{{ '/stable/cockroachdb-in-comparison.html' | relative_url }}">DB Comparisons</a></li>
           </ul>
         </div>
       </div>
@@ -187,7 +187,7 @@ layout: default
           </a>
           <div class="row no-gutters p-3">
             <div class="col-md-4 m-0"
-            style="background-image: url('{{ 'images/disk-spilling.png' | relative_url }}');background-size:cover;min-height: 150px;">
+            style="background-image: url('https://crl2020.imgix.net/img/cloudreport2021-blog-1158x404-1-.png?auto=format');background-size:cover;min-height: 150px;">
             </div>
             <div class="col-md-8">
               <div class="card-body p-0 pl-4"
@@ -199,24 +199,16 @@ layout: default
                 <p
                   class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0 mr-auto"
                 >
-                  Engineering
+                  Blog
                 </p>
                 <h6 class="card-title font-weight-bold mt-3">
-                  Disk Spilling in a Vectorized Execution Engine
+                  <a style="text-decoration: none; color: #000;" href="https://www.cockroachlabs.com/blog/2021-cloud-report/">GCP Outpaces Azure, AWS in the 2021 Cloud Report</a>
                 </h6>
                 <div class="d-flex align-items-center mt-auto mb-2">
-                  <div>
-                    <img
-                      class="m-0"
-                      width="40"
-                      src="{{ 'images/alfonso-subioto-marquez.png' | relative_url }}"
-                      alt="author"
-                    />
-                  </div>
                   <div class="ml-3 d-flex flex-column justify-content-center ">
-                    <div class="card-text m-0 lh-n">Alfonso Subioto Marquez</div>
+                    <div class="card-text m-0 lh-n"> Arul Ajmani, John Kendall, Yevgeniy Miretskiy, and Jessica Edwards</div>
                     <p class="card-text m-0 lh-n">
-                      <small class="text-muted">June 30, 2020</small>
+                      <small class="text-muted">Jan 15, 2021</small>
                     </p>
                   </div>
                 </div>

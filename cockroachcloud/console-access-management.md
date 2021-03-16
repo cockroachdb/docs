@@ -37,6 +37,7 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Create and manage SQL users](connect-to-your-cluster.html#step-2-create-a-sql-user)
 - [Manage billing for the Organization](#manage-billing-for-the-organization)
 - [Restore databases and tables from a CockroachCloud backup](backups-page.html#ways-to-restore-data)
+- [Delete an Organization](#delete-an-organization)
 
 ## Administrative tasks
 
@@ -86,6 +87,10 @@ As a Console Admin, you can change your own access to a Developer role; however,
 2. In the **Action** column, click the three dots to view the allowed actions.
 3. Click **Revoke Invite**.
 
+#### Delete an email address
+
+This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
+
 ### Manage billing for the Organization
 
 As a Console Admin, you can set up and manage billing for the Organization.
@@ -104,6 +109,10 @@ As a Console Admin, you can set up and manage billing for the Organization.
 2. On the **Edit payment method** page, enter the new email address at which you want get invoices for the Organization.
 3. Click **Add card**.
 
+#### Delete your credit card information
+
+We keep a card on file after the associated Organization is deleted so we can process pending charges. You can [contact Support](https://support.cockroachlabs.com) to remove your card once your charges are settled.
+
 #### Check trial code details
 
 If you had used a CockroachCloud trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Billing page**.
@@ -111,3 +120,19 @@ If you had used a CockroachCloud trial code while [creating a cluster](create-yo
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends. You can check the expiration date of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
 {{site.data.alerts.end}}
+
+### Delete an Organization
+
+{{site.data.alerts.callout_danger}}
+Deleting an Organization will delete all clusters and user data within the Organization. This action cannot be reversed. To delete a single cluster instead, see [Cluster Management](cluster-management.html#delete-cluster). 
+{{site.data.alerts.end}}
+
+If you are sure you want to delete the Organization, proceed with the following steps:
+
+1. Navigate to the **Settings** page for the Organization you want to delete.
+1. Click **Delete**.
+1. Enter the name of the Organization.
+1. Click **Delete**.
+
+    You will be automatically logged out of your account.
+

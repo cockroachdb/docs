@@ -9,7 +9,11 @@ toc: true
 This command takes in a source file to upload and a destination filename. It will then use a SQL connection to upload the file to the [destination](#file-destination).
 
 {{site.data.alerts.callout_info}}
-A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommended using `cockroach userfile upload` for quick imports from your client (about 15MB or smaller).
+A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommended using `cockroach userfile upload` for quick uploads from your client (about 15MB or smaller).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+If you would like to upload and import data from from a dump file, consider using [`cockroach import`](cockroach-import.html) instead.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -125,6 +129,7 @@ successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 
 - [`cockroach userfile list`](cockroach-userfile-list.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
+- [`cockroach userfile get`](cockroach-userfile-get.html)
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)

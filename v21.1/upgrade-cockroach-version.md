@@ -44,20 +44,6 @@ TBD
 
 <!-- Review the [backward-incompatible changes in v20.2](../releases/v20.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v20.2.0.html#deprecations). If any affect your application, make the necessary changes. -->
 
-### Check ongoing jobs
-
-Make sure there are no [bulk imports](import.html) or [schema changes](online-schema-changes.html) in progress. These are complex operations that involve coordination across nodes and can increase the potential for unexpected behavior during an upgrade.
-
-<!-- In addition, make sure there are fewer than 100 jobs of all types, including backups, in a non-terminal state (i.e., any state other than `succeeded`, `failed`, or `canceled`). Otherwise, v20.2 nodes will hang and never successfully start. Note that this will be fixed in a later v20.2 patch release. For more context, see [Known Limitations in CockroachDB v20.2](known-limitations.html#upgrading-to-v20-2-with-100-or-more-non-terminal-jobs). -->
-
-To check for ongoing jobs, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](ui-jobs-page.html) in the DB Console.
-
-<!-- {{site.data.alerts.callout_danger}}
-If there are any ongoing schema changes that were started when the cluster was running v19.2 or earlier and that have not reached a terminal state (`succeeded`, `failed`, or `canceled`) after the upgrade to v20.1, wait for them to finish running before upgrading to v20.2. Otherwise, they will be marked as `failed` during the upgrade to v20.2.
-
-Also, schema changes that have not reached a terminal state due to bugs in prior versions will be marked as `failed` during the upgrade to v20.2.
-{{site.data.alerts.end}} -->
-
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
@@ -223,7 +209,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades within the v21.1.x series, skip this step.
 {{site.data.alerts.end}}
 
-If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day) and remember to prevent new schema changes and changes to user privileges. If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
+If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
 Once you are satisfied with the new version:
 

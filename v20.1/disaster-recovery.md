@@ -83,7 +83,7 @@ To be able to survive 2+ availability zones failing, scale to a [multi-region](#
 
 For hardware failures in a single-region cluster, the recovery actions vary and depend on the type of infrastructure used.
 
-For example, consider a cloud-deployed CockroachBD cluster with the following setup:
+For example, consider a cloud-deployed CockroachDB cluster with the following setup:
 
 - Single-region
 - 3 nodes
@@ -225,7 +225,7 @@ The chart below describes the CockroachDB default behavior when locality flags a
 
 For hardware failures in a multi-region cluster, the actions taken to recover vary and depend on the type of infrastructure used.
 
-For example, consider a cloud-deployed CockroachBD cluster with the following setup:
+For example, consider a cloud-deployed CockroachDB cluster with the following setup:
 
 - 3 regions
 - 3 AZs per region

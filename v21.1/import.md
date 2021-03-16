@@ -29,18 +29,7 @@ The user must have the `CREATE` [privileges](authorization.html#assign-privilege
 
 #### Source privileges
 
-The source file URL does _not_ require the `ADMIN` role in the following scenarios:
-
-- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
-- [Userfile](use-userfile-for-bulk-operations.html)
-
-The source file URL _does_ require the `ADMIN` role in the following scenarios:
-
-- S3 or GS using `IMPLICIT` credentials
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
-
-Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+{% include {{ page.version.version }}/misc/source-privileges.md %}
 
 ## Synopsis
 
@@ -102,6 +91,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `nullif`               | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The string that should be converted to *NULL*.
 `skip`                 | `CSV DATA `, [`DELIMITED DATA`](#delimited-data-files) | The number of rows to be skipped while importing a file. **Default: `'0'`**.
 `decompress`           | General         | The decompression codec to be used: `gzip`, `bzip`, `auto`, or `none`.  **Default: `'auto'`**, which guesses based on file extension (`.gz`, `.bz`, `.bz2`). `none` disables decompression.
+`row_limit`           | General         |<span class="version-tag">New in v21.1:</span> The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
@@ -166,7 +156,7 @@ On [`cockroach start`](cockroach-start.html), if you set `--max-disk-temp-storag
 CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
--  [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
+- [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
 
 ### Table users and privileges
@@ -519,6 +509,57 @@ Google Cloud:
 CSV DATA ('gs://acme-co/customers.csv')
 WITH
 	skip = '2'
+;
+~~~
+
+### Import a limited number of rows
+
+<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+
+The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+WITH
+	row_limit = '10'
+;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+WITH
+	row_limit = '10'
+;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv')
+WITH
+	row_limit = '10'
 ;
 ~~~
 

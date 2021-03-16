@@ -154,6 +154,7 @@ The following options are available to [`IMPORT ... CSV`](import.html):
 - [Column delimiter](migrate-from-csv.html#column-delimiter)
 - [Comment syntax](migrate-from-csv.html#comment-syntax)
 - [Skip header rows](migrate-from-csv.html#skip-header-rows)
+- <span class="version-tag">New in v21.1:</span> [Row limit](migrate-from-csv.html#row-limit)
 - [Null strings](migrate-from-csv.html#null-strings)
 - [File compression](migrate-from-csv.html#file-compression)
 
@@ -287,7 +288,7 @@ For example, to import the data from `CUSTOMERS.csv.gz` into a new `CUSTOMERS` t
    CSV DATA (
         'https://your-bucket-name.s3.us-east-2.amazonaws.com/CUSTOMERS.csv.gz'
        )
-  WITH delimiter = '|',
+  WITH delimiter = e'\t',
        "nullif" = '',
        decompress = 'gzip';
 ~~~

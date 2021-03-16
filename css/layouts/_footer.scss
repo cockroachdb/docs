@@ -299,11 +299,11 @@ section.footer {
 }
 
 #footer-mktoForm_1083 {
-
+	width: 100%!important;
 	&.mkto-footer-form {
 		#Email {
 			display: block;
-			width: 100%;
+			width: 70%!important;
 			height: calc(1.725em + 1rem + 2px);
 			padding: 0.5rem 1rem;
 			font-size: 1rem;

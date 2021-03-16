@@ -103,12 +103,16 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 To shut down the CockroachDB cluster:
 
-1. Delete all of the resources you created, including the logs and remote persistent volumes:
+1. Delete the resources you created, including the logs:
+
+    {{site.data.alerts.callout_danger}}
+    This does not include deleting the persistent volumes that were attached to the pods. If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
+    {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete pods,statefulsets,services,persistentvolumeclaims,persistentvolumes,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
+    $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
 
     ~~~
@@ -119,10 +123,6 @@ To shut down the CockroachDB cluster:
     service "alertmanager-cockroachdb" deleted
     service "cockroachdb" deleted
     service "cockroachdb-public" deleted
-    persistentvolumeclaim "datadir-cockroachdb-0" deleted
-    persistentvolumeclaim "datadir-cockroachdb-1" deleted
-    persistentvolumeclaim "datadir-cockroachdb-2" deleted
-    persistentvolumeclaim "datadir-cockroachdb-3" deleted
     poddisruptionbudget "cockroachdb-budget" deleted
     job "cluster-init" deleted
     clusterrolebinding "prometheus" deleted
@@ -171,10 +171,6 @@ To shut down the CockroachDB cluster:
         ~~~ shell
         $ cluster/kube-down.sh
         ~~~
-
-    {{site.data.alerts.callout_danger}}
-    If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
-    {{site.data.alerts.end}}
 
 ## See also
 
