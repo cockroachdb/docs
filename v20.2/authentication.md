@@ -246,7 +246,7 @@ For details about when and how to change security certificates without restartin
 
 As mentioned above, CockroachDB supports the [TLS 1.3 and TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the DB Console.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 To understand how CockroachDB uses digital certificates, let's first understand what each of these terms means.
 
@@ -262,7 +262,7 @@ So going back to our example, Amy and Rosa both have their own public-private ke
 
 But what if a malicious imposter intercepts the communication? The imposter might pose as Rosa and send their public key instead of Rosa’s. There's no way for Amy to know that the public key she received isn’t Rosa’s, so she would end up using the imposter's public key to encrypt the message and send it to the imposter. The imposter can use their own private key and decrypt and read the message, thus compromising the secure communication channel between Amy and Rosa.
 
-To prevent this security risk, Amy needs to be sure that the public key she received was indeed Rosa’s. That’s where the Certificate Authority (CA) comes into the picture.
+To prevent this security risk, Amy needs to be sure that the public key she received was indeed Rosa’s. That’s where the certificate authority (CA) comes into the picture.
 
 ### Certificate authority
 

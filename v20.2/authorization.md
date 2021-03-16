@@ -5,10 +5,10 @@ toc: true
 redirect_from: [create-and-manage-users.html, roles.html]
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#users-and-roles) and assign SQL-level [privileges](#assign-privileges) to them. Additionally, you can use [role-based access management (RBAC)](#roles) for simplified user management.
+User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#users-and-roles) and assign SQL-level [privileges](#assign-privileges) to them. Additionally, you can use [role-based access control (RBAC)](#roles) for simplified user management.
 
 {{site.data.alerts.callout_info}}
- Role-based access management (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements as the two represent the same type of entity. A role can be used as a group of database roles/users or as an individual user. For more information, see [Users and roles](#users-and-roles).
+ Role-based access control (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements as the two represent the same type of entity. A role can be used as a group of database roles/users or as an individual user. For more information, see [Users and roles](#users-and-roles).
 {{site.data.alerts.end}}
 
 ## Users and roles
@@ -35,7 +35,7 @@ A SQL user can interact with a CockroachDB database using the [built-in SQL shel
 
 You can use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, and the [`SHOW USERS`](show-users.html) statement to list users.
 
-The statements `CREATE ROLE`, `DROP ROLE`, `ALTER ROLE`, AND `SHOW ROLES` are equivalent to these, respectively, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
+The statements [`CREATE ROLE`](create-role.html), [`DROP ROLE`](drop-role.html), [`ALTER ROLE`](alter-role.html), AND [`SHOW ROLES`](show-roles.html) are equivalent to these, respectively, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
 
 Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges. 
 
@@ -52,7 +52,7 @@ For secure clusters, in addition to [generating the client certificate](authenti
 ## Roles
 
 {{site.data.alerts.callout_info}}
- Role-based access management is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
+ Role-based access control (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
 {{site.data.alerts.end}}
 
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.

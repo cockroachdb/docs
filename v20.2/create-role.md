@@ -5,7 +5,7 @@ toc: true
 ---
 
 The `CREATE ROLE` statement creates a new SQL role. A role acts as a database user or a group of member roles/users.
-There is no distinct "user" entity in CockroachDB, however, a role with the `LOGIN` option enabled can log in to the database and is often called a user.
+There is no distinct "user" entity in CockroachDB. A role with the `LOGIN` option enabled can log in to the database and is often called a user.
 
 
 You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members and any further members of members ([indirect members](authorization.html#indirect-member)).
@@ -13,7 +13,7 @@ You can [assign privileges](authorization.html#assign-privileges) to the role an
 {{site.data.alerts.callout_info}}
  `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
 
- Prior to CockroachDB v20.1, Role-Based Access Control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
+ Prior to CockroachDB v20.1, role-based access control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
 {{site.data.alerts.end}}
 
 For more information, see the [Authorization](authorization.html) documentation on roles and users.
@@ -24,7 +24,7 @@ For more information, see the [Authorization](authorization.html) documentation 
 
 ## Required privileges
 
-Unless a role is a member of the admin role, additional [priviliges](#parameters) are required to manage other roles.
+Unless a role is a member of the admin role, additional [privileges](#parameters) are required to manage other roles.
 
 - To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 - To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set. 
