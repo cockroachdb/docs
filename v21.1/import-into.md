@@ -68,8 +68,6 @@ For examples showing how to use the `DELIMITED DATA` format, see the [Examples](
 
 You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `<option>  [= <value>]`.
 
-<a name="delimiter"></a>
-
 Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `delimiter`            | `CSV DATA `     | The unicode character that delimits columns in your rows. **Default: `,`**. <br><br> Example: To use tab-delimited values: `IMPORT INTO foo (..) CSV DATA ('file.csv') WITH delimiter = e'\t';`

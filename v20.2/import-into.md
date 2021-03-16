@@ -55,7 +55,7 @@ Parameter | Description
 
 #### Delimited data files
 
-The `DELIMITED DATA` format can be used to import delimited data from any text file type, while ignoring characters that need to be escaped, like the following:
+<span class="version-tag">New in v20.2:</span> The `DELIMITED DATA` format can be used to import delimited data from any text file type, while ignoring characters that need to be escaped, like the following:
 
 - The file's delimiter (`\t` by default)
 - Double quotes (`"`)
@@ -67,8 +67,6 @@ For examples showing how to use the `DELIMITED DATA` format, see the [Examples](
 ### Import options
 
 You can control the `IMPORT` process's behavior using any of the following key-value pairs as a `<option>  [= <value>]`.
-
-<a name="delimiter"></a>
 
 Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             
 --------------------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
