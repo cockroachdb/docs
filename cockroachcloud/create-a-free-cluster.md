@@ -33,7 +33,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Additional configuration** section.
 
-1. _(Optional)_ Select a region in the **Additional configuration** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application. By default, your cluster will be deployed in GCP's `us-central1` region.
+1. _(Optional)_ Select a region in the **Additional configuration** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
 1. Click **Create your free cluster**.
 
