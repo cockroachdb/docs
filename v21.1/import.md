@@ -122,7 +122,7 @@ Before using `IMPORT`, you should have:
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
 
 {{site.data.alerts.callout_info}}
-`IMPORT` cannot be used with [user-defined types](create-type.html). Users should use [`IMPORT INTO`](import-into.html) instead. </span>
+`IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead. </span>
 {{site.data.alerts.end}}
 
 ### Import targets
