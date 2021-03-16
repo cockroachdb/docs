@@ -70,7 +70,7 @@ Example of a cloud storage sink URI:
 `experimental-s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
 ~~~
 
-Cloud storage sink URIs must be prepended with `experimental-` when working with core changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+Cloud storage sink URIs must be prepended with `experimental-` when working with changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
 
 #### Query parameters
 
