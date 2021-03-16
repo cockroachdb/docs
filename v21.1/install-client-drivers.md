@@ -15,13 +15,12 @@ Applications may encounter incompatibilities when using advanced or obscure feat
   <button class="filter-button page-level" data-scope="java">Java</button>
   <button class="filter-button page-level" data-scope="go">Go</button>
   <button class="filter-button page-level" data-scope="ruby">Ruby</button>
-  <button class="filter-button page-level" data-scope="node">Node.js</button>
+  <button class="filter-button page-level" data-scope="js-ts">JavaScript/TypeScript</button>
   <button class="filter-button page-level" data-scope="c">C</button>
   <button class="filter-button page-level" data-scope="c++">C++</button>
   <button class="filter-button page-level" data-scope="c-sharp">C# (.NET)</button>
   <button class="filter-button page-level" data-scope="clojure">Clojure</button>
   <button class="filter-button page-level" data-scope="php">PHP</button>
-  <button class="filter-button page-level" data-scope="typescript">TypeScript</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="python">
@@ -281,9 +280,9 @@ For a simple but complete "Hello World" example app, see [Build a Ruby App with 
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="node">
+<section class="filter-content" markdown="1" data-scope="js-ts">
 
-## Node.js Drivers
+## JavaScript Drivers
 
 ### pg
 
@@ -305,7 +304,7 @@ $ npm install async
 
 For a simple but complete "Hello World" example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
 
-## Node.js ORM frameworks
+## JavaScript/TypeScript ORM frameworks
 
 ### Sequelize
 
@@ -319,6 +318,14 @@ $ npm install sequelize sequelize-cockroachdb
 ~~~
 
 For a simple but complete "Hello World" example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
+
+### TypeORM
+
+**Support level:** Full
+
+Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
+
+For a simple but complete "Hello World" example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
 
 </section>
 
@@ -424,20 +431,6 @@ For a simple but complete "Hello World" example app, see [Build a PHP App with C
 Install the Rust Postgres driver as described in the [official documentation](https://crates.io/crates/postgres/).
 
 For a simple but complete "Hello World" example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="typescript">
-
-## TypeScript ORM frameworks
-
-### TypeORM
-
-**Support level:** Full
-
-Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
-
-For a simple but complete "Hello World" example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
 
 </section>
 
