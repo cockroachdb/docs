@@ -282,7 +282,7 @@ For a simple but complete "Hello World" example app, see [Build a Ruby App with 
 
 <section class="filter-content" markdown="1" data-scope="js-ts">
 
-## JavaScript/TypeScript Drivers
+## JavaScript Drivers
 
 ### pg
 
