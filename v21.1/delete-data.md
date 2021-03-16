@@ -55,7 +55,7 @@ Here are some best practices to follow when deleting rows:
 - To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html).
 - To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column).
 - When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
-- Review the [performance considerations below](performance-considerations.html) before writing and executing `DELETE` statements.
+- Review the [performance considerations below](#performance-considerations) before writing and executing `DELETE` statements.
 
 ### Examples
 
