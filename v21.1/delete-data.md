@@ -38,10 +38,6 @@ Where:
 - `{comparison_operator}` is a [comparison operator](functions-and-operators.html#operators) that resolves to `TRUE` or `FALSE` (e.g., `=`).
 - `{filter_value}` is the matching value for the filter.
 
-{{site.data.alerts.callout_info}}
-Filtering on a unique or primary key column will delete a single row. Filtering on non-unique columns removes every row that returns `TRUE` for the `WHERE` clause's expression.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
 For detailed reference documentation on the `DELETE` statement, including additional examples, see the [`DELETE` syntax page](delete.html).
 {{site.data.alerts.end}}
@@ -52,16 +48,16 @@ Here are some best practices to follow when deleting rows:
 
 - Limit the number of `DELETE` statements that you execute. It's more efficient to delete multiple rows with a single statement than to execute multiple `DELETE` statements that each delete a single row.
 - Always specify a `WHERE` clause in `DELETE` queries. If no `WHERE` clause is specified, CockroachDB will delete all of the rows in the specified table.
-- To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html).
+- To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html) instead of a `DELETE` statement.
 - To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column).
 - When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
-- Review the [performance considerations below](#performance-considerations) before writing and executing `DELETE` statements.
+- Review the [performance considerations below](#performance-considerations).
 
 ### Examples
 
 #### Delete rows filtered on a non-unique column
 
-Suppose that you want to delete all of the MovR ride data that generated no revenue. To delete all rows from the `rides` table where `revenue` is equal to 0:
+Suppose that you want to delete the vehicle location history data recorded during a specific hour of a specific day. To delete all of the rows in the `vehicle_location_histories` table where the `timestamp` is between two [`TIMESTAMP`](timestamp.html) values:
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
@@ -74,73 +70,7 @@ Suppose that you want to delete all of the MovR ride data that generated no reve
 
 {% include copy-clipboard.html %}
 ~~~ sql
-DELETE from rides WHERE revenue = 0;
-~~~
-
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="go">
-
-{% include copy-clipboard.html %}
-~~~ go
-// 'db' is an open database connection
-
-if _, err := db.Exec("DELETE from rides WHERE revenue = 0"); err != nil {
-    return err
-}
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="java">
-
-{% include copy-clipboard.html %}
-~~~ java
-// ds is an org.postgresql.ds.PGSimpleDataSource
-
-try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("DELETE from rides WHERE revenue = 0");
-
-} catch (SQLException e) {
-    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                      e.getSQLState(), e.getCause(), e.getMessage());
-}
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="python">
-
-{% include copy-clipboard.html %}
-~~~ python
-# conn is a psycopg2 connection
-
-with conn.cursor() as cur:
-    cur.execute("DELETE from rides WHERE revenue = 0",
-conn.commit()
-~~~
-
-</section>
-
-
-#### Delete rows filtered on a unique column
-
-Suppose that you want to delete all of the MovR ride data for a specific set of users. To delete the rows in the `rides` table where the `user_id` matches a UUID in a set of UUID values:
-
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="sql">SQL</button>
-  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
-  <button class="filter-button" data-scope="java">Java (jdbc)</button>
-  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="sql">
-
-{% include copy-clipboard.html %}
-~~~ sql
-DELETE from rides WHERE user_id IN ('00000000-0000-4000-8000-000000000000', '80000000-0000-4000-8000-000000000019', '33333333-3333-4400-8000-00000000000a');
+DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN '2021-03-17 14:00:00' AND '2021-03-17 15:00:00';
 ~~~
 
 For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
@@ -153,13 +83,13 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 ~~~ go
 // tx is a *sql.Tx from "database/sql"
 
-idOne := "00000000-0000-4000-8000-000000000000"
-idTwo := "80000000-0000-4000-8000-000000000019"
-idThree := "33333333-3333-4400-8000-00000000000a"
+tsOne := "2021-03-17 14:00:00"
+tsTwo := "2021-03-17 15:00:00"
 
-if _, err := tx.Exec("DELETE from rides WHERE user_id IN ('$1', '$2', '$3')", idOne, idTwo, idThree); err != nil {
-    return err
+if _, err := tx.Exec("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN $1 AND $2", tsOne, tsTwo); err != nil {
+  return err
 }
+return nil
 ~~~
 
 </section>
@@ -170,17 +100,17 @@ if _, err := tx.Exec("DELETE from rides WHERE user_id IN ('$1', '$2', '$3')", id
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
-String idOne = "00000000-0000-4000-8000-000000000000"
-String idTwo = "80000000-0000-4000-8000-000000000019"
-String idThree = "33333333-3333-4400-8000-00000000000a"
+String tsOne = "2021-03-17 14:00:00";
+String tsTwo = "2021-03-17 15:00:00";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("DELETE from rides WHERE user_id IN('"
-                                               + idOne + "','" + idTwo + "','" + idThree + "')");
+    connection.createStatement()
+            .executeUpdate("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN '" + tsOne
+                    + "' AND '" + tsTwo + "'");
 
 } catch (SQLException e) {
-    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                      e.getSQLState(), e.getCause(), e.getMessage());
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
 }
 ~~~
 
@@ -192,12 +122,95 @@ try (Connection connection = ds.getConnection()) {
 ~~~ python
 # conn is a psycopg2 connection
 
-idOne = '00000000-0000-4000-8000-000000000000'
-idTwo = '80000000-0000-4000-8000-000000000019'
-idThree = '33333333-3333-4400-8000-00000000000a'
+tsOne = '2021-03-17 14:00:00'
+tsTwo = '2021-03-17 15:00:00'
 
 with conn.cursor() as cur:
-    cur.execute("DELETE from rides WHERE user_id IN ('%s', '%s', '%s')", (idOne, idTwo, idThree)),
+    cur.execute(
+        "DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN %s AND %s", (tsOne, tsTwo))
+conn.commit()
+~~~
+
+</section>
+
+{{site.data.alerts.callout_success}}
+If the `WHERE` clause evaluates to `TRUE` for a large number of rows (i.e., tens of thousands of rows), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column) instead of executing a simple `DELETE` query.
+{{site.data.alerts.end}}
+
+#### Delete rows filtered on a unique column
+
+Suppose that you want to delete the promo code data for a specific set of codes. To delete the rows in the `promo_codes` table where the `code` matches a string in a set of string values:
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="sql">SQL</button>
+  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
+  <button class="filter-button" data-scope="java">Java (jdbc)</button>
+  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="sql">
+
+{% include copy-clipboard.html %}
+~~~ sql
+DELETE from promo_codes WHERE code IN ('0_explain_theory_something', '100_address_garden_certain', '1000_do_write_words');
+~~~
+
+For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+{% include copy-clipboard.html %}
+~~~ go
+// tx is a *sql.Tx from "database/sql"
+
+codeOne := "0_explain_theory_something"
+codeTwo := "100_address_garden_certain"
+codeThree := "1000_do_write_words"
+
+if _, err := tx.Exec("DELETE from promo_codes WHERE code IN ($1, $2, $3)", codeOne, codeTwo, codeThree); err != nil {
+  return err
+}
+return nil
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include copy-clipboard.html %}
+~~~ java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+String codeOne = "0_explain_theory_something";
+String codeTwo = "100_address_garden_certain";
+String codeThree = "1000_do_write_words";
+
+try (Connection connection = ds.getConnection()) {
+    connection.createStatement().executeUpdate(
+            "DELETE from promo_codes WHERE code IN('" + codeOne + "','" + codeTwo + "','" + codeThree + "')");
+
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+{% include copy-clipboard.html %}
+~~~ python
+# conn is a psycopg2 connection
+
+codeOne = '0_explain_theory_something'
+codeTwo = '100_address_garden_certain'
+codeThree = '1000_do_write_words'
+
+with conn.cursor() as cur:
+    cur.execute("DELETE from promo_codes WHERE code IN (%s, %s, %s)", (codeOne, codeTwo, codeThree)),
 conn.commit()
 ~~~
 
