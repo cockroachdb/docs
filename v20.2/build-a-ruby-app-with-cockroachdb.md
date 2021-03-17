@@ -14,11 +14,11 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+{% include_cached {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Get the code
 
@@ -84,7 +84,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
 ~~~
 
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+{% include_cached {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
@@ -116,4 +116,4 @@ print_balances(): Balances as of '2021-02-23 11:56:55 -0800':
 
 Read more about using the [Ruby pg driver](https://rubygems.org/gems/pg).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

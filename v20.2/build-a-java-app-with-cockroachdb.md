@@ -14,7 +14,7 @@ twitter: false
 
 This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
 
-{% include {{page.version.version}}/app/java-version-note.md %}
+{% include_cached {{page.version.version}}/app/java-version-note.md %}
 
 {{site.data.alerts.callout_success}}
 For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [Build a Spring App with CockroachDB and JDBC](build-a-spring-app-with-cockroachdb-jdbc.html).
@@ -22,11 +22,11 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+{% include_cached {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Run the Java code
 
@@ -90,7 +90,7 @@ ds.setSslMode("verify-full");
 ds.setSslRootCert("{path to the CA certificate}")
 ~~~
 
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+{% include_cached {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
@@ -187,11 +187,11 @@ BasicExampleDAO.tearDown:
 
 ### Generate PKCS8 keys for client authentication
 
-{% include {{page.version.version}}/app/pkcs8-gen.md %}
+{% include_cached {{page.version.version}}/app/pkcs8-gen.md %}
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include cockroachcloud/cc-no-user-certs.md %}
+{% include_cached cockroachcloud/cc-no-user-certs.md %}
 
 </section>
 
@@ -253,4 +253,4 @@ Note that interleaved execution (partial execution of multiple statements within
 
 Read more about using the [Java JDBC driver](https://jdbc.postgresql.org/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}

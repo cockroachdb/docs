@@ -16,11 +16,11 @@ This tutorial shows you how build a simple Go application with CockroachDB and t
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+{% include_cached {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Run the Go code
 
@@ -66,7 +66,7 @@ The function call should look similar to the following:
 config, err := pgx.ParseConfig("postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}")
 ~~~
 
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+{% include_cached {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
@@ -121,4 +121,4 @@ The output should be:
 
 Read more about using the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx?tab=doc).
 
-{% include {{ page.version.version }}/app/see-also-links.md %}
+{% include_cached {{ page.version.version }}/app/see-also-links.md %}

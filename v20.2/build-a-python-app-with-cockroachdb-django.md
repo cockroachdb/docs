@@ -49,11 +49,11 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 ## Step 2. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 3. Create a database
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+{% include_cached {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 4. Create a Django project
 
@@ -279,4 +279,4 @@ You can also query the tables directly in the SQL shell to see the changes:
 
 Read more about writing a [Django app](https://docs.djangoproject.com/en/3.1/intro/tutorial01/).
 
-{% include {{page.version.version}}/app/see-also-links.md %}
+{% include_cached {{page.version.version}}/app/see-also-links.md %}
