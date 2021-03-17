@@ -21,7 +21,7 @@ There is no technical distinction between a SQL role or user in CockroachDB. Dep
 - be a member of other roles, inheriting their privileges.
 - have other roles as members that inherit its privileges.
 
-We often refer to these as "roles" to mean that they are created for managing the privileges of their member "users". We often refer to roles that are enabled to log in to a database as "users".
+We often refer to these as "roles" when they are created for managing the privileges of their member "users". We often refer to roles that are enabled to log in to a database as "users".
 
 The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the [`NOLOGIN`](create-role.html#parameters) option by default, preventing the role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 

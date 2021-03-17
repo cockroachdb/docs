@@ -11,7 +11,7 @@ There is no distinct "user" entity in CockroachDB. A role with the `LOGIN` optio
 You can [assign privileges](authorization.html#assign-privileges) to the role and [set other roles as members](grant-roles.html) of the role. A role's privileges are inherited by its members and any further members of members ([indirect members](authorization.html#indirect-member)).
 
 {{site.data.alerts.callout_info}}
- `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the `NOLOGIN` option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
+ `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
 
  Prior to CockroachDB v20.1, role-based access control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
 {{site.data.alerts.end}}
@@ -28,7 +28,7 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 - To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
 - To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set. 
-- To be able to grant or revoke membership to a role for additional roles/users, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role. 
+- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role. 
 
 ## Synopsis
 

@@ -7,7 +7,7 @@ toc: true
 
 The `SHOW GRANTS` [statement](sql-statements.html) lists one of the following:
 
-- The [roles](authorization.html#users) granted to [users](authorization.html#users) in a cluster.
+- The [roles](authorization.html#roles) granted to [users](authorization.html#users) in a cluster.
 - The [privileges](authorization.html#assign-privileges) [granted](grant.html) to [users](authorization.html#users) on [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
 ## Syntax

@@ -11,7 +11,7 @@ The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can b
  You can [assign privileges](authorization.html#assign-privileges) to the user and [set it as a member](grant-roles.html) of other roles, inheriting their privileges.
 
 {{site.data.alerts.callout_info}}
- `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the `LOGIN` option to achieve the same result as `CREATE USER`.
+ `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
 
  Prior to CockroachDB v20.1, role-based access control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
 {{site.data.alerts.end}}
@@ -28,7 +28,7 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 - To create other roles, a role must have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 - To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set. 
-- To be able to grant or revoke membership to a role for additional roles/users, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
+- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
@@ -82,7 +82,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Create a user
 
-Note the [considerations](#considerations) for role/user names.
+Note the [considerations](#considerations) for role names.
 
 ~~~ sql
 root@:26257/defaultdb> CREATE USER no_options;
