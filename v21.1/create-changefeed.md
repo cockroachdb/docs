@@ -64,7 +64,13 @@ Use a cloud storage sink to deliver changefeed data to OLAP or big data systems 
 Currently, cloud storage sinks only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-For more information on the sink URL structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+Example of a cloud storage sink URI:
+
+~~~
+`experimental-s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+~~~
+
+Cloud storage sink URIs must be pre-pended with `experimental-` when working with changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
 
 #### Query parameters
 
@@ -110,7 +116,9 @@ Option | Value | Description
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. Below is a list of unsupported SQL types and values for Avro changefeeds:
+Currently, support for Avro is limited and experimental. You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro).
+
+Below is a list of unsupported SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
 - [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.
