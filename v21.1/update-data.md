@@ -6,9 +6,9 @@ toc: true
 
 This page has instructions for updating existing rows of data in CockroachDB, using the following [SQL statements](sql-statements.html):
 
-- [`UPDATE`](#update), which updates existing rows in a table.
-- [`UPSERT`](#upsert), which inserts new rows in a table, updating existing rows that conflict on a primary key.
-- [`INSERT ... ON CONFLICT ... DO UPDATE`](#insert-on-conflict), which inserts new rows in a table, updating existing rows in the event of a conflict on specified, `UNIQUE`-constrained columns.
+- [`UPDATE`](#use-update), which updates existing rows in a table.
+- [`UPSERT`](#use-upsert), which inserts new rows in a table, updating existing rows that conflict on a primary key.
+- [`INSERT ... ON CONFLICT ... DO UPDATE`](#use-insert-on-conflict), which inserts new rows in a table, updating existing rows in the event of a conflict on specified, `UNIQUE`-constrained columns.
 
 ## Before you begin
 
@@ -23,7 +23,7 @@ Before reading this page, do the following:
 
     In the examples on this page, we use sample [`movr`](movr.html) data imported with the [`cockroach workload` command](cockroach-workload.html).
 
-## UPDATE
+## Use `UPDATE`
 
 To update existing rows in a table, use an [`UPDATE` statement](update.html) with a `WHERE` clause that filters on the columns that identify the rows that you want to update.
 
@@ -33,7 +33,7 @@ To update a large number of rows (i.e., tens of thousands of rows or more), we r
 For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
 {{site.data.alerts.end}}
 
-### SQL syntax
+### `UPDATE` SQL syntax
 
 In SQL, `UPDATE` statements generally take the following form:
 
@@ -53,7 +53,15 @@ Where:
 For detailed reference documentation on the `UPDATE` statement, including additional examples, see the [`UPDATE` syntax page](update.html).
 {{site.data.alerts.end}}
 
-### Example
+### `UPDATE` best practices
+
+Here are some best practices to follow when updating rows:
+
+- Always specify a `WHERE` clause in `UPDATE` queries. If no `WHERE` clause is specified, CockroachDB will update all of the rows in the specified table.
+- To update a large number of rows (i.e., tens of thousands of rows or more), use a [batch-update loop](bulk-update-data.html).
+- When executing `UPDATE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+
+### `UPDATE` example
 
 Suppose you want to change the status of all of the vehicles owned by a particular MovR user. To update all rows in the `vehicles` table with the `owner_id` equal to `bd70a3d7-0a3d-4000-8000-000000000025`:
 
@@ -81,9 +89,10 @@ UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8
 
 ownerID := "bd70a3d7-0a3d-4000-8000-000000000025"
 
-if _, err := tx.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = '$1'", ownerID); err != nil {
-    return err
+if _, err := tx.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID); err != nil {
+  return err
 }
+return nil
 ~~~
 
 </section>
@@ -97,11 +106,12 @@ if _, err := tx.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id =
 String ownerID = "bd70a3d7-0a3d-4000-8000-000000000025";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = " + ownerID);
+    connection.createStatement()
+            .executeUpdate("UPDATE vehicles SET status = 'unavailable' WHERE owner_id = '" + ownerID + "'");
 
 } catch (SQLException e) {
-    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                      e.getSQLState(), e.getCause(), e.getMessage());
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
 }
 ~~~
 
@@ -116,18 +126,18 @@ try (Connection connection = ds.getConnection()) {
 ownerID = 'bd70a3d7-0a3d-4000-8000-000000000025'
 
 with conn.cursor() as cur:
-    cur.execute("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = %s",
-                (ownerID));
-conn.commit()
+    cur.execute(
+        "UPDATE vehicles SET status = 'unavailable' WHERE owner_id = %s", (ownerID,))
+    conn.commit()
 ~~~
 
 </section>
 
-## UPSERT
+## Use `UPSERT`
 
 To insert new rows into a table, and update rows that conflict with the primary key value(s) of the new rows, use an [`UPSERT` statement](upsert.html).
 
-### SQL syntax
+### `UPSERT` SQL syntax
 
 In SQL, `UPSERT` statements take the following form:
 
@@ -145,7 +155,14 @@ Where:
 For detailed reference documentation on the `UPSERT` statement, including additional examples, see the [`UPSERT` syntax page](upsert.html).
 {{site.data.alerts.end}}
 
-### Example
+### `UPSERT` best practices
+
+Here are some best practices to follow when using `UPSERT`:
+
+- Limit the number of `UPSERT` statements that you execute. It's more efficient to insert multiple rows with a single statement than to execute multiple `UPSERT` statements that each insert a single row.
+- When executing `UPSERT` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+
+### `UPSERT` example
 
 Suppose you want to add some promo codes to the MovR platform, and overwrite any existing promos with the same code. To insert new rows into the `promo_codes` table, and update any rows that have the same primary key `code` value:
 
@@ -184,12 +201,13 @@ codeThree := "1000_do_write_words"
 descriptionThree := "Twenty-five percent off."
 rulesThree := "{\"type\": \"percent_discount\", \"value\": \"25%\"}"
 
-if _, err := tx.Exec("UPSERT INTO promo_codes (code, description, rules)"
-                    + "values ('$1','$2','$3'), ('$4','$5','$6'), ('$7','$8','$9')",
-                    codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo,
-                    rulesTwo, codeThree, descriptionThree, rulesThree); err != nil {
-    return err
+if _, err := tx.Exec("UPSERT INTO promo_codes (code, description, rules) "+
+  "values ($1, $2, $3), ($4, $5, $6), ($7, $8, $9)",
+  codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo,
+  rulesTwo, codeThree, descriptionThree, rulesThree); err != nil {
+  return err
 }
+return nil
 ~~~
 
 </section>
@@ -201,25 +219,25 @@ if _, err := tx.Exec("UPSERT INTO promo_codes (code, description, rules)"
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
 
-String codeOne = "0_explain_theory_something"
-String descriptionOne = "Fifteen percent off."
-String rulesOne = "{\"type\": \"percent_discount\", \"value\": \"15%\"}"
-String codeTwo = "100_address_garden_certain"
-String descriptionTwo = "Twenty percent off."
-String rulesTwo = "{\"type\": \"percent_discount\", \"value\": \"20%\"}"
-String codeThree = "1000_do_write_words"
-String descriptionThree = "Twenty-five percent off."
-String rulesThree = "{\"type\": \"percent_discount\", \"value\": \"25%\"}"
+String codeOne = "0_explain_theory_something";
+String descriptionOne = "Fifteen percent off.";
+String rulesOne = "{\"type\": \"percent_discount\", \"value\": \"15%\"}";
+String codeTwo = "100_address_garden_certain";
+String descriptionTwo = "Twenty percent off.";
+String rulesTwo = "{\"type\": \"percent_discount\", \"value\": \"20%\"}";
+String codeThree = "1000_do_write_words";
+String descriptionThree = "Twenty-five percent off.";
+String rulesThree = "{\"type\": \"percent_discount\", \"value\": \"25%\"}";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("UPSERT INTO promo_codes (code, description, rules) values('"
-                                              + codeOne + "','" + descriptionOne + "','" + rulesOne + "'),('"
-                                              + codeTwo + "','" + descriptionTwo + "','" + rulesTwo + "'),('"
-                                              + codeThree + "','" + descriptionThree + "','" + rulesThree + "')");
+    connection.createStatement()
+            .executeUpdate("UPSERT INTO promo_codes (code, description, rules) values('" + codeOne + "','"
+                    + descriptionOne + "','" + rulesOne + "'),('" + codeTwo + "','" + descriptionTwo + "','"
+                    + rulesTwo + "'),('" + codeThree + "','" + descriptionThree + "','" + rulesThree + "')");
 
 } catch (SQLException e) {
-    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                      e.getSQLState(), e.getCause(), e.getMessage());
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
 }
 ~~~
 
@@ -242,20 +260,24 @@ descriptionThree = 'Twenty-five percent off.'
 rulesThree = '{"type": "percent_discount", "value": "25%"}'
 
 with conn.cursor() as cur:
-    cur.execute("UPSERT INTO promo_codes (code, description, rules) values ('%s','%s','%s'), ('%s','%s','%s'), ('%s','%s','%s')",
-                (codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo, rulesTwo, codeThree, descriptionThree, rulesThree));
-conn.commit()
+    cur.execute("UPSERT INTO promo_codes (code, description, rules) values (%s,%s,%s), (%s,%s,%s), (%s,%s,%s)",
+                (codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo, rulesTwo, codeThree, descriptionThree, rulesThree))
+    conn.commit()
 ~~~
 
 </section>
 
-## INSERT ON CONFLICT
+## Use `INSERT ON CONFLICT`
 
 To insert new rows into a table, and to update rows with `UNIQUE`-constrained values that conflict with any values of the new rows, use an `INSERT ... ON CONFLICT ... DO UPDATE` statement.
 
 `INSERT ... ON CONFLICT ... DO UPDATE` is semantically identical to `UPSERT`, when the conflicting values are in the primary key and the action to take on conflict is to update the conflicting rows with the new rows. `INSERT ... ON CONFLICT` is more flexible than `UPSERT`, and can be used to consider uniqueness for columns not in the primary key. With `INSERT ... ON CONFLICT`, you can also control how to update rows in the event of a conflict. This contrasts with the behavior of an `UPSERT` statement, which just overwrites conflicting rows with new rows.
 
-### SQL syntax
+{{site.data.alerts.callout_info}}
+ Note that if you are inserting to/updating all columns of a table, and the table has no secondary indexes, `UPSERT` will be faster than the equivalent `INSERT ON CONFLICT` statement, as it will write without first reading.
+{{site.data.alerts.end}}
+
+### `INSERT ON CONFLICT` SQL syntax
 
 In SQL, `INSERT ... ON CONFLICT ... DO UPDATE` statements take the following form:
 
@@ -275,7 +297,15 @@ Where:
 
 Note that the statement contains an `UPDATE` clause, which is semantically identical to an `UPDATE` statement.
 
-### Example
+### `INSERT ON CONFLICT` best practices
+
+Here are some best practices to follow when using `INSERT ... ON CONFLICT ... DO UPDATE`:
+
+- Limit the number of `INSERT` statements that you execute. It's more efficient to insert multiple rows with a single statement than to execute multiple `INSERT` statements that each insert a single row.
+- When executing `INSERT` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+- Follow the [performance best practices listed on the `INSERT`](insert.html#performance-best-practices) page.
+
+### `INSERT ON CONFLICT` example
 
 Suppose you want to record a particular user's promo code usage count. The `user_promo_codes` table keeps track of user promo usage. If no usage counter exists, you want to insert a new row, and if one does exist, you want to increment the `usage_count` column by 1.
 
@@ -310,12 +340,13 @@ code := "promo_code"
 ts := "now()"
 usageCount := 1
 
-if _, err := tx.Exec("INSERT INTO user_promo_codes"
-                    + "VALUES ('$1', '$2', '$3', $4, $5) ON CONFLICT (city, user_id, code)"
-                    + "DO UPDATE SET usage_count = user_promo_codes.usage_count+1",
-                    city, userId, code, ts, usageCount); err != nil {
-    return err
+if _, err := tx.Exec("INSERT INTO user_promo_codes "+
+  "VALUES ($1, $2, $3, $4, $5) ON CONFLICT (city, user_id, code) "+
+  "DO UPDATE SET usage_count = user_promo_codes.usage_count + 1",
+  city, userId, code, ts, usageCount); err != nil {
+  return err
 }
+return nil
 ~~~
 
 </section>
@@ -327,20 +358,20 @@ if _, err := tx.Exec("INSERT INTO user_promo_codes"
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
 
-String city = "new york"
-String userId = "147ae147-ae14-4b00-8000-000000000004"
-String code = "promo_code"
-String ts = "now()"
-int usageCount = 1
+String city = "new york";
+String userId = "147ae147-ae14-4b00-8000-000000000004";
+String code = "promo_code";
+String ts = "now()";
+int usageCount = 1;
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("INSERT INTO user_promo_codes VALUES ('"
-                                              + city + "','" + userId + "','" + code + "','" + ts + "','" + usageCount
-                                              + "') ON CONFLICT (city, user_id, code) DO UPDATE SET usage_count = user_promo_codes.usage_count+1");
+    connection.createStatement().executeUpdate("INSERT INTO user_promo_codes VALUES ('" + city + "','" + userId
+            + "','" + code + "','" + ts + "','" + usageCount
+            + "') ON CONFLICT (city, user_id, code) DO UPDATE SET usage_count = user_promo_codes.usage_count+1");
 
 } catch (SQLException e) {
-    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                      e.getSQLState(), e.getCause(), e.getMessage());
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
 }
 ~~~
 
@@ -359,9 +390,9 @@ ts = 'now()'
 usageCount = 1
 
 with conn.cursor() as cur:
-    cur.execute("INSERT INTO user_promo_codes VALUES ('%s', '%s', '%s', %s, %s) ON CONFLICT (city, user_id, code)" \
-                "DO UPDATE SET usage_count = user_promo_codes.usage_count+1", (city, userId, code, ts, usageCount));
-conn.commit()
+    cur.execute("INSERT INTO user_promo_codes VALUES (%s, %s, %s, %s, %s) ON CONFLICT (city, user_id, code)"
+                "DO UPDATE SET usage_count = user_promo_codes.usage_count+1", (city, userId, code, ts, usageCount))
+    conn.commit()
 ~~~
 
 </section>
