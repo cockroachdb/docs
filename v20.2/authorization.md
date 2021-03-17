@@ -13,29 +13,29 @@ User authorization is the act of defining access policies for authenticated Cock
 
 ## Users and roles
 
-There is no technical distinction between a SQL role or user in CockroachDB. Depending on its configuration, a role/user can:
+There is no technical distinction between a SQL role or user in CockroachDB. Depending on its configuration, a role can:
 
 - log in via the [SQL shell](cockroach-sql.html).
 - be used by applications to connect to the database.
 - be granted [privileges](#privileges) to specific actions and database objects.
-- be a member of other users/roles, inheriting their privileges.
-- have other users/roles as members that inherit its privileges.
+- be a member of other roles, inheriting their privileges.
+- have other roles as members that inherit its privileges.
 
-We refer to these as "roles" when they are created for managing the privileges of their member "users". We often refer to roles that are enabled to log in to a database as "users".
+We often refer to these as "roles" to mean that they are created for managing the privileges of their member "users". We often refer to roles that are enabled to log in to a database as "users".
 
-The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the [`NOLOGIN`](create-role.html#parameters) option by default, preventing the user/role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
+The SQL statements [`CREATE USER`](create-user.html) and [`CREATE ROLE`](create-role.html) will create the same entity with one exception: `CREATE ROLE` will add the [`NOLOGIN`](create-role.html#parameters) option by default, preventing the role from being used to log in. Otherwise, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can be used interchangeably in SQL statements.
 
 Throughout the documentation, however, we refer to a "user" or "role" based on the intended purpose of the entity, and we default to using the term "role" when we want to include both possibilities for how the role may be used.
 
 ## Users
 
-A SQL user can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
+A SQL user (a role with `LOGIN` priviliges) can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
 
 ### Create and manage users
 
 You can use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, and the [`SHOW USERS`](show-users.html) statement to list users.
 
-The statements [`CREATE ROLE`](create-role.html), [`DROP ROLE`](drop-role.html), [`ALTER ROLE`](alter-role.html), AND [`SHOW ROLES`](show-roles.html) are equivalent to these, respectively, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
+The statements [`CREATE ROLE`](create-role.html), [`DROP ROLE`](drop-role.html), [`ALTER ROLE`](alter-role.html), and [`SHOW ROLES`](show-roles.html) are equivalent to these, respectively, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
 
 Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges. 
 

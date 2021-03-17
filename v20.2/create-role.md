@@ -44,7 +44,7 @@ table td:first-child {
 
 | Parameter | Description |
 ------------|--------------
-`name` | The name of the role/user you want to create. See the [Considerations](#considerations) section for important naming guidelines.
+`name` | The name of the role you want to create. See the [Considerations](#considerations) section for important naming guidelines.
 `CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin roles.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the role from logging in using any authentication method. `NOLOGIN` is set by default when using `CREATE ROLE`, but not when using the otherwise equivalent `CREATE USER` statement.
 `password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
