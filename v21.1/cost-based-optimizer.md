@@ -326,15 +326,18 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree |        field        |     description
--------+---------------------+-----------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | postal_codes@primary
-       | spans               | [/1 - /1]
-(6 rows)
+              info
+---------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    missing stats
+    table: postal_codes@primary
+    spans: [/1 - /1]
+(7 rows)
+
+Time: 52ms total (execution 52ms / network 0ms)
 ~~~
 
 As expected, the node in the EU uses the `idx_eu` index.
@@ -345,15 +348,17 @@ $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree |        field        |     description
--------+---------------------+----------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | postal_codes@idx_eu
-       | spans               | [/1 - /1]
-(6 rows)
+---------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    missing stats
+    table: postal_codes@idx_eu
+    spans: [/1 - /1]
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 As expected, the node in APAC uses the `idx_apac` index.
@@ -364,15 +369,17 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXP
 ~~~
 
 ~~~
-  tree |        field        |      description
--------+---------------------+------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | postal_codes@idx_apac
-       | spans               | [/1 - /1]
-(6 rows)
+---------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    missing stats
+    table: postal_codes@idx_apac
+    spans: [/1 - /1]
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
