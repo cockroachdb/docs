@@ -48,7 +48,7 @@ cockroachdb-build: bootstrap
 .PHONY: cockroachdb
 cockroachdb: jekyll-action := serve --port 4000
 cockroachdb: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
+	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_local.yml$(extra-config) $(JEKYLLFLAGS)
 
 .PHONY: standard
 standard: cockroachdb
