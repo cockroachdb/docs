@@ -16,11 +16,11 @@ This tutorial shows you how build a simple Go application with CockroachDB and t
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+{% include_cached {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Run the Go code
 
@@ -39,7 +39,7 @@ You can copy the code below, <a href="https://raw.githubusercontent.com/cockroac
 
 Here are the contents of `main.go`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/master/main.go %}
 ~~~
@@ -61,12 +61,12 @@ Replace the string passed to `pgx.ParseConfig()` with the connection string that
 
 The function call should look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 config, err := pgx.ParseConfig("postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}")
 ~~~
 
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+{% include_cached {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
@@ -74,14 +74,14 @@ config, err := pgx.ParseConfig("postgresql://{user}:{password}@{globalhost}:2625
 
 Initialize the module:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go mod init basic-sample
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run main.go
 ~~~
@@ -97,12 +97,12 @@ Success
 
 To verify that the SQL statements were executed, run the following query from inside the SQL shell:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE bank;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT id, balance FROM accounts;
 ~~~
@@ -121,4 +121,4 @@ The output should be:
 
 Read more about using the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx?tab=doc).
 
-{% include {{ page.version.version }}/app/see-also-links.md %}
+{% include_cached {{ page.version.version }}/app/see-also-links.md %}

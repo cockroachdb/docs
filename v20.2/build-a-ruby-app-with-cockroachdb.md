@@ -24,7 +24,7 @@ This tutorial shows you how build a simple Ruby application with CockroachDB and
 
 Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-pg).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~shell
 git clone https://github.com/cockroachlabs/hello-world-ruby-pg
 ~~~
@@ -35,7 +35,7 @@ The code connects as the user you created and executes some basic SQL statements
 
 Check out the `cockroachcloud` branch:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git checkout cockroachcloud
 ~~~
@@ -45,12 +45,12 @@ git checkout cockroachcloud
 ## Step 4. Configure the dependencies
 
 1. Install `libpq` for your platform. For example, to install it on Mac with Homebrew:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~shell
     brew install libpq
     ~~~
 1. Configure `bundle` to use `libpq`. For example, if you installed `libpq` on Mac using Homebrew:
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~shell
     bundle config --local build.pg --with-opt-dir="/usr/local/opt/libpq"
     ~~~
@@ -58,7 +58,7 @@ git checkout cockroachcloud
 
 ## Step 5. Install the dependencies
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~shell
 bundle install
 ~~~
@@ -69,7 +69,7 @@ Update the connection parameters to connect to your cluster.
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/master/main.rb|# BEGIN connect|# END connect %}
 ~~~
@@ -79,7 +79,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 </section>
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ ruby
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-pg/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
 ~~~
@@ -92,7 +92,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 
 Run the code to create a table and insert some rows, and then you'll run code to read and update values as an atomic [transaction](transactions.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ruby main.rb
 ~~~

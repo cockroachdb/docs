@@ -41,7 +41,7 @@ You can copy the code below, <a href="https://raw.githubusercontent.com/cockroac
 
 Here are the contents of `main.go`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-gorm/master/main.go %}
 ~~~
@@ -63,7 +63,7 @@ Replace the string given for the `addr` constant definition with the connection 
 
 The constant definition should look similar to the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ go
 const addr = "postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}"
 ~~~
@@ -76,14 +76,14 @@ const addr = "postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=ver
 
 Initialize the module:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go mod init basic-sample
 ~~~
 
 Then run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ go run main.go
 ~~~
