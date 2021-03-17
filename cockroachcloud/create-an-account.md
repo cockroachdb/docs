@@ -19,9 +19,11 @@ To register a new account, navigate to the [CockroachCloud registration page](ht
 <section class="filter-content" markdown="1" data-scope="github">
 
 1. Click **Sign up with GitHub**.
-1. Enter your GitHub **Username or email address** associated with your account.
-1. Enter your GitHub **Password**
-1. Click **Sign in**
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Log in to GitHub if you haven't already.
+1. Click **Authorize CockroachCloud by Cockroach Labs**.
+
+    A confirmation email will be sent.
 
 {{site.data.alerts.callout_info}}
 GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/github/authenticating-to-github/about-two-factor-authentication), if you have it enabled.
@@ -142,8 +144,12 @@ If you want to change your login method, you can do so at any time:
 1. Enter a **Password**.
 1. Click **Save**.
 
-    A confirmation email will be sent to your email address.
-    
+    A confirmation email will be sent.
+  
+{{site.data.alerts.callout_info}}
+As a best security practice, you can also [remove CockroachCloud's access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
+{{site.data.alerts.end}}
+        
 {{site.data.alerts.callout_info}}
 Creating an account password will _not_ change your [SQL user](user-authorization.html#create-a-sql-user) password.
 {{site.data.alerts.end}}
@@ -155,6 +161,7 @@ Creating an account password will _not_ change your [SQL user](user-authorizatio
 1. Click **Switch to GitHub login**.
 1. In the **Log in with GitHub** dialog, enter your **Password**.
 1. Click **Continue**.
-1. You will be prompted to log in to GitHub if you haven't already.
+1. Log in to GitHub if you haven't already.
+1. Click **Authorize CockroachCloud by Cockroach Labs**.
 
-    A confirmation email will be sent to your email address.
+    A confirmation email will be sent.
