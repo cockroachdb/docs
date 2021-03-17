@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% include head.html %}
+    {% include_cached head.html %}
     <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body>
     
-    {% include main-menu-contained-dropdown.html %}
+    {% include_cached main-menu-contained-dropdown.html %}
 
     {% for hash in page.allowed_hashes %}
         <a id="{{ hash }}" style="display: none"></a>
@@ -26,7 +26,7 @@
           id="sidebarMenu"
           class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0"
         >
-          {% include sidebar.html %}
+          {% include_cached sidebar.html %}
         </nav>
 
         {% if page.toc == true %}
@@ -51,16 +51,16 @@
       </div>
     </div>
 
-          {% include footer.html %}
+          {% include_cached footer.html %}
 
 
     <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}"></script>
-    {% include google_tag_manager.html %}
-    {% include google_remarketing.html %}
+    {% include_cached google_tag_manager.html %}
+    {% include_cached google_remarketing.html %}
     {% if page.twitter == true %}
-      {% include twitter_analytics.html %}
+      {% include_cached twitter_analytics.html %}
     {% endif %}
-    {% include drift.html %}
+    {% include_cached drift.html %}
 
   </body>
 </html>
