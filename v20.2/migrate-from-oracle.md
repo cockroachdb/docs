@@ -128,7 +128,7 @@ for lstfile in sys.argv[1:]:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python2 fix.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
+$ python3 fix-example.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
 ~~~
 
 Format the generated CSV files to meet the CockroachDB's [CSV requirements](#csv-requirements).
@@ -365,7 +365,7 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
     CockroachDB does not support `SYSDATE`; however, it does support date and time with the following:
 
     ~~~
-    > SELECT Transaction_timestamp(), clock_timestamp();
+    > SELECT transaction_timestamp(), clock_timestamp();
     ~~~
 
     ~~~
