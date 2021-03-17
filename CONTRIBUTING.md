@@ -8,7 +8,7 @@ This section helps you set up the tools you'll need to write the docs and use Co
 
 1. Install [Homebrew](https://brew.sh/), a macOS package manager you'll use for a few different installations. If you use Linux, then default package manager will work fine as well:
 
-    ``` 
+    ```
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     ```
 
@@ -20,7 +20,7 @@ This section helps you set up the tools you'll need to write the docs and use Co
     brew install git
     ````
 
-You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions. 
+You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions.
 
 3. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
 
@@ -32,7 +32,7 @@ You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documen
     gem install jekyll bundler
     ```
 If you get a permissions error, then try re-running the command with `sudo`.    
-    
+
 6. Learn the essentials of our [Docs Structure](#docs-structure).
 
 7. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
@@ -161,7 +161,6 @@ Field | Description | Default
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 `block_search` | If `true`, adds meta tags to the header that excludes the page from search indexing/caching. | Nothing
 `back_to_top` | If `true`, adds a back-to-top button to the page. This is only helpful in cases where the page is very long and there is no page toc, e.g., the Full SQL Grammar page.
-<!-- `drift` | Set this to `true` if a Drift survey is active on the page. This excludes the help button from the page, which would otherwise conflict visually with the Drift interface. -->
 
 #### Page TOC
 
