@@ -6,11 +6,11 @@ The following requirements apply to all role names (also known as usernames).
 - When surrounded by quotes in SQL statements (always recommended)—single or double quotes, depending on the statement—role names:
     - Can contain letters, underscores, digits, periods, and dashes. Letters may include `a`-`z`, those with diacritical marks, and non-Latin letters*.
     - Can begin with a letter, underscore, or digit.
-- When referenced without quotes, role names:
+- When referenced in SQL without quotes, role names:
     - Cannot contain periods or dashes.
     - Cannot begin with a digit.
     - Cannot match the name of a SQL keyword.
-- Role names cannot exceed 63 bytes, limiting them to 63 characters when all are ASCII characters and limiting them to fewer characters when a broader character set is used. A name cannot be the null (0 byte) character.
+- Role names cannot exceed 63 bytes. This limits them to 63 characters when all are ASCII characters and to fewer characters when a broader character set is used. A name cannot be the null (0 byte) character.
 
 ### Role membership and privileges
 
