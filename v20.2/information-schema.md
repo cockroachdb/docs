@@ -1,12 +1,10 @@
 ---
 title: information_schema
-summary: The information_schema virtual schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
+summary: The information_schema schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
 toc: true
 ---
 
-The `information_schema` [virtual schema](virtual-schemas.html) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
-
-The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema [`crdb_internal`](crdb-internal.html), which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
+The `information_schema` [system catalog](system-catalogs.html) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
 ## Data exposed by `information_schema`
 
@@ -414,7 +412,7 @@ And to retrieve specific columns from the `table_constraints` table:
 
 ## See also
 
-- [Virtual Schemas](virtual-schemas.html)
+- [System Catalogs](system-catalogs.html)
 - [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

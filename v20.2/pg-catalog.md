@@ -4,11 +4,11 @@ summary: The pg_catalog schema contains read-only views that you can use for int
 toc: true
 ---
 
-For PostgreSQL compatibility, CockroachDB includes a [virtual schema](virtual-schemas.html) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs-overview.html). `pg_catalog` tables are read-only.
+For PostgreSQL compatibility, CockroachDB includes a [system catalog schema](system-catalogs.html) called `pg_catalog`. The tables in the `pg_catalog` schema roughly correspond to the [system catalogs in PostgreSQL](https://www.postgresql.org/docs/13/catalogs.html). `pg_catalog` tables are read-only.
 
 ## Data exposed by `pg_catalog`
 
-The tables in `pg_catalog` correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
+The tables in CockroachDB's `pg_catalog` correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
 
 PostgreSQL 13 system catalog | `pg_catalog` table  
 -----------------------------|--------------
@@ -164,4 +164,4 @@ For example, to return the `pg_catalog` table with additional information about 
 - [`SHOW SCHEMAS`](show-schemas.html)
 - [`SHOW TABLES`](show-tables.html)
 - [SQL Name Resolution](sql-name-resolution.html)
-- [Virtual Schemas](virtual-schemas.html)
+- [System Catalogs](system-catalogs.html)
