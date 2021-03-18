@@ -85,11 +85,11 @@ UPDATE vehicle SET status = 'unavailable' WHERE owner_id = 'bd70a3d7-0a3d-4000-8
 
 {% include copy-clipboard.html %}
 ~~~ go
-// tx is a *sql.Tx from "database/sql"
+// 'db' is an open database connection
 
 ownerID := "bd70a3d7-0a3d-4000-8000-000000000025"
 
-if _, err := tx.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID); err != nil {
+if _, err := db.Exec("UPDATE vehicle SET status = 'unavailable' WHERE owner_id = $1", ownerID); err != nil {
   return err
 }
 return nil
@@ -103,11 +103,12 @@ return nil
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
-String ownerID = "bd70a3d7-0a3d-4000-8000-000000000025";
+String ownerId = "bd70a3d7-0a3d-4000-8000-000000000025";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement()
-            .executeUpdate("UPDATE vehicles SET status = 'unavailable' WHERE owner_id = '" + ownerID + "'");
+    PreparedStatement p = connection.prepareStatement("UPDATE vehicles SET status = 'unavailable' WHERE owner_id = ?");
+    p.setString(1, ownerId);
+    p.executeUpdate();
 
 } catch (SQLException e) {
     System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
@@ -128,7 +129,6 @@ ownerID = 'bd70a3d7-0a3d-4000-8000-000000000025'
 with conn.cursor() as cur:
     cur.execute(
         "UPDATE vehicles SET status = 'unavailable' WHERE owner_id = %s", (ownerID,))
-    conn.commit()
 ~~~
 
 </section>
@@ -189,19 +189,19 @@ UPSERT INTO promo_codes (code, description, rules)
 
 {% include copy-clipboard.html %}
 ~~~ go
-// tx is a *sql.Tx from "database/sql"
+// 'db' is an open database connection
 
 codeOne := "0_explain_theory_something"
 descriptionOne := "Fifteen percent off."
-rulesOne := "{\"type\": \"percent_discount\", \"value\": \"15%\"}"
+rulesOne := `{"type": "percent_discount", "value\": "15%"}`
 codeTwo := "100_address_garden_certain"
 descriptionTwo := "Twenty percent off."
-rulesTwo := "{\"type\": \"percent_discount\", \"value\": \"20%\"}"
+rulesTwo := `{"type": "percent_discount", "value": "20%"}`
 codeThree := "1000_do_write_words"
 descriptionThree := "Twenty-five percent off."
-rulesThree := "{\"type\": \"percent_discount\", \"value\": \"25%\"}"
+rulesThree := `{"type": "percent_discount", "value": "25%"}`
 
-if _, err := tx.Exec("UPSERT INTO promo_codes (code, description, rules) "+
+if _, err := db.Exec("UPSERT INTO promo_codes (code, description, rules) "+
   "values ($1, $2, $3), ($4, $5, $6), ($7, $8, $9)",
   codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo,
   rulesTwo, codeThree, descriptionThree, rulesThree); err != nil {
@@ -218,7 +218,6 @@ return nil
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
-
 String codeOne = "0_explain_theory_something";
 String descriptionOne = "Fifteen percent off.";
 String rulesOne = "{\"type\": \"percent_discount\", \"value\": \"15%\"}";
@@ -230,10 +229,18 @@ String descriptionThree = "Twenty-five percent off.";
 String rulesThree = "{\"type\": \"percent_discount\", \"value\": \"25%\"}";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement()
-            .executeUpdate("UPSERT INTO promo_codes (code, description, rules) values('" + codeOne + "','"
-                    + descriptionOne + "','" + rulesOne + "'),('" + codeTwo + "','" + descriptionTwo + "','"
-                    + rulesTwo + "'),('" + codeThree + "','" + descriptionThree + "','" + rulesThree + "')");
+    PreparedStatement p = connection.prepareStatement("UPSERT INTO promo_codes (code, description, rules) values (?, ?, ?), (?, ?, ?), (?, ?, ?)");
+    p.setString(1, codeOne);
+    p.setString(2, descriptionOne);
+    p.setString(3, rulesOne);
+    p.setString(4, codeTwo);
+    p.setString(5, descriptionTwo);
+    p.setString(6, rulesTwo);
+    p.setString(7, codeThree);
+    p.setString(8, descriptionThree);
+    p.setString(9, rulesThree);
+    p.executeUpdate();
+
 
 } catch (SQLException e) {
     System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
@@ -262,7 +269,6 @@ rulesThree = '{"type": "percent_discount", "value": "25%"}'
 with conn.cursor() as cur:
     cur.execute("UPSERT INTO promo_codes (code, description, rules) values (%s,%s,%s), (%s,%s,%s), (%s,%s,%s)",
                 (codeOne, descriptionOne, rulesOne, codeTwo, descriptionTwo, rulesTwo, codeThree, descriptionThree, rulesThree))
-    conn.commit()
 ~~~
 
 </section>
@@ -332,7 +338,7 @@ INSERT INTO user_promo_codes (city, user_id, code, "timestamp", usage_count)
 
 {% include copy-clipboard.html %}
 ~~~ go
-// tx is a *sql.Tx from "database/sql"
+// 'db' is an open database connection
 
 city := "new york"
 userId := "147ae147-ae14-4b00-8000-000000000004"
@@ -340,7 +346,7 @@ code := "promo_code"
 ts := "now()"
 usageCount := 1
 
-if _, err := tx.Exec("INSERT INTO user_promo_codes "+
+if _, err := db.Exec("INSERT INTO user_promo_codes "+
   "VALUES ($1, $2, $3, $4, $5) ON CONFLICT (city, user_id, code) "+
   "DO UPDATE SET usage_count = user_promo_codes.usage_count + 1",
   city, userId, code, ts, usageCount); err != nil {
@@ -357,7 +363,6 @@ return nil
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
-
 String city = "new york";
 String userId = "147ae147-ae14-4b00-8000-000000000004";
 String code = "promo_code";
@@ -365,9 +370,13 @@ String ts = "now()";
 int usageCount = 1;
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("INSERT INTO user_promo_codes VALUES ('" + city + "','" + userId
-            + "','" + code + "','" + ts + "','" + usageCount
-            + "') ON CONFLICT (city, user_id, code) DO UPDATE SET usage_count = user_promo_codes.usage_count+1");
+    PreparedStatement p = connection.prepareStatement("INSERT INTO user_promo_codes VALUES (?, ?, ?, ?, ?) ON CONFLICT (city, user_id, code) DO UPDATE SET usage_count = user_promo_codes.usage_count+1");
+    p.setString(1, city);
+    p.setString(2, userId);
+    p.setString(3, code);
+    p.setString(4, ts);
+    p.setInt(5, usageCount);
+    p.executeUpdate();
 
 } catch (SQLException e) {
     System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
@@ -392,7 +401,6 @@ usageCount = 1
 with conn.cursor() as cur:
     cur.execute("INSERT INTO user_promo_codes VALUES (%s, %s, %s, %s, %s) ON CONFLICT (city, user_id, code)"
                 "DO UPDATE SET usage_count = user_promo_codes.usage_count+1", (city, userId, code, ts, usageCount))
-    conn.commit()
 ~~~
 
 </section>
