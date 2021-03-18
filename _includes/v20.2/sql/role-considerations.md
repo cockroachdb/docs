@@ -10,7 +10,7 @@ The following requirements apply to all role names (also known as usernames).
     - Cannot contain periods or dashes.
     - Cannot begin with a digit.
     - Cannot match the name of a SQL keyword.
-- Role names cannot exceed 63 bytes, so, when only ASCII characters are used, 63 characters. A null character (0 bytes) is not allowed. 
+- Role names cannot exceed 63 bytes, limiting them to 63 characters when all are ASCII characters and limiting them to fewer characters when a broader character set is used. A name cannot be the null (0 byte) character.
 
 ### Role membership and privileges
 
