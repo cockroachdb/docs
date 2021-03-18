@@ -81,12 +81,12 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 {% include copy-clipboard.html %}
 ~~~ go
-// tx is a *sql.Tx from "database/sql"
+// 'db' is an open database connection
 
 tsOne := "2021-03-17 14:00:00"
 tsTwo := "2021-03-17 15:00:00"
 
-if _, err := tx.Exec("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN $1 AND $2", tsOne, tsTwo); err != nil {
+if _, err := db.Exec("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN $1 AND $2", tsOne, tsTwo); err != nil {
   return err
 }
 return nil
@@ -104,9 +104,10 @@ String tsOne = "2021-03-17 14:00:00";
 String tsTwo = "2021-03-17 15:00:00";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement()
-            .executeUpdate("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN '" + tsOne
-                    + "' AND '" + tsTwo + "'");
+    PreparedStatement p = connection.prepareStatement("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN ? AND ?");
+    p.setString(1, tsOne);
+    p.setString(2, tsTwo);
+    p.executeUpdate();
 
 } catch (SQLException e) {
     System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
@@ -128,7 +129,6 @@ tsTwo = '2021-03-17 15:00:00'
 with conn.cursor() as cur:
     cur.execute(
         "DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN %s AND %s", (tsOne, tsTwo))
-conn.commit()
 ~~~
 
 </section>
@@ -163,13 +163,13 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 
 {% include copy-clipboard.html %}
 ~~~ go
-// tx is a *sql.Tx from "database/sql"
+// 'db' is an open database connection
 
 codeOne := "0_explain_theory_something"
 codeTwo := "100_address_garden_certain"
 codeThree := "1000_do_write_words"
 
-if _, err := tx.Exec("DELETE from promo_codes WHERE code IN ($1, $2, $3)", codeOne, codeTwo, codeThree); err != nil {
+if _, err := db.Exec("DELETE from promo_codes WHERE code IN ($1, $2, $3)", codeOne, codeTwo, codeThree); err != nil {
   return err
 }
 return nil
@@ -188,8 +188,11 @@ String codeTwo = "100_address_garden_certain";
 String codeThree = "1000_do_write_words";
 
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate(
-            "DELETE from promo_codes WHERE code IN('" + codeOne + "','" + codeTwo + "','" + codeThree + "')");
+    PreparedStatement p = connection.prepareStatement("DELETE from promo_codes WHERE code IN(?, ?, ?)");
+    p.setString(1, codeOne);
+    p.setString(2, codeTwo);
+    p.setString(3, codeThree);
+    p.executeUpdate();
 
 } catch (SQLException e) {
     System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
@@ -211,7 +214,6 @@ codeThree = '1000_do_write_words'
 
 with conn.cursor() as cur:
     cur.execute("DELETE from promo_codes WHERE code IN (%s, %s, %s)", (codeOne, codeTwo, codeThree)),
-conn.commit()
 ~~~
 
 </section>
