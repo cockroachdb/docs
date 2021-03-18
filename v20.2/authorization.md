@@ -47,10 +47,6 @@ For secure clusters, in addition to [generating the client certificate](authenti
 
 ## Roles
 
-{{site.data.alerts.callout_info}}
- Role-based access control (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB.
-{{site.data.alerts.end}}
-
 A role is a group of users and/or other roles for which you can grant or revoke privileges as a whole. To simplify access management, create a role and grant privileges to the role, then create SQL users and grant them membership to the role.
 
 Users and roles and technically the same type of entity. See [Users and roles](#users-and-roles).
