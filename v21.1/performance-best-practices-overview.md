@@ -14,26 +14,22 @@ For a demonstration of some of these techniques, see [Performance Tuning](perfor
 If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
 {{site.data.alerts.end}}
 
-## Multi-row DML best practices
+## DML best practices
 
-### Use multi-row DML instead of multiple single-row DMLs
+### Use multi-row statements instead of multiple single-row statements
 
-For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row DML is faster than multiple single-row DMLs. Whenever possible, use multi-row DML instead of multiple single-row DMLs.
+For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row statement is faster than multiple single-row statements. Whenever possible, use multi-row statements for DML queries instead of multiple single-row statements.
 
 For more information, see:
 
-- [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
-- [Upsert Multiple Rows](upsert.html#upsert-multiple-rows)
-- [Delete Multiple Rows](delete.html)
+- [Insert Data](insert-data.html)
+- [Update Data](update-data.html)
+- [Delete Data](delete-data.html)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
-### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
+## Bulk-insert best practices
 
-The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
-
-## Bulk insert best practices
-
-### Use multi-row `INSERT` statements for bulk inserts into existing tables
+### Use multi-row `INSERT` statements for bulk-inserts into existing tables
 
 To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include bulk `INSERT` statements within an explicit transaction.
 
@@ -47,18 +43,27 @@ For more information, see [Insert Multiple Rows](insert.html#insert-multiple-row
 Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry errors](transaction-retry-error-reference.html). If a multi-row `INSERT` query results in an error code [`40001` with the message `"transaction deadline exceeded"`](transaction-retry-error-reference.html#retry_commit_deadline_exceeded), we recommend breaking up the query up into smaller batches of rows.
 {{site.data.alerts.end}}
 
-
-### Use `IMPORT` instead of `INSERT` for bulk inserts into new tables
+### Use `IMPORT` instead of `INSERT` for bulk-inserts into new tables
 
 To bulk-insert data into a brand new table, the [`IMPORT`](import.html) statement performs better than `INSERT`.
 
-## Bulk delete best practices
+## Bulk-update best practices
 
-### Batch deletes
+### Use batch updates to delete a large number of rows
 
-To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Batch deletes](bulk-delete-data.html).
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-update Data](bulk-update-data.html).
 
-### Batch-delete "expired" data
+## Bulk-delete best practices
+
+### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
+
+The [`TRUNCATE`](truncate.html) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
+
+### Use batch deletes to delete a large number of rows
+
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-delete Data](bulk-delete-data.html).
+
+### Batch delete "expired" data
 
 CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process with a job scheduler like `cron`. For an example, see [Batch-delete "expired" data](bulk-delete-data.html#batch-delete-expired-data).
 
