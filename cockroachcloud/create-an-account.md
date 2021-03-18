@@ -149,10 +149,6 @@ If you want to change your login method, you can do so at any time:
 {{site.data.alerts.callout_info}}
 As a best security practice, you can also [remove CockroachCloud's access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
 {{site.data.alerts.end}}
-        
-{{site.data.alerts.callout_info}}
-Creating an account password will _not_ change your [SQL user](user-authorization.html#create-a-sql-user) password.
-{{site.data.alerts.end}}
 
 ### Switch from an email login to GitHub
 
