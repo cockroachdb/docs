@@ -5,11 +5,7 @@ toc: true
 redirect_from: [create-and-manage-users.html, roles.html]
 ---
 
-User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's SQL [users](#users-and-roles) and assign SQL-level [privileges](#assign-privileges) to them. Additionally, you can use [role-based access control (RBAC)](#roles) for simplified user management.
-
-{{site.data.alerts.callout_info}}
- Role-based access control (RBAC) is no longer an enterprise feature and is now freely available in the core version of CockroachDB. Also, for enhanced PostgreSQL compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements as the two represent the same type of entity. A role can be used as a group of database roles/users or as an individual user. For more information, see [Users and roles](#users-and-roles).
-{{site.data.alerts.end}}
+You can map SQL [roles](#roles) to SQL [privileges](#assign-privileges) and use role membership to group [users](#users-and-roles) that share privileges.
 
 ## Users and roles
 

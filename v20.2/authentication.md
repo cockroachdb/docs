@@ -4,7 +4,7 @@ summary: Learn about the authentication features for secure CockroachDB clusters
 toc: true
 ---
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.3 digital certificates for inter-node authentication and accepts TLS 1.2 and TLS 1.3 certificates for client-node authentication. A certificate authority (CA) is required, as well as keys and certificates for nodes, clients, and, optionally, the DB Console. This document discusses how CockroachDB uses digital certificates and gives a [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.3 digital certificates for inter-node authentication and accepts TLS 1.2 and TLS 1.3 certificates for client-node authentication. This document discusses how CockroachDB uses digital certificates and what your options are for configuring user authentication for SQL clients and the DB Console UI. It also offers a [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
@@ -50,7 +50,7 @@ CockroachDB offers the following methods for client authentication:
     $ cockroach sql --certs-dir=certs --user=jpointsman
     ~~~
 
-- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters. While users can use passwords to authenticate without supplying client certificates and keys, we recommend using certificate-based authentication whenever possible.
+- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters. While users can use passwords to authenticate without supplying client certificates and keys, we recommend using certificate-based authentication whenever possible. For more information, see [Password authentication considerations](#password-authentication-considerations).
 
     Example:
     {% include copy-clipboard.html %}
@@ -68,18 +68,21 @@ CockroachDB offers the following methods for client authentication:
 
     Note that the client still needs the CA certificate to validate the nodes' certificates.
 
-    To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) OR `CREATE USER`(create-user.html). To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) OR [`ALTER USER`](alter-user.html) statement. Note that the user performing these actions [must have the `CREATEROLE` and `CREATELOGIN` permissions](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) or be a member of the `admin` role.
+    - To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) or `CREATE USER`(create-user.html).
+    - To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) or [`ALTER USER`](alter-user.html) statement.
+    - To remove a user's password and thereby disable password authentication for the user, use `WITH PASSWORD NULL` clause of [`ALTER ROLE`](alter-role.html) or [`ALTER USER`](alter-user.html). 
+    - Note that the user performing these actions [must have the `CREATEROLE` and `CREATELOGIN` permissions](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) or be a member of the `admin` role.
 
 - **Password authentication without TLS**
 
     <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
 
-    With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+    With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`. Note that we recommend using certificate-based authentication instead of password authentication whenever possible. For more information, see [Password authentication considerations](#password-authentication-considerations).
 
     Example:
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --user=jpointsman --insecure
+    $ cockroach sql --user=jpointsman
     ~~~
 
     ~~~
@@ -231,7 +234,9 @@ File name | File usage
 
 See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
-## Authentication best practice
+### Authentication best practices
+
+#### Certificate rotation
 
 As a security best practice, we recommend that you rotate the node, client, or CA certificates in the following scenarios:
 
@@ -241,6 +246,12 @@ As a security best practice, we recommend that you rotate the node, client, or C
 - You need to modify the contents of a certificate, for example, to add another DNS name or the IP address of a load balancer through which a node can be reached. In this case, you would need to rotate only the node certificates.
 
 For details about when and how to change security certificates without restarting nodes, see [Rotate Security Certificates](rotate-certificates.html).
+
+#### Password authentication considerations
+
+In most cases, we recommend using client certificate and key authentication rather than password authentication, to ensure a higher level of security.
+
+Passwords are often embedded in connection URLs, which can inadvertently be included in log files, public scripts, and other insecure locations. It is less likely to inadvertently leak a certificate which is transmitted securely from one system to another.
 
 ## Background on public key cryptography and digital certificates
 

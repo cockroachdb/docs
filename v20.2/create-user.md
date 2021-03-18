@@ -12,11 +12,9 @@ The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can b
 
 {{site.data.alerts.callout_info}}
  `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
-
- Prior to CockroachDB v20.1, role-based access control (RBAC) was an enterprise feature, and `CREATE ROLE` created an entity type called a role that was distinct from a user. As of v20.1, an updated version of this feature is freely available in CockroachDB core, and for enhanced Postgres compatibility, the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements to refer to this new, singular entity type.
 {{site.data.alerts.end}}
 
-For more information, see the [Authorization](authorization.html) documentation on roles and users.
+See [Authorization](authorization.html) for more information on privilege management and role membership.
 
 ## Considerations
 

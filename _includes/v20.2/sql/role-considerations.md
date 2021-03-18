@@ -1,9 +1,19 @@
-- Role names (also known as usernames):
-    - Are case-insensitive.
-    - Can contain only letters, numbers, underscores (`_`), and periods. When a period is present, single or double quotes around the name are required in SQL commands.
-    - Must start with a letter or underscore.
-    - Can be 1 to 63 characters long.
-    - Must be unique.
+### Role name limitations
+
+The following requirements apply to all role names (also known as usernames).
+
+- Role names are case-insensitive and must be unique.
+- When surrounded by quotes in SQL statements (always recommended)—single or double quotes, depending on the statement—role names:
+    - Can contain letters, underscores, digits, periods, and dashes. Letters may include `a`-`z`, those with diacritical marks, and non-Latin letters*.
+    - Can begin with a letter, underscore, or digit.
+- When referenced without quotes, role names:
+    - Cannot contain periods or dashes.
+    - Cannot begin with a digit.
+    - Cannot match the name of a SQL keyword.
+- Role names cannot exceed 63 bytes, so, when only ASCII characters are used, 63 characters. A null character (0 bytes) is not allowed. 
+
+### Role membership and privileges
+
 - After creating roles, you can [grant them privileges to databases and tables](grant.html) and later [revoke](revoke.html) privileges.
 - Roles can be members of other roles. All privileges of a role are inherited by all of its members.
 - All roles belong to the `public` role, to which you can likewise [grant](grant.html) and [revoke](revoke.html) privileges.
