@@ -14,7 +14,7 @@ The following syntax forms are recognized for compatibility with the
 SQL standard and PostgreSQL, but are equivalent to regular built-in
 functions:
 
-{% include {{ page.version.version }}/sql/function-special-forms.md %}
+{% include_cached {{ page.version.version }}/sql/function-special-forms.md %}
 
 ## Conditional and function-like operators
 
