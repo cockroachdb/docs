@@ -52,7 +52,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 Clone the `hello-world-java-jdbc` repo to your machine:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/hello-world-java-jdbc
 ~~~
@@ -65,7 +65,7 @@ In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` 
 
 Modify the options in the `PGSimpleDataSource` instance:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 ds.setPortNumber({port});
 ds.setUser("{username}");
@@ -80,7 +80,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 
 In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 ds.setServerNames(new String[]{"{globalhost}"});
 ds.setDatabaseName("{cluster_name}.bank");
@@ -98,14 +98,14 @@ ds.setSslRootCert("{path to the CA certificate}")
 
 Compile and run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 ./gradlew run
 ~~~
 
 The contents of `BasicExample.java`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
