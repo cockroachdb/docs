@@ -59,6 +59,8 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 CockroachCloud is a single-tenant offering and resources are not shared between clusters.
 
+### Who has access to my cluster data?
+
 ## Cluster maintenance
 
 ### How do I change the configurations on my cluster?
@@ -87,6 +89,8 @@ To restore your data, [contact us](https://support.cockroachlabs.com).
 
 Additionally, you can [backup and restore](../stable/backup-and-restore.html) data on your own.
 
+### Can I download the backups that CockroachCloud takes for me?
+
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
 Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location](../v20.1/backup.html#backup-file-urls) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
@@ -101,9 +105,25 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
+### Is there a public API for CockroachCloud?
+
 ### Do you have a UI? How can I see details?
 
 All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
+
+### What latency should I expect when making a call to CockroachCloud?
+
+### How can I manage resources such as CPU, memory, and IOPs?
+
+### How does CockroachCloud support replication between regions?
+
+## Support
+
+### What is the policy for upgrades and support for older versions of CockroachCloud?
+
+### What is the outage history in production?
+
+### What is the process and SLA for disaster recovery?
 
 ## Cluster troubleshooting
 
