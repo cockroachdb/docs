@@ -78,7 +78,7 @@ Key                 | <div style="width:130px">Context</div> | Value
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n` <br><br> Example: `IMPORT INTO ... WITH rows_terminated_by='\m';`
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t` <br><br> Example: `IMPORT INTO ... WITH fields_terminated_by=".";`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"` <br><br> Example: `IMPORT INTO ... WITH fields_enclosed_by='"';`
-`fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally. <br><br> Example: `IMPORT INTO ... WITH fields_escaped_by='"';`
+`fields_escaped_by`    | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character, when preceding one of the above `DELIMITED DATA` options, to be interpreted literally. <br><br> Example: `IMPORT INTO ... WITH fields_escaped_by='\';`
 `strict_validation`    | `AVRO DATA`    | Rejects Avro records that do not have a one-to-one mapping between Avro fields to the target CockroachDB schema. By default, CockroachDB ignores unknown Avro fields and sets missing SQL fields to `NULL`. CockroachDB will also attempt to convert the Avro field to the CockroachDB [data type][datatypes]; otherwise, it will report an error. <br><br> Example: `IMPORT INTO foo (..) AVRO DATA ('file.avro') WITH strict_validation;`
 `records_terminated_by` | `AVRO DATA`   | The unicode character to indicate new lines in the input binary or JSON file. This is not needed for Avro OCF. **Default:** `\n` <br><br> Example: To use tab-terminated records: `IMPORT INTO foo (..) AVRO DATA ('file.csv') WITH records_terminated_by = e'\t';`
 `data_as_binary_records` | `AVRO DATA`  | Use when [importing a binary file containing Avro records](migrate-from-avro.html#import-binary-or-json-records).  The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option. <br><br> Example: `IMPORT INTO foo (..) AVRO DATA ('file.bjson') WITH data_as_binary_records, schema_uri='..';`
@@ -289,7 +289,7 @@ Amazon S3:
     WITH
       fields_terminated_by='|',
       fields_enclosed_by='"',
-      fields_escaped_by='"';
+      fields_escaped_by='\';
 ~~~
 
 Azure:
@@ -303,7 +303,7 @@ Azure:
     WITH
       fields_terminated_by='|',
       fields_enclosed_by='"',
-      fields_escaped_by='"';
+      fields_escaped_by='\';
 ~~~
 
 Google Cloud:
@@ -317,7 +317,7 @@ Google Cloud:
     WITH
       fields_terminated_by='|',
       fields_enclosed_by='"',
-      fields_escaped_by='"';
+      fields_escaped_by='\';
 ~~~
 
 ## Known limitations
