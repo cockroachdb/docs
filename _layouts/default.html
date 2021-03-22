@@ -7,7 +7,7 @@
   </head>
   <body>
 
-    {% include main-menu-contained-dropdown.html %}
+    {% include_cached main-menu-contained-dropdown.html %}
 
     {% for hash in page.allowed_hashes %}
         <a id="{{ hash }}" style="display: none"></a>
@@ -51,14 +51,14 @@
       </div>
     </div>
 
-          {% include footer.html %}
+          {% include_cached footer.html %}
 
 
     <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}"></script>
-    {% include google_tag_manager.html %}
-    {% include google_remarketing.html %}
+    {% include_cached google_tag_manager.html %}
+    {% include_cached google_remarketing.html %}
     {% if page.twitter == true %}
-      {% include twitter_analytics.html %}
+      {% include_cached twitter_analytics.html %}
     {% endif %}
 
   </body>
