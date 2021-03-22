@@ -50,7 +50,7 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 ### Get the code
 
-Clone the `hello-world-java-hibernate` repo to your machine:
+Clone the `hello-world-java-jdbc` repo to your machine:
 
 {% include copy-clipboard.html %}
 ~~~ shell
