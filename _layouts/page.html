@@ -5,7 +5,7 @@ layout: default
 
 {% unless page.homepage %}
 {% if page.version %}
-  {% include_cached version-switcher.html %}
+  {% include version-switcher.html %}
 {% endif %}
 {% endunless %}
 
@@ -21,7 +21,7 @@ layout: default
 ">
   <h1 class="post-title-main">{{ page.title }}</h1>
   {% unless page.contribute == false %}
-      {% include_cached contribute-options.html %}
+      {% include contribute-options.html %}
   {% endunless %}
 </div>
 {% endif %}
@@ -37,17 +37,17 @@ layout: default
    {% endif %}
 
    {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
-      {% include_cached unsupported-version.md %}
+      {% include unsupported-version.md %}
    {% endif %}
 
    {% if page.url contains 'v19.2' %}
-      {% include_cached unsupported-version-soon.md %}
+      {% include unsupported-version-soon.md %}
    {% endif %}
    
    {{content}}
 
    {% if page.feedback != false %}
-      {% include_cached feedback-widget.html %}
+      {% include feedback-widget.html %}
    {% endif %}
 
 </div>
