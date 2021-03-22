@@ -21,17 +21,17 @@ For a more realistic use of Sequelize with CockroachDB, see our [`examples-orms`
 
 ## Step 1. Start CockroachDB
 
-{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include_cached {{page.version.version}}/app/create-a-database.md %}
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Install the Sequelize ORM
 
 To install Sequelize, as well as a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
 $ npm install sequelize sequelize-cockroachdb
 ~~~
@@ -71,14 +71,14 @@ Open `app.js`, and edit the connection configuration parameters:
 
 The following code uses the [Sequelize](https://sequelize.readthedocs.io/en/v3/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ js
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js %}
 ~~~
 
 To run the code:
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
 $ node app.js
 ~~~
@@ -94,4 +94,4 @@ The output should be:
 
 Read more about using the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include_cached {{ page.version.version }}/app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

@@ -17,17 +17,17 @@ We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) enough 
 
 ## Step 1. Start CockroachDB
 
-{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include_cached {{page.version.version}}/app/create-a-database.md %}
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Install client driver
 
 To let your application communicate with CockroachDB, install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
 $ npm install pg
 ~~~
@@ -69,7 +69,7 @@ The sample code creates a table, inserts some rows, and then reads and updates v
 
 Here are the contents of `app.js`:
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ js
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-pg/main/app.js %}
 ~~~
@@ -78,7 +78,7 @@ Note that all of the database operations are wrapped in the `retryTxn` function.
 
 To run the code:
 
-{% include_cached copy-clipboard.html %}
+{% include copy-clipboard.html %}
 ~~~ shell
 $ node app.js
 ~~~
@@ -100,4 +100,4 @@ New account balances:
 
 Read more about using the [Node.js pg driver](https://www.npmjs.com/package/pg).
 
-{% include_cached {{page.version.version}}/app/see-also-links.md %}
+{% include {{page.version.version}}/app/see-also-links.md %}
