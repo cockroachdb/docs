@@ -24,6 +24,7 @@ keep_files:
 - _internal
 markdown: Redcarpet
 plugins:
+- jekyll-include-cache
 - jekyll-sitemap
 release_info:
   v1.0:
