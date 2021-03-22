@@ -27,6 +27,20 @@ If your application needs support for functions that are not yet implemented, pl
 
 For a list of other known limitations, see [Known Limitations](known-limitations.html#spatial-support-limitations).
 
+### ORM compatibility
+
+CockroachDB's spatial support is limited. As a result, not all PostGIS-compatible client libraries are compatible with CockroachDB's spatial features.
+
+The following ORM spatial libraries are fully compatible with CockroachDB's spatial features:
+
+- [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#spatial)
+
+    [Hibernate 5.4.30.Final](https://in.relation.to/2021/03/19/hibernate-orm-5430-final-release/) added the `CockroachDB202SpatialDialect` dialect to the `hibernate-spatial` module. The `CockroachDB202SpatialDialect` dialect supports spatial features available in CockroachDB v20.2 and later.
+
+- [RGeo/RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord)
+
+    CockroachDB's ActiveRecord adapter ([`activerecord-cockroachdb-adapter`](https://github.com/cockroachdb/activerecord-cockroachdb-adapter)) uses [RGeo](https://github.com/rgeo/rgeo) and [RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord) for spatial support with ActiveRecord v5.2.2+ and v6.0.0+. For information about using CockroachDB spatial features with ActiveRecord, see the [`activerecord-cockroachdb-adapter` README](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data).
+
 ## Troubleshooting
 
 For general CockroachDB troubleshooting information, see [this troubleshooting overview](troubleshooting-overview.html).
