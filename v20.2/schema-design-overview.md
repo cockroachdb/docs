@@ -101,6 +101,31 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
     The CockroachDB SQL client allows you to execute commands from the command line, or through the [CockroachDB SQL shell](cockroach-sql.html#sql-shell) interface. From the command line, you can pass a string to the client for execution, or you can pass a `.sql` file populated with SQL commands. From the SQL shell, you can execute SQL commands directly. Throughout the guide, we pass a `.sql` file to the SQL client to perform most database schema changes.
 
+## Object size and scaling considerations
+
+CockroachDB does not place hard limits on most database objects, however, there are scenarios where exteremely large attributes may cause performance to degrade.
+
+CockroachDB has been shown to perform well with clusters of 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes).
+
+As you scale to a large number of tables, note that:
+
+- The number of databases or schemas has minimal impact as compared to the total number of tables and their complexity.
+- Increasing RAM may have the greatest impact on performance. Increasing the number of nodes will not have a substantial effect.
+
+### Limits
+
+While practical limitations may exist, CockroachDB does not impose hard limits on:
+
+- database size.
+- the number of databases in a cluster.
+- the number of tables in a database or cluster.
+- the number of the following objects per table, database, or cluster:
+  - rows
+  - columns
+  - indexes
+  - inverted indexes
+  - constraints
+  - partitions
 
 ## What's next?
 
