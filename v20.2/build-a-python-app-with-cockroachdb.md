@@ -25,7 +25,7 @@ This tutorial shows you how build a simple Python application with CockroachDB a
 
 To install the Python psycopg2 driver, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install psycopg2-binary
 ~~~
@@ -56,12 +56,12 @@ Download the [`example.py`](https://raw.githubusercontent.com/cockroachlabs/hell
 
 If you prefer, you can also clone a version of the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/hello-world-python-psycopg2/
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ python
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-python-psycopg2/master/example.py %}
 ~~~
@@ -72,7 +72,7 @@ The Python code is a command-line utility that accepts the connection string to 
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
 "postgresql://<username>:<password>@<hostname>:<port>/bank?sslmode=require"
@@ -87,7 +87,7 @@ Before running the command, update the connection string as follows:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 example.py \
 "postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt"
