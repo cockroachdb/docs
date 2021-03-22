@@ -181,7 +181,7 @@ Use the [Statements page](ui-statements-page.html) to identify the slow [SQL sta
 
 Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 
--   [Multi-row DML](performance-best-practices-overview.html#multi-row-dml-best-practices)
+-   [Multi-row DML](performance-best-practices-overview.html#dml-best-practices)
 
 -   [Bulk-Insert best practices](performance-best-practices-overview.html#bulk-insert-best-practices)
 
