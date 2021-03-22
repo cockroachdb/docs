@@ -42,7 +42,14 @@ After a connection pool initializes connections to CockroachDB clusters, those c
 
 Validating connections is typically handled automatically by the connection pool. For example, in HikariCP the connection is validated whenever you request a connection from the pool, and the `keepaliveTime` property allows you to configure an interval to periodically check if the connections in the pool are valid. Whatever connection pool you use, make sure connection validation is enabled when running your application.
 
-## Example using HikariCP and JDBC
+## Example
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="java">Java (Hikari/JDBC)</button>
+  <button class="filter-button" data-scope="go">Go (pgxpool)</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="java">
 
 In this example, a Java application similar to the [basic JDBC example](build-a-java-app-with-cockroachdb.html) uses the [PostgreSQL JDBC driver](https://jdbc.postgresql.org/) and [HikariCP](https://github.com/brettwooldridge/HikariCP) as the connection pool layer to connect to a CockroachDB cluster. The database is being run on 10 cores across the cluster.
 
@@ -68,3 +75,36 @@ HikariDataSource ds = new HikariDataSource(config);
 
 Connection conn = ds.getConnection();
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+In this example, a Go application similar to the [basic pgx example](build-a-go-app-with-cockroachdb.html) uses the [pgxpool library](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool) to create a connection pool on a CockroachDB cluster. The database is being run on 10 cores across the cluster.
+
+Using the connection pool formula above:
+
+**connections = (10 [processor cores] * 3)**
+
+The connection pool size should be 30.
+
+~~~ go
+// Set connection pool configuration, with maximum connection pool size.
+config, err := pgxpool.ParseConfig("postgres://max:roach@127.0.0.1:26257/bank?sslmode=require&pool_max_conns=30")
+	if err != nil {
+		log.Fatal("error configuring the database: ", err)
+	}
+
+// Create a connection pool to the "bank" database.
+dbpool, err := pgxpool.ConnectConfig(context.Background(), config)
+if err != nil {
+	log.Fatal("error connecting to the database: ", err)
+}
+defer dbpool.Close()
+~~~
+
+This example uses the `pool_max_conns` parameter to set the maximum number of connections in the connection pool to 30.
+
+For a full list of connection pool configuration parameters for pgxpool, see [the pgxpool documentation](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#Config).
+
+</section>
