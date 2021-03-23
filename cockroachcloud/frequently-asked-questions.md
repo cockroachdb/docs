@@ -46,7 +46,7 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
-## Is encryption-at-rest enabled on CockroachCloud?
+### Is encryption-at-rest enabled on CockroachCloud?
 
 Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
@@ -60,6 +60,8 @@ Because we are relying on the cloud provider's encryption implementation (as not
 CockroachCloud is a single-tenant offering and resources are not shared between clusters.
 
 ### Who has access to my cluster data?
+
+The Cockroach Labs SRE team has direct access to CockroachCloud cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions).
 
 ## Cluster maintenance
 
@@ -85,11 +87,13 @@ The backups for AWS clusters are encrypted using [AWS S3’s server-side encrypt
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 
-To restore your data, [contact us](https://support.cockroachlabs.com).
+You can also [backup and restore](../stable/backup-and-restore.html) data on your own.
 
-Additionally, you can [backup and restore](../stable/backup-and-restore.html) data on your own.
+If you need additional help, [contact us](https://support.cockroachlabs.com).
 
 ### Can I download the backups that CockroachCloud takes for me?
+
+CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](../stable/take-full-and-incremental-backups.html) to your own [storage location](../stable/backup#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
@@ -107,23 +111,43 @@ Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all e
 
 ### Is there a public API for CockroachCloud?
 
+Our team is currently working on creating a public API for CockroachCloud, and our goal is to have foundational API cabilities available in 2021. The initial work is focused on core automation requirements, such as creation, modification, and deletion of clusters. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+
 ### Do you have a UI? How can I see details?
 
 All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
 
 ### What latency should I expect when making a call to CockroachCloud?
 
-### How can I manage resources such as CPU, memory, and IOPs?
+Response times are under 10ms for public access and typically much lower. Additionally, using [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink) will reduce latency.
+
+### How can I manage resources such as CPU, memory, and IOPS?
+
+The Cockroach Labs SRE team monitors cluster resources and is alerted in the event of storage and compute threshold issues and node downtime. The team also monitors performance and will work with you to add nodes as necessary to remediate any issues. Additional capabilities for direct customer alerts are being developed to notify you of any anomalies in real time.
 
 ### How does CockroachCloud support replication between regions?
 
+Cockroach enables locality flags with the [`cockroach start`](../stable/cockroach-start.html) command, which enforces placement of replicas across regions for optimal resiliency. Additionally, the [`configure zone`](../stable/configure-zone.html) command can be used to customize replication settings.
+
 ## Support
 
-### What is the policy for upgrades and support for older versions of CockroachCloud?
+### Am I in control of upgrades for all environments that use CockroachCloud?
+
+Yes. The Cockroach Labs Customer Success team will work with you to control when upgrades are applied to each of your environments. Major release upgrades can be applied directly [through the CockroachCloud Console](upgrade-to-v20.2.html). Minor release upgrades are automatically applied to all clusters. For more information, see the [Upgrade Policy](upgrade-policy.html).
+
+### What is the support policy for older versions of the software?
+
+CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. We highly recommend running one of the two latest versions of CockroachDB, but we will never force an upgrade to a cluster without your knowledge. You can contact [Support](https://support.cockroachlabs.com/hc/en-us) if you require an exception.
 
 ### What is the outage history in production?
 
+We support 99.95% uptime for CockroachCloud clusters. To date, we have not had any full scale or major outages affecting all customers. CockroachDB's distributed architecture is designed to be more resilient than traditional databases, and most of our customers achieve higher resilience by deploying more than 3 nodes. We can help size the right cluster for you based on your specific resilience or downtime needs.
+
 ### What is the process and SLA for disaster recovery?
+
+You can access self-service [backup and restore](backups-page.html) in the CockroachCloud console. Through the console, you have the ability to restore full tables or databases into a new or existing CockroachCloud cluster.
+
+If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
 
 ## Cluster troubleshooting
 
@@ -132,15 +156,3 @@ All customers of our CockroachCloud service can view and manage their clusters i
 To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) and [Performance Tuning](../stable/performance-tuning.html) docs for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
-
-### Can you run my CockroachDB cluster on-premise?
-
-Today, we do not have an offering that manages running CockroachDB on customer premises. In the future, we expect to have a private cloud offering that will allow you to run multiple CockroachDB clusters on your premises using the same tools that we use internally for our CockroachCloud offering.
-
-### Do you have a private cloud offering?
-
-[See above.](#can-you-run-my-cockroachdb-cluster-on-premise)
-
-### Can I see a demo?
-
-Yes, [contact us](https://support.cockroachlabs.com/hc/en-us) and we’d be happy to show you a demo of our CockroachCloud offering.
