@@ -18,6 +18,12 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
+<section class="filter-content" data-scope="windows">
+{{site.data.alerts.callout_danger}}
+The CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.
+{{site.data.alerts.end}}
+</section>
+
 <table class="release-table">
 <thead>
 <tr>
