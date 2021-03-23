@@ -14,7 +14,7 @@
       "/cockroachcloud/quickstart.html"
     ]
   },
-  {% include sidebar-data-cockroachcloud.json %},
+  {% include_cached sidebar-data-cockroachcloud.json %},
   {
     "title": "CockroachDB",
     "is_top_level": true,
@@ -265,7 +265,7 @@
                 ]
               },
               {
-                "title": "Overwrite Existing Data",
+                "title": "Update Data",
                 "urls": [
                   "/${VERSION}/update-data.html"
                 ]
@@ -2801,7 +2801,7 @@
           }
         ]
       },
-      {% include sidebar-releases.json %}
+      {% include_cached sidebar-releases.json %}
     ]
   },
   {

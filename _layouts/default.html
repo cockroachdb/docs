@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% include_cached head.html %}
+    {% include head.html %}
     <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body>
-    
+
     {% include_cached main-menu-contained-dropdown.html %}
 
     {% for hash in page.allowed_hashes %}
@@ -26,7 +26,7 @@
           id="sidebarMenu"
           class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0"
         >
-          {% include_cached sidebar.html %}
+          {% include sidebar.html %}
         </nav>
 
         {% if page.toc == true %}

@@ -17,11 +17,11 @@ We have tested the [Node.js pg driver](https://www.npmjs.com/package/pg) enough 
 
 ## Step 1. Start CockroachDB
 
-{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include_cached {{page.version.version}}/app/create-a-database.md %}
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Install client driver
 
@@ -100,4 +100,4 @@ New account balances:
 
 Read more about using the [Node.js pg driver](https://www.npmjs.com/package/pg).
 
-{% include_cached {{page.version.version}}/app/see-also-links.md %}
+{% include {{page.version.version}}/app/see-also-links.md %}

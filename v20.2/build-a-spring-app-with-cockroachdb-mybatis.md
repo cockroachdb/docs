@@ -16,7 +16,7 @@ This tutorial shows you how to build a simple [Spring Boot](https://spring.io/pr
 
 ## Before you begin
 
-{% include_cached {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/before-you-begin.md %}
 
 ## Step 1. Install JDK
 
@@ -250,6 +250,11 @@ This section walks you through the different components of the application proje
 ### Main process
 
 The main process of the application is defined in `src/main/java/com/example/cockroachdemo/CockroachDemoApplication.java`:
+
+{% include_cached copy-clipboard.html %}
+~~~ java
+{% remote_include https://raw.githubusercontent.com/jeffgbutler/mybatis-cockroach-demo/master/src/main/java/com/example/cockroachdemo/CockroachDemoApplication.java %}
+~~~
 
 The `SpringApplication.run` call in the `main` method bootstraps and launches a Spring application. The [`@SpringBootApplication` annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) on the `CockroachDemoApplication` class triggers Spring's [component scanning](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-structuring-your-code) and [auto-configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-auto-configuration) features.
 

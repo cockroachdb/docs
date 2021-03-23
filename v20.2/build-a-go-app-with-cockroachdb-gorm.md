@@ -20,11 +20,11 @@ For another use of GORM with CockroachDB, see our [`examples-orms`](https://gith
 
 ## Step 1. Start CockroachDB
 
-{% include_cached {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
 ## Step 2. Create a database
 
-{% include_cached {{page.version.version}}/app/create-a-database.md %}
+{% include {{page.version.version}}/app/create-a-database.md %}
 
 ## Step 3. Run the Go code
 
@@ -68,7 +68,7 @@ The constant definition should look similar to the following:
 const addr = "postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}"
 ~~~
 
-{% include_cached {{page.version.version}}/app/cc-free-tier-params.md %}
+{% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
 </section>
 
@@ -103,4 +103,4 @@ Balance at '2020-12-01 17:31:01.570412 -0500 EST m=+0.163512523':
 
 Read more about using the [GORM ORM](http://gorm.io), or check out a more realistic implementation of GORM with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
-{% include_cached {{ page.version.version }}/app/see-also-links.md %}
+{% include {{ page.version.version }}/app/see-also-links.md %}

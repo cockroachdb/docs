@@ -9,7 +9,7 @@ gem "jekyll", "~> 4.2"
 gem "jekyll-redirect-from", "~> 0.15"
 gem "jekyll-sitemap", "~> 1.3.1"
 gem "liquid-c", "~> 4.0.0"
-gem "redcarpet", "~> 3.4"
+gem "redcarpet", "~> 3.5"
 gem "sassc", "~> 2.2"
 
 group :jekyll_plugins do

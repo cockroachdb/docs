@@ -67,7 +67,7 @@ Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your clu
 
 ### How do I add nodes?
 
-You can add nodes by accessing the **Clusters** page on the [CockroachCloud Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for.
+You can add nodes by accessing the **Clusters** page on the [CockroachCloud Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
 
 ### Do you auto-scale?
 
