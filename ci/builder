@@ -3,7 +3,7 @@
 set -euo pipefail
 
 image=cockroachdb/docs-builder
-version=${COCKROACH_DOCS_BUILDER_VERSION:-20210316-181928}
+version=${COCKROACH_DOCS_BUILDER_VERSION:-20210322-155506}
 
 root=$(cd "$(dirname "$0")" && pwd)
 repo_root=$root/..
