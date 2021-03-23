@@ -30,7 +30,6 @@ TODO: clean up the SQL diagrams not to link to these missing nonterminals.
 <a id="column_name"></a>
 <a id="count"></a>
 <a id="fk_column_name"></a>
-<a id="interleave_prefix"></a>
 <a id="limit_val"></a>
 <a id="offset_val"></a>
 <a id="ref_column_name"></a>

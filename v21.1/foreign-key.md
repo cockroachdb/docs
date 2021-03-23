@@ -123,8 +123,6 @@ Parameter | Description
 
 Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
 
-You can improve the performance of some statements that use foreign keys by also using [`INTERLEAVE IN PARENT`](interleave-in-parent.html), but there are tradeoffs. For more information about the performance implications of interleaved tables (as well as the limitations), see the **Interleave tables** section of [Performance best practices](performance-best-practices-overview.html#interleave-tables).
-
 {{site.data.alerts.callout_danger}}
 Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
 {{site.data.alerts.end}}
@@ -194,8 +192,7 @@ CREATE TABLE packages (
     delivery_date DATE,
     PRIMARY KEY (customer, "order", id),
     CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES orders
-    ) INTERLEAVE IN PARENT orders (customer, "order")
-  ;
+    );
 ~~~
 
 ## Usage examples
