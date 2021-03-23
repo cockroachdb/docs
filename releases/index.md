@@ -18,6 +18,10 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
 
+<section class="filter-content" data-scope="windows">
+{% include windows_warning.md %}
+</section>
+
 <table class="release-table">
 <thead>
 <tr>
