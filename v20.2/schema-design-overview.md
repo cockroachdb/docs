@@ -105,7 +105,7 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 CockroachDB does not place hard limits on most database objects, however, there are scenarios where exteremely large attributes may cause performance to degrade.
 
-CockroachDB has been shown to perform well with clusters of 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes).
+CockroachDB has been shown to perform well with clusters containing 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes) and system specifications.
 
 As you scale to a large number of tables, note that:
 
@@ -126,6 +126,11 @@ While practical limitations may exist, CockroachDB does not impose hard limits o
   - inverted indexes
   - constraints
   - partitions
+- the length of identifiers. Note:
+  - a maximum of 128 bytes is recommended for identifiers and may be enforced in future versions of CockroachDB. For compatibility with other databases, CockroachDB has a `max_identifier_length` variable set to 128. This is a reported value that is not currently enforced.
+  - this does not apply to role or user names, which have a limit of 63 bytes, among other [restrictions](create-role.html#role-name-limitations).
+
+By default, a [range](architecture/overview.html#terms) automatically [splits](architecture/distribution-layer#range-splits) into two ranges when it reaches 512MiB in size. You can also choose to [manually split ranges](https://www.cockroachlabs.com/docs/stable/split-at.html) at a specified row in a table or index. The size of each range will continue to be within the 512MiB limit, in this case.
 
 ## What's next?
 
