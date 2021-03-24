@@ -103,17 +103,17 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 ## Object size and scaling considerations
 
-CockroachDB does not place hard limits on most database objects, however, there are scenarios where exteremely large attributes may not be supported or may cause performance to degrade.
+CockroachDB does not place hard limits on most database objects, however, there are scenarios where extremely large attributes may not be supported or may cause performance to degrade.
 
 ### Hard limits
 
 The following table lists specific limits imposed by CockroachDB.
 
 | Object | Limit | Comments |
-| --- | --- | --- |
+| ------ | ----- | -------- |
 | Role names | 63 bytes | Other [restrictions](create-role.html#role-name-limitations) apply. |
 | User names | 63 bytes | These are [equivalent](create-user.html) to role names. |
-| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB. | 
+| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. | 
 
 ### Quantity of tables and other schema objects
 
@@ -121,7 +121,7 @@ CockroachDB has been shown to perform well with clusters containing 2,500 tables
 
 As you scale to a large number of tables, note that:
 
-- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support: columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact, while increasing the number of nodes will not have a substantial effect.
+- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas has minimal impact as compared to the total number of tables and their complexity.
 
 ### Quantity of rows
