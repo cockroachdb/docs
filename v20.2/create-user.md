@@ -1,30 +1,32 @@
 ---
 title: CREATE USER
-summary: The CREATE USER statement creates SQL users, which let you control privileges on your databases and tables.
+summary: The CREATE USER statement creates SQL roles that are preconfigured with the necessary login permission to act as database users.
 toc: true
 ---
 
-The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let you control [privileges](authorization.html#assign-privileges) on your databases and tables.
+The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can be used to log in to a database.
+
+ There is no distinct "user" entity in CockroachDB. A role with the [`LOGIN`](#parameters) option enabled can log in to the SQL shell and is often called a user.
+ 
+ You can [assign privileges](authorization.html#assign-privileges) to the user and [set it as a member](grant-roles.html) of other roles, inheriting their privileges.
 
 {{site.data.alerts.callout_info}}
- Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `CREATE USER` is now an alias for [`CREATE ROLE`](create-role.html).
+ `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
 {{site.data.alerts.end}}
+
+See [Authorization](authorization.html) for more information on privilege management and role membership.
 
 ## Considerations
 
-- Usernames:
-    - Are case-insensitive
-    - Must start with a letter, number, or underscore
-    - Must contain only letters, numbers, periods, or underscores
-    - Must be between 1 and 63 characters.
-- After creating users, you must [grant them privileges to databases and tables](grant.html).
-- All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
-- On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
+{% include {{ page.version.version }}/sql/role-considerations.md %}
 
 ## Required privileges
 
- To create other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+Unless a role is a member of the admin role, additional [privileges](#parameters) are required to manage other roles.
 
+- To create other roles, a role must have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set. 
+- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>
@@ -39,7 +41,7 @@ table td:first-child {
 
  Parameter | Description
 -----------|-------------
-`user_name` | The name of the user you want to create.<br><br>Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, or underscores; and must be between 1 and 63 characters.
+`user_name` | The name of the user you want to create. See the [Considerations](#considerations) section for important naming guidelines.
 `CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the user to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` parameters. <br><br>By default, the parameter is set to `NOCREATELOGIN` for all non-admin users.
 `LOGIN`/`NOLOGIN` | The `LOGIN` parameter allows a user to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the parameter to `NOLOGIN` prevents the user from logging in using any authentication method.
 `password` | Let the user [authenticate their access to a secure cluster](authentication.html#client-authentication) using this password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a user from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-user-from-using-password-authentication).
@@ -51,20 +53,6 @@ table td:first-child {
 `VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other users' [queries](show-queries.html) and [sessions](show-sessions.html) using `SHOW QUERIES`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and **Transactions** pages in the DB Console. Without this privilege, the `SHOW` commands only show the user's own data and the DB Console pages are unavailable. <br><br>By default, the parameter is set to `NOVIEWACTIVITY` for all non-admin users.
 `CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the user to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the parameter is set to `NOCONTROLCHANGEFEED` for all non-admin users.
 `MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the user to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the parameter is set to `NOMODIFYCLUSTERSETTING` for all non-admin users.
-
-## User authentication
-
-Secure clusters require users to authenticate their access to databases and tables. CockroachDB offers three methods for this:
-
-- [Client certificate and key authentication](authentication.html#client-authentication), which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
-
-- [Password authentication](#create-a-user-with-a-password), which is available to users and roles who you've created passwords for. To create a user with a password, use the `WITH PASSWORD` clause of `CREATE USER`. To add a password to an existing user, use the [`ALTER USER`](alter-user.html) statement.
-
-    Users can use passwords to authenticate without supplying client certificates and keys; however, we recommend using certificate-based authentication whenever possible.
-
-    Password creation is supported only in secure clusters.
-
-- [GSSAPI authentication](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
 
 ## Examples
 
@@ -92,7 +80,7 @@ The following statements are run by the `root` user that is a member of the `adm
 
 ### Create a user
 
-Usernames are case-insensitive; must start with a letter, number, or underscore; must contain only letters, numbers, periods, or underscores; and must be between 1 and 63 characters.
+Note the [considerations](#considerations) for role names.
 
 ~~~ sql
 root@:26257/defaultdb> CREATE USER no_options;

@@ -4,7 +4,7 @@ summary: Learn about the authentication features for secure CockroachDB clusters
 toc: true
 ---
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the DB Console. This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.3 digital certificates for inter-node authentication and accepts TLS 1.2 and TLS 1.3 certificates for client-node authentication. This document discusses how CockroachDB uses digital certificates and what your options are for configuring user authentication for SQL clients and the DB Console UI. It also offers a [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
@@ -12,7 +12,7 @@ Authentication refers to the act of verifying the identity of the other party in
 
 ## Using digital certificates with CockroachDB
 
-CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.2 server certificate. Note that the node certificate is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes.  Node certificates have the following requirements:
+Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. Note that the node certificate is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
@@ -27,7 +27,7 @@ Based on your security setup, you can use the [`cockroach cert` commands](cockro
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
-- Node authentication using [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
+- Node authentication using [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) digital certificates.
 - Client authentication using TLS digital certificates, passwords, or [GSSAPI authentication](gssapi_authentication.html) (for Enterprise users).
 
 ### Node authentication
@@ -44,49 +44,54 @@ CockroachDB offers the following methods for client authentication:
 
 - **Client certificate and key authentication**, which is available to all users. To ensure the highest level of security, we recommend only using client certificate and key authentication.
 
-   Example:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --certs-dir=certs --user=jpointsman
-   ~~~
+    Example:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --user=jpointsman
+    ~~~
 
-- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters.
+- **Password authentication**, which is available to users and roles who you've created passwords for. Password creation is supported only in secure clusters. While users can use passwords to authenticate without supplying client certificates and keys, we recommend using certificate-based authentication whenever possible. For more information, see [Password authentication considerations](#password-authentication-considerations).
 
-   Example:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --certs-dir=certs --user=jpointsman
-   ~~~
+    Example:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --certs-dir=certs --user=jpointsman
+    ~~~
 
-   ~~~
+    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
     Enter password:
-  ~~~
+    ~~~
 
-   Note that the client still needs the CA certificate to validate the nodes' certificates.
+    Note that the client still needs the CA certificate to validate the nodes' certificates.
+
+    - To create a user with a password, use the `WITH PASSWORD` clause of [`CREATE ROLE`](create-role.html) or `CREATE USER`(create-user.html).
+    - To add a password to an existing user, use the [`ALTER ROLE`](alter-role.html) or [`ALTER USER`](alter-user.html) statement.
+    - To remove a user's password and thereby disable password authentication for the user, use `WITH PASSWORD NULL` clause of [`ALTER ROLE`](alter-role.html) or [`ALTER USER`](alter-user.html). 
+    - Note that the user performing these actions [must have the `CREATEROLE` and `CREATELOGIN` permissions](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) or be a member of the `admin` role.
 
 - **Password authentication without TLS**
 
-   <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
+    <span class="version-tag">New in v20.2</span> For deployments where transport security is already handled at the infrastructure level (e.g. IPSec with DMZ), and TLS-based transport security is not possible or not desirable, CockroachDB now supports delegating transport security to the infrastructure with the new experimental flag `--accept-sql-without-tls` for [`cockroach start`](cockroach-start.html#security).
 
-   With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`.
+    With this flag, SQL clients can establish a session over TCP without a TLS handshake. They still need to present valid authentication credentials, for example a password in the default configuration. Different authentication schemes can be further configured as per `server.host_based_authentication.configuration`. Note that we recommend using certificate-based authentication instead of password authentication whenever possible. For more information, see [Password authentication considerations](#password-authentication-considerations).
 
-   Example:
-   {% include copy-clipboard.html %}
-   ~~~ shell
-   $ cockroach sql --user=jpointsman --insecure
-   ~~~
+    Example:
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --user=jpointsman
+    ~~~
 
-   ~~~
+    ~~~
     # Welcome to the CockroachDB SQL shell.
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
     Enter password:
-  ~~~
+    ~~~
 
 - [**Single sign-on authentication**](sso.html), which is available to [Enterprise users](enterprise-licensing.html) to grant access to the DB Console.
 
@@ -229,7 +234,9 @@ File name | File usage
 
 See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
-## Authentication best practice
+### Authentication best practices
+
+#### Certificate rotation
 
 As a security best practice, we recommend that you rotate the node, client, or CA certificates in the following scenarios:
 
@@ -240,11 +247,17 @@ As a security best practice, we recommend that you rotate the node, client, or C
 
 For details about when and how to change security certificates without restarting nodes, see [Rotate Security Certificates](rotate-certificates.html).
 
+#### Password authentication considerations
+
+In most cases, we recommend using client certificate and key authentication rather than password authentication, to ensure a higher level of security.
+
+Passwords are often embedded in connection URLs, which can inadvertently be included in log files, public scripts, and other insecure locations. It is less likely to inadvertently leak a certificate which is transmitted securely from one system to another.
+
 ## Background on public key cryptography and digital certificates
 
-As mentioned above, CockroachDB uses the [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocol that takes advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
+As mentioned above, CockroachDB supports the [TLS 1.3 and TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the DB Console.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 To understand how CockroachDB uses digital certificates, let's first understand what each of these terms means.
 
@@ -260,7 +273,7 @@ So going back to our example, Amy and Rosa both have their own public-private ke
 
 But what if a malicious imposter intercepts the communication? The imposter might pose as Rosa and send their public key instead of Rosa’s. There's no way for Amy to know that the public key she received isn’t Rosa’s, so she would end up using the imposter's public key to encrypt the message and send it to the imposter. The imposter can use their own private key and decrypt and read the message, thus compromising the secure communication channel between Amy and Rosa.
 
-To prevent this security risk, Amy needs to be sure that the public key she received was indeed Rosa’s. That’s where the Certificate Authority (CA) comes into the picture.
+To prevent this security risk, Amy needs to be sure that the public key she received was indeed Rosa’s. That’s where the certificate authority (CA) comes into the picture.
 
 ### Certificate authority
 

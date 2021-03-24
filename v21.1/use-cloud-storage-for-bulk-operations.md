@@ -64,6 +64,10 @@ HTTP         | `http://localhost:8080/employees`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
+URLs for [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) should be prepended with `experimental-`.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 

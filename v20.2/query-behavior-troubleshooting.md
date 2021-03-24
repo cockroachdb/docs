@@ -91,7 +91,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 1. Access the Jaeger UI at [http://localhost:16686/search](http://localhost:16686/search).
 
-1. Click on **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right. 
+1. Click on **JSON File** in the Jaeger UI and upload `trace-jaeger.json` from the diagnostics bundle. The trace will appear in the list on the right.
 
     <img src="{{ 'images/v20.2/jaeger-trace-json.png' | relative_url }}" alt="Jaeger Trace Upload JSON" style="border:1px solid #eee;max-width:40%" />
 
@@ -181,7 +181,7 @@ Use the [Statements page](ui-statements-page.html) to identify the slow [SQL sta
 
 Refer to the following documents to improve `INSERT` / `UPDATE` performance:
 
--   [Multi-row DML](performance-best-practices-overview.html#multi-row-dml-best-practices)
+-   [Multi-row DML](performance-best-practices-overview.html#dml-best-practices)
 
 -   [Bulk-Insert best practices](performance-best-practices-overview.html#bulk-insert-best-practices)
 

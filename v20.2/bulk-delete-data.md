@@ -8,9 +8,27 @@ To delete a large number of rows (i.e., tens of thousands of rows or more), we r
 
 This page provides guidance on batch deleting with the `DELETE` query filter [on an indexed column](#batch-delete-on-an-indexed-column) and [on a non-indexed column](#batch-delete-on-a-non-indexed-column). Filtering on an indexed column is both simpler to implement and more efficient, but adding an index to a table can slow down insertions to the table and may cause bottlenecks. Queries that filter on a non-indexed column must perform at least one full-table scan, a process that takes time proportional to the size of the entire table.
 
+{{site.data.alerts.callout_success}}
+If you want to delete all of the rows in a table (and not just a large subset of the rows), use a [`TRUNCATE` statement](#delete-all-of-the-rows-in-a-table).
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_danger}}
 Exercise caution when batch deleting rows from tables with foreign key constraints and explicit [`ON DELETE` foreign key actions](foreign-key.html#foreign-key-actions). To preserve `DELETE` performance on tables with foreign key actions, we recommend using smaller batch sizes, as additional rows updated or deleted due to `ON DELETE` actions can make batch loops significantly slower.
 {{site.data.alerts.end}}
+
+## Before you begin
+
+Before reading this page, do the following:
+
+- [Install CockroachDB](install-cockroachdb.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Install a Postgres client](install-client-drivers.html).
+
+    For the example on this page, we use the `psycopg2` Python driver.
+- [Connect to the database](connect-to-the-database.html).
+- [Insert data](insert-data.html) that you now want to delete.
+
+    For the example on this page, we load a cluster with the [`tpcc` database](cockroach-workload.html#tpcc-workload) and data from [`cockroach workload`](cockroach-workload.html).
 
 ## Batch delete on an indexed column
 
@@ -143,7 +161,41 @@ To run the script with a daily `cron` job:
 
 Saving the `cron` file will install a new job that runs the `cleanup.py` file every morning at 10:30 A.M., writing the results to the `cron.log` file.
 
+## Delete all of the rows in a table
+
+To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html).
+
+For example, to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `new_order` table, execute the following SQL statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+TRUNCATE new_order;
+~~~
+
+You can execute the statement from a compatible SQL client (e.g., the [CockroachDB SQL client](cockroach-sql.html)), or in a script or application.
+
+For example, in Python, using the `psycopg2` client driver:
+
+{% include copy-clipboard.html %}
+~~~ python
+#!/usr/bin/env python3
+
+import psycopg2
+import os
+
+conn = psycopg2.connect(os.environ.get('DB_URI'))
+
+with conn:
+  with conn.cursor() as cur:
+      cur.execute("TRUNCATE new_order")
+~~~
+
+{{site.data.alerts.callout_success}}
+For detailed reference documentation on the `TRUNCATE` statement, including additional examples, see the [`TRUNCATE` syntax page](truncate.html).
+{{site.data.alerts.end}}
+
 ## See also
 
 - [Delete data](delete-data.html)
 - [`DELETE`](delete.html)
+- [`TRUNCATE`](truncate.html)
