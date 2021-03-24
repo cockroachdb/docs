@@ -6,7 +6,9 @@ toc_not_nested: true
 ---
 
 {{site.data.alerts.callout_danger}}
-`INTERLEAVE IN PARENT` is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. For details, see [below](#deprecation).
+`INTERLEAVE IN PARENT` is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
+
+For details, see [below](#deprecation).
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
@@ -76,6 +78,15 @@ Interleaving tables and indexes was deprecated in CockroachDB v20.2 for the foll
 In CockroachDB v21.1, interleaving is disabled with the `sql.defaults.interleaved_tables.enabled` [cluster setting](cluster-settings.html) set to `false` by default. Interleaving will be permanently disabled in a future release.
 
 For more details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/52009).
+
+After [upgrading to v21.1](upgrade-cockroach-version.html), we recommend that you do the following:
+
+- [Convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables).
+- [Replace any existing interleaved secondary indexes with non-interleaved indexes](#replace-interleaved-indexes).
+
+{{site.data.alerts.callout_success}}
+Test your [schema changes](online-schema-changes.html) in a non-production environment before implementing them in production.
+{{site.data.alerts.end}}
 
 ### Convert interleaved tables
 

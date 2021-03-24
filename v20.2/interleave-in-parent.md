@@ -6,7 +6,9 @@ toc_not_nested: true
 ---
 
 {{site.data.alerts.callout_danger}}
-`INTERLEAVE IN PARENT` is deprecated in CockroachDB v20.2, and will be permanently removed from CockroachDB in a future release. For details, see [below](#deprecation).
+`INTERLEAVE IN PARENT` is deprecated in CockroachDB v20.2, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
+
+For details, see [below](#deprecation).
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
@@ -75,7 +77,14 @@ Interleaving tables and indexes is deprecated in CockroachDB v20.2, and will be 
 
 For more details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/52009).
 
-After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables) and [replace any existing interleaved secondary indexes with non-interleaved indexes](#replace-interleaved-indexes). We do not recommend interleaving tables or indexes in new clusters.
+After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you do the following:
+
+- [Convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables).
+- [Replace any existing interleaved secondary indexes with non-interleaved indexes](#replace-interleaved-indexes).
+
+{{site.data.alerts.callout_success}}
+Test your [schema changes](online-schema-changes.html) in a non-production environment before implementing them in production.
+{{site.data.alerts.end}}
 
 ### Convert interleaved tables
 
