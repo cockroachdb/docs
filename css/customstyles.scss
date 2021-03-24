@@ -701,7 +701,7 @@ a.accordion-toggle {
 
 /* Docs landing page */
 .landing-column-title {
-  font-family: 'Graphik-Semibold', sans-serif;
+  @include sourcesanspro_m(15px);
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 1.2px;
