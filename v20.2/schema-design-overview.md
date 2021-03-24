@@ -103,34 +103,30 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 ## Object size and scaling considerations
 
-CockroachDB does not place hard limits on most database objects, however, there are scenarios where exteremely large attributes may cause performance to degrade.
+CockroachDB does not place hard limits on most database objects, however, there are scenarios where exteremely large attributes may not be supported or may cause performance to degrade.
+
+### Hard limits
+
+The following table lists specific limits imposed by CockroachDB.
+
+| Object | Limit | Comments |
+| --- | --- | --- |
+| Role names | 63 bytes | Other [restrictions](create-role.html#role-name-limitations) apply. |
+| User names | 63 bytes | These are [equivalent](create-user.html) to role names. |
+| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB. | 
+
+### Quantity of tables and other schema objects
 
 CockroachDB has been shown to perform well with clusters containing 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes) and system specifications.
 
 As you scale to a large number of tables, note that:
 
+- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support: columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact, while increasing the number of nodes will not have a substantial effect.
 - The number of databases or schemas has minimal impact as compared to the total number of tables and their complexity.
-- Increasing RAM may have the greatest impact on performance. Increasing the number of nodes will not have a substantial effect.
 
-### Limits
+### Quantity of rows
 
-While practical limitations may exist, CockroachDB does not impose hard limits on:
-
-- database size.
-- the number of databases in a cluster.
-- the number of tables in a database or cluster.
-- the number of the following objects per table, database, or cluster:
-  - rows
-  - columns
-  - indexes
-  - inverted indexes
-  - constraints
-  - partitions
-- the length of identifiers. Note:
-  - a maximum of 128 bytes is recommended for identifiers and may be enforced in future versions of CockroachDB. For compatibility with other databases, CockroachDB has a `max_identifier_length` variable set to 128. This is a reported value that is not currently enforced.
-  - this does not apply to role or user names, which have a limit of 63 bytes, among other [restrictions](create-role.html#role-name-limitations).
-
-By default, a [range](architecture/overview.html#terms) automatically [splits](architecture/distribution-layer.html#range-splits) into two ranges when it reaches 512MiB in size. You can also choose to [manually split ranges](https://www.cockroachlabs.com/docs/stable/split-at.html) at a specified row in a table or index. The size of each range will continue to be within the 512MiB limit, in this case.
+CockroachDB can support any number of rows by adding additional nodes and storage.
 
 ## What's next?
 
