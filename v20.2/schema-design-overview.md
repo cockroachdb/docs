@@ -103,7 +103,7 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 ## Object size and scaling considerations
 
-CockroachDB does not place hard limits on most database objects, however, there are scenarios where extremely large attributes may not be supported or may cause performance to degrade.
+CockroachDB does not place hard limits on most database objects, however, there are scenarios where extremely large attributes may not be supported.
 
 ### Hard limits
 
