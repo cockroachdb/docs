@@ -53,7 +53,28 @@
 
           {% include_cached footer.html %}
 
-
+    
+    <script src="{{ 'js/jquery.cookie.min.js' | relative_url }}"></script>
+    <script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}"></script>
+    <!-- bs 4.X -->
+    <script src="{{'js/bootstrap453.bundle.min.js' | relative_url }}" crossorigin="anonymous"></script>
+    
+    <script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
+    <script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
+    
+    <script src="{{ 'js/toc.js' | relative_url }}"></script>
+    <script src="{{ 'js/cookieUtils.js' | relative_url }}"></script>
+    <script src="{{ 'js/clipboard.min.js' | relative_url }}"></script>
+    <script src="{{ 'js/customscripts.js' | relative_url }}"></script>
+    <script src="{{ 'js/setDocsContext.js' | relative_url }}"></script>
+    <script src="{{ 'js/anchor.js' | relative_url }}"></script>
+    {% if page.homepage != true %}
+        <script>
+          anchors.add('h2, h3, h4, h5');
+        </script>
+    {% endif %}
+    <link rel="preload" href="ttps://kit.fontawesome.com/4e4d5754e5.js" as="script" />
+    <script src="https://kit.fontawesome.com/4e4d5754e5.js" crossorigin="anonymous" defer></script>
     <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}"></script>
     {% include_cached google_tag_manager.html %}
     {% include_cached google_remarketing.html %}
