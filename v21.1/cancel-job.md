@@ -16,7 +16,8 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 
 ## Limitations
 
-When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- When an enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- You can only cancel [`ALTER TYPE`](alter-type.html) [schema change jobs](online-schema-changes.html) that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
 
 ## Required privileges
 
