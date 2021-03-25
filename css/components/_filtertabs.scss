@@ -24,6 +24,7 @@
 
 		&:hover {
 			color: $electric-purple;
+			font-weight: 700;
 		}
 
 		&.current {
@@ -213,6 +214,7 @@
 
 		&.current {
 			color: $electric-purple;
+			font-weight: 700;
 			border-bottom-color: $electric-purple;
 			margin-right: 15px;
 		}

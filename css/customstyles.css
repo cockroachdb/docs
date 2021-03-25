@@ -11201,6 +11201,7 @@ img.mfp-img {
 }
 #os-tabs button:hover {
   color: #6933FF;
+  font-weight: 700;
 }
 #os-tabs button.current {
   color: #6933FF;
@@ -11394,6 +11395,7 @@ img.mfp-img {
 }
 .filters .filter-button.current {
   color: #6933FF;
+  font-weight: 700;
   border-bottom-color: #6933FF;
   margin-right: 15px;
 }
