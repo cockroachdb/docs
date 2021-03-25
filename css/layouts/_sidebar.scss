@@ -114,6 +114,9 @@ body.sidenav-open{
         position: absolute;
         top: 13px;
         left: 2px;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+
       }
 
       &.visited a {
@@ -125,8 +128,8 @@ body.sidenav-open{
       }
 
       &.active > a .nav-expand{
-        transform: rotate(-180deg);
-        -webkit-transform: rotate(-180deg);
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
       }
     }
   }
