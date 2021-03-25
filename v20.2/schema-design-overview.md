@@ -103,7 +103,7 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 ## Object size and scaling considerations
 
-CockroachDB does not place hard limits on most database objects, however, there are scenarios where extremely large attributes may not be supported.
+CockroachDB does not place hard limits on most database objects, however, extremely large attributes are not supported in certain scenarios.
 
 ### Hard limits
 
@@ -117,12 +117,14 @@ The following table lists specific limits imposed by CockroachDB.
 
 ### Quantity of tables and other schema objects
 
-CockroachDB has been shown to perform well with clusters containing 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes) and system specifications.
+CockroachDB has been shown to perform well with clusters containing 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes) and hardware specifications.
 
 As you scale to a large number of tables, note that:
 
 - The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact, while increasing the number of nodes will not have a substantial effect.
-- The number of databases or schemas has minimal impact as compared to the total number of tables and their complexity.
+- The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
+
+See the [Hardware](recommended-production-settings.html#hardware) section for additional recommendations based on your expected workloads.
 
 ### Quantity of rows
 
