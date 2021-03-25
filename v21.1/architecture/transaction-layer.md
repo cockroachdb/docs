@@ -366,6 +366,30 @@ Despite their logical equivalence, the transaction coordinator now works as quic
 
 Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction’s record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the final result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
 
+## Non-blocking transactions
+
+<span class="version-tag">New in v21.1:</span> CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
+
+The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
+
+- Non-blocking transactions use a replication scheme over the [ranges](overview.html#terms) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
+- Non-blocking transactions are minimally disruptive to reads over the data they modify, even in the presence of read/write [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments](../multiregion-overview.html). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.
+
+Most users will not interact with the non-blocking transaction mechanism directly. Instead, they will [set a `GLOBAL` table locality](../multiregion-overview.html#global-tables) using the SQL API.
+
+### How non-blocking transactions work
+
+The consistency guarantees offered by non-blocking transactions are enforced through semi-synchronized clocks with bounded uncertainty, _not_ inter-node communication, since the latter would struggle to provide the same guarantees without incurring excessive latency costs in global deployments.
+
+Non-blocking transactions are implemented via _non-blocking ranges_. Every non-blocking range has the following properties:
+
+- Any transaction that writes to it is marked as a non-blocking transaction.
+- It is able to propagate a [closed timestamp](../follower-reads.html#how-follower-reads-work) in the future of present time, also known as a _synthetic timestamp_. Synthetic timestamps are not bound to a specific clock value, and are treated especially by the [hybrid logical clock mechanism](#time-and-hybrid-logical-clocks) to provide consistency guarantees. Essentially, the HLC waits until it advances past the synthetic timestamp on its own, or advances due to updates from other, non-synthetic ("standard") timestamps.
+
+As a result of the above properties, all replicas in a non-blocking range are expected to be able to serve transactionally-consistent reads at the present. This means that all follower replicas in a non-blocking range (which includes all [non-voting replicas](replication-layer.html#non-voting-replicas)) implicitly behave as "consistent read replicas", which are exactly what they sound like: read-only replicas that always have a consistent view of the range's current state.
+
 ## Technical interactions with other layers
 
 ### Transaction and SQL layer
