@@ -642,15 +642,18 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West
 ~~~
 
 ~~~
-  tree |        field        |                                     description
--------+---------------------+--------------------------------------------------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | token@token_id_east_idx
-       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
-(6 rows)
+                                              info
+------------------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (100% of the table; stats collected 34 seconds ago)
+    table: token@token_id_west_idx
+    spans: [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Similarly, queries from the `us-east` node should use the `token_id_east_idx` index (and the same should be true for `us-central`).
@@ -672,15 +675,18 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East
 ~~~
 
 ~~~
-  tree |        field        |                                     description
--------+---------------------+--------------------------------------------------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | token@token_id_east_idx
-       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
-(6 rows)
+                                              info
+------------------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (0.01% of the table; stats collected 18 seconds ago)
+    table: token@token_id_west_idx
+    spans: [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.

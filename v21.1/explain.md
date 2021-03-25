@@ -24,11 +24,11 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
-- Indexes the query uses; shown as the **Description** value of rows with the **Field** value of `table`
+- Indexes the query uses; shown as the value of `table` property.
 
-- Key values in the index are being scanned; shown as the **Description** value of rows with the **Field** value of `spans`
+- Key values in the index are being scanned; shown as the value of the `spans` property.
 
- You can also see the estimated number of rows that a scan will perform in the  **Description** of the `estimated row count` **Field**.
+ You can also see the estimated number of rows that a scan will perform in the `estimated row count` property.
 
 For more information about indexing and table scans, see [Find the Indexes and Key Ranges a Query Uses](#find-the-indexes-and-key-ranges-a-query-uses).
 
@@ -122,7 +122,8 @@ The output shows the tree structure of the query plan, in this case a `sort`, a 
 The output also describes a set of properties, some global to the query, and some specific to an operation listed in the true structure (in this case, `sort`, `filter`, or `scan`):
 
 - `distribution`:`full`
-  <br>The query plan will be distributed across all nodes on a distributed cluster.
+  <br>The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. A `full` execution plan doesn't mean that processing occurs on all nodes in the cluster, only that processing is executed simultaneously on multiple nodes.
+  <br>The `local` execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`true`
   <br>The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
 - `order`:`+revenue`
