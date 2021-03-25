@@ -1,10 +1,11 @@
 ---
 title: Cluster Overview Page
+summary: The Cluster Overview page of the DB Console displays key metrics about your cluster and individual nodes.
 toc: true
 redirect_from: admin-ui-cluster-overview-page.html
 ---
 
-The **Cluster Overview** page of the DB Console displays key metrics about your cluster and individual nodes. These include: 
+The **Cluster Overview** page of the DB Console displays key metrics about your cluster and individual nodes. These include:
 
 - Liveness status
 - Replication status
@@ -70,7 +71,7 @@ Node Status | Description
 `DEAD` | Node has not [updated its liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for 5 minutes.
 
 {{site.data.alerts.callout_info}}
-Nodes are considered dead once they have not [updated their liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for a certain amount of time (5 minutes by default). At this point, the [automated repair process](cockroach-quit.html#how-it-works) starts, wherein CockroachDB rebalances replicas from dead nodes to live nodes, using the unaffected replicas as sources. 
+Nodes are considered dead once they have not [updated their liveness record](cluster-setup-troubleshooting.html#node-liveness-issues) for a certain amount of time (5 minutes by default). At this point, the [automated repair process](cockroach-quit.html#how-it-works) starts, wherein CockroachDB rebalances replicas from dead nodes to live nodes, using the unaffected replicas as sources.
 {{site.data.alerts.end}}
 
 ### Node details
@@ -114,7 +115,7 @@ The Node Map uses the longitude and latitude of each locality to position the co
 
 A locality component represents capacity, CPU, and QPS metrics for a given locality.
 
-The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., availability zone). 
+The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., availability zone).
 
 For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
 
@@ -128,7 +129,7 @@ On multi-core systems, the displayed CPU usage can be greater than 100%. Full ut
 
 A node component represents capacity, CPU, and QPS metrics for a given node.
 
-Node components are accessed by clicking on the **Node Count** of the lowest-level [locality component](#locality-component). 
+Node components are accessed by clicking on the **Node Count** of the lowest-level [locality component](#locality-component).
 
 For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
 
