@@ -16,8 +16,12 @@ key: install-cockroachdb.html
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
+<h2>Install options</h2>
+
+Use one of the options below to install CockroachDB.
+
 <!-- <div id="use-homebrew" class="install-option">
-  <h2>Use Homebrew</h2>
+  <h3>Use Homebrew</h3>
   <ol>
     <li>
       <p><a href="http://brew.sh/">Install Homebrew</a>.</p>
@@ -41,7 +45,7 @@ If you previously installed CockroachDB via Homebrew before version v20.2, run <
 </div> -->
 
 <div id="download-the-binary" class="install-option">
-  <h2>Download the binary</h2>
+  <h3>Download the binary</h3>
   <ol>
     <li>
       <p>Download the <a href="https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz" class="mac-binary-step1" id="mac-binary-step1-{{page.version.version}}" data-eventcategory="mac-binary-step1">CockroachDB archive</a> for OS X and the supporting libraries that are used to provide <a href="spatial-features.html">spatial features</a>, and extract the binary:</p>
@@ -131,13 +135,13 @@ true
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h2>Use Kubernetes</h2>
+  <h3>Use Kubernetes</h3>
 
   <p>To orchestrate CockroachDB locally using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, see <a href="orchestrate-a-local-cluster-with-kubernetes.html">Orchestrate CockroachDB Locally with Minikube</a>.</p>
 </div>
 
 <div id="use-docker" class="install-option">
-  <h2>Use Docker</h2>
+  <h3>Use Docker</h3>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
 
@@ -173,7 +177,7 @@ true
 </div>
 
 <div id="build-from-source" class="install-option">
-  <h2>Build from source</h2>
+  <h3>Build from source</h3>
   <ol>
     <li>
       <p>Install the following prerequisites, as necessary:</p>
