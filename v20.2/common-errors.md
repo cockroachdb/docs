@@ -145,9 +145,12 @@ This message occurs when a component of CockroachDB gives up because it was rely
 
 Messages that begin with `pq: failed to verify protection id…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail. 
 
-The error message will specify which part of your backup is causing the failure. For example, `r13485:/Table/771` indicates that table `771` is part of the problem. You can then inspect this table by running [`SELECT * FROM example_db.tables WHERE id=771`](select-clause.html). You can also run [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) and look for any `gc.ttlseconds` values that are set lower than your incremental backup frequency.
+The error message will specify which part of your backup is causing the failure. For example, `r13485:/Table/771` indicates that table `771` is part of the problem. You can then inspect this table by running [`SELECT * FROM crdb_internal.tables WHERE id=771`](select-clause.html). You can also run [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) and look for any `gc.ttlseconds` values that are set lower than your incremental backup frequency.
 
-To resolve this issue, you can take a new [full backup](take-full-and-incremental-backups.html) before retrying your incremental backup. To prevent this error from occurring again, either increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds) or [decrease the frequency of incremental backups](manage-a-backup-schedule.html).
+To resolve this issue, do both of the following:
+
+- Take a new [full backup](take-full-and-incremental-backups.html), and
+- Either increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds) or [decrease the frequency of incremental backups](manage-a-backup-schedule.html).
 
 ## result is ambiguous
 
