@@ -57,8 +57,8 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters.
 
 <div class="filters clearfix">
-  <button style="width: 15%" class="filter-button" data-scope="gcp">VPC Peering</button>
-  <button style="width: 15%" class="filter-button" data-scope="aws">AWS PrivateLink</button>
+  <button class="filter-button" data-scope="gcp">VPC Peering</button>
+  <button class="filter-button" data-scope="aws">AWS PrivateLink</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="gcp">
