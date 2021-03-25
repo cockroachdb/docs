@@ -46,6 +46,10 @@ $ cockroach import --help
 `--certs-dir`    | The path to the [certificate directory](cockroach-cert.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--insecure`     | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+`--ignore-unsupported-statements=` | Ignore statements that are unsupported during an import from a PGDUMP file. <br/>**Default:** `false`
+`--log-ignored-statements=` | Log statements that are ignored during an import from a PGDUMP file to the specified destination.
+`--row-limit=` | Specify the number of rows that will be imported for each table during a PGDUMP or MYSQLDUMP import. <br/> This can be used to check schema and data correctness without running
+the entire import. <br/>**Default:** `0`
 
 ## Examples
 
@@ -69,6 +73,30 @@ To import a table from a local file:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
+~~~
+
+~~~
+successfully imported table test_table from pgdump file /Users/maxroach/Desktop/test-db.sql
+~~~
+
+### Import a database with unsupported SQL syntax and log all unsupported statements
+
+To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach import db pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --ignore-unsupported-statements=true --log-ignored-statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log'
+~~~
+
+~~~
+successfully imported table test_table from pgdump file /Users/maxroach/Desktop/test-db.sql
+~~~
+
+### Import a limited number of rows from a dump file
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --row-limit='50'
 ~~~
 
 ~~~
