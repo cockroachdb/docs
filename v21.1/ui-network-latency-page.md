@@ -1,5 +1,6 @@
 ---
 title: Network Latency Page
+summary: The Network Latency page displays round-trip latencies between all nodes in your cluster.
 toc: true
 redirect_from: admin-ui-network-latency-page.html
 ---

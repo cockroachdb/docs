@@ -1,5 +1,6 @@
 ---
 title: Runtime Dashboard
+summary: The Runtime dashboard lets you monitor runtime metrics for you cluster, such as node count, memory usage, and CPU time.
 toc: true
 redirect_from: admin-ui-runtime-dashboard.html
 ---

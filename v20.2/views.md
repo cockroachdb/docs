@@ -1,6 +1,6 @@
 ---
 title: Views
-summary:
+summary: Learn about CockroachDB's dematerialized and materialized views.
 toc: true
 ---
 
