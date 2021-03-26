@@ -103,7 +103,7 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
 ## Object size and scaling considerations
 
-CockroachDB does not place hard limits on most database objects, however, extremely large attributes are not supported in certain scenarios.
+CockroachDB does not place hard limits on most database objects. Extremely large attributes are not supported in certain scenarios as described in this section.
 
 ### Hard limits
 
@@ -128,7 +128,7 @@ See the [Hardware](recommended-production-settings.html#hardware) section for ad
 
 ### Quantity of rows
 
-CockroachDB can support any number of rows by adding additional nodes and storage.
+CockroachDB can support any number of rows by adding additional nodes and [storage](recommended-production-settings.html#storage).
 
 ## What's next?
 
