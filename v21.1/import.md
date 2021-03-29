@@ -29,18 +29,7 @@ The user must have the `CREATE` [privileges](authorization.html#assign-privilege
 
 #### Source privileges
 
-The source file URL does _not_ require the `ADMIN` role in the following scenarios:
-
-- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
-- [Userfile](use-userfile-for-bulk-operations.html)
-
-The source file URL _does_ require the `ADMIN` role in the following scenarios:
-
-- S3 or GS using `IMPLICIT` credentials
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
-
-Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+{% include {{ page.version.version }}/misc/source-privileges.md %}
 
 ## Synopsis
 
@@ -131,6 +120,10 @@ Before using `IMPORT`, you should have:
 
 - The schema of the table you want to import.
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
+
+{{site.data.alerts.callout_info}}
+`IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead. </span>
+{{site.data.alerts.end}}
 
 ### Import targets
 

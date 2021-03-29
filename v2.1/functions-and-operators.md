@@ -36,7 +36,7 @@ functions but have special evaluation rules:
 
 ## Built-in functions
 
-{% include {{ page.version.version }}/sql/functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.1/docs/generated/sql/functions.md %}
 
 ## Aggregate functions
 
@@ -44,11 +44,11 @@ functions but have special evaluation rules:
 For examples showing how to use aggregate functions, see [the `SELECT` clause documentation](select-clause.html#aggregate-functions).
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/sql/aggregates.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.1/docs/generated/sql/aggregates.md %}
 
 ## Window functions
 
-{% include {{ page.version.version }}/sql/window_functions.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.1/docs/generated/sql/window_functions.md %}
 
 ## Operators
 
@@ -110,7 +110,7 @@ The following table lists all CockroachDB operators from highest to lowest prece
 
 ### Supported operations
 
-{% include {{ page.version.version }}/sql/operators.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-2.1/docs/generated/sql/operators.md %}
 
 <!--
 ## `CAST()`

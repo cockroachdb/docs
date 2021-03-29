@@ -8,6 +8,7 @@ twitter: false
 <div class="filters filters-big clearfix">
     <a href="build-a-nodejs-app-with-cockroachdb.html"><button class="filter-button">Use <strong>pg</strong></button></a>
     <a href="build-a-nodejs-app-with-cockroachdb-sequelize.html"><button class="filter-button current">Use <strong>Sequelize</strong></button></a>
+    <a href="build-a-typescript-app-with-cockroachdb.html"><button class="filter-button">Use <strong>TypeORM</strong></button></a>
 </div>
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the Sequelize ORM.
@@ -30,7 +31,7 @@ For a more realistic use of Sequelize with CockroachDB, see our [`examples-orms`
 
 To install Sequelize, as well as a [CockroachDB Node.js package](https://github.com/cockroachdb/sequelize-cockroachdb) that accounts for some minor differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ npm install sequelize sequelize-cockroachdb
 ~~~
@@ -70,14 +71,14 @@ Open `app.js`, and edit the connection configuration parameters:
 
 The following code uses the [Sequelize](https://sequelize.readthedocs.io/en/v3/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ js
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js %}
 ~~~
 
 To run the code:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ node app.js
 ~~~

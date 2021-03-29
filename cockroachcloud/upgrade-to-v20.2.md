@@ -1,6 +1,6 @@
 ---
 title: Upgrade to CockroachDB v20.2
-summary:
+summary: Learn how to upgrade your CockroachDB cluster to v20.2.
 toc: true
 ---
 

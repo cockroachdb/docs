@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud (30-day trial)</strong></button></a>
-    <a href="quickstart.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud (30-day trial)</button></a>
+    <a href="quickstart.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
@@ -15,7 +15,7 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Create a free cluster
 

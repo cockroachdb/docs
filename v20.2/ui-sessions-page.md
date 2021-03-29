@@ -1,5 +1,6 @@
 ---
 title: Sessions Page
+summary: The Sessions page provides details of all open sessions in the cluster.
 toc: true
 redirect_from: admin-ui-sessions-page.html
 ---
@@ -14,7 +15,7 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 ## Sessions list
 
-Use the **Sessions** list to see the open sessions in the cluster. This includes active and idle sessions. 
+Use the **Sessions** list to see the open sessions in the cluster. This includes active and idle sessions.
 
 {{site.data.alerts.callout_info}}
 A session is *active* if it has an open transaction (including implicit transactions, which are individual SQL statements), and *idle* if it has no open transaction. Active sessions consume [hardware resources](recommended-production-settings.html#hardware).

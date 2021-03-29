@@ -35,6 +35,8 @@ Raft is a consensus protocol––an algorithm which makes sure that your data i
 
 Raft organizes all nodes that contain a replica of a range into a group--unsurprisingly called a Raft group. Each replica in a Raft group is either a "leader" or a "follower". The leader, which is elected by Raft and long-lived, coordinates all writes to the Raft group. It heartbeats followers periodically and keeps their logs replicated. In the absence of heartbeats, followers become candidates after randomized election timeouts and proceed to hold new leader elections.
 
+<span class="version-tag">New in v21.1:</span> A third replica type is introduced, the "non-voting" replica. These replicas do not participate in Raft elections, but are useful for unlocking use cases that require low-latency multi-region reads. For more information, see [Non-voting replicas](#non-voting-replicas).
+
 Once a node receives a `BatchRequest` for a range it contains, it converts those KV operations into Raft commands. Those commands are proposed to the Raft group leader––which is what makes it ideal for the [leaseholder](#leases) and the Raft leader to be one in the same––and written to the Raft log.
 
 For a great overview of Raft, we recommend [The Secret Lives of Data](http://thesecretlivesofdata.com/raft/).
@@ -44,6 +46,18 @@ For a great overview of Raft, we recommend [The Secret Lives of Data](http://the
 When writes receive a quorum, and are committed by the Raft group leader, they're appended to the Raft log. This provides an ordered set of commands that the replicas agreed on and is essentially the source of truth for consistent replication.
 
 Because this log is treated as serializable, it can be replayed to bring a node from a past state to its current state. This log also lets nodes that temporarily went offline to be "caught up" to the current state without needing to receive a copy of the existing data in the form of a snapshot.
+
+#### Non-voting replicas
+
+In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#glossary) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
+
+<span class="version-tag">New in v21.1:</span> In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) possible), a new type of replica is introduced: the _non-voting_ replica.
+
+Non-voting replicas follow the [Raft log](#raft-logs) (and are thus able to serve [follower reads](../follower-reads.html)), but do not participate in quorum. They have almost no impact on write latencies.
+
+They are also sometimes referred to as [_read-only_ replicas](https://cloud.google.com/spanner/docs/replication#read-only), since they only serve reads, but do not participate in quorum (and thus do not incur the associated latency costs).
+
+Non-voting replicas can be configured via [zone configurations through `num_voters` and `num_replicas`](../configure-replication-zones.html#num_voters). When `num_voters` is configured to be less than `num_replicas`, the difference dictates the number of non-voting replicas. However, most users should control non-voting replica placement with the high-level [multi-region SQL features](../multiregion-overview.html) instead.
 
 ### Snapshots
 

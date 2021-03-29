@@ -102,6 +102,7 @@ cockroach userfile delete userfile://testdb.public.uploads
 
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile list`](cockroach-userfile-list.html)
+- [`cockroach userfile get`](cockroach-userfile-get.html)
 - [Use `userfile` for Bulk Operations](use-userfile-for-bulk-operations.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)

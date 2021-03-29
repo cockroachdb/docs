@@ -720,8 +720,6 @@ Other databases use partitioning for three additional use cases: secondary index
 
 - CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
 
-- Partitions cannot be created on columns of type `ENUM`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/55342).
-
 ## See also
 
 - [`CREATE TABLE`](create-table.html)

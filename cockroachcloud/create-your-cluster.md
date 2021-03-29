@@ -19,7 +19,7 @@ To create and connect to a 30-day free CockroachCloud cluster and run your first
 
 ## Step 1. Start the cluster creation process
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
@@ -79,13 +79,11 @@ The cluster name must be 6-20 characters in length, and can include lowercase le
 
 Click **Next**. Optionally, you can enable VPC peering for your cluster.
 
-## Step 7. Enable VPC peering (optional)
+## Step 7. Enable VPC Peering (optional)
 
-{{site.data.alerts.callout_info}}
-Self-service VPC peering is a limited-availability feature for GCP clusters. For AWS clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
-{{site.data.alerts.end}}
+VPC peering is only available for GCP clusters. For AWS clusters, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster.
 
-You can use [VPC peering](network-authorization.html#vpc-peering) to connect your application to the CockroachCloud cluster. To enable VPC peering:
+You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the CockroachCloud cluster. To enable VPC peering:
 
 1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
 1. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:

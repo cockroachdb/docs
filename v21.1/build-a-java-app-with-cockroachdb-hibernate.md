@@ -46,7 +46,7 @@ It does all of the above using the practices we recommend for using Hibernate (a
 <a name="code-contents"></a>
 The contents of `Sample.java`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
@@ -55,7 +55,7 @@ The contents of `Sample.java`:
 
 Clone the `hello-world-java-hibernate` repo to your machine:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 git clone https://github.com/cockroachlabs/hello-world-java-hibernate/
 ~~~
@@ -72,7 +72,7 @@ Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
 1. Modify the `hibernate.connection.url` property with the port number from the connection string above:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ xml
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:{port}/bank?ssl=true&amp;sslmode=require</property>
     ~~~
@@ -89,7 +89,7 @@ Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
 1. Modify the `hibernate.connection.url` property with the information from the connection string you copied [earlier](#set-up-your-cluster-connection) host, cluster and database name, and path to the SSL certificate:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ xml
   <property name="hibernate.connection.url">jdbc:postgresql://{globalhost}:26257/{cluster_name}.bank?sslmode=verify-full&amp;sslrootcert={path to the CA certificate}</property>
   ~~~
@@ -101,7 +101,7 @@ Edit `src/main/resources/hibernate.cfg.xml` in a text editor.
 
 Compile and run the code using `gradlew`, which will also download the dependencies.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ ./gradlew run
 ~~~
@@ -136,7 +136,7 @@ APP: getAccountBalance(2) --> 350.00
 
 To verify that the account balances were updated successfully, start the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --certs-dir={certs_dir}
 ~~~
@@ -146,7 +146,7 @@ Where:
 
 To check the account balances, issue the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SELECT id, balance FROM accounts;
 ~~~

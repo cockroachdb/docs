@@ -8,6 +8,7 @@ toc: true
 
 - [`cockroach userfile upload`](#upload-a-file)
 - [`cockroach userfile list`](#list-files)
+- [`cockroach userfile get`](#get-files)
 - [`cockroach userfile delete`](#delete-files)
 
 Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
@@ -38,6 +39,15 @@ userfile://defaultdb.public.userfiles_root/test-data.csv
 ~~~
 
 For more information, see [`cockroach userfile list`](cockroach-userfile-list.html).
+
+## Get files
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach userfile get test-data.csv --certs-dir=certs
+~~~
+
+For more information, see [`cockroach userfile get`](cockroach-userfile-get.html).
 
 ## Delete files
 
@@ -85,6 +95,7 @@ For more import options, see [`IMPORT`](import.html) or [`IMPORT INTO`](import-i
 
 - [`cockroach userfile upload`](cockroach-userfile-upload.html)
 - [`cockroach userfile list`](cockroach-userfile-list.html)
+- [`cockroach userfile get`](cockroach-userfile-get.html)
 - [`cockroach userfile delete`](cockroach-userfile-delete.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 - [`IMPORT`](import.html)
