@@ -6,6 +6,10 @@ toc: true
 
 The `ALTER TYPE` [statement](sql-statements.html) modifies a user-defined, [enumerated data type](enum.html) in the current database.
 
+{{site.data.alerts.callout_info}}
+You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-schema-changes.html) that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
+{{site.data.alerts.end}}
+
 ## Synopsis
 
 <div>
@@ -18,7 +22,7 @@ Parameter | Description
 ----------|------------
 `type_name` | The name of the user-defined type.
 `ADD VALUE value` | Add a constant value to the user-defined type's list of values. You can optionally specify `BEFORE value` or `AFTER value` to add the value in sort order relative to an existing value.
-`DROP VALUE value` | <span class="version-tag">New in v21.1:</span> Drop a specific value from the user-defined type's list of values.<br>{{site.data.alerts.callout_info}}Expressions in [views](views.html), [default values](default-value.html), and [computed columns](computed-columns.html) will stop working if they reference a dropped `ENUM` value. As a result, `ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. You can enable `ALTER TYPE ... DROP VALUE` by running `SET enable_drop_enum_value = on;`.{{site.data.alerts.end}}
+`DROP VALUE value` | <span class="version-tag">New in v21.1:</span> Drop a specific value from the user-defined type's list of values.<br>{{site.data.alerts.callout_info}}`ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. To enable `ALTER TYPE ... DROP VALUE`, run `SET enable_drop_enum_value = on;`.{{site.data.alerts.end}}
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
 `SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.
@@ -36,7 +40,7 @@ on the type.
 ## Known limitations
 
 - You can only reference a user-defined type from the database that contains the type.
-- You can only [cancel](cancel-job.html) `ALTER TYPE`[schema change jobs](online-schema-changes.html) that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
+- Expressions in [views](views.html), [default values](default-value.html), and [computed columns](computed-columns.html) will stop working if they reference an `ENUM` value dropped by an `ALTER TYPE ... DROP VALUE` statement. As a result, `ALTER TYPE ... DROP VALUE` is disabled by default with the `enable_drop_enum_value` [cluster setting](cluster-settings.html) set to `off`. You can enable `ALTER TYPE ... DROP VALUE` by running `SET enable_drop_enum_value = on;`.
 
 ## Example
 
