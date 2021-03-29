@@ -49,7 +49,9 @@ The virtual tables in `information_schema` contain useful comments with links to
 
 Column | Description
 -------|-----------
-`grantee` | The name of the user to which this role membership was granted (always the current user).
+`grantee` | Name of the user to which this role membership was granted (always the current user).
+`role_name` | Name of a role.
+`is_grantable` | `YES` if the grantee has the admin option on the role; `NO` if not.
 
 ### applicable_roles
 
@@ -60,6 +62,21 @@ Column | Description
 `grantee` | Name of the user to which this role membership was granted (always the current user).
 `role_name` | Name of a role.
 `is_grantable` | `YES` if the grantee has the admin option on the role; `NO` if not.
+
+### character_sets
+
+`character_sets` identifies the character sets available in the current database.
+
+Column | Description
+-------|-----------
+`character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
+`character_set_schema` | Always `NULL` (unsupported by CockroachDB).
+`character_set_name` | Name of the character set (i.e., the name of the database encoding).
+`character_repertoire` | Character repertoire. `UCS` if the encoding is UTF8; the encoding name if not.
+`form_of_use` | Character encoding form (i.e., the name of the database encoding).
+`default_collate_catalog` | Name of the database containing the default collation (if any collation is identified, always the current database).
+`default_collate_schema` | Name of the schema containing the default collation.
+`default_collate_name` | Name of the default collation. The default collation matches the [`COLLATE`](collate.html) settings of the current database. If there is no such collation, then this column and the associated schema and catalog columns are `NULL`.
 
 ### check_constraints
 
@@ -72,6 +89,26 @@ Column | Description
 `constraint_name` | Name of the constraint.
 `check_clause` | Definition of the `CHECK` constraint.
 
+### collations
+
+Column | Description
+-------|-----------
+`collation_catalog` | Name of the database containing the collation (always the current database).
+`collation_schema` | Name of the schema containing the collation.
+`collation_name` | Name of the collation.
+`pad_attribute` | Always `NO PAD` (`PAD SPACE` is not supported by CockroachDB).
+
+### collation_character_set_applicability
+
+Column | Description
+-------|-----------
+`collation_catalog` | Name of the database containing the collation (always the current database).
+`collation_schema` | Name of the schema containing the collation.
+`collation_name` | Name of the collation.
+`character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
+`character_set_schema` | Always `NULL` (unsupported by CockroachDB).
+`character_set_name` | Name of the character set.
+
 ### columns
 
 `columns` contains information about the columns in each table.
@@ -82,6 +119,7 @@ Column | Description
 `table_schema` | Name of the schema containing the table.
 `table_name` | Name of the table.
 `column_name` | Name of the column.
+`column_comment` | Comment on the column.
 `ordinal_position` | Ordinal position of the column in the table (begins at 1).
 `column_default` | Default value for the column.
 `is_nullable` | `YES` if the column accepts `NULL` values; `NO` if it doesn't (e.g., it has the [`NOT NULL` constraint](not-null.html)).
@@ -92,13 +130,30 @@ Column | Description
 `numeric_precision_radix` | If `data_type` identifies a numeric type, the base in which the values in the columns `numeric_precision` and `numeric_scale` are expressed (either `2` or `10`). For all other data types, column is `NULL`.
 `numeric_scale` | If `data_type` is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise `NULL`.
 `datetime_precision` | The precision level of columns with data type [`TIME`/`TIMETZ`](time.html), [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html), or [`INTERVAL`](interval.html). For all other data types, this column is `NULL`.
+`interval_type` | If `data_type` is [`INTERVAL`](interval.html), the specified fields (e.g., `YEAR TO MONTH`); otherwise `NULL`.
+`interval_precision` | If `data_type` is [`INTERVAL`](interval.html), the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
 `character_set_name` | Always `NULL` (unsupported by CockroachDB).
+`collation_catalog` | Name of the database containing the collation (always the current database); `NULL` if the default collation is used, or if `data_type` is not collatable.
+`collation_schema` | Name of the schema containing the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
+`collation_name` | Name of the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
 `domain_catalog` | Always `NULL` (unsupported by CockroachDB).
 `domain_schema` | Always `NULL` (unsupported by CockroachDB).
 `domain_name` | Always `NULL` (unsupported by CockroachDB).
+`udt_catalog` | Name of the column data type's database (always the current database).
+`udt_schema` | Name of the column data type's schema.
+`udt_name` | Name of the column data type.
+`scope_catalog` | Always `NULL` (unsupported by CockroachDB).
+`scope_schema` | Always `NULL` (unsupported by CockroachDB).
+`scope_name` | Always `NULL` (unsupported by CockroachDB).
+`maximum_cardinality` | Always `NULL` (unsupported by CockroachDB).
+`dtd_identifier` | Always `NULL` (unsupported by CockroachDB).
+`is_self_referencing` | Whether or not the column is self-referencing. Possible values: `true` or `false`.
+`is_identity` | Whether or not the column is self-referencing. Possible values: `true` or `false`.
+`is_generated` | Whether or not the column is able to be updated. Possible values: `true` or `false`.
 `generation_expression` | The expression used for computing the column value in a computed column.
+`is_updatable` | Whether or not the column is able to be updated. Possible values: `true` or `false`.
 `is_hidden` | Whether or not the column is hidden. Possible values: `true` or `false`.
 `crdb_sql_type` | [Data type](data-types.html) of the column.
 
@@ -155,6 +210,8 @@ Column | Description
 `ordinal_position` | Ordinal position of the column within the constraint (begins at 1).
 `position_in_unique_constraint` | For foreign key constraints, ordinal position of the referenced column within its uniqueness constraint (begins at 1).
 
+### parameters
+
 ### referential_constraints
 
 `referential_constraints` identifies all referential ([Foreign Key](foreign-key.html)) constraints.
@@ -188,6 +245,8 @@ Column | Description
 `privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
+
+### routines
 
 ### schema_privileges
 
@@ -230,6 +289,8 @@ Column | Description
 `maximum_value` | The maximum value of the sequence.
 `increment` | The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.
 `cycle_option` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
+
+### session_variables
 
 ### statistics
 
@@ -304,6 +365,8 @@ Column | Description
 `table_catalog` | Name of the database that the privilege applies to.
 `privilege_type` | Type of [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
+
+### type_privileges
 
 ### views
 
