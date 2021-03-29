@@ -55,9 +55,9 @@ In this example, a Java application similar to the [basic JDBC example](build-a-
 
 Using the connection pool formula above:
 
-**connections = (10 [processor cores] * 3)**
+**connections = (10 [processor cores] * 4)**
 
-The connection pool size should be 30.
+The connection pool size should be 40.
 
 ~~~ java
 HikariConfig config = new HikariConfig();
@@ -68,7 +68,7 @@ config.addDataSourceProperty("ssl", "true");
 config.addDataSourceProperty("sslMode", "require")
 config.addDataSourceProperty("reWriteBatchedInserts", "true");
 config.setAutoCommit(false);
-config.setMaximumPoolSize(30);
+config.setMaximumPoolSize(40);
 config.setKeepaliveTime(150000);
 
 HikariDataSource ds = new HikariDataSource(config);
@@ -84,13 +84,13 @@ In this example, a Go application similar to the [basic pgx example](build-a-go-
 
 Using the connection pool formula above:
 
-**connections = (10 [processor cores] * 3)**
+**connections = (10 [processor cores] * 4)**
 
-The connection pool size should be 30.
+The connection pool size should be 40.
 
 ~~~ go
 // Set connection pool configuration, with maximum connection pool size.
-config, err := pgxpool.ParseConfig("postgres://max:roach@127.0.0.1:26257/bank?sslmode=require&pool_max_conns=30")
+config, err := pgxpool.ParseConfig("postgres://max:roach@127.0.0.1:26257/bank?sslmode=require&pool_max_conns=40")
 	if err != nil {
 		log.Fatal("error configuring the database: ", err)
 	}
