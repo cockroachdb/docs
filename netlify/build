@@ -28,4 +28,10 @@ pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
 ./vale --no-wrap v20.2 || true
 
 # Run htmltest, but skip checking external links to speed things up
-$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external
+# unless it's on a scheduled nightly run
+if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]
+then
+	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
+else
+	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external
+fi
