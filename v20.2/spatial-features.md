@@ -12,6 +12,7 @@ See the links below for more information about how to use CockroachDB for spatia
 
 - [Install CockroachDB](install-cockroachdb.html)
 - [Working with Spatial Data](spatial-data.html)
+- [Spatial tutorial](spatial-tutorial.html)
 
 ## Migrating spatial data into and out of CockroachDB
 
@@ -27,6 +28,7 @@ See the links below for more information about how to use CockroachDB for spatia
 - [Spatial and GIS Glossary of Terms](spatial-glossary.html)
 - [Known Limitations](known-limitations.html#spatial-support-limitations)
 - [Spatial functions](functions-and-operators.html#spatial-functions)
+- [Client library compatibility](spatial-data.html#compatibility)
 
 ### Spatial objects
 
