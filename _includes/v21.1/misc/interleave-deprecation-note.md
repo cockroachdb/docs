@@ -1,1 +1,2 @@
-{{site.data.alerts.callout_warning}}Interleaving was deprecated in CockroachDB v20.2, and is disabled by default in CockroachDB v21.1. For details, see [`INTERLEAVE IN PARENT` Deprecation](interleave-in-parent.html#deprecation).{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}Interleaving was deprecated in CockroachDB v20.2, and is disabled by default in CockroachDB v21.1. For details, see [`INTERLEAVE IN PARENT` Deprecation](interleave-in-parent.html#deprecation).
+{{site.data.alerts.end}}

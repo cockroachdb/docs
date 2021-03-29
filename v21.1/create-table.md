@@ -125,7 +125,7 @@ The following options are supported:
 To exclude specifiers, use the `EXCLUDING` keyword. Excluding specifiers can be useful if you want to use `INCLUDING ALL`, and exclude just one or two specifiers. The last `INCLUDING`/`EXCLUDING` keyword for a given specifier takes priority.
 
 {{site.data.alerts.callout_info}}
-Column families, partitioning, and foreign key constraints
+Column families, partitioning, interleavings, and foreign key constraints
 cannot be preserved from the old table and will have to be recreated
 manually in the new table if the user wishes.
 {{site.data.alerts.end}}
