@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function build {
+	bundle exec jekyll build --trace --config _config_base.yml,$1
+}
+
+gem install bundler
+bundle install
+build _config_cockroachdb.yml
+
+cp _site/docs/_redirects _site/_redirects
+cp _site/docs/404.html _site/404.html
+
+# Set up htmltest
+go get -u github.com/cockroachdb/htmltest
+pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
+
+# Run htmltest and check external links
+$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
