@@ -34,7 +34,9 @@ Cockroach Labs performed lab testing of various customer workloads and found no 
 
 **connections = (number of cores * 4)**
 
-Many workloads perform best when the number of connections was between 2 and 4 times the number of CPU cores in the cluster.
+Many workloads perform best when the maximum number of connections was between 2 and 4 times the number of CPU cores in the cluster.
+
+In addition to setting a maximum connection pool size, set the idle connection pool size if possible. Cockroach Labs recommends setting the idle connection pool size equal to the maximum pool size. While this uses more memory, it allows many connections when concurrency is high without having to create a new connection for every new operation.
 
 ## Validating connections in a pool
 
