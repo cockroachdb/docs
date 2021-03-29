@@ -11,8 +11,6 @@ gem "jekyll-sitemap", "~> 1.3.1"
 gem "liquid-c", "~> 4.0.0"
 gem "redcarpet", "~> 3.5"
 gem "sassc", "~> 2.2"
-gem "rss"
-gem "webrick"
 
 group :jekyll_plugins do
     gem "jekyll-include-cache"
