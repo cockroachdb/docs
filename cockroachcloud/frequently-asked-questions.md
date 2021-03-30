@@ -12,7 +12,7 @@ This page answers the frequently asked questions about the paid version of Cockr
 
 ### Why can't I use certain regions in AWS and  GCP?
 
-We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
 
 **Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to technical limitations that we are actively trying to resolve:
@@ -50,10 +50,7 @@ We use separate certificate authorities for each cluster, and all connections to
 
 Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
-- Data stored in clusters running in GCP are encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
-- Data stored in clusters running in AWS are encrypted-at-rest using [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
-
-Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../v20.2/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption.
+Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest](../v20.2/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -119,14 +116,6 @@ All customers of our CockroachCloud service can view and manage their clusters i
 
 Response times are under 10ms for public access but typically much lower. Additionally, using [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink) will reduce latency.
 
-### How can I monitor resource usage such as CPU, memory, and IOPS?
-
-The Cockroach Labs SRE team monitors cluster resources and is alerted in the event of storage and compute threshold issues and node downtime. The team also monitors performance and will work with you to add nodes as necessary to remediate any issues. Additional capabilities for direct customer alerts are being developed to notify you of any anomalies in real time.
-
-### How does CockroachCloud support replication between availability zones?
-
-CockroachDB can be [started](../stable/cockroach-start.html) with locality flags, which enforce the placement of replicas across zones for optimal resiliency. Additionally, the [`configure zone`](../stable/configure-zone.html) command can be used to customize replication settings.
-
 ## Support
 
 ### Am I in control of upgrades for my CockroachCloud clusters?
@@ -137,15 +126,14 @@ Yes, you can apply major release upgrades directly [through the CockroachCloud C
 
 CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. We highly recommend running one of the two latest versions of CockroachDB, but we will never force a major upgrade to a cluster without your knowledge. You can contact [Support](https://support.cockroachlabs.com/hc/en-us) if you require an exception.
 
-### What is the outage history in production?
+### How do I check to see if CockroachCloud is down?
 
-We support 99.95% uptime for CockroachCloud clusters. To date, we have not had any full scale or major outages affecting all customers. CockroachDB's distributed architecture is designed to be more resilient than traditional databases, and most of our customers achieve higher resilience by deploying more than three nodes. We can help size the right cluster for you based on your specific resilience or downtime needs.
+The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a publicly available page that displays the current uptime status of the following services:
 
-### What is the process and SLA for disaster recovery?
-
-You can access self-service [backup and restore](backups-page.html) in the CockroachCloud console. Through the console, you have the ability to restore full tables or databases into a new or existing CockroachCloud cluster.
-
-If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+- [**CockroachCloud Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for CockroachCloud, cluster creation and management, and user management.
+- [**CockroachDB Support Portal**](https://support.cockroachlabs.com/hc/en-us): Where registered CockroachCloud customers can report, track, and resolve issues.
+- **AWS**: The status reported here reflects the health of existing AWS CockroachCloud clusters and the ability to provision new clusters in AWS.
+- **GCP**: The status reported here reflects the health of existing GCP CockroachCloud clusters and the ability to provision new clusters in GCP.
 
 ## Cluster troubleshooting
 
