@@ -8545,6 +8545,8 @@ body.sidenav-open:before {
   position: absolute;
   top: 13px;
   left: 2px;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
 }
 #sidebar ul li.visited a,
 .js-sidebar ul li.visited a {
@@ -8556,8 +8558,8 @@ body.sidenav-open:before {
 }
 #sidebar ul li.active > a .nav-expand,
 .js-sidebar ul li.active > a .nav-expand {
-  transform: rotate(-180deg);
-  -webkit-transform: rotate(-180deg);
+  transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
 }
 #sidebar .tier-1 a,
 .js-sidebar .tier-1 a {
@@ -11200,11 +11202,11 @@ img.mfp-img {
   vertical-align: middle;
 }
 #os-tabs button:hover {
-  color: #242A35;
-  border-bottom-color: #6933FF;
+  color: #6933FF;
+  font-weight: 700;
 }
 #os-tabs button.current {
-  color: #242A35;
+  color: #6933FF;
   border-bottom-color: #6933FF;
 }
 #os-tabs.os-tabs_button-outline-primary a.external {
@@ -11391,11 +11393,11 @@ img.mfp-img {
   outline: none;
 }
 .filters .filter-button:hover {
-  color: #242A35;
-  border-bottom-color: #6933FF;
+  color: #6933FF;
 }
 .filters .filter-button.current {
-  color: #242A35;
+  color: #6933FF;
+  font-weight: 700;
   border-bottom-color: #6933FF;
   margin-right: 15px;
 }

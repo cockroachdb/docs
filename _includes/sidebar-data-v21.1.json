@@ -1220,12 +1220,6 @@
                 ]
               },
               {
-                "title": "Name Resolution",
-                "urls": [
-                  "/${VERSION}/sql-name-resolution.html"
-                ]
-              },
-              {
                 "title": "SQL Statements",
                 "items": [
                   {
@@ -1244,6 +1238,12 @@
                     "title": "<code>ADD CONSTRAINT</code>",
                     "urls": [
                       "/${VERSION}/add-constraint.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ADD REGION</code>",
+                    "urls": [
+                      "/${VERSION}/add-region.html"
                     ]
                   },
                   {
@@ -1775,6 +1775,12 @@
                     ]
                   },
                   {
+                    "title": "<code>SET LOCALITY</code>",
+                    "urls": [
+                      "/${VERSION}/set-locality.html"
+                    ]
+                  },
+                  {
                     "title": "<code>SET SCHEMA</code>",
                     "urls": [
                       "/${VERSION}/set-schema.html"
@@ -1964,6 +1970,12 @@
                     "title": "<code>SPLIT AT</code>",
                     "urls": [
                       "/${VERSION}/split-at.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
+                    "urls": [
+                      "/${VERSION}/survive-failure.html"
                     ]
                   },
                   {
@@ -2229,6 +2241,48 @@
                   }
                 ]
               },
+
+              {
+                "title": "Name Resolution",
+                "urls": [
+                  "/${VERSION}/sql-name-resolution.html"
+                ]
+              },
+              {
+                "title": "System Catalogs",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/system-catalogs.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>crdb_internal</code>",
+                    "urls": [
+                      "/${VERSION}/crdb-internal.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>information_schema</code>",
+                    "urls": [
+                      "/${VERSION}/information-schema.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_catalog</code>",
+                    "urls": [
+                      "/${VERSION}/pg-catalog.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_extension</code>",
+                    "urls": [
+                      "/${VERSION}/pg-extension.html"
+                    ]
+                  }
+                ]
+              },
               {
                 "title": "Transactions",
                 "items": [
@@ -2248,6 +2302,35 @@
                     "title": "Transaction Retry Error Reference",
                     "urls": [
                       "/${VERSION}/transaction-retry-error-reference.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Performance Optimization",
+                "items": [
+                  {
+                    "title": "Indexes",
+                    "urls": [
+                      "/${VERSION}/indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Interleaved Tables",
+                    "urls": [
+                      "/${VERSION}/interleave-in-parent.html"
+                    ]
+                  },
+                  {
+                    "title": "Cost-Based Optimizer",
+                    "urls": [
+                      "/${VERSION}/cost-based-optimizer.html"
+                    ]
+                  },
+                  {
+                    "title": "Vectorized Execution",
+                    "urls": [
+                      "/${VERSION}/vectorized-execution.html"
                     ]
                   }
                 ]
@@ -2411,41 +2494,6 @@
                       "/${VERSION}/st_union.html"
                     ]
                   }
-                ]
-              },
-              {
-                "title": "Performance Optimization",
-                "items": [
-                  {
-                    "title": "Indexes",
-                    "urls": [
-                      "/${VERSION}/indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Interleaved Tables",
-                    "urls": [
-                      "/${VERSION}/interleave-in-parent.html"
-                    ]
-                  },
-                  {
-                    "title": "Cost-Based Optimizer",
-                    "urls": [
-                      "/${VERSION}/cost-based-optimizer.html"
-                    ]
-                  },
-                  {
-                    "title": "Vectorized Execution",
-                    "urls": [
-                      "/${VERSION}/vectorized-execution.html"
-                    ]
-                  }
-                ]
-              },
-              {
-                "title": "Information Schema",
-                "urls": [
-                  "/${VERSION}/information-schema.html"
                 ]
               },
               {

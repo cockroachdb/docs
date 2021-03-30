@@ -1,6 +1,6 @@
 ---
 title: Upgrade to CockroachDB v20.1
-summary:
+summary: Learn how to upgrade your CockroachDB cluster to v20.1.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-upgrade-to-v20.1.html

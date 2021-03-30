@@ -8,12 +8,6 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
-### Partitioning on `ENUM` values
-
-[Partitions](partitioning.html) cannot be created on columns of type [`ENUM`](enum.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55342)
-
 ### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 
 CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`](insert.html#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.

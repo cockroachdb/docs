@@ -17,7 +17,6 @@ You can configure vectorized execution with the `vectorize` [session variable](s
 Option    | Description
 ----------|------------
 `on`   | Turns on vectorized execution for all queries on rows over the [`vectorize_row_count_threshold`](#setting-the-row-threshold-for-vectorized-execution) (1000 rows, by default).<br><br>**Default:** `vectorize=on`
-`201auto` | Follows the [vectorized execution behavior of CockroachDB v20.1](../v20.1/vectorized-execution.html), instructing CockroachDB to use the vectorized execution engine on queries that use a constant amount of memory, on [data types supported by the vectorized engine in CockroachDB v20.1](../v20.1/data-types.html).
 `off`  | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
