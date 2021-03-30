@@ -59,8 +59,8 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_partitioned_table` | None
 `pg_policies` | `pg_policies` (empty)
 `pg_policy` | None
-`pg_prepared_statements` | `pg_prepared_statements`
-`pg_prepared_xacts` | `pg_prepared_xacts`
+`pg_prepared_statements` | `pg_prepared_statements` (empty)
+`pg_prepared_xacts` | `pg_prepared_xacts` (empty)
 `pg_proc` | `pg_proc`
 `pg_publication` | `pg_publication` (empty)
 `pg_publication_rel` | `pg_publication_rel` (empty)
