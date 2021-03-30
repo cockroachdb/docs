@@ -92,14 +92,37 @@ Column | Description
 `numeric_precision_radix` | If `data_type` identifies a numeric type, the base in which the values in the columns `numeric_precision` and `numeric_scale` are expressed (either `2` or `10`). For all other data types, column is `NULL`.
 `numeric_scale` | If `data_type` is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise `NULL`.
 `datetime_precision` | <span class="version-tag">New in v20.2:</span> The precision level of columns with data type [`TIME`/`TIMETZ`](time.html), [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html), or [`INTERVAL`](interval.html). For all other data types, this column is `NULL`.
+`interval_type` | If `data_type` is [`INTERVAL`](interval.html), the specified fields (e.g., `YEAR TO MONTH`); otherwise `NULL`.
+`interval_precision` | If `data_type` is [`INTERVAL`](interval.html), the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
 `character_set_name` | Always `NULL` (unsupported by CockroachDB).
+`collation_catalog` | Name of the database containing the collation (always the current database); `NULL` if the default collation is used, or if `data_type` is not collatable.
+`collation_schema` | Name of the schema containing the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
+`collation_name` | Name of the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
 `domain_catalog` | Always `NULL` (unsupported by CockroachDB).
 `domain_schema` | Always `NULL` (unsupported by CockroachDB).
 `domain_name` | Always `NULL` (unsupported by CockroachDB).
+`udt_catalog` | Name of the column data type's database (always the current database).
+`udt_schema` | Name of the column data type's schema.
+`udt_name` | Name of the column data type.
+`scope_catalog` | Always `NULL` (unsupported by CockroachDB).
+`scope_schema` | Always `NULL` (unsupported by CockroachDB).
+`scope_name` | Always `NULL` (unsupported by CockroachDB).
+`maximum_cardinality` | Always `NULL` (unsupported by CockroachDB).
+`dtd_identifier` | Always `NULL` (unsupported by CockroachDB).
+`is_self_referencing` | Always `NULL` (unsupported by CockroachDB).
+`is_identity` | Whether or not the column is self-referencing. Possible values: `YES` or `NO`.
+`identity_generation` | Always `NULL` (unsupported by CockroachDB).
+`identity_start` | If the column is an identity column, then the start value of the internal sequence, else `NULL`.
+`identity_increment` | If the column is an identity column, then the increment of the internal sequence, else `NULL`.
+`identity_maximum` | If the column is an identity column, then the maximum value of the internal sequence, else `NULL`.
+`identity_minimum` | If the column is an identity column, then the minimum value of the internal sequence, else `NULL`.
+`identity_cycle` | If the column is an identity column, then `YES` if the internal sequence cycles or `NO` if it does not; otherwise `NULL`.
+`is_generated` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
 `generation_expression` | The expression used for computing the column value in a computed column.
-`is_hidden` | Whether or not the column is hidden. Possible values: `true` or `false`.
+`is_updatable` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
+`is_hidden` | Whether or not the column is hidden. Possible values: `YES` or `NO`.
 `crdb_sql_type` | [Data type](data-types.html) of the column.
 
 ### column_privileges

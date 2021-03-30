@@ -142,9 +142,9 @@ Column | Description
 `collation_catalog` | Name of the database containing the collation (always the current database); `NULL` if the default collation is used, or if `data_type` is not collatable.
 `collation_schema` | Name of the schema containing the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
 `collation_name` | Name of the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
-`domain_catalog` | If the column has a domain type, the name of the database that the domain is defined in (always the current database), else `NULL`.
-`domain_schema` | If the column has a domain type, the name of the database that the domain is defined in (always the current database), else `NULL`.
-`domain_name` | If the column has a domain type, the name of the domain, else `NULL`.
+`domain_catalog` | Always `NULL` (unsupported by CockroachDB).
+`domain_schema` | Always `NULL` (unsupported by CockroachDB).
+`domain_name` | Always `NULL` (unsupported by CockroachDB).
 `udt_catalog` | Name of the column data type's database (always the current database).
 `udt_schema` | Name of the column data type's schema.
 `udt_name` | Name of the column data type.
