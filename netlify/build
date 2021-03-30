@@ -19,7 +19,7 @@ pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
 # (see .github/workflows/nightly.yml)
 if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
 	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
-	exit 0	
+	exit $?	
 fi;
 
 # Run Algolia if building master
