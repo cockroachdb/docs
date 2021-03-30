@@ -117,6 +117,20 @@ Column | Description
 `privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 
+### column_udt_usage
+
+<span class="version-tag">New in v20.2:</span> `column_udt_usage` identifies all columns that use data types owned by a currently-enabled role.
+
+Column | Description
+-------|-----------
+`udt_catalog` | Name of the database in which the column data type is defined (always the current database).
+`udt_schema` | Name of the schema in which the column data type is defined.
+`udt_name` | Name of the column data type.
+`table_catalog` | Name of the database containing the table (always the current database).
+`table_schema` | Name of the schema containing the table.
+`table_name` | Name of the table.
+`column_name` | Name of the column.
+
 ### constraint_column_usage
 
 `constraint_column_usage` identifies all columns in a database that are used by some [constraint](constraints.html).
@@ -155,6 +169,47 @@ Column | Description
 `ordinal_position` | Ordinal position of the column within the constraint (begins at 1).
 `position_in_unique_constraint` | For foreign key constraints, ordinal position of the referenced column within its uniqueness constraint (begins at 1).
 
+### parameters
+
+`parameters` is an empty view, provided for PostgreSQL compatibility.
+
+CockroachDB does not yet support stored procedures. For details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/17511).
+
+Column | Description
+-------|-----------
+`specific_catalog` | Always `NULL`.
+`specific_schema` | Always `NULL`.
+`specific_name` | Always `NULL`.
+`ordinal_position` | Always `NULL`.
+`parameter_mode` | Always `NULL`.
+`is_result` | Always `NULL`.
+`as_locator` | Always `NULL`.
+`parameter_name` | Always `NULL`.
+`data_type` | Always `NULL`.
+`character_maximum_length` |  Always `NULL`.
+`character_octet_length` | Always `NULL`.
+`character_set_catalog` | Always `NULL`.
+`character_set_schema` | Always `NULL`.
+`character_set_name` | Always `NULL`.
+`collation_catalog` | Always `NULL`.
+`collation_schema` | Always `NULL`.
+`collation_name` | Always `NULL`.
+`numeric_precision` | Always `NULL`.
+`numeric_precision_radix` | Always `NULL`.
+`numeric_scale` | Always `NULL`.
+`datetime_precision` | Always `NULL`.
+`interval_type` | Always `NULL`.
+`interval_precision` | Always `NULL`.
+`udt_catalog` | Always `NULL`.
+`udt_schema` | Always `NULL`.
+`udt_name` | Always `NULL`.
+`scope_catalog` | Always `NULL`.
+`scope_schema` | Always `NULL`.
+`scope_name` | Always `NULL`.
+`maximum_cardinality` | Always `NULL`.
+`dtd_identifier` | Always `NULL`.
+`parameter_default` | Always `NULL`.
+
 ### referential_constraints
 
 `referential_constraints` identifies all referential ([Foreign Key](foreign-key.html)) constraints.
@@ -188,6 +243,96 @@ Column | Description
 `privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
+
+### routines
+
+`routines` is an empty view, provided for PostgreSQL compatibility.
+
+CockroachDB does not yet support stored procedures. For details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/17511).
+
+Column | Description
+-------|-----------
+`specific_catalog` | Always `NULL`.
+`specific_schema` | Always `NULL`.
+`specific_name` | Always `NULL`.
+`routine_catalog` | Always `NULL`.
+`routine_schema` | Always `NULL`.
+`routine_name` | Always `NULL`.
+`routine_type` | Always `NULL`.
+`module_catalog` | Always `NULL`.
+`module_schema` | Always `NULL`.
+`module_name` | Always `NULL`.
+`udt_catalog` | Always `NULL`.
+`udt_schema` | Always `NULL`.
+`udt_name` | Always `NULL`.
+`data_type` | Always `NULL`.
+`character_maximum_length` | Always `NULL`.
+`character_octet_length` | Always `NULL`.
+`character_set_catalog` | Always `NULL`.
+`character_set_schema` | Always `NULL`.
+`character_set_name` | Always `NULL`.
+`collation_catalog` | Always `NULL`.
+`collation_schema` | Always `NULL`.
+`collation_name` | Always `NULL`.
+`numeric_precision` | Always `NULL`.
+`numeric_precision_radix` | Always `NULL`.
+`numeric_scale` | Always `NULL`.
+`datetime_precision` | Always `NULL`.
+`interval_type` | Always `NULL`.
+`interval_precision` | Always `NULL`.
+`type_udt_catalog` | Always `NULL`.
+`type_udt_schema` | Always `NULL`.
+`type_udt_name` | Always `NULL`.
+`scope_catalog` | Always `NULL`.
+`scope_name` | Always `NULL`.
+`maximum_cardinality` | Always `NULL`.
+`dtd_identifier` | Always `NULL`.
+`routine_body` | Always `NULL`.
+`routine_definition` | Always `NULL`.
+`external_name` | Always `NULL`.
+`external_language` | Always `NULL`.
+`parameter_style` | Always `NULL`.
+`is_deterministic` | Always `NULL`.
+`sql_data_access` | Always `NULL`.
+`is_null_call` | Always `NULL`.
+`sql_path` | Always `NULL`.
+`schema_level_routine` | Always `NULL`.
+`max_dynamic_result_sets` | Always `NULL`.
+`is_user_defined_cast` | Always `NULL`.
+`is_implicitly_invocable` | Always `NULL`.
+`security_type` | Always `NULL`.
+`to_sql_specific_catalog` | Always `NULL`.
+`to_sql_specific_schema` | Always `NULL`.
+`to_sql_specific_name` | Always `NULL`.
+`as_locator` | Always `NULL`.
+`created` | Always `NULL`.
+`last_altered` | Always `NULL`.
+`new_savepoint_level` | Always `NULL`.
+`is_udt_dependent` | Always `NULL`.
+`result_cast_from_data_type` | Always `NULL`.
+`result_cast_as_locator` | Always `NULL`.
+`result_cast_char_max_length` | Always `NULL`.
+`result_cast_char_octet_length` | Always `NULL`.
+`result_cast_char_set_catalog` | Always `NULL`.
+`result_cast_char_set_schema` | Always `NULL`.
+`result_cast_char_set_name` | Always `NULL`.
+`result_cast_collation_catalog` | Always `NULL`.
+`result_cast_collation_schema` | Always `NULL`.
+`result_cast_collation_name` | Always `NULL`.
+`result_cast_numeric_precision` | Always `NULL`.
+`result_cast_numeric_precision_radix` | Always `NULL`.
+`result_cast_numeric_scale` | Always `NULL`.
+`result_cast_datetime_precision` | Always `NULL`.
+`result_cast_interval_type` | Always `NULL`.
+`result_cast_interval_precision` | Always `NULL`.
+`result_cast_type_udt_catalog` | Always `NULL`.
+`result_cast_type_udt_schema` | Always `NULL`.
+`result_cast_type_udt_name` | Always `NULL`.
+`result_cast_scope_catalog` | Always `NULL`.
+`result_cast_scope_schema` | Always `NULL`.
+`result_cast_scope_name` | Always `NULL`.
+`result_cast_maximum_cardinality` | Always `NULL`.
+`result_cast_dtd_identifier` | Always `NULL`.
 
 ### schema_privileges
 
@@ -293,6 +438,18 @@ Column | Description
 `table_name` | Name of the table.
 `table_type` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
 `version` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table. Note that this column is an experimental feature used for internal purposes inside CockroachDB and its definition is subject to change without notice.
+
+### type_privileges
+
+<span class="version-tag">New in v20.2:</span> `type_privileges` contains information about privileges on the user-defined types in the current database.
+
+Column | Description
+-------|-----------
+`grantee` | Username of user with privilege grant.
+`type_catalog` | Name of the database that contains the type (always the current database).
+`type_schema` | Name of the schema that contains the type (always `pg_catalog`).
+`type_name` | Name of the type.
+`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
 
 ### user_privileges
 

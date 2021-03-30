@@ -65,7 +65,7 @@ Column | Description
 
 ### character_sets
 
-`character_sets` identifies the character sets available in the current database.
+<span class="version-tag">New in v21.1:</span> `character_sets` identifies the character sets available in the current database.
 
 Column | Description
 -------|-----------
@@ -91,19 +91,23 @@ Column | Description
 
 ### collations
 
+<span class="version-tag">New in v21.1:</span> `collations` identifies the collations available in the current database.
+
 Column | Description
 -------|-----------
 `collation_catalog` | Name of the database containing the collation (always the current database).
-`collation_schema` | Name of the schema containing the collation.
+`collation_schema` | Name of the schema containing the collation (always `pg_catalog`).
 `collation_name` | Name of the collation.
 `pad_attribute` | Always `NO PAD` (`PAD SPACE` is not supported by CockroachDB).
 
 ### collation_character_set_applicability
 
+<span class="version-tag">New in v21.1:</span> `collation_character_set_applicability` identifies which character set the available collations are applicable to.
+
 Column | Description
 -------|-----------
 `collation_catalog` | Name of the database containing the collation (always the current database).
-`collation_schema` | Name of the schema containing the collation.
+`collation_schema` | Name of the schema containing the collation (always `pg_catalog`).
 `collation_name` | Name of the collation.
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
@@ -138,9 +142,9 @@ Column | Description
 `collation_catalog` | Name of the database containing the collation (always the current database); `NULL` if the default collation is used, or if `data_type` is not collatable.
 `collation_schema` | Name of the schema containing the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
 `collation_name` | Name of the collation; `NULL` if the default collation is used, or if `data_type` is not collatable.
-`domain_catalog` | Always `NULL` (unsupported by CockroachDB).
-`domain_schema` | Always `NULL` (unsupported by CockroachDB).
-`domain_name` | Always `NULL` (unsupported by CockroachDB).
+`domain_catalog` | If the column has a domain type, the name of the database that the domain is defined in (always the current database), else `NULL`.
+`domain_schema` | If the column has a domain type, the name of the database that the domain is defined in (always the current database), else `NULL`.
+`domain_name` | If the column has a domain type, the name of the domain, else `NULL`.
 `udt_catalog` | Name of the column data type's database (always the current database).
 `udt_schema` | Name of the column data type's schema.
 `udt_name` | Name of the column data type.
@@ -149,12 +153,18 @@ Column | Description
 `scope_name` | Always `NULL` (unsupported by CockroachDB).
 `maximum_cardinality` | Always `NULL` (unsupported by CockroachDB).
 `dtd_identifier` | Always `NULL` (unsupported by CockroachDB).
-`is_self_referencing` | Whether or not the column is self-referencing. Possible values: `true` or `false`.
-`is_identity` | Whether or not the column is self-referencing. Possible values: `true` or `false`.
-`is_generated` | Whether or not the column is able to be updated. Possible values: `true` or `false`.
+`is_self_referencing` | Always `NULL` (unsupported by CockroachDB).
+`is_identity` | Whether or not the column is self-referencing. Possible values: `YES` or `NO`.
+`identity_generation` | Always `NULL` (unsupported by CockroachDB).
+`identity_start` | If the column is an identity column, then the start value of the internal sequence, else `NULL`.
+`identity_increment` | If the column is an identity column, then the increment of the internal sequence, else `NULL`.
+`identity_maximum` | If the column is an identity column, then the maximum value of the internal sequence, else `NULL`.
+`identity_minimum` | If the column is an identity column, then the minimum value of the internal sequence, else `NULL`.
+`identity_cycle` | If the column is an identity column, then `YES` if the internal sequence cycles or `NO` if it does not; otherwise `NULL`.
+`is_generated` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
 `generation_expression` | The expression used for computing the column value in a computed column.
-`is_updatable` | Whether or not the column is able to be updated. Possible values: `true` or `false`.
-`is_hidden` | Whether or not the column is hidden. Possible values: `true` or `false`.
+`is_updatable` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
+`is_hidden` | Whether or not the column is hidden. Possible values: `YES` or `NO`.
 `crdb_sql_type` | [Data type](data-types.html) of the column.
 
 ### column_privileges
@@ -171,6 +181,20 @@ Column | Description
 `column_name` | Name of the column.
 `privilege_type` | Name of the [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
+
+### column_udt_usage
+
+`column_udt_usage` identifies all columns that use data types owned by a currently-enabled role.
+
+Column | Description
+-------|-----------
+`udt_catalog` | Name of the database in which the column data type is defined (always the current database).
+`udt_schema` | Name of the schema in which the column data type is defined.
+`udt_name` | Name of the column data type.
+`table_catalog` | Name of the database containing the table (always the current database).
+`table_schema` | Name of the schema containing the table.
+`table_name` | Name of the table.
+`column_name` | Name of the column.
 
 ### constraint_column_usage
 
@@ -212,6 +236,45 @@ Column | Description
 
 ### parameters
 
+`parameters` is an empty view, provided for PostgreSQL compatibility.
+
+CockroachDB does not yet support stored procedures. For details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/17511).
+
+Column | Description
+-------|-----------
+`specific_catalog` | Always `NULL`.
+`specific_schema` | Always `NULL`.
+`specific_name` | Always `NULL`.
+`ordinal_position` | Always `NULL`.
+`parameter_mode` | Always `NULL`.
+`is_result` | Always `NULL`.
+`as_locator` | Always `NULL`.
+`parameter_name` | Always `NULL`.
+`data_type` | Always `NULL`.
+`character_maximum_length` |  Always `NULL`.
+`character_octet_length` | Always `NULL`.
+`character_set_catalog` | Always `NULL`.
+`character_set_schema` | Always `NULL`.
+`character_set_name` | Always `NULL`.
+`collation_catalog` | Always `NULL`.
+`collation_schema` | Always `NULL`.
+`collation_name` | Always `NULL`.
+`numeric_precision` | Always `NULL`.
+`numeric_precision_radix` | Always `NULL`.
+`numeric_scale` | Always `NULL`.
+`datetime_precision` | Always `NULL`.
+`interval_type` | Always `NULL`.
+`interval_precision` | Always `NULL`.
+`udt_catalog` | Always `NULL`.
+`udt_schema` | Always `NULL`.
+`udt_name` | Always `NULL`.
+`scope_catalog` | Always `NULL`.
+`scope_schema` | Always `NULL`.
+`scope_name` | Always `NULL`.
+`maximum_cardinality` | Always `NULL`.
+`dtd_identifier` | Always `NULL`.
+`parameter_default` | Always `NULL`.
+
 ### referential_constraints
 
 `referential_constraints` identifies all referential ([Foreign Key](foreign-key.html)) constraints.
@@ -247,6 +310,94 @@ Column | Description
 `with_hierarchy` | Always `NULL` (unsupported by CockroachDB).
 
 ### routines
+
+`routines` is an empty view, provided for PostgreSQL compatibility.
+
+CockroachDB does not yet support stored procedures. For details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/17511).
+
+Column | Description
+-------|-----------
+`specific_catalog` | Always `NULL`.
+`specific_schema` | Always `NULL`.
+`specific_name` | Always `NULL`.
+`routine_catalog` | Always `NULL`.
+`routine_schema` | Always `NULL`.
+`routine_name` | Always `NULL`.
+`routine_type` | Always `NULL`.
+`module_catalog` | Always `NULL`.
+`module_schema` | Always `NULL`.
+`module_name` | Always `NULL`.
+`udt_catalog` | Always `NULL`.
+`udt_schema` | Always `NULL`.
+`udt_name` | Always `NULL`.
+`data_type` | Always `NULL`.
+`character_maximum_length` | Always `NULL`.
+`character_octet_length` | Always `NULL`.
+`character_set_catalog` | Always `NULL`.
+`character_set_schema` | Always `NULL`.
+`character_set_name` | Always `NULL`.
+`collation_catalog` | Always `NULL`.
+`collation_schema` | Always `NULL`.
+`collation_name` | Always `NULL`.
+`numeric_precision` | Always `NULL`.
+`numeric_precision_radix` | Always `NULL`.
+`numeric_scale` | Always `NULL`.
+`datetime_precision` | Always `NULL`.
+`interval_type` | Always `NULL`.
+`interval_precision` | Always `NULL`.
+`type_udt_catalog` | Always `NULL`.
+`type_udt_schema` | Always `NULL`.
+`type_udt_name` | Always `NULL`.
+`scope_catalog` | Always `NULL`.
+`scope_name` | Always `NULL`.
+`maximum_cardinality` | Always `NULL`.
+`dtd_identifier` | Always `NULL`.
+`routine_body` | Always `NULL`.
+`routine_definition` | Always `NULL`.
+`external_name` | Always `NULL`.
+`external_language` | Always `NULL`.
+`parameter_style` | Always `NULL`.
+`is_deterministic` | Always `NULL`.
+`sql_data_access` | Always `NULL`.
+`is_null_call` | Always `NULL`.
+`sql_path` | Always `NULL`.
+`schema_level_routine` | Always `NULL`.
+`max_dynamic_result_sets` | Always `NULL`.
+`is_user_defined_cast` | Always `NULL`.
+`is_implicitly_invocable` | Always `NULL`.
+`security_type` | Always `NULL`.
+`to_sql_specific_catalog` | Always `NULL`.
+`to_sql_specific_schema` | Always `NULL`.
+`to_sql_specific_name` | Always `NULL`.
+`as_locator` | Always `NULL`.
+`created` | Always `NULL`.
+`last_altered` | Always `NULL`.
+`new_savepoint_level` | Always `NULL`.
+`is_udt_dependent` | Always `NULL`.
+`result_cast_from_data_type` | Always `NULL`.
+`result_cast_as_locator` | Always `NULL`.
+`result_cast_char_max_length` | Always `NULL`.
+`result_cast_char_octet_length` | Always `NULL`.
+`result_cast_char_set_catalog` | Always `NULL`.
+`result_cast_char_set_schema` | Always `NULL`.
+`result_cast_char_set_name` | Always `NULL`.
+`result_cast_collation_catalog` | Always `NULL`.
+`result_cast_collation_schema` | Always `NULL`.
+`result_cast_collation_name` | Always `NULL`.
+`result_cast_numeric_precision` | Always `NULL`.
+`result_cast_numeric_precision_radix` | Always `NULL`.
+`result_cast_numeric_scale` | Always `NULL`.
+`result_cast_datetime_precision` | Always `NULL`.
+`result_cast_interval_type` | Always `NULL`.
+`result_cast_interval_precision` | Always `NULL`.
+`result_cast_type_udt_catalog` | Always `NULL`.
+`result_cast_type_udt_schema` | Always `NULL`.
+`result_cast_type_udt_name` | Always `NULL`.
+`result_cast_scope_catalog` | Always `NULL`.
+`result_cast_scope_schema` | Always `NULL`.
+`result_cast_scope_name` | Always `NULL`.
+`result_cast_maximum_cardinality` | Always `NULL`.
+`result_cast_dtd_identifier` | Always `NULL`.
 
 ### schema_privileges
 
@@ -291,6 +442,10 @@ Column | Description
 `cycle_option` | Currently, all sequences are set to `NO CYCLE` and the sequence will not wrap.
 
 ### session_variables
+
+<span class="version-tag">New in v21.1:</span> `session_variables` contains information about the [session variable settings](set-vars.html) for your session. The `session_variables` view exposes the same information as the [`SHOW (session settings)`](show-vars.html) statement.
+
+For a list of the session variables, see [supported variables](show-vars.html#supported-variables).
 
 ### statistics
 
@@ -355,6 +510,18 @@ Column | Description
 `table_type` | Type of the table: `BASE TABLE` for a normal table, `VIEW` for a view, or `SYSTEM VIEW` for a view created by CockroachDB.
 `version` | Version number of the table; versions begin at 1 and are incremented each time an `ALTER TABLE` statement is issued on the table. Note that this column is an experimental feature used for internal purposes inside CockroachDB and its definition is subject to change without notice.
 
+### type_privileges
+
+`type_privileges` contains information about privileges on the user-defined types in the current database.
+
+Column | Description
+-------|-----------
+`grantee` | Username of user with privilege grant.
+`type_catalog` | Name of the database that contains the type (always the current database).
+`type_schema` | Name of the schema that contains the type (always `pg_catalog`).
+`type_name` | Name of the type.
+`privilege_type` | Type of [privilege](authorization.html#assign-privileges).
+
 ### user_privileges
 
 `user_privileges` identifies global [privileges](authorization.html#assign-privileges).
@@ -365,8 +532,6 @@ Column | Description
 `table_catalog` | Name of the database that the privilege applies to.
 `privilege_type` | Type of [privilege](authorization.html#assign-privileges).
 `is_grantable` | Always `NULL` (unsupported by CockroachDB).
-
-### type_privileges
 
 ### views
 
@@ -411,27 +576,7 @@ For example, to retrieve all columns from the `table_constraints` table:
   movr               | public            | 3426283741_53_1_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
   movr               | public            | 3426283741_53_2_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
   movr               | public            | primary                      | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
-  movr               | public            | fk_city_ref_users            | movr          | public       | vehicles                   | FOREIGN KEY     | NO            | NO
-  movr               | public            | 3426283741_54_1_not_null     | movr          | public       | vehicles                   | CHECK           | NO            | NO
-  movr               | public            | 3426283741_54_2_not_null     | movr          | public       | vehicles                   | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | rides                      | PRIMARY KEY     | NO            | NO
-  movr               | public            | fk_city_ref_users            | movr          | public       | rides                      | FOREIGN KEY     | NO            | NO
-  movr               | public            | fk_vehicle_city_ref_vehicles | movr          | public       | rides                      | FOREIGN KEY     | NO            | NO
-  movr               | public            | check_vehicle_city_city      | movr          | public       | rides                      | CHECK           | NO            | NO
-  movr               | public            | 3426283741_55_1_not_null     | movr          | public       | rides                      | CHECK           | NO            | NO
-  movr               | public            | 3426283741_55_2_not_null     | movr          | public       | rides                      | CHECK           | NO            | NO
-  movr               | public            | fk_city_ref_rides            | movr          | public       | vehicle_location_histories | FOREIGN KEY     | NO            | NO
-  movr               | public            | primary                      | movr          | public       | vehicle_location_histories | PRIMARY KEY     | NO            | NO
-  movr               | public            | 3426283741_56_1_not_null     | movr          | public       | vehicle_location_histories | CHECK           | NO            | NO
-  movr               | public            | 3426283741_56_2_not_null     | movr          | public       | vehicle_location_histories | CHECK           | NO            | NO
-  movr               | public            | 3426283741_56_3_not_null     | movr          | public       | vehicle_location_histories | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | promo_codes                | PRIMARY KEY     | NO            | NO
-  movr               | public            | 3426283741_57_1_not_null     | movr          | public       | promo_codes                | CHECK           | NO            | NO
-  movr               | public            | primary                      | movr          | public       | user_promo_codes           | PRIMARY KEY     | NO            | NO
-  movr               | public            | fk_city_ref_users            | movr          | public       | user_promo_codes           | FOREIGN KEY     | NO            | NO
-  movr               | public            | 3426283741_58_1_not_null     | movr          | public       | user_promo_codes           | CHECK           | NO            | NO
-  movr               | public            | 3426283741_58_2_not_null     | movr          | public       | user_promo_codes           | CHECK           | NO            | NO
-  movr               | public            | 3426283741_58_3_not_null     | movr          | public       | user_promo_codes           | CHECK           | NO            | NO
+...
 (25 rows)
 ~~~
 
@@ -449,27 +594,7 @@ And to retrieve specific columns from the `table_constraints` table:
   users                      | 3426283741_53_1_not_null
   users                      | 3426283741_53_2_not_null
   vehicles                   | primary
-  vehicles                   | fk_city_ref_users
-  vehicles                   | 3426283741_54_1_not_null
-  vehicles                   | 3426283741_54_2_not_null
-  rides                      | primary
-  rides                      | fk_city_ref_users
-  rides                      | fk_vehicle_city_ref_vehicles
-  rides                      | check_vehicle_city_city
-  rides                      | 3426283741_55_1_not_null
-  rides                      | 3426283741_55_2_not_null
-  vehicle_location_histories | fk_city_ref_rides
-  vehicle_location_histories | primary
-  vehicle_location_histories | 3426283741_56_1_not_null
-  vehicle_location_histories | 3426283741_56_2_not_null
-  vehicle_location_histories | 3426283741_56_3_not_null
-  promo_codes                | primary
-  promo_codes                | 3426283741_57_1_not_null
-  user_promo_codes           | fk_city_ref_users
-  user_promo_codes           | primary
-  user_promo_codes           | 3426283741_58_1_not_null
-  user_promo_codes           | 3426283741_58_2_not_null
-  user_promo_codes           | 3426283741_58_3_not_null
+...
 (25 rows)
 ~~~
 
