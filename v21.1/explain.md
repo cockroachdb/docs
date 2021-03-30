@@ -20,6 +20,10 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
      You can disable query plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
 
+     The query planner uses the [cost-based optimizer](cost-based-optimizer.html) to create query plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster.
+
+     For example, if you add a secondary index to a table with a large number of rows and see that a query plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an index join.
+
 - By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a query plan.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
@@ -69,21 +73,9 @@ Time | The time details for the query. The total time is the planning and execut
 
 ## Examples
 
-The following examples use the [`movr` example dataset](cockroach-demo.html#datasets). To follow along:
+The following examples use the [`movr` example dataset](cockroach-demo.html#datasets).
 
-1. Start a [single-node cluster](cockroach-start-single-node.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start-single-node --insecure
-~~~
-
-2. Load the `movr` database and some [workload data](cockroach-workload.html) to the cluster:
-
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach workload init movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750
-~~~
+{% include {{ page.version.version }}/demo_movr.md %}
 
 ### Default query plans
 

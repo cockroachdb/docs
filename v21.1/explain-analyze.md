@@ -4,7 +4,7 @@ summary: The EXPLAIN ANALYZE statement executes a query and generates a physical
 toc: true
 ---
 
-The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a URL for a physical query plan with execution statistics, or a URL to download a bundle with more details about the query plan. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a physical query plan with execution statistics, a URL for a physical query plan, or a URL to download a bundle with more details about the query plan. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
@@ -24,8 +24,8 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 Parameter          | Description
 -------------------|-----------
-`DISTSQL`          | _(Default)_ Generate a link to a distributed SQL physical query plan tree. For more information, see [Default option](#default-option).
-`PLAN`             | Executes the statement and returns CockroachDB's query plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt).
+`PLAN`             | _(Default)_ Executes the statement and returns CockroachDB's query plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
+`DISTSQL`          | Return the query plan and performance statistics as well as a generated link to a graphical distributed SQL physical query plan tree.
 `DEBUG`            |  Generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. For more information, see [`DEBUG` option](#debug-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
 
@@ -35,22 +35,54 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
 
 ## Success responses
 
-Successful `EXPLAIN ANALYZE` (and `EXPLAIN ANALYZE (DISTSQL)`) statements return a table with the following columns:
+Successful `EXPLAIN ANALYZE` statements return return tables with the following details in the `info` column:
 
- Column | Description
+ Detail | Description
 --------|------------
-**automatic** | If `true`, the query is distributed. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
-**url** | The URL generated for a physical query plan that provides high level information about how a query will be executed. For details about reading the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+[Global properties](#global-properties) | The properties and statistics that apply to the entire query plan.
+[Query plan tree](#query-plan-tree-properties) | A tree representation of the hierarchy of the query plan.
+Node details | The properties, columns, and ordering details for the current query plan node in the tree.
+Time | The time details for the query. The total time is the planning and execution time of the query. The execution time is the time it took for the final query plan to complete. The network time is the amount of time it took to distribute the query across the relevant nodes in the cluster. Some queries do not need to be distributed, so the network time is 0ms.
+
+If you use the `DISTSQL` option, the statement will also return a URL generated for a physical query plan that provides high level information about how a query will be executed. For details about reading the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
 
 If you use the [`DEBUG` option](#debug-option), the statement will return a single `text` column with a URL and instructions to download the `DEBUG` bundle, which includes the physical query plan.
 
+### Global properties
+
+Global property | Description
+----------------|------------
+planning time | The total time the planner took to create a query plan.
+execution time | The time it took for the final query plan to complete.
+distribution | Shows whether the query was distributed or local. If `distribution` is `full` execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this query.
+rows read from KV | The number of rows read from the [Storage layer](architecture/storage-layer.html).
+cumulative time spent in KV | The total amount of time spent in the [Storage layer](architecture/storage-layer.html).
+Maximum memory usage | The maximum amount of memory used by this query anytime during its execution.
+Network usage | The amount of data transferred over the network while the query was executed. If this value is 0 B, the statement was executed on a single node and didn't use the network.
+
+### Query plan tree properties
+
+The query plan tree shows
+
+Query plan tree properties | Description
+---------------------------|------------
+node | Each node in they query plan hierarchy has a node with details about that phase of the query. For example, a query with a `GROUP BY` clause has a `group` node with details about the nodes, rows, and operations related to the `GROUP BY` operation.
+cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the query.
+actual row count | The actual number of rows affected by this phase of the query during execution.
+estimated row count | The estimated number of rows affected by this phase of the query according to the query planner.
+KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the query.
+KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the query.
+table | The table and index used in a scan operation in a query.
+spans | The table span used in a scan operation in a query. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index.
+
 ## Default option
 
-By default, `EXPLAIN ANALYZE` uses the `DISTQL` option, which generates a physical query plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (DISTSQL)` produce the same output.
+By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
 
 ### DistSQL Plan Viewer
 
-The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html).
+`EXPLAIN ANALYZE (DISTSQL)` generates a physical query plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html).
 
 Field | Description | Execution engine
 ------+-------------+----------------
@@ -103,21 +135,93 @@ You can obtain this ZIP file by following the link provided in the `EXPLAIN ANAL
 
 ## Examples
 
+To run the examples, initialize a demo cluster with the MovR workload.
+
+{% include {{ page.version.version }}/demo_movr.md %}
+
 ### `EXPLAIN ANALYZE`
 
-Use `EXPLAIN ANALYZE` without an option, or equivalently with the `DISTSQL` option, to execute a query and generate a link to a physical query plan with execution statistics.
+Use `EXPLAIN ANALYZE` without an option, or equivalently with the `PLAN` option, to execute a query and display the physical query plan with execution statistics.
 
-For example, the following `EXPLAIN ANALYZE` statement executes a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster, and then generates a link to a physical query plan with execution statistics:
+For example, the following `EXPLAIN ANALYZE` statement executes a simple query against the [MovR database](movr.html) and then displays the physical query plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
+> EXPLAIN ANALYZE SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-  automatic |                      url                      
-------------+-----------------------------------------------
-    true    | https://cockroachdb.github.io/distsqlplan...
+                                          info
+-----------------------------------------------------------------------------------------
+  planning time: 475µs
+  execution time: 53ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 125,000 (21 MiB)
+  cumulative time spent in KV: 132ms
+  maximum memory usage: 1.1 MiB
+  network usage: 2.9 KiB (25 messages)
+
+  • group
+  │ cluster nodes: n1, n2, n3
+  │ actual row count: 9
+  │ estimated row count: 9
+  │ group by: city
+  │ ordered: +city
+  │
+  └── • scan
+        cluster nodes: n1, n2, n3
+        actual row count: 125,000
+        KV rows read: 125,000
+        KV bytes read: 21 MiB
+        estimated row count: 125,000 (100% of the table; stats collected 2 minutes ago)
+        table: rides@primary
+        spans: FULL SCAN
+(24 rows)
+
+Time: 54ms total (execution 54ms / network 0ms)
+~~~
+
+### `EXPLAIN ANALYZE (DISTSQL)`
+
+Use `EXPLAIN ANALYZE (DISTSQL)` to execute a query, display the physical query plan with execution statistics, and generate a link to a graphical DistSQL query plan.
+
+~~~ sql
+EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
+~~~
+
+~~~
+                          info
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  planning time: 510µs
+  execution time: 58ms
+  distribution: full
+  vectorized: true
+  rows read from KV: 125,000 (21 MiB)
+  cumulative time spent in KV: 146ms
+  maximum memory usage: 1.1 MiB
+  network usage: 2.9 KiB (25 messages)
+
+  • group
+  │ cluster nodes: n1, n2, n3
+  │ actual row count: 9
+  │ estimated row count: 9
+  │ group by: city
+  │ ordered: +city
+  │
+  └── • scan
+        cluster nodes: n1, n2, n3
+        actual row count: 125,000
+        KV rows read: 125,000
+        KV bytes read: 21 MiB
+        estimated row count: 125,000 (100% of the table; stats collected 15 minutes ago)
+        table: rides@primary
+        spans: FULL SCAN
+
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzcmE1u4zYUx_c9BcFVBlViUV-WtfJkkLbBJPYgHwUGVRAw0qsjjCy6JJ1xGuQmBXqKbrrsIXqAnqSgZE9sWaJlR0mL2QiSHh_13o_8_83kAYtfUhzg86OTo3cXKErkvYHo3WiPwx1kU3iDvjsbniKexCDQ92fDyw_o8GM-DBs4YzEM6BgEDn7CBBvYwga28ZWBJ5xFIATjKvSQDzyOZzgwDZxkk6lUr68MHDEOOHjAMpEp4ABf0JsUzoDGwDsmNnAMkiZpPn1eQX_CkzHl6tvnE5qJAO13QkzHQgKP6TjEnRCH4SzqhuGM9A7CcEZddf251w_DmWmG4cw3F3flC3lQqWaIEc1iZCEmb4ELbODhVAaobxl9omp6_yOSyRgC5LhjUTxHLJOQyYRl85D51x_zkJxOUhCIA40D5BDDc50icHMvv7z3DnroNDnEBr6hMroFgdhUTtRXHUV1PsfTu3yWq0cDF6_mMIWkI8ABeTSaA387GnEYUcl4x17l3VdfHvIYOMQByp_eDj5eD4YX14PLk5O9PnmjVuHydK9vqbt3w8vBxfweZhBNl3DYOahybxWtuaWungq9uUe3VNyu1Xj1-NS5Vdv50zys6Kg8z7fFRBo83vPwnF-eXh8rQLZ6OoMsBq7yDNS3On27AprrFpuojM1ax2bXbga7AZJpVgWlkseA7bNJp7eKoly4U123u153r7ZuZ6Vu0tw1rEau0QnxDROSZblj-P_8_lsYzsAPw1ncO9zsFGZahLFyn5QJRLMRpCAW_kOpuigTiuHvP9XY6IcG_nM0nzX3H1L4j8Z-ervYj-eu20_3gGxpP15ZqHX2s2HllvTlfmX2Q9q1H_-17cfqVsu4AhtpaD9WcxmTpjJu-7d_vy1raHiIcMkuKvZJGyr26xeObLNwS9vU-R-o2GtRxVa7Ku6-toq9XuNDRL2l1x8iKro9AzFhmYDSYaJ6ZlPxgngEBV_BpjyCD5xF-WeKx2Gel7-IQcgiSoqH46wIqQKXk0k5mSwnWyvJJK9GVh9l_HzTjekMjWHM-D2iacoiKtV62SZ6n-tNhUXEFWIUJ-LT8iATVSmyYtdaCv82XfRqu8hAfmb8E0qphCy6D5DbnZv5IvKZJnL1GBGDAJ7QNPmVLvVPSnlfjCiC5E61Zy0FF2a0iNmulTe_iI9BCDpaHfJCbLzmbBzf35GNt4EN0bEhbbEh62wsrXTsVTblZFuvO1MvPEeb7eqT3R1Vu77fLVK_pvPlrl7UZ-13z3y5_a5n05YXdHVsiL0Bjq2F47cEx94WTr0ZlO1-fuKqtntrd7s317sw17vwtpHtrtvfdTWWZm9aYZ2lWd0XtLSulo2v9xX_NXxFx3WjcrS24jgvZyt6NPW2svbPqlc7J1XIX99ES2cB7fqazzkKWG39bFTopvffe4qzgY2rYeO53iY2TvO_bq4ev_k3AAD__yqgOLs=
+(26 rows)
+
+Time: 62ms total (execution 61ms / network 0ms)
 ~~~
 
 To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided:
@@ -131,19 +235,21 @@ Use the [`DEBUG`](#debug-option) option to generate a ZIP file containing files 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE (DEBUG) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
+> EXPLAIN ANALYZE (DEBUG) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                      text
+                                      info
 --------------------------------------------------------------------------------
   Statement diagnostics bundle generated. Download from the Admin UI (Advanced
   Debug -> Statement Diagnostics History), via the direct link below, or using
   the command line.
-  Admin UI: http://127.0.0.1:26258
-  Direct link: http://127.0.0.1:26258/_admin/v1/stmtbundle/...
+  Admin UI: http://127.0.0.1:8080
+  Direct link: http://127.0.0.1:8080/_admin/v1/stmtbundle/645706706591449089
   Command line: cockroach statement-diag list / download
 (6 rows)
+
+Time: 150ms total (execution 150ms / network 0ms)
 ~~~
 
 Navigating to the URL will automatically download the ZIP file. You can also obtain the bundle by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
