@@ -101,12 +101,12 @@ If you backup to a destination already containing a full backup, an incremental 
 It is recommended that the same localities be included for every incremental backup in the series of backups; however, only the `default` locality is required. When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
 {{site.data.alerts.end}}
 
-And if you want to explicitly control where your incremental backups go, specify the subdirectory in the storage URL:
+And if you want to explicitly control where your incremental backups go, specify the subdirectory in the `BACKUP` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO
-		('s3://us-east-bucket/{subdirectory}?COCKROACH_LOCALITY=default', 's3://us-west-bucket/{subdirectory}?COCKROACH_LOCALITY=region%3Dus-west');
+> BACKUP INTO {subdirectory} IN
+		('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west');
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).

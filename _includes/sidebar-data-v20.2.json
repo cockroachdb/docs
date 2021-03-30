@@ -1302,7 +1302,7 @@
                     ]
                   },
                   {
-                    "title": "<code>BACKUP</code> (Enterprise)",
+                    "title": "<code>BACKUP</code>",
                     "urls": [
                       "/${VERSION}/backup.html"
                     ]
@@ -1674,7 +1674,7 @@
                     ]
                   },
                   {
-                    "title": "<code>RESTORE</code> (Enterprise)",
+                    "title": "<code>RESTORE</code>",
                     "urls": [
                       "/${VERSION}/restore.html"
                     ]
