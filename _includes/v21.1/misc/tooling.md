@@ -11,7 +11,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Language | Driver | Recommended version | Support level |
 |----------+--------+---------------------+---------------|
-| C | [libpq](http://www.postgresql.org/docs/9.5/static/libpq.html) | [PostgreSQL 9.5](http://www.postgresql.org/docs/9.5/static/libpq.html) | Beta |
+| C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html) | [PostgreSQL 13](http://www.postgresql.org/docs/13/static/libpq.html) | Beta |
 | C++ | [libpqxx](build-a-c++-app-with-cockroachdb.html) | [7.1.1](https://github.com/jtv/libpqxx/releases) (Windows)<br>[4.0.1](https://github.com/jtv/libpqxx/releases) or higher (macOS) | Beta |
 | C# (.NET) | [Npgsql](build-a-csharp-app-with-cockroachdb.html) | [4.1.3.1](https://www.nuget.org/packages/Npgsql/) | Beta |
 | Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | [0.7.11](https://search.maven.org/search?q=g:org.clojure%20AND%20a:java.jdbc) | Beta |
