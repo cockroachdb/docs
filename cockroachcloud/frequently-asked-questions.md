@@ -118,6 +118,13 @@ Response times are under 10ms for public access but typically much lower. Additi
 
 ## Support
 
+### Where can I find the Support Policy and Service Level Agreement (SLA) for CockroachCloud?
+
+The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions):
+
+- [CockroachCloud Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
+- [CockroachCloud SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
+
 ### Am I in control of upgrades for my CockroachCloud clusters?
 
 Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
