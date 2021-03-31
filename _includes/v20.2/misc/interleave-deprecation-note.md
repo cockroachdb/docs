@@ -1,0 +1,2 @@
+{{site.data.alerts.callout_danger}}Interleaving is deprecated in CockroachDB v20.2. For details, see [`INTERLEAVE IN PARENT` Deprecation](interleave-in-parent.html#deprecation).
+{{site.data.alerts.end}}
