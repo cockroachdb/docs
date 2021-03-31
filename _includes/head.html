@@ -24,8 +24,6 @@ var pageConfig = {
 };
 </script>
 
-{% include_cached vwo.html %}
-
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
 
 {% if page.comparison == true %}
@@ -34,8 +32,6 @@ var pageConfig = {
 {% endif %}
 {% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}
 {% if page.license == true %}<script src="{{ 'js/license-on-page.js' | relative_url }}"></script>{% endif %}
-<script async src="//js.convertflow.co/production/websites/5329.js" defer></script>
-
 
 <link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
 <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
