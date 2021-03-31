@@ -299,11 +299,6 @@ th,
 td {
   padding: map-get($spacers, 1) map-get($spacers, 2);
 }
-// @debug map-get($spacers, 2);
-tbody tr:hover {
-  // what is theme-blue.css? overwriting requires important
-  // background-color: $cl_gray_light !important;
-}
 
 
 tbody tr.eol {
@@ -844,3 +839,5 @@ a.accordion-toggle {
 ::marker {
   color: $neutral-800;
 }
+
+@import "theme-blue.css";
