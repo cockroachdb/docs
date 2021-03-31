@@ -138,7 +138,6 @@ CockroachCloud supports the latest major version of CockroachDB and the version 
 The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a publicly available page that displays the current uptime status of the following services:
 
 - [**CockroachCloud Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for CockroachCloud, cluster creation and management, and user management.
-- [**CockroachDB Support Portal**](https://support.cockroachlabs.com/hc/en-us): Where registered CockroachCloud customers can report, track, and resolve issues.
 - **AWS**: The status reported here reflects the health of existing AWS CockroachCloud clusters and the ability to provision new clusters in AWS.
 - **GCP**: The status reported here reflects the health of existing GCP CockroachCloud clusters and the ability to provision new clusters in GCP.
 
