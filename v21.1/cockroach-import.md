@@ -46,10 +46,9 @@ $ cockroach import --help
 `--certs-dir`    | The path to the [certificate directory](cockroach-cert.html) containing the CA and client certificates and client key.<br><br>**Env Variable:** `COCKROACH_CERTS_DIR`<br>**Default:** `${HOME}/.cockroach-certs/`
 `--insecure`     | Use an insecure connection.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
-`--ignore-unsupported-statements=` | Ignore statements that are unsupported during an import from a PGDUMP file. <br/>**Default:** `false`
-`--log-ignored-statements=` | Log statements that are ignored during an import from a PGDUMP file to the specified destination.
-`--row-limit=` | Specify the number of rows that will be imported for each table during a PGDUMP or MYSQLDUMP import. <br/> This can be used to check schema and data correctness without running
-the entire import. <br/>**Default:** `0`
+`--ignore-unsupported-statements` | <span class="version-tag">New in v21.1:</span> Ignore statements that are unsupported during an import from a PGDUMP file. <br/>**Default:** `false`
+`--log-ignored-statements` | <span class="version-tag">New in v21.1:</span> Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
+`--row-limit=` | <span class="version-tag">New in v21.1:</span> The number of rows to import for each table during a PGDUMP or MYSQLDUMP import. <br/> This can be used to check schema and data correctness without running the entire import. <br/>**Default:** `0`
 
 ## Examples
 
@@ -81,7 +80,7 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 
 ### Import a database with unsupported SQL syntax and log all unsupported statements
 
-To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
+<span class="version-tag">New in v21.1:</span> To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](use-userfile-for-bulk-operations.html):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -93,6 +92,8 @@ successfully imported table test_table from pgdump file /Users/maxroach/Desktop/
 ~~~
 
 ### Import a limited number of rows from a dump file
+
+<span class="version-tag">New in v21.1:</span> To limit the number of rows imported from a dump file:
 
 {% include copy-clipboard.html %}
 ~~~ shell

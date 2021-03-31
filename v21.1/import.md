@@ -95,7 +95,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
 `ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
-`log_ignored_statements` | `PGDUMP` | <span class="version-tag">New in v21.1:</span> Log unsupported statements when using `ignore_unsupported_statements` to a specified destination.
+`log_ignored_statements` | `PGDUMP` | <span class="version-tag">New in v21.1:</span> Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
@@ -731,7 +731,7 @@ Google Cloud:
 > IMPORT PGDUMP 'gs://acme-co/employees.sql' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres][postgres].
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
 
 ### Import a table from a Postgres database dump
 

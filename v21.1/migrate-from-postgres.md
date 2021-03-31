@@ -191,7 +191,9 @@ Example usage:
 
 ### Ignore unsupported statements
 
-<span class="version-tag">New in v21.1:</span> The `ignore_unsupported_statements` option specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default: false**. If unset or set to `false`, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
+<span class="version-tag">New in v21.1:</span> The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default: false**.
+
+If `ignore_unsupported_statements` is omitted, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
 
 Example usage:
 
@@ -202,7 +204,7 @@ Example usage:
 
 ### Log unsupported statements
 
-<span class="version-tag">New in v21.1:</span> The `log_ignored_statements` is used with `ignore_unsupported_statements` to log unsupported statements in the `PGDUMP` file to specified a destination file.
+<span class="version-tag">New in v21.1:</span> The `log_ignored_statements` option is used with the `ignore_unsupported_statements` option to log unsupported statements in the `PGDUMP` file to specified a destination file.
 
 Example usage:
 
