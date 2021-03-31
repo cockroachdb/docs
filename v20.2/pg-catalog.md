@@ -47,7 +47,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_indexes` | `pg_indexes`
 `pg_inherits` | `pg_inherits`
 `pg_init_privs` | None
-`pg_language` | None
+`pg_language` | `pg_language` (empty)
 `pg_largeobject` | None
 `pg_largeobject_metadata` | None
 `pg_locks` | `pg_locks`
@@ -59,8 +59,8 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_partitioned_table` | None
 `pg_policies` | None
 `pg_policy` | None
-`pg_prepared_statements` | `pg_prepared_statements`
-`pg_prepared_xacts` | `pg_prepared_xacts`
+`pg_prepared_statements` | `pg_prepared_statements` (empty)
+`pg_prepared_xacts` | `pg_prepared_xacts` (empty)
 `pg_proc` | `pg_proc`
 `pg_publication` | None
 `pg_publication_rel` | None
