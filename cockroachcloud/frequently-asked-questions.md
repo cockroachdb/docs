@@ -120,7 +120,7 @@ Response times are under 10ms for public access but typically much lower. Additi
 
 ### Am I in control of upgrades for my CockroachCloud clusters?
 
-Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
