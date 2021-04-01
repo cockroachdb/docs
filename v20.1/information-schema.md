@@ -118,14 +118,14 @@ Column | Description
 `maximum_cardinality` | Always `NULL` (unsupported by CockroachDB).
 `dtd_identifier` | Always `NULL` (unsupported by CockroachDB).
 `is_self_referencing` | Always `NULL` (unsupported by CockroachDB).
-`is_identity` | Whether or not the column is self-referencing. Possible values: `YES` or `NO`.
+`is_identity` | Whether or not the column is an identity column (always `NO`).
 `identity_generation` | Always `NULL` (unsupported by CockroachDB).
 `identity_start` | If the column is an identity column, then the start value of the internal sequence, else `NULL`.
 `identity_increment` | If the column is an identity column, then the increment of the internal sequence, else `NULL`.
 `identity_maximum` | If the column is an identity column, then the maximum value of the internal sequence, else `NULL`.
 `identity_minimum` | If the column is an identity column, then the minimum value of the internal sequence, else `NULL`.
 `identity_cycle` | If the column is an identity column, then `YES` if the internal sequence cycles or `NO` if it does not; otherwise `NULL`.
-`is_generated` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
+`is_generated` | Whether or not the column is generated (i.e., a [computed column](computed-columns.html)). Possible values: `YES` or `NO`.
 `generation_expression` | The expression used for computing the column value in a computed column.
 `is_updatable` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
 `is_hidden` | Whether or not the column is hidden. Possible values: `YES` or `NO`.

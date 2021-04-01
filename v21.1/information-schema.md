@@ -71,12 +71,12 @@ Column | Description
 -------|-----------
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
-`character_set_name` | Name of the character set (i.e., the name of the database encoding).
+`character_set_name` | Name of the character set (i.e., the name of the database encoding). Always `UTF8`.
 `character_repertoire` | Character repertoire. `UCS` if the encoding is UTF8; the encoding name if not.
-`form_of_use` | Character encoding form (i.e., the name of the database encoding).
+`form_of_use` | Character encoding form (i.e., the name of the database encoding). Always `UTF8`.
 `default_collate_catalog` | Name of the database containing the default collation (if any collation is identified, always the current database).
-`default_collate_schema` | Name of the schema containing the default collation.
-`default_collate_name` | Name of the default collation. The default collation matches the [`COLLATE`](collate.html) settings of the current database. If there is no such collation, then this column and the associated schema and catalog columns are `NULL`.
+`default_collate_schema` | Always `NULL` (unsupported by CockroachDB).
+`default_collate_name` | Always `NULL` (unsupported by CockroachDB).
 
 ### check_constraints
 
@@ -111,7 +111,7 @@ Column | Description
 `collation_name` | Name of the collation.
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
-`character_set_name` | Name of the character set.
+`character_set_name` | Name of the character set (always `UTF8`).
 
 ### columns
 
@@ -154,14 +154,14 @@ Column | Description
 `maximum_cardinality` | Always `NULL` (unsupported by CockroachDB).
 `dtd_identifier` | Always `NULL` (unsupported by CockroachDB).
 `is_self_referencing` | Always `NULL` (unsupported by CockroachDB).
-`is_identity` | Whether or not the column is self-referencing. Possible values: `YES` or `NO`.
+`is_identity` | Whether or not the column is an identity column (always `NO`).
 `identity_generation` | Always `NULL` (unsupported by CockroachDB).
 `identity_start` | If the column is an identity column, then the start value of the internal sequence, else `NULL`.
 `identity_increment` | If the column is an identity column, then the increment of the internal sequence, else `NULL`.
 `identity_maximum` | If the column is an identity column, then the maximum value of the internal sequence, else `NULL`.
 `identity_minimum` | If the column is an identity column, then the minimum value of the internal sequence, else `NULL`.
 `identity_cycle` | If the column is an identity column, then `YES` if the internal sequence cycles or `NO` if it does not; otherwise `NULL`.
-`is_generated` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
+`is_generated` | Whether or not the column is generated (i.e., a [computed column](computed-columns.html)). Possible values: `YES` or `NO`.
 `generation_expression` | The expression used for computing the column value in a computed column.
 `is_updatable` | Whether or not the column is able to be updated. Possible values: `YES` or `NO`.
 `is_hidden` | Whether or not the column is hidden. Possible values: `YES` or `NO`.
@@ -443,7 +443,7 @@ Column | Description
 
 ### session_variables
 
-<span class="version-tag">New in v21.1:</span> `session_variables` contains information about the [session variable settings](set-vars.html) for your session. The `session_variables` view exposes the same information as the [`SHOW (session settings)`](show-vars.html) statement.
+<span class="version-tag">New in v21.1:</span> `session_variables` contains information about the [session variable settings](set-vars.html) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW (session settings)`](show-vars.html) statement.
 
 For a list of the session variables, see [supported variables](show-vars.html#supported-variables).
 
@@ -518,7 +518,7 @@ Column | Description
 -------|-----------
 `grantee` | Username of user with privilege grant.
 `type_catalog` | Name of the database that contains the type (always the current database).
-`type_schema` | Name of the schema that contains the type (always `pg_catalog`).
+`type_schema` | Name of the schema that contains the type.
 `type_name` | Name of the type.
 `privilege_type` | Type of [privilege](authorization.html#assign-privileges).
 
