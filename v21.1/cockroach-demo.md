@@ -150,19 +150,19 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
 # Connection parameters:
-#   (console) http://127.0.0.1:59403
-#   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo635924269&port=26257
-#   (sql/tcp) postgres://root:admin@127.0.0.1:59405?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
+#   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
+#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 #
 #
-# The user "root" with password "admin" has been created. Use it to access the Web UI!
+# The user "demo" with password "demo11762" has been created. Use it to access the Web UI!
 #
-# Server version: CockroachDB CCL v20.2.0 (x86_64-apple-darwin19.6.0, built , go1.14.4) (same version as client)
-# Cluster ID: d4055073-8b30-490b-97bf-39ced0cd6471
+# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, go1.15.6) (same version as client)
+# Cluster ID: 6a7041ac-8cf0-40d7-8564-fec9b95e46d6
 # Organization: Cockroach Demo
 #
 # Enter \? for a brief introduction.
-##
+#
 ~~~
 
 ### Connection parameters
@@ -171,14 +171,14 @@ The SQL shell welcome text includes connection parameters for accessing the DB C
 
 ~~~
 # Connection parameters:
-#   (console) http://127.0.0.1:50037
-#   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo294284060&port=26257
-#   (sql/tcp) postgres://root:admin@127.0.0.1:50039?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
+#   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
+#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 Parameter | Description
 ----------|------------
-`console` | Use this link to access a local [DB Console](ui-overview.html). To login, use the `root` user with password `admin`.
+`console` | Use this link to access a local [DB Console](ui-overview.html). To login, use the `demo` user with password provided (in this case, `demo11762`).
 `sql` | Use this connection URL to establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
 `sql/tcp` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).
 
