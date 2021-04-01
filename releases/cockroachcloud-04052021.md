@@ -16,19 +16,11 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.7](v20.2.7.html).
 
 ### Console changes
 
-- The login form no longer focuses on the email
-  field on page load. This change makes the form more flexible once other
-  authentication methods are available.
-- Extraneous information is no longer displayed in the
-  error for failed GCP peering attempts.
+- The [login form](https://cockroachlabs.cloud/login) no longer focuses on the email field on page load. This change makes the form more flexible once other authentication methods are available.
+- Extraneous information is no longer displayed in the error for failed [GCP peering](../cockroachcloud/network-authorization.html#vpc-peering) attempts.
+- Created a new [Status Page](https://status.cockroachlabs.cloud) that displays the current uptime status of the [CockroachCloud Console](https://cockroachlabs.cloud), AWS services, and GCP services.
 
 ### Bug fixes
 
-- The region shown in the GUI for free-tier
-  clusters is now correct. Previously, the GUI showed the wrong
-  region when creating an AWS free-tier cluster.
-- Fixed a bug where an error was thrown when
-  displaying the **Connect** modal for an old GCP cluster that does not have
-  the custom `crdb` network. These clusters do not support VPC peering, but
-  the lack of the `crdb` network was causing the listing of VPC peerings
-  to fail even though no such peerings exist.
+- The region shown in the [CockroachCloud Console](https://cockroachlabs.cloud) for free-tier clusters is now correct. Previously, the Console showed the wrong region when creating an AWS free-tier cluster.
+- Fixed a bug where an error occurred when displaying the **Connect** modal for an old GCP cluster that does not have the custom `crdb` network. These clusters do not support VPC peering, but the lack of the `crdb` network was causing the listing of VPC peerings to fail even though no such peerings exist.
