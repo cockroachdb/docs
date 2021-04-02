@@ -1,6 +1,6 @@
 ---
 title: Statements Page
-summary: The Statements page TK.
+summary: Learn how to use the Statements page to view and manage SQL statements on CockroachCloud.
 toc: true
 ---
 
@@ -27,20 +27,20 @@ You can also search for statements using the search bar.
 Use this page to identify SQL statements that you may want to [troubleshoot](../stable/query-behavior-troubleshooting.html). This might include statements that are experiencing high latencies, multiple [retries](../stable/transactions.html#transaction-retries), or execution failures. You can optionally create and retrieve [diagnostics](#diagnostics) for these statements.
 
 {{site.data.alerts.callout_success}}
-If you haven't yet executed any queries in the cluster as a user, this page will initially be blank.
+This page is initially blank on clusters where no queries have yet been executed.
 {{site.data.alerts.end}}
 
 <img src="{{ 'images/cockroachcloud/statements_page.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 Parameter | Description
 -----|------------
-Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details of a SQL statement fingerprint, click this to open the [**Statement Details** page](#statement-details-page).
-Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](../stable/begin-transaction.html) and [`COMMIT`](../stable/commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](../stable/architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachCloud wraps each statement in individual implicit transactions. 
+Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [**Statement Details** page](#statement-details-page).
+Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](../stable/begin-transaction.html) and [`COMMIT`](../stable/commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](../stable/architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachCloud wraps each statement in individual implicit transactions.
 Retries | Cumulative number of [retries](../stable/transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](#time-interval).
-Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](../stable/transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
-Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
-Diagnostics |  Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
+Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval).<br><br>The bar indicates the ratio of runtime success (gray) to [retries](../stable/transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client.<br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Diagnostics | Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
 
 ### Time interval
 
