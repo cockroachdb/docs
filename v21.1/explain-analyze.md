@@ -24,7 +24,7 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 Parameter          | Description
 -------------------|-----------
-`PLAN`             | _(Default)_ Executes the statement and returns CockroachDB's query plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
+`PLAN`             | <span class="version-tag">New in v21.1:</span> <br /> _(Default)_ Executes the statement and returns CockroachDB's query plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
 `DISTSQL`          | Return the query plan and performance statistics as well as a generated link to a graphical distributed SQL physical query plan tree.
 `DEBUG`            |  Generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. For more information, see [`DEBUG` option](#debug-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
@@ -58,8 +58,9 @@ distribution | Shows whether the query was distributed or local. If `distributio
 vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this query.
 rows read from KV | The number of rows read from the [Storage layer](architecture/storage-layer.html).
 cumulative time spent in KV | The total amount of time spent in the [Storage layer](architecture/storage-layer.html).
-Maximum memory usage | The maximum amount of memory used by this query anytime during its execution.
-Network usage | The amount of data transferred over the network while the query was executed. If this value is 0 B, the statement was executed on a single node and didn't use the network.
+cumulative time spent due to contention | The total amount of time this query was in contention with another transaction during execution.
+maximum memory usage | The maximum amount of memory used by this query anytime during its execution.
+network usage | The amount of data transferred over the network while the query was executed. If this value is 0 B, the statement was executed on a single node and didn't use the network.
 
 ### Query plan tree properties
 
@@ -67,10 +68,10 @@ The query plan tree shows
 
 Query plan tree properties | Description
 ---------------------------|------------
-node | Each node in they query plan hierarchy has a node with details about that phase of the query. For example, a query with a `GROUP BY` clause has a `group` node with details about the nodes, rows, and operations related to the `GROUP BY` operation.
+processor | Each processor in the query plan hierarchy has a node with details about that phase of the query. For example, a query with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
 cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the query.
-actual row count | The actual number of rows affected by this phase of the query during execution.
-estimated row count | The estimated number of rows affected by this phase of the query according to the query planner.
+actual row count | The actual number of rows affected by this processor during execution.
+estimated row count | The estimated number of rows affected by this processor according to the query planner.
 KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the query.
 KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the query.
 table | The table and index used in a scan operation in a query.
@@ -78,39 +79,11 @@ spans | The table span used in a scan operation in a query. If `spans` is `FULL 
 
 ## Default option
 
-By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
+<span class="version-tag">New in v21.1:</span> By default, `EXPLAIN ANALYZE` uses the `PLAN` option. `EXPLAIN ANALYZE` and `EXPLAIN ANALYZE (PLAN)` produce the same output.
 
-### DistSQL Plan Viewer
+## `DISTSQL` option
 
 `EXPLAIN ANALYZE (DISTSQL)` generates a physical query plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html).
-
-Field | Description | Execution engine
-------+-------------+----------------
-&lt;Processor&gt;/&lt;id&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, a "TableReader" processor reads in data, and an "Aggregator" aggregates input rows. | Both
-&lt;index&gt;@&lt;table&gt; | The index used by the processor. | Both
-Spans | The interval of the key space read by the processor. For example, `[/1 - /1]` indicates that only the key with value `1` is read by the processor. | Both
-Out | The output columns. | Both
-batches output | The number of batches of columnar data output. | Vectorized engine only
-tuples output | The number of rows output. | Vectorized engine only
-IO time | How long the TableReader processor spent reading data from disk. | Vectorized engine only
-stall time | How long the processor spent not doing work. This is aggregated into the stall time numbers as the query progresses down the tree (i.e., stall time is added up and overlaps with previous time). | Row-oriented engine only
-bytes read | The size of the data read by the processor. | Both
-rows read | The number of rows read by the processor. | Both
-@&lt;n&gt; | The index of the column relative to the input. | Both
-max memory used | How much memory (if any) is used to buffer rows. | Row-oriented engine only
-max disk used | How much disk (if any) is used to buffer data. Routers and processors will spill to disk buffering if there is not enough memory to buffer the data. | Row-oriented engine only
-execution time | How long the engine spent executing the processor. | Vectorized engine only
-max vectorized memory allocated | How much memory is allocated to the processor to buffer batches of columnar data. | Vectorized engine only
-max vectorized disk used | How much disk (if any) is used to buffer columnar data. Processors will spill to disk buffering if there is not enough memory to buffer the data. | Vectorized engine only
-left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join. | Both
-stored side | The smaller table that was stored as an in-memory hash table. | Both
-rows routed | How many rows were sent by routers, which can be used to understand network usage. | Row-oriented engine only
-bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication. | Both
-Render | The stage that renders the output. | Both
-by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows. | Both
-unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order. | Both
-&lt;data type&gt; |  If [`EXPLAIN(DISTSQL, TYPES)`](explain.html#distsql-option) is specified, lists the data types of the input columns. | Both
-Response | The response back to the client. | Both
 
 ## `DEBUG` option
 
@@ -132,6 +105,43 @@ Response | The response back to the client. | Both
 `statement.txt`     | The SQL statement for the query.
 
 You can obtain this ZIP file by following the link provided in the `EXPLAIN ANALYZE (DEBUG)` output, or by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
+
+## DistSQL plan viewer
+
+The graphical diagram when using the `DISTSQL` option displays the processors and operations that make up the query plan. While the text output from `PLAN` shows the query plan across the cluster, `DISTSQL` shows details on each node involved in the query.
+
+Field | Description | Execution engine
+------+-------------+----------------
+&lt;Processor&gt;/&lt;id&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, a "TableReader" processor reads in data, and an "Aggregator" aggregates input rows. | Both
+&lt;index&gt;@&lt;table&gt; | The index used by the processor. | Both
+Spans | The interval of the key space read by the processor. For example, `[/1 - /1]` indicates that only the key with value `1` is read by the processor. | Both
+Out | The output columns. | Both
+cluster nodes | The names of the CockroachDB cluster nodes involved in the execution of this processor. | Both
+batches output | The number of batches of columnar data output. | Vectorized engine only
+rows output | The number of rows output. | Vectorized engine only
+IO time | How long the TableReader processor spent reading data from disk. | Vectorized engine only
+stall time | How long the processor spent not doing work. This is aggregated into the stall time numbers as the query progresses down the tree (i.e., stall time is added up and overlaps with previous time). | Row-oriented engine only
+bytes read | The size of the data read by the processor. | Both
+rows read | The number of rows read by the processor. | Both
+KV time | The total time this phase of the query was in the [Storage layer](architecture/storage-layer.html). | Both
+KV contention time | The time the [Storage layer](architecture/storage-layer.html) was in contention during this phase of the query. | Both
+KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the query. | Both
+KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the query. | Both
+@&lt;n&gt; | The index of the column relative to the input. | Both
+max memory used | How much memory (if any) is used to buffer rows. | Row-oriented engine only
+max disk used | How much disk (if any) is used to buffer data. Routers and processors will spill to disk buffering if there is not enough memory to buffer the data. | Row-oriented engine only
+execution time | How long the engine spent executing the processor. | Vectorized engine only
+max vectorized memory allocated | How much memory is allocated to the processor to buffer batches of columnar data. | Vectorized engine only
+max vectorized disk used | How much disk (if any) is used to buffer columnar data. Processors will spill to disk buffering if there is not enough memory to buffer the data. | Vectorized engine only
+left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join. | Both
+stored side | The smaller table that was stored as an in-memory hash table. | Both
+rows routed | How many rows were sent by routers, which can be used to understand network usage. | Row-oriented engine only
+bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication. | Both
+Render | The stage that renders the output. | Both
+by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows. | Both
+unordered / ordered | _(Blue box)_ A synchronizer that takes one or more output streams and merges them to be consumable by a processor. An ordered synchronizer is used to merge ordered streams and keeps the rows in sorted order. | Both
+&lt;data type&gt; |  If [`EXPLAIN (DISTSQL, TYPES)`](explain.html#distsql-option) is specified, lists the data types of the input columns. | Both
+Response | The response back to the client. | Both
 
 ## Examples
 
