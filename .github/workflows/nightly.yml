@@ -11,4 +11,4 @@ jobs:
     - name: hook
       uses: wei/curl@v1
       with:
-        args: -X POST -d {} https://api.netlify.com/build_hooks/60623d6d4f10e018bbca9b7d
+        args: -X POST -d {} https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_HOOK }}
