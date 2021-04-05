@@ -18,7 +18,7 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.7](v20.2.7.html).
 
 - The [login form](https://cockroachlabs.cloud/login) no longer focuses on the email field on page load. This change makes the form more flexible once other authentication methods are available.
 - Extraneous information is no longer displayed in the error for failed [GCP peering](../cockroachcloud/network-authorization.html#vpc-peering) attempts.
-- Created a new [Status Page](https://status.cockroachlabs.cloud) that displays the current uptime status of the [CockroachCloud Console](https://cockroachlabs.cloud), AWS services, and GCP services.
+- Created a new [Status Page](https://status.cockroachlabs.cloud) that displays the current service status and incident communication of the [CockroachCloud Console](https://cockroachlabs.cloud), AWS services, and GCP services.
 
 ### Bug fixes
 
