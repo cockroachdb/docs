@@ -83,7 +83,9 @@ spans | The table span used in a scan operation in a query. If `spans` is `FULL 
 
 ## `DISTSQL` option
 
-`EXPLAIN ANALYZE (DISTSQL)` generates a physical query plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html).
+`EXPLAIN ANALYZE (DISTSQL)` generates a physical query plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html). There will be multiple diagrams if the query contains subqueries or post-queries.
+
+<span class="version-tag">New in v21.1:</span> `EXPLAIN ANALYZE (DISTSQL)` can only be used as the top-level statement in a query.
 
 ## `DEBUG` option
 
