@@ -138,6 +138,7 @@ max vectorized disk used | How much disk (if any) is used to buffer columnar dat
 left(@&lt;n&gt;)=right(@&lt;n&gt;) | The equality columns used in the join. | Both
 stored side | The smaller table that was stored as an in-memory hash table. | Both
 rows routed | How many rows were sent by routers, which can be used to understand network usage. | Row-oriented engine only
+network latency | The latency time in nanoseconds between nodes in a stream. | Vectorized engine only
 bytes sent | The number of actual bytes sent (i.e., encoding of the rows). This is only relevant when doing network communication. | Both
 Render | The stage that renders the output. | Both
 by hash | _(Orange box)_ The router, which is a component that takes one stream of input rows and sends them to a node according to a routing algorithm.<br><br>For example, a hash router hashes columns of a row and sends the results to the node that is aggregating the result rows. | Both
