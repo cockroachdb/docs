@@ -14,10 +14,14 @@ defaults:
     layout: page
 exclude:
 - ci
+- netlify
 - scripts
 - vendor
 - jekyll-algolia-dev
 - archived
+- __tests__
+- package.json
+- package-lock.json
 include:
 - _redirects
 keep_files:
