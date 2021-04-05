@@ -870,8 +870,7 @@
               {
                 "title": "Tuning Tutorial",
                 "urls": [
-                  "/${VERSION}/performance-tuning.html",
-                  "/${VERSION}/performance-tuning-insecure.html"
+                  "/${VERSION}/performance-tuning.html"
                 ]
               }
             ]
