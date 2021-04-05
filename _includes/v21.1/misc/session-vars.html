@@ -119,6 +119,18 @@
 
   <tr>
    <td>
+    <code>default_transaction_use_follower_reads</code>
+   </td>
+   <td><span class="version-tag">New in v21.1</span>: If set to <code>on</code>, all read-only transactions use <a href="as-of-system-time.html"><code>AS OF SYSTEM TIME follower_read_timestamp()</code></a>, to allow the transaction to use <a href="follower-reads.html">follower reads</a>.<br>If set to <code>off</code>, read-only transactions will only use follower reads if an <code>AS OF SYSTEM TIME</code> clause is specified in the statement, with an interval of at least 4.8 seconds.</td>
+   <td>
+    <code>off</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>disallow_full_table_scans</code>
    </td>
    <td> If set to <code>on</code>, all queries that have planned a full table or full secondary index scan will return an error message. This setting does not apply to internal queries, which may plan full table or index scans without checking the session variable.</td>
@@ -136,6 +148,18 @@
    <td>The query distribution mode for the session. By default, CockroachDB determines which queries are faster to execute if distributed across multiple nodes, and all other queries are run through the gateway node.</td>
    <td>
     <code>auto</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>enable_drop_enum_value</code>
+   </td>
+   <td>Indicates whether <code>DROP VALUE</code> clauses are enabled for <a href="alter-type.html"><code>ALTER TYPE</code></a> statements.</td>
+   <td>
+    <code>off</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>
@@ -229,6 +253,16 @@
     <code>0</code>
    </td>
    <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>locality</code>
+   </td>
+   <td>The location of the node. For more information, see <a href="cockroach-start.html#locality">Locality</a>.</td>
+   <td>Node-dependent</td>
+   <td>No</td>
    <td>Yes</td>
   </tr>
 
