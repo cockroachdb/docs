@@ -28,14 +28,7 @@ These rules apply to an environment where thousands of [OLTP](https://en.wikiped
 
 To show each of these rules in action, we will optimize a query against the [MovR data set](movr.html) as follows:
 
-1. Start a [local cluster](start-a-local-cluster.html).
-
-2. Populate the cluster with data by running the following [`cockroach workload`](cockroach-workload.html) command:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    cockroach workload init movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750 'postgresql://root@localhost:26257?sslmode=disable'
-    ~~~
+{% include {{ page.version.version }}/demo_movr.md %}
 
 It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, we want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount.
 
