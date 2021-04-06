@@ -1,3 +1,7 @@
+- advisory: 63162
+  summary: Invalid incremental backups under certain circumstances
+  versions: 19.1 and later
+  date: April 6, 2021
 - advisory: 58932
   summary: HTTP requests can cause full-cluster denial of service (DoS)
   versions: 19.2.0-19.2.11, 20.1.0-20.1.10, 20.2.0-20.2.3
