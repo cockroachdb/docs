@@ -1,6 +1,6 @@
 ---
 title: File an Issue
-summary: Learn how to file an issue with CockroachDB
+summary: Learn how to file a GitHub issue with CockroachDB.
 toc: false
 ---
 

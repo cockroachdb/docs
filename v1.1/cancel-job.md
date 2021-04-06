@@ -1,6 +1,6 @@
 ---
 title: CANCEL JOB
-summary: The CANCEL JOB statement stops long-running jobs, which include enterprise BACKUP and RESTORE tasks.
+summary: The CANCEL JOB statement stops long-running jobs such as imports, backups, and schema changes. which include enterprise BACKUP and RESTORE tasks.
 toc: true
 ---
 

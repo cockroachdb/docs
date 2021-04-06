@@ -1,6 +1,6 @@
 ---
 title: MULTILINESTRING
-summary: A MULTILINESTRING is a collection of LINESTRINGs.
+summary: The spatial MULTILINESTRING object is a collection of LINESTRINGs.
 toc: true
 ---
 

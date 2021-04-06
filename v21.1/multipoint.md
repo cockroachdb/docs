@@ -1,6 +1,6 @@
 ---
 title: MULTIPOINT
-summary: A MULTIPOINT is a collection of POINTs.
+summary: The spatial MULTIPOINT object is a collection of POINTs.
 toc: true
 ---
 

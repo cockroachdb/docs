@@ -1,6 +1,6 @@
 ---
 title: Use Cloud Storage for Bulk Operations
-summary: Import data into your CockroachDB cluster.
+summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
 toc: true
 ---
 

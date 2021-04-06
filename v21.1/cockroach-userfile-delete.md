@@ -1,6 +1,6 @@
 ---
 title: cockroach userfile delete
-summary: Delete a file to the user-scoped file storage.
+summary: The cockroach userfile delete command deletes files stored in user-scoped file storage.
 toc: true
 ---
 
