@@ -1,0 +1,64 @@
+---
+title: Preliminary Technical Advisory (#TBD)
+summary: Invalid incremental backups under certain circumstances
+toc: true
+---
+
+Preliminary date: April 6, 2021
+
+**Preliminary, and subject to change**
+
+## Description
+
+Cockroach Labs has discovered a bug relating to incremental backups, which under certain circumstances may result in data loss when restoring from an incremental backup. This is a **preliminary notice** in the interest of transparency, and will change.
+
+If an incremental backup coincides with an in-progress index creation or rebuild, RESTORE, or IMPORT, it is possible that the incremental backup will not include all of the indexed, restored or imported data.
+
+Full backups are unaffected by this issue.
+
+This issue affects CockroachDB [versions](/docs/releases/) 19.1 and later.
+
+## Statement
+
+We are investigating and implementing fixes to the above-described issue. You should expect follow-up from Cockroach Labs in the near future.
+
+We have deliberately chosen to document this issue before the fixes are available. We believe the alternative -- of waiting for the fixes prior to communicating -- would be less responsible.
+
+The upcoming patch release will include fixes, detection and recovery tools, and is expected in a small number of weeks.
+
+To our knowledge, this issue has not been observed to affect any user. It was discovered via an internal investigation by Cockroach Labs engineers, and dates back to CockroachDB version 19.1, released in 2019.
+
+You may track progress on these GitHub issues and pull requests:
+
+- [https://github.com/cockroachdb/cockroach/issues/62564](https://github.com/cockroachdb/cockroach/issues/62564) 
+- [https://github.com/cockroachdb/cockroach/issues/62565](https://github.com/cockroachdb/cockroach/issues/62565) 
+- [https://github.com/cockroachdb/cockroach/pull/62572](https://github.com/cockroachdb/cockroach/pull/62572) 
+
+You may track our releases, where fixed versions will appear:
+
+- [https://www.cockroachlabs.com/docs/releases/](/docs/releases/)
+
+You may track our technical advisories, including this one, here:
+
+- [https://www.cockroachlabs.com/docs/advisories/](/docs/advisories/)
+
+Questions about this technical alert can be directed to our [support team](https://support.cockroachlabs.com/), or to your customer success contact at Cockroach Labs.
+
+## Mitigation
+
+We will have fixes, detection tools, and mitigation advice in the near future, as patch releases to several CockroachDB versions. If you wish to operate with an abundance of caution in the meantime:
+
+- Only consider full backups to be reliable. Consider incremental backups to be unreliable, if those incremental backups were taken during in-progress index backfills or imports.
+- If you redefine primary indexes, take a full backup before and after the operation; do not rely on incremental backups taken while doing this operation.
+- If you use incremental backups, refrain from doing imports until a fix is available.
+- If you suspect that you have restored an incremental backup into production, where secondary indexes were being rebuilt while that incremental backup was running, you may wish to rebuild those indexes. 
+
+## Impact
+
+Incremental backups are only available in CockroachDB's enterprise version. Full backups are unaffected.
+
+- This issue may result in undetected data loss, if invalid incremental backups have been restored into production.
+- This issue may result in incorrect query results, if invalid incremental backups have been restored into production.
+- Incremental backups at rest may be invalid, if the backup occurred during certain incomplete bulk operations, as described above.
+
+The upcoming patch release will include detection and recovery tools.
