@@ -147,10 +147,10 @@ Messages that begin with `pq: failed to verify protection id…` indicate that y
 
 The error message will specify which part of your backup is causing the failure. For example, `r13485:/Table/771` indicates that table `771` is part of the problem. You can then inspect this table by running [`SELECT * FROM crdb_internal.tables WHERE id=771`](select-clause.html). You can also run [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) and look for any `gc.ttlseconds` values that are set lower than your incremental backup frequency.
 
-To resolve this issue, take a new [full backup](take-full-and-incremental-backups.html), then do either of the following:
+To resolve this issue, take a new [full backup](take-full-and-incremental-backups.html) after doing either of the following:
 
 - Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds), or
-- [Decrease the frequency of incremental backups](manage-a-backup-schedule.html).
+- [Increase the frequency of incremental backups](manage-a-backup-schedule.html).
 
 ## result is ambiguous
 
