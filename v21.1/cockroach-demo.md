@@ -126,9 +126,9 @@ Flag | Description
 
 ### Logging
 
-By default, the `demo` command logs errors to `stderr`.
+By default, the `demo` command does not log messages. 
 
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
 
 ## SQL shell
 

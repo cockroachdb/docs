@@ -43,8 +43,7 @@ The **Even More Advanced Debugging** section of the page lists additional report
 
 Depending on your [access level](ui-overview.html#db-console-access), the endpoints listed here provide access to:
 
-- [Log files](debug-and-error-logs.html#write-to-file)
-- Secondary log files (e.g., storage engine logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log), [authentication logs](query-behavior-troubleshooting.html#authentication-logs))
+- [Log files](logging-overview.html)
 - Node status
 - Hot ranges
 - Node-specific metrics
