@@ -60,14 +60,14 @@ Take note of the `(sql/tcp)` connection string listed under `Connection paramete
 ~~~
 # Connection parameters:
 ...
-#   (sql/tcp) postgres://root:admin@127.0.0.1:65207?sslmode=require
+#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 Open a new terminal window, and connect to your demo cluster with `psql`, using the connection string provided for the demo cluster, with the `movr` database specified:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ psql postgres://root:admin@127.0.0.1:65207/movr?sslmode=require
+$ psql postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 In the `psql` shell, run the following command to start copying data from `psql` to the `users` table:

@@ -135,7 +135,7 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # Welcome to the CockroachDB demo database!
 #
-# You are connected to a temporary, in-memory CockroachDB cluster of 1 node.
+# You are connected to a temporary, in-memory CockroachDB cluster of 3 nodes.
 #
 # This demo session will attempt to enable enterprise features
 # by acquiring a temporary license from Cockroach Labs in the background.
@@ -150,15 +150,16 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
-#   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
-#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
+#   (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
+#   (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
 #
+# To display connection parameters for other nodes, use \demo ls.
 #
-# The user "demo" with password "demo11762" has been created. Use it to access the Web UI!
+# The user "demo" with password "demo53628" has been created. Use it to access the Web UI!
 #
-# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, go1.15.6) (same version as client)
-# Cluster ID: 6a7041ac-8cf0-40d7-8564-fec9b95e46d6
+# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, built 2021/03/31 10:29:32, go1.15.6) (same version as client)
+# Cluster ID: fe842d74-430d-4868-b21a-d41065e6e395
 # Organization: Cockroach Demo
 #
 # Enter \? for a brief introduction.
@@ -178,7 +179,7 @@ The SQL shell welcome text includes connection parameters for accessing the DB C
 
 Parameter | Description
 ----------|------------
-`console` | Use this link to access a local [DB Console](ui-overview.html). To login, use the `demo` user with password provided (in this case, `demo11762`).
+`console` | Use this link to access a local [DB Console](ui-overview.html) to the demo cluster.
 `sql` | Use this connection URL to establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
 `sql/tcp` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).
 
@@ -195,19 +196,19 @@ When running a multi-node demo cluster, use the `\demo ls` [shell command](#comm
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:50037
-  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo294284060&port=26257
-  (sql/tcp) postgres://root:admin@127.0.0.1:50039?sslmode=require
+  (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
+  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
+  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
 
 node 2:
-  (console) http://127.0.0.1:50040
-  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo294284060&port=26258
-  (sql/tcp) postgres://root:admin@127.0.0.1:50042?sslmode=require
+  (console) http://127.0.0.1:8081/demologin?password=demo53628&username=demo
+  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26258
+  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26258?sslmode=require
 
 node 3:
-  (console) http://127.0.0.1:50048
-  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo294284060&port=26259
-  (sql/tcp) postgres://root:admin@127.0.0.1:50050?sslmode=require
+  (console) http://127.0.0.1:8082/demologin?password=demo53628&username=demo
+  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26259
+  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26259?sslmode=require
 ~~~
 
 ### Commands
@@ -409,26 +410,26 @@ First, use `\demo ls` to list the connection parameters for each node in the dem
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:54880
-  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo200406637&port=26257
-  (sql/tcp) postgres://root:admin@127.0.0.1:54882?sslmode=require
+  (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
+  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
+  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
 
 node 2:
-  (console) http://127.0.0.1:54883
-  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo200406637&port=26258
-  (sql/tcp) postgres://root:admin@127.0.0.1:54885?sslmode=require
+  (console) http://127.0.0.1:8081/demologin?password=demo53628&username=demo
+  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26258
+  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26258?sslmode=require
 
 node 3:
-  (console) http://127.0.0.1:54891
-  (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo200406637&port=26259
-  (sql/tcp) postgres://root:admin@127.0.0.1:54893?sslmode=require
+  (console) http://127.0.0.1:8082/demologin?password=demo53628&username=demo
+  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26259
+  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26259?sslmode=require
 ~~~
 
 Then open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the `--url` flag set to the `sql/tcp` connection URL of the node to which you want to connect:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --url='postgres://root:admin@127.0.0.1:54885?sslmode=require'
+$ cockroach sql --url='postgres://demo:demo53628@127.0.0.1:26259?sslmode=require'
 ~~~
 
 You can also use this URL to connect an application to the demo cluster.  
