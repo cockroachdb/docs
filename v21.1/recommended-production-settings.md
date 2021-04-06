@@ -54,6 +54,8 @@ Each node should have **at least 2 vCPUs**. For best performance, we recommend a
 
 - To optimize for resiliency, use many smaller nodes instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
 
+- To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects](schema-design-overview.html#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
+
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
 - To ensure consistent SQL performance, make sure all nodes have a uniform configuration.
