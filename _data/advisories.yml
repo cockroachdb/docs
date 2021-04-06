@@ -1,4 +1,4 @@
-- advisory: TBD
+- advisory: 63162
   summary: Invalid incremental backups under certain circumstances
   versions: 19.1 and later
   date: April 6, 2021
