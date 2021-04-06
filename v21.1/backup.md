@@ -7,7 +7,7 @@ toc: true
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
 {{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html). You can also use [CockroachCloud](https://cockroachlabs.cloud/signup?referralId=crdb-docs), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 {{site.data.alerts.end}}
 
 You can [backup a full cluster](#backup-a-cluster), which includes:
@@ -56,7 +56,7 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the subdirectory (e.g., `2021/03/23-213101.37`) where you want to add a backup. To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a full backup will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an incremental backup. To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a full backup will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
@@ -146,7 +146,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a cluster
 
- To backup a full cluster:
+To take a full backup a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -157,7 +157,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a database
 
-To backup a single database:
+To take a full backup a single database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -166,7 +166,7 @@ INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={acces
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-To backup multiple databases:
+To take a full backup of multiple databases:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -177,7 +177,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a table or view
 
-To backup a single table or view:
+To take a full backup of a single table or view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -186,7 +186,7 @@ INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={acces
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-To backup multiple tables:
+To take a full backup of multiple tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
