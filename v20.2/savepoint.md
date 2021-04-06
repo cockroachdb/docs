@@ -1,6 +1,6 @@
 ---
 title: SAVEPOINT
-summary: Start a nested transaction.
+summary: A savepoint is a marker that defines the beginning of a nested transaction.
 toc: true
 ---
 

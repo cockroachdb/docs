@@ -31,7 +31,7 @@ Command | Usage
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge multiple log files from different machines into a single stream.
 [`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster.
 [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) |  Upload a file to the `externalIODir` on a node's local file system.
-[`cockroach userfile upload`](cockroach-userfile-upload.html)   |  Upload a file to the user-scoped file storage.
+[`cockroach userfile upload`](cockroach-userfile-upload.html)   |  The cockroach userfile upload command uploads a file to user-scoped file storage.
 [`cockroach userfile list`](cockroach-userfile-list.html)       |  List the files stored in the user-scoped file storage.
 [`cockroach userfile delete`](cockroach-userfile-delete.html)   |  Deletes the files stored in the user-scoped file storage.
 [`cockroach userfile get`](cockroach-userfile-get.html)         |  Fetch a file from the user-scoped file storage.

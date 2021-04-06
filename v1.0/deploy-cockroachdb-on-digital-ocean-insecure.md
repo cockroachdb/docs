@@ -1,6 +1,6 @@
 ---
 title: Deploy CockroachDB on Digital Ocean (Insecure)
-summary: Learn how to deploy CockroachDB on Digital Ocean.
+summary: Learn how to deploy a CockroachDB cluster on Digital Ocean.
 toc: true
 toc_not_nested: true
 ---

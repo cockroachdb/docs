@@ -1,6 +1,6 @@
 ---
 title: SQL Grammar
-summary: The full SQL grammar for CockroachDB.
+summary: The full SQL grammar for CockroachDB, generated automatically from the CockroachDB code.
 toc: false
 back_to_top: true
 ---
