@@ -212,6 +212,10 @@ ERROR:  current transaction is aborted, commands ignored until end of transactio
 ROLLBACK
 ~~~
 
+### `ALTER TYPE` schema changes cannot be cancelled.
+
+You can only [cancel](cancel-job.html) [`ALTER TYPE`](alter-type.html) schema change jobs that drop values. All other `ALTER TYPE` schema change jobs are non-cancellable.
+
 ## See also
 
 + [How online schema changes are possible in CockroachDB][blog]: Blog post with more technical details about how our schema change engine works.

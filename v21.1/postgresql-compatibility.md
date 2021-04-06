@@ -5,9 +5,9 @@ toc: true
 redirect_from: porting-postgres.html
 ---
 
-CockroachDB supports the PostgreSQL wire protocol and the majority of its syntax. This means that your existing applications can often be migrated to CockroachDB without changing application code.
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. This means that your existing applications can often be migrated to CockroachDB without changing application code.
 
-CockroachDB is compatible with PostgreSQL 9.5 and works with majority of PostgreSQL database tools such as [Dbeaver](dbeaver.html), [Intellij](intellij-idea.html), pgdump and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](build-an-app-with-cockroachdb.html).
+CockroachDB is wire-compatible with PostgreSQL 13 and works with majority of PostgreSQL database tools such as [Dbeaver](dbeaver.html), [Intellij](intellij-idea.html), pgdump and so on. Consult this link for a full list of supported [third-party database tools](third-party-database-tools.html). CockroachDB also works with most [PostgreSQL drivers and ORMs](build-an-app-with-cockroachdb.html).
 
 However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system. This page documents the known list of differences between PostgreSQL and CockroachDB for identical input. That is, a SQL statement of the type listed here will behave differently than in PostgreSQL. Porting an existing application to CockroachDB will require changing these expressions.
 

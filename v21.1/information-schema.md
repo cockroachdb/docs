@@ -1,22 +1,16 @@
 ---
-title: Information Schema
-summary: The information_schema database contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
+title: information_schema
+summary: The information_schema schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views.
 toc: true
 ---
 
-CockroachDB provides a virtual schema called `information_schema` that contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
+The `information_schema` [system catalog](system-catalogs.html) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
 
-The definition of `information_schema` is part of the SQL standard and can therefore be relied on to remain stable over time. This contrasts with CockroachDB's `SHOW` statements, which provide similar data and are meant to be stable in CockroachDB but not standardized. It also contrasts with the virtual schema `crdb_internal`, which reflects the internals of CockroachDB and may thus change across CockroachDB versions.
+## Data exposed by `information_schema`
 
-{{site.data.alerts.callout_info}}
-The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as the `root` user.
-{{site.data.alerts.end}}
+To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements. `information_schema` tables are read-only.
 
-## Data exposed by information_schema
-
-To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements.
-
-Object | Information Schema Table | Corresponding `SHOW` Statement
+Object | `information_schema` Table | Corresponding `SHOW` Statement
 -------|--------------|--------
 Columns | [`columns`](#columns) | [`SHOW COLUMNS`](show-columns.html)
 Constraints | [`check_constraints`](#check_constraints), [`key_column_usage`](#key_column_usage), [`referential_constraints`](#referential_constraints), [`table_constraints`](#table_constraints)| [`SHOW CONSTRAINTS`](show-constraints.html)
@@ -28,7 +22,7 @@ Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-seq
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`](show-create.html)
 
-## Tables in information_schema
+## Tables in `information_schema`
 
 The virtual schema `information_schema` contains virtual tables, also called "system views," representing the database's objects, each of which is detailed below.
 
@@ -97,7 +91,7 @@ Column | Description
 `numeric_precision` | If `data_type` is numeric, the declared or implicit precision (i.e., number of significant digits); otherwise `NULL`.
 `numeric_precision_radix` | If `data_type` identifies a numeric type, the base in which the values in the columns `numeric_precision` and `numeric_scale` are expressed (either `2` or `10`). For all other data types, column is `NULL`.
 `numeric_scale` | If `data_type` is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise `NULL`.
-`datetime_precision` |  The precision level of columns with data type [`TIME`/`TIMETZ`](time.html), [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html), or [`INTERVAL`](interval.html). For all other data types, this column is `NULL`.
+`datetime_precision` | The precision level of columns with data type [`TIME`/`TIMETZ`](time.html), [`TIMESTAMP`/`TIMESTAMPTZ`](timestamp.html), or [`INTERVAL`](interval.html). For all other data types, this column is `NULL`.
 `character_set_catalog` | Always `NULL` (unsupported by CockroachDB).
 `character_set_schema` | Always `NULL` (unsupported by CockroachDB).
 `character_set_name` | Always `NULL` (unsupported by CockroachDB).
@@ -328,16 +322,25 @@ Column | Description
 `is_trigger_deletable` | Always `NULL` (unsupported by CockroachDB).
 `is_trigger_insertable_into` | Always `NULL` (unsupported by CockroachDB).
 
-## Examples
+## Querying `information_schema` tables
 
-{% include {{page.version.version}}/sql/movr-statements.md %}
+You can run [`SELECT` queries](selection-queries.html) on the tables in `information_schema`.
 
-### Retrieve all columns from an information schema table
+{{site.data.alerts.callout_success}}
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](authorization.html#admin-role).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+Unless specified otherwise, queries to `information_schema` assume the [current database](sql-name-resolution.html#current-database).
+{{site.data.alerts.end}}
+
+For example, to retrieve all columns from the `table_constraints` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM movr.information_schema.table_constraints;
 ~~~
+
 ~~~
   constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
 ---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
@@ -369,12 +372,13 @@ Column | Description
 (25 rows)
 ~~~
 
-### Retrieve specific columns from an information schema table
+And to retrieve specific columns from the `table_constraints` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
 ~~~
+
 ~~~
           table_name         |       constraint_name
 -----------------------------+-------------------------------
@@ -408,6 +412,7 @@ Column | Description
 
 ## See also
 
+- [System Catalogs](system-catalogs.html)
 - [`SHOW`](show-vars.html)
 - [`SHOW COLUMNS`](show-columns.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)

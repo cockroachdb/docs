@@ -1140,8 +1140,7 @@ At just 9.48ms, this approach is faster due to the write and read executing in o
 <!-- - upsert instead of insert/update
 - update using case expressions (instead of 2 separate updates)
 - returning nothing
-- insert with returning (auto gen ID) instead of select to get auto gen ID
-- Maybe interleaved tables -->
+- insert with returning (auto gen ID) instead of select to get auto gen ID-->
 
 ## Multi-region deployment
 

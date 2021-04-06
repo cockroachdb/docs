@@ -167,9 +167,46 @@ All of these updates to the range descriptor occur locally on the range, and the
 
 ### Range splits
 
-By default, CockroachDB attempts to keep ranges/replicas at 512 MiB. Once a range reaches that limit we split it into two smaller ranges (composed of contiguous key spaces).
+By default, CockroachDB attempts to keep ranges/replicas at the default range size (currently 512 MiB). Once a range reaches that limit, we split it into two smaller ranges (composed of contiguous key spaces).
 
 During this range split, the node creates a new Raft group containing all of the same members as the range that was split. The fact that there are now two ranges also means that there is a transaction that updates `meta2` with the new keyspace boundaries, as well as the addresses of the nodes using the range descriptor.
+
+### Range merges
+
+By default, CockroachDB automatically merges small ranges of data together to form fewer, larger ranges (up to the default range size). This can improve both query latency and cluster survivability.
+
+#### How range merges work
+
+As [described above](#overview), CockroachDB splits your cluster's data into many ranges. For example, your cluster might have a range for customers whose IDs are between `[1000, 2000)`. If that range grows beyond the default range size, the range is [split into two smaller ranges](#range-splits).
+
+However, as you delete data from your cluster, a range might contain far less data than the default range size. Over the lifetime of a cluster, this could lead to a number of small ranges.
+
+To reduce the number of small ranges, your cluster can have any range below a certain size threshold try to merge with its "right-hand neighbor", i.e., the range that starts where the current range ends. Using our example above, this range's right-hand neighbor might be the range for customers whose IDs are between `[2000, 3000)`.
+
+If the combined size of the small range and its neighbor is less than the maximum range size, the ranges merge into a single range. In our example, this will create a new range of keys `[1000, 3000)`.
+
+{{site.data.alerts.callout_info}}
+When ranges merge, the left-hand-side (LHS) range consumes the right-hand-side (RHS) range.
+{{site.data.alerts.end}}
+
+#### Why range merges improve performance
+
+##### Query latency
+
+Queries in CockroachDB must contact a replica of each range involved in the query. This creates the following issues for clusters with many small ranges:
+
+- Queries incur a fixed overhead in terms of processing time for each range they must coordinate with.
+- Having many small ranges can increase the number of machines your query must coordinate with. This exposes your query to a greater likelihood of running into issues like network latency or overloaded nodes.
+
+By merging small ranges, CockroachDB can greatly reduce the number of ranges involved in queries, thus reducing query latency.
+
+##### Survivability
+
+CockroachDB automatically rebalances the distribution of ranges in your cluster whenever nodes come online or go offline.
+
+During rebalancing, it's better to replicate a few larger ranges across nodes than many smaller ranges. Replicating larger ranges requires less coordination and often completes more quickly.
+
+By merging smaller ranges together, your cluster needs to rebalance fewer total ranges. This ultimately improves your cluster's performance, especially in the face of availability events like node outages.
 
 ## Technical interactions with other layers
 
