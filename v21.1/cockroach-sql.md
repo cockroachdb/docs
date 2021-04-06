@@ -89,9 +89,9 @@ See [Client Connection Parameters](connection-parameters.html) for more details.
 
 ### Logging
 
-By default, the `sql` command logs errors to `stderr`.
+By default, the `sql` command logs messages to `stderr`. This includes events with `WARNING` [severity](logging.html#logging-levels) and higher.
 
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
 
 ## Session and output types
 

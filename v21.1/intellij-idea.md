@@ -86,7 +86,7 @@ If you encounter issues other than those outlined above, please [file an issue o
 - IntelliJ IDEA version
 - Operating system
 - Steps to reproduce the behavior
-- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](query-behavior-troubleshooting.html#sql-logging).
+- If possible, a trace of the SQL statements sent to CockroachDB while the error is being reproduced using [SQL query logging](logging-use-cases.html#sql_exec).
 
 ## See Also
 
