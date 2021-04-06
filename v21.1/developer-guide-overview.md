@@ -13,7 +13,7 @@ This guide shows you how to develop an application on CockroachDB. After reading
 - [Design a Schema](schema-design-overview.html)
 - [Write Data](insert-data.html)
 - [Read Data](query-data.html)
-- [Debug Your Application](debug-and-error-logs.html)
+- [Debug Your Application](logging-overview.html)
 - [Optimize Performance](make-queries-fast.html)
 
 ## CockroachDB basics

@@ -138,9 +138,9 @@ Flag | Description
 
 ### Logging
 
-By default, the `cert` command logs errors to `stderr`.
+By default, the `cert` command logs messages to `stderr`. This includes events with `WARNING` [severity](logging.html#logging-levels) and higher.
 
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
 
 ## Examples
 

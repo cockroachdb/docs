@@ -12,65 +12,7 @@ For a developer-centric walkthrough of optimizing SQL query performance, see [Ma
 
 ## Identify slow queries
 
-Use the [slow query log](#using-the-slow-query-log) or [DB Console](#using-the-db-console) to detect slow queries in your cluster.
-
-### Using the slow query log
-
- The slow query log is a record of SQL queries whose service latency exceeds a specified threshold value. When the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) is set to a non-zero value, each gateway node will log slow SQL queries to a secondary log file (`cockroach-sql-slow.log`) in the [log directory](debug-and-error-logs.html#write-to-file).
-
-{{site.data.alerts.callout_info}}
-Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client.
-{{site.data.alerts.end}}
-
-1. Run the [`cockroach sql`](cockroach-sql.html) command against one of your nodes. This opens the interactive SQL shell.
-
-2. Set the `sql.log.slow_query.latency_threshold` [cluster setting](cluster-settings.html) to a threshold of your choosing. For example, 100 milliseconds represents [the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/).
-
-  	{% include copy-clipboard.html %}
-  	~~~ sql
-  	> SET CLUSTER SETTING sql.log.slow_query.latency_threshold = '100ms';
-    ~~~
-
-3.  To write slow internal queries to a separate log, set the `sql.log.slow_query.internal_queries.enabled` cluster setting to `true`.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET CLUSTER SETTING sql.log.slow_query.internal_queries.enabled = 'true';
-    ~~~
-
-4. Each node's slow query logs are written by default in CockroachDB's standard [log directory](debug-and-error-logs.html#write-to-file).
-
-5. When you open a slow query log, look for a line that corresponds to your earlier [`SET CLUSTER SETTING`](set-cluster-setting.html) command. For example:
-
-	~~~
-  I201008 21:16:13.751178 1947 sql/exec_log.go:225 ⋮ [n1,client=‹[::1]:54351›,hostnossl,user=root] 1 53.832ms ‹exec› ‹"$ cockroach sql"› ‹{}› ‹"SET CLUSTER SETTING \"sql.log.slow_query.latency_threshold\" = '100ms'"› ‹{}› 0 ‹""› 0 ‹{ LATENCY_THRESHOLD }›
-	~~~
-
-	Slow queries will be logged after this line.
-
-6. The slow query log generally shares the [SQL audit log file format](experimental-audit.html#audit-log-file-format). One exception is that service latency is found between the log entry counter and log message.
-
-  	For example, the below query was logged with a service latency of 117.473ms milliseconds:
-
-  	~~~
-    I201008 21:17:53.642721 7444 sql/exec_log.go:225 ⋮ [n1,client=‹[::1]:54425›,hostnossl,user=root] 270 117.473ms ‹exec› ‹"movr"› ‹{}› ‹"UPDATE rides SET end_address = $3, end_time = now() WHERE (city = $1) AND (id = $2)"› ‹{$1:"'san francisco'", $2:"'9c33be8a-fdeb-428b-b3df-50c3c947df5a'", $3:"'3873 Margaret Junctions Apt. 52'"}› 1 ‹""› 0 ‹{ LATENCY_THRESHOLD }›
-  	~~~
-
-    And the following internal query was logged with a service latency of 483.627 milliseconds:
-
-    ~~~
-    I201008 21:16:06.534587 28912 sql/exec_log.go:225 ⋮ [intExec=‹create-stats›] 10 483.627ms ‹exec-internal› ‹"$ internal-create-stats"› ‹{}› ‹"CREATE STATISTICS __auto__ FROM [56] WITH OPTIONS THROTTLING 0.9 AS OF SYSTEM TIME '-30s'"› ‹{}› 0 ‹""› 0 ‹{ LATENCY_THRESHOLD }›
-    ~~~
-
-{{site.data.alerts.callout_info}}
-Setting `sql.log.slow_query.latency_threshold` to a non-zero value enables tracing on all queries, which impacts performance. After debugging, set the value back to `0s` to disable the log.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}
-{% include {{ page.version.version }}/ui/ui-log-files.md %}
-{{site.data.alerts.end}}
-
-### Using the DB Console
+Use the [slow query log](logging-use-cases.html#sql_perf) or [DB Console](#using-the-db-console) to detect slow queries in your cluster.
 
 High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
 
@@ -197,13 +139,45 @@ See [Why would increasing the number of nodes not result in more operations per 
 
 If you receive a response of `bad connection` or `closed`, this normally indicates that the node you connected to died. You can check this by connecting to another node in the cluster and running [`cockroach node status`](cockroach-node.html#show-the-status-of-all-nodes).
 
-Once you find the downed node, you can check its [logs](debug-and-error-logs.html) (stored in `cockroach-data/logs` by default).
+Once you find the downed node, you can check its [logs](logging.html) (stored in `cockroach-data/logs` by [default](configure-logs.html#default-logging-configuration)).
 
 Because this kind of behavior is entirely unexpected, you should [file an issue](file-an-issue.html).
 
-## SQL logging
+## Local query testing
 
-{% include {{ page.version.version }}/faq/sql-query-logging.md %}
+If you are testing CockroachDB locally and want to log queries executed just by a specific node, you can either pass a CLI flag at node startup, or execute a SQL function on a running node.
+
+Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](cockroach-start.html) command. For example, to start a single node locally and log all client-generated SQL queries it executes, you'd run:
+
+~~~ shell
+$ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2 --join=<join addresses>
+~~~
+
+{{site.data.alerts.callout_success}}
+To log CockroachDB-generated SQL queries as well, use `--vmodule=exec_log=3`.
+{{site.data.alerts.end}}
+
+From the SQL prompt on a running node, execute the `crdb_internal.set_vmodule()` [function](functions-and-operators.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT crdb_internal.set_vmodule('exec_log=2');
+~~~
+
+This will result in the following output:
+
+~~~
+  crdb_internal.set_vmodule
++---------------------------+
+                          0
+(1 row)
+~~~
+
+Once the logging is enabled, all client-generated SQL queries executed by the node will be written to the `DEV` [logging channel](logging.html#dev), which outputs by [default](configure-logs.html#default-logging-configuration) to the primary `cockroach` log file in `/cockroach-data/logs`. Use the symlink `cockroach.log` to open the most recent log.
+
+~~~
+I180402 19:12:28.112957 394661 sql/exec_log.go:173  [n1,client=127.0.0.1:50155,user=root] exec "psql" {} "SELECT version()" {} 0.795 1 ""
+~~~
 
 ## Something else?
 
