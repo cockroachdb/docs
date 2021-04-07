@@ -1,6 +1,6 @@
 ---
 title: Statements Page
-summary: Learn how to use the Statements page to view and manage SQL statements on CockroachCloud.
+summary: How to use the Statements page to view and manage SQL statements on CockroachCloud.
 toc: true
 ---
 
