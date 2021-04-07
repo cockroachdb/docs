@@ -13,7 +13,11 @@ This page answers the frequently asked questions about CockroachCloud Free (beta
 
 ### What is CockroachCloud Free (beta)?
 
-CockroachCloud Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic. There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster.
+CockroachCloud Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic.
+
+### What are the usage limits of Cockroach Cloud Free (beta)?
+
+There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster. If you hit the storage limit, you will receive an email asking you to delete enough data to stay under the 5GB limit. If you do not respond within the next 30 days, you will be blocked from accessing your cluster.
 
 ### Do I have to pay for CockroachCloud Free (beta)?
 

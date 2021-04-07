@@ -3,6 +3,7 @@ title: Performance Benchmarking with TPC-C
 summary: Benchmark CockroachDB against TPC-C with 15 nodes on `c5d.4xlarge` machines
 toc: true
 toc_not_nested: true
+key: performance-benchmarking-with-tpc-c-10k-warehouses.html
 redirect_from:
 - performance-benchmarking-with-tpc-c-10k-warehouses.html
 ---
@@ -22,10 +23,6 @@ This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarki
 | Small    | 3 nodes on `c5d.4xlarge` machines  | 2500       | 200 GB    |
 | Medium   | 15 nodes on `c5d.4xlarge` machines | 13,000     | 1.04 TB   |
 | Large    | 81 nodes on `c5d.9xlarge` machines | 140,000    | 11.2 TB   |
-
- CockroachDB can achieve a TPC-C run of 13k warehouses on the same cluster size used for 10k in version 19.2, a 30% improvement:
-
-<img src="{{ 'images/v21.1/tpcc13k.png' | relative_url }}" alt="TPC-C 13,000" style="border:1px solid #eee;max-width:100%" />
 
 ## Before you begin
 
@@ -182,45 +179,53 @@ You'll be importing a large TPC-C data set. To speed that up, you can tweak some
 
 ## Step 4. Import the TPC-C dataset
 
-CockroachDB offers a pre-built `workload` binary for Linux that includes the TPC-C benchmark. You'll need to put this binary on the VM for importing the dataset and running TPC-C.
+CockroachDB comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc/) workload.
 
 1. SSH to the VM where you want to run TPC-C.
 
-2. Download the `workload` binary for Linux and make it executable:
+1. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://edge-binaries.cockroachdb.com/cockroach/workload.LATEST -O workload; chmod 755 workload
+    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar  xvz
     ~~~
-
-3. Import the TPC-C dataset:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./workload fixtures import tpcc \
-    --partitions 5
-    --warehouses 13000 \
-    "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
+    $ cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
 
-    This will load data for 13,000 "warehouses". This can take around 1 hour to complete.
+    If you get a permissions error, prefix the command with `sudo`.
 
-    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](admin-ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+1. Import the TPC-C dataset:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload fixtures import tpcc \
+    --partitions=5 \
+    --warehouses=13000 \
+    'postgres://root@<address of any CockroachDB node>:26257?sslmode=disable'
+    ~~~
+
+    This will load 1.04 TB of data for 13,000 "warehouses". This can take around 1 hour to complete.
+
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](ui-overview.html) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
 
 ## Step 5. Allow the cluster to rebalance
 
 Next, [partition your database](partitioning.html) to divide all of the TPC-C tables and indexes into 5 partitions, one per rack, and then use [zone configurations](configure-replication-zones.html) to pin those partitions to a particular rack.
 
-1. On the VM with the `workload` binary, briefly run TPC-C to let the cluster balance and the leases settle. Bump the file descriptor limits with `ulimit` to the high value shown below, since the workload generators create a lot of database connections.
+1. Still on the same VM, briefly run TPC-C to let the cluster balance and the leases settle. Bump the file descriptor limits with `ulimit` to the high value shown below, since the workload generators create a lot of database connections.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 100000 && ./workload run tpcc \
-    --partitions 5 \
-    --warehouses 13000 \
-    --duration 1m \
-    --ramp 1ms \
-    "postgres://root@<address of any CockroachDB node>:26257?sslmode=disable"
+    $ ulimit -n 100000 && cockroach workload run tpcc \
+    --partitions=5 \
+    --warehouses=13000 \
+    --duration=1m \
+    --ramp=1ms \
+    'postgres://root@<address of any CockroachDB node>:26257?sslmode=disable'
     ~~~
 
 2. Wait for range rebalancing to finish.
@@ -239,17 +244,17 @@ Next, [partition your database](partitioning.html) to divide all of the TPC-C ta
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ulimit -n 100000 && ./workload run tpcc \
-    --partitions 5 \
-    --warehouses 13000 \
-    --ramp 1m \
-    --duration 30m \
+    $ ulimit -n 100000 && cockroach workload run tpcc \
+    --partitions=5 \
+    --warehouses=13000 \
+    --ramp=1m \
+    --duration=30m \
     $(cat addrs)
     ~~~
 
 ## Step 7. Interpret the results
 
-Once the `workload` has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
+Once the workload has finished running, you will see a final result similar to the following. The efficiency and latency can be combined to determine whether this was a passing run. You should expect to see an efficiency number above 95%, well above the required minimum of 85%, and p95 latencies well below the required maximum of 10 seconds.
 
 ~~~
 _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)

@@ -14,7 +14,7 @@
       "/cockroachcloud/quickstart.html"
     ]
   },
-  {% include sidebar-data-cockroachcloud.json %},
+  {% include_cached sidebar-data-cockroachcloud.json %},
   {
     "title": "CockroachDB",
     "is_top_level": true,
@@ -265,9 +265,15 @@
                 ]
               },
               {
-                "title": "Overwrite Existing Data",
+                "title": "Update Data",
                 "urls": [
                   "/${VERSION}/update-data.html"
+                ]
+              },
+              {
+                "title": "Bulk-update Data",
+                "urls": [
+                  "/${VERSION}/bulk-update-data.html"
                 ]
               },
               {
@@ -337,6 +343,12 @@
                       "/${VERSION}/follower-reads.html"
                     ]
                   }
+                ]
+              },
+              {
+                "title": "Query Spatial Data",
+                "urls": [
+                  "/${VERSION}/query-spatial-data.html"
                 ]
               }
             ]
@@ -442,10 +454,11 @@
                     ]
                   },
                   {
-                    "title": "Node.js",
+                    "title": "JavaScript/TypeScript",
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html"
+                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+                      "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
                     ]
                   },
                   {
@@ -476,12 +489,6 @@
                     "title": "Rust",
                     "urls": [
                       "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
-                    ]
-                  },
-                  {
-                    "title": "TypeScript",
-                    "urls": [
-                      "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
                     ]
                   }
                 ]
@@ -1181,12 +1188,6 @@
                 "title": "SQL Feature Support",
                 "urls": [
                   "/${VERSION}/sql-feature-support.html"
-                ]
-              },
-              {
-                "title": "Name Resolution",
-                "urls": [
-                  "/${VERSION}/sql-name-resolution.html"
                 ]
               },
               {
@@ -2194,6 +2195,47 @@
                 ]
               },
               {
+                "title": "Name Resolution",
+                "urls": [
+                  "/${VERSION}/sql-name-resolution.html"
+                ]
+              },
+              {
+                "title": "System Catalogs",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/system-catalogs.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>crdb_internal</code>",
+                    "urls": [
+                      "/${VERSION}/crdb-internal.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>information_schema</code>",
+                    "urls": [
+                      "/${VERSION}/information-schema.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_catalog</code>",
+                    "urls": [
+                      "/${VERSION}/pg-catalog.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_extension</code>",
+                    "urls": [
+                      "/${VERSION}/pg-extension.html"
+                    ]
+                  }
+                ]
+              },
+              {
                 "title": "Transactions",
                 "items": [
                   {
@@ -2212,6 +2254,35 @@
                     "title": "Transaction Retry Error Reference",
                     "urls": [
                       "/${VERSION}/transaction-retry-error-reference.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Performance Optimization",
+                "items": [
+                  {
+                    "title": "Indexes",
+                    "urls": [
+                      "/${VERSION}/indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Interleaved Tables",
+                    "urls": [
+                      "/${VERSION}/interleave-in-parent.html"
+                    ]
+                  },
+                  {
+                    "title": "Cost-Based Optimizer",
+                    "urls": [
+                      "/${VERSION}/cost-based-optimizer.html"
+                    ]
+                  },
+                  {
+                    "title": "Vectorized Execution",
+                    "urls": [
+                      "/${VERSION}/vectorized-execution.html"
                     ]
                   }
                 ]
@@ -2375,41 +2446,6 @@
                       "/${VERSION}/st_union.html"
                     ]
                   }
-                ]
-              },
-              {
-                "title": "Performance Optimization",
-                "items": [
-                  {
-                    "title": "Indexes",
-                    "urls": [
-                      "/${VERSION}/indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Interleaved Tables",
-                    "urls": [
-                      "/${VERSION}/interleave-in-parent.html"
-                    ]
-                  },
-                  {
-                    "title": "Cost-Based Optimizer",
-                    "urls": [
-                      "/${VERSION}/cost-based-optimizer.html"
-                    ]
-                  },
-                  {
-                    "title": "Vectorized Execution",
-                    "urls": [
-                      "/${VERSION}/vectorized-execution.html"
-                    ]
-                  }
-                ]
-              },
-              {
-                "title": "Information Schema",
-                "urls": [
-                  "/${VERSION}/information-schema.html"
                 ]
               },
               {
@@ -2759,7 +2795,7 @@
           }
         ]
       },
-      {% include sidebar-releases.json %}
+      {% include_cached sidebar-releases.json %}
     ]
   },
   {

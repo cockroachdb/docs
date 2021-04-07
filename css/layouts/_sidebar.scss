@@ -41,7 +41,7 @@ body.sidenav-open{
     border-top: 1px solid $neutral-300;
     border-bottom: 1px solid $neutral-300;
     height: 60%;
-    overflow: scroll; 
+    overflow: scroll;
     padding-bottom: 15px;
 	}
 }
@@ -49,7 +49,7 @@ body.sidenav-open{
 .col-sidebar-content{
   max-height: calc(100vh - 50px);
   overflow-y: scroll;
-  position: -webkit-sticky; /* Safari */  
+  position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
   // Desktop fix sidebar lower to show search
@@ -114,15 +114,22 @@ body.sidenav-open{
         position: absolute;
         top: 13px;
         left: 2px;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg);
+
       }
 
-      &.visited a{
+      &.visited a {
+        color: $electric-purple;
+      }
+
+      &.visited code {
         color: $electric-purple;
       }
 
       &.active > a .nav-expand{
-        transform: rotate(-180deg);
-        -webkit-transform: rotate(-180deg);
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
       }
     }
   }
@@ -131,6 +138,7 @@ body.sidenav-open{
     a {
       color: $neutral-800;
     }
+
     &.active {
       > a {
         color: $electric-purple;
@@ -139,14 +147,19 @@ body.sidenav-open{
   }
 
   .tier-2 {
-    a {
+    a, code {
       color: $neutral-800;
     }
 
-    a:hover{
+    a:hover, code:hover{
       text-decoration: none;
       color: $electric-purple;
     }
-    
+
+    &.active {
+      > a {
+        color: $electric-purple;
+      }
+    }
   }
 }

@@ -1,0 +1,14 @@
+name: nightly
+
+on:
+  schedule:
+    - cron: '0 22 * * *'
+    
+jobs:
+  curl:
+    runs-on: ubuntu-latest
+    steps:
+    - name: hook
+      uses: wei/curl@v1
+      with:
+        args: -X POST -d {} https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_HOOK }}

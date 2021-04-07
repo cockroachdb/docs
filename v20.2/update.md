@@ -72,6 +72,12 @@ When executing an `UPDATE` query with a `FROM` clause, CockroachDB [joins](joins
 
 For an example, see [Update using values from a different table](#update-using-values-from-a-different-table).
 
+## Bulk-update data
+
+To update a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively updating subsets of the rows that you want to update, until all of the rows have been updated. You can write a script to do this, or you can write a loop into your application.
+
+For guidance and an example, see [Bulk-update Data](bulk-update-data.html).
+
 ## Examples
 
 {% include {{page.version.version}}/sql/movr-statements.md %}

@@ -1,5 +1,6 @@
 ---
 title: Statements Page
+summary: The Statements page helps you identify frequently executed or high latency SQL statements, view statement details, and download statement diagnostics.
 toc: true
 redirect_from: admin-ui-statements-page.html
 ---
@@ -20,7 +21,7 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 By default, this page shows SQL statements from all applications running on the cluster, and hides internal CockroachDB queries.
 
-To filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`. 
+To filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`.
 
 CockroachDB's internal queries are only displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
 
@@ -52,7 +53,7 @@ By default, the Statements page displays all SQL statements executed within a on
 
 ### SQL statement fingerprints
 
-The Statements page displays SQL statement *fingerprints*. 
+The Statements page displays SQL statement *fingerprints*.
 
 A statement fingerprint represents one or more SQL statements by replacing literal values (e.g., numbers and strings) with underscores (`_`). This can help you quickly identify frequently executed SQL statements and their latencies.
 
@@ -62,7 +63,7 @@ For multiple SQL statements to be represented by a fingerprint, they must be ide
 - <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)</code>
 - <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)</code>
 
-The above SQL statements have the fingerprint: 
+The above SQL statements have the fingerprint:
 
 <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, no_w_id) VALUES (_, _, _)</code>
 

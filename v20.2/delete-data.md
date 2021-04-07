@@ -4,7 +4,7 @@ summary: How to delete data from CockroachDB during application development
 toc: true
 ---
 
-This page has instructions for deleting data from CockroachDB (using the [`DELETE`](update.html) statement) using various programming languages.
+This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](update.html) [SQL statement](sql-statements.html).
 
 ## Before you begin
 
@@ -14,24 +14,63 @@ Before reading this page, do the following:
 - [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
+- [Create a database schema](schema-design-overview.html).
 - [Insert data](insert-data.html) that you now want to delete.
 
-{% include {{page.version.version}}/app/retry-errors.md %}
+    In the examples on this page, we use sample [`movr`](movr.html) data imported with the [`cockroach workload` command](cockroach-workload.html).
 
-## Delete a single row
+## Use `DELETE`
+
+To delete rows in a table, use a [`DELETE` statement](update.html) with a `WHERE` clause that filters on the columns that identify the rows that you want to delete.
+
+### SQL syntax
+
+In SQL, `DELETE` statements generally take the following form:
+
+~~~
+DELETE FROM {table} WHERE {filter_column} {comparison_operator} {filter_value}
+~~~
+
+Where:
+
+- `{table}` is a table with rows that you want to delete.
+- `{filter_column}` is the column to filter on.
+- `{comparison_operator}` is a [comparison operator](functions-and-operators.html#operators) that resolves to `TRUE` or `FALSE` (e.g., `=`).
+- `{filter_value}` is the matching value for the filter.
+
+{{site.data.alerts.callout_success}}
+For detailed reference documentation on the `DELETE` statement, including additional examples, see the [`DELETE` syntax page](delete.html).
+{{site.data.alerts.end}}
+
+### Best practices
+
+Here are some best practices to follow when deleting rows:
+
+- Limit the number of `DELETE` statements that you execute. It's more efficient to delete multiple rows with a single statement than to execute multiple `DELETE` statements that each delete a single row.
+- Always specify a `WHERE` clause in `DELETE` queries. If no `WHERE` clause is specified, CockroachDB will delete all of the rows in the specified table.
+- To delete all of the rows in a table, use a [`TRUNCATE` statement](truncate.html) instead of a `DELETE` statement.
+- To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column).
+- When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](error-handling-and-troubleshooting.html#transaction-retry-errors) that can occur under contention.
+- Review the [performance considerations below](#performance-considerations).
+
+### Examples
+
+#### Delete rows filtered on a non-unique column
+
+Suppose that you want to delete the vehicle location history data recorded during a specific hour of a specific day. To delete all of the rows in the `vehicle_location_histories` table where the `timestamp` is between two [`TIMESTAMP`](timestamp.html) values:
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="sql">SQL</button>
-  <button class="filter-button" data-scope="go">Go</button>
-  <button class="filter-button" data-scope="java">Java</button>
-  <button class="filter-button" data-scope="python">Python</button>
+  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
+  <button class="filter-button" data-scope="java">Java (jdbc)</button>
+  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="sql">
 
 {% include copy-clipboard.html %}
 ~~~ sql
-DELETE from accounts WHERE id = 1;
+DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN '2021-03-17 14:00:00' AND '2021-03-17 15:00:00';
 ~~~
 
 For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
@@ -44,12 +83,14 @@ For more information about how to use the built-in SQL client, see the [`cockroa
 ~~~ go
 // 'db' is an open database connection
 
-if _, err := db.Exec("DELETE FROM accounts WHERE id = 1"); err != nil {
-    return err
-}
-~~~
+tsOne := "2021-03-17 14:00:00"
+tsTwo := "2021-03-17 15:00:00"
 
-{% include {{page.version.version}}/app/for-a-complete-example-go.md %}
+if _, err := db.Exec("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN $1 AND $2", tsOne, tsTwo); err != nil {
+  return err
+}
+return nil
+~~~
 
 </section>
 
@@ -59,16 +100,20 @@ if _, err := db.Exec("DELETE FROM accounts WHERE id = 1"); err != nil {
 ~~~ java
 // ds is an org.postgresql.ds.PGSimpleDataSource
 
+String tsOne = "2021-03-17 14:00:00";
+String tsTwo = "2021-03-17 15:00:00";
+
 try (Connection connection = ds.getConnection()) {
-    connection.createStatement().executeUpdate("DELETE FROM accounts WHERE id = 1");
+    PreparedStatement p = connection.prepareStatement("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN ? AND ?");
+    p.setString(1, tsOne);
+    p.setString(2, tsTwo);
+    p.executeUpdate();
 
 } catch (SQLException e) {
-    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
-                      e.getSQLState(), e.getCause(), e.getMessage());
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
 }
 ~~~
-
-{% include {{page.version.version}}/app/for-a-complete-example-java.md %}
 
 </section>
 
@@ -78,38 +123,100 @@ try (Connection connection = ds.getConnection()) {
 ~~~ python
 # conn is a psycopg2 connection
 
-with conn.cursor() as cur:
-    cur.execute("DELETE FROM accounts WHERE id = 1",
-conn.commit()
-~~~
+tsOne = '2021-03-17 14:00:00'
+tsTwo = '2021-03-17 15:00:00'
 
-{% include {{page.version.version}}/app/for-a-complete-example-python.md %}
+with conn.cursor() as cur:
+    cur.execute(
+        "DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN %s AND %s", (tsOne, tsTwo))
+~~~
 
 </section>
 
-## Delete multiple rows
-
-You can delete multiple rows from a table in several ways:
-
-- Using a `WHERE` clause to limit the number of rows based on one or more predicates:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    DELETE FROM student_loan_accounts WHERE loan_amount < 30000;
-    ~~~
-
-- Using a `WHERE` clause to specify multiple records by a specific column's value (in this case, `id`):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    DELETE FROM accounts WHERE id IN (1, 2, 3, 4, 5);
-    ~~~
-
-- Using [`TRUNCATE`](truncate.html) instead of [`DELETE`](delete.html) to delete all of the rows from a table, as recommended in our [performance best practices](performance-best-practices-overview.html#use-truncate-instead-of-delete-to-delete-all-rows-in-a-table).
-
-{{site.data.alerts.callout_info}}
-Before deleting large amounts of data, see [Performance considerations](#performance-considerations).
+{{site.data.alerts.callout_success}}
+If the `WHERE` clause evaluates to `TRUE` for a large number of rows (i.e., tens of thousands of rows), use a [batch-delete loop](bulk-delete-data.html#batch-delete-on-an-indexed-column) instead of executing a simple `DELETE` query.
 {{site.data.alerts.end}}
+
+#### Delete rows filtered on a unique column
+
+Suppose that you want to delete the promo code data for a specific set of codes. To delete the rows in the `promo_codes` table where the `code` matches a string in a set of string values:
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="sql">SQL</button>
+  <button class="filter-button" data-scope="go">Go (lib/pq)</button>
+  <button class="filter-button" data-scope="java">Java (jdbc)</button>
+  <button class="filter-button" data-scope="python">Python (psycopg2)</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="sql">
+
+{% include copy-clipboard.html %}
+~~~ sql
+DELETE from promo_codes WHERE code IN ('0_explain_theory_something', '100_address_garden_certain', '1000_do_write_words');
+~~~
+
+For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="go">
+
+{% include copy-clipboard.html %}
+~~~ go
+// 'db' is an open database connection
+
+codeOne := "0_explain_theory_something"
+codeTwo := "100_address_garden_certain"
+codeThree := "1000_do_write_words"
+
+if _, err := db.Exec("DELETE from promo_codes WHERE code IN ($1, $2, $3)", codeOne, codeTwo, codeThree); err != nil {
+  return err
+}
+return nil
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+{% include copy-clipboard.html %}
+~~~ java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+String codeOne = "0_explain_theory_something";
+String codeTwo = "100_address_garden_certain";
+String codeThree = "1000_do_write_words";
+
+try (Connection connection = ds.getConnection()) {
+    PreparedStatement p = connection.prepareStatement("DELETE from promo_codes WHERE code IN(?, ?, ?)");
+    p.setString(1, codeOne);
+    p.setString(2, codeTwo);
+    p.setString(3, codeThree);
+    p.executeUpdate();
+
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
+}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+{% include copy-clipboard.html %}
+~~~ python
+# conn is a psycopg2 connection
+
+codeOne = '0_explain_theory_something'
+codeTwo = '100_address_garden_certain'
+codeThree = '1000_do_write_words'
+
+with conn.cursor() as cur:
+    cur.execute("DELETE from promo_codes WHERE code IN (%s, %s, %s)", (codeOne, codeTwo, codeThree)),
+~~~
+
+</section>
 
 ## Performance considerations
 
@@ -119,7 +226,6 @@ The practical implications of the above are:
 
 - Deleting data will not immediately decrease disk usage.
 - If you issue multiple [`DELETE`](delete.html) statements in sequence that each delete large amounts of data, each subsequent `DELETE` statement will run more slowly. For details, see [Preserving `DELETE` performance over time](delete.html#preserving-delete-performance-over-time).
-- To delete all of the rows in a table, [it's faster to use `TRUNCATE` instead of `DELETE`](performance-best-practices-overview.html#use-truncate-instead-of-delete-to-delete-all-rows-in-a-table).
 
 For more information about how the storage layer of CockroachDB works, see the [storage layer reference documentation](architecture/storage-layer.html).
 
@@ -128,6 +234,7 @@ For more information about how the storage layer of CockroachDB works, see the [
 Reference information related to this task:
 
 - [`DELETE`](delete.html)
+- [Bulk-delete data](bulk-delete-data.html)
 - [Disk space usage after deletes](delete.html#disk-space-usage-after-deletes)
 - [`TRUNCATE`](truncate.html)
 - [`DROP TABLE`](drop-table.html)

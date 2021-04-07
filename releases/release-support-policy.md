@@ -1,6 +1,6 @@
 ---
 title: Release Support Policy
-summary:
+summary: Learn about Cockroach Lab's policy for supporting major releases of CockroachDB.
 toc: true
 ---
 

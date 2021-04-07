@@ -29,18 +29,7 @@ The user must have the `CREATE` [privileges](authorization.html#assign-privilege
 
 #### Source privileges
 
-The source file URL does _not_ require the `ADMIN` role in the following scenarios:
-
-- S3 and GS using `SPECIFIED` (and not `IMPLICIT`) credentials. Azure is always `SPECIFIED` by default.
-- [Userfile](use-userfile-for-bulk-operations.html)
-
-The source file URL _does_ require the `ADMIN` role in the following scenarios:
-
-- S3 or GS using `IMPLICIT` credentials
-- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints/) on S3
-- [Nodelocal](cockroach-nodelocal-upload.html), [HTTP](use-a-local-file-server-for-bulk-operations.html) or [HTTPS] (use-a-local-file-server-for-bulk-operations.html)
-
-Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-operations.html).
+{% include {{ page.version.version }}/misc/source-privileges.md %}
 
 ## Synopsis
 
@@ -105,6 +94,8 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `row_limit`           | General         |<span class="version-tag">New in v21.1:</span> The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+`ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
+`log_ignored_statements` | `PGDUMP` | <span class="version-tag">New in v21.1:</span> Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
@@ -131,6 +122,10 @@ Before using `IMPORT`, you should have:
 
 - The schema of the table you want to import.
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
+
+{{site.data.alerts.callout_info}}
+`IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead. </span>
+{{site.data.alerts.end}}
 
 ### Import targets
 
@@ -719,24 +714,24 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH ignore_unsupported_statements;
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
+> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH ignore_unsupported_statements;
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 'gs://acme-co/employees.sql';
+> IMPORT PGDUMP 'gs://acme-co/employees.sql' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres][postgres].
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
 
 ### Import a table from a Postgres database dump
 
@@ -744,21 +739,21 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).

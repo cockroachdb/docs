@@ -15,7 +15,7 @@ This page walks you through the process of creating a cluster using CockroachClo
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_free_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Start the cluster creation process
 

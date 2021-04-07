@@ -84,7 +84,7 @@ The [`IMPORT`][import] statement below reads the data and [DDL](https://en.wikip
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz';
+> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
 ~~~
 
 ~~~
@@ -104,7 +104,7 @@ This example assumes you [dumped the entire database](#dump-the-entire-database)
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT TABLE employees FROM PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz';
+> IMPORT TABLE employees FROM PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
 ~~~
 
 ~~~
@@ -124,7 +124,7 @@ The simplest way to import a table dump is to run [`IMPORT TABLE`][import] as sh
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS employees;
 > USE employees;
-> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz';
+> IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz' WITH ignore_unsupported_statements;
 ~~~
 
 ~~~
@@ -146,7 +146,7 @@ If you need to specify the table's columns for some reason, you can use an [`IMP
     gender STRING NOT NULL,
     hire_date DATE NOT NULL
   )
-  PGDUMP DATA ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz');
+  PGDUMP DATA ('https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees.sql.gz') WITH ignore_unsupported_statements;
 ~~~
 
 ## Configuration Options
@@ -155,6 +155,8 @@ The following options are available to `IMPORT ... PGDUMP`:
 
 + [Max row size](#max-row-size)
 + <span class="version-tag">New in v21.1:</span> [Row limit](#row-limit)
++ <span class="version-tag">New in v21.1:</span> [Ignore unsupported statements](#ignore-unsupported-statements)
++ <span class="version-tag">New in v21.1:</span> [Log unsupported statements](#log-unsupported-statements)
 + [Skip foreign keys](#skip-foreign-keys)
 
 ### Max row size
@@ -185,6 +187,30 @@ Example usage:
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH row_limit = '10';
+~~~
+
+### Ignore unsupported statements
+
+<span class="version-tag">New in v21.1:</span> The [`ignore_unsupported_statements` option](import.html#import-options) specifies whether the import will ignore unsupported statements in the `PGDUMP` file. **Default: false**.
+
+If `ignore_unsupported_statements` is omitted, the import will fail if it encounters a statement that is unsupported by CockroachDB. Use `ignore_unsupported_statements` with `log_ignored_statements` to log unsupported statements.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements;
+~~~
+
+### Log unsupported statements
+
+<span class="version-tag">New in v21.1:</span> The `log_ignored_statements` option is used with the `ignore_unsupported_statements` option to log unsupported statements in the `PGDUMP` file to specified a destination file.
+
+Example usage:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456' WITH ignore_unsupported_statements, log_ignored_statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log';
 ~~~
 
 ### Skip foreign keys

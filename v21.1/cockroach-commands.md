@@ -34,6 +34,7 @@ Command | Usage
 [`cockroach userfile upload`](cockroach-userfile-upload.html)   |  Upload a file to the user-scoped file storage.
 [`cockroach userfile list`](cockroach-userfile-list.html)       |  List the files stored in the user-scoped file storage.
 [`cockroach userfile delete`](cockroach-userfile-delete.html)   |  Deletes the files stored in the user-scoped file storage.
+[`cockroach userfile get`](cockroach-userfile-get.html)         |  Fetch a file from the user-scoped file storage.
 [`cockroach import`](cockroach-import.html)   |  <span class="version-tag">New in v21.1:</span> Import a table or database from a local dump file into a running cluster. `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
 
 ## Environment variables

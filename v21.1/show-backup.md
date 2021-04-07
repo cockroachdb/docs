@@ -8,7 +8,9 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 
 ## Required privileges
 
-Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` user belongs to the `admin` role.
+`SHOW BACKUP` requires read permissions to its target destination.
+
+{% include {{ page.version.version }}/misc/source-privileges.md %}
 
 ## Synopsis
 

@@ -37,17 +37,17 @@ layout: default
    {% endif %}
 
    {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
-      {% include unsupported-version.md %}
+      {% include_cached unsupported-version.md %}
    {% endif %}
 
    {% if page.url contains 'v19.2' %}
-      {% include unsupported-version-soon.md %}
+      {% include_cached unsupported-version-soon.md %}
    {% endif %}
    
    {{content}}
 
    {% if page.feedback != false %}
-      {% include feedback-widget.html %}
+      {% include_cached feedback-widget.html %}
    {% endif %}
 
 </div>
