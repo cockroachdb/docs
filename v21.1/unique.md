@@ -21,6 +21,10 @@ The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value
 
 - You can define the `UNIQUE` constraint when [creating a table](#syntax), or you can add it to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-unique-constraint).
 
+{% include {{page.version.version}}/sql/unique-indexes-regional-by-row.md %}
+
+For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+
 ## Syntax
 
 `UNIQUE` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
