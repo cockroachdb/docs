@@ -164,6 +164,16 @@ For an example of a table that can benefit from the _global_ table locality sett
 
 For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#global)
 
+## Additional Features
+
+The features listed in this section are designed to make working with multi-region clusters easier.
+
+### Implicitly partitioned unique indexes
+
+<span class="version-tag">New in v21.1:</span> CockroachDB has support for _implicitly partitioned unique indexes_ in [multi-region databases](multiregion-overview.html).  When you add a `UNIQUE` constraint to a column in a multi-region database, CockroachDB automatically takes care of [partitioning](partitioning.html) the index for you to ensure that you get the best performance possible on uniqueness checks in multi-region deployments.
+
+For a usage example, see [Add an implicitly partitioned unique index](add-constraint.html#add-an-implicitly-partitioned-unique-index).
+
 ## Next steps
 
 + [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)

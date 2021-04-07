@@ -230,6 +230,90 @@ NOTICE: primary key changes are finalized asynchronously; further schema changes
 
 Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
+### Add an implicitly partitioned unique index
+
+<span class="version-tag">New in v21.1:</span> CockroachDB has support for _implicitly partitioned unique indexes_ in [multi-region databases](multiregion-overview.html).  When you add a [`UNIQUE` constraint](unique.html) to a column in a multi-region database, CockroachDB automatically takes care of [partitioning](partitioning.html) the index for you to ensure that you get the best performance possible on uniqueness checks in multi-region deployments.
+
+This example assumes you have a simulated multi-region database running on your local machine following the steps described in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
+
+To show how implicitly partitioned unique indexes work, we will:
+
+1. [Add a column](add-column.html) to the `users` table in the [MovR dataset](movr.html).
+2. Add a [`UNIQUE` constraint](unique.html) to that column.
+3. Verify that the index is automatically partitioned for better multi-region performance by using [`SHOW INDEXES`](show-index.html) and [`SHOW PARTITIONS`](show-partitions.html).
+
+First, add a column and its unique constraint.  We'll use `email` since that is something that should be unique per user.
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE users ADD COLUMN email STRING;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
+~~~
+
+Next, issue the [`SHOW INDEXES`](show-index.html) statement.  You will see that [the implicit region column](set-locality.html#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables) is now indexed:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW INDEXES FROM users;
+~~~
+
+~~~
+  table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
+  users      | primary           |   false    |            1 | region      | ASC       |  false  |  false
+  users      | primary           |   false    |            2 | id          | ASC       |  false  |  false
+  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |  false
+  users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
+  users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true
+  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |  false
+  users      | users_city_idx    |    true    |            2 | city        | ASC       |  false  |  false
+  users      | users_city_idx    |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
+~~~
+
+Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.  This means that uniqueness checks happen in the region where the user is located, which will lead to reduced query latency.
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW PARTITIONS FROM TABLE users;
+~~~
+
+~~~
+  database_name | table_name | partition_name | column_names |       index_name        | partition_value  | ...
+----------------+------------+----------------+--------------+-------------------------+------------------+
+...
+  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1') |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+...
+  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')     |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+...
+  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+                |            |                |              |                         |                  |
+~~~
+
 ## See also
 
 - [Constraints](constraints.html)

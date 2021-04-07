@@ -21,6 +21,10 @@ The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value
 
 - You can define the `UNIQUE` constraint when [creating a table](#syntax), or you can add it to existing tables through [`ADD CONSTRAINT`](add-constraint.html#add-the-unique-constraint).
 
+- <span class="version-tag">New in v21.1:</span> CockroachDB has support for _implicitly partitioned unique indexes_ in [multi-region databases](multiregion-overview.html).  When you add a `UNIQUE` constraint to a column in a multi-region database, CockroachDB automatically takes care of [partitioning](partitioning.html) the index for you to ensure that you get the best performance possible on uniqueness checks in multi-region deployments.
+
+For a usage example, see [Add an implicitly partitioned unique index](add-constraint.html#add-an-implicitly-partitioned-unique-index).
+
 ## Syntax
 
 `UNIQUE` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).

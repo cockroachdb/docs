@@ -19,6 +19,8 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
  To index [spatial data](spatial-data.html), CockroachDB uses *spatial indexes*. For more information about spatial indexes, see [Spatial Indexes](spatial-indexes.html).
 
+To support [multi-region deployments](multiregion-overview.html), indexes can be [partitioned](partitioning.html) based on region.  However, as of CockroachDB v21.1 and later, most users should use [implicitly partitioned unique indexes](multiregion-overview.html#implicitly-partitioned-unique-indexes) instead.
+
 ### Creation
 
 Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
