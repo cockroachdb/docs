@@ -96,7 +96,7 @@ To add a new row to a regional by row table, you must choose one of the followin
     INSERT INTO {table} (crdb_region, ...) VALUES ('us-east-1', ...);
     ~~~
 
-This is necessary because every row in a regional by row table must have a home region.
+This is necessary because every row in a regional by row table must have a home region.  Note that until you set a home region for a row in a regional by row table, it defaults to the value of the primary region.
 
 For more information about how this table locality works, see [Regional by row tables](multiregion-overview.html#regional-by-row-tables).
 
