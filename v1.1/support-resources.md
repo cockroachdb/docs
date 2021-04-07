@@ -1,6 +1,6 @@
 ---
 title: Support Resources
-summary: Get help using CockroachDB
+summary: There are various ways to reach out for support from Cockroach Labs and our community.
 toc: false
 ---
 

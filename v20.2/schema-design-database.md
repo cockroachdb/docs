@@ -1,6 +1,6 @@
 ---
 title: Create a Database
-summary: Create a database for your CockroachDB cluster
+summary: Best practices for creating databases in CockroachDB.
 toc: true
 ---
 

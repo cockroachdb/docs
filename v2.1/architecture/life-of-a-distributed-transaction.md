@@ -1,6 +1,6 @@
 ---
 title: Life of a Distributed Transaction
-summary: This guide details the path through CockroachDB's architecture that a query takes, starting with a SQL client and progressing all the way to RocksDB (and then back out again).
+summary: Learn how a query moves through the layers of CockroachDB's architecture.
 toc: true
 ---
 

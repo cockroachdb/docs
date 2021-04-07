@@ -1,6 +1,6 @@
 ---
 title: Connection Pooling
-summary: How to create connection pools to CockroachDB
+summary: How to plan, configure, and use connection pools when using drivers or frameworks with CockroachDB.
 toc: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Create a Table
-summary: Define tables for your database schema
+summary: Best practices for working with tables in CockroachDB.
 toc: true
 ---
 

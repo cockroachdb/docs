@@ -1,6 +1,6 @@
 ---
 title: Monitor CockroachDB with Prometheus
-summary: Use Prometheus to monitor CockroachDB.
+summary: How to pull CockroachDB's time series metrics into Prometheus.
 toc: true
 ---
 

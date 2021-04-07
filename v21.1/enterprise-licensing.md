@@ -1,6 +1,6 @@
 ---
 title: Enterprise Features
-summary: Enterprise features and descriptions
+summary: Learn about CockroachDB features that require an enterprise license key.
 toc: true
 ---
 
