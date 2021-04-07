@@ -22,12 +22,10 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
     ~~~
     # Connection parameters:
-    #   (console) http://127.0.0.1:61009
-    #   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fk1%2Fr048yqpd7_9337rgxm9vb_gw0000gn%2FT%2Fdemo255013852&port=26257
-    #   (sql/tcp) postgres://root:admin@127.0.0.1:61011?sslmode=require    
+    #   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
+    #   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
+    #   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require 
     ~~~
-
-    In this example, the port number is 61011. You will use the port number in your application code later.
 
 </section>
 
