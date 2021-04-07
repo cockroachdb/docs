@@ -98,6 +98,8 @@ To add a new row to a regional by row table, you must choose one of the followin
 
 This is necessary because every row in a regional by row table must have a home region.
 
+If you do not set a home region for a row in a regional by row table, it defaults to the value returned by the built-in function `gateway_region()`. If the value returned by `gateway_region()` does not belong to the multi-region database the table is a part of, the home region defaults to the database's primary region.
+
 For more information about how this table locality works, see [Regional by row tables](multiregion-overview.html#regional-by-row-tables).
 
 Note that you can use a name other than `crdb_region` for the hidden column by using the following statements:
