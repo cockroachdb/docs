@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-your-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud</strong></button></a>
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="create-a-free-cluster.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
 This page walks you through the process of creating a cluster using CockroachCloud Free (beta). Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.

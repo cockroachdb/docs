@@ -1,10 +1,21 @@
 Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachCloud. The instructions below will adjust accordingly.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
   <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
-<p></p>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Create a free cluster
+
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+
+### Set up your cluster connection
+
+{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -24,19 +35,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     # Connection parameters:
     #   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
     #   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
-    #   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require 
+    #   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
     ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-### Create a free cluster
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-### Set up your cluster connection
-
-{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
 </section>
