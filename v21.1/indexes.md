@@ -19,6 +19,8 @@ For example, if you index an `INT` column and then filter it <code>WHERE &lt;ind
 
  To index [spatial data](spatial-data.html), CockroachDB uses *spatial indexes*. For more information about spatial indexes, see [Spatial Indexes](spatial-indexes.html).
 
+{% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
+
 ### Creation
 
 Each table automatically has an index created called `primary`, which indexes either its [primary key](primary-key.html) or&mdash;if there is no primary key&mdash;a unique value for each row known as `rowid`. We recommend always defining a primary key because the index it creates provides much better performance than letting CockroachDB use `rowid`.
@@ -116,6 +118,12 @@ However, if we store `col3` in the index, the index join is no longer necessary.
 ## Best practices
 
 For best practices, see [Add a Secondary Index: Best Practices](schema-design-indexes.html#best-practices)
+
+## Indexes on `REGIONAL BY ROW` tables in multi-region databases
+
+{% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
+
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
 ## See also
 
