@@ -1,6 +1,6 @@
 ---
 title: Architecture Overview
-summary: An overview of the CockroachDB architecture.
+summary: Learn about the inner-workings of the CockroachDB architecture.
 toc: true
 key: cockroachdb-architecture.html
 redirect_from: index.html
