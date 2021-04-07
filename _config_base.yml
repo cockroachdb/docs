@@ -13,11 +13,15 @@ defaults:
   values:
     layout: page
 exclude:
+- __tests__
 - ci
+- netlify
 - scripts
 - vendor
 - jekyll-algolia-dev
 - archived
+- package.json
+- package-lock.json
 include:
 - _redirects
 keep_files:
