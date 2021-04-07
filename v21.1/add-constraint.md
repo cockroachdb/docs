@@ -230,6 +230,287 @@ NOTICE: primary key changes are finalized asynchronously; further schema changes
 
 Using [`ALTER PRIMARY KEY`](alter-primary-key.html) would have created a `UNIQUE` secondary index called `users_city_id_key`. Instead, there is just one index for the primary key constraint.
 
+### Add a unique index to a `REGIONAL BY ROW` table
+
+{% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
+
+This example assumes you have a simulated multi-region database running on your local machine following the steps described in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html). It shows how a `UNIQUE` index is partitioned, but it's similar to how all indexes are partitioned on `REGIONAL BY ROW` tables.
+
+To show how the automatic partitioning of indexes on `REGIONAL BY ROW` tables works, we will:
+
+1. [Add a column](add-column.html) to the `users` table in the [MovR dataset](movr.html).
+2. Add a [`UNIQUE` constraint](unique.html) to that column.
+3. Verify that the index is automatically partitioned for better multi-region performance by using [`SHOW INDEXES`](show-index.html) and [`SHOW PARTITIONS`](show-partitions.html).
+
+First, add a column and its unique constraint.  We'll use `email` since that is something that should be unique per user.
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE users ADD COLUMN email STRING;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER TABLE users ADD CONSTRAINT user_email_unique UNIQUE (email);
+~~~
+
+Next, issue the [`SHOW INDEXES`](show-index.html) statement.  You will see that [the implicit region column](set-locality.html#set-the-table-locality-to-regional-by-row) that was added when the table [was converted to regional by row](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables) is now indexed:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW INDEXES FROM users;
+~~~
+
+~~~
+  table_name |    index_name     | non_unique | seq_in_index | column_name | direction | storing | implicit
+-------------+-------------------+------------+--------------+-------------+-----------+---------+-----------
+  users      | primary           |   false    |            1 | region      | ASC       |  false  |  false
+  users      | primary           |   false    |            2 | id          | ASC       |  false  |  false
+  users      | user_email_unique |   false    |            1 | region      | ASC       |  false  |  false
+  users      | user_email_unique |   false    |            2 | email       | ASC       |  false  |  false
+  users      | user_email_unique |   false    |            3 | id          | ASC       |  false  |   true
+  users      | users_city_idx    |    true    |            1 | region      | ASC       |  false  |  false
+  users      | users_city_idx    |    true    |            2 | city        | ASC       |  false  |  false
+  users      | users_city_idx    |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
+~~~
+
+Next, issue the [`SHOW PARTITIONS`](show-partitions.html) statement. The output below (which is edited for length) will verify that the unique index was automatically [partitioned](partitioning.html) for you. It shows that the `user_email_unique` index is now partitioned by the database regions `europe-west1`, `us-east1`, and `us-west1`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW PARTITIONS FROM TABLE users;
+~~~
+
+~~~
+  database_name | table_name | partition_name | column_names |       index_name        | partition_value  |
+----------------+------------+----------------+--------------+-------------------------+------------------+
+  movr          | users      | europe-west1   | region       | users@user_email_unique | ('europe-west1') |
+  movr          | users      | us-east1       | region       | users@user_email_unique | ('us-east1')     |
+  movr          | users      | us-west1       | region       | users@user_email_unique | ('us-west1')     |
+~~~
+
+To ensure that the uniqueness constraint is enforced properly across regions when rows are inserted, or the `email` column of an existing row is updated, the database needs to do the following additional work when indexes are partitioned as shown above:
+
+1. Run a one-time-only validation query to ensure that the existing data in the table satisfies the unique constraint.
+2. Thereafter, the [optimizer](cost-based-optimizer.html) will automatically add a "uniqueness check" when necessary to any [`INSERT`](insert.html), [`UPDATE`](update.html), or [`UPSERT`](upsert.html) statement affecting the columns in the unique constraint.
+
+Note that there is a performance benefit for queries that select a single email address (e.g., `SELECT * FROM users WHERE email = 'anemailaddress@gmail.com'`). If `'anemailaddress@gmail.com'` is found in the local region, there is no need to search remote regions.  This feature, whereby the SQL engine will avoid sending requests to nodes in other regions when it can read a value from a unique column that is stored locally, is known as _locality optimized search_.
+
+### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
+
+In `REGIONAL BY ROW` tables, all indexes are partitioned on the region column (usually called [`crdb_region`](set-locality.html#crdb_region)).
+
+These indexes can either include or exclude the partitioning key (`crdb_region`) as the first column in the index definition:
+
+- If `crdb_region` is included in the index definition, a [`UNIQUE` index](unique.html) will enforce uniqueness on the set of columns, just like it would in a non-partitioned table.
+- If `crdb_region` is excluded from the index definition, that serves as a signal that CockroachDB should enforce uniqueness on only the columns in the index definition.
+
+In the latter case, the index alone cannot enforce uniqueness on columns that are not a prefix of the index columns, so any time rows are inserted or updated in a `REGIONAL BY ROW` table that has an implicitly partitioned `UNIQUE` index, the [optimizer](cost-based-optimizer.html) must add uniqueness checks.
+
+Whether or not to explicitly include `crdb_region` in the index definition depends on the context:
+
+- If you only need to enforce uniqueness at the region level, then including `crdb_region` in the `UNIQUE` index definition will enforce these semantics and allow you to get better performance on `INSERT`s, `UPDATE`s, and `UPSERT`s, since there won't be any added latency from uniqueness checks.
+- If you need to enforce global uniqueness, you should not include `crdb_region` in the `UNIQUE` (or `PRIMARY KEY`) index definition, and the database will automatically ensure that the constraint is enforced.
+
+To illustrate the different behavior of explicitly vs. implicitly partitioned indexes, we will perform the following tasks:
+
+- Create a schema that includes an explicitly partitioned index, and an implicitly partitioned index.
+- Check the output of several queries using `EXPLAIN` to show the differences in behavior between the two.
+
+1. Start [`cockroach demo`](cockroach-demo.html) as follows:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    cockroach demo --geo-partitioned-replicas
+    ~~~
+
+1. Create a multi-region database and an `employees` table. There are three indexes in the table, all `UNIQUE` and all partitioned by the `crdb_region` column. The table schema guarantees that both `id` and `email` are globally unique, while `desk_id` is only unique per region. The indexes on `id` and `email` are implicitly partitioned, while the index on `(crdb_region, desk_id)` is explicitly partitioned. `UNIQUE` indexes can only directly enforce uniqueness on all columns in the index, including partitioning columns, so each of these indexes enforce uniqueness for `id`, `email`, and `desk_id` per region, respectively.
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1";
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    USE multi_region_test_db;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE employee (
+      id INT PRIMARY KEY,
+      email STRING UNIQUE,
+      desk_id INT,
+      UNIQUE (crdb_region, desk_id)
+    ) LOCALITY REGIONAL BY ROW;
+    ~~~
+
+1. In the statement below, we add a new user with the required `id`, `email`, and `desk_id` columns. CockroachDB needs to do additional work to enforce global uniqueness for the `id` and `email` columns, which are implicitly partitioned. This additional work is in the form of "uniqueness checks" that the optimizer adds as part of mutation queries.
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN INSERT INTO employee VALUES (1, 'joe@example.com', 1);
+    ~~~
+
+    The `EXPLAIN` output below shows that the optimizer has added two `constraint-check` post queries to check the uniqueness of the implicitly partitioned indexes `id` and `email`. There is no check needed for `desk_id` (really `(crdb_region, desk_id)`), since that constraint is automatically enforced by the explicitly partitioned index we added in the [`CREATE TABLE`](create-table.html) statement above.
+
+    ~~~
+                                             info
+    --------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • root
+      │
+      ├── • insert
+      │   │ into: employee(id, email, desk_id, crdb_region)
+      │   │
+      │   └── • buffer
+      │       │ label: buffer 1
+      │       │
+      │       └── • values
+      │             size: 5 columns, 1 row
+      │
+      ├── • constraint-check
+      │   │
+      │   └── • error if rows
+      │       │
+      │       └── • lookup join (semi)
+      │           │ table: employee@primary
+      │           │ equality: (lookup_join_const_col_@15, column1) = (crdb_region,id)
+      │           │ equality cols are key
+      │           │ pred: column10 != crdb_region
+      │           │
+      │           └── • cross join
+      │               │ estimated row count: 3
+      │               │
+      │               ├── • values
+      │               │     size: 1 column, 3 rows
+      │               │
+      │               └── • scan buffer
+      │                     label: buffer 1
+      │
+      └── • constraint-check
+          │
+          └── • error if rows
+              │
+              └── • lookup join (semi)
+                  │ table: employee@employee_email_key
+                  │ equality: (lookup_join_const_col_@25, column2) = (crdb_region,email)
+                  │ equality cols are key
+                  │ pred: (column1 != id) OR (column10 != crdb_region)
+                  │
+                  └── • cross join
+                      │ estimated row count: 3
+                      │
+                      ├── • values
+                      │     size: 1 column, 3 rows
+                      │
+                      └── • scan buffer
+                            label: buffer 1
+    ~~~
+
+1. The statement below updates the user's `email` column. Because the unique index on the `email` column is implicitly partitioned, the optimizer must perform a uniqueness check.
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN UPDATE employee SET email = 'joe1@exaple.com' WHERE id = 1;
+    ~~~
+
+    In the `EXPLAIN` output below, the optimizer performs a uniqueness check for `email` since we're not updating any other columns (see the `constraint-check` section).
+
+    ~~~
+                                                      info
+    --------------------------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • root
+      │
+      ├── • update
+      │   │ table: employee
+      │   │ set: email
+      │   │
+      │   └── • buffer
+      │       │ label: buffer 1
+      │       │
+      │       └── • render
+      │           │ estimated row count: 1
+      │           │
+      │           └── • union all
+      │               │ estimated row count: 1
+      │               │ limit: 1
+      │               │
+      │               ├── • scan
+      │               │     estimated row count: 1 (100% of the table; stats collected 1 minute ago)
+      │               │     table: employee@primary
+      │               │     spans: [/'us-east1'/1 - /'us-east1'/1]
+      │               │
+      │               └── • scan
+      │                     estimated row count: 1 (100% of the table; stats collected 1 minute ago)
+      │                     table: employee@primary
+      │                     spans: [/'europe-west1'/1 - /'europe-west1'/1] [/'us-west1'/1 - /'us-west1'/1]
+      │
+      └── • constraint-check
+          │
+          └── • error if rows
+              │
+              └── • lookup join (semi)
+                  │ table: employee@employee_email_key
+                  │ equality: (lookup_join_const_col_@18, email_new) = (crdb_region,email)
+                  │ equality cols are key
+                  │ pred: (id != id) OR (crdb_region != crdb_region)
+                  │
+                  └── • cross join
+                      │ estimated row count: 3
+                      │
+                      ├── • values
+                      │     size: 1 column, 3 rows
+                      │
+                      └── • scan buffer
+                            label: buffer 1
+    ~~~
+
+1. If we only update the user's `desk_id` as shown below, no uniqueness checks are needed, since the index on that column is explicitly partitioned (it's really `(crdb_region, desk_id)`).
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    EXPLAIN UPDATE employee SET desk_id = 2 WHERE id = 1;
+    ~~~
+
+    Because no uniqueness check is needed, there is no `constraint-check` section in the `EXPLAIN` output.
+
+    ~~~
+                                                  info
+    ------------------------------------------------------------------------------------------------
+      distribution: local
+      vectorized: true
+
+      • update
+      │ table: employee
+      │ set: desk_id
+      │ auto commit
+      │
+      └── • render
+          │ estimated row count: 1
+          │
+          └── • union all
+              │ estimated row count: 1
+              │ limit: 1
+              │
+              ├── • scan
+              │     estimated row count: 1 (100% of the table; stats collected 2 minutes ago)
+              │     table: employee@primary
+              │     spans: [/'us-east1'/1 - /'us-east1'/1]
+              │
+              └── • scan
+                    estimated row count: 1 (100% of the table; stats collected 2 minutes ago)
+                    table: employee@primary
+                    spans: [/'europe-west1'/1 - /'europe-west1'/1] [/'us-west1'/1 - /'us-west1'/1]
+    ~~~
+
 ## See also
 
 - [Constraints](constraints.html)
