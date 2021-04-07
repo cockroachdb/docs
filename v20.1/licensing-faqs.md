@@ -1,6 +1,6 @@
 ---
 title: Licensing FAQs
-summary: Overview of Licensing for CockroachDB.
+summary: Frequently asked questions about CockroachDB licensing.
 toc: true
 ---
 

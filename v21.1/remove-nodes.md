@@ -1,6 +1,6 @@
 ---
 title: Decommission Nodes
-summary: Remove one or more nodes from a cluster.
+summary: Remove one or more nodes from a CockroachDB cluster.
 toc: true
 ---
 

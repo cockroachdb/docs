@@ -1,6 +1,6 @@
 ---
 title: Life of a Distributed Transaction
-summary: This guide details the path through CockroachDB's architecture that a query takes, starting with a SQL client and progressing all the way to the storage layer (and then back out again).
+summary: Learn how a query moves through the layers of CockroachDB's architecture.
 toc: true
 ---
 
@@ -132,9 +132,9 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 - `PENDING`, the new transaction attempts to "push" the write intent's transaction by moving that transaction's timestamp forward (i.e.,  ahead of this transaction's timestamp); however, this only succeeds if the write intent's transaction has become inactive.
   	- If the push succeeds, the operation continues.
   	- If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
-- `MISSING`, the resolver consults the write intent's timestamp. 
-	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created. 
-	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior. 
+- `MISSING`, the resolver consults the write intent's timestamp.
+	- If it was created within the transaction liveness threshold, it treats the transaction record as exhibiting the `PENDING` behavior, with the addition of tracking the push in the range's timestamp cache, which will inform the transaction that its timestamp was pushed once the transaction record gets created.
+	- If the write intent is older than the transaction liveness threshold, the resolution exhibits the `ABORTED` behavior.
 
     Note that transaction records might be missing because we've avoided writing the record until the transaction commits. For more information, see [Transaction Layer: Transaction records](transaction-layer.html#transaction-records).
 

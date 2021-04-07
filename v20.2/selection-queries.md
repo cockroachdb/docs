@@ -1,6 +1,6 @@
 ---
 title: Selection Queries
-summary: Selection Queries can read and process data.
+summary: Selection queries can read and process data in CockroachDB.in CockroachDB.
 toc: true
 redirect_from: selection-clauses.html
 key: selection-clauses.html
@@ -310,7 +310,7 @@ ORDER BY balance DESC, name ASC;
 +----+--------------------+---------+----------+--------------+
 ~~~
 
-## Limiting row count 
+## Limiting row count
 
 You can reduce the number of results with `LIMIT`.
 

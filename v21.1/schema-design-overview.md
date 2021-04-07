@@ -83,7 +83,7 @@ For guidance on using temporary objects, see [Temporary Tables](temporary-tables
 
 ## Controlling access to objects
 
-CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](authorization.html#users) the [privileges](authorization.html#privileges) required to view, modify, and delete database schema objects.
+CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](authorization.html#sql-users) the [privileges](authorization.html#privileges) required to view, modify, and delete database schema objects.
 
 By default, the user that creates an object is that object's *owner*. [Object owners](authorization.html#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
 
@@ -111,7 +111,7 @@ The following table lists specific limits imposed by CockroachDB.
 
 | Object | Limit | Comments |
 | ------ | ----- | -------- |
-| Role names | 63 bytes | Other [restrictions](create-role.html#role-name-limitations) apply. |
+| Role names | 63 bytes | Other [restrictions](create-role.html#considerations) apply. |
 | User names | 63 bytes | These are [equivalent](create-user.html) to role names. |
 | Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. | 
 

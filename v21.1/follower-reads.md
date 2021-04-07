@@ -67,7 +67,7 @@ To verify that your cluster is performing follower reads:
 
 Any [`SELECT` statement](select-clause.html) with an [`AS OF SYSTEM TIME`](as-of-system-time.html) value at least 4.8 seconds in the past can be a follower read (i.e., served by any replica).
 
-To simplify this calculation, we've added a convenience function that will always set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads, `follower_read_timestamp()`:
+To simplify this calculation, we've added the convenience [function](functions-and-operators.html) `follower_read_timestamp()`. `follower_read_timestamp()` returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s` (known as the [follower read timestamp](follower-reads.html#run-queries-that-use-follower-reads)). Using this function in an `AS OF SYSTEM TIME` statement will set the time as close as possible to the present time while remaining safe for [follower reads](follower-reads.html):
 
 ``` sql
 SELECT ... FROM ... AS OF SYSTEM TIME follower_read_timestamp();
