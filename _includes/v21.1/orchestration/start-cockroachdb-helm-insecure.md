@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_danger}}
-The CockroachDB Helm chart is undergoing active maintenance. Some features may not be functional. For new production and local deployments, we currently recommend using a manual configuration (**Configs** option). If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
+The CockroachDB Helm chart is being maintained to ensure compatibility with newer versions of Kubernetes. No new feature development is currently planned. For new production and local deployments, we currently recommend using a manual configuration (**Configs** option). If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
 
 1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
