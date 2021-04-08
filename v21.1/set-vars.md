@@ -174,13 +174,15 @@ You can control the default time zone for a session with `SET TIME ZONE`. This w
 
 The input passed to `SET TIME ZONE` indicates the time zone for the current session. This value can be a string representation of a local system-defined time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or negative numeric offset from UTC (e.g., `-7`, `+7`, or `UTC-7`, `UTC+7`) or GMT (e.g., `GMT-7`, `GMT+7`). The numeric offset input can also be colon-delimited (e.g., `-7:00`, `GMT+7:00`).
 
-{{site.data.alerts.callout_info}}
-Only offsets specified by integers use the [ISO 8601 time offset](https://en.wikipedia.org/wiki/ISO_8601#Time_offsets_from_UTC) (i.e., the offset input is parsed as hours *east* of the specified time zone). If you explicitly specify `UTC` or `GMT` for the time zone offset (e.g., `UTC-7`,`GMT+7`), or if the numeric input is colon-delimited (e.g.,  `-7:00`, `GMT+7:00`), CockroachDB uses the [POSIX time offset](https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-TIMEZONES) (i.e., hours *west* of the specified time zone).
-{{site.data.alerts.end}}
+When setting a time zone, note the following:
 
-All timezone abbreviations are case-sensitive and must be uppercase, with the exception of `UTC`, for which `utc` is an alias.
+- Timezone abbreviations are case-insensitive.
 
-`DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
+- Timezone abbreviations must be part of the [tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), as recognized by the [`tzdata` Golang package](https://golang.org/pkg/time/tzdata/).
+
+- `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.
+
+- Only offsets specified by integers use the [ISO 8601 time offset](https://en.wikipedia.org/wiki/ISO_8601#Time_offsets_from_UTC) (i.e., the offset input is parsed as hours *east* of the specified time zone). If you explicitly specify `UTC` or `GMT` for the time zone offset (e.g., `UTC-7`,`GMT+7`), or if the numeric input is colon-delimited (e.g.,  `-7:00`, `GMT+7:00`), CockroachDB uses the [POSIX time offset](https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-TIMEZONES) (i.e., hours *west* of the specified time zone).
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
