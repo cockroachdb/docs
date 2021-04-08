@@ -240,19 +240,19 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
 
 ~~~
-  table_name |               index_name               | non_unique | seq_in_index |       column_name        | direction | storing | implicit
--------------+----------------------------------------+------------+--------------+--------------------------+-----------+---------+-----------
-  events     | primary                                |   false    |            1 | product_id               | ASC       |  false  |  false
-  events     | primary                                |   false    |            2 | owner                    | ASC       |  false  |  false
-  events     | primary                                |   false    |            3 | serial_number            | ASC       |  false  |  false
-  events     | primary                                |   false    |            4 | ts                       | ASC       |  false  |  false
-  events     | primary                                |   false    |            5 | event_id                 | ASC       |  false  |  false
-  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
-  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
-  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
-  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
-  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            5 | serial_number            | ASC       |  false  |   true
-  events     | events_crdb_internal_ts_shard_8_ts_idx |    true    |            6 | event_id                 | ASC       |  false  |   true
+  table_name |  index_name   | non_unique | seq_in_index |       column_name        | direction | storing | implicit
+-------------+---------------+------------+--------------+--------------------------+-----------+---------+-----------
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_8 | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            2 | ts                       | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            3 | product_id               | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            4 | owner                    | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            5 | serial_number            | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            6 | event_id                 | ASC       |  false  |   true
+  events     | primary       |   false    |            1 | product_id               | ASC       |  false  |  false
+  events     | primary       |   false    |            2 | owner                    | ASC       |  false  |  false
+  events     | primary       |   false    |            3 | serial_number            | ASC       |  false  |  false
+  events     | primary       |   false    |            4 | ts                       | ASC       |  false  |  false
+  events     | primary       |   false    |            5 | event_id                 | ASC       |  false  |  false
 (11 rows)
 ~~~
 
@@ -262,15 +262,15 @@ Normally, CockroachDB selects the index that it calculates will scan the fewest 
 ~~~
 
 ~~~
-        column_name        | data_type | is_nullable | column_default |       generation_expression       |                     indices                      | is_hidden
----------------------------+-----------+-------------+----------------+-----------------------------------+--------------------------------------------------+------------
-  product_id               | INT8      |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
-  owner                    | UUID      |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
-  serial_number            | VARCHAR   |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
-  event_id                 | UUID      |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
-  ts                       | TIMESTAMP |    false    | NULL           |                                   | {primary,events_crdb_internal_ts_shard_8_ts_idx} |   false
-  data                     | JSONB     |    true     | NULL           |                                   | {}                                               |   false
-  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(CAST(ts AS STRING)), 8) | {events_crdb_internal_ts_shard_8_ts_idx}         |   true
+        column_name        | data_type | is_nullable | column_default |              generation_expression              |         indices         | is_hidden
+---------------------------+-----------+-------------+----------------+-------------------------------------------------+-------------------------+------------
+  product_id               | INT8      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
+  owner                    | UUID      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
+  serial_number            | VARCHAR   |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
+  event_id                 | UUID      |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
+  ts                       | TIMESTAMP |    false    | NULL           |                                                 | {events_ts_idx,primary} |   false
+  data                     | JSONB     |    true     | NULL           |                                                 | {}                      |   false
+  crdb_internal_ts_shard_8 | INT4      |    false    | NULL           | mod(fnv32(COALESCE(CAST(ts AS STRING), '')), 8) | {events_ts_idx}         |   true
 (7 rows)
 ~~~
 
