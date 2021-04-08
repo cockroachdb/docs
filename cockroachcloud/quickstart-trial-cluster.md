@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud (30-day trial)</button></a>
     <a href="quickstart.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud (30-day trial)</button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
