@@ -1,10 +1,10 @@
 ---
 title: EXPLAIN ANALYZE
-summary: The EXPLAIN ANALYZE statement executes a query and generates a physical query plan with execution statistics.
+summary: The EXPLAIN ANALYZE statement executes a query and generates a physical statement plan with execution statistics.
 toc: true
 ---
 
-The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a query plan with execution statistics, a URL for a physical query plan, or a URL to download a bundle with more details about the query plan. Query plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+The `EXPLAIN ANALYZE` [statement](sql-statements.html) **executes a SQL query** and generates a statement plan with execution statistics. The `(DEBUG)` option generates a URL to download a bundle with more details about the statement plan for advanced debugging. Statement plans provide information around SQL execution, which can be used to troubleshoot slow queries by figuring out where time is being spent, how long a processor (i.e., a component that takes streams of input rows and processes them according to a specification) is not doing work, etc. For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
 
 {{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
@@ -24,8 +24,8 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 Parameter          | Description
 -------------------|-----------
-`PLAN`             | <span class="version-tag">New in v21.1:</span> <br /> _(Default)_ Executes the statement and returns CockroachDB's query plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
-`DISTSQL`          | Return the query plan and performance statistics as well as a generated link to a graphical distributed SQL physical query plan tree.
+`PLAN`             | <span class="version-tag">New in v21.1:</span> <br /> _(Default)_ Executes the statement and returns CockroachDB's statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
+`DISTSQL`          | Return the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree.
 `DEBUG`            |  Generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. For more information, see [`DEBUG` option](#debug-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
 
@@ -39,43 +39,43 @@ Successful `EXPLAIN ANALYZE` statements return return tables with the following 
 
  Detail | Description
 --------|------------
-[Global properties](#global-properties) | The properties and statistics that apply to the entire query plan.
-[Query plan tree](#query-plan-tree-properties) | A tree representation of the hierarchy of the query plan.
-Node details | The properties, columns, and ordering details for the current query plan node in the tree.
-Time | The time details for the query. The total time is the planning and execution time of the query. The execution time is the time it took for the final query plan to complete. The network time is the amount of time it took to distribute the query across the relevant nodes in the cluster. Some queries do not need to be distributed, so the network time is 0ms.
+[Global properties](#global-properties) | The properties and statistics that apply to the entire statement plan.
+[Statement plan tree](#statement-plan-tree-properties) | A tree representation of the hierarchy of the statement plan.
+Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
+Time | The time details for the statement. The total time is the planning and execution time of the statement. The execution time is the time it took for the final statement plan to complete. The network time is the amount of time it took to distribute the statement across the relevant nodes in the cluster. Some statements do not need to be distributed, so the network time is 0ms.
 
-If you use the `DISTSQL` option, the statement will also return a URL generated for a physical query plan that provides high level information about how a query will be executed. For details about reading the physical query plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+If you use the `DISTSQL` option, the statement will also return a URL generated for a physical statement plan that provides high level information about how a statement will be executed. For details about reading the physical statement plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
 
-If you use the [`DEBUG` option](#debug-option), the statement will return a single `text` column with a URL and instructions to download the `DEBUG` bundle, which includes the physical query plan.
+If you use the [`DEBUG` option](#debug-option), the statement will return a single `text` column with a URL and instructions to download the `DEBUG` bundle, which includes the physical statement plan.
 
 ### Global properties
 
 Global property | Description
 ----------------|------------
-planning time | The total time the planner took to create a query plan.
-execution time | The time it took for the final query plan to complete.
-distribution | Shows whether the query was distributed or local. If `distribution` is `full` execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
-vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this query.
+planning time | The total time the planner took to create a statement plan.
+execution time | The time it took for the final statement plan to complete.
+distribution | Shows whether the statement was distributed or local. If `distribution` is `full` execution of the statement is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.
 rows read from KV | The number of rows read from the [Storage layer](architecture/storage-layer.html).
 cumulative time spent in KV | The total amount of time spent in the [Storage layer](architecture/storage-layer.html).
-cumulative time spent due to contention | The total amount of time this query was in contention with another transaction during execution.
-maximum memory usage | The maximum amount of memory used by this query anytime during its execution.
-network usage | The amount of data transferred over the network while the query was executed. If this value is 0 B, the statement was executed on a single node and didn't use the network.
+cumulative time spent due to contention | The total amount of time this statement was in contention with another transaction during execution.
+maximum memory usage | The maximum amount of memory used by this statement anytime during its execution.
+network usage | The amount of data transferred over the network while the statement was executed. If this value is 0 B, the statement was executed on a single node and didn't use the network.
 
-### Query plan tree properties
+### Statement plan tree properties
 
-The query plan tree shows
+The statement plan tree shows
 
-Query plan tree properties | Description
----------------------------|------------
-processor | Each processor in the query plan hierarchy has a node with details about that phase of the query. For example, a query with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
-cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the query.
+Statement plan tree properties | Description
+-------------------------------|------------
+processor | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
+cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
 actual row count | The actual number of rows affected by this processor during execution.
-estimated row count | The estimated number of rows affected by this processor according to the query planner.
-KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the query.
-KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the query.
-table | The table and index used in a scan operation in a query.
-spans | The table span used in a scan operation in a query. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index.
+estimated row count | The estimated number of rows affected by this processor according to the statement planner.
+KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the statement.
+KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the statement.
+table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
+spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]` only the key with value `1` is read by the processor.
 
 ## Default option
 
@@ -83,13 +83,13 @@ spans | The table span used in a scan operation in a query. If `spans` is `FULL 
 
 ## `DISTSQL` option
 
-`EXPLAIN ANALYZE (DISTSQL)` generates a physical query plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical query plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html). There will be multiple diagrams if the query contains subqueries or post-queries.
+`EXPLAIN ANALYZE (DISTSQL)` generates a physical statement plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical statement plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html). There will be multiple diagrams if the query contains subqueries or post-queries.
 
 <span class="version-tag">New in v21.1:</span> `EXPLAIN ANALYZE (DISTSQL)` can only be used as the top-level statement in a query.
 
 ## `DEBUG` option
 
- `EXPLAIN ANALYZE (DEBUG)` executes a query and generates a link to a ZIP file that contains the [physical query plan](#distsql-plan-viewer), execution statistics, statement tracing, and other information about the query.
+ `EXPLAIN ANALYZE (DEBUG)` executes a query and generates a link to a ZIP file that contains the [physical statement plan](#distsql-plan-viewer), execution statistics, statement tracing, and other information about the query.
 
         File        | Description
 --------------------+-------------------
@@ -99,18 +99,18 @@ spans | The table span used in a scan operation in a query. If `spans` is `FULL 
 `trace.txt`         | Contains [statement traces](show-trace.html) in plaintext format.
 `trace.json`        | Contains [statement traces](show-trace.html) in JSON format.
 `trace-jaeger.json` | Contains [statement traces](show-trace.html) in JSON format that can be [imported to Jaeger](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger).
-`distsql.html`      | The query's [physical query plan](#distsql-plan-viewer). This diagram is identical to the one generated by [`EXPLAIN(DISTSQL)`](explain.html#distsql-option)
+`distsql.html`      | The query's [physical statement plan](#distsql-plan-viewer). This diagram is identical to the one generated by [`EXPLAIN(DISTSQL)`](explain.html#distsql-option)
 `plan.txt`          | The query execution plan. This is identical to the output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option).
-`opt.txt`           | The query plan tree generated by the [cost-based optimizer](cost-based-optimizer.html). This is identical to the output of [`EXPLAIN (OPT)`](explain.html#opt-option).
-`opt-v.txt`         | The query plan tree generated by the [cost-based optimizer](cost-based-optimizer.html), with cost details. This is identical to the output of [`EXPLAIN (OPT, VERBOSE)`](explain.html#opt-option).
-`opt-vv.txt`        | The query plan tree generated by the [cost-based optimizer](cost-based-optimizer.html), with cost details and input column data types. This is identical to the output of [`EXPLAIN (OPT, TYPES)`](explain.html#opt-option).
+`opt.txt`           | The statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html). This is identical to the output of [`EXPLAIN (OPT)`](explain.html#opt-option).
+`opt-v.txt`         | The statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html), with cost details. This is identical to the output of [`EXPLAIN (OPT, VERBOSE)`](explain.html#opt-option).
+`opt-vv.txt`        | The statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html), with cost details and input column data types. This is identical to the output of [`EXPLAIN (OPT, TYPES)`](explain.html#opt-option).
 `statement.txt`     | The SQL statement for the query.
 
 You can obtain this ZIP file by following the link provided in the `EXPLAIN ANALYZE (DEBUG)` output, or by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
 ## DistSQL plan viewer
 
-The graphical diagram when using the `DISTSQL` option displays the processors and operations that make up the query plan. While the text output from `PLAN` shows the query plan across the cluster, `DISTSQL` shows details on each node involved in the query.
+The graphical diagram when using the `DISTSQL` option displays the processors and operations that make up the statement plan. While the text output from `PLAN` shows the statement plan across the cluster, `DISTSQL` shows details on each node involved in the query.
 
 Field | Description | Execution engine
 ------+-------------+----------------
@@ -154,9 +154,9 @@ To run the examples, initialize a demo cluster with the MovR workload.
 
 ### `EXPLAIN ANALYZE`
 
-Use `EXPLAIN ANALYZE` without an option, or equivalently with the `PLAN` option, to execute a query and display the physical query plan with execution statistics.
+Use `EXPLAIN ANALYZE` without an option, or equivalently with the `PLAN` option, to execute a query and display the physical statement plan with execution statistics.
 
-For example, the following `EXPLAIN ANALYZE` statement executes a simple query against the [MovR database](movr.html) and then displays the physical query plan with execution statistics:
+For example, the following `EXPLAIN ANALYZE` statement executes a simple query against the [MovR database](movr.html) and then displays the physical statement plan with execution statistics:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -197,7 +197,7 @@ Time: 54ms total (execution 54ms / network 0ms)
 
 ### `EXPLAIN ANALYZE (DISTSQL)`
 
-Use `EXPLAIN ANALYZE (DISTSQL)` to execute a query, display the physical query plan with execution statistics, and generate a link to a graphical DistSQL query plan.
+Use `EXPLAIN ANALYZE (DISTSQL)` to execute a query, display the physical statement plan with execution statistics, and generate a link to a graphical DistSQL statement plan.
 
 ~~~ sql
 EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
