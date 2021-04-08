@@ -221,46 +221,11 @@ We can demonstrate the necessary configuration steps using a local cluster. The 
 - The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
 - Using [the built-in SQL client](cockroach-sql.html).
 
-First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
+First, start 3 local demo nodes as shown below. The `--demo-locality` flag uses the [`--locality`](cockroach-start.html#locality) internally flag to put the nodes each in a different region as denoted by `region=usa`, `region=eu`, and `region=apac`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --locality=region=usa  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
-  --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --locality=region=eu   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
-  --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
-  --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init --insecure --host=localhost --port=26257
-~~~
-
-Next, from the SQL client, add your organization name and enterprise license:
-
-{% include copy-clipboard.html %}
-~~~ sh
-$ cockroach sql --insecure --host=localhost --port=26257
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING enterprise.license = 'xxxxx';
+./cockroach demo --nodes 3 --demo-locality=region=usa:region=eu:region=apac
 ~~~
 
 Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
@@ -313,14 +278,14 @@ In a geo-distributed scenario with a cluster that spans multiple datacenters, it
 
 For example, if you have 11 nodes, you may see 11 queries with high latency due to schema cache misses.  Once all nodes have cached the schema locally, the latencies will drop.
 
-This behavior may also cause the [Statements page of the Web UI](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
+This behavior may also cause the [Statements page of the DB Console](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
 {{site.data.alerts.end}}
 
 As expected, the node in the USA region uses the primary key index.
 
 {% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~ sql
+EXPLAIN SELECT * FROM postal_codes WHERE id=1;
 ~~~
 
 ~~~
@@ -330,20 +295,48 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXP
   vectorized: true
 
   • scan
-    missing stats
+    estimated row count: 1 (100% of the table; stats collected 22 seconds ago)
     table: postal_codes@primary
     spans: [/1 - /1]
 (7 rows)
 
-Time: 52ms total (execution 52ms / network 0ms)
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-As expected, the node in the EU uses the `idx_eu` index.
+Find the connection string for the nodes in the demo cluster.
+
+{% include copy-clipboard.html %}
+~~~ sql
+\demo ls
+~~~
+
+~~~
+node 1:
+  (webui)    http://127.0.0.1:8080/demologin?password=demo65395&username=demo
+  (sql)      postgres://demo:demo65395@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo65395@?host=%2Fvar%2Ffolders%2Fr5%2F7q2jzh4n0rj5lgcwc47st58m0000gp%2FT%2Fdemo064093534&port=26257
+
+node 2:
+  (webui)    http://127.0.0.1:8081/demologin?password=demo65395&username=demo
+  (sql)      postgres://demo:demo65395@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo65395@?host=%2Fvar%2Ffolders%2Fr5%2F7q2jzh4n0rj5lgcwc47st58m0000gp%2FT%2Fdemo064093534&port=26258
+
+node 3:
+  (webui)    http://127.0.0.1:8082/demologin?password=demo65395&username=demo
+  (sql)      postgres://demo:demo65395@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo65395@?host=%2Fvar%2Ffolders%2Fr5%2F7q2jzh4n0rj5lgcwc47st58m0000gp%2FT%2Fdemo064093534&port=26259
+~~~
+
+Note the `(sql)` connection string for nodes 2 and 3.
+
+Open a new terminal and connect to node 2, which is in the `eu` region, and run the same `EXPLAIN` query. Use the connection string from node 2 in your demo cluster, as it will differ from this example.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+cockroach sql --url 'postgres://demo:demo65395@127.0.0.1:26258?sslmode=require' --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
+
+The node in the EU uses the `idx_eu` index.
 
 ~~~
 ---------------------------------
@@ -351,20 +344,22 @@ $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXP
   vectorized: true
 
   • scan
-    missing stats
+    estimated row count: 1 (100% of the table; stats collected 5 minutes ago)
     table: postal_codes@idx_eu
     spans: [/1 - /1]
 (7 rows)
 
-Time: 1ms total (execution 1ms / network 0ms)
+Time: 11ms
 ~~~
 
-As expected, the node in APAC uses the `idx_apac` index.
+Connect to node 3, which is in the `apac` region, and run the same `EXPLAIN` query. Use the connection string from node 3 in your demo cluster, as it will differ from this example.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+$ cockroach sql --url 'postgres://demo:demo65395@127.0.0.1:26259?sslmode=require' --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
+
+The node in APAC uses the `idx_apac` index.
 
 ~~~
 ---------------------------------
@@ -372,12 +367,12 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXP
   vectorized: true
 
   • scan
-    missing stats
+    estimated row count: 1 (100% of the table; stats collected 9 minutes ago)
     table: postal_codes@idx_apac
     spans: [/1 - /1]
 (7 rows)
 
-Time: 1ms total (execution 1ms / network 0ms)
+Time: 1ms
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
