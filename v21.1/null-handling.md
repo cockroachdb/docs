@@ -521,3 +521,33 @@ failed to satisfy CHECK constraint (price > 0)
 ~~~
 failed to satisfy CHECK constraint (discount <= price)
 ~~~
+
+## NULLs and concatenation with other types
+
+<span class="version-tag">New in v21.1</span> Concatenation between a non-`NULL` value and a `NULL` value results in a `NULL` value.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT NULL || 1;
+~~~
+
+~~~
+  ?column?
+------------
+  NULL
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT NULL || `item`;
+~~~
+
+~~~
+  ?column?
+------------
+  NULL
+(1 row)
+~~~
