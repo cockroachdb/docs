@@ -94,10 +94,7 @@ The following examples use MovR, a fictional vehicle-sharing application, to dem
 
 To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` workload:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach demo movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750
-~~~
+{% include {{ page.version.version }}/demo_movr.md %}
 
 ### Create an index on a subset of rows
 
@@ -109,12 +106,12 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 ~~~
 
 ~~~
-schema_name | table_name | type  | owner | estimated_row_count | locality
+  schema_name | table_name | type  | owner | estimated_row_count | locality
 --------------+------------+-------+-------+---------------------+-----------
-public      | rides      | table | demo  |                   0 | NULL
+  public      | rides      | table | demo  |              125000 | NULL
 (1 row)
 
-Time: 17ms total (execution 16ms / network 1ms)
+Time: 21ms total (execution 21ms / network 0ms)
 ~~~
 
 Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement](explain.html):

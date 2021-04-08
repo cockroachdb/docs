@@ -22,7 +22,7 @@ Using `EXPLAIN`'s output, you can optimize your queries by taking the following 
 
      The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster.
 
-     For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an index join.
+     For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html).
 
 - By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a statement plan.
 
@@ -65,7 +65,7 @@ Successful `EXPLAIN` statements return tables with the following details in the 
 
  Detail | Description
 -----------|-------------
-Global properties | The `distribution` and `vectorized` properties apply to the entire statement plan.
+Global properties | Properties that apply to the entire query plan. Global properties include `distribution` and `vectorized`.
 Statement plan tree | A tree representation of the hierarchy of the statement plan.
 Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
 Number of rows | The number of rows affected by the query.
@@ -114,8 +114,8 @@ The output shows the tree structure of the statement plan, in this case a `sort`
 The output also describes a set of properties, some global to the query, and some specific to an operation listed in the true structure (in this case, `sort`, `filter`, or `scan`):
 
 - `distribution`:`full`
-  <br>The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. A `full` execution plan doesn't mean that processing occurs on all nodes in the cluster, only that processing is executed simultaneously on multiple nodes.
-  <br>The `local` execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+  <br>The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes.
+  <br>An execution plan with `local` distribution, on the other hand, is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`true`
   <br>The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
 - `order`:`+revenue`

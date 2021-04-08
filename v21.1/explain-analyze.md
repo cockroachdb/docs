@@ -35,7 +35,7 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
 
 ## Success responses
 
-Successful `EXPLAIN ANALYZE` statements return return tables with the following details in the `info` column:
+Successful `EXPLAIN ANALYZE` statements return tables with the following details in the `info` column:
 
  Detail | Description
 --------|------------
@@ -44,7 +44,7 @@ Successful `EXPLAIN ANALYZE` statements return return tables with the following 
 Node details | The properties, columns, and ordering details for the current statement plan node in the tree.
 Time | The time details for the statement. The total time is the planning and execution time of the statement. The execution time is the time it took for the final statement plan to complete. The network time is the amount of time it took to distribute the statement across the relevant nodes in the cluster. Some statements do not need to be distributed, so the network time is 0ms.
 
-If you use the `DISTSQL` option, the statement will also return a URL generated for a physical statement plan that provides high level information about how a statement will be executed. For details about reading the physical statement plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
+If you use the `DISTSQL` option, the statement will also return a URL generated for a physical statement plan that provides high level information about how a statement will be executed. For details about reading the physical statement plan, see [DistSQL Plan Viewer](#distsql-plan-viewer).<br><br>{{site.data.alerts.callout_info}}{% include {{ page.version.version }}/sql/physical-plan-url.md %} {{site.data.alerts.end}}
 
 If you use the [`DEBUG` option](#debug-option), the statement will return a single `text` column with a URL and instructions to download the `DEBUG` bundle, which includes the physical statement plan.
 
@@ -54,7 +54,7 @@ Global property | Description
 ----------------|------------
 planning time | The total time the planner took to create a statement plan.
 execution time | The time it took for the final statement plan to complete.
-distribution | Shows whether the statement was distributed or local. If `distribution` is `full` execution of the statement is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+distribution | Shows whether the statement was distributed or local. If `distribution` is `full`, execution of the statement is performed by multiple nodes in parallel, then the final results are returned by the gateway node. If `local`, the execution plan is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 vectorized | Indicates whether the [vectorized execution engine](vectorized-execution.html) was used in this statement.
 rows read from KV | The number of rows read from the [Storage layer](architecture/storage-layer.html).
 cumulative time spent in KV | The total amount of time spent in the [Storage layer](architecture/storage-layer.html).
@@ -85,7 +85,9 @@ spans | The interval of the key space read by the processor. If `spans` is `FULL
 
 `EXPLAIN ANALYZE (DISTSQL)` generates a physical statement plan diagram in the [DistSQL Plan Viewer](#distsql-plan-viewer). The DistSQL Plan Viewer displays the physical statement plan, as well as execution statistics. The statistics listed depend on the query type and the [execution engine used](vectorized-execution.html). There will be multiple diagrams if the query contains subqueries or post-queries.
 
+{{site.data.alerts.callout_info}}
 <span class="version-tag">New in v21.1:</span> `EXPLAIN ANALYZE (DISTSQL)` can only be used as the top-level statement in a query.
+{{site.data.alerts.end}}
 
 ## `DEBUG` option
 
@@ -231,7 +233,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
         table: rides@primary
         spans: FULL SCAN
 
-  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzcmE1u4zYUx_c9BcFVBlViUV-WtfJkkLbBJPYgHwUGVRAw0qsjjCy6JJ1xGuQmBXqKbrrsIXqAnqSgZE9sWaJlR0mL2QiSHh_13o_8_83kAYtfUhzg86OTo3cXKErkvYHo3WiPwx1kU3iDvjsbniKexCDQ92fDyw_o8GM-DBs4YzEM6BgEDn7CBBvYwga28ZWBJ5xFIATjKvSQDzyOZzgwDZxkk6lUr68MHDEOOHjAMpEp4ABf0JsUzoDGwDsmNnAMkiZpPn1eQX_CkzHl6tvnE5qJAO13QkzHQgKP6TjEnRCH4SzqhuGM9A7CcEZddf251w_DmWmG4cw3F3flC3lQqWaIEc1iZCEmb4ELbODhVAaobxl9omp6_yOSyRgC5LhjUTxHLJOQyYRl85D51x_zkJxOUhCIA40D5BDDc50icHMvv7z3DnroNDnEBr6hMroFgdhUTtRXHUV1PsfTu3yWq0cDF6_mMIWkI8ABeTSaA387GnEYUcl4x17l3VdfHvIYOMQByp_eDj5eD4YX14PLk5O9PnmjVuHydK9vqbt3w8vBxfweZhBNl3DYOahybxWtuaWungq9uUe3VNyu1Xj1-NS5Vdv50zys6Kg8z7fFRBo83vPwnF-eXh8rQLZ6OoMsBq7yDNS3On27AprrFpuojM1ax2bXbga7AZJpVgWlkseA7bNJp7eKoly4U123u153r7ZuZ6Vu0tw1rEau0QnxDROSZblj-P_8_lsYzsAPw1ncO9zsFGZahLFyn5QJRLMRpCAW_kOpuigTiuHvP9XY6IcG_nM0nzX3H1L4j8Z-ervYj-eu20_3gGxpP15ZqHX2s2HllvTlfmX2Q9q1H_-17cfqVsu4AhtpaD9WcxmTpjJu-7d_vy1raHiIcMkuKvZJGyr26xeObLNwS9vU-R-o2GtRxVa7Ku6-toq9XuNDRL2l1x8iKro9AzFhmYDSYaJ6ZlPxgngEBV_BpjyCD5xF-WeKx2Gel7-IQcgiSoqH46wIqQKXk0k5mSwnWyvJJK9GVh9l_HzTjekMjWHM-D2iacoiKtV62SZ6n-tNhUXEFWIUJ-LT8iATVSmyYtdaCv82XfRqu8hAfmb8E0qphCy6D5DbnZv5IvKZJnL1GBGDAJ7QNPmVLvVPSnlfjCiC5E61Zy0FF2a0iNmulTe_iI9BCDpaHfJCbLzmbBzf35GNt4EN0bEhbbEh62wsrXTsVTblZFuvO1MvPEeb7eqT3R1Vu77fLVK_pvPlrl7UZ-13z3y5_a5n05YXdHVsiL0Bjq2F47cEx94WTr0ZlO1-fuKqtntrd7s317sw17vwtpHtrtvfdTWWZm9aYZ2lWd0XtLSulo2v9xX_NXxFx3WjcrS24jgvZyt6NPW2svbPqlc7J1XIX99ES2cB7fqazzkKWG39bFTopvffe4qzgY2rYeO53iY2TvO_bq4ev_k3AAD__yqgOLs=
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJy8V81u4zYQvvcpCJ6yqDYWKVmSdfLuIm2DTexFfgosqiBgpKkjRJa8JJ3YDfJYvfTYh-jzFJTsja0fWnbsvQgiRzOa-Wa-T9QzFt8S7OPLk7OTT1cojOXcQOxxdMThEdIpvEO_XAzPEY8jEOjXi-H1F_Txa_4YNnCaRTBgYxDY_wMTbGCKDWzhGwNPeBaCEBlXpuf8wdNohn3TwHE6mUq1fWPgMOOA_WcsY5kA9vEVu0vgAlgEvGNiA0cgWZzk4fMM-hMejxlX776csFT46H0nwGwsJPCIjQPcCXAQzEI3CGakdxwEM9ZV1z97_SCYmWYQzDxzeVe-kGflagYYG3g4lT7qU6NPVBqff0cyHoOPiD0WxTrMUgmpjLN0YTL__Xth4tmTQBxY5CNiGZ5Hi-27uYTlPj220Hn8ERv4jsnwHgTKpnKi3klsbOA8wvedIsbNi4GLrQV2QrIRYJ-8GO3x_TAacRgxmfGOtQ5vX7VvyCPgEPkoX30YfL0dDK9uB9dnZ0d98k6Bfn1-1Kfq7tPwenC1uIcZhNMVKEgOUqWySmGlml7TvJujeybuKxnevLzWTRvrfo2TFfWU4_xcBNKA47wNnMvr89tTBY-lVheQRsCVn4H6tNO3aiBzSDE-G0GzGgfBagHINK2DpBaNQfY-m3R660BUOl2fdWWGe41Z22tZk_byQFrJwwHUQSlOkgnE0hEkIJZRGVMXFTqC__5RocLfWkQ9KcwYsTRCFGXyHrhoFiCXbidATs-wbbsqQIQ26I_jlXu3CNFOfzY0cIVi9uH0p9tOf7w96g_Zr_64P1p_CO3WU5mWUeu2FCDansq0LZX3TztF5hSe0DzjD8uQJPw2VFwHmZxuDmU6_QV7ScHeZvLa1nbktYnhuDXkdY9JA3vtypAvYrRj74aerQxo93DstdqxtzyHb2Ev3S97vR_NXstteXooH7nanB5qar0AMclSAaVTRH1kU6EF0QgKdEU25SF84VmYv6ZYDnO_fCMCIQsrKRanaWFSCa46k7IzWXWma84kz0bWn2GKz8WYzdAYxhmfI5YkWcik6hYx0eecacosQq4ARlEsHlYfMlEdF80y-KYCf5sanMYaUpBPGX9ACZOQhnMfdR1ajMDS8sRiuSzQyQuMQACPWRL_xVaqp-a630J-Qogf8_pXTEsJWtosWhS-tI9BCDZaf6T1UG6DS28LXNzebrhYWlhMDSwbQaE7DgvVssVaB6XsbOmpZuq5Zmu9u3rn7o5ErTbTdhqb6VBNM4mn7SbVDbmznyGn1X7qcWkmf_XfUSNg1u4CVv_J3aaGLYjqWt6OvSW7CxihhxIwZxuu7jrzrqfBxdELe1eDi9N1NuFit_5VWMfF1eLi6YXE25uQdJuHjZAF4A3fBaqF1dKNm2fvZdysKqx6ZLY4R7hm8_fSpTpg3sLDwx0k9MA061NZYxelH15ja2ro7U1LNGOv1RLL3rm31N2fxt68_PR_AAAA___8Kx2h
 (26 rows)
 
 Time: 62ms total (execution 61ms / network 0ms)

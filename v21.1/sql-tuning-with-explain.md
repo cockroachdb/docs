@@ -72,12 +72,12 @@ The query will now return much faster:
 ~~~
 
 ~~~
-id                  |   city   |      name      |      address      | credit_card
+                   id                  |   city   |      name      |      address      | credit_card
 ---------------------------------------+----------+----------------+-------------------+--------------
-00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
+  00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Time: 1ms total (execution 1ms / network 0ms)
+Time: 7ms total (execution 7ms / network 0ms)
 ~~~
 
 To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -122,12 +122,12 @@ For example, let's say you frequently retrieve a user's name and credit card num
 ~~~
 
 ~~~
-name      | credit_card
+       name      | credit_card
 -----------------+--------------
-Cheyenne Smith | 4374468739
+  Cheyenne Smith | 4374468739
 (1 row)
 
-Time: 1ms total (execution 1ms / network 0ms)
+Time: 6ms total (execution 6ms / network 0ms)
 ~~~
 
 With the current secondary index on `name`, CockroachDB still needs to scan the primary index to get the credit card number:
