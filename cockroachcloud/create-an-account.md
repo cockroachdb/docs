@@ -8,7 +8,7 @@ Before you [create a CockroachCloud cluster](create-your-cluster.html), you must
 
 ## Register a new account
 
-To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs).
+To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="github">Register with GitHub</button>
