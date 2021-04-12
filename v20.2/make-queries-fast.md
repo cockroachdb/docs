@@ -398,22 +398,18 @@ The query is a little faster when we force CockroachDB to use a merge join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-        name       | sum
--------------------+------
-  William Brown    |   6
-  Laura Marsh      |   5
-  Joseph Smith     |   5
-  David Martinez   |   4
-  Michael Garcia   |   4
-  David Mitchell   |   4
-  Arthur Nielsen   |   4
-  Jennifer Johnson |   4
-  William Mitchell |   4
-  Michael Bradford |   4
-(10 rows)
-
-Server Execution Time: 23.573ms
-Network Latency: 623µs
+SELECT
+	name, count(rides.id) AS sum
+FROM
+	users INNER MERGE JOIN rides ON users.id = rides.rider_id
+WHERE
+	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
+GROUP BY
+	name
+ORDER BY
+	sum DESC
+LIMIT
+	10;
 ~~~
 
 ~~~
