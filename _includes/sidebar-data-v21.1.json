@@ -10,8 +10,8 @@
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart-trial-cluster.html",
-      "/cockroachcloud/quickstart.html"
+      "/cockroachcloud/quickstart.html",
+      "/cockroachcloud/quickstart-trial-cluster.html"
     ]
   },
   {% include_cached sidebar-data-cockroachcloud.json %},
@@ -870,8 +870,7 @@
               {
                 "title": "Tuning Tutorial",
                 "urls": [
-                  "/${VERSION}/performance-tuning.html",
-                  "/${VERSION}/performance-tuning-insecure.html"
+                  "/${VERSION}/performance-tuning.html"
                 ]
               }
             ]

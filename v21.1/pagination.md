@@ -37,7 +37,7 @@ The examples in this section use the [employees data set](https://github.com/dat
 ~~~ sql
 CREATE DATABASE IF NOT EXISTS employees;
 USE employees;
-IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz';
+IMPORT PGDUMP 'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql.gz' WITH ignore_unsupported_statements;
 ~~~
 
 To get the first page of results using keyset pagination, run the statement below.
@@ -54,11 +54,10 @@ emp_no |        birth_date         | first_name |  last_name  | gender |        
  10002 | 1964-06-02 00:00:00+00:00 | Bezalel    | Simmel      | F      | 1985-11-21 00:00:00+00:00
  10003 | 1959-12-03 00:00:00+00:00 | Parto      | Bamford     | M      | 1986-08-28 00:00:00+00:00
  10004 | 1954-05-01 00:00:00+00:00 | Chirstian  | Koblick     | M      | 1986-12-01 00:00:00+00:00
-...
+ ...
 (25 rows)
 
-Server Execution Time: 540µs
-Network Latency: 797µs
+Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -86,8 +85,7 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 10025 ORDER BY em
 ...
 (25 rows)
 
-Server Execution Time: 545µs
-Network Latency: 529µs
+Time: 2ms total (execution 1ms / network 1ms)
 ~~~
 
 To get an arbitrary page of results showing employees whose IDs (`emp_no`) are in a much higher range, run the following query. Note that it takes about the same amount of time to run as the previous queries.
@@ -108,8 +106,7 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' WHERE emp_no > 300025 ORDER BY e
 ....
 (25 rows)
 
-Server Execution Time: 545µs
-Network Latency: 529µs
+Time: 2ms total (execution 1ms / network 0ms)
 ~~~
 
 Compare the execution speed of the previous keyset pagination queries with the query below that uses `LIMIT` / `OFFSET` to get the same page of results:
@@ -129,8 +126,7 @@ SELECT * FROM employees AS OF SYSTEM TIME '-1m' LIMIT 25 OFFSET 200024;
 ...
 (25 rows)
 
-Server Execution Time: 141.314ms
-Network Latency: 498µs
+Time: 158ms total (execution 156ms / network 1ms)
 ~~~
 
 The query using `LIMIT`/`OFFSET` for pagination is almost 100 times slower. To see why, let's use [`EXPLAIN`](explain.html).
@@ -141,23 +137,28 @@ EXPLAIN SELECT * FROM employees LIMIT 25 OFFSET 200024;
 ~~~
 
 ~~~
-    tree    |        field        |         description
-------------+---------------------+------------------------------
-            | distribution        | full
-            | vectorized          | true
-  limit     |                     |
-   │        | offset              | 200024
-   └── scan |                     |
-            | estimated row count | 200049
-            | table               | employees@idx_17110_primary
-            | spans               | LIMITED SCAN
-            | limit               | 200049
-(9 rows)
+                                          info
+----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • limit
+  │ estimated row count: 25
+  │ offset: 200024
+  │
+  └── • scan
+        estimated row count: 200,049 (67% of the table; stats collected 5 minutes ago)
+        table: employees@idx_17110_primary
+        spans: LIMITED SCAN
+        limit: 200049
+(12 rows)
+
+Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
-The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limited scan of the entire table (see `spans` = `LIMITED SCAN` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049. The `estimated row count` row shows this.
+The culprit is this: because we used `LIMIT`/`OFFSET`, we are performing a limited scan of the entire table (see `spans: LIMITED SCAN` above) from the first record all the way up to the value of the offset. In other words, we are iterating over a big array of rows from 1 to *n*, where *n* is 200049. The `estimated row count` row shows this.
 
-Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans` = `300026-` + 25 below). Because [there is an index on every column in the `WHERE` clause](indexes.html#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
+Meanwhile, the keyset pagination queries are looking at a much smaller range of table spans, which is much faster (see `spans: [/300026 - ]` and `limit: 25` below). Because [there is an index on every column in the `WHERE` clause](indexes.html#best-practices), these queries are doing an index lookup to jump to the start of the page of results, and then getting an additional 25 rows from there. This is much faster.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -165,16 +166,19 @@ EXPLAIN SELECT * FROM employees WHERE emp_no > 300025 ORDER BY emp_no LIMIT 25;
 ~~~
 
 ~~~
-  tree |        field        |         description
--------+---------------------+------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 25
-       | table               | employees@idx_17110_primary
-       | spans               | [/300026 - ]
-       | limit               | 25
-(7 rows)
+                                       info
+----------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 25 (<0.01% of the table; stats collected 6 minutes ago)
+    table: employees@idx_17110_primary
+    spans: [/300026 - ]
+    limit: 25
+(8 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 As shown by the `estimated row count` row, this query scans only 25 rows, far fewer than the 200049 scanned by the `LIMIT`/`OFFSET` query.

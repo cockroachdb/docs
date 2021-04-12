@@ -28,14 +28,7 @@ These rules apply to an environment where thousands of [OLTP](https://en.wikiped
 
 To show each of these rules in action, we will optimize a query against the [MovR data set](movr.html) as follows:
 
-1. Start a [local cluster](start-a-local-cluster.html).
-
-2. Populate the cluster with data by running the following [`cockroach workload`](cockroach-workload.html) command:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    cockroach workload init movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750 'postgresql://root@localhost:26257?sslmode=disable'
-    ~~~
+{% include {{ page.version.version }}/demo_movr.md %}
 
 It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, we want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount.
 
@@ -70,6 +63,8 @@ SHOW TABLES;
   public      | vehicle_location_histories | table |              250000
   public      | vehicles                   | table |                3750
 (6 rows)
+
+Time: 17ms total (execution 17ms / network 0ms)
 ~~~
 
 Let's look at the schema for the `users` table:
@@ -92,6 +87,8 @@ SHOW CREATE TABLE users;
              |     FAMILY "primary" (id, city, name, address, credit_card)
              | )
 (1 row)
+
+Time: 9ms total (execution 9ms / network 0ms)
 ~~~
 
 There's no information about the number of rides taken here, nor anything about the days on which rides occurred. Luckily, there is also a `rides` table. Let's look at it:
@@ -124,6 +121,8 @@ SHOW CREATE TABLE rides;
              |     CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
              | )
 (1 row)
+
+Time: 9ms total (execution 8ms / network 1ms)
 ~~~
 
 There is a `rider_id` field that we can use to match each ride to a user. There is also a `start_time` field that we can use to filter the rides by date.
@@ -169,11 +168,10 @@ LIMIT
   Thomas Smith     |   7
 (10 rows)
 
-Server Execution Time: 103.41ms
-Network Latency: 822µs
+Time: 111ms total (execution 111ms / network 0ms)
 ~~~
 
-Unfortunately, this query is a bit slow. 160 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and we're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
+Unfortunately, this query is a bit slow. 111 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and we're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
 
 We can see why if we look at the output of [`EXPLAIN`](explain.html):
 
@@ -194,32 +192,46 @@ LIMIT
 ~~~
 
 ~~~
-              tree              |        field        |                                   description
---------------------------------+---------------------+----------------------------------------------------------------------------------
-                                | distribution        | full
-                                | vectorized          | true
-  limit                         |                     |
-   │                            | count               | 10
-   └── sort                     |                     |
-        │                       | order               | -count_rows
-        └── group               |                     |
-             │                  | group by            | name
-             └── hash join      |                     |
-                  │             | equality            | (id) = (rider_id)
-                  ├── scan      |                     |
-                  │             | estimated row count | 12500
-                  │             | table               | users@primary
-                  │             | spans               | FULL SCAN
-                  └── filter    |                     |
-                       │        | filter              | (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2019-01-01 00:00:00')
-                       └── scan |                     |
-                                | estimated row count | 125000
-                                | table               | rides@primary
-                                | spans               | FULL SCAN
-(20 rows)
+                                                    info
+-------------------------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • limit
+  │ estimated row count: 10
+  │ count: 10
+  │
+  └── • sort
+      │ estimated row count: 3,392
+      │ order: -count_rows
+      │
+      └── • group
+          │ estimated row count: 3,392
+          │ group by: name
+          │
+          └── • hash join
+              │ estimated row count: 4,013
+              │ equality: (id) = (rider_id)
+              │
+              ├── • scan
+              │     estimated row count: 12,500 (100% of the table; stats collected 4 minutes ago)
+              │     table: users@primary
+              │     spans: FULL SCAN
+              │
+              └── • filter
+                  │ estimated row count: 4,013
+                  │ filter: (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2019-01-01 00:00:00')
+                  │
+                  └── • scan
+                        estimated row count: 125,000 (100% of the table; stats collected 3 minutes ago)
+                        table: rides@primary
+                        spans: FULL SCAN
+(32 rows)
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans | FULL SCAN`). This tells us that we don't have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells us that we don't have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
 
 Therefore, we need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
 
@@ -245,6 +257,8 @@ SHOW INDEXES FROM rides;
   rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            3 | id           | ASC       |  false  |   true
   rides      | rides_auto_index_fk_vehicle_city_ref_vehicles |    true    |            4 | city         | ASC       |  false  |   true
 (9 rows)
+
+Time: 5ms total (execution 5ms / network 0ms)
 ~~~
 
 As we suspected, there are no indexes on `start_time` or `rider_id`, so we'll need to create indexes on those columns.
@@ -289,11 +303,10 @@ LIMIT
   Jennifer Johnson |   4
 (10 rows)
 
-Server Execution Time: 24.523ms
-Network Latency: 325µs
+Time: 22ms total (execution 22ms / network 0ms)
 ~~~
 
-This query is now running much faster than it was before we added the indexes (160ms vs. 25ms). This means we have an extra 135 milliseconds we can budget towards other areas of our application.
+This query is now running much faster than it was before we added the indexes (111ms vs. 22ms). This means we have an extra 89 milliseconds we can budget towards other areas of our application.
 
 To see what changed, let's look at the [`EXPLAIN`](explain.html) output:
 
@@ -313,30 +326,42 @@ LIMIT
 	10;
 ~~~
 
-As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (3975 rows instead of 125000).
+As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (4,013 rows instead of 125,000).
 
 ~~~
-            tree           |        field        |                    description
----------------------------+---------------------+----------------------------------------------------
-                           | distribution        | full
-                           | vectorized          | true
-  limit                    |                     |
-   │                       | count               | 10
-   └── sort                |                     |
-        │                  | order               | -count_rows
-        └── group          |                     |
-             │             | group by            | name
-             └── hash join |                     |
-                  │        | equality            | (id) = (rider_id)
-                  ├── scan |                     |
-                  │        | estimated row count | 12500
-                  │        | table               | users@primary
-                  │        | spans               | FULL SCAN
-                  └── scan |                     |
-                           | estimated row count | 3975
-                           | table               | rides@rides_start_time_idx
-                           | spans               | [/'2018-12-31 00:00:00' - /'2019-01-01 00:00:00']
-(18 rows)
+                                                info
+----------------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • limit
+  │ estimated row count: 10
+  │ count: 10
+  │
+  └── • sort
+      │ estimated row count: 3,392
+      │ order: -count_rows
+      │
+      └── • group
+          │ estimated row count: 3,392
+          │ group by: name
+          │
+          └── • hash join
+              │ estimated row count: 4,013
+              │ equality: (id) = (rider_id)
+              │
+              ├── • scan
+              │     estimated row count: 12,500 (100% of the table; stats collected 8 minutes ago)
+              │     table: users@primary
+              │     spans: FULL SCAN
+              │
+              └── • scan
+                    estimated row count: 4,013 (3.2% of the table; stats collected 7 minutes ago)
+                    table: rides@rides_start_time_idx
+                    spans: [/'2018-12-31 00:00:00' - /'2019-01-01 00:00:00']
+(28 rows)
+
+Time: 2ms total (execution 1ms / network 0ms)
 ~~~
 
 
@@ -388,8 +413,7 @@ LIMIT
   Michael Bradford |   4
 (10 rows)
 
-Server Execution Time: 881.797ms
-Network Latency: 402µs
+Time: 1.548s total (execution 1.548s / network 0.000s)
 ~~~
 
 The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier.
@@ -398,22 +422,18 @@ The query is a little faster when we force CockroachDB to use a merge join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-        name       | sum
--------------------+------
-  William Brown    |   6
-  Laura Marsh      |   5
-  Joseph Smith     |   5
-  David Martinez   |   4
-  Michael Garcia   |   4
-  David Mitchell   |   4
-  Arthur Nielsen   |   4
-  Jennifer Johnson |   4
-  William Mitchell |   4
-  Michael Bradford |   4
-(10 rows)
-
-Server Execution Time: 23.573ms
-Network Latency: 623µs
+SELECT
+	name, count(rides.id) AS sum
+FROM
+	users INNER MERGE JOIN rides ON users.id = rides.rider_id
+WHERE
+	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
+GROUP BY
+	name
+ORDER BY
+	sum DESC
+LIMIT
+	10;
 ~~~
 
 ~~~
@@ -431,10 +451,10 @@ Network Latency: 623µs
   Jennifer Johnson  |   4
 (10 rows)
 
-Time: 31.31ms
+Time: 22ms total (execution 22ms / network 0ms)
 ~~~
 
-The results are consistently about 31-35ms with merge join vs. 25-27ms when we let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if we had done nothing.
+The results are consistently about 20-26ms with a merge join vs. 16-23ms when we let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if we had done nothing.
 
 ## Schema design
 

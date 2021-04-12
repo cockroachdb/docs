@@ -7,10 +7,10 @@ redirect_from:
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud</strong></button></a>
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
 </div>
-<p></p>
+
 This page shows you how to connect to your CockroachCloud cluster.
 
 ## Step 1. Authorize your network
@@ -105,7 +105,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
     The **Connect** dialog displays with **IP Allowlist** selected by default.
 
 1.  Select a **Network Security** option:
-    
+
       You can use the **IP Allowlist** option if you have already [added an IP address to your allowlist.](#add-ip-addresses-to-the-allowlist)
 
       For AWS clusters, you can select **AWS PrivateLink** if you have already [established a PrivateLink connection](#establish-vpc-peering-or-aws-privatelink).
@@ -113,7 +113,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
       For GCP clusters, you can select **VPC Peering** if you have already:
     - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
     - [Established a VPC Peering connection](#establish-vpc-peering-or-aws-privatelink)
-  
+
 1. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
 1. From the **Database** dropdown, select the database you want to connect to.
@@ -140,7 +140,7 @@ To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql
 1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine.
 
     Alternatively, you can set [`sslmode=require`](authentication.html#ssl-mode-settings). This is less secure than using a CA certificate and should not be used with sensitive data.
-    
+
 1. Create a `certs` directory on your local machine:
 
     {% include copy-clipboard.html %}
@@ -227,4 +227,3 @@ To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-p
 
 - [Build a "Hello, World" app](../v20.2/build-a-python-app-with-cockroachdb-django.html)
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
-

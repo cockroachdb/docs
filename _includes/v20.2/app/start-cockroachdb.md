@@ -1,10 +1,21 @@
 Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachCloud. The instructions below will adjust accordingly.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
   <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
-<p></p>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Create a free cluster
+
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+
+### Set up your cluster connection
+
+{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
+
+</section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -28,17 +39,5 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     ~~~
 
     In this example, the port number is 61011. You will use the port number in your application code later.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-### Create a free cluster
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-### Set up your cluster connection
-
-{% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
 </section>
