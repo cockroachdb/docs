@@ -10,7 +10,7 @@ using namespace std;
 int main() {
   try {
     // Connect to the "bank" database.
-    pqxx::connection c("dbname=bank user=maxroach sslmode=require sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
+    pqxx::connection c("postgresql://{username}:{password}@{host}:{port}/{cluster_name}.bank?sslmode=verify-full&sslrootcert={path/to/ca.crt}");
 
     pqxx::nontransaction w(c);
 

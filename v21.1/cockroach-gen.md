@@ -195,7 +195,7 @@ Then, pipe the output from `cockroach gen` to [the URL to the demo cluster](cock
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data startrek | cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
+$ cockroach gen example-data startrek | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
 ~~~
 
 ~~~
@@ -215,7 +215,7 @@ Open a [SQL shell](cockroach-sql.html) to view it:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
+$ cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
 ~~~
 
 {% include copy-clipboard.html %}
@@ -234,7 +234,7 @@ You can also generate an example `intro` database, which contains 1 table, `myta
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach gen example-data intro | cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
+$ cockroach gen example-data intro | cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
 ~~~
 
 ~~~
@@ -252,7 +252,7 @@ INSERT 1
 {% include copy-clipboard.html %}
 ~~~ shell
 # Launch the built-in SQL client to view it:
-$ cockroach sql --url='postgres://demo:pass@127.0.0.1:55531?sslmode=require'
+$ cockroach sql --url='postgres://demo:demo11762@127.0.0.1:26257?sslmode=require'
 ~~~
 
 {% include copy-clipboard.html %}

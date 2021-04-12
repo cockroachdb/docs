@@ -6,11 +6,6 @@ certs: --certs-dir=certs
 app: ./tuning-secure.py
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="performance-tuning-insecure.html"><button class="filter-button">Insecure</button></a>
-</div>
-
 This tutorial shows you essential techniques for getting fast reads and writes in CockroachDB, starting with a single-region deployment and expanding into multiple regions.
 
 For a comprehensive list of tuning recommendations, only some of which are demonstrated here, see [SQL Performance Best Practices](performance-best-practices-overview.html).
@@ -350,18 +345,25 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  tree |    field    |         description
--------+-------------+------------------------------
-       | distributed | true
-       | vectorized  | false
-  scan |             |
-       | table       | users@primary
-       | spans       | FULL SCAN
-       | filter      | name = 'Natalie Cunningham'
-(6 rows)
+                                          info
+-----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • filter
+  │ estimated row count: 1
+  │ filter: name = 'Natalie Cunningham'
+  │
+  └── • scan
+        estimated row count: 12,500 (100% of the table; stats collected 42 minutes ago)
+        table: users@primary
+        spans: FULL SCAN
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The row with `spans | FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+The row with `spans: FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 #### Filtering by a secondary index
 
@@ -411,17 +413,22 @@ $ cockroach sql \
 ~~~
 
 ~~~
-     tree    |    field    |                      description
--------------+-------------+--------------------------------------------------------
-             | distributed | false
-             | vectorized  | false
-  index-join |             |
-   │         | table       | users@primary
-   │         | key columns | city, id
-   └── scan  |             |
-             | table       | users@users_name_idx
-             | spans       | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
-(8 rows)
+                                       info
+-----------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • index join
+  │ estimated row count: 0
+  │ table: users@primary
+  │
+  └── • scan
+        estimated row count: 0 (<0.01% of the table; stats collected 2 hours ago)
+        table: users@users_name_idx
+        spans: [/'Natalie Cunningham' - /'Natalie Cunningham']
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 This shows you that CockroachDB starts with the secondary index (`table | users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`spans | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
@@ -467,17 +474,22 @@ $ cockroach sql \
 ~~~
 
 ~~~
-     tree    |    field    |                      description
--------------+-------------+--------------------------------------------------------
-             | distributed | false
-             | vectorized  | false
-  index-join |             |
-   │         | table       | users@primary
-   │         | key columns | city, id
-   └── scan  |             |
-             | table       | users@users_name_idx
-             | spans       | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
-(8 rows)
+                                         info
+--------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • index join
+  │ estimated row count: 0
+  │ table: users@primary
+  │
+  └── • scan
+        estimated row count: 0 (<0.01% of the table; stats collected 30 seconds ago)
+        table: users@users_name_idx
+        spans: [/'Natalie Cunningham' - /'Natalie Cunningham']
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
@@ -512,17 +524,21 @@ $ cockroach sql \
 ~~~
 
 ~~~
-  tree |    field    |                      description
--------+-------------+--------------------------------------------------------
-       | distributed | false
-       | vectorized  | false
-  scan |             |
-       | table       | users@users_name_idx
-       | spans       | /"Natalie Cunningham"-/"Natalie Cunningham"/PrefixEnd
-(5 rows)
+                                      info
+---------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 0 (<0.01% of the table; stats collected 2 minutes ago)
+    table: users@users_name_idx
+    spans: [/'Natalie Cunningham' - /'Natalie Cunningham']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-This results in even faster performance, reducing latency from 1.77ms (index without storing) to 0.99ms (index with storing):
+This results in even faster performance, reducing latency to 1ms (index with storing):
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -590,28 +606,41 @@ WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';"
 ~~~
 
 ~~~
-         tree         |    field    |                                         description
-----------------------+-------------+----------------------------------------------------------------------------------------------
-                      | distributed | true
-                      | vectorized  | false
-  group               |             |
-   │                  | aggregate 0 | count(DISTINCT id)
-   │                  | scalar      |
-   └── render         |             |
-        └── hash-join |             |
-             │        | type        | inner
-             │        | equality    | (rider_id) = (id)
-             ├── scan |             |
-             │        | table       | rides@primary
-             │        | spans       | FULL SCAN
-             │        | filter      | (start_time >= '2018-07-20 00:00:00+00:00') AND (start_time <= '2018-07-21 00:00:00+00:00')
-             └── scan |             |
-                      | table       | users@users_name_idx
-                      | spans       | FULL SCAN
-(16 rows)
+                                                  info
+---------------------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • group (scalar)
+  │ estimated row count: 1
+  │
+  └── • distinct
+      │ estimated row count: 0
+      │ distinct on: id
+      │
+      └── • hash join
+          │ estimated row count: 0
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     estimated row count: 12,500 (100% of the table; stats collected 2 minutes ago)
+          │     table: users@primary
+          │     spans: FULL SCAN
+          │
+          └── • filter
+              │ estimated row count: 0
+              │ filter: (start_time >= '2018-07-20 00:00:00') AND (start_time <= '2018-07-21 00:00:00')
+              │
+              └── • scan
+                    estimated row count: 125,000 (100% of the table; stats collected 2 minutes ago)
+                    table: rides@primary
+                    spans: FULL SCAN
+(27 rows)
+
+Time: 2ms total (execution 1ms / network 0ms)
 ~~~
 
-Reading from bottom up, you can see that CockroachDB does a full table scan (`spans | FULL SCAN`) first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
+Reading from bottom up, you can see that CockroachDB does a full table scan (`spans: FULL SCAN`) first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
 
 Given that the `rides` table is large, its data is split across several ranges. Each range is replicated and has a leaseholder. At least some of these leaseholders are likely located on different nodes. This means that the full table scan of `rides` involves several network hops to various leaseholders before finally going to the leaseholder for `users` to do a full table scan there.
 
@@ -627,15 +656,20 @@ $ cockroach sql \
 ~~~
 
 ~~~
-                           start_key                           |                           end_key                            | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
-+--------------------------------------------------------------+--------------------------------------------------------------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
-  NULL                                                         | /"boston"/"\x00\x00\a\xef\xfa\x0fJn\xa0\x89\xcet\xaa\x8d\"v" |       33 |             0 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"boston"/"\x00\x00\a\xef\xfa\x0fJn\xa0\x89\xcet\xaa\x8d\"v" | /"boston"/"\x99\xf4ff\xbb1K\xf9\xab\x92\x83\x003(o\x8a"      |       41 |     21.520739 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"boston"/"\x99\xf4ff\xbb1K\xf9\xab\x92\x83\x003(o\x8a"      | /"los angeles"/"3\ncK{?Oħ\x9e\xf0k\x96\xba\xad\xf2"          |       37 |     21.850083 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"los angeles"/"3\ncK{?Oħ\x9e\xf0k\x96\xba\xad\xf2"          | /"new york"/"\xb3\xb4:#\x1f\x8aDݘ\xc9SC\a5*\xd4"             |       39 |     55.677376 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"new york"/"\xb3\xb4:#\x1f\x8aDݘ\xc9SC\a5*\xd4"             | /"seattle"/"x\x15\xaa\x84\xc73Im\xa2\xbf\n\x81$\xcf\xf6\xda" |       55 |     66.072353 |            3 | region=us-west1       | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"seattle"/"x\x15\xaa\x84\xc73Im\xa2\xbf\n\x81$\xcf\xf6\xda" | NULL                                                         |       38 |     57.403476 |            2 | region=us-central1    | {1,2,3}  | {region=us-east1,region=us-central1,region=us-west1}
-(6 rows)
+                                start_key                               |                                end_key                                | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas | replica_localities
+------------------------------------------------------------------------+-----------------------------------------------------------------------+----------+---------------+--------------+-----------------------+----------+---------------------
+  NULL                                                                  | /"amsterdam"/"\xc7\x19.\xa5.\xf9@\x00\x80\x00\x00\x00\x00\x01{\xc0"   |       89 |      2.381378 |            1 |                       | {1}      | {""}
+  /"amsterdam"/"\xc7\x19.\xa5.\xf9@\x00\x80\x00\x00\x00\x00\x01{\xc0"   | /"boston"/"8⟜\xe8\xd9B\x00\x80\x00\x00\x00\x00\x00l\x80"              |      116 |      2.315489 |            1 |                       | {1}      | {""}
+  /"boston"/"8⟜\xe8\xd9B\x00\x80\x00\x00\x00\x00\x00l\x80"              | /"los angeles"/"\xaa\xa7\xdeֺ\x8cH\x00\x80\x00\x00\x00\x00\x01E\x80"  |      113 |      2.438385 |            1 |                       | {1}      | {""}
+  /"los angeles"/"\xaa\xa7\xdeֺ\x8cH\x00\x80\x00\x00\x00\x00\x01E\x80"  | /"new york"/"\x1cqO\xcetlI\x00\x80\x00\x00\x00\x00\x006@"             |      111 |       2.36655 |            1 |                       | {1}      | {""}
+  /"new york"/"\x1cqO\xcetlI\x00\x80\x00\x00\x00\x00\x006@"             | /"paris"/"\xe3\x8a~s\xa3eH\x00\x80\x00\x00\x00\x00\x01\xb2\x00"       |      112 |      2.272437 |            1 |                       | {1}      | {""}
+  /"paris"/"\xe3\x8a~s\xa3eH\x00\x80\x00\x00\x00\x00\x01\xb2\x00"       | /"san francisco"/"\x8e6\x8f\bF\x1f@\x00\x80\x00\x00\x00\x00\x01\x0f@" |      109 |      4.749651 |            1 |                       | {1}      | {""}
+  /"san francisco"/"\x8e6\x8f\bF\x1f@\x00\x80\x00\x00\x00\x00\x01\x0f@" | /"seattle"/"q\xc5?9ѲD\x00\x80\x00\x00\x00\x00\x00\xd9\x00"            |      115 |      2.342258 |            1 |                       | {1}      | {""}
+  /"seattle"/"q\xc5?9ѲD\x00\x80\x00\x00\x00\x00\x00\xd9\x00"            | /"washington dc"/"US\xefk]FL\x00\x80\x00\x00\x00\x00\x00\xa2\xc0"     |      110 |      2.508319 |            1 |                       | {1}      | {""}
+  /"washington dc"/"US\xefk]FL\x00\x80\x00\x00\x00\x00\x00\xa2\xc0"     | NULL                                                                  |      114 |     21.928775 |            1 |                       | {1}      | {""}
+(9 rows)
+
+Time: 13ms total (execution 13ms / network 0ms)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -711,24 +745,38 @@ WHERE start_time BETWEEN '2018-07-20 00:00:00' AND '2018-07-21 00:00:00';"
 ~~~
 
 ~~~
-         tree         |    field    |                      description
-----------------------+-------------+--------------------------------------------------------
-                      | distributed | true
-                      | vectorized  | false
-  group               |             |
-   │                  | aggregate 0 | count(DISTINCT id)
-   │                  | scalar      |
-   └── render         |             |
-        └── hash-join |             |
-             │        | type        | inner
-             │        | equality    | (rider_id) = (id)
-             ├── scan |             |
-             │        | table       | rides@rides_start_time_idx
-             │        | spans       | /2018-07-20T00:00:00Z-/2018-07-21T00:00:00.000000001Z
-             └── scan |             |
-                      | table       | users@users_name_idx
-                      | spans       | FULL SCAN
-(15 rows)
+                                                  info
+---------------------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • group (scalar)
+  │ estimated row count: 1
+  │
+  └── • distinct
+      │ estimated row count: 0
+      │ distinct on: id
+      │
+      └── • hash join
+          │ estimated row count: 0
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     estimated row count: 12,500 (100% of the table; stats collected 6 minutes ago)
+          │     table: users@primary
+          │     spans: FULL SCAN
+          │
+          └── • filter
+              │ estimated row count: 0
+              │ filter: (start_time >= '2018-07-20 00:00:00') AND (start_time <= '2018-07-21 00:00:00')
+              │
+              └── • scan
+                    estimated row count: 125,000 (100% of the table; stats collected 6 minutes ago)
+                    table: rides@primary
+                    spans: FULL SCAN
+(27 rows)
+
+Time: 3ms total (execution 1ms / network 1ms)
 ~~~
 
 Notice that CockroachDB now starts by using `rides@rides_start_time_idx` secondary index to retrieve the relevant rides without needing to scan the full `rides` table.
@@ -815,33 +863,44 @@ GROUP BY vehicle_id;"
 ~~~
 
 ~~~
-              tree              |       field        |                     description
---------------------------------+--------------------+------------------------------------------------------
-                                | distributed        | true
-                                | vectorized         | false
-  group                         |                    |
-   │                            | aggregate 0        | vehicle_id
-   │                            | aggregate 1        | max(end_time)
-   │                            | group by           | vehicle_id
-   └── hash-join                |                    |
-        │                       | type               | semi
-        │                       | equality           | (vehicle_id) = (vehicle_id)
-        │                       | right cols are key |
-        ├── scan                |                    |
-        │                       | table              | rides@primary
-        │                       | spans              | FULL SCAN
-        └── limit               |                    |
-             │                  | count              | 5
-             └── sort           |                    |
-                  │             | order              | -count_rows
-                  └── group     |                    |
-                       │        | aggregate 0        | vehicle_id
-                       │        | aggregate 1        | count_rows()
-                       │        | group by           | vehicle_id
-                       └── scan |                    |
-                                | table              | rides@rides_auto_index_fk_vehicle_city_ref_vehicles
-                                | spans              | FULL SCAN
-(24 rows)
+                                                  info
+---------------------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • group
+  │ estimated row count: 5
+  │ group by: vehicle_id
+  │
+  └── • hash join (semi)
+      │ estimated row count: 166
+      │ equality: (vehicle_id) = (vehicle_id)
+      │ right cols are key
+      │
+      ├── • scan
+      │     estimated row count: 125,000 (100% of the table; stats collected 8 minutes ago)
+      │     table: rides@primary
+      │     spans: FULL SCAN
+      │
+      └── • limit
+          │ estimated row count: 5
+          │ count: 5
+          │
+          └── • sort
+              │ estimated row count: 3,764
+              │ order: -count_rows
+              │
+              └── • group
+                  │ estimated row count: 3,764
+                  │ group by: vehicle_id
+                  │
+                  └── • scan
+                        estimated row count: 125,000 (100% of the table; stats collected 8 minutes ago)
+                        table: rides@rides_auto_index_fk_vehicle_city_ref_vehicles
+                        spans: FULL SCAN
+(33 rows)
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 This is a complex query plan, but the important thing to note is the full table scan of `rides@primary` above the `subquery`. This shows you that, after the subquery returns the IDs of the top 5 vehicles, CockroachDB scans the entire primary index to find the rows with `max(end_time)` for each `vehicle_id`, although you might expect CockroachDB to more efficiently use the secondary index on `vehicle_id` (CockroachDB is working to remove this limitation in a future version).
@@ -1140,8 +1199,7 @@ At just 9.48ms, this approach is faster due to the write and read executing in o
 <!-- - upsert instead of insert/update
 - update using case expressions (instead of 2 separate updates)
 - returning nothing
-- insert with returning (auto gen ID) instead of select to get auto gen ID
-- Maybe interleaved tables -->
+- insert with returning (auto gen ID) instead of select to get auto gen ID-->
 
 ## Multi-region deployment
 

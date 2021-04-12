@@ -1,5 +1,6 @@
 ---
 title: Database Page
+summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
 redirect_from: admin-ui-databases-page.html
 ---
@@ -12,7 +13,7 @@ The **Databases** page of the DB Console provides details of the following:
 
 - The databases configured.
 - The tables in each database.
-- The grants assigned to each user. 
+- The grants assigned to each user.
 
 To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
 

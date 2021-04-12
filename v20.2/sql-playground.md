@@ -1,6 +1,6 @@
 ---
 title: SQL Playground
-summary: Use CockroachDB v20.2 in a sandboxed playground environment
+summary: The SQL Playground gives you an interactive SQL shell to a single-node CockroachDB cluster. 
 toc: false
 ---
 

@@ -1,18 +1,12 @@
 ---
 title: Known Limitations in CockroachDB v21.1
-summary: Known limitations in CockroachDB v21.1.
+summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 ---
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
 ## Unresolved limitations
-
-### Partitioning on `ENUM` values
-
-[Partitions](partitioning.html) cannot be created on columns of type [`ENUM`](enum.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55342)
 
 ### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 

@@ -23,12 +23,12 @@
 		}
 
 		&:hover {
-			color: $neutral-800;
-			border-bottom-color: $electric-purple;
+			color: $electric-purple;
+			font-weight: 700;
 		}
 
 		&.current {
-			color: $neutral-800;
+			color: $electric-purple;
 			border-bottom-color: $electric-purple;
 		}
 	}
@@ -209,12 +209,12 @@
 		outline: none;
 
 		&:hover {
-			color: $neutral-800;
-			border-bottom-color: $electric-purple;
+			color: $electric-purple;
 		}
 
 		&.current {
-			color: $neutral-800;
+			color: $electric-purple;
+			font-weight: 700;
 			border-bottom-color: $electric-purple;
 			margin-right: 15px;
 		}

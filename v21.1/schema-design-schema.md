@@ -37,7 +37,7 @@ Here are some best practices to follow when creating and using user-defined sche
 
 - When you create a user-defined schema, take note of the [object's owner](authorization.html#object-ownership). You can specify the owner in a `CREATE SCHEMA` statement with the [`AUTHORIZATION` keyword](create-schema.html#parameters). If `AUTHORIZATION` is not specified, the owner will be the user creating the user-defined schema.
 
-- Do not create user-defined schemas in the preloaded `defaultdb` database. Instead, use a database [you have created](schema-design-database.html). User-defined schemas can only be created in your SQL session's [current database](sql-name-resolution.html#current-database), so be sure to [change the session's database](schema-design-database.html#database-best-practices) to a database that you have created before creating a user-defined schema.
+- Do not create user-defined schemas in the preloaded `defaultdb` database. Instead, use a database [you have created](schema-design-database.html). If you do not specify a database in the `CREATE SCHEMA` statement, the user-defined schema will be created in your SQL session's [current database](sql-name-resolution.html#current-database).
 
 - When referring to a lower-level object in a database (e.g., a table), include the object's schema name (e.g., `schema_name.table_name`). Specifying the schema name in a lower-level object reference can prevent users from attempting to access the wrong object, if there are multiple objects with the same name in a database.
 

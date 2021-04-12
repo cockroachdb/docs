@@ -70,7 +70,7 @@ root@127.0.0.1:34839/movr>
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql');
+    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/bookstores-and-roads-20210125.sql') WITH ignore_unsupported_statements;
     ~~~
 
     ~~~
@@ -94,7 +94,7 @@ root@127.0.0.1:34839/movr>
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/birds-20210125.sql');
+    IMPORT PGDUMP ('https://spatial-tutorial.s3.us-east-2.amazonaws.com/birds-20210125.sql') WITH ignore_unsupported_statements;
     ~~~
 
     ~~~

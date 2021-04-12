@@ -1,6 +1,6 @@
 ---
 title: DROP SEQUENCE
-summary:
+summary: The DROP SEQUENCE statement removes a sequence from a database.
 toc: true
 ---
 

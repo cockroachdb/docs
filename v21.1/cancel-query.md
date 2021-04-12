@@ -40,24 +40,22 @@ When a query is successfully cancelled, CockroachDB sends a `query execution can
 
 ### Cancel a query via the query ID
 
-In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get the ID of a query and then pass the ID into the `CANCEL QUERY` statement:
+In this example, we use the [`SHOW STATEMENTS`](show-statements.html) statement to get the ID of a query and then pass the ID into the `CANCEL QUERY` statement:
 
 ~~~ sql
-> SHOW QUERIES;
+> SHOW STATEMENTS;
 ~~~
 
 ~~~
-+----------------------------------+---------+----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-|             query_id             | node_id | username |              start               |              query               |   client_address   | application_name | distributed |   phase   |
-+----------------------------------+---------+----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-| 14dacc1f9a781e3d0000000000000001 |       2 | mroach   | 2017-08-10 14:08:22.878113+00:00 | SELECT * FROM test.kv ORDER BY k | 192.168.0.72:56194 | test_app         | false       | executing |
-+----------------------------------+---------+----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
-| 14dacc206c47a9690000000000000002 |       2 | root     | 2017-08-14 19:11:05.309119+00:00 | SHOW CLUSTER QUERIES             | 127.0.0.1:50921    |                  | NULL        | preparing |
-+----------------------------------+---------+----------+----------------------------------+----------------------------------+--------------------+------------------+-------------+-----------+
+              query_id             | node_id |            session_id            | user_name |                start                |                query                 | client_address  | application_name | distributed |   phase
+-----------------------------------+---------+----------------------------------+-----------+-------------------------------------+--------------------------------------+-----------------+------------------+-------------+------------
+  1673f58fca5301900000000000000001 |       1 | 1673f583067d51280000000000000001 | demo      | 2021-04-08 18:31:29.079614+00:00:00 | SELECT * FROM rides ORDER BY revenue | 127.0.0.1:55212 | $ cockroach demo |    true     | executing
+  1673f590433eaa000000000000000001 |       1 | 1673f58a4ba3c8e80000000000000001 | demo      | 2021-04-08 18:31:31.108372+00:00:00 | SHOW CLUSTER STATEMENTS              | 127.0.0.1:55215 | $ cockroach sql  |    false    | executing
+(2 rows)
 ~~~
 
 ~~~ sql
-> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
+> CANCEL QUERY '1673f590433eaa000000000000000001';
 ~~~
 
 ### Cancel a query via a subquery
@@ -65,10 +63,14 @@ In this example, we use the [`SHOW QUERIES`](show-queries.html) statement to get
 In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves the ID of a query inside the `CANCEL QUERY` statement:
 
 ~~~ sql
-> CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER QUERIES]
-      WHERE client_address = '192.168.0.72:56194'
-          AND username = 'mroach'
-          AND query = 'SELECT * FROM test.kv ORDER BY k');
+> CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER STATEMENTS]
+      WHERE client_address = '127.0.0.1:55212'
+          AND user_name = 'demo'
+          AND query = 'SELECT * FROM rides ORDER BY revenue');
+~~~
+
+~~~
+CANCEL QUERIES 1
 ~~~
 
 {{site.data.alerts.callout_info}}<code>CANCEL QUERY</code> accepts a single query ID. If a subquery is used and returns multiple IDs, the <code>CANCEL QUERY</code> statement will fail. To cancel multiple queries, use <code>CANCEL QUERIES</code>.{{site.data.alerts.end}}
@@ -76,6 +78,6 @@ In this example, we nest a [`SELECT` clause](select-clause.html) that retrieves 
 ## See also
 
 - [Manage Long-Running Queries](manage-long-running-queries.html)
-- [`SHOW QUERIES`](show-queries.html)
+- [`SHOW STATEMENTS`](show-statements.html)
 - [`CANCEL SESSION`](cancel-session.html)
 - [SQL Statements](sql-statements.html)

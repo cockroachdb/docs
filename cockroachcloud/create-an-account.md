@@ -8,7 +8,7 @@ Before you [create a CockroachCloud cluster](create-your-cluster.html), you must
 
 ## Register a new account
 
-To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs).
+To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="github">Register with GitHub</button>
@@ -34,7 +34,7 @@ GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/g
 
 <section class="filter-content" markdown="1" data-scope="email">
 1. Enter your **Email address**.
-1. Enter your **First name** and **Last name**.
+1. Enter your **Name**.
 1. Enter a **Password**.
 1. Enter your **Organization name (optional)**.
 
@@ -89,7 +89,7 @@ To change your account name:
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
 1. Click the pencil icon in the **Name** row.
-1. In the **Edit name** dialog, enter your **First name** and **Last name**.
+1. In the **Edit name** dialog, enter your **Name**.
 1. Click **Save**.
 
 ### Change your email

@@ -36,7 +36,7 @@ Format | Notes
 [`INT`](int.html) | Nanoseconds since the Unix epoch.
 negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thus must be negative.
 [`STRING`](string.html) | A [`TIMESTAMP`](timestamp.html), [`INT`](int.html) of nanoseconds, or negative [`INTERVAL`](interval.html).
-`follower_read_timestamp()`| A [function](functions-and-operators.html) that runs your queries at a time as close as possible to the present time known as the [follower read timestamp](follower-reads.html#run-queries-that-use-follower-reads), while remaining safe for [follower reads](follower-reads.html).
+`follower_read_timestamp()`| A [function](functions-and-operators.html) that returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s` (known as the [follower read timestamp](follower-reads.html#run-queries-that-use-follower-reads)). Using this function will set the time as close as possible to the present time while remaining safe for [follower reads](follower-reads.html).
 
 ## Examples
 

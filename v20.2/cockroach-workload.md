@@ -174,7 +174,7 @@ Flag | Description
 `--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
-`--interleaved` | Use [interleaved tables](interleave-in-parent.html).<br><br>**Applicable commands:** `init` or `run`
+`--interleaved` | Use [interleaved tables](interleave-in-parent.html).<br><br>**Applicable commands:** `init` or `run`<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`
 `--max-rate` | The maximum frequency of operations (reads/writes).<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means unlimited.
 `--mix` | Weights for the transaction mix.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `newOrder=10,payment=10,orderStatus=1,delivery=1,stockLevel=1`, which matches the [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/current_specifications.asp).

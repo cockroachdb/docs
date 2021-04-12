@@ -143,8 +143,6 @@ Lookup joins are performed on two tables as follows:
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
 {{site.data.alerts.callout_info}}
-With queries on [interleaved tables](interleave-in-parent.html), the [optimizer](cost-based-optimizer.html) might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
-
 <span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
@@ -156,9 +154,8 @@ CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins
 
 ## Performance best practices
 
-{{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}CockroachDB is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
 
-- Joins over [interleaved tables](interleave-in-parent.html) are usually (but not always) processed more effectively than over non-interleaved tables.
 - When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
 - Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins)) are generally processed less efficiently than [inner joins](#inner-joins). Use inner joins whenever possible. Full outer joins are the least optimized.
 - Use [`EXPLAIN`](explain.html) over queries containing joins to verify that indexes are used.

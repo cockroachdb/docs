@@ -1,6 +1,6 @@
 ---
 title: Orchestrate CockroachDB Across Multiple Kubernetes Clusters
-summary: How to use Kubernetes to orchestrate the deployment, management, and monitoring of an insecure CockroachDB cluster across multiple Kubernetes clusters in different regions.
+summary: Orchestrate the deployment, management, and monitoring of CockroachDB across multiple Kubernetes clusters in different regions.
 toc: true
 toc_not_nested: true
 redirect_from: orchestrate-cockroachdb-with-kubernetes-multi-region.html
@@ -69,7 +69,7 @@ You can now [enable global access](https://cloud.google.com/load-balancing/docs/
 
 ## Step 1. Start Kubernetes clusters
 
-Our multi-region deployment approach relies on pod IP addresses being routable across three distinct Kubernetes clusters and regions. Both the hosted Google Kubernetes Engine (GKE) and Amazon Elastic Kubernetes Service (EKS) satisfy this requirement. 
+Our multi-region deployment approach relies on pod IP addresses being routable across three distinct Kubernetes clusters and regions. Both the hosted Google Kubernetes Engine (GKE) and Amazon Elastic Kubernetes Service (EKS) satisfy this requirement.
 
 If you want to run on another cloud or on-premises, use this [basic network test](https://github.com/cockroachdb/cockroach/tree/master/cloud/kubernetes/multiregion#pod-to-pod-connectivity) to see if it will work.
 
@@ -140,8 +140,8 @@ If you want to run on another cloud or on-premises, use this [basic network test
     ~~~ shell
     kubectl config use-context <context-name>
     ~~~
-    
-    When sending commands to another context, you need to use the `--context` flag to specify the context. For clarity, every `kubectl` command in this tutorial uses the `--context` flag to indicate the proper context. 
+
+    When sending commands to another context, you need to use the `--context` flag to specify the context. For clarity, every `kubectl` command in this tutorial uses the `--context` flag to indicate the proper context.
     {{site.data.alerts.end}}
 
 1. Get the email address associated with your Google Cloud account:
@@ -215,7 +215,7 @@ If you want to run on another cloud or on-premises, use this [basic network test
     --region <aws-region-2> \
     --vpc-cidr <ip-range-2>
     ~~~
-       
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
@@ -291,7 +291,7 @@ For pods to communciate across three separate Kubernetes clusters, the VPCs in a
     You need to create a total of 3 VPC peering connections between your 3 VPCs, which means switching regions at least once in the console. For example, if you are deploying in `eu-central-1`, `eu-north-1`, and `ca-central-1`, you can select `eu-central-1` in the console and create VPC peering connections to both `eu-north-1` and `ca-central-1`. Then switch to either `eu-north-1` or `ca-central-1` to create the VPC peering connection between those two regions.
     {{site.data.alerts.end}}
 
-1. To complete the VPC peering connections, switch to each destination region and [accept the pending connection](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) in the VPC console. 
+1. To complete the VPC peering connections, switch to each destination region and [accept the pending connection](https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#accept-vpc-peering-connection) in the VPC console.
 
 1. For all 3 regions, navigate to the Route Tables section and find `PublicRouteTable`. [Update this route table](https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-routing.html) with 2 new entries that point traffic to the other 2 peered VPCs. The **Destination** should be the CIDR block of a destination region, and the **Target** should be the VPC peering connection between the current and the destination region.
 
@@ -351,12 +351,12 @@ The Kubernetes cluster in each region needs to have a [Network Load Balancer](ht
 
     ~~~
     ...
-    
+
     ;; ANSWER SECTION:
     ac63a423fbf6231cba51235e1e51e6ec-132cf6c423e67123.elb.eu-central-1.amazonaws.com. 60 IN A ip1
     ac63a423fbf6231cba51235e1e51e6ec-132cf6c423e67123.elb.eu-central-1.amazonaws.com. 60 IN A ip2
     ac63a423fbf6231cba51235e1e51e6ec-132cf6c423e67123.elb.eu-central-1.amazonaws.com. 60 IN A ip3
-    
+
     ...
     ~~~
 
@@ -372,10 +372,10 @@ To enable traffic forwarding to CockroachDB pods in all 3 regions, you need to [
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/configmap.yaml 
+    curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/configmap.yaml
     ~~~
 
-1. After [obtaining the IP addresses of EKS instances](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions. 
+1. After [obtaining the IP addresses of EKS instances](#set-up-load-balancing) in all 3 regions, you can use this information to define a **separate ConfigMap for each region**. Each unique ConfigMap lists the forwarding addresses for the pods in the 2 other regions.
 
     ~~~
     ...
@@ -605,7 +605,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     --ca-key=my-safe-directory/ca.key
     ~~~
 
-1. For all 3 regions, upload the client certificate and key to the Kubernetes cluster as a secret. 
+1. For all 3 regions, upload the client certificate and key to the Kubernetes cluster as a secret.
 
     {{site.data.alerts.callout_success}}
     Specify the namespace in which the CockroachDB pods will run. You defined these namespaces after [starting your Kubernetes clusters](#step-1-start-kubernetes-clusters).
@@ -664,7 +664,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     --context <cluster-context> \
     --namespace <cluster-namespace>    
     ~~~
-    
+
 1. Repeat the previous 2 steps for your 2 remaining regions. You may need to delete the local `node.crt` and `node.key` in your `certs` directory before generating a new node certificate and key pair.
 
 1. For all 3 regions, check that the secrets were created on the cluster:
@@ -699,13 +699,13 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     namespace: <cluster-namespace>
     ~~~
 
-1. Allocate a memory request and limit to CockroachDB on each pod, using the `resources` object in the CockroachDB `containers` spec. 
+1. Allocate a memory request and limit to CockroachDB on each pod, using the `resources` object in the CockroachDB `containers` spec.
 
     {{site.data.alerts.callout_success}}
     These values should be appropriate for the instances that you have provisioned. Run `kubectl describe nodes` to see the available resources.
     {{site.data.alerts.end}}
 
-    For example, to allocate 8Gi of memory to CockroachDB in each pod: 
+    For example, to allocate 8Gi of memory to CockroachDB in each pod:
 
     ~~~
     resources:
@@ -719,7 +719,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     If you don't specify a memory request, no memory will be allocated to CockroachDB. If you don't specify a memory limit, the Kubernetes scheduler will allocate the maximum possible amount.
     {{site.data.alerts.end}}
 
-1. The StatefulSet configuration includes a [`cockroach start`](cockroach-start.html) command that creates the nodes on the Kubernetes pods. 
+1. The StatefulSet configuration includes a [`cockroach start`](cockroach-start.html) command that creates the nodes on the Kubernetes pods.
 
     In the `--locality` flag, name `region` after region 1. This can technically be an arbitrary value, but it's simplest to use the CockroachDB namespace in region 1.
 
@@ -817,7 +817,7 @@ In each Kubernetes cluster, the StatefulSet configuration sets all CockroachDB n
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/client-secure.yaml --context <cluster-context> --namespace <cluster-namespace> 
+    kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/client-secure.yaml --context <cluster-context> --namespace <cluster-namespace>
     ~~~
 
     ~~~

@@ -1,6 +1,6 @@
 ---
 title: Flyway
-summary: Learn how to use Flyway with CockroachDB.
+summary: This tutorial walks you through a series of simple database schema changes using Flyway, an open-source schema migration tool.
 toc: true
 ---
 

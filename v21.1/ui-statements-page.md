@@ -1,5 +1,6 @@
 ---
 title: Statements Page
+summary: The Statements page helps you identify frequently executed or high latency SQL statements, view statement details, and download statement diagnostics.
 toc: true
 redirect_from: admin-ui-statements-page.html
 ---
@@ -20,7 +21,7 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 By default, this page shows SQL statements from all applications running on the cluster, and hides internal CockroachDB queries.
 
-To filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`. 
+To filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`.
 
 CockroachDB's internal queries are only displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
 
@@ -38,13 +39,13 @@ If you haven't yet executed any queries in the cluster as a user, this page will
 
 Parameter | Description
 -----|------------
-Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details of a SQL statement fingerprint, click this to open the [**Statement Details** page](#statement-details-page).
-Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions. 
+Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [**Statement Details** page](#statement-details-page).
+Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](#time-interval).
-Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
-Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
-Diagnostics |  Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
+Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval).<br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of statements with this fingerprint within the last hour or specified [time interval](#time-interval). Service latency is the time taken to execute a query once it is received by the cluster. It does not include the time taken to send the query to the cluster or return the result to the client.<br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Diagnostics | Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
 
 ### Time interval
 
@@ -52,7 +53,7 @@ By default, the Statements page displays all SQL statements executed within a on
 
 ### SQL statement fingerprints
 
-The Statements page displays SQL statement *fingerprints*. 
+The Statements page displays SQL statement *fingerprints*.
 
 A statement fingerprint represents one or more SQL statements by replacing literal values (e.g., numbers and strings) with underscores (`_`). This can help you quickly identify frequently executed SQL statements and their latencies.
 
@@ -62,7 +63,7 @@ For multiple SQL statements to be represented by a fingerprint, they must be ide
 - <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)</code>
 - <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)</code>
 
-The above SQL statements have the fingerprint: 
+The above SQL statements have the fingerprint:
 
 <code style="white-space:pre-wrap">INSERT INTO new_order(product_id, customer_id, no_w_id) VALUES (_, _, _)</code>
 

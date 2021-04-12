@@ -1,6 +1,6 @@
 ---
 title: Cost-Based Optimizer
-summary: Learn about the cost-based optimizer
+summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
 redirect_from: sql-optimizer.html
 ---
@@ -166,8 +166,6 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 
 
 {{site.data.alerts.callout_info}}
-With queries on [interleaved tables](interleave-in-parent.html), the optimizer might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
-
 <span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
