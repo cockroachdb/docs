@@ -521,3 +521,49 @@ failed to satisfy CHECK constraint (price > 0)
 ~~~
 failed to satisfy CHECK constraint (discount <= price)
 ~~~
+
+## NULLs and concatenation with other types
+
+For all values other than [`STRING`](string.html), concatenation between a non-`NULL` value and a `NULL` value results in an [`ARRAY`](array.html) of the non-`NULL` value's type.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT NULL || 1;
+~~~
+
+~~~
+  ?column?
+------------
+  {1}
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT NULL || true;
+~~~
+
+~~~
+  ?column?
+------------
+  {t}
+(1 row)
+~~~
+
+Concatenating a `STRING` value with a [`NULL` value](null-handling.html) results in a `NULL` value.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT NULL || 'item';
+~~~
+
+~~~
+  ?column?
+------------
+  NULL
+(1 row)
+~~~
