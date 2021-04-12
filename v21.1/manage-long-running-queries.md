@@ -11,11 +11,11 @@ This page shows you how to identify and, if necessary, cancel SQL queries that a
 
 ## Identify long-running queries
 
-Use the [`SHOW QUERIES`](show-queries.html) statement to list details about currently active SQL queries, including each query's `start` timestamp:
+Use the [`SHOW STATEMENTS`](show-statements.html) statement to list details about currently active SQL queries, including each query's `start` timestamp:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE application_name != '$ cockroach sql';
 ~~~
 
@@ -32,13 +32,13 @@ You can also filter for queries that have been running for a certain amount of t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE start < (now() - INTERVAL '3 hours');
 ~~~
 
 ## Cancel long-running queries
 
-Once you've identified a long-running query via [`SHOW QUERIES`](show-queries.html), note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
+Once you've identified a long-running query via [`SHOW STATEMENTS`](show-statements.html), note the `query_id` and use it with the [`CANCEL QUERY`](cancel-query.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -58,7 +58,7 @@ After cancelling a long-running query, use the [`EXPLAIN`](explain.html) stateme
 
 ## See also
 
-- [`SHOW QUERIES`](show-queries.html)
+- [`SHOW STATEMENTS`](show-statements.html)
 - [`CANCEL QUERY`](cancel-query.html)
 - [`EXPLAIN`](explain.html)
 - [Query Behavior Troubleshooting](query-behavior-troubleshooting.html)

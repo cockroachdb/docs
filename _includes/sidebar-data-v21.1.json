@@ -1870,12 +1870,6 @@
                     ]
                   },
                   {
-                    "title": "<code>SHOW QUERIES</code>",
-                    "urls": [
-                      "/${VERSION}/show-queries.html"
-                    ]
-                  },
-                  {
                     "title": "<code>SHOW RANGES</code>",
                     "urls": [
                       "/${VERSION}/show-ranges.html"
@@ -1915,6 +1909,12 @@
                     "title": "<code>SHOW SESSIONS</code>",
                     "urls": [
                       "/${VERSION}/show-sessions.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW STATEMENTS</code>",
+                    "urls": [
+                      "/${VERSION}/show-statements.html"
                     ]
                   },
                   {

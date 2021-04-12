@@ -1,10 +1,11 @@
 ---
-title: SHOW QUERIES
-summary: The SHOW QUERIES statement lists all currently active queries across the cluster or on the local node.
+title: SHOW STATEMENTS
+summary: The SHOW STATEMENTS statement lists all currently active queries across the cluster or on the local node.
 toc: true
+redirect_from: show-queries.html
 ---
 
-The `SHOW QUERIES` [statement](sql-statements.html) lists details about currently active SQL queries, including:
+The `SHOW STATEMENTS` [statement](sql-statements.html) lists details about currently active SQL queries, including:
 
 - The internal ID of the query
 - The node executing the query
@@ -16,21 +17,27 @@ The `SHOW QUERIES` [statement](sql-statements.html) lists details about currentl
 These details let you monitor the progress of active queries and, if necessary, identify those that may need to be [cancelled](cancel-query.html) to prevent unwanted resource consumption.
 
 {{site.data.alerts.callout_info}}
-Schema changes and [`BACKUP`](backup.html)/[`RESTORE`](restore.html) statements are not executed as queries internally and so are not listed by `SHOW QUERIES`. To monitor such statements, use [`SHOW JOBS`](show-jobs.html) instead.
+Schema changes and [`BACKUP`](backup.html)/[`RESTORE`](restore.html) statements are not executed as queries internally and so are not listed by `SHOW STATEMENTS`. To monitor such statements, use [`SHOW JOBS`](show-jobs.html) instead.
 {{site.data.alerts.end}}
+
+## Aliases
+
+In CockroachDB, the following are aliases for `SHOW STATEMENTS`:
+
+- `SHOW QUERIES`
 
 ## Required privileges
 
-All users can see their own currently active queries. All users belonging to the `admin` role can view see all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set. 
+All users can see their own currently active queries. All users belonging to the `admin` role can view see all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set.
 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_queries.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/show_statements.html %}
 </div>
 
-- To list the active queries across all nodes of the cluster, use `SHOW QUERIES` or `SHOW CLUSTER QUERIES`.
-- To list the active queries just on the local node, use `SHOW LOCAL QUERIES`.
+- To list the active queries across all nodes of the cluster, use `SHOW STATEMENTS` or `SHOW CLUSTER STATEMENTS`.
+- To list the active queries just on the local node, use `SHOW LOCAL STATEMENTS`.
 
 ## Response
 
@@ -55,32 +62,32 @@ Field | Description
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CLUSTER QUERIES;
+> SHOW CLUSTER STATEMENTS;
 ~~~
 
 ~~~
               query_id             | node_id |            session_id            | user_name |              start               |                                 query                                 | client_address  | application_name | distributed |   phase
 +----------------------------------+---------+----------------------------------+-----------+----------------------------------+-----------------------------------------------------------------------+-----------------+------------------+-------------+-----------+
   15f92b12b2fb95b00000000000000002 |       2 | 15f92b10b92ed4080000000000000002 | root      | 2020-03-04 17:48:23.309592+00:00 | SELECT city, id FROM vehicles WHERE city = $1                         | 127.0.0.1:65092 |                  |    false    | executing
-  15f92b12b2ea5f700000000000000001 |       1 | 15f92adefd48d8a00000000000000001 | root      | 2020-03-04 17:48:23.3085+00:00   | SHOW CLUSTER QUERIES                                                  | 127.0.0.1:64970 | $ cockroach sql  |    false    | executing
+  15f92b12b2ea5f700000000000000001 |       1 | 15f92adefd48d8a00000000000000001 | root      | 2020-03-04 17:48:23.3085+00:00   | SHOW CLUSTER STATEMENTS                                               | 127.0.0.1:64970 | $ cockroach sql  |    false    | executing
   15f92b12b2ffeb100000000000000003 |       3 | 15f92b0e4ea399680000000000000003 | root      | 2020-03-04 17:48:23.30989+00:00  | UPSERT INTO vehicle_location_histories VALUES ($1, $2, now(), $3, $4) | 127.0.0.1:65088 |                  |    NULL     | preparing
 (3 rows)
 ~~~
 
-Alternatively, you can use `SHOW QUERIES` to receive the same response.
+Alternatively, you can use `SHOW STATEMENTS` to receive the same response.
 
 ### List queries on the local node
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW LOCAL QUERIES;
+> SHOW LOCAL STATEMENTS;
 ~~~
 
 ~~~
               query_id             | node_id |            session_id            | user_name |              start               |                           query                            | client_address  | application_name | distributed |   phase
 +----------------------------------+---------+----------------------------------+-----------+----------------------------------+------------------------------------------------------------+-----------------+------------------+-------------+-----------+
   15f92b15bece88900000000000000001 |       1 | 15f92aefb240d2980000000000000001 | root      | 2020-03-04 17:48:36.392919+00:00 | INSERT INTO user_promo_codes VALUES ($1, $2, $3, now(), 1) | 127.0.0.1:65044 |                  |    false    | executing
-  15f92b15bed80a280000000000000001 |       1 | 15f92adefd48d8a00000000000000001 | root      | 2020-03-04 17:48:36.393495+00:00 | SHOW LOCAL QUERIES                                         | 127.0.0.1:64970 | $ cockroach sql  |    false    | executing
+  15f92b15bed80a280000000000000001 |       1 | 15f92adefd48d8a00000000000000001 | root      | 2020-03-04 17:48:36.393495+00:00 | SHOW LOCAL STATEMENTS                                      | 127.0.0.1:64970 | $ cockroach sql  |    false    | executing
 (2 rows)
 ~~~
 
@@ -92,7 +99,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE node_id = 2;
 ~~~
 
@@ -107,7 +114,7 @@ You can use a [`SELECT`](select-clause.html) statement to filter the list of act
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE client_address = '127.0.0.1:65196' AND user_name = 'maxroach';
 ~~~
 
@@ -124,7 +131,7 @@ To exclude queries from the [built-in SQL client](cockroach-sql.html), filter fo
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE application_name != '$ cockroach sql';
 ~~~
 
@@ -141,11 +148,11 @@ To exclude queries from the [built-in SQL client](cockroach-sql.html), filter fo
 
 When you see a query that is taking too long to complete, you can use the [`CANCEL QUERY`](cancel-query.html) statement to end it.
 
-For example, let's say you use `SHOW CLUSTER QUERIES` to find queries that have been running for more than 3 hours:
+For example, let's say you use `SHOW CLUSTER STATEMENTS` to find queries that have been running for more than 3 hours:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE start < (now() - INTERVAL '3 hours');
 ~~~
 

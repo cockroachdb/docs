@@ -152,7 +152,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
-[`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
+[`SHOW STATEMENTS`/`SHOW QUERIES`](show-statements.html) | List details about current active SQL queries.
 
 ## Query planning statements
 
