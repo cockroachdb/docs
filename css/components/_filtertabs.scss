@@ -273,45 +273,44 @@
 			width: 140px;
 
 			&:before {
-				font-family: 'FontAwesome';
-				content: "\f078";
-				margin-right: 10px;
-				z-index: 5;
-				font-size: 24px;
+				background-size: 22px;
+				width: 22px;
+				height: 22px;
+				content: ''; 
 			}
 
 			&#mac {
 
 				&:before {
-					content: "\f179";
+					background: url(../images/icon-apple.png) no-repeat center center;
 	        }
 			}
 
 			&#linux {
 
 				&:before {
-					content: "\f17c";
+					background: url(../images/icon-linux.png) no-repeat center center;
 	        }
 			}
 
 			&#windows {
 
 				&:before {
-					content: "\f17a";
+					background: url(../images/icon-windows.png) no-repeat center center;
 	        }
 			}
 
 			&#source {
 
 				&:before {
-					content: "\f1c6";
+					background: url(../images/icon-zipfile.png) no-repeat center center;
 				}
 			}
 
 			&#docker {
 
 				&:before {
-					content: "\f395";
+					background: url(../images/icon-docker.png) no-repeat center center;
 				}
 			}
 		}
