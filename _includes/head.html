@@ -32,6 +32,9 @@ var pageConfig = {
 {% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}
 {% if page.license == true %}<script src="{{ 'js/license-on-page.js' | relative_url }}"></script>{% endif %}
 
+<link rel="preconnect dns-prefetch" href="//go.cockroachlabs.com" />
+<link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
+
 <link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
 <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
 
@@ -39,8 +42,8 @@ var pageConfig = {
 <link rel="preload" href="{{ "/fonts/SourceSansPro-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
 <link rel="preload" href="{{ "/fonts/Poppins-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
 
-<link rel="dns-prefetch" href="https://app.convertflow.co/" >
-<link rel="dns-prefetch" href="https://js.convertflow.co/" >
+<link rel="preconnect dns-prefetch" href="https://app.convertflow.co/" >
+<link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" >
 
 <link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-3-1.png?auto=format,compress&w=1200" />
 <link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-early-3-1.png?auto=format,compress&w=1200" />
