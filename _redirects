@@ -5,6 +5,8 @@ layout: null
 {%- if site.baseurl == "/docs" %}
 / /docs/ 301!
 # /docs /docs/stable/ 301!
+/docs/stable /docs/v20.2/ 200!
+/docs/dev /docs/v21.1/ 200!
 /docs/cockroachcloud /docs/cockroachcloud/stable/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!

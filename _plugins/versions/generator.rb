@@ -50,9 +50,9 @@ module JekyllVersions
         # end
       end
 
-      @config.versions.each do |name, version|
-        @site.static_files << Symlink.new(@site, name, version)
-      end
+#      @config.versions.each do |name, version|
+#        @site.static_files << Symlink.new(@site, name, version)
+#      end
     end
 
     private
