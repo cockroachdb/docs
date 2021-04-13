@@ -11,6 +11,8 @@ build _config_cockroachdb.yml
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
 
+ls -lth _site/docs
+
 # Set up htmltest
 go get -u github.com/cockroachdb/htmltest
 pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
