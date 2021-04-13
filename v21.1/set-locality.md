@@ -64,6 +64,8 @@ For more information about how table localities work, see [Regional tables](mult
 
 ### Set the table locality to `REGIONAL BY ROW`
 
+{{site.data.alerts.callout_info}} Changefeeds are not currently supported on _regional by row_ tables and any ongoing changefeed job will fail when setting locality to `REGIONAL BY ROW` {{site.data.alerts.end}}
+
 To make an existing table a _regional by row_ table, use the following statement:
 
 {% include copy-clipboard.html %}
