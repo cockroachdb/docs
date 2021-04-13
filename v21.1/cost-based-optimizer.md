@@ -162,6 +162,12 @@ Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to S
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
+- `INVERTED`: <span class="version-tag">New in v21.1:</span> Forces an inverted join, even if the optimizer determines that a different plan would have a lower cost. The join must have an [inverted index](inverted-indexes.html).
+
+{{site.data.alerts.callout_info}}
+You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
+{{site.data.alerts.end}}
+
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
 
@@ -212,6 +218,110 @@ The optimizer does not actually understand geographic locations, i.e., the relat
 {{site.data.alerts.end}}
 
 ### Examples
+
+#### Inverted join examples
+
+To run these example, initialize a demo cluster with the MovR workload.
+
+{% include {{ page.version.version }}/demo_movr.md %}
+
+Create an inverted index on the `vehicles` table's `ext` column.
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE INVERTED INDEX idx_vehicle_details ON vehicles(ext);
+~~~
+
+Check the statement plan for a `SELECT` statement that uses an inner inverted join.
+
+{% include copy-clipboard.html %}
+~~~ sql
+EXPLAIN SELECT * FROM vehicles@primary AS v2 INNER INVERTED JOIN vehicles@idx_vehicle_details AS v1 ON v1.ext @> v2.ext;
+~~~
+
+~~~
+                                           info
+-------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join
+  │ table: vehicles@primary
+  │ equality: (city, id) = (city,id)
+  │ equality cols are key
+  │ pred: ext @> ext
+  │
+  └── • inverted join
+      │ table: vehicles@idx_vehicle_details
+      │
+      └── • scan
+            estimated row count: 3,750 (100% of the table; stats collected 3 minutes ago)
+            table: vehicles@primary
+            spans: FULL SCAN
+(16 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
+~~~
+
+You can omit the `INNER INVERTED JOIN` statement by putting the inverted index the left side of the join.
+
+~~~ sql
+EXPLAIN SELECT * FROM vehicles@idx_vehicle_details AS v1, vehicles AS v2 WHERE v1.ext @> v2.ext;
+~~~
+
+~~~
+                                            info
+--------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join
+  │ table: vehicles@primary
+  │ equality: (city, id) = (city,id)
+  │ equality cols are key
+  │ pred: ext @> ext
+  │
+  └── • inverted join
+      │ table: vehicles@idx_vehicle_details
+      │
+      └── • scan
+            estimated row count: 3,750 (100% of the table; stats collected 12 minutes ago)
+            table: vehicles@primary
+            spans: FULL SCAN
+(16 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
+~~~
+
+Use the `LEFT INVERTED JOIN` hint to perform a left inverted join.
+
+~~~ sql
+EXPLAIN SELECT * FROM vehicles AS v2 LEFT INVERTED JOIN vehicles AS v1 ON v1.ext @> v2.ext;
+~~~
+
+~~~
+                                            info
+--------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join (left outer)
+  │ table: vehicles@primary
+  │ equality: (city, id) = (city,id)
+  │ equality cols are key
+  │ pred: ext @> ext
+  │
+  └── • inverted join (left outer)
+      │ table: vehicles@idx_vehicle_details
+      │
+      └── • scan
+            estimated row count: 3,750 (100% of the table; stats collected 16 minutes ago)
+            table: vehicles@primary
+            spans: FULL SCAN
+(16 rows)
+
+Time: 2ms total (execution 2ms / network 0ms)
+~~~
 
 #### Zone constraints
 

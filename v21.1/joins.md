@@ -35,6 +35,7 @@ CockroachDB supports the following join types:
 - [Left outer joins](#left-outer-joins)
 - [Right outer joins](#right-outer-joins)
 - [Full outer joins](#full-outer-joins)
+- [Inverted joins](#inverted-joins)
 
 ### Inner joins
 
@@ -76,6 +77,17 @@ For every row on one side of the join where there is no match on the other side,
 <table expr> FULL [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
 <table expr> NATURAL FULL [ OUTER ] JOIN <table expr>
 ~~~
+
+### Inverted joins
+
+Force the optimizer to use a join using an [inverted index](inverted-index.html), even if it estimates that a different plan would have a [lower-cost](cost-based-optimizer.html).
+
+~~~
+<table expr> INNER INVERTED JOIN <table expr> ON <val expr>
+<table expr> LEFT INVERTED JOIN <table expr> ON <val expr>
+~~~
+
+See the [cost-based optimizer examples](cost-based-optimizer.html#inverted-join-examples) for statements that use inverted joins.
 
 ## Supported join conditions
 
