@@ -54,9 +54,9 @@ layout: null
 /docs/cockroachcloud/dev/managed-troubleshooting-page.html /docs/cockroachcloud/dev/cockroachcloud-troubleshooting-page.html 301!
 {% endif %}
 
-{%- for version in site.versions -%}
-{{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
-{% endfor -%}
+#{%- for version in site.versions -%}
+#{{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
+#{% endfor -%}
 
 # Redirects for DockerHub
 /docs/install-cockroachdb.html /docs/stable/install-cockroachdb.html   301!
