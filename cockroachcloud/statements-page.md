@@ -6,7 +6,7 @@ toc: true
 
 The **Statements** page helps you:
 
-- Identify frequently executed or high latency [SQL statements](../v21.1/sql-statements.html).
+- Identify frequently executed or high latency [SQL statements]({{ '/stable/sql-statements.html' | relative_url }}).
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
