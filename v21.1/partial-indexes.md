@@ -76,13 +76,20 @@ For another example, see [Create a partial index that enforces uniqueness on a s
 When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`](insert.html#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
+## Partial inverted indexes
+
+<span class="version-tag">New in v21.1:</span> You can create partial [inverted indexes](inverted-indexes.html#partial-inverted-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+
 ## Index hints
 
 You can force queries [to use a specific partial index](table-expressions.html#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
 
+{{site.data.alerts.callout_danger}}
+You cannot use index hinting with partial inverted indexes.
+{{site.data.alerts.end}}
+
 ## Known limitations
 
-- CockroachDB does not currently support partial [inverted indexes](inverted-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50952).
 - CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
 - CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
 

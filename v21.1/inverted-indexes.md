@@ -143,9 +143,23 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 - "is contained by": [`<@`](functions-and-operators.html#supported-operations)
 - "contains": [`@>`](functions-and-operators.html#supported-operations)
 
+## Partial inverted indexes
+
+<span class="version-tag">New in v21.1:</span> You can create a [partial](partial-indexes.html) inverted index, an inverted index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container datatypes, create a partial inverted index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE test (
+  id INT,
+  data JSONB,
+  INVERTED INDEX idx_data(data) WHERE id > 10
+);
+~~~
+
 ## Known limitations
 
-CockroachDB does not support partitioning inverted indexes. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
+- CockroachDB does not support partitioning inverted indexes. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
+- CockroachDB does not support [index hinting](table-expressions.html#force-index-selection) for partial inverted indexes.
 
 ## Example
 
@@ -289,6 +303,29 @@ Now, let’s add an inverted index to the table and run a query that filters on 
 |                                      |              |
 +--------------------------------------+--------------+
 (2 rows)
+~~~
+
+### Create a table with a partial inverted index on a JSONB column
+
+In the same [`users` table in the previous example](#create-a-table-with-inverted-index-on-a-jsonb-column) create a partial inverted index for online users.
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE INVERTED INDEX idx_online_users ON users(user_profile) WHERE user_profile -> 'online' = 'true';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT * FROM users WHERE user_profile -> 'online' = 'true';
+~~~
+
+~~~
+               profile_id              |            last_updated             |                                         user_profile
+---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
+  b6df0cae-d619-4a08-ab4f-2815da7b981f | 2021-04-13 20:54:35.660734+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
+(1 row)
+
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 ## See also
