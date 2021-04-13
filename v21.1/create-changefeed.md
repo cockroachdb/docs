@@ -157,7 +157,7 @@ By default, a Kafka topic has the same name as the table that a changefeed was c
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster. 
 
 {{site.data.alerts.callout_info}}
-You must have the Kafka cluster setting `auto.create.topics.enable` set to `True` for automatic topic creation.
+You must have the Kafka cluster setting [`auto.create.topics.enable`](https://kafka.apache.org/documentation/#brokerconfigs_auto.create.topics.enable) set to `true` for automatic topic creation. This will create the topic when the changefeed sends its first message. If you create the consumer before that, you will also need the Kafka consumer configuration [`allow.auto.create.topics`](https://kafka.apache.org/documentation/#consumerconfigs_allow.auto.create.topics) to be set to `true`.
 {{site.data.alerts.end}}
 
 Kafka has the following topic limitations:
@@ -165,7 +165,7 @@ Kafka has the following topic limitations:
 - [Legal characters](https://github.com/apache/kafka/blob/0.10.2/core/src/main/scala/kafka/common/Topic.scala#L29) are numbers, letters, and `[._-]`.
 - The maximum character length of a topic name is 249.
 - Topics with a period (`.`) and underscore (`_`) can collide on internal Kafka data structures, so you should use either but not both.
-- Characters not accepted by Kafka can be encoded as unicode characters.
+- Characters not accepted by Kafka will be encoded as unicode characters by Cockroach.
 
 ## Responses
 
