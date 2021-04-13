@@ -1,3 +1,4 @@
+- Changefeeds do not work on _regional by row_ tables. Any running changefeed jobs will fail when setting a table's locality to [`REGIONAL BY ROW`](set-locality.html).
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
 - Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
 - Many DDL queries (including [`TRUNCATE`](truncate.html) and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
