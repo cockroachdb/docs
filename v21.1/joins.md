@@ -80,7 +80,7 @@ For every row on one side of the join where there is no match on the other side,
 
 ### Inverted joins
 
-Force the optimizer to use a join using an [inverted index](inverted-index.html), even if it estimates that a different plan would have a [lower-cost](cost-based-optimizer.html).
+<span class="version-tag">New in v21.1:</span> Force the optimizer to use a join using an [inverted index](inverted-index.html), even if it estimates that a different plan would have a [lower-cost](cost-based-optimizer.html).
 
 ~~~
 <table expr> INNER INVERTED JOIN <table expr> ON <val expr>
