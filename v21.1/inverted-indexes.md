@@ -158,7 +158,6 @@ CREATE TABLE test (
 
 ## Known limitations
 
-- CockroachDB does not support partitioning inverted indexes. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
 - CockroachDB does not support [index hinting](table-expressions.html#force-index-selection) for partial inverted indexes.
 
 ## Example
