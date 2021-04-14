@@ -75,7 +75,7 @@ Support for certain [window functions](window-functions.html) is limited in the 
 
 The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
 
-### Unordered distinct aggregations
+### Unordered distinct operations
 
 Disk spilling isn't supported when running `UPSERT` statements that have `nulls are distinct` and `error on duplicate` markers. You can check this by using `EXPLAIN` and looking at the statement plan.
 
