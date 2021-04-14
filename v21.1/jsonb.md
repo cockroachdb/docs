@@ -254,6 +254,10 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 {% include {{ page.version.version }}/computed-columns/jsonb.md %}
 
+### Create a table with a `JSONB` columns and a virtual computed column
+
+{% include {{ page.version.version }}/computed-columns/virtual.md %}
+
 ## Supported casting and conversion
 
 `JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
