@@ -84,10 +84,6 @@ When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one o
 
 You can force queries [to use a specific partial index](table-expressions.html#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
 
-{{site.data.alerts.callout_danger}}
-You cannot use index hinting with partial inverted indexes.
-{{site.data.alerts.end}}
-
 ## Known limitations
 
 - CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).

@@ -156,10 +156,6 @@ CREATE TABLE test (
 );
 ~~~
 
-## Known limitations
-
-- CockroachDB does not support [index hinting](table-expressions.html#force-index-selection) for partial inverted indexes.
-
 ## Example
 
 ### Create a table with inverted index on a JSONB column
@@ -322,6 +318,21 @@ SELECT * FROM users WHERE user_profile -> 'online' = 'true';
                profile_id              |            last_updated             |                                         user_profile
 ---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
   b6df0cae-d619-4a08-ab4f-2815da7b981f | 2021-04-13 20:54:35.660734+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
+(1 row)
+
+Time: 2ms total (execution 2ms / network 0ms)
+~~~
+
+Using index hinting with the partial inverted index.
+
+~~~ sql
+SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND user_profile->'location' = '"NYC"';
+~~~
+
+~~~
+               profile_id              |            last_updated             |                                         user_profile
+---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
+  ea1db57e-51c3-449d-b928-adab11191085 | 2021-04-14 20:45:39.960443+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
 (1 row)
 
 Time: 2ms total (execution 2ms / network 0ms)
