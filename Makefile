@@ -53,10 +53,12 @@ cockroachdb: bootstrap
 .PHONY: standard
 standard: cockroachdb
 
-.PHONY: nocache
-nocache: bootstrap
-	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_no_cache.yml,$(extra-config) $(JEKYLLFLAGS)
+# turn off caching remote_include content
+.PHONY: no-remote-cache
+no-remote-cache: bootstrap
+	bundle exec jekyll $(jekyll-action) --incremental --trace --config _config_base.yml,_config_cockroachdb.yml,_config_cockroachdb_no_remote_cache.yml,$(extra-config) $(JEKYLLFLAGS)
 
+# output the performance stats for the build using the --profile option
 .PHONY: profile
 profile: bootstrap
 	bundle exec jekyll $(jekyll-action) --incremental --profile --trace --config _config_base.yml,_config_cockroachdb.yml$(extra-config) $(JEKYLLFLAGS)
