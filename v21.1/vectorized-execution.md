@@ -51,6 +51,7 @@ The following operations require [memory buffering](https://en.wikipedia.org/wik
 
 - Global [sorts](order-by.html)
 - [Unordered aggregations](order-by.html)
+- Hash aggregations
 - [Hash joins](joins.html#hash-joins)
 - [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", can execute entirely in-memory.
 - [Window functions](window-functions.html). Note that [support for window functions is limited in the vectorized execution engine](#window-functions).
