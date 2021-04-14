@@ -24,6 +24,7 @@ Parameter | Description
 ----------|------------
 `joined_table` | Another join expression.
 `table_ref` | A [table expression](table-expressions.html).
+`opt_join_hint` | A [join hint](cost-based-optimizer.html#join-hints).
 `a_expr` | A [scalar expression](scalar-expressions.html) to use as [`ON` join condition](#supported-join-conditions).
 `name` | A column name to use as [`USING` join condition](#supported-join-conditions)
 
