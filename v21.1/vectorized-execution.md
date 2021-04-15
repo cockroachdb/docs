@@ -77,14 +77,7 @@ The vectorized engine does not support [working with spatial data](spatial-data.
 
 ### Unordered distinct operations
 
-Disk spilling isn't supported when running `UPSERT` statements that have `nulls are distinct` and `error on duplicate` markers. You can check this by using `EXPLAIN` and looking at the statement plan.
-
-~~~
-        ├── distinct                     |                     |
-        │    │                           | distinct on         | ...
-        │    │                           | nulls are distinct  |
-        │    │                           | error on duplicate  |
-~~~
+{% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
 
 ## See also
 

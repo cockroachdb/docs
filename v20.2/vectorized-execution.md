@@ -62,9 +62,9 @@ You can also configure a node's total budget for in-memory query processing at n
 
 ## Known limitations
 
-### Unordered aggregations
+### Unordered aggregation operations
 
-Unordered aggregations do not support disk spilling, and are limited by the `--max-sql-memory` setting. If unordered aggregation operations exceed the amount of memory available to the SQL layer, CockroachDB will throw an error.
+{% include {{ page.version.version }}/known-limitations/unordered-operations.md %}
 
 ### Unsupported queries
 
