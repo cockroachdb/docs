@@ -50,7 +50,7 @@ Field | Description
 `size_bytes` | The size of the backup, in bytes.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` |  Whether the backup is of a full cluster or not.
-`path` |  The list of the full backup's subdirectories. This field is returned for `SHOW BACKUPS IN location` only. The path format is `<year>/<month>/<day>-<timestamp>`.
+`path` |  The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN location` only. The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ## Example
 
@@ -173,6 +173,8 @@ To view a list of which users and roles had which privileges on each database an
 
 ### View a list of the available full backup subdirectories
 
+To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
@@ -191,6 +193,8 @@ To view a list of which users and roles had which privileges on each database an
 The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
+
+To view a list of the [full](take-full-and-incremental-backups.html#full-backups) and [incremental](take-full-and-incremental-backups.html#incremental-backups) backups in a specific subdirectory, use the following command:
 
 {% include copy-clipboard.html %}
 ~~~ sql

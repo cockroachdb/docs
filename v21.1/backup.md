@@ -7,6 +7,10 @@ toc: true
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
 {{site.data.alerts.callout_info}}
+<span class="version-tag">New in v21.1:</span> The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to back up directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be deprecated in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html). You can also use [CockroachCloud](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 {{site.data.alerts.end}}
 
@@ -23,7 +27,7 @@ You can also back up:
 - [An individual database](#backup-a-database), which includes all of its tables and views
 - [An individual table](#backup-a-table-or-view), which includes its indexes and views
 
-    `BACKUP` only offers table-level granularity; it _does not_ support backing up subsets of a table.
+    `BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
 
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
@@ -33,8 +37,8 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-- Full cluster backups can only be run by members of the `admin` role. By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have read access (`SELECT` or `USAGE`) on all objects being backed up.
+- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](authorization#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges
@@ -47,16 +51,12 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 {% include {{ page.version.version }}/sql/generated/diagrams/backup.html %}
 </div>
 
-{{site.data.alerts.callout_info}}
-<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Previous versions of CockroachDB used the syntax `BACKUP ... TO` to back up directly to a specific operator-chosen destination, rather than picking a date-based path. For more information on this old syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
-{{site.data.alerts.end}}
-
 ## Parameters
 
  Parameter | Description
 -----------+-------------
 `targets` | Back up the listed [targets](#targets).
-`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an incremental backup. To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a full backup will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
+`subdirectory` | The name of the specific subdirectory (e.g., `2021/03/23-213101.37`) where you want to add an [incremental backup](take-full-and-incremental-backups.html#incremental-backups). To view available subdirectories, use [`SHOW BACKUPS IN destination`](show-backup.html). If the `subdirectory` is not provided, a [full backup](take-full-and-incremental-backups.html#full-backups) will be created in the collection using a date-based naming scheme (i.e., `<year>/<month>/<day>-<timestamp>`).<br><br>**Warning:** If you use an arbitrary `STRING` as the subdirectory, a new full backup will be created, but it will never be shown in `SHOW BACKUPS IN`. We do not recommend using arbitrary strings as subdirectory names.
 `LATEST` | Append an incremental backup to the latest completed full backup's subdirectory.
 `destination` | The URL where you want to store the backup.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
 `timestamp` | Back up data as it existed as of [`timestamp`](as-of-system-time.html). The `timestamp` must be more recent than your cluster's last garbage collection (which defaults to occur every 25 hours, but is [configurable per table](configure-replication-zones.html#replication-zone-variables)).
@@ -66,9 +66,9 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 Target                             | Description
 -----------------------------------+-------------------------------------------------------------------------
-Empty target                       | Backup the cluster. [See the example below.](#backup-a-cluster)
-`DATABASE {database_name} [, ...]` | The name of the database(s) you want to back up (i.e., create backups of all tables and views in the database). [See the example below.](#backup-a-database)
-`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to back up. [See the example below.](#backup-a-table-or-view)
+N/A                                | Backup the cluster. For an example of a full cluster backup, [see Backup a cluster](#backup-a-cluster).
+`DATABASE {database_name} [, ...]` | The name of the database(s) you want to back up (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#backup-a-database).
+`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to back up. For an example of backing up a table or view, see [Backup a table or view](#backup-a-table-or-view).
 
 ### Options
 
@@ -81,7 +81,7 @@ CockroachDB uses the URL provided to construct a secure API call to the service 
 - [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html)
 
     {{site.data.alerts.callout_info}}
-    `BACKUP` and `RESTORE` is not supported for HTTP storage.
+    HTTP storage is not supported for `BACKUP` and `RESTORE`.
     {{site.data.alerts.end}}
 
 - [Use a Local File Server for Bulk Operations](use-a-local-file-server-for-bulk-operations.html)
@@ -142,7 +142,7 @@ Per our guidance in the [Performance](#performance) section, we recommend starti
 
 ### Backup a cluster
 
-To take a full backup a cluster:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -153,7 +153,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a database
 
-To take a full backup a single database:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) a single database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -162,7 +162,7 @@ INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={acces
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-To take a full backup of multiple databases:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -173,7 +173,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a table or view
 
-To take a full backup of a single table or view:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -182,7 +182,7 @@ INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={acces
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-To take a full backup of multiple tables:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -193,7 +193,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Create incremental backups
 
-If you backup to a destination already containing a full backup, an incremental backup will be appended to the full backup's path with a date-based name (e.g., `20210324`):
+If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -204,7 +204,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Run a backup asynchronously
 
-Use the `detached` [option](#options) to execute the backup job asynchronously:
+Use the `detached` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql

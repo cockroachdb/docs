@@ -26,7 +26,7 @@ You can also back up:
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 {{site.data.alerts.callout_info}}
-`BACKUP` only offers table-level granularity; it _does not_ support backing up subsets of a table.
+`BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -35,8 +35,8 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-- Full cluster backups can only be run by members of the `admin` role. By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have read access (`SELECT` or `USAGE`) on all objects being backed up.
+- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](authorization#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges

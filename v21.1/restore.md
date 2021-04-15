@@ -20,8 +20,8 @@ You can restore:
 
 ## Required privileges
 
-- Full cluster restores can only be run by members of the `admin` role. By default, the `root` user belongs to the `admin` role.
-- For all other restores, the user must have write access (`CREATE` or `INSERT`) on all objects affected.
+- [Full cluster restores](#full-cluster) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other restores, the user must have [write access](authorization#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
 
 ### Source privileges
 
@@ -39,7 +39,7 @@ You can restore:
 -----------|-------------
  `table_pattern` | The table or [view](views.html) you want to restore.
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
- `destination` | The URL where the full backup (and appended incremental backups, if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
+ `destination` | The URL where the [full backup](take-full-and-incremental-backups.html#full-backups) (and appended [incremental backups](take-full-and-incremental-backups.html#incremental-backups), if applicable) is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `partitioned_backup_location` | The URL where a [locality-aware backup](take-and-restore-locality-aware-backups.html) is stored. When restoring from an incremental locality-aware backup, you need to include _every_ locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `kv_option_list` | Control your backup's behavior with [these options](#options).
@@ -93,14 +93,14 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 #### Databases
 
-Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
+**The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
 
 ~~~ sql
 RESTORE DATABASE backup_database_name FROM 'your_backup_location';
 ~~~
 
 {{site.data.alerts.callout_success}}
-If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database by using the [`WITH into_db` option](#options).
+If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use [_table_ restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
 {{site.data.alerts.end}}
 
 #### Tables
@@ -240,7 +240,7 @@ To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subd
 
 ### Restore from incremental backups
 
-Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -257,7 +257,7 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 
 ### Restore a backup asynchronously
 
-Use the `detached` [option](#options) to execute the restore job asynchronously:
+Use the `detached` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql

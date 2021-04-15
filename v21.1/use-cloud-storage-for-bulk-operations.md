@@ -38,7 +38,7 @@ The location parameters often contain special characters that need to be URI-enc
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-You can also disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
+You can disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>

@@ -26,13 +26,15 @@ You can use the [`BACKUP`][backup] statement to efficiently back up your cluster
 
 Full backups are now available to both core and enterprise users.
 
-Full backups contain an un-replicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
+Full backups contain an un-replicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp. Optionally, you can include the available [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) in the backup.
 
-In most cases, **it's recommended to take full nightly backups of your cluster**. A cluster backup allows you to do the following:
+In most cases, **it's recommended to take nightly full backups of your cluster**. A cluster backup allows you to do the following:
 
 - Restore table(s) from the cluster
 - Restore database(s) from the cluster
 - Restore a full cluster
+
+### Take a full backup
 
 To do a cluster backup, use the [`BACKUP`](backup.html) statement:
 
@@ -72,15 +74,17 @@ A full cluster restore can only be run on a target cluster that has _never_ had 
 To take incremental backups, you need an [enterprise license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
-If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
+If your cluster grows too large for nightly [full backups](#full-backups), you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
 Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
 {{site.data.alerts.callout_danger}}
 Incremental backups can only be created within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process.
 
-You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html).
+You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html#gc-ttlseconds).
 {{site.data.alerts.end}}
+
+### Take an incremental backup
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
 

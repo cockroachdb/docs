@@ -65,7 +65,7 @@ When restoring a [full backup](take-full-and-incremental-backups.html#full-backu
 
 And the restored cluster does not have [nodes with the locality](partitioning.html#node-attributes) `region=us-west1`, the restored cluster will still have a zone configuration for `us-west1`. This means that the cluster's data will _not_ be reshuffled to `us-west1` because the region does not exist. The data will be distributed as if the zone configuration does not exist. For the data to be distributed correctly, you can [add node(s)](cockroach-start.html) with the missing region or [remove the zone configuration](configure-zone.html#remove-a-replication-zone).
 
-For example, a locality-aware backup created with
+For example, a locality-aware backup created with:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -73,7 +73,7 @@ For example, a locality-aware backup created with
 	  ('s3://us-east-bucket?COCKROACH_LOCALITY=default', 's3://us-west-bucket?COCKROACH_LOCALITY=region%3Dus-west')
 ~~~
 
-can be restored by running:
+The backup above can be restored by running:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -84,12 +84,12 @@ can be restored by running:
 To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
 
 {{site.data.alerts.callout_info}}
-[`RESTORE`](restore.html) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`](backup.html) or [`RESTORE`](restore.html) was not full cluster. Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
+[`RESTORE`](restore.html) is not truly locality-aware; while restoring from backups, a node may read from a store that does not match its locality. This can happen in the cases that either the [`BACKUP`](backup.html) or [`RESTORE`](restore.html) was not of a [full cluster](take-full-and-incremental-backups.html#full-backups). Note that during a locality-aware restore, some data may be temporarily located on another node before it is eventually relocated to the appropriate node. To avoid this, you can [manually restore zone configurations from a locality-aware backup](#manually-restore-zone-configurations-from-a-locality-aware-backup).
 {{site.data.alerts.end}}
 
 ## Create an incremental locality-aware backup
 
-If you backup to a destination already containing a full backup, an incremental backup will be appended to the full backup in a subdirectory. For example:
+If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup in a subdirectory. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -98,7 +98,9 @@ If you backup to a destination already containing a full backup, an incremental 
 ~~~
 
 {{site.data.alerts.callout_info}}
-It is recommended that the same localities be included for every incremental backup in the series of backups; however, only the `default` locality is required. When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
+When [restoring from an incremental locality-aware backup](#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
+
+It is recommended that the same localities be included for every incremental backup in the series of backups; however, only the `default` locality is required.
 {{site.data.alerts.end}}
 
 And if you want to explicitly control where your incremental backups go, specify the subdirectory in the `BACKUP` statement:
@@ -134,7 +136,7 @@ can be restored by running:
 To view the available subdirectories, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
 
 {{site.data.alerts.callout_info}}
-When restoring from an incremental locality-aware backup, you need to include _every_ locality ever used, even if it was only used once.
+When [restoring from an incremental locality-aware backup](take-and-restore-locality-aware-backups.html#restore-from-an-incremental-locality-aware-backup), you need to include _every_ locality ever used, even if it was only used once.
 {{site.data.alerts.end}}
 
 ## Manually restore zone configurations from a locality-aware backup

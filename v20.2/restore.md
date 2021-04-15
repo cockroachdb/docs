@@ -20,8 +20,8 @@ You can restore:
 
 ## Required privileges
 
-- Full cluster restores can only be run by members of the `admin` role. By default, the `root` user belongs to the `admin` role.
-- For all other restores, the user must have write access (`CREATE` or `INSERT`) on all objects affected.
+- Full cluster restores can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other restores, the user must have [write access](authorization#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
 
 ### Source privileges
 
@@ -93,7 +93,7 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 #### Databases
 
-Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
+**The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup. 
 
 ~~~ sql
 RESTORE DATABASE backup_database_name FROM 'your_backup_location';
