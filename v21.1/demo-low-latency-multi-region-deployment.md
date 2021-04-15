@@ -29,7 +29,6 @@ Because the instructions on this page describe how to simulate a multi-region cl
 
 ## Prerequisites
 
-- [A CockroachDB trial enterprise license](#a-cockroachdb-trial-enterprise-license)
 - [A basic understanding of the MovR application](#a-basic-understanding-of-the-movr-application)
 - [Docker](https://www.docker.com) installed on the local machine
 
