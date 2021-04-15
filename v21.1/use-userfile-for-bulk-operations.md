@@ -11,7 +11,7 @@ toc: true
 - [`cockroach userfile get`](#get-files)
 - [`cockroach userfile delete`](#delete-files)
 
-Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
+<span class="version-tag">New in v21.1:</span> For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command. For other formats, you can [upload a userfile](#upload-a-file) and then run [`IMPORT`](#import-from-userfile).
 
 ## Upload a file
 
@@ -61,6 +61,23 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 ~~~
 
 For more information, see [`cockroach userfile delete`](cockroach-userfile-delete.html).
+
+## Upload and import from a dump file
+
+{{site.data.alerts.callout_info}}
+We recommend using [`cockroach import`](cockroach-import.html) for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](import.html) statement.
+{{site.data.alerts.end}}
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
+~~~
+
+~~~
+successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
+~~~
+
+For more information, see [`cockroach import`](cockroach-import.html).
 
 ## Import from `userfile`
 
