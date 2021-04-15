@@ -8,7 +8,7 @@ The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html)
 - Set or drop a column's [`NOT NULL` constraint](not-null.html)
--  Change a column's [data type](data-types.html)
+- Change a column's [data type](data-types.html)
 
 {{site.data.alerts.callout_info}}
 To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
@@ -46,7 +46,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Altering column data types
 
- Support for altering column data types is [experimental](experimental-features.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
+Support for altering column data types is [experimental](experimental-features.html), with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
 
 The following are equivalent in CockroachDB:
 

@@ -8,14 +8,10 @@ The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html)
 - Set or drop a column's [`NOT NULL` constraint](not-null.html)
-- <span class="version-tag">New in v20.2:</span> Change a column's [data type](data-types.html)
+- Increase the precision of the column's [data type](data-types.html)
 
 {{site.data.alerts.callout_info}}
 To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-Support for altering column types is [experimental](experimental-features.html) in CockroachDB versions v20.2, with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
@@ -37,16 +33,21 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 | `table_name` | The name of the table with the column you want to modify. |
 | `column_name` | The name of the column you want to modify. |
 | `SET DEFAULT a_expr` | The new [Default Value](default-value.html) you want to use. |
-| `typename` | The new [data type](data-types.html) you want to use.<br><span class="version-tag">New in v20.2:</span> Support for altering column types is expanded in CockroachDB v20.2, but still [experimental](experimental-features.html), and with certain limitations. For details, see [Altering column data types](#altering-column-data-types). |
+| `typename` | The new, altered type you want to use.<br>In CockroachDB versions < v21.1, support for altering column types is limited to increasing the precision of the current column type. For details, see [Altering column types](#altering-column-types). |
 | `USING a_expr` | <span class="version-tag">New in v20.2:</span> Specifies how to compute a new column value from the old column value. |
 
 ## Viewing schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
-## Altering column data types
+## Altering column types
 
-<span class="version-tag">New in v20.2:</span> Support for altering column data types is [experimental](experimental-features.html) in CockroachDB versions v20.2, with [certain limitations](#limitations-on-altering-data-types). To enable column type altering, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`.
+In CockroachDB versions < v21.1, support for altering column types is limited to increasing the precision of the current type of a column. You cannot convert the column type to another data type, or decrease the precision of the column type. Changing the column type from its current type to the same type and precision will result in a no-op, with no error.
+
+You can use `ALTER COLUMN TYPE` if the following conditions are met:
+
+- The on-disk representation of the column remains unchanged. For example, you cannot change the column data type from `STRING` to an `INT`.
+- The existing data remains valid. For example, you can change the column data type from `STRING[10]` to `STRING[20]`, but not to `STRING [5]` since that will invalidate the existing data.
 
 The following are equivalent in CockroachDB:
 
@@ -54,21 +55,7 @@ The following are equivalent in CockroachDB:
 - `ALTER TABLE ... ALTER COLUMN TYPE`
 - `ALTER TABLE ... ALTER COLUMN SET DATA TYPE`
 
-For examples of `ALTER COLUMN TYPE`, [Examples](#convert-to-a-different-data-type).
-
-### Limitations on altering data types
-
-You can alter the data type of a column if:
-
-- The column is not part of an [index](indexes.html).
-- The column does not have [`CHECK` constraints](check.html).
-- The column does not own a [sequence](create-sequence.html).
-- The `ALTER COLUMN TYPE` statement is not part of a [combined `ALTER TABLE` statement](alter-table.html#subcommands).
-- The `ALTER COLUMN TYPE` statement is not inside an [explicit transaction](begin-transaction.html).
-
-{{site.data.alerts.callout_info}}
-Most `ALTER COLUMN TYPE` changes are finalized asynchronously. Schema changes on the table with the altered column may be restricted, and writes to the altered column may be rejected until the schema change is finalized.
-{{site.data.alerts.end}}
+For an example of `ALTER COLUMN TYPE`, see [Increase a column type's precision](#increase-a-column-types-precision).
 
 ## Examples
 
@@ -114,168 +101,19 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
+### Increase a column type's precision
 
-### Convert to a different data type
-
-The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_credit_lim';
-~~~
-
-~~~
-  column_name  |   data_type
----------------+----------------
-  c_credit_lim | DECIMAL(10,2)
-(1 row)
-~~~
-
-Suppose you want to change the data type from `DECIMAL` to [`STRING`](string.html).
-
-First, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`:
+The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database contains a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html). Suppose you want to increase the precision of the column's data type to `DECIMAL (12,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SET enable_experimental_alter_column_type_general = true;
-~~~
-
-Then, alter the column type:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
+> ALTER TABLE customer ALTER c_credit_lim type DECIMAL (12,2);
 ~~~
 
 ~~~
-NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
-~~~
+ALTER TABLE
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_credit_lim';
-~~~
-
-~~~
-  column_name  | data_type
----------------+------------
-  c_credit_lim | STRING
-(1 row)
-~~~
-
-
-### Change a column type's precision
-
-The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table contains a column `c_balance` of type [`DECIMAL(12,2)`](decimal.html):
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_balance';
-~~~
-
-~~~
-  column_name |   data_type
---------------+----------------
-  c_balance   | DECIMAL(12,2)
-(1 row)
-~~~
-
-Suppose you want to increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DECIMAL(14,2)`:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE customer ALTER c_balance TYPE DECIMAL(14,2);
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_balance';
-~~~
-
-~~~
-  column_name |   data_type
---------------+----------------
-  c_balance   | DECIMAL(14,2)
-(1 row)
-~~~
-
-### Change a column's type using an expression
-
-You can change the data type of a column and create a new, computed value from the old column values, with a [`USING` clause](#parameters). For example:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_discount';
-~~~
-
-~~~
-  column_name |  data_type
---------------+---------------
-  c_discount  | DECIMAL(4,4)
-(1 row)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT c_discount FROM customer LIMIT 10;
-~~~
-
-~~~
-  c_discount
---------------
-      0.1569
-      0.4629
-      0.2932
-      0.0518
-      0.3922
-      0.1106
-      0.0622
-      0.4916
-      0.3072
-      0.0316
-(10 rows)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE customer ALTER c_discount TYPE STRING USING ((c_discount*100)::DECIMAL(4,2)::STRING || ' percent');
-~~~
-
-~~~
-NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_discount';
-~~~
-
-~~~
-  column_name | data_type
---------------+------------
-  c_discount  | STRING
-(1 row)
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT c_discount FROM customer LIMIT 10;
-~~~
-
-~~~
-   c_discount
------------------
-  15.69 percent
-  46.29 percent
-  29.32 percent
-  5.18 percent
-  39.22 percent
-  11.06 percent
-  6.22 percent
-  49.16 percent
-  30.72 percent
-  3.16 percent
-(10 rows)
+Time: 80.814044ms
 ~~~
 
 ## See also
