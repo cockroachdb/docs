@@ -145,7 +145,7 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 
 ## Partial inverted indexes
 
-<span class="version-tag">New in v21.1:</span> You can create a [partial](partial-indexes.html) inverted index, an inverted index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container datatypes, create a partial inverted index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
+<span class="version-tag">New in v21.1:</span> You can create a [partial](partial-indexes.html) inverted index, an inverted index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, create a partial inverted index by including a clause that evaluates to true on a boolean predicate, like a `WHERE` clause.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -323,7 +323,7 @@ SELECT * FROM users WHERE user_profile -> 'online' = 'true';
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-Using index hinting with the partial inverted index.
+Now, use index hinting with the partial inverted index.
 
 ~~~ sql
 SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND user_profile->'location' = '"NYC"';
