@@ -112,10 +112,6 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 (1 row)
 ~~~
 
-### Known limitation
-
-{% include {{ page.version.version }}/known-limitations/kms-scheduled-backup.md %}
-
 ## Use a passphrase
 
 {% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
