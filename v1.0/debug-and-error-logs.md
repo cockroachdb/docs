@@ -1,6 +1,6 @@
 ---
 title: Debug & Error Logs
-summary: Learn how to find and read CockroachDB error logs
+summary: CockroachDB logs include details about certain node-level and range-level events, such as errors.
 toc: true
 ---
 

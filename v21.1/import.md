@@ -1,6 +1,6 @@
 ---
 title: IMPORT
-summary: Import data into your CockroachDB cluster.
+summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
 ---
 

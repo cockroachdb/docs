@@ -1,6 +1,6 @@
 ---
 title: Change and Remove Objects in a Database Schema
-summary: How to update the objects in a database schema
+summary: How to change and remove objects in a CockroachDB database schema.
 toc: true
 ---
 

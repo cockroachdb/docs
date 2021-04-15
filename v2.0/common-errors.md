@@ -1,6 +1,6 @@
 ---
 title: Common Errors
-summary: Understand and resolve common errors.
+summary: Understand and resolve common error messages written to stderr or logs.
 toc: false
 redirect_from: general-troubleshooting.html
 ---

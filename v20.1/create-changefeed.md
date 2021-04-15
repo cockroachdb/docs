@@ -1,6 +1,6 @@
 ---
 title: CREATE CHANGEFEED
-summary: The CREATE CHANGEFEED statement creates a new enterprise changefeed, which provides row-level change subscriptions in a configurable format to a configurable sink.
+summary: The CREATE CHANGEFEED statement creates a changefeed of row-level change subscriptions in a configurable format to a configurable sink.
 toc: true
 ---
 

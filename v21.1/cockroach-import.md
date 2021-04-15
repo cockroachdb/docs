@@ -1,6 +1,6 @@
 ---
 title: cockroach import
-summary: Import a local file to a cluster
+summary: The cockroach import command imports a database or table from a local dump file into a running cluster.
 toc: true
 ---
 

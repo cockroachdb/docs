@@ -1,6 +1,6 @@
 ---
 title: RELEASE SAVEPOINT
-summary: Commit a nested transaction.
+summary: The RELEASE SAVEPOINT statement commits the nested transaction starting at the corresponding SAVEPOINT statement using the same savepoint name.
 toc: true
 ---
 

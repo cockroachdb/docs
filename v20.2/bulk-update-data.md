@@ -1,6 +1,6 @@
 ---
 title: Bulk-update Data
-summary: How to update a large amount of data in a cluster
+summary: How to to update a large amount of data using batch-update loops.
 toc: true
 ---
 

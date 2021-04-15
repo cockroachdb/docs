@@ -10,8 +10,8 @@
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart-trial-cluster.html",
-      "/cockroachcloud/quickstart.html"
+      "/cockroachcloud/quickstart.html",
+      "/cockroachcloud/quickstart-trial-cluster.html"
     ]
   },
   {% include_cached sidebar-data-cockroachcloud.json %},
@@ -58,6 +58,12 @@
                   "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
                   "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
                   "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
+                ]
+              },
+              {
+                "title": "Simulate a Multi-Region Cluster on localhost",
+                "urls": [
+                  "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
                 ]
               }
             ]
@@ -870,8 +876,7 @@
               {
                 "title": "Tuning Tutorial",
                 "urls": [
-                  "/${VERSION}/performance-tuning.html",
-                  "/${VERSION}/performance-tuning-insecure.html"
+                  "/${VERSION}/performance-tuning.html"
                 ]
               }
             ]
@@ -1871,12 +1876,6 @@
                     ]
                   },
                   {
-                    "title": "<code>SHOW QUERIES</code>",
-                    "urls": [
-                      "/${VERSION}/show-queries.html"
-                    ]
-                  },
-                  {
                     "title": "<code>SHOW RANGES</code>",
                     "urls": [
                       "/${VERSION}/show-ranges.html"
@@ -1916,6 +1915,12 @@
                     "title": "<code>SHOW SESSIONS</code>",
                     "urls": [
                       "/${VERSION}/show-sessions.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW STATEMENTS</code>",
+                    "urls": [
+                      "/${VERSION}/show-statements.html"
                     ]
                   },
                   {

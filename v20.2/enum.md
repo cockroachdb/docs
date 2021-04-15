@@ -1,6 +1,6 @@
 ---
 title: ENUM
-summary: ENUM data types comprise a set of values.
+summary: CockroachDB's CockroachDB's ENUM data types comprise a set of values.
 toc: true
 ---
 

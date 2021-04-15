@@ -1,6 +1,6 @@
 ---
 title: Use Userfile for Bulk Operations
-summary: Import data into your CockroachDB cluster with user-scoped storage.
+summary: The IMPORT statement imports various types of data into CockroachDB.with user-scoped storage.
 toc: true
 ---
 

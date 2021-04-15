@@ -1,6 +1,6 @@
 ---
 title: MULTIPOLYGON
-summary: A MULTIPOLYGON is a collection of POLYGONs.
+summary: The spatial MULTIPOLYGON object is a collection of POLYGONs.
 toc: true
 ---
 

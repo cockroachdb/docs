@@ -1,6 +1,6 @@
 ---
 title: Add Secondary Indexes
-summary: Index columns in your schema
+summary: Best practices for working with secondary indexes in CockroachDB.
 toc: true
 ---
 

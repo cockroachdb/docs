@@ -57,8 +57,8 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | IDE | Recommended version | Support level |
 |-----+---------------------+---------------|
-| [DataGrip](https://www.jetbrains.com/datagrip/) | [2019.1 or higher](https://www.jetbrains.com/datagrip/download) | Beta |
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2018.1 or higher](https://www.jetbrains.com/idea/download) | Beta |
+| [DataGrip](https://www.jetbrains.com/datagrip/) | [2021.1 or higher](https://www.jetbrains.com/datagrip/download) | Full |
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2021.1 or higher](https://www.jetbrains.com/idea/download) | Beta |
 
 ## Schema migration tools
 

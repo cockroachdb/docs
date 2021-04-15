@@ -6,11 +6,17 @@ toc: true
 
  The `SHOW ENUMS` statement lists the [enumerated data types](enum.html) in the current database.
 
-## Synopsis
+## Syntax
 
 <div>
   {% include {{ page.version.version }}/sql/generated/diagrams/show_enums.html %}
 </div>
+
+## Parameters
+
+Parameter | Description
+----------|------------
+`name`<br>`name.name` | The name of the [schema](create-schema.html) from which to show enumerated data types, or the name of the [database](create-database.html) and the [schema](create-schema.html), separated by a "`.`".
 
 ## Examples
 
@@ -30,10 +36,23 @@ toc: true
 ~~~
 
 ~~~
-  schema |  name   |                  value
----------+---------+-------------------------------------------
-  public | weekday | monday|tuesday|wednesday|thursday|friday
-  public | weekend | sunday|saturday
+  schema |  name   |                   values                   | owner
+---------+---------+--------------------------------------------+--------
+  public | weekday | {monday,tuesday,wednesday,thursday,friday} | demo
+  public | weekend | {sunday,saturday}                          | demo
+(2 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW ENUMS FROM movr.public;
+~~~
+
+~~~
+  schema |  name   |                   values                   | owner
+---------+---------+--------------------------------------------+--------
+  public | weekday | {monday,tuesday,wednesday,thursday,friday} | demo
+  public | weekend | {sunday,saturday}                          | demo
 (2 rows)
 ~~~
 

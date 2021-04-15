@@ -54,7 +54,7 @@ The DistSQL Plan Viewer displays the physical query plan, as well as execution s
 Field | Description | Execution engine
 ------+-------------+----------------
 &lt;Processor&gt;/&lt;id&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, a "TableReader" processor reads in data, and an "Aggregator" aggregates input rows. | Both
-&lt;index&gt;@&lt;table&gt; | The index used by the processor. | Both
+&lt;table&gt;@&lt;index&gt; | The index used by the processor. | Both
 Spans | The interval of the key space read by the processor. For example, `[/1 - /1]` indicates that only the key with value `1` is read by the processor. | Both
 Out | The output columns. | Both
 batches output | The number of batches of columnar data output. | Vectorized engine only
