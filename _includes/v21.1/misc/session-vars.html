@@ -445,6 +445,20 @@
    <td>Yes</td>
   </tr>
 
+
+  <tr>
+   <td>
+    <code>stub_catalog_tables</code>
+   </td>
+   <td><span class="version-tag">New in v21.1</span>: If <code>off</code>, querying an unimplemented, empty <a href="pg-catalog.html"><code>pg_catalog</code></a> table will result in an error, as is the case in v20.2 and earlier.
+       <br>If <code>on</code>, querying an unimplemented, empty <code>pg_catalog</code> table simply returns no rows.</td>
+   <td>
+    <code>on</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
   <tr>
    <td>
     <code>timezone</code>
