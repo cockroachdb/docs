@@ -12,23 +12,26 @@ CockroachDB currently only supports `COPY FROM` statements issued from third-par
 
 ## Syntax
 
-~~~
-COPY table_name [( <colnames...> )] FROM STDIN [WITH <option> = <value>]
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/copy_from.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 -----------|-------------
 `table_name` | The name of the table to which to copy data.
-`<colnames>` | The name(s) of the column(s) to which to copy data.
-`WITH <option> = value` | Specify one or more [copy options](#options).
+`opt_column_list` | The column name, or list of column names, to which to copy data.
+`WITH copy_options` | Optionally specify one or more [copy options](#options).
 
 ### Options
 
 Option | Description
 -----------|-------------
-`BINARY` | Copy data from binary format.<br>If not specified, CockroachDB copies in plaintext format. Note that CSV format is not yet supported.
+`DELIMITER 'value'` | <span class="version-tag">New in v21.1:</span> The value that delimits the rows of input data, passed as a string.
+`NULL 'value'` | <span class="version-tag">New in v21.1:</span> The string that represents a `NULL` value in the input data.
+`BINARY` | Copy data from binary format. If `BINARY` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
+`CSV` | <span class="version-tag">New in v21.1:</span> Copy data from CSV format. If `CSV` is specified, no other format can be specified.<br>If no format is specified, CockroachDB copies in plaintext format.
 
 ## Required privileges
 
@@ -60,14 +63,14 @@ Take note of the `(sql/tcp)` connection string listed under `Connection paramete
 ~~~
 # Connection parameters:
 ...
-#   (sql/tcp) postgres://root:admin@127.0.0.1:65207?sslmode=require
+#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 Open a new terminal window, and connect to your demo cluster with `psql`, using the connection string provided for the demo cluster, with the `movr` database specified:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ psql postgres://root:admin@127.0.0.1:65207/movr?sslmode=require
+$ psql postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 In the `psql` shell, run the following command to start copying data from `psql` to the `users` table:

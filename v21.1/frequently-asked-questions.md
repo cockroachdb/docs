@@ -30,6 +30,8 @@ CockroachDB is well suited for applications that require reliable, available, an
 - Cloud migrations
 - Infrastructure initiatives built for the cloud
 
+<a name="single-row-perf"></a>
+
 CockroachDB returns single-row reads in 2ms or less and single-row writes in 4ms or less, and supports a variety of [SQL and operational tuning practices](performance-tuning.html) for optimizing query performance. However, CockroachDB is not yet suitable for heavy analytics / OLAP.
 
 ## How easy is it to install CockroachDB?

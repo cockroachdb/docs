@@ -58,9 +58,7 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 
 ## Examples
 
-### Setup
-
-{% include {{page.version.version}}/sql/movr-statements-partitioning.md %}
+{% include {{page.version.version}}/sql/movr-statements-geo-partitioned-replicas.md %}
 
 ### Split a table
 
@@ -70,10 +68,18 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 ~~~
 
 ~~~
-  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
-+-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
-  NULL      | NULL    |       25 |      0.005563 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
-(1 row)
+                                     start_key                                     |                                     end_key                                      | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                             replica_localities
+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+----------+---------------+--------------+--------------------------+----------+-----------------------------------------------------------------------------
+  NULL                                                                             | /"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |       37 |      0.000116 |            1 | region=us-east1,az=b     | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            |       46 |      0.000886 |            8 | region=europe-west1,az=c | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   |       45 |       0.00046 |            8 | region=europe-west1,az=c | {2,4,8}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      |       44 |      0.001015 |            8 | region=europe-west1,az=c | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            |       77 |      0.000214 |            8 | region=europe-west1,az=c | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" |       43 |      0.001299 |            8 | region=europe-west1,az=c | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         |       61 |      0.000669 |            3 | region=us-east1,az=d     | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    |       57 |      0.000671 |            3 | region=us-east1,az=d     | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | NULL                                                                             |       87 |      0.000231 |            4 | region=us-west1,az=a     | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+(9 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -82,11 +88,11 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 ~~~
 
 ~~~
-              key              |         pretty         |       split_enforced_until
-+------------------------------+------------------------+----------------------------------+
-  \275\211\022chicago\000\001  | /Table/53/1/"chicago"  | 2262-04-11 23:47:16.854776+00:00
-  \275\211\022new york\000\001 | /Table/53/1/"new york" | 2262-04-11 23:47:16.854776+00:00
-  \275\211\022seattle\000\001  | /Table/53/1/"seattle"  | 2262-04-11 23:47:16.854776+00:00
+              key              |   pretty    |        split_enforced_until
+-------------------------------+-------------+--------------------------------------
+  \275\211\022chicago\000\001  | /"chicago"  | 2262-04-11 23:47:16.854776+00:00:00
+  \275\211\022new york\000\001 | /"new york" | 2262-04-11 23:47:16.854776+00:00:00
+  \275\211\022seattle\000\001  | /"seattle"  | 2262-04-11 23:47:16.854776+00:00:00
 (3 rows)
 ~~~
 
@@ -96,13 +102,36 @@ Note that when a table is [truncated](truncate.html), it is essentially re-creat
 ~~~
 
 ~~~
-   start_key  |   end_key   | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
-+-------------+-------------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
-  NULL        | /"chicago"  |       25 |      0.000872 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"chicago"  | /"new york" |       45 |      0.001943 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"new york" | /"seattle"  |       46 |       0.00184 |            8 | region=us-west1       | {3,5,8}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"seattle"  | NULL        |       47 |      0.000908 |            7 | region=us-west1       | {1,4,7}  | {region=us-east1,region=us-central1,region=us-west1}
-(4 rows)
+                                     start_key                                     |                                     end_key                                      | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities
+-----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+----------+---------------+--------------+--------------------------+----------+-------------------------------------------------------------------------------------
+  NULL                                                                             | /"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |       37 |      0.000116 |            1 | region=us-east1,az=b     | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /"amsterdam"/PrefixEnd                                                           |       46 |      0.000446 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"amsterdam"/PrefixEnd                                                           | /"boston"                                                                        |       70 |             0 |            8 | region=europe-west1,az=c | {3,6,8}  | {"region=us-east1,az=d","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"boston"                                                                        | /"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            |       71 |       0.00044 |            1 | region=us-east1,az=b     | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /"boston"/PrefixEnd                                                              |       45 |      0.000225 |            2 | region=us-east1,az=c     | {2,3,8}  | {"region=us-east1,az=c","region=us-east1,az=d","region=europe-west1,az=c"}
+  /"boston"/PrefixEnd                                                              | /"chicago"                                                                       |       72 |             0 |            8 | region=europe-west1,az=c | {2,4,8}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"chicago"                                                                       | /"los angeles"                                                                   |       74 |             0 |            8 | region=europe-west1,az=c | {2,4,8}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"los angeles"                                                                   | /"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   |       73 |      0.000235 |            8 | region=europe-west1,az=c | {2,4,8}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /"los angeles"/PrefixEnd                                                         |       44 |      0.000462 |            4 | region=us-west1,az=a     | {4,6,8}  | {"region=us-west1,az=a","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"los angeles"/PrefixEnd                                                         | /"new york"                                                                      |       68 |             0 |            8 | region=europe-west1,az=c | {2,6,8}  | {"region=us-east1,az=c","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"new york"                                                                      | /"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      |       69 |      0.000553 |            8 | region=europe-west1,az=c | {1,3,8}  | {"region=us-east1,az=b","region=us-east1,az=d","region=europe-west1,az=c"}
+  /"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /"new york"/PrefixEnd                                                            |       77 |      0.000111 |            1 | region=us-east1,az=b     | {1,6,8}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=c"}
+  /"new york"/PrefixEnd                                                            | /"paris"                                                                         |       62 |             0 |            8 | region=europe-west1,az=c | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"paris"                                                                         | /"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            |       63 |      0.000103 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /"paris"/PrefixEnd                                                               |       43 |      0.000525 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"paris"/PrefixEnd                                                               | /"rome"                                                                          |       64 |             0 |            8 | region=europe-west1,az=c | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"rome"                                                                          | /"rome"/PrefixEnd                                                                |       65 |      0.000539 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"}
+  /"rome"/PrefixEnd                                                                | /"san francisco"                                                                 |       66 |             0 |            8 | region=europe-west1,az=c | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"san francisco"                                                                 | /"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" |       67 |      0.000235 |            4 | region=us-west1,az=a     | {4,5,8}  | {"region=us-west1,az=a","region=us-west1,az=b","region=europe-west1,az=c"}
+  /"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /"san francisco"/PrefixEnd                                                       |       61 |      0.000365 |            4 | region=us-west1,az=a     | {4,5,6}  | {"region=us-west1,az=a","region=us-west1,az=b","region=us-west1,az=c"}
+  /"san francisco"/PrefixEnd                                                       | /"seattle"                                                                       |       88 |             0 |            3 | region=us-east1,az=d     | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"seattle"                                                                       | /"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         |       89 |      0.000304 |            3 | region=us-east1,az=d     | {3,4,8}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=c"}
+  /"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /"seattle"/PrefixEnd                                                             |       57 |      0.000327 |            3 | region=us-east1,az=d     | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"seattle"/PrefixEnd                                                             | /"washington dc"                                                                 |       90 |             0 |            3 | region=us-east1,az=d     | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"washington dc"                                                                 | /"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    |       91 |      0.000344 |            3 | region=us-east1,az=d     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /"washington dc"/PrefixEnd                                                       |       87 |      0.000231 |            3 | region=us-east1,az=d     | {1,2,3}  | {"region=us-east1,az=b","region=us-east1,az=c","region=us-east1,az=d"}
+  /"washington dc"/PrefixEnd                                                       | NULL                                                                             |      157 |             0 |            4 | region=us-west1,az=a     | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+(27 rows)
 ~~~
 
 ### Split a table with a compound primary key
@@ -139,9 +168,9 @@ Because this table has several columns in common with the `users` table, you can
 ~~~
 
 ~~~
-  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
-+-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
-  NULL      | NULL    |       45 |      0.007222 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  start_key | end_key | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                             replica_localities
+------------+---------+----------+---------------+--------------+--------------------------+----------+-----------------------------------------------------------------------------
+  NULL      | NULL    |      310 |      0.007218 |            7 | region=europe-west1,az=b | {1,4,7}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=b"}
 (1 row)
 ~~~
 
@@ -153,14 +182,14 @@ Now you can split the table based on the compound primary key. Note that you don
 ~~~
 
 ~~~
-                     key                    |           pretty           |       split_enforced_until
-+-------------------------------------------+----------------------------+----------------------------------+
-  \303\211\022new york\000\001\0223\000\001 | /Table/59/1/"new york"/"3" | 2262-04-11 23:47:16.854776+00:00
-  \303\211\022new york\000\001\0227\000\001 | /Table/59/1/"new york"/"7" | 2262-04-11 23:47:16.854776+00:00
-  \303\211\022chicago\000\001\0223\000\001  | /Table/59/1/"chicago"/"3"  | 2262-04-11 23:47:16.854776+00:00
-  \303\211\022chicago\000\001\0227\000\001  | /Table/59/1/"chicago"/"7"  | 2262-04-11 23:47:16.854776+00:00
-  \303\211\022seattle\000\001\0223\000\001  | /Table/59/1/"seattle"/"3"  | 2262-04-11 23:47:16.854776+00:00
-  \303\211\022seattle\000\001\0227\000\001  | /Table/59/1/"seattle"/"7"  | 2262-04-11 23:47:16.854776+00:00
+                     key                    |     pretty      |        split_enforced_until
+--------------------------------------------+-----------------+--------------------------------------
+  \303\211\022new york\000\001\0223\000\001 | /"new york"/"3" | 2262-04-11 23:47:16.854776+00:00:00
+  \303\211\022new york\000\001\0227\000\001 | /"new york"/"7" | 2262-04-11 23:47:16.854776+00:00:00
+  \303\211\022chicago\000\001\0223\000\001  | /"chicago"/"3"  | 2262-04-11 23:47:16.854776+00:00:00
+  \303\211\022chicago\000\001\0227\000\001  | /"chicago"/"7"  | 2262-04-11 23:47:16.854776+00:00:00
+  \303\211\022seattle\000\001\0223\000\001  | /"seattle"/"3"  | 2262-04-11 23:47:16.854776+00:00:00
+  \303\211\022seattle\000\001\0227\000\001  | /"seattle"/"7"  | 2262-04-11 23:47:16.854776+00:00:00
 (6 rows)
 ~~~
 
@@ -170,15 +199,15 @@ Now you can split the table based on the compound primary key. Note that you don
 ~~~
 
 ~~~
-     start_key    |     end_key     | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                   replica_localities
-+-----------------+-----------------+----------+---------------+--------------+-----------------------+----------+---------------------------------------------------------+
-  NULL            | /"chicago"/"3"  |       45 |      0.000792 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"chicago"/"3"  | /"chicago"/"7"  |       48 |      0.000316 |            1 | region=us-east1       | {1,5,6}  | {region=us-east1,region=us-central1,region=us-central1}
-  /"chicago"/"7"  | /"new york"/"3" |       49 |      0.001452 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"new york"/"3" | /"new york"/"7" |       46 |      0.000094 |            6 | region=us-central1    | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"new york"/"7" | /"seattle"/"3"  |       47 |      0.001865 |            9 | region=us-west1       | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"seattle"/"3"  | /"seattle"/"7"  |       50 |      0.000106 |            9 | region=us-west1       | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /"seattle"/"7"  | NULL            |       51 |      0.002597 |            9 | region=us-west1       | {1,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+     start_key    |     end_key     | range_id | range_size_mb | lease_holder |  lease_holder_locality   | replicas |                             replica_localities
+------------------+-----------------+----------+---------------+--------------+--------------------------+----------+-----------------------------------------------------------------------------
+  NULL            | /"chicago"/"3"  |      310 |      0.001117 |            7 | region=europe-west1,az=b | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"chicago"/"3"  | /"chicago"/"7"  |      314 |             0 |            7 | region=europe-west1,az=b | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"chicago"/"7"  | /"new york"/"3" |      315 |      0.000933 |            7 | region=europe-west1,az=b | {3,4,7}  | {"region=us-east1,az=d","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"new york"/"3" | /"new york"/"7" |      311 |             0 |            7 | region=europe-west1,az=b | {1,4,7}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"new york"/"7" | /"seattle"/"3"  |      312 |      0.001905 |            7 | region=europe-west1,az=b | {1,4,7}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=b"}
+  /"seattle"/"3"  | /"seattle"/"7"  |      316 |      0.000193 |            7 | region=europe-west1,az=b | {1,6,7}  | {"region=us-east1,az=b","region=us-west1,az=c","region=europe-west1,az=b"}
+  /"seattle"/"7"  | NULL            |      317 |       0.00307 |            7 | region=europe-west1,az=b | {1,4,7}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=b"}
 (7 rows)
 ~~~
 
@@ -198,11 +227,11 @@ Then split the table ranges by secondary index values:
 > ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
 ~~~
-         key        |      pretty      |       split_enforced_until
-+-------------------+------------------+----------------------------------+
-  \277\214*2\000    | /Table/55/4/25   | 2262-04-11 23:47:16.854776+00:00
-  \277\214*d\000    | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-  \277\214*\226\000 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
+         key        | pretty |        split_enforced_until
+--------------------+--------+--------------------------------------
+  \277\214*2\000    | /25    | 2262-04-11 23:47:16.854776+00:00:00
+  \277\214*d\000    | /5E+1  | 2262-04-11 23:47:16.854776+00:00:00
+  \277\214*\226\000 | /75    | 2262-04-11 23:47:16.854776+00:00:00
 (3 rows)
 ~~~
 
@@ -211,12 +240,12 @@ Then split the table ranges by secondary index values:
 > SHOW RANGES FROM INDEX rides@revenue_idx;
 ~~~
 ~~~
-  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                  replica_localities
-+-----------+---------+----------+---------------+--------------+-----------------------+----------+------------------------------------------------------+
-  NULL      | /25     |       55 |      0.007446 |            6 | region=us-central1    | {3,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /25       | /5E+1   |       56 |      0.008951 |            6 | region=us-central1    | {3,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /5E+1     | /75     |       57 |      0.008205 |            2 | region=us-east1       | {2,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
-  /75       | NULL    |       60 |      0.009322 |            6 | region=us-central1    | {2,6,9}  | {region=us-east1,region=us-central1,region=us-west1}
+  start_key | end_key | range_id | range_size_mb | lease_holder | lease_holder_locality | replicas |                             replica_localities
+------------+---------+----------+---------------+--------------+-----------------------+----------+-----------------------------------------------------------------------------
+  NULL      | /25     |      249 |      0.007464 |            3 | region=us-east1,az=d  | {3,5,7}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=b"}
+  /25       | /5E+1   |      250 |      0.008995 |            3 | region=us-east1,az=d  | {3,5,7}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=b"}
+  /5E+1     | /75     |      251 |      0.008212 |            3 | region=us-east1,az=d  | {3,5,7}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=b"}
+  /75       | NULL    |      252 |      0.009267 |            3 | region=us-east1,az=d  | {3,5,7}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=b"}
 (4 rows)
 ~~~
 
@@ -226,14 +255,14 @@ You can specify the time at which a split enforcement expires by adding a `WITH 
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2020-01-10 23:30:00+00:00';
+> ALTER TABLE vehicles SPLIT AT VALUES ('chicago'), ('new york'), ('seattle') WITH EXPIRATION '2022-01-10 23:30:00+00:00';
 ~~~
 ~~~
-              key              |         pretty         |   split_enforced_until
-+------------------------------+------------------------+---------------------------+
-  \276\211\022chicago\000\001  | /Table/54/1/"chicago"  | 2020-01-10 23:30:00+00:00
-  \276\211\022new york\000\001 | /Table/54/1/"new york" | 2020-01-10 23:30:00+00:00
-  \276\211\022seattle\000\001  | /Table/54/1/"seattle"  | 2020-01-10 23:30:00+00:00
+              key              |   pretty    |     split_enforced_until
+-------------------------------+-------------+-------------------------------
+  \276\211\022chicago\000\001  | /"chicago"  | 2022-01-10 23:30:00+00:00:00
+  \276\211\022new york\000\001 | /"new york" | 2022-01-10 23:30:00+00:00:00
+  \276\211\022seattle\000\001  | /"seattle"  | 2022-01-10 23:30:00+00:00:00
 (3 rows)
 ~~~
 
@@ -245,13 +274,22 @@ You can see the split's expiration date in the `split_enforced_until` column. Th
 ~~~
 
 ~~~
-  range_id |      start_pretty      |       end_pretty       |   split_enforced_until
-+----------+------------------------+------------------------+---------------------------+
-        26 | /Table/54              | /Table/54/1/"chicago"  | NULL
-        75 | /Table/54/1/"chicago"  | /Table/54/1/"new york" | 2020-01-10 23:30:00+00:00
-        76 | /Table/54/1/"new york" | /Table/54/1/"seattle"  | 2020-01-10 23:30:00+00:00
-        78 | /Table/54/1/"seattle"  | /Table/55              | 2020-01-10 23:30:00+00:00
-(4 rows)
+  range_id |                                       start_pretty                                        |                                        end_pretty                                         |        split_enforced_until
+-----------+-------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------+--------------------------------------
+        38 | /Table/54                                                                                 | /Table/54/1/"amsterdam"                                                                   | NULL
+        55 | /Table/54/1/"amsterdam"                                                                   | /Table/54/1/"amsterdam"/PrefixEnd                                                         | NULL
+       109 | /Table/54/1/"amsterdam"/PrefixEnd                                                         | /Table/54/1/"boston"                                                                      | NULL
+       114 | /Table/54/1/"boston"                                                                      | /Table/54/1/"boston"/"\"\"\"\"\"\"B\x00\x80\x00\x00\x00\x00\x00\x00\x02"                  | NULL
+        50 | /Table/54/1/"boston"/"\"\"\"\"\"\"B\x00\x80\x00\x00\x00\x00\x00\x00\x02"                  | /Table/54/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\x03"                        | 2262-04-11 23:47:16.854776+00:00:00
+        49 | /Table/54/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\x03"                        | /Table/54/1/"boston"/PrefixEnd                                                            | 2262-04-11 23:47:16.854776+00:00:00
+       129 | /Table/54/1/"boston"/PrefixEnd                                                            | /Table/54/1/"chicago"                                                                     | NULL
+       241 | /Table/54/1/"chicago"                                                                     | /Table/54/1/"los angeles"                                                                 | 2022-01-10 23:30:00+00:00:00
+       130 | /Table/54/1/"los angeles"                                                                 | /Table/54/1/"los angeles"/PrefixEnd                                                       | NULL
+       131 | /Table/54/1/"los angeles"/PrefixEnd                                                       | /Table/54/1/"new york"                                                                    | NULL
+       132 | /Table/54/1/"new york"                                                                    | /Table/54/1/"new york"/"\x11\x11\x11\x11\x11\x11A\x00\x80\x00\x00\x00\x00\x00\x00\x01"    | 2022-01-10 23:30:00+00:00:00
+        48 | /Table/54/1/"new york"/"\x11\x11\x11\x11\x11\x11A\x00\x80\x00\x00\x00\x00\x00\x00\x01"    | /Table/54/1/"new york"/PrefixEnd                                                          | 2262-04-11 23:47:16.854776+00:00:00
+...
+(46 rows)
 ~~~
 
 

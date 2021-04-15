@@ -8,8 +8,8 @@ redirect_from:
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud (30-day trial)</button></a>
     <a href="quickstart.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud (30-day trial)</button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.

@@ -143,16 +143,16 @@ $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > 
 
 ### View a running export
 
-View running exports by using [`SHOW QUERIES`](show-queries.html):
+View running exports by using [`SHOW STATEMENTS`](show-statements.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW QUERIES;
+> SHOW STATEMENTS;
 ~~~
 
 ### Cancel a running export
 
-Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
+Use [`SHOW STATEMENTS`](show-statements.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

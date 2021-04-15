@@ -1,6 +1,6 @@
 ---
 title: Liquibase
-summary: Learn how to use Liquibase with CockroachDB.
+summary: Learn how to use Liquibase with a CockroachDB cluster.
 toc: true
 ---
 

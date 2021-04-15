@@ -7,10 +7,6 @@ toc: true
 
 The `SHOW TABLES` [statement](sql-statements.html) lists the schema, table name, table type, owner, and estimated row count for the tables or [views](views.html) in a schema or database.
 
-{{site.data.alerts.callout_success}}
-Estimating the number of rows in a table costs resources. To improve the performance of `SHOW TABLES` queries, disable row-count estimation by setting the `sql.show_tables.estimated_row_count.enabled` [cluster setting](cluster-settings.html) to `false` before executing a `SHOW TABLES` statement.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_info}}
 While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will list the object with a `(dropped)` suffix.
 {{site.data.alerts.end}}
@@ -35,6 +31,13 @@ Parameter | Description
 When a `database_name` and `schema_name` are omitted, the tables of the [current schema](sql-name-resolution.html#current-schema) in the [current database](sql-name-resolution.html#current-database) are listed.
 
 `SHOW TABLES` will attempt to find a schema with the specified name first. If that fails, it will try to find a database with that name instead, and list the tables of its `public` schema. For more details, see [Name Resolution](sql-name-resolution.html).
+
+## Performance
+
+To optimize the performance of the `SHOW TABLES` statement, you can do the following:
+
+- Disable table row-count estimation by setting the `sql.show_tables.estimated_row_count.enabled` [cluster setting](cluster-settings.html) to `false` before executing a `SHOW TABLES` statement.
+- Avoid running `SHOW TABLES` on databases with a large number of tables (e.g., more than 10,000 tables).
 
 ## Examples
 

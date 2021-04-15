@@ -1,6 +1,6 @@
 ---
 title: POLYGON
-summary: A POLYGON
+summary: A POLYGON is a shape with a closed exterior that is made up of lines.
 toc: true
 ---
 
