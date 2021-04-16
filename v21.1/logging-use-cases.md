@@ -15,7 +15,7 @@ We provide an example [file sink configuration](configure-logs.html#output-to-fi
 Your deployment may use an external service to collect and programmatically read logging data. For an example that uses Elasticsearch, see [Parse Logging Output](parse-logging-output.html).
 
 {{site.data.alerts.callout_info}}
-All log examples on this page use the default `crdb-v2` format. Most of the log entries record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html). Logging channels may also contain events that are *unstructured*. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented.
+All log examples on this page use the default `crdb-v2` format. Most of the log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html). Logging channels may also contain events that are *unstructured*. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -169,10 +169,10 @@ To log SQL client connection events to the `SESSIONS` channel, enable the `serve
 ~~~
 
 {{site.data.alerts.callout_info}}
-In addition to SQL sessions, connection events can include SQL-based liveness probe attempts, as well as attempts to use the [PostgreSQL cancel protocol](https://www.postgresql.org/docs/current/protocol-flow.html#id-1.10.5.7.9).
+In addition to SQL sessions, connection events can include SQL-based liveness probe attempts.
 {{site.data.alerts.end}}
 
-These logs show a [`client_connection_start`](eventlog.html#client_connection_start) (client connection established) and a [`client_connection_end`](eventlog.html#client_connection_end) (client connection terminated) event over a `hostssl` (TLS certificate over TCP) connection:
+These logs show a [`client_connection_start`](eventlog.html#client_connection_start) (client connection established) and a [`client_connection_end`](eventlog.html#client_connection_end) (client connection terminated) event over a `hostssl` (TLS transport over TCP) connection:
 
 ~~~
 I210323 21:53:58.300180 53298 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:52632›] 49 ={"Timestamp":1616536438300176000,"EventType":"client_connection_start","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:52632›"}
@@ -192,7 +192,7 @@ To log SQL session authentication events to the `SESSIONS` channel, enable the `
 > SET CLUSTER SETTING server.auth_log.sql_sessions.enabled = true;
 ~~~
 
-These logs show certificate authentication success over a `hostssl` (TLS certificate over TCP) connection: 
+These logs show certificate authentication success over a `hostssl` (TLS transport over TCP) connection: 
 
 ~~~
 I210323 23:35:19.458098 122619 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:53884›,hostssl,user=‹roach›] 62 ={"Timestamp":1616542519458095000,"EventType":"client_authentication_info","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:53884›","Transport":"hostssl","User":"‹roach›","Method":"cert-password","Info":"‹HBA rule: host  all all  all cert-password # built-in CockroachDB default›"}
@@ -205,7 +205,7 @@ I210323 23:35:19.458154 122619 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1
 - The [`client_authentication_ok`](eventlog.html#client_authentication_ok) event shows that certificate authentication was successful.
 - `User` shows that the SQL session is authenticated for user `roach`.
 
-These logs show password authentication failure over a `hostssl` (TLS certificate over TCP) connection:
+These logs show password authentication failure over a `hostssl` (TLS transport over TCP) connection:
 
 ~~~
 I210323 21:53:58.304573 53299 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:52632›,hostssl,user=‹roach›] 50 ={"Timestamp":1616536438304572000,"EventType":"client_authentication_info","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:52632›","Transport":"hostssl","User":"‹roach›","Method":"cert-password","Info":"‹HBA rule: host  all all  all cert-password # built-in CockroachDB default›"}
