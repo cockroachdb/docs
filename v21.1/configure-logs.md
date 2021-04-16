@@ -6,10 +6,10 @@ toc: true
 
 This page describes how to configure CockroachDB logs with the [`--log` flag](cockroach-start.html#logging) and a [YAML payload](#yaml-payload). Most logging behaviors are configurable, including:
 
-- The [logging sinks](#configure-logging-sinks) that output logs to different locations, including over the network
-- The [logging channels](logging-overview.html#logging-channels) that are mapped to each sink
-- The [format](logformats.html) used by the log messages
-- The [redaction](#redact-logs) of log messages
+- The [logging sinks](#configure-logging-sinks) that output logs to different locations, including over the network.
+- The [logging channels](logging-overview.html#logging-channels) that are mapped to each sink.
+- The [format](logformats.html) used by the log messages.
+- The [redaction](#redact-logs) of log messages.
 
 For examples of how these settings can be used in practice, see [Logging Use Cases](logging-use-cases.html) and [Parse Logging Output](parse-logging-output.html).
 
@@ -65,9 +65,9 @@ You can view your current settings by running `cockroach debug check-log-config`
 
 ## Configure logging sinks
 
-A logging *sink* outputs log messages from specified [logging channels](#logging-overview.html#logging-channels).
+Logging *sinks* route events from specified [logging channels](logging-overview.html#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-network), and the [standard error stream (`stderr`)](#output-to-stderr).
 
-CockroachDB can write logs to [files](#output-to-files), a [Fluentd](https://www.fluentd.org/)-compatible [server](#output-to-network), and the [standard error stream (`stderr`)](#output-to-stderr). Each output is configured under `sinks`:
+All supported output destinations are configured under `sinks`:
 
 ~~~ yaml
 sinks:
@@ -76,7 +76,7 @@ sinks:
       channels: {channels}
       ...
   fluent-servers:
-  	{server name}:
+    {server name}:
       channels: {channels}
       ...
   stderr:
@@ -86,7 +86,7 @@ sinks:
 
 <a name="common-sink-parameters">
 
-All three sink types use the following common parameters.
+All supported sink types use the following common parameters.
 
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -112,22 +112,22 @@ The channels that output to a log file are specified in its file sink configurat
 ~~~ yaml
 sinks:
   file-groups:
-  	default:
-  	  channels: [DEV]
+    default:
+      channels: [DEV]
     health:
       channels: [HEALTH]
       dir: health-logs
 ~~~
 
 {{site.data.alerts.callout_success}}
-A file group name is arbitrary and is used to name the log file. The `default` file group is an exception. For details, see [Log file naming](#log-file-naming).
+A file group name is arbitrary and is used to name the log files. The `default` file group is an exception. For details, see [Log file naming](#log-file-naming).
 {{site.data.alerts.end}}
 
 File groups accept the following parameters along with the [common sink parameters](#common-sink-parameters). 
 
 | Parameter         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `channels`        | List of channels that output to this sink. Use a YAML array or string of [channel names](#logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format).                                                                                                                                                                                        |
+| `channels`        | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format).                                                                                                                                                                                        |
 | `dir`             | Output directory for log files generated by this sink.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `max-file-size`   | Approximate maximum size of individual files generated by this sink.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `max-group-size`  | Approximate maximum combined size of all files to be preserved for this sink. An asynchronous garbage collection removes files that cause the file set to grow beyond this specified size.                                                                                                                                                                                                                                                                                                                                                       |
@@ -140,7 +140,7 @@ If not specified for a given file group, the parameter values are inherited from
 Log files are named in the following format:
 
 ~~~
-[process]-[file group].[host].[user].[start timestamp in UTC].[process ID].log
+{process}-{file group}.{host}.{user}.{start timestamp in UTC}.{process ID}.log
 ~~~
 
 For example, a file group `health` will generate a log file that looks like this:
@@ -156,7 +156,7 @@ cockroach-health.log
 ~~~
 
 {{site.data.alerts.callout_info}}
-Channels in a file group named `default` are output to a `cockroach.log` file.
+The files generated for a group named `default` are named after the pattern `cockroach.{metadata}.log`.
 {{site.data.alerts.end}}
 
 ### Output to network
@@ -176,7 +176,7 @@ Fluentd servers accept the following parameters along with the [common sink para
 
 | Parameter | Description                                                                                                        |
 |-----------|--------------------------------------------------------------------------------------------------------------------|
-| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](#logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format). |
+| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format). |
 | `address` | Network address and port of the log collector.                                                                     |
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
 
@@ -196,7 +196,7 @@ The `stderr` configuration accepts the following parameters along with the [comm
 
 | Parameter  | Description                                                       |
 |------------|-------------------------------------------------------------------|
-| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](#logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format). |
+| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format). |
 | `no-color` | When `true`, removes terminal color [escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code) from the output. |
 
 {{site.data.alerts.callout_info}}
@@ -218,11 +218,11 @@ Defaults for log files are set in `file-defaults`, which accepts all [common sin
 By default, CockroachDB adds log files to a `logs` subdirectory in the first on-disk [`store` directory](cockroach-start.html#store) (default: `cockroach-data`):
 
 ~~~
-/cockroachdb/cockroach/cockroach-data/logs
+/cockroach-data/logs
 ~~~
 
 {{site.data.alerts.callout_success}}
-Each Cockroach node generates log files in its own directory. These logs detail the internal activity of that node without visibility into the behavior of other nodes. When troubleshooting, it's best to refer to the output directory for the cluster log files, which collect the messages from all active nodes.
+Each Cockroach node generates log files in the directory specified by its logging configuration. These logs detail the internal activity of that node without visibility into the behavior of other nodes. When troubleshooting, it's best to refer to the output directory for the cluster log files, which collect the messages from all active nodes.
 {{site.data.alerts.end}}
 
 In cloud deployments, the main data store will be subject to an IOPS budget. Adding logs to the store directory will excessively consume IOPS. For this reason, cloud deployments should output log files to a separate directory with fewer IOPS restrictions. You can override the default logging directory like this:
@@ -245,7 +245,7 @@ sinks:
   file-groups:
     dev:
       channels: [DEV]
-	  dir: /custom/dir/path/
+    dir: /custom/dir/path/
 	...
   fluent-servers:
     ...
@@ -259,7 +259,7 @@ To ensure that you are protecting sensitive information, also [redact your logs]
 
 The default message format for log files is [`crdb-v2`](logformats.html#format-crdb-v2). Each `crdb-v2` log message starts with a flat prefix that contains event metadata (e.g., severity, date, timestamp, channel), followed by the event payload. For details on the metadata, see [Log formats](logformats.html#format-crdb-v2).
 
-If you plan to read logs programmatically, you can switch to JSON:
+If you plan to read logs programmatically, you can switch to a [JSON](logformats.html#format-json) or [compact JSON](logformats.html#format-json-compact) format:
 
 ~~~ yaml
 file-defaults:
@@ -302,8 +302,8 @@ Log messages are associated with a [severity level](logging.html#logging-levels)
 
 The [default configuration](#default-logging-configuration) uses the following severity levels for [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html):
 
-- File and network sinks output messages with `INFO` severity or higher. Since `INFO` is the lowest severity level, this includes all log messages.
-- `stderr` is configured with `filter: NONE` and does not receive log messages.
+- File and network sinks emit messages with `INFO` severity or higher. Since `INFO` is the lowest severity level, this includes all log messages.
+- `stderr` is configured with `filter: NONE` and does not emit log messages.
 
 {{site.data.alerts.callout_info}}
 All other `cockroach` commands use `filter: WARNING` and log to `stderr` by default, with these exceptions:
@@ -326,7 +326,7 @@ sinks:
 
 CockroachDB can redact personally identifiable information (PII) from log messages. The logging system includes two parameters that handle this differently:
 
-- `redact` is disabled by default. When enabled, `redact` automatically redacts sensitive data from logging output.
+- `redact` is disabled by default. When enabled, `redact` automatically redacts sensitive data from logging output. We do *not* recommend enabling this on the `DEV` channel because it impairs our ability to troubleshoot problems.
 - `redactable` is enabled by default. This places redaction markers around sensitive fields in log messages. These markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html), which aggregate CockroachDB log files and can be instructed to redact sensitive data from their output. 
 
 When collecting logs centrally (e.g., in data mining scenarios where non-privileged users have access to logs) or over a network (e.g., to an external log collector), it's safest to enable `redact`:
