@@ -79,7 +79,7 @@ future versions of CockroachDB may return an error in that case.
 
 ### Additional connection parameters
 
-The following additional parameters can be passed after the `?` character in the URL:
+The following additional parameters can be passed after the `?` character in the URL. After the first parameter is specified, any additional parameters must be separated by an ampersand (`&`).
 
 Parameter | Description | Default value
 ----------|-------------|---------------
