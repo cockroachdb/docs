@@ -72,7 +72,7 @@ homepage: true
         <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">Start a Dedicated Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/connect-to-your-cluster.html' | relative_url }}">Connect to Your Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
-        <li><a href="{{ '/v20.2/build-a-python-app-with-cockroachdb-django.html' | relative_url }}">Hello, World!</a></li>
+        <li><a href="{{ '/stable/build-a-python-app-with-cockroachdb-django.html' | relative_url }}">Hello, World!</a></li>
         </ul>
       </div>
     </div>
