@@ -77,12 +77,6 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 
-### KMS encryption not supported for scheduled backups
-
-You cannot [schedule a backup](create-schedule-for-backup.html) with [KMS encryption](take-and-restore-encrypted-backups.html#use-aws-key-management-service).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56082)
-
 ### Collation names that include upper-case or hyphens may cause errors
 
 Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
