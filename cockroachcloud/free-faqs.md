@@ -96,7 +96,7 @@ Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clus
 
 In the meantime, you can run a [`SELECT`]({{ '/stable/select.html' | relative_url }}) statement using the [`--format=csv` flag]({{ '/stable/cockroach-sql.html#general' | relative_url }}) to print the output into a file. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
 ~~~

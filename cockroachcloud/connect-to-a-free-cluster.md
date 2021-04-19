@@ -47,21 +47,21 @@ To connect to your cluster with the [built-in SQL client]({{ '/stable/cockroach-
 1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
 1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /path/to/cc-ca.crt /path/to/certs
     ~~~
 
     For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /Users/maxroach/Downloads/cc-ca.crt /Users/maxroach/certs
     ~~~    
@@ -87,21 +87,21 @@ To connect to your cluster with your application, use the connection string prov
 1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
 1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /path/to/cc-ca.crt /path/to/certs
     ~~~
 
     For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /Users/maxroach/Downloads/cc-ca.crt /Users/maxroach/certs
     ~~~    
