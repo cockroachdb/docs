@@ -11,9 +11,15 @@ toc: true
 - [`cockroach userfile get`](#get-files)
 - [`cockroach userfile delete`](#delete-files)
 
-<span class="version-tag">New in v21.1:</span> For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command. For other formats, you can [upload a userfile](#upload-a-file) and then run [`IMPORT`](#import-from-userfile).
+Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
+
+<span class="version-tag">New in v21.1:</span> For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command.
 
 ## Upload a file
+
+{{site.data.alerts.callout_info}}
+A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommend using [`cockroach userfile upload`](cockroach-userfile-upload.html) for quick uploads from your client (about 15MB or smaller).
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
