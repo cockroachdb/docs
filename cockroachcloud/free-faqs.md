@@ -45,7 +45,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### Why is CockroachCloud Free in beta?
 
-CockroachCloud Free is in beta while we work on adding core features like [import]({{ '/stable/import.html' | relative_url }}) and [backups](backups-page.html).
+CockroachCloud Free is in beta while we work on adding core features like [import]({{ '/stable/important.html' | relative_url }}) and [backups](backups-page.html).
 
 ### Where can I submit feedback or bugs on the beta?
 
