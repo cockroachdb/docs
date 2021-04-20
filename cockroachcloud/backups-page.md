@@ -8,7 +8,7 @@ redirect_from:
 
 This page describes the **Backups** page and how to restore your data.
 
-Cockroach Labs runs [full backups](../v20.2/backup.html#full-backups) daily and [incremental backups](../v20.2/backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+Cockroach Labs runs [full backups]({{ '/stable/backup.html#full-backups' | relative_url }}) daily and [incremental backups]({{ '/stable/backup.html#incremental-backups' | relative_url }}) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
 
@@ -95,20 +95,20 @@ To restore a database:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`](../v20.2/drop-database.html) or [`RENAME`](../v20.2/rename-database.html) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+    [Resolve any naming conflicts](#resolve-a-database-naming-conflict) by using [`DROP`]({{ '/stable/drop-database.html' | relative_url }}) or [`RENAME`]({{ '/stable/rename-database.html' | relative_url }}) on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
     {{site.data.alerts.end}}  
 
 1. Select any of the **Dependency options** to skip. You can:
-    - **Skip missing foreign keys**, which will remove missing [foreign key](../v20.2/foreign-key.html) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
-    - **Skip missing sequences**, which will ignore [sequence](../v20.2/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
-    - **Skip missing views**, which will skip restoring [views](../v20.2/views.html) that cannot be restored because their dependencies are not being restored at the same time.
+    - **Skip missing foreign keys**, which will remove missing [foreign key]({{ '/stable/foreign-key.html' | relative_url }}) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore [sequence]({{ '/stable/show-sequences.html' | relative_url }}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring [views]({{ '/stable/views.html' | relative_url }}) that cannot be restored because their dependencies are not being restored at the same time.
 
 1. Click **Continue**
 1. Once you have reviewed the restore details, click **Restore**.
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
-When the restore is complete, be sure to set any database-specific [zone configurations](../v20.2/configure-replication-zones.html) and, if applicable, [grant privileges](../v20.2/grant.html).
+When the restore is complete, be sure to set any database-specific [zone configurations]({{ '/stable/configure-replication-zones.html' | relative_url }}) and, if applicable, [grant privileges]({{ '/stable/grant.html' | relative_url }}).
 
 ### Restore a table
 
@@ -126,13 +126,13 @@ To restore a table:
 1. In the **Restore to** field, enter the name of the destination database.
 
     {{site.data.alerts.callout_info}}
-    [Resolve any naming conflicts](#resolve-a-table-naming-conflict) by using [`DROP`](../v20.2/drop-table.html) or [`RENAME`](../v20.2/rename-table.html) on the existing table. If you enter a unique name in the **Restore to** field, a new table will be created.
+    [Resolve any naming conflicts](#resolve-a-table-naming-conflict) by using [`DROP`]({{ '/stable/drop-table.html' | relative_url }}) or [`RENAME`]({{ '/stable/rename-table.html' | relative_url }}) on the existing table. If you enter a unique name in the **Restore to** field, a new table will be created.
     {{site.data.alerts.end}}  
 
 1. Select any of the **Dependency options** to skip. You can:
-    - **Skip missing foreign keys**, which will remove missing [foreign key](../v20.2/foreign-key.html) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
-    - **Skip missing sequences**, which will ignore [sequence](../v20.2/show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
-    - **Skip missing views**, which will skip restoring [views](../v20.2/views.html) that cannot be restored because their dependencies are not being restored at the same time.
+    - **Skip missing foreign keys**, which will remove missing [foreign key]({{ '/stable/foreign-key.html' | relative_url }}) constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore [sequence]({{ '/stable/show-sequences.html' | relative_url }}) dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring [views]({{ '/stable/views.html' | relative_url }}) that cannot be restored because their dependencies are not being restored at the same time.
 
 1. Click **Continue**
 1. Once you have reviewed the restore details, click **Restore**.
@@ -143,47 +143,47 @@ To restore a table:
 
 To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
-1. While [connected to your self-hosted CockroachDB cluster](../v20.2/connect-to-the-database.html), [back up](../v20.2/backup.html) your databases and/or tables to an [external location](../v20.2/backup.html#backup-file-urls):
+1. While [connected to your self-hosted CockroachDB cluster]({{ '/stable/connect-to-the-database.html' | relative_url }}), [back up]({{ '/stable/backup.html' | relative_url }}) your databases and/or tables to an [external location]({{ '/stable/backup.html#backup-file-urls' | relative_url }}):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BACKUP DATABASE example_database TO 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachCloud will need the `specified` credentials upon [`RESTORE`](../v20.2/restore.html).
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachCloud will need the `specified` credentials upon [`RESTORE`]({{ '/stable/restore.html' | relative_url }}).
     {{site.data.alerts.end}}
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
     ~~~
 
-1. [Restore](../v20.2/restore.html) to your CockroachCloud cluster:
+1. [Restore]({{ '/stable/restore.html' | relative_url }}) to your CockroachCloud cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESTORE DATABASE example_database FROM 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
 
 ### Back up and restore data manually
 
-Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) your Cockroach Cloud data manually:
+Additionally, you can [back up and restore]({{ '/stable/backup-and-restore.html' | relative_url }}) your Cockroach Cloud data manually:
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
     ~~~
 
-1. [Back up](../v20.2/backup.html) your databases and/or tables to an [external location](../v20.2/backup.html#backup-file-urls):
+1. [Back up]({{ '/stable/backup.html' | relative_url }}) your databases and/or tables to an [external location]({{ '/stable/backup.html#backup-file-urls' | relative_url }}):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BACKUP DATABASE example_database TO 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
@@ -192,9 +192,9 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
     If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
     {{site.data.alerts.end}}
 
-1. To [restore](../v20.2/restore.html) to your CockroachCloud cluster:
+1. To [restore]({{ '/stable/restore.html' | relative_url }}) to your CockroachCloud cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESTORE DATABASE example_database FROM 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
@@ -205,21 +205,21 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
 
 The databases you want to restore cannot have the same name as an existing database in the target cluster. Before you restore a database, verify that the database name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and run the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
 
-If the database's name is already in use, either [drop the existing database](../v20.2/drop-database.html):
+If the database's name is already in use, either [drop the existing database]({{ '/stable/drop-database.html' | relative_url }}):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE example_database;
 ~~~
 
-Or [change the existing database's name](../v20.2/rename-database.html):
+Or [change the existing database's name]({{ '/stable/rename-database.html' | relative_url }}):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE example_database RENAME TO archived_example_database;
 ~~~
@@ -228,21 +228,21 @@ Or [change the existing database's name](../v20.2/rename-database.html):
 
 The table you want to restore cannot have the same name as an existing table in the target database. Before you restore a table, verify that the table name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and run the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM database_name;
 ~~~   
 
-If the table's name is already in use, either [drop the existing table](../v20.2/drop-table.html):
+If the table's name is already in use, either [drop the existing table]({{ '/stable/drop-table.html' | relative_url }}):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE target_database.example_table;
 ~~~
 
-Or [change the existing table's name](../v20.2/rename-table.html):
+Or [change the existing table's name]({{ '/stable/rename-table.html' | relative_url }}):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE target_database.example_table RENAME TO target_database.archived_example_table;
 ~~~

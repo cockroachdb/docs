@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_danger}}
-The CockroachDB Helm chart is being maintained to ensure compatibility with newer versions of Kubernetes. No new feature development is currently planned. For new production and local deployments, we currently recommend using a manual configuration (**Configs** option). If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
+The CockroachDB Helm chart is undergoing maintenance for compatibility with Kubernetes versions 1.17 through 1.21 (the latest version as of this writing). No new feature development is currently planned. For new production and local deployments, we currently recommend using a manual configuration (**Configs** option). If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

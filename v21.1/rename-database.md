@@ -4,7 +4,7 @@ summary: The ALTER DATABASE ... RENAME TO statement changes the name of a databa
 toc: true
 ---
 
-The `RENAME TO` clause is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database. 
+The `RENAME TO` clause is part of [`ALTER DATABASE`](alter-database.html), and changes the name of a database.
 
 {% include {{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -30,56 +30,7 @@ Parameter | Description
 
 ## Limitations
 
-It is not possible to rename a database if:
-
-- The database is referenced by a [view](views.html). For more details, see [View Dependencies](views.html#view-dependencies).
-- The database is explicitly specified in a reference to a [sequence](create-sequence.html). In this case, you can drop the column in the table that references the sequence, or you can modify the reference so that it does not specify the database name.
-
-    For example, suppose you create a database `db`, and in that database, a sequence `seq`:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE db;
-      USE db;
-      CREATE SEQUENCE seq;
-    ~~~
-
-    Then you reference the sequence in a table `tab`:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > CREATE TABLE tab (
-      id UUID DEFAULT gen_random_uuid(),
-      count INT DEFAULT nextval('db.seq')
-    );
-    ~~~
-
-    Attempting to rename the database will result in an error:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > SET sql_safe_updates=false;
-      ALTER DATABASE db RENAME TO mydb;
-    ~~~
-
-    ~~~
-    ERROR: cannot rename database because relation "db.public.tab" depends on relation "db.public.seq"
-    SQLSTATE: 2BP01
-    HINT: you can drop the column default "count" of "db.public.seq" referencing "db.public.tab" or modify the default to not reference the database name "db"
-    ~~~
-
-    In order to rename the database `db`, you need to drop or change the reference in the default value for the `seq` column to not explicitly name the database `db`:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER TABLE tab ALTER COLUMN count SET DEFAULT nextval('seq');
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > USE defaultdb;
-      ALTER DATABASE db RENAME TO mydb;
-    ~~~
+- It is not possible to rename a database if the database is referenced by a [view](views.html). For more details, see [View Dependencies](views.html#view-dependencies).
 
 ## Examples
 

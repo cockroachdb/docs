@@ -78,7 +78,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xJ
@@ -86,7 +86,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar  xvz
@@ -101,24 +101,24 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
     </section>
 
-3. Initialize the `movr` [workload](../v20.2/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
+3. Initialize the `movr` [workload]({{ '/stable/cockroach-workload.html' | relative_url }}) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
 
-    In the [connection string](../v20.2/connection-parameters.html), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
+    In the [connection string]({{ '/stable/connection-parameters.html' | relative_url }}), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
     'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
@@ -126,13 +126,13 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 4. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM movr;
     ~~~
@@ -151,7 +151,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 5. Run your first query:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM movr.users WHERE city='new york';
     ~~~
@@ -172,8 +172,8 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 Learn more:
 
-- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- Build a ["Hello World" app with the Django framework](../v20.2/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
+- Use the [built-in SQL client]({{ '/stable/cockroach-sql.html' | relative_url }}) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Build a ["Hello World" app with the Django framework]({{ '/stable/build-a-python-app-with-cockroachdb-django.html' | relative_url }}), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
 - Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../stable/demo-fault-tolerance-and-recovery.html).
 
 Before you move into production:

@@ -118,7 +118,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
 1. From the **Database** dropdown, select the database you want to connect to.
 
-    The default database is `defaultdb`. For more information, see [Default databases](../v20.2/show-databases.html#preloaded-databases).
+    The default database is `defaultdb`. For more information, see [Default databases]({{ '/stable/show-databases.html#preloaded-databases' | relative_url }}).
 
 1. Click **Next**.
 
@@ -135,7 +135,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 
 <section class="filter-content" markdown="1" data-scope="command-line">
 
-To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql.html):
+To connect to your cluster with the [built-in SQL client]({{ '/stable/cockroach-sql.html' | relative_url }}):
 
 1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine.
 
@@ -143,28 +143,28 @@ To connect to your cluster with the [built-in SQL client](../v20.2/cockroach-sql
 
 1. Create a `certs` directory on your local machine:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
 1. Move the downloaded `<cluster_name>-ca.crt` file to the `certs` directory:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /path/to/cc-ca.crt /path/to/certs
     ~~~
 
     For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /Users/maxroach/Downloads/<cluster_name>-ca.crt /Users/maxroach/certs
     ~~~    
 
 1. If you have not done so already, [install the CockroachDB binary](../stable/install-cockroachdb.html).
-1. Copy the [`cockroach sql`](../v20.2/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
-1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../v20.2/cockroach-sql.html).
+1. Copy the [`cockroach sql`]({{ '/stable/cockroach-sql.html' | relative_url }}) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
+1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client]({{ '/stable/cockroach-sql.html' | relative_url }}).
 
     Be sure to replace the `<your_certs_ directory>` placeholder with the path to the `certs` directory you created earlier.
 
@@ -183,21 +183,21 @@ To connect to your cluster with your application, use the connection string prov
 1. Click the name of the `<cluster_name>-ca.crt` to download the CA certificate to your local machine.
 1. Create a `certs` directory on your local machine:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs
     ~~~
 
 1. Move the downloaded `<cluster_name>-ca.crt` file to the `certs` directory:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /path/to/cc-ca.crt /path/to/certs
     ~~~
 
     For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mv /Users/maxroach/Downloads/<cluster_name>-ca.crt /Users/maxroach/certs
     ~~~    
@@ -213,17 +213,17 @@ To connect to your cluster with your application, use the connection string prov
 
 For examples, see the following:
 
-- [Build a Python App with CockroachDB](../v20.2/build-a-python-app-with-cockroachdb.html)
-- [Build a Go App with CockroachDB](../v20.2/build-a-go-app-with-cockroachdb.html)
-- [Build a Java App with CockroachDB](../v20.2/build-a-java-app-with-cockroachdb.html)
+- [Build a Python App with CockroachDB]({{ '/stable/build-a-python-app-with-cockroachdb.html' | relative_url }})
+- [Build a Go App with CockroachDB]({{ '/stable/build-a-go-app-with-cockroachdb.html' | relative_url }})
+- [Build a Java App with CockroachDB]({{ '/stable/build-a-java-app-with-cockroachdb.html' | relative_url }})
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="connection-parameters">
-To connect to your cluster with a [CockroachDB-compatible tool](../v20.2/third-party-database-tools.html), use the connection parameters provided in the Console.
+To connect to your cluster with a [CockroachDB-compatible tool]({{ '/stable/third-party-database-tools.html' | relative_url }}), use the connection parameters provided in the Console.
 </section>
 
 ## What's next
 
-- [Build a "Hello, World" app](../v20.2/build-a-python-app-with-cockroachdb-django.html)
+- [Build a "Hello, World" app]({{ '/stable/build-a-python-app-with-cockroachdb-django.html' | relative_url }})
 - [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)

@@ -8,7 +8,7 @@ redirect_from:
 
 CockroachCloud requires you to create SQL users to access the cluster.
 
-By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../v20.2/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
+By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges]({{ '/stable/authorization.html#assign-privileges' | relative_url }}) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ## Create a SQL user
 
@@ -40,7 +40,7 @@ Once you have [connected to the cluster's SQL client](connect-to-your-cluster.ht
 
 To create a new user, use the [`CREATE USER ... WITH PASSWORD`](../stable/create-user.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE USER <username> WITH PASSWORD '<password>';
 ~~~
@@ -80,7 +80,7 @@ On the **SQL Users** page, you can do the following:
 <section class="filter-content" markdown="1" data-scope="client">
 To list all the users in your cluster, use the [`SHOW USERS`](../stable/show-users.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW USERS;
 ~~~
@@ -117,7 +117,7 @@ To change a user's password:
 <section class="filter-content" markdown="1" data-scope="client">
 To change a user's password, use the [`ALTER USER`](../stable/alter-user.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER USER <user> WITH PASSWORD '<new password>';
 ~~~
@@ -148,7 +148,7 @@ To remove a user:
 <section class="filter-content" markdown="1" data-scope="client">
 To remove a user, use the [`DROP USER`](../stable/drop-user.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP USER <user>;
 ~~~
@@ -160,23 +160,23 @@ All of a user's privileges must be [revoked](#revoke-a-users-privileges) before 
 
 ## Grant privileges
 
-Access to the data in your cluster is controlled by [privileges](../v20.2/authorization.html#assign-privileges). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+Access to the data in your cluster is controlled by [privileges]({{ '/stable/authorization.html#assign-privileges' | relative_url }}). When a user connects to a database, either via the CockroachDB SQL client or a Postgres driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
 
 To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](../stable/grant.html) statement. For example, to assign a user all privileges for all tables in a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT ALL ON DATABASE <database> TO <user>;
 ~~~
 
 To assign a user more limited privileges for one table in a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > GRANT SELECT, INSERT ON TABLE <database>.<table> TO <user>;
 ~~~
 
-For more details, see [Privileges](../v20.2/authorization.html#assign-privileges) and [`GRANT`](../stable/grant.html).
+For more details, see [Privileges]({{ '/stable/authorization.html#assign-privileges' | relative_url }}) and [`GRANT`](../stable/grant.html).
 
 ## Manage privileges
 
@@ -187,7 +187,7 @@ For more details, see [Privileges](../v20.2/authorization.html#assign-privileges
 
 To show privileges granted to a user, use the [`SHOW GRANTS`](../stable/show-grants.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW GRANTS ON DATABASE <database> FOR <user>;
 ~~~
@@ -196,7 +196,7 @@ To show privileges granted to a user, use the [`SHOW GRANTS`](../stable/show-gra
 
 To revoke privileges from a user, use the [`REVOKE`](../stable/revoke.html) statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > REVOKE INSERT ON TABLE <database>.<table> FROM <user>;
 ~~~
@@ -209,49 +209,49 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
 
 - To create a role, use the [`CREATE ROLE`](../stable/create-role.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE ROLE <role>;
     ~~~
 
 - To grant privileges to a role, use the [`GRANT <privilege>`](../stable/grant.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT <privilege> ON DATABASE <database> TO <role>;
     ~~~
 
 - To add a user (or another role) to a role, use the [`GRANT <role>`](../stable/grant-roles.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > GRANT <role> TO <user or role>;
     ~~~
 
 - To revoke privileges from a role, use the [`REVOKE <privilege>`](../stable/revoke.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE INSERT ON TABLE <database>.<table> FROM <role>;
     ~~~
 
 - To remove a user (or another role) from a role, use the [`REVOKE <role>`](../stable/revoke-roles.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > REVOKE <role> FROM <user or role>;
     ~~~
 
 - To list all roles in your cluster, use the [`SHOW ROLES`](../stable/show-roles.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW ROLES;
     ~~~
 
 - To remove a role, use the [`DROP ROLE`](../stable/drop-role.html) statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DROP ROLE <role>;
     ~~~
