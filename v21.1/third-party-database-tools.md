@@ -1,10 +1,12 @@
 ---
-title: Third-Party Database Tools
+title: Third-Party Tools Supported by Cockroach Labs
 summary: Learn about third-party software that works with CockroachDB.
 toc: true
 ---
 
-CockroachDB's support of the PostgreSQL wire protocol enables support for many [drivers](build-an-app-with-cockroachdb.html), [ORMs](build-an-app-with-cockroachdb.html), and other types of third-party database tools.
+CockroachDB's support of the PostgreSQL wire protocol makes most PostgreSQL drivers, ORM frameworks, and other types of third-party database tools designed for PostgreSQL compatible with CockroachDB. Cockroach Labs guarantees [official support](#support-levels) for a set of popular PostgreSQL tools, which we list on this page.
+
+For a list of tools supported by the CockroachDB community, see [Third-Party Tools Supported by the Community](community-tooling.html).
 
 {% include {{page.version.version}}/misc/tooling.md %}
 
@@ -12,3 +14,4 @@ CockroachDB's support of the PostgreSQL wire protocol enables support for many [
 
 - [Build an App with CockroachDB](build-an-app-with-cockroachdb.html)
 - [Install a Postgres Client](install-client-drivers.html)
+- [Third-Party Tools Supported by the Community](community-tooling.html)

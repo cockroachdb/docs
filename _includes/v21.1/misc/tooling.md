@@ -1,9 +1,9 @@
 ## Support levels
 
-We’ve partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools.
+Cockroach Labs has partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools.
 
-- **Full support** indicates that the vast majority of the tool's features should work without issue with CockroachDB. CockroachDB is regularly tested against the recommended version documented here.
-- **Beta support** indicates that the tool has been tried with CockroachDB, but its integration might require additional steps, lack support for all features, or exhibit unexpected behavior.
+- **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the recommended version documented here.
+- **Beta support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
 
 If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
 
@@ -21,7 +21,6 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | [PHP 7.4.6](https://www.php.net/downloads) | Beta |
 | Python | [psycopg2](build-a-python-app-with-cockroachdb.html) | [2.8.6](https://www.psycopg.org/docs/install.html) | Full |
 | Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [1.2.3](https://rubygems.org/gems/pg) | Full |
-| Rust | <a href="https://crates.io/crates/postgres/" data-proofer-ignore>postgres</a> {% comment %} This link is in HTML instead of Markdown because HTML proofer dies bc of https://github.com/rust-lang/crates.io/issues/163 {% endcomment %} | [0.17.3](https://crates.io/crates/postgres/) | Beta |
 
 ## Data access frameworks (e.g., ORMs)
 
@@ -43,14 +42,8 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | GUI | Recommended version | Support level |
 |-----+---------------------+---------------|
-| [Beekeeper Studio](https://beekeeperstudio.io) | [1.6.10 or higher](https://www.beekeeperstudio.io/get) | Full |
 | [DBeaver](https://dbeaver.com/) | [5.2.3 or higher](https://dbeaver.com/download/) | Full |
 | [DbVisualizer](https://www.dbvis.com/) | [10.0.22 or higher](https://www.dbvis.com/download/) | Beta |
-| [Navicat for PostgreSQL](https://www.navicat.com/en/products/navicat-for-postgresql)/[Navicat Premium](https://www.navicat.com/en/products/navicat-premium) | [12.1.25 or higher](https://www.navicat.com/en/download/navicat-for-postgresql) | Beta |
-| [Pgweb](http://sosedoff.github.io/pgweb/) | [0.9.12 or higher](https://github.com/sosedoff/pgweb/releases/latest) | Beta |
-| [Postico](https://eggerapps.at/postico/) | 1.5.8 or higher | Beta |
-| [TablePlus](https://tableplus.com/) | [Build 222 or higher](https://tableplus.com/download) | Beta |
-| [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html) | [1.3.9 or higher](https://www.vaultproject.io/docs/install) | Beta |
 
 ## Integrated development environments (IDEs)
 
