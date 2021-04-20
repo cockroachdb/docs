@@ -20,7 +20,7 @@ No [privileges](authorization.html#assign-privileges) are required to list repli
 
 Parameter | Description
 ----------|------------
-`range_name` | The name of the system [range](architecture/overview.html#glossary) for which to show [replication zone configurations](configure-replication-zones.html).
+`zone_name` | The name of the system [range](architecture/overview.html#glossary) for which to show [replication zone configurations](configure-replication-zones.html).
 `database_name` | The name of the [database](create-database.html) for which to show [replication zone configurations](configure-replication-zones.html).
 `table_name` | The name of the [table](create-table.html) for which to show [replication zone configurations](configure-replication-zones.html).
 `partition_name` | The name of the [partition](partitioning.html) for which to show [replication zone configurations](configure-replication-zones.html).
@@ -63,12 +63,12 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
+> SHOW ZONE CONFIGURATION FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
 ~~~
 
 ~~~
                          target                        |                                 raw_config_sql
-+------------------------------------------------------+---------------------------------------------------------------------------------+
+-------------------------------------------------------+----------------------------------------------------------------------------------
   INDEX vehicles@vehicles_auto_index_fk_city_ref_users | ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
                                                        |     range_min_bytes = 134217728,
                                                        |     range_max_bytes = 536870912,
