@@ -317,7 +317,7 @@ In the following steps, replace the placeholder text in the code with the actual
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ openssl x509 -in certs/client.<username_1>.crt -text | grep CN=
+    $ openssl x509 -in certs/client.<username_1>.crt -text | grep "CN ="
     ~~~
 
     Sample Output:
