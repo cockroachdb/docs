@@ -147,7 +147,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 2. Navigate back to the [S3 bucket](https://s3.console.aws.amazon.com/) to confirm that the data is now streaming to the bucket. A new directory should display on the **Overview** tab.
 
     {{site.data.alerts.callout_info}}
-    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed]({{ '/stable/change-data-capture.html#debug-a-changefeed' | relative_url).
+    If your changefeed is running but data is not displaying in your S3 bucket, you might have to [debug your changefeed]({{ '/stable/change-data-capture.html#debug-a-changefeed' | relative_url }}).
     {{site.data.alerts.end}}
 
 ## Step 8. Configure Snowflake
