@@ -58,7 +58,7 @@ For a description of the sequence of SQL statements issued by the MovR applicati
 
 ## Step 1. Simulate a multi-region cluster on your local machine
 
-To set up a simulated multi-region cluster on your local machine, follow the instructions in [Simulate a multi-region cluster on localhost](simulate-a-multi-region-cluster-on-localhost.html).
+{% include {{page.version.version}}/sql/start-a-multi-region-demo-cluster.md %}
 
 To verify that the simulated latencies are working as expected, check the [Network Latency Page](ui-network-latency-page.html) in the DB Console. Round trip times between  `us-west1` and `europe-west1` should be in the 150 ms range.
 
