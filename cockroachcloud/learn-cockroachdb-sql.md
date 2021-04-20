@@ -4,7 +4,7 @@ summary: Learn some of the most essential CockroachDB SQL statements on a local 
 toc: true
 ---
 
-This tutorial walks you through some of the most essential CockroachDB SQL statements. For a complete list of supported SQL statements and related details, see [SQL Statements]({{ '/stable/sql-statements.html' | relative_url }}).
+This tutorial walks you through some of the most essential CockroachDB SQL statements. For a complete list of supported SQL statements and related details, see [SQL Statements](../v20.1/sql-statements.html).
 
 ## Before you begin
 
@@ -25,14 +25,14 @@ To create a new database, connect with your initial "admin" user and use [`CREAT
 > CREATE DATABASE bank;
 ~~~
 
-Database names must follow [these identifier rules]({{ '/stable/keywords-and-identifiers.html#identifiers' | relative_url }}). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
+Database names must follow [these identifier rules](../v20.1/keywords-and-identifiers.html#identifiers). To avoid an error in case the database already exists, you can include `IF NOT EXISTS`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS bank;
 ~~~
 
-When you no longer need a database, use [`DROP DATABASE`]({{ '/stable/drop-database.html' | relative_url }}) followed by the database name to remove the database and all its objects:
+When you no longer need a database, use [`DROP DATABASE`](../v20.1/drop-database.html) followed by the database name to remove the database and all its objects:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -41,7 +41,7 @@ When you no longer need a database, use [`DROP DATABASE`]({{ '/stable/drop-datab
 
 ## Show databases
 
-To see all databases, use the [`SHOW DATABASES`]({{ '/stable/show-databases.html' | relative_url }}) statement or the `\l` [shell command]({{ '/stable/cockroach-sql.html#commands' | relative_url }}):
+To see all databases, use the [`SHOW DATABASES`](../v20.1/show-databases.html) statement or the `\l` [shell command](../v20.1/cockroach-sql.html#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -83,7 +83,7 @@ When working in the default database, you do not need to reference it explicitly
 
 ## Create a table
 
-To create a table, use [`CREATE TABLE`]({{ '/stable/create-table.html' | relative_url }}) followed by a table name, the column names, and the [data type]({{ '/stable/data-types.html' | relative_url }}) and [constraint]({{ '/stable/constraints.html' | relative_url }}), if any, for each column:
+To create a table, use [`CREATE TABLE`](../v20.1/create-table.html) followed by a table name, the column names, and the [data type](../v20.1/data-types.html) and [constraint](../v20.1/constraints.html), if any, for each column:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -93,7 +93,7 @@ To create a table, use [`CREATE TABLE`]({{ '/stable/create-table.html' | relativ
 );
 ~~~
 
-Table and column names must follow [these rules]({{ '/stable/keywords-and-identifiers.html#identifiers' | relative_url }}). Also, when you do not explicitly define a [primary key]({{ '/stable/primary-key.html' | relative_url }}), CockroachDB will automatically add a hidden `rowid` column as the primary key.
+Table and column names must follow [these rules](../v20.1/keywords-and-identifiers.html#identifiers). Also, when you do not explicitly define a [primary key](../v20.1/primary-key.html), CockroachDB will automatically add a hidden `rowid` column as the primary key.
 
 To avoid an error in case the table already exists, you can include `IF NOT EXISTS`:
 
@@ -105,7 +105,7 @@ To avoid an error in case the table already exists, you can include `IF NOT EXIS
 );
 ~~~
 
-To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`]({{ '/stable/show-columns.html' | relative_url }}) statement or the `\d <table>` [shell command]({{ '/stable/cockroach-sql.html#commands' | relative_url }}):
+To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`](../v20.1/show-columns.html) statement or the `\d <table>` [shell command](../v20.1/cockroach-sql.html#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -120,7 +120,7 @@ To show all of the columns from a table, use the [`SHOW COLUMNS FROM <table>`]({
 (2 rows)
 ~~~
 
-When you no longer need a table, use [`DROP TABLE`]({{ '/stable/drop-table.html' | relative_url }}) followed by the table name to remove the table and all its data:
+When you no longer need a table, use [`DROP TABLE`](../v20.1/drop-table.html) followed by the table name to remove the table and all its data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -129,7 +129,7 @@ When you no longer need a table, use [`DROP TABLE`]({{ '/stable/drop-table.html'
 
 ## Show tables
 
-To see all tables in the active database, use the [`SHOW TABLES`]({{ '/stable/show-tables.html' | relative_url }}) statement or the `\dt` [shell command]({{ '/stable/cockroach-sql.html#commands' | relative_url }}):
+To see all tables in the active database, use the [`SHOW TABLES`](../v20.1/show-tables.html) statement or the `\dt` [shell command](../v20.1/cockroach-sql.html#commands):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -145,7 +145,7 @@ To see all tables in the active database, use the [`SHOW TABLES`]({{ '/stable/sh
 
 ## Insert rows
 
-To insert a row into a table, use [`INSERT INTO`]({{ '/stable/insert.html' | relative_url }}) followed by the table name and then the column values listed in the order in which the columns appear in the table:
+To insert a row into a table, use [`INSERT INTO`](../v20.1/insert.html) followed by the table name and then the column values listed in the order in which the columns appear in the table:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -169,7 +169,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
     (4, 9400.10);
 ~~~
 
-[Defaults values]({{ '/stable/default-value.html' | relative_url }}) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
+[Defaults values](../v20.1/default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements would create a row with `balance` filled with its default value, in this case `NULL`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -198,9 +198,9 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
 
 ## Create an index
 
-[Indexes]({{ '/stable/indexes.html' | relative_url }}) help locate data without having to look through every row of a table. They're automatically created for the [primary key]({{ '/stable/primary-key.html' | relative_url }}) of a table and any columns with a [`UNIQUE` constraint]({{ '/stable/unique.html' | relative_url }}).
+[Indexes](../v20.1/indexes.html) help locate data without having to look through every row of a table. They're automatically created for the [primary key](../v20.1/primary-key.html) of a table and any columns with a [`UNIQUE` constraint](../v20.1/unique.html).
 
-To create an index for non-unique columns, use [`CREATE INDEX`]({{ '/stable/create-index.html' | relative_url }}) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
+To create an index for non-unique columns, use [`CREATE INDEX`](../v20.1/create-index.html) followed by an optional index name and an `ON` clause identifying the table and column(s) to index.  For each column, you can choose whether to sort ascending (`ASC`) or descending (`DESC`).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -238,7 +238,7 @@ To show the indexes on a table, use [`SHOW INDEX FROM`](../v20.1/show-index.html
 
 ## Query a table
 
-To query a table, use [`SELECT`]({{ '/stable/select-clause.html' | relative_url }}) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
+To query a table, use [`SELECT`](../v20.1/select-clause.html) followed by a comma-separated list of the columns to be returned and the table from which to retrieve the data:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -313,7 +313,7 @@ To sort the results, add an `ORDER BY` clause identifying the columns to sort by
 
 ## Update rows
 
-To update rows in a table, use [`UPDATE`]({{ '/stable/update.html' | relative_url }}) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
+To update rows in a table, use [`UPDATE`](../v20.1/update.html) followed by the table name, a `SET` clause identifying the columns to update and their new values, and a `WHERE` clause identifying the rows to update:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -341,7 +341,7 @@ If a table has a primary key, you can use that in the `WHERE` clause to reliably
 
 ## Delete rows
 
-To delete rows from a table, use [`DELETE FROM`]({{ '/stable/delete.html' | relative_url }}) followed by the table name and a `WHERE` clause identifying the rows to delete:
+To delete rows from a table, use [`DELETE FROM`](../v20.1/delete.html) followed by the table name and a `WHERE` clause identifying the rows to delete:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
