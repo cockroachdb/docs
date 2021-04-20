@@ -141,7 +141,7 @@ For more information about the difficulty of selecting an optimal join ordering,
 
 ## Join hints
 
-The optimizer supports hint syntax to force the use of a specific join algorithm. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
+The optimizer supports hint syntax to force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
 
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
@@ -162,7 +162,7 @@ Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to S
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
-- `INVERTED`: <span class="version-tag">New in v21.1:</span> Forces an inverted join, even if the optimizer determines that a different plan would have a lower cost. The join must have an [inverted index](inverted-indexes.html).
+- `INVERTED`: <span class="version-tag">New in v21.1:</span> Forces an inverted join into the right side; the right side must be a table with a suitable [inverted index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
 
 {{site.data.alerts.callout_info}}
 You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
@@ -221,7 +221,7 @@ The optimizer does not actually understand geographic locations, i.e., the relat
 
 #### Inverted join examples
 
-To run these example, initialize a demo cluster with the MovR workload.
+To run these examples, initialize a demo cluster with the MovR workload.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
@@ -263,8 +263,9 @@ EXPLAIN SELECT * FROM vehicles@primary AS v2 INNER INVERTED JOIN vehicles@idx_ve
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-You can omit the `INNER INVERTED JOIN` statement by putting the inverted index the left side of the join.
+You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@> join condition in a `WHERE` clause.
 
+{% include copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT * FROM vehicles@idx_vehicle_details AS v1, vehicles AS v2 WHERE v1.ext @> v2.ext;
 ~~~
