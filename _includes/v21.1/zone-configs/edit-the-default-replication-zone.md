@@ -11,7 +11,7 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR RANGE default;
+> SHOW ZONE CONFIGURATION FROM RANGE default;
 ~~~
 
 ~~~

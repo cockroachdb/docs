@@ -541,6 +541,10 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
 
+### Disk-spilling not supported for unordered aggregation operations
+
+{% include {{ page.version.version }}/known-limitations/unordered-operations.md %}
+
 ### Inverted indexes cannot be partitioned
 
 CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
