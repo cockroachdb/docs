@@ -14,7 +14,7 @@ To enable the feature, [enable auditing](#enable-auditing) for a table and then 
 
 Use the [`EXPERIMENTAL_AUDIT`](../stable/experimental-audit.html) subcommand of [`ALTER TABLE`](../stable/alter-table.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~

@@ -122,6 +122,10 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
   ...
 ~~~
 
+{{site.data.alerts.callout_info}}
+To prohibit queries against empty tables, set the `stub_catalog_tables` [session variable](set-vars.html) to `off`.
+{{site.data.alerts.end}}
+
 ## Querying `pg_catalog` tables
 
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.

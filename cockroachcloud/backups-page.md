@@ -145,7 +145,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 1. While [connected to your self-hosted CockroachDB cluster](../v20.2/connect-to-the-database.html), [back up](../v20.2/backup.html) your databases and/or tables to an [external location](../v20.2/backup.html#backup-file-urls):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BACKUP DATABASE example_database TO 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
@@ -156,7 +156,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
@@ -164,7 +164,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 1. [Restore](../v20.2/restore.html) to your CockroachCloud cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESTORE DATABASE example_database FROM 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
@@ -175,7 +175,7 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
@@ -183,7 +183,7 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
 
 1. [Back up](../v20.2/backup.html) your databases and/or tables to an [external location](../v20.2/backup.html#backup-file-urls):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > BACKUP DATABASE example_database TO 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
@@ -194,7 +194,7 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
 
 1. To [restore](../v20.2/restore.html) to your CockroachCloud cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > RESTORE DATABASE example_database FROM 'gs://bucket_name/path_to_backup?AUTH=specified';
     ~~~
@@ -205,21 +205,21 @@ Additionally, you can [back up and restore](../v20.2/backup-and-restore.html) yo
 
 The databases you want to restore cannot have the same name as an existing database in the target cluster. Before you restore a database, verify that the database name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and run the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASES;
 ~~~
 
 If the database's name is already in use, either [drop the existing database](../v20.2/drop-database.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP DATABASE example_database;
 ~~~
 
 Or [change the existing database's name](../v20.2/rename-database.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER DATABASE example_database RENAME TO archived_example_database;
 ~~~
@@ -228,21 +228,21 @@ Or [change the existing database's name](../v20.2/rename-database.html):
 
 The table you want to restore cannot have the same name as an existing table in the target database. Before you restore a table, verify that the table name is not already in use. To do this, connect to the target cluster with the [CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) and run the following:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TABLES FROM database_name;
 ~~~   
 
 If the table's name is already in use, either [drop the existing table](../v20.2/drop-table.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > DROP TABLE target_database.example_table;
 ~~~
 
 Or [change the existing table's name](../v20.2/rename-table.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE target_database.example_table RENAME TO target_database.archived_example_table;
 ~~~

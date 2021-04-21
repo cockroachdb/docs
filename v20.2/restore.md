@@ -20,7 +20,12 @@ You can restore:
 
 ## Required privileges
 
-Only members of the `admin` role can run `RESTORE`. By default, the `root` user belongs to the `admin` role.
+- Full cluster restores can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other restores, the user must have [write access](authorization.html#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
+
+### Source privileges
+
+{% include {{ page.version.version }}/misc/source-privileges.md %}
 
 ## Synopsis
 
@@ -88,19 +93,14 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 #### Databases
 
-Restoring a database will create a new database and restore all of its tables and views.
+**The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup. 
 
-The created database will have the name of the database in the backup. The database cannot already exist in the target cluster.
+~~~ sql
+RESTORE DATABASE backup_database_name FROM 'your_backup_location';
+~~~
 
-If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database:
-
-```sql
-RESTORE backup_database_name.* FROM 'your_backup_location'
-WITH into_db = 'your_target_db'
-```
-
-{{site.data.alerts.callout_info}}
-The [`into_db`](#into_db) option only applies to [table restores](#tables).
+{{site.data.alerts.callout_success}}
+If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into a specific database by using the [`WITH into_db` option](#options).
 {{site.data.alerts.end}}
 
 #### Tables

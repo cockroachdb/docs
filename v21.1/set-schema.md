@@ -249,5 +249,5 @@ SQLSTATE: 42P01
 - [`ALTER SEQUENCE`](alter-sequence.html)
 - [`ALTER VIEW`](alter-view.html)
 - [`CREATE SCHEMA`](drop-table.html)
-- [`SHOW SCHEMAS`](show-jobs.html)
+- [`SHOW SCHEMAS`](show-schemas.html)
 - [Other SQL Statements](sql-statements.html)

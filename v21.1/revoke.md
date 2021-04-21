@@ -1,39 +1,30 @@
 ---
-title: REVOKE &lt;privileges&gt;
-summary: The REVOKE statement revokes privileges from users and/or roles.
+title: REVOKE
+summary: The REVOKE statement revokes privileges from users and/or roles, or revokes privileges from users and/or roles.
 toc: true
+redirect_from: revoke-roles.html
 ---
 
-The `REVOKE <privileges>` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
+The `REVOKE` [statement](sql-statements.html) revokes [privileges](authorization.html#assign-privileges) from [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles). For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
 
-For the list of privileges that can be granted to and revoked from users and roles, see [`GRANT`](grant.html).
+You can use `REVOKE` to directly revoke privileges from a role or user, or you can revoke membership to an existing role, which effectively revokes that role's privileges.
 
 ## Syntax
 
-### Revoke privileges
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/revoke.html %}
+</div>
 
-To revoke privileges from a user or role, use the following syntax:
+### Parameters
 
-~~~
-REVOKE {ALL | <privileges...> } ON {DATABASE | SCHEMA | TABLE | TYPE} <targets...> FROM <grantees...>
-~~~
-
-### Revoke `admin`
-
-To revoke the [`admin`](authorization.html#role-admin) privileges from a role, use the following syntax:
-
-~~~
-REVOKE [ADMIN OPTION FOR] <roles...> FROM <grantees...>
-~~~
-
-## Parameters
-
-Parameter       | Description
-----------------|------------
-`ALL`           | Revoke all [privileges](#supported-privileges).
-`privileges`    | A comma-separated list of privileges to revoke. For a list of supported privileges, see [Supported privileges](#supported-privileges).
-`targets`       | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To revoke privileges from all tables in a database or schema, you can use `REVOKE ... ON TABLE *`. For an example, see [Revoke privileges on all tables in a database or schema](#revoke-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`grantees`         | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles) from whom to revoke privileges.
+Parameter                             | Description
+--------------------------------------|------------
+`ALL`<br>`ALL PRIVILEGES`             | Revoke all [privileges](#supported-privileges).
+`targets`                             | A comma-separated list of database, schema, table, or user-defined type names, followed by the name of the object (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To revoke privileges on all tables in a database or schema, you can use `REVOKE ... ON TABLE *`. For an example, see [Revoke privileges on all tables in a database or schema](#revoke-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
+`name_list`                           | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles) from whom to revoke privileges.
+`privilege_list ON targets FROM ...`  | Specify a comma-separated list of [privileges](authorization.html#assign-privileges) to revoke.
+`privilege_list FROM ...`             | Specify a comma-separated list of [roles](authorization.html#create-and-manage-roles) whose membership to revoke.
+`ADMIN OPTION FOR privilege_list`     | Revoke the user's role admin status.
 
 ## Supported privileges
 
@@ -43,9 +34,13 @@ The following privileges can be revoked:
 
 ## Required privileges
 
-The user revoking privileges must have the `GRANT` privilege on the target [database](create-database.html), [schema](create-schema.html), [table](create-table.html), or [user-defined type](enum.html).
+- To revoke privileges, user revoking privileges must have the `GRANT` privilege on the target [database](create-database.html), [schema](create-schema.html), [table](create-table.html), or [user-defined type](enum.html). In addition to the `GRANT` privilege, the user revoking privileges must have the privilege being revoked on the target object. For example, a user revoking the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
 
-In addition to the `GRANT` privilege, the user revoking privileges must have the privilege being revoked on the target object. For example, a user revoking the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
+- To revoke role membership, the user revoking role membership must be a role admin (i.e., members with the `WITH ADMIN OPTION`) or a member of the `admin` role. To remove membership to the `admin` role, the user must have `WITH ADMIN OPTION` on the `admin` role.
+
+## Considerations
+
+- The `root` user cannot be revoked from the `admin` role.
 
 ## Examples
 
@@ -69,24 +64,12 @@ In addition to the `GRANT` privilege, the user revoking privileges must have the
 ~~~
 
 ~~~
-  database_name |    schema_name     | grantee | privilege_type
-----------------+--------------------+---------+-----------------
-  movr          | crdb_internal      | admin   | ALL
-  movr          | crdb_internal      | max     | CREATE
-  movr          | crdb_internal      | root    | ALL
-  movr          | information_schema | admin   | ALL
-  movr          | information_schema | max     | CREATE
-  movr          | information_schema | root    | ALL
-  movr          | pg_catalog         | admin   | ALL
-  movr          | pg_catalog         | max     | CREATE
-  movr          | pg_catalog         | root    | ALL
-  movr          | pg_extension       | admin   | ALL
-  movr          | pg_extension       | max     | CREATE
-  movr          | pg_extension       | root    | ALL
-  movr          | public             | admin   | ALL
-  movr          | public             | max     | CREATE
-  movr          | public             | root    | ALL
-(15 rows)
+  database_name | grantee | privilege_type
+----------------+---------+-----------------
+  movr          | admin   | ALL
+  movr          | max     | CREATE
+  movr          | root    | ALL
+(3 rows)
 ~~~
 
 {% include copy-clipboard.html %}
@@ -100,19 +83,11 @@ In addition to the `GRANT` privilege, the user revoking privileges must have the
 ~~~
 
 ~~~
-  database_name |    schema_name     | grantee | privilege_type
-----------------+--------------------+---------+-----------------
-  movr          | crdb_internal      | admin   | ALL
-  movr          | crdb_internal      | root    | ALL
-  movr          | information_schema | admin   | ALL
-  movr          | information_schema | root    | ALL
-  movr          | pg_catalog         | admin   | ALL
-  movr          | pg_catalog         | root    | ALL
-  movr          | pg_extension       | admin   | ALL
-  movr          | pg_extension       | root    | ALL
-  movr          | public             | admin   | ALL
-  movr          | public             | root    | ALL
-(10 rows)
+  database_name | grantee | privilege_type
+----------------+---------+-----------------
+  movr          | admin   | ALL
+  movr          | root    | ALL
+(2 rows)
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -315,12 +290,93 @@ Any tables that previously inherited the database-level privileges retain the pr
 (4 rows)
 ~~~
 
+### Revoke role membership
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE ROLE developer WITH CREATEDB;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE USER abbey WITH PASSWORD lincoln;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT developer TO abbey;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE developer;
+~~~
+
+~~~
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |  false
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> REVOKE developer FROM abbey;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE developer;
+~~~
+
+~~~
+  role_name | member | is_admin
+------------+--------+-----------
+(0 rows)
+~~~
+
+### Revoke the admin option
+
+{% include copy-clipboard.html %}
+~~~ sql
+> GRANT developer TO abbey WITH ADMIN OPTION;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE developer;
+~~~
+
+~~~
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |   true
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> REVOKE ADMIN OPTION FOR developer FROM abbey;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW GRANTS ON ROLE developer;
+~~~
+
+~~~
+  role_name | member | is_admin
+------------+--------+-----------
+  developer | abbey  |  false
+(1 row)
+~~~
+
+
+
 ## See also
 
 - [Authorization](authorization.html)
-- [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>`](grant-roles.html)
-- [`REVOKE <roles>`](revoke-roles.html)
+- [`GRANT`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`CREATE USER`](create-user.html)
