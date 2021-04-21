@@ -46,7 +46,12 @@ ALTER DATABASE foo PRIMARY REGION "us-east1";
 ALTER DATABASE PRIMARY REGION
 ~~~
 
-For more information, see [Database regions](multiregion-overview.html#database-regions).
+Given a cluster with multiple regions, any databases in that cluster that have not yet had their primary regions set will have their replicas spread as broadly as possible for resiliency. When a primary region is added to one of these databases:
+
+- All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in the primary region by default.
+- This means that all such tables will have all of their voting replicas and leaseholders moved to the primary region. This process is known as [rebalancing](architecture/replication-layer.html#leaseholder-rebalancing).
+
+For more information about cluster regions and database regions, see [Cluster regions](multiregion-overview.html#cluster-regions) and [Database regions](multiregion-overview.html#database-regions).
 
 ### Add a region to a database
 
