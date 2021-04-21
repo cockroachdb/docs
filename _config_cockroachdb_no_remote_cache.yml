@@ -1,0 +1,3 @@
+# this option turns off local caching of remote_include files
+remote_include:
+  use_cache: false
