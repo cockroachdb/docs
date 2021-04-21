@@ -79,17 +79,6 @@ For every row on one side of the join where there is no match on the other side,
 <table expr> NATURAL FULL [ OUTER ] JOIN <table expr>
 ~~~
 
-### Inverted joins
-
-<span class="version-tag">New in v21.1:</span> Force the optimizer to use a join using an [inverted index](inverted-index.html), even if it estimates that a different plan would have a [lower-cost](cost-based-optimizer.html).
-
-~~~
-<table expr> INNER INVERTED JOIN <table expr> ON <val expr>
-<table expr> LEFT INVERTED JOIN <table expr> ON <val expr>
-~~~
-
-See the [cost-based optimizer examples](cost-based-optimizer.html#inverted-join-examples) for statements that use inverted joins.
-
 ## Supported join conditions
 
 CockroachDB supports the following conditions to match rows in a join:
@@ -114,6 +103,7 @@ CockroachDB supports the following algorithms for performing a join:
 - [Merge joins](#merge-joins)
 - [Hash joins](#hash-joins)
 - [Lookup joins](#lookup-joins)
+- [Inverted joins](#inverted-joins)
 
 ### Merge joins
 
@@ -158,6 +148,17 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 {{site.data.alerts.end}}
 
 The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+
+### Inverted joins
+
+<span class="version-tag">New in v21.1:</span> Inverted joins force the optimizer to use a join using an [inverted index](inverted-index.html) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
+
+~~~
+<table expr> INNER INVERTED JOIN <table expr> ON <val expr>
+<table expr> LEFT INVERTED JOIN <table expr> ON <val expr>
+~~~
+
+See the [cost-based optimizer examples](cost-based-optimizer.html#inverted-join-examples) for statements that use inverted joins.
 
 ## `LATERAL` joins
 

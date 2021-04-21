@@ -156,7 +156,7 @@ CREATE TABLE test (
 );
 ~~~
 
-## Example
+## Examples
 
 ### Create a table with inverted index on a JSONB column
 
@@ -337,6 +337,10 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
+
+### Inverted join examples
+
+{% include {{ page.version.version }}/sql/inverted-joins.md %}
 
 ## See also
 
