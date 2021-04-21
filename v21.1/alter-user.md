@@ -118,7 +118,7 @@ root@:26257/defaultdb> ALTER USER carl WITH MODIFYCLUSTERSETTING;
 
 - [`DROP USER`](drop-user.html)
 - [`SHOW USERS`](show-users.html)
-- [`GRANT`](grant.html)
+- [`GRANT <privileges>`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)

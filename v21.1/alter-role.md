@@ -120,7 +120,7 @@ root@:26257/defaultdb> ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
 
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
-- [`GRANT`](grant.html)
+- [`GRANT <privileges>`](grant.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)

@@ -38,7 +38,7 @@ To modify an `ENUM` type, use [`ALTER TYPE`](alter-type.html):
 > ALTER TYPE <name> ADD VALUE '<value>';
 ~~~
 
-where `<value>` is a string literal to add to the existing list of type values. You can also use `ALTER TYPE` to rename types, rename type values, set a type's schema, or change the type owner's [role specification](grant.html).
+where `<value>` is a string literal to add to the existing list of type values. You can also use `ALTER TYPE` to rename types, rename type values, set a type's schema, or change the type owner's [role specification](grant-roles.html).
 
 To drop the type, use [`DROP TYPE`](drop-type.html):
 
