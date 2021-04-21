@@ -26,7 +26,7 @@ Parameter | Description
 `RENAME TO name` | Rename the user-defined type.
 `RENAME VALUE value TO value` |  Rename a constant value in the user-defined type's list of values.
 `SET SCHEMA`  | Set [the schema](sql-name-resolution.html) of the user-defined type.
-`OWNER TO`  | Change the [role specification](grant-roles.html) for the user-defined type's owner.
+`OWNER TO`  | Change the [role specification](grant.html) for the user-defined type's owner.
 
 ## Required privileges
 

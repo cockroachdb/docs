@@ -11,12 +11,12 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR TABLE users;
+> SHOW ZONE CONFIGURATION FROM TABLE users;
 ~~~
 
 ~~~
     target    |             raw_config_sql
-+-------------+----------------------------------------+
+--------------+-----------------------------------------
   TABLE users | ALTER TABLE users CONFIGURE ZONE USING
               |     range_min_bytes = 134217728,
               |     range_max_bytes = 536870912,

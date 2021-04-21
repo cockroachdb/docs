@@ -50,7 +50,7 @@ We use separate certificate authorities for each cluster, and all connections to
 
 Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
-Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest]({{ '/stable/encryption.html#encryption-at-rest-enterprise' | relative_url }}). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
+Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest](../v20.2/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -88,11 +88,11 @@ You can also [backup and restore](backups-page.html#back-up-and-restore-data-man
 
 ### Can I download the backups that CockroachCloud takes for me?
 
-CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](backups-page.html#back-up-and-restore-data-manually) to your own [storage location]({{ '/stable/backup.html#backup-file-urls' | relative_url }}) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](backups-page.html#back-up-and-restore-data-manually) to your own [storage location](../v20.2/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
-Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location]({{ '/stable/backup.html#backup-file-urls' | relative_url }}) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
+Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location](../v20.2/backup.html#backup-file-urls) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -127,7 +127,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my CockroachCloud clusters?
 
-Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart]({{ '/stable/connection-pooling.html#validating-connections-in-a-pool' | relative_url }}). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
