@@ -1,4 +1,4 @@
-In this example, create a table with a computed columns and an index on that column:
+In this example, create a table with a virtual computed column and an index on that column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -9,7 +9,7 @@ In this example, create a table with a computed columns and an index on that col
     bars DECIMAL,
     beam DECIMAL,
     floor DECIMAL,
-    combined_score DECIMAL AS (vault + bars + beam + floor) STORED,
+    combined_score DECIMAL AS (vault + bars + beam + floor) VIRTUAL,
     INDEX total (combined_score DESC)
   );
 ~~~
