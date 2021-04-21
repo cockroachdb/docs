@@ -36,16 +36,16 @@ To define replication zones for identically named partitions of a table and its 
       constraints = '[+region=us-west1]';
 ~~~
 
-To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FOR PARTITION <partition> OF INDEX <table@index>`:
+To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FROM PARTITION <partition> OF INDEX <table@index>`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR PARTITION us_west OF INDEX vehicles@primary;
+> SHOW ZONE CONFIGURATION FROM PARTITION us_west OF INDEX vehicles@primary;
 ~~~
 
 ~~~
                     target                    |                             raw_config_sql
-+---------------------------------------------+------------------------------------------------------------------------+
+----------------------------------------------+-------------------------------------------------------------------------
   PARTITION us_west OF INDEX vehicles@primary | ALTER PARTITION us_west OF INDEX vehicles@primary CONFIGURE ZONE USING
                                               |     range_min_bytes = 134217728,
                                               |     range_max_bytes = 536870912,

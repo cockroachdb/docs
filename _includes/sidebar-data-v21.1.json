@@ -1582,15 +1582,9 @@
                     ]
                   },
                   {
-                    "title": "<code>GRANT &lt;privileges&gt;</code>",
+                    "title": "<code>GRANT</code>",
                     "urls": [
                       "/${VERSION}/grant.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>GRANT &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/grant-roles.html"
                     ]
                   },
                   {
@@ -1732,15 +1726,9 @@
                     ]
                   },
                   {
-                    "title": "<code>REVOKE &lt;privileges&gt;</code>",
+                    "title": "<code>REVOKE</code>",
                     "urls": [
                       "/${VERSION}/revoke.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>REVOKE &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/revoke-roles.html"
                     ]
                   },
                   {
