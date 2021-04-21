@@ -305,10 +305,8 @@ root                       |                                       | {admin}
 
 - [Authorization](authorization.html)
 - [`DROP ROLE`](drop-role.html)
-- [`GRANT <privileges>`](grant.html)
-- [`REVOKE <privileges>`](revoke.html)
-- [`GRANT <roles>`](grant-roles.html)
-- [`REVOKE <roles>`](revoke-roles.html)
+- [`GRANT`](grant.html)
+- [`REVOKE`](revoke.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`SHOW USERS`](show-users.html)
 - [`SHOW GRANTS`](show-grants.html)

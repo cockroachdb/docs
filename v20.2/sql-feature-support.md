@@ -92,7 +92,7 @@ table tr td:nth-child(2) {
  Database renames | ✓ | Standard | [`RENAME DATABASE` documentation](rename-database.html)
  Table renames | ✓ | Standard | [`RENAME TABLE` documentation](rename-table.html)
  Column renames | ✓ | Standard | [`RENAME COLUMN` documentation](rename-column.html)
- Altering a column's data type | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER COLUMN` documentation](alter-column.html#altering-column-data-types)
+ Altering a column's data type | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER COLUMN` documentation](alter-column.html#altering-column-types)
  Adding columns | ✓ | Standard | [`ADD COLUMN` documentation](add-column.html)
  Removing columns | ✓ | Standard | [`DROP COLUMN` documentation](drop-column.html)
  Adding constraints | ✓ | Standard | [`ADD CONSTRAINT` documentation](add-constraint.html)
