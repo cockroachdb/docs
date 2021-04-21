@@ -1,30 +1,27 @@
 ---
-title: GRANT
-summary: The GRANT statement grants user privileges for interacting with specific database objects and adds roles or users as a member of a role.
+title: GRANT &lt;privileges&gt;
+summary: The GRANT statement grants user privileges for interacting with specific database objects
 toc: true
-redirect_from: grant-roles.html
 ---
 
-`GRANT` [statement](sql-statements.html) controls each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](authorization.html#assign-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html). For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
+The `GRANT <privileges>` [statement](sql-statements.html) lets you control each [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) SQL [privileges](authorization.html#assign-privileges) for interacting with specific [databases](create-database.html), [schemas](create-schema.html), [tables](create-table.html), or [user-defined types](enum.html).
 
-You can use `GRANT` to directly grant privileges to a role or user, or you can grant membership to an existing role, which grants that role's privileges to the grantee.
+For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
 ## Syntax
 
-<div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/grant.html %}
-</div>
+~~~
+GRANT {ALL | <privileges...>} ON {DATABASE | SCHEMA | TABLE | TYPE} <targets...> TO <users...>
+~~~
 
-### Parameters
+## Parameters
 
-Parameter                 | Description
---------------------------|------------
-`ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
-`targets`                 | A comma-separated list of database, schema, table, or user-defined type names, followed by the name of the object (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`name_list`                | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles) to whom to grant privileges.
-`privilege_list ON ...`    | Specify a comma-separated list of [privileges](authorization.html#assign-privileges) to grant.
-`privilege_list TO ...`    | Specify a comma-separated list of [roles](authorization.html#create-and-manage-roles) whose membership to grant.
-`WITH ADMIN OPTION`        | Designate the user as a role admin. Role admins can grant or revoke membership for the specified role.
+Parameter       | Description
+----------------|------------
+`ALL`           | Grant all [privileges](#supported-privileges).
+`privileges`    | A comma-separated list of privileges to grant. For a list of supported privileges, see [Supported privileges](#supported-privileges).
+`targets`       | A comma-separated list of database, schema, table, or user-defined type names.<br><br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
+`users`         | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles) to whom you want to grant privileges.
 
 ## Supported privileges
 
@@ -34,13 +31,9 @@ Roles and users can be granted the following privileges:
 
 ## Required privileges
 
-- To grant privileges, the user granting the privileges must also have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
-
-- To grant roles, the user granting role membership must be a role admin (i.e., members with the `WITH ADMIN OPTION`) or a member of the `admin` role. To grant membership to the `admin` role, the user must have `WITH ADMIN OPTION` on the `admin` role.
+The user granting privileges must also have the privilege being granted on the target database or tables. For example, a user granting the `SELECT` privilege on a table to another user must have the `GRANT` and `SELECT` privileges on that table.
 
 ## Details
-
-### Granting privileges
 
 - When a role or user is granted privileges for a database, new tables created in the database will inherit the privileges, but the privileges can then be changed.
 
@@ -51,13 +44,6 @@ Roles and users can be granted the following privileges:
 - When a role or user is granted privileges for a table, the privileges are limited to the table.
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
-
-### Granting roles
-
-- Users and roles can be members of roles.
-- The `root` user is automatically created as an `admin` role and assigned the `ALL` privilege for new databases.
-- All privileges of a role are inherited by all its members.
-- Membership loops are not allowed (direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
 
 ## Examples
 
@@ -81,12 +67,27 @@ Roles and users can be granted the following privileges:
 ~~~
 
 ~~~
-  database_name | grantee | privilege_type
-----------------+---------+-----------------
-  movr          | admin   | ALL
-  movr          | max     | ALL
-  movr          | root    | ALL
-(3 rows)
+  database_name |    schema_name     | grantee | privilege_type
+----------------+--------------------+---------+-----------------
+  movr          | cockroach_labs     | admin   | ALL
+  movr          | cockroach_labs     | max     | ALL
+  movr          | cockroach_labs     | root    | ALL
+  movr          | crdb_internal      | admin   | ALL
+  movr          | crdb_internal      | max     | ALL
+  movr          | crdb_internal      | root    | ALL
+  movr          | information_schema | admin   | ALL
+  movr          | information_schema | max     | ALL
+  movr          | information_schema | root    | ALL
+  movr          | pg_catalog         | admin   | ALL
+  movr          | pg_catalog         | max     | ALL
+  movr          | pg_catalog         | root    | ALL
+  movr          | pg_extension       | admin   | ALL
+  movr          | pg_extension       | max     | ALL
+  movr          | pg_extension       | root    | ALL
+  movr          | public             | admin   | ALL
+  movr          | public             | max     | ALL
+  movr          | public             | root    | ALL
+(18 rows)
 ~~~
 
 ### Grant privileges on specific tables in a database
@@ -136,7 +137,7 @@ Roles and users can be granted the following privileges:
   movr          | public      | user_promo_codes           | max     | SELECT
   movr          | public      | user_promo_codes           | root    | ALL
   movr          | public      | users                      | admin   | ALL
-  movr          | public      | users                      | max     | SELECT
+  movr          | public      | users                      | max     | ALL
   movr          | public      | users                      | root    | ALL
   movr          | public      | vehicle_location_histories | admin   | ALL
   movr          | public      | vehicle_location_histories | max     | SELECT
@@ -216,11 +217,10 @@ Roles and users can be granted the following privileges:
   database_name | schema_name | type_name | grantee | privilege_type
 ----------------+-------------+-----------+---------+-----------------
   movr          | public      | status    | admin   | ALL
-  movr          | public      | status    | demo    | ALL
   movr          | public      | status    | max     | ALL
   movr          | public      | status    | public  | USAGE
   movr          | public      | status    | root    | ALL
-(5 rows)
+(4 rows)
 ~~~
 
 ### Grant the privilege to manage the replication zones for a database or table
@@ -232,58 +232,12 @@ Roles and users can be granted the following privileges:
 
 The user `max` can then use the [`CONFIGURE ZONE`](configure-zone.html) statement to add, modify, reset, or remove replication zones for the table `rides`.
 
-### Grant role membership
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE ROLE developer WITH CREATEDB;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE USER abbey WITH PASSWORD lincoln;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT developer TO abbey;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON ROLE developer;
-~~~
-
-~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  developer | abbey  |  false
-(1 row)
-~~~
-
-### Grant the admin option
-
-{% include copy-clipboard.html %}
-~~~ sql
-> GRANT developer TO abbey WITH ADMIN OPTION;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW GRANTS ON ROLE developer;
-~~~
-
-~~~
-  role_name | member | is_admin
-------------+--------+-----------
-  developer | abbey  |   true
-(1 row)
-~~~
-
 ## See also
 
 - [Authorization](authorization.html)
-- [`REVOKE`](revoke.html)
+- [`REVOKE <roles>`](revoke-roles.html)
+- [`GRANT <roles>`](grant-roles.html)
+- [`REVOKE <privileges>`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
