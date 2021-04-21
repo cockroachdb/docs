@@ -96,6 +96,10 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
     Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
+    
+## Delete messages
+
+Deleting a row will result in a changefeed message giving the primary key of the deleted row and a null value. If an attempt is made to delete a row that never existed, changefeed behavior is undefined to allow for optimizations at the storage layer: you may or may not get a delete message. Similarly, creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
 
 ## Avro schema changes
 
