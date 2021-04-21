@@ -24,7 +24,7 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FROM RANGE meta;
+> SHOW ZONE CONFIGURATION FOR RANGE meta;
 ~~~
 
 ~~~
