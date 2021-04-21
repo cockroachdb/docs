@@ -23,8 +23,8 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO \
-'gs://acme-co-backup/test-cluster-2017-03-27-weekly' \
+> BACKUP INTO \
+'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
 
@@ -32,26 +32,17 @@ AS OF SYSTEM TIME '-10s' WITH revision_history;
 
 If the full or incremental backup was taken [with revision history](#create-a-backup-with-revision-history), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause to specify the point-in-time.
 
- Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html).
+Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](as-of-system-time.html) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](show-backup.html).
 
 If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly' \
+> RESTORE FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 AS OF SYSTEM TIME '2017-02-26 10:00:00';
 ~~~
 
-## Point-in-time restore from incremental backups
-
-Restoring from incremental backups requires previous full and incremental backups. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> RESTORE FROM \
-'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly' \
-AS OF SYSTEM TIME '2017-02-28 10:00:00';
-~~~
+To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
 
 ## See also
 

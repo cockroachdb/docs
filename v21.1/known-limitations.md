@@ -77,12 +77,6 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 
-### KMS encryption not supported for scheduled backups
-
-You cannot [schedule a backup](create-schedule-for-backup.html) with [KMS encryption](take-and-restore-encrypted-backups.html#use-aws-key-management-service).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56082)
-
 ### Collation names that include upper-case or hyphens may cause errors
 
 Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
@@ -539,6 +533,10 @@ If you think a rollback of a column-dropping schema change has occurred, check t
 If the execution of a [join](joins.html) query exceeds the limit set for memory-buffering operations (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the equality columns is of type [`JSON`](jsonb.html), CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35706)
+
+### Disk-spilling not supported for some unordered distinct operations
+
+{% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
 
 ### Inverted indexes cannot be partitioned
 

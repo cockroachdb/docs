@@ -28,7 +28,7 @@ A SQL user can interact with a CockroachDB database using the [built-in SQL shel
 
 ### Create and manage users
 
-Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
+Use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.html) statements to create and remove users, the [`ALTER USER`](alter-user.html) statement to add or change a user's password and role options, the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage the user’s privileges, and the [`SHOW USERS`](show-users.html) statement to list users.
 
 A new user must be granted the required privileges for each database and table that the user needs to access.
 
@@ -54,10 +54,8 @@ Statement | Description
 ----------|------------
 [`CREATE ROLE`](create-role.html) | Create SQL roles.
 [`DROP ROLE`](drop-role.html) | Remove one or more SQL roles.
-[`GRANT <roles>`](grant-roles.html) | Add a role or user as a member to a role.
-[`REVOKE <roles>`](revoke-roles.html) | Revoke a role or user's membership to a role.
-[`GRANT <privileges>`](grant.html) | Manage each role or user's SQL privileges for interacting with specific databases and tables.
-[`REVOKE <privileges>`](revoke.html) | Revoke privileges from users and/or roles.
+[`GRANT`](grant.html) | Manage each role or user's SQL privileges for interacting with specific databases and tables, or add a role or user as a member to a role.
+[`REVOKE`](revoke.html) | Revoke privileges from users and/or roles, or revoke a role or user's membership to a role.
 [`SHOW ROLES`](show-roles.html) | List the roles for all databases.
 [`SHOW GRANTS`](show-grants.html) | List the privileges granted to users.
 
@@ -86,7 +84,7 @@ All new users and roles belong to the `public` role by default. You can grant an
 
 #### Role admin
 
-A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](grant-roles.html#grant-the-admin-option).
+A `role admin` is a member of the role that's allowed to grant or revoke role membership to other users for that specific role. To create a `role admin`, use [`WITH ADMIN OPTION`](grant.html#grant-the-admin-option).
 
 {{site.data.alerts.callout_success}}
 The terms “`admin` role” and “`role admin`” can be confusing. A user who is a member of the `admin` role has all privileges on all database objects across the entire cluster, whereas a `role admin` has privileges limited to the role they are a member of. Assign the `admin` role to a SQL user if you want the user to have privileges across the cluster. Make a SQL user the `role admin` if you want to limit the user’s privileges to its current role, but with an option to grant or revoke role membership to other users. This applies to the `admin` role as well - only admin users with the `WITH ADMIN OPTION` can add or remove other users from the `admin` role.
@@ -126,7 +124,7 @@ Roles and users can be granted the following privileges:
 
 ### Assign privileges
 
-Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage privileges for users and roles.
+Use the [`GRANT`](grant.html) and [`REVOKE`](revoke.html) statements to manage privileges for users and roles.
 
 Take the following points into consideration while granting privileges to roles and users:
 
@@ -523,8 +521,6 @@ Let's say we want to create the following access control setup for the `movr` da
 - [`CREATE ROLE`](create-role.html)
 - [`DROP ROLE`](drop-role.html)
 - [`SHOW ROLES`](show-roles.html)
-- [`GRANT <privileges>`](grant.html)
-- [`GRANT <roles>`](grant-roles.html)
-- [`REVOKE <privileges>`](revoke.html)
-- [`REVOKE <roles>`](revoke-roles.html)
+- [`GRANT`](grant.html)
+- [`REVOKE`](revoke.html)
 - [`SHOW GRANTS`](show-grants.html)

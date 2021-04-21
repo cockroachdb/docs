@@ -15,7 +15,7 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR TABLE users;
+> SHOW ZONE CONFIGURATION FROM TABLE users;
 ~~~
 
 ~~~
