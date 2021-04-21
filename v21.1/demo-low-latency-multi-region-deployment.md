@@ -32,12 +32,6 @@ Because the instructions on this page describe how to simulate a multi-region cl
 - [A basic understanding of the MovR application](#a-basic-understanding-of-the-movr-application)
 - [Docker](https://www.docker.com) installed on the local machine
 
-### A CockroachDB trial enterprise license
-
-The CockroachDB [multi-region features](multiregion-overview.html) used in this tutorial require an enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
-
-You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
-
 ### A basic understanding of the MovR application
 
 The workload you'll run against the cluster is our open-source, fictional, peer-to-peer vehicle-sharing app, [MovR](movr.html). Each instance represents users in a specific region:
@@ -58,7 +52,7 @@ For a description of the sequence of SQL statements issued by the MovR applicati
 
 ## Step 1. Simulate a multi-region cluster on your local machine
 
-To set up a simulated multi-region cluster on your local machine, follow the instructions in [Simulate a multi-region cluster on localhost](simulate-a-multi-region-cluster-on-localhost.html).
+{% include {{page.version.version}}/sql/start-a-multi-region-demo-cluster.md %}
 
 To verify that the simulated latencies are working as expected, check the [Network Latency Page](ui-network-latency-page.html) in the DB Console. Round trip times between  `us-west1` and `europe-west1` should be in the 150 ms range.
 
@@ -152,7 +146,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     CREATE DATABASE movr;
     ~~~
 
-1. In Terminal window #1, run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
+1. Open a second terminal and run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -187,7 +181,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     [INFO] (MainThread) populated 9 cities in 86.986230 seconds
     ~~~
 
-1. Still in Terminal window #1, run the following command:
+1. In the same terminal window, run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -208,7 +202,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     ...
     ~~~
 
-1. In Terminal window #2, run the following command:
+1. Open a third terminal and run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -228,7 +222,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     [INFO] (MainThread) running single region queries...
     ~~~
 
-1. In Terminal window #3, run the following command:
+1. In the same terminal, run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
