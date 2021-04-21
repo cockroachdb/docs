@@ -64,6 +64,10 @@ Parameter | Description
 
 {% include {{ page.version.version }}/computed-columns/simple.md %}
 
+### Create a table with a `JSONB` column and a stored computed column
+
+{% include {{ page.version.version }}/computed-columns/jsonb.md %}
+
 ### Create a virtual computed column using `JSONB` data
 
 {% include {{ page.version.version }}/computed-columns/virtual.md %}
@@ -71,10 +75,6 @@ Parameter | Description
 ### Create a table with geo-partitions and a computed column
 
 {% include {{ page.version.version }}/computed-columns/partitioning.md %} The `locality` values can then be used for geo-partitioning.
-
-### Create a table with a `JSONB` column and a computed column
-
-{% include {{ page.version.version }}/computed-columns/jsonb.md %}
 
 ### Create a table with a secondary index on a computed column
 
