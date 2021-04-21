@@ -239,7 +239,7 @@ To return just the `create_statement` value:
 
 For more information, see [`COMMENT ON`](comment-on.html).
 
-### Show the `CREATE` statements for all tables, views, and sequences in the current database
+### Show the statements needed to recreate all tables, views, and sequences in the current database
 
 <span class="version-tag">New in v21.1:</span> To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
 
