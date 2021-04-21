@@ -216,7 +216,7 @@ If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZA
 
 When you [use a table without specifying a schema](sql-name-resolution.html#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
 
-For example, suppose that you [grant the `root` role](grant-roles.html) (i.e., the role of the current user `root`) to the `max` user:
+For example, suppose that you [grant the `root` role](grant.html) (i.e., the role of the current user `root`) to the `max` user:
 
 {% include copy-clipboard.html %}
 ~~~ sql
