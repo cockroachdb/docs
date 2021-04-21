@@ -35,7 +35,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
 
 1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string](connect-to-your-cluster.html#step-3-select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257?sslmode=verify-full&sslrootcert=certs/ca.crt'
@@ -47,7 +47,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
 
 2. Enable [rangefeeds](../v20.1/change-data-capture.html#enable-rangefeeds):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING kv.rangefeed.enabled = true;
     ~~~
@@ -59,7 +59,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
 
 1. In the built-in SQL shell, create a database called `cdc_test`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE cdc_test;
     ~~~
@@ -69,7 +69,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
 
 2. Set it as the default:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET DATABASE = cdc_test;
     ~~~
@@ -83,7 +83,7 @@ Before you can start a changefeed, you need to create at least one table for the
 
 Let's create a table called `order_alerts` to target:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE order_alerts (
     id   INT PRIMARY KEY,
@@ -108,7 +108,7 @@ Every change to a watched row is emitted as a record in a configurable format (i
 
 Back in the built-in SQL shell, [create an enterprise changefeed](../v20.1/create-changefeed.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE order_alerts
     INTO 'experimental-s3://changefeed-example?AWS_ACCESS_KEY_ID=<KEY>&AWS_SECRET_ACCESS_KEY=<SECRET_KEY>'
@@ -133,7 +133,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 
 1. In the built-in SQL shell, insert data into the `order_alerts` table that the changefeed is targeting:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO order_alerts
         VALUES
@@ -158,7 +158,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 
 3. Create a table to store the data to be ingested:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE order_alerts (
        changefeed_record VARIANT
@@ -171,7 +171,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 
 5. In the Worksheet, create a stage called `cdc-stage`, which tells Snowflake where your data files reside in S3:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE STAGE cdc_stage url='s3://changefeed-example/' credentials=(aws_key_id='<KEY>' aws_secret_key='<SECRET_KEY>') file_format = (type = json);
     ~~~
@@ -180,7 +180,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 
 6. In the Worksheet, create a snowpipe called `cdc-pipe`, which tells Snowflake to auto-ingest data:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE PIPE cdc_pipe auto_ingest = TRUE as COPY INTO order_alerts FROM @cdc_stage;
     ~~~
@@ -191,7 +191,7 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 
 7. In the Worksheet, view the snowpipe:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW PIPES;
     ~~~
@@ -213,14 +213,14 @@ If your changefeed is running but data is not displaying in your S3 bucket, you 
 
 4. Ingest the data from your stage:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > ALTER PIPE cdc_pipe refresh;
     ~~~
 
 5. To view the data Snowflake, query the `order_alerts` table:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM order_alerts;
     ~~~

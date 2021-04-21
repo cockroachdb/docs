@@ -224,10 +224,6 @@ When a [backup is created by a schedule](create-schedule-for-backup.html), it is
 
 For more details, see [`SHOW BACKUP`](show-backup.html).
 
-## Known limitation
-
-{% include {{ page.version.version }}/known-limitations/kms-scheduled-backup.md %}
-
 ## See also
 
 - [Manage a Backup Schedule](manage-a-backup-schedule.html)

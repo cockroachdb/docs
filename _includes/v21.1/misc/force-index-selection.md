@@ -58,4 +58,71 @@ you can check the scan direction with:
 (2 rows)
 ~~~
 
+To force a [partial index scan](partial-indexes.html), your statement must have a `WHERE` clause that implies the partial index filter.
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE t (
+  a INT,
+  INDEX idx (a) WHERE a > 0);
+INSERT INTO t(a) VALUES (5);
+SELECT * FROM t@idx WHERE a > 0;
+~~~
+
+~~~
+CREATE TABLE
+
+Time: 13ms total (execution 12ms / network 0ms)
+
+INSERT 1
+
+Time: 22ms total (execution 21ms / network 0ms)
+
+  a
+-----
+  5
+(1 row)
+
+Time: 1ms total (execution 1ms / network 0ms)
+~~~
+
+To force a [partial inverted index](inverted-indexes.html#partial-inverted-indexes) scan, your statement must have a `WHERE` clause that:
+
+- Implies the partial index.
+- Constrains the inverted index scan.
+
+{% include copy-clipboard.html %}
+~~~ sql
+DROP TABLE t;
+CREATE TABLE t (
+  j JSON,
+  INVERTED INDEX idx (j) WHERE j->'a' = '1');
+INSERT INTO t(j)
+  VALUES ('{"a": 1}'),
+         ('{"a": 3, "b": 2}'),
+         ('{"a": 1, "b": 2}');
+SELECT * FROM t@idx WHERE j->'a' = '1' AND j->'b' = '2';
+~~~
+
+~~~
+DROP TABLE
+
+Time: 68ms total (execution 22ms / network 45ms)
+
+CREATE TABLE
+
+Time: 10ms total (execution 10ms / network 0ms)
+
+INSERT 3
+
+Time: 22ms total (execution 22ms / network 0ms)
+
+         j
+--------------------
+  {"a": 1, "b": 2}
+(1 row)
+
+Time: 1ms total (execution 1ms / network 0ms)
+~~~
+
 To see all indexes available on a table, use [`SHOW INDEXES`](show-index.html).
