@@ -8,6 +8,8 @@ Name | Help
 `capacity.reserved` | Capacity reserved for snapshots
 `capacity.used` | Used storage capacity
 `capacity` | Total storage capacity
+`changefeed.failures` | Total number of changefeed jobs which have failed
+`changefeed.running` | Number of currently running changefeeds, including sinkless
 `clock-offset.meannanos` | Mean clock offset with other nodes in nanoseconds
 `clock-offset.stddevnanos` | Std dev clock offset with other nodes in nanoseconds
 `compactor.compactingnanos` | Number of nanoseconds spent compacting ranges

@@ -37,10 +37,6 @@ For examples of applications that use CockroachCloud Free (beta), check out the 
 
 CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
-### Can I use a specific region in AWS or GCP?
-
-At this time, CockroachCloud Free (beta) is only available in the GCP `us-central-1` and AWS `us-east-1` regions. More regions may be available in the future.
-
 ### How do I connect to my cluster?
 
 To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
@@ -100,7 +96,7 @@ Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clus
 
 In the meantime, you can run a [`SELECT`](../v20.2/select.html) statement using the [`--format=csv` flag](../v20.2/cockroach-sql.html#general) to print the output into a file. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
 ~~~

@@ -48,10 +48,10 @@ For guidance on accessing the DB Console in the context of cluster deployment, s
 
 On insecure clusters, all areas of the DB Console are accessible to all users.
 
-On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password](create-user.html#create-a-user-with-a-password) and optionally [grant the user membership to the `admin` role](grant-roles.html).
+On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password](create-user.html#create-a-user-with-a-password) and optionally [grant the user membership to the `admin` role](grant.html).
 
 {{site.data.alerts.callout_info}}
-The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant-roles.html):
+The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant.html):
 
 <code style="white-space:pre-wrap">GRANT admin TO \<sql_user\>;</code>
 {{site.data.alerts.end}}

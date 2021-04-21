@@ -226,10 +226,6 @@ For more details, see [`SHOW BACKUP`](show-backup.html).
 
 {% include {{ page.version.version }}/backups/show-scheduled-backups.md %}
 
-## Known limitation
-
-{% include {{ page.version.version }}/known-limitations/kms-scheduled-backup.md %}
-
 ## See also
 
 - [Manage a Backup Schedule](manage-a-backup-schedule.html)

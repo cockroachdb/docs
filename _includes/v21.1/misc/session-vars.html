@@ -372,8 +372,9 @@
    <td>
     <code>serial_normalization</code>
    </td>
-   <td>Specifies the default handling of <code>SERIAL</code> in table definitions.
-       <br>Valid options include <code>'rowid'</code>, <code>'virtual_sequence'</code>, and <code>sql_sequence</code>.<br>If set to <code>'virtual_sequence'</code>, the <code>SERIAL</code> type auto-creates a sequence for <a href="https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/">better compatibility with Hibernate sequences</a>.</td>
+   <td>Specifies the default handling of <code>SERIAL</code> in table definitions. Valid options include <code>'rowid'</code>, <code>'virtual_sequence'</code>, <code>sql_sequence</code>, and <code>sql_sequence_cached</code>.
+       <br>If set to <code>'virtual_sequence'</code>, the <code>SERIAL</code> type auto-creates a sequence for <a href="https://forum.cockroachlabs.com/t/hibernate-sequence-generator-returns-negative-number-and-ignore-unique-rowid/">better compatibility with Hibernate sequences</a>.
+       <br>If set to <code>sql_sequence_cached</code>, the <code>sql.defaults.serial_sequences_cache_size</code> <a href="cluster-settings.html">cluster setting</a> can be used to control the number of values to cache in a user's session, with a default of 256.</td>
    <td>
     <code>'rowid'</code>
    </td>
@@ -441,6 +442,20 @@
        <br>This value can be an <code>int</code> (e.g., <code>10</code>) and will be interpreted as milliseconds. It can also be an interval or string argument, where the string can be parsed as a valid interval (e.g., <code>'4s'</code>).
        <br>A value of <code>0</code> turns it off.</td>
    <td>The value set by the <code>sql.defaults.statement_timeout</code> <a href="cluster-settings.html">cluster setting</a> (<code>0s</code>, by default).</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+
+  <tr>
+   <td>
+    <code>stub_catalog_tables</code>
+   </td>
+   <td><span class="version-tag">New in v21.1</span>: If <code>off</code>, querying an unimplemented, empty <a href="pg-catalog.html"><code>pg_catalog</code></a> table will result in an error, as is the case in v20.2 and earlier.
+       <br>If <code>on</code>, querying an unimplemented, empty <code>pg_catalog</code> table simply returns no rows.</td>
+   <td>
+    <code>on</code>
+   </td>
    <td>Yes</td>
    <td>Yes</td>
   </tr>
