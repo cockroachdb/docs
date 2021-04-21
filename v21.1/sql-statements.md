@@ -75,9 +75,8 @@ Statement | Usage
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
-[`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
-[`SET SCHEMA`](set-schema.html) |  Change the schema of a table, sequence, or view.
+[`SET SCHEMA`](set-schema.html) |  Change the schema of a table.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.

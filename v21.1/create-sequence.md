@@ -301,7 +301,6 @@ For example, to cache 10 sequence values in memory:
 ## See also
 
 - [`ALTER SEQUENCE`](alter-sequence.html)
-- [`RENAME SEQUENCE`](rename-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`SHOW CREATE`](show-create.html)
 - [`SHOW SEQUENCES`](show-sequences.html)

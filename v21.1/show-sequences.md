@@ -43,7 +43,6 @@ Parameter | Description
 
 ## See also
 
-- [`RENAME SEQUENCE`](rename-sequence.html)
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`DROP SEQUENCE`](drop-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
