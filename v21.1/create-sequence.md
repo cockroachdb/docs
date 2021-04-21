@@ -131,7 +131,7 @@ In this example, we create a sequence with default settings.
 
 ### Use a sequence when creating a table
 
-In this example, we [create a table](create-table.html), using the `nextval()` function for a [default value](default-value.html), with the `customer_seq` sequence as its input:
+In this example, we [create a table](create-table.html), using the [`nextval()` function](functions-and-operators.html#sequence-functions) for a [default value](default-value.html), with the `customer_seq` sequence as its input:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -195,7 +195,7 @@ If a value has been obtained from the sequence in the current session, you can a
 
 ### Set the next value of a sequence
 
-In this example, we're going to change the next value of `customer_seq` using the `setval()` function. Currently, the next value will be `3` (i.e., `2` + `INCREMENT 1`). We will change the next value to `5`.
+In this example, we're going to change the next value of `customer_seq` using the [`setval()` function](functions-and-operators.html#sequence-functions). Currently, the next value will be `3` (i.e., `2` + `INCREMENT 1`). We will change the next value to `5`.
 
 {{site.data.alerts.callout_info}}
 You cannot set a value outside the <code>MAXVALUE</code> or <code>MINVALUE</code> of the sequence.
