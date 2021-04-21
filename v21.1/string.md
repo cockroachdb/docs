@@ -161,6 +161,52 @@ A literal entered through a SQL client will be translated into a different value
 + `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
+### Concatenating `STRING` values with values of other types
+
+<span class="version-tag">New in v21.1</span> `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT 1 || 'item';
+~~~
+
+~~~
+  ?column?
+------------
+  1item
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT true || 'item';
+~~~
+
+~~~
+  ?column?
+------------
+  titem
+(1 row)
+~~~
+
+Concatenating a `STRING` value with a [`NULL` value](null-handling.html) results in a `NULL` value.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT NULL || 'item';
+~~~
+
+~~~
+  ?column?
+------------
+  NULL
+(1 row)
+~~~
+
 ## See also
 
 - [Data Types](data-types.html)

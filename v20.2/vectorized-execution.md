@@ -56,11 +56,15 @@ The following operations require [memory buffering](https://en.wikipedia.org/wik
 - [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", can execute entirely in-memory.
 - [Window functions](window-functions.html). Note that [support for window functions is limited in the vectorized execution engine](#window-functions).
 
-If there is not enough memory allocated for an operation, CockroachDB will spill the intermediate execution results to disk. By default, the memory limit allocated per operator is 64MiB. You can change this limit with the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html).
+If there is not enough memory allocated for an operation, CockroachDB will spill the intermediate execution results to disk if the operation supports disk spilling. By default, the memory limit allocated per operator is 64MiB. You can change this limit with the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html).
 
-You can also configure a node's total budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If the queries running on the node exceed the memory budget, the node spills intermediate execution results to disk. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity. If the maximum on-disk storage capacity is reached, the query will return an error during execution.
+You can also configure a node's total budget for in-memory query processing at node startup with the [`--max-sql-memory` flag](cockroach-start.html#general). If the queries running on the node exceed the memory budget, the node spills intermediate execution results to disk, if possible. The [`--max-disk-temp-storage` flag](cockroach-start.html#general) sets the maximum on-disk storage capacity. If the maximum on-disk storage capacity is reached, the query will return an error during execution.
 
 ## Known limitations
+
+### Unordered aggregation operations
+
+{% include {{ page.version.version }}/known-limitations/unordered-operations.md %}
 
 ### Unsupported queries
 

@@ -373,7 +373,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE students;
+    > SHOW ZONE CONFIGURATION FROM PARTITION north_america OF TABLE students;
     ~~~
 
     ~~~

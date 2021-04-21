@@ -59,6 +59,12 @@
                   "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
                   "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
                 ]
+              },
+              {
+                "title": "Simulate a Multi-Region Cluster on localhost",
+                "urls": [
+                  "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
+                ]
               }
             ]
           },
@@ -1336,7 +1342,7 @@
                     ]
                   },
                   {
-                    "title": "<code>BACKUP</code> (Enterprise)",
+                    "title": "<code>BACKUP</code>",
                     "urls": [
                       "/${VERSION}/backup.html"
                     ]
@@ -1576,15 +1582,9 @@
                     ]
                   },
                   {
-                    "title": "<code>GRANT &lt;privileges&gt;</code>",
+                    "title": "<code>GRANT</code>",
                     "urls": [
                       "/${VERSION}/grant.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>GRANT &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/grant-roles.html"
                     ]
                   },
                   {
@@ -1708,7 +1708,7 @@
                     ]
                   },
                   {
-                    "title": "<code>RESTORE</code> (Enterprise)",
+                    "title": "<code>RESTORE</code>",
                     "urls": [
                       "/${VERSION}/restore.html"
                     ]
@@ -1726,15 +1726,9 @@
                     ]
                   },
                   {
-                    "title": "<code>REVOKE &lt;privileges&gt;</code>",
+                    "title": "<code>REVOKE</code>",
                     "urls": [
                       "/${VERSION}/revoke.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>REVOKE &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/revoke-roles.html"
                     ]
                   },
                   {
@@ -1870,12 +1864,6 @@
                     ]
                   },
                   {
-                    "title": "<code>SHOW QUERIES</code>",
-                    "urls": [
-                      "/${VERSION}/show-queries.html"
-                    ]
-                  },
-                  {
                     "title": "<code>SHOW RANGES</code>",
                     "urls": [
                       "/${VERSION}/show-ranges.html"
@@ -1915,6 +1903,12 @@
                     "title": "<code>SHOW SESSIONS</code>",
                     "urls": [
                       "/${VERSION}/show-sessions.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW STATEMENTS</code>",
+                    "urls": [
+                      "/${VERSION}/show-statements.html"
                     ]
                   },
                   {

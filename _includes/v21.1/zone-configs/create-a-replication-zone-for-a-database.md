@@ -11,12 +11,12 @@ CONFIGURE ZONE 1
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR DATABASE movr;
+> SHOW ZONE CONFIGURATION FROM DATABASE movr;
 ~~~
 
 ~~~
      target     |              raw_config_sql
-+---------------+------------------------------------------+
+----------------+-------------------------------------------
   DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
                 |     range_min_bytes = 134217728,
                 |     range_max_bytes = 536870912,
