@@ -1,6 +1,6 @@
 ---
 title: Use Userfile for Bulk Operations
-summary: Import data into your CockroachDB cluster with user-scoped storage.
+summary: The IMPORT statement imports various types of data into CockroachDB.with user-scoped storage.
 toc: true
 ---
 
@@ -13,7 +13,13 @@ toc: true
 
 Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
 
+<span class="version-tag">New in v21.1:</span> For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command.
+
 ## Upload a file
+
+{{site.data.alerts.callout_info}}
+A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommend using [`cockroach userfile upload`](cockroach-userfile-upload.html) for quick uploads from your client (about 15MB or smaller).
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -61,6 +67,23 @@ deleted userfile://defaultdb.public.userfiles_root/test-data.csv
 ~~~
 
 For more information, see [`cockroach userfile delete`](cockroach-userfile-delete.html).
+
+## Upload and import from a dump file
+
+{{site.data.alerts.callout_info}}
+We recommend using [`cockroach import`](cockroach-import.html) for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](import.html) statement.
+{{site.data.alerts.end}}
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
+~~~
+
+~~~
+successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
+~~~
+
+For more information, see [`cockroach import`](cockroach-import.html).
 
 ## Import from `userfile`
 

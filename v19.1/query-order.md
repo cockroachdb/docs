@@ -1,6 +1,6 @@
 ---
 title: Ordering Query Results
-summary: The ORDER BY clause controls the order of rows.
+summary: The ORDER BY clause controls the order in which rows are returned or processed.
 toc: true
 ---
 

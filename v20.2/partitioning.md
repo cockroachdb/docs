@@ -114,11 +114,7 @@ To ensure uniqueness or fast lookups, create a [secondary index](indexes.html) o
 Indexes are not required to be partitioned, but creating a non-partitioned index on a partitioned table may not perform well.
 
  When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
-
-#### Define partitions on interleaved tables
-
-For [interleaved tables](interleave-in-parent.html), partitions can be defined only on the root table of the interleave hierarchy, while children are interleaved the same as their parents.
-
+ 
 ### Replication zones
 
 On their own, partitions are inert and simply apply a label to the rows of the table that satisfy the criteria of the defined partitions. Applying functionality to a partition requires creating and applying [replication zone](configure-replication-zones.html) to the corresponding partitions.

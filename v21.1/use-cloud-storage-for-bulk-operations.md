@@ -1,10 +1,10 @@
 ---
 title: Use Cloud Storage for Bulk Operations
-summary: Import data into your CockroachDB cluster.
+summary: CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to bulk operation statements.
 toc: true
 ---
 
-CockroachDB constructs a secure API call to the cloud storage specify in a URL passed to one of the following statements:
+CockroachDB constructs a secure API call to the cloud storage specified in a URL passed to one of the following statements:
 
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
@@ -38,9 +38,7 @@ The location parameters often contain special characters that need to be URI-enc
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` environment variables when starting CockroachDB.
-
- If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when performing bulk operations (e.g., `BACKUP`, `RESTORE`, etc.) by using the [`--external-io-disable-http` flag](cockroach-start.html#security). You can also disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
+You can disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>
@@ -60,7 +58,6 @@ Location     | Example
 Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
 Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
 Google Cloud | `gs://acme-co`                                                     
-HTTP         | `http://localhost:8080/employees`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -80,6 +77,10 @@ Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=a
 Google Cloud | `gs://acme-co/employees.sql`                                                     
 HTTP         | `http://localhost:8080/employees.sql`                                            
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
+
+{{site.data.alerts.callout_info}}
+HTTP storage can only be used for [`IMPORT`](import.html).
+{{site.data.alerts.end}}
 
 ## Authentication
 
@@ -105,7 +106,9 @@ If the `AUTH` parameter is set to:
 
 ### HTTP
 
-You can create your own HTTP server with [Caddy or nginx](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` environment variables when starting CockroachDB. You can create your own HTTP server with [Caddy or nginx](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+
+If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#security).
 
 ### S3-compatible services
 
@@ -118,4 +121,4 @@ A custom root CA can be appended to the system's default CAs by setting the `clo
 - [`IMPORT`](import.html)
 - [`EXPORT`](export.html)
 - [`CREATE CHANGEFEED`](create-changefeed.html)
-- [](cluster-settings.html)
+- [Cluster Settings](cluster-settings.html)

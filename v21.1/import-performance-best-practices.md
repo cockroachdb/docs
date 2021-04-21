@@ -73,7 +73,7 @@ When importing bundled data formats, it is often faster to provide schema for th
 ~~~ sql
 > IMPORT TABLE employees
 FROM PGDUMP
-    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql'
+    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/employees-full.sql' WITH ignore_unsupported_statements
 ;
 ~~~
 
@@ -106,7 +106,7 @@ Then, import the schema-only file:
 ~~~ sql
 > IMPORT TABLE customers
 FROM PGDUMP
-    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.sql'
+    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.sql' WITH ignore_unsupported_statements
 ;
 ~~~
 

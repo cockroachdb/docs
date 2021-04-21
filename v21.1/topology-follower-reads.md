@@ -61,7 +61,7 @@ Insert some data:
 2. Configure your app to use `AS OF SYSTEM TIME follower_read_timestamp()` whenever reading from the table:
 
     {{site.data.alerts.callout_info}}
-    The `follower_read_timestamp()` [function](functions-and-operators.html) will set the [`AS OF SYSTEM TIME`](as-of-system-time.html) value to the minimum required for follower reads.
+    The `follower_read_timestamp()` [function](functions-and-operators.html) returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s`.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}

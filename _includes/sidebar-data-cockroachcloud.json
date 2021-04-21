@@ -119,12 +119,12 @@
       		      "/stable/migrate-from-avro.html"
       	      ]
       	    },
-                  {
-                    "title": "Import Performance Best Practices",
-                    "urls": [
-                      "/stable/import-performance-best-practices.html"
-                    ]
-                  }
+            {
+              "title": "Import Performance Best Practices",
+              "urls": [
+                "/stable/import-performance-best-practices.html"
+              ]
+            }
       	  ]
       	},
       	{
@@ -139,12 +139,23 @@
       	    "/cockroachcloud/production-checklist.html"
       	  ]
       	},
-      	{
-      	  "title": "Monitor Your Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/monitoring-page.html"
-      	  ]
-      	},
+        {
+          "title": "Monitor Your Cluster",
+          "items": [
+            {
+              "title": "Monitoring Page",
+              "urls": [
+                "/cockroachcloud/monitoring-page.html"
+              ]
+            },
+            {
+              "title": "Statements Page",
+              "urls": [
+                "/cockroachcloud/statements-page.html"
+              ]
+            }
+          ]
+        },
       	{
       	  "title": "Troubleshoot Your Cluster",
       	  "urls": [
@@ -234,13 +245,14 @@
         {
           "title": "Latest Release Notes",
           "urls": [
-            "/releases/cockroachcloud-03082021.html"
+            "/releases/cockroachcloud-04052021.html"
           ]
         },
         {
           "title": "All Release Notes",
           "urls": [
             "/releases/index-cockroachcloud.html",
+            "/releases/cockroachcloud-03082021.html",
             "/releases/cockroachcloud-02092021.html",
             "/releases/cockroachcloud-01222021.html",
             "/releases/cockroachcloud-12112020.html",

@@ -1,0 +1,3 @@
+Cockroach Labs has discovered a bug relating to incremental backups, for CockroachDB v20.2.0 - v20.2.7. If a backup coincides with an in-progress index creation (backfill), `RESTORE`, or `IMPORT`, it is possible that a subsequent incremental backup will not include all of the indexed, restored or imported data.
+
+For more information, including other affected versions, see [Technical Advisory 63162](../advisories/a63162.html).

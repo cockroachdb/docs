@@ -59,8 +59,8 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_partitioned_table` | None
 `pg_policies` | `pg_policies` (empty)
 `pg_policy` | None
-`pg_prepared_statements` | `pg_prepared_statements`
-`pg_prepared_xacts` | `pg_prepared_xacts`
+`pg_prepared_statements` | `pg_prepared_statements` (empty)
+`pg_prepared_xacts` | `pg_prepared_xacts` (empty)
 `pg_proc` | `pg_proc`
 `pg_publication` | `pg_publication` (empty)
 `pg_publication_rel` | `pg_publication_rel` (empty)
@@ -121,6 +121,10 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
   pg_catalog  | pg_am                   | table | NULL  |                NULL
   ...
 ~~~
+
+{{site.data.alerts.callout_info}}
+To prohibit queries against empty tables, set the `stub_catalog_tables` [session variable](set-vars.html) to `off`.
+{{site.data.alerts.end}}
 
 ## Querying `pg_catalog` tables
 

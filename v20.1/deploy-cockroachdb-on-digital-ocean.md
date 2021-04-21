@@ -1,6 +1,6 @@
 ---
 title: Deploy CockroachDB on Digital Ocean
-summary: Learn how to deploy CockroachDB on Digital Ocean.
+summary: Learn how to deploy a CockroachDB cluster on Digital Ocean.
 toc: true
 toc_not_nested: true
 ssh-link: https://www.digitalocean.com/community/tutorials/how-to-connect-to-your-droplet-with-ssh

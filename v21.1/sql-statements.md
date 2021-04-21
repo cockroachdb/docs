@@ -1,6 +1,6 @@
 ---
 title: SQL Statements
-summary: SQL statements supported by CockroachDB.
+summary: Overview of SQL statements supported by CockroachDB.
 toc: true
 ---
 
@@ -119,10 +119,8 @@ Statement | Usage
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](authorization.html#assign-privileges) on your databases and tables.
 [`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT <privileges>`](grant.html) | Grant privileges to [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles).
-[`GRANT <roles>`](grant-roles.html) | Add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
-[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles).
-[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) membership to a role.
+[`GRANT`](grant.html) | Grant privileges to [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
+[`REVOKE`](revoke.html) | Revoke privileges from [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or revoke a [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
@@ -152,7 +150,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
-[`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
+[`SHOW STATEMENTS`/`SHOW QUERIES`](show-statements.html) | List details about current active SQL queries.
 
 ## Query planning statements
 

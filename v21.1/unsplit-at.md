@@ -43,10 +43,18 @@ The `crdb_internal.ranges` table contains information about ranges in your Cockr
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='users';
 ~~~
 ~~~
-  range_id | start_pretty | end_pretty | split_enforced_until
-+----------+--------------+------------+----------------------+
-        21 | /Table/53    | /Table/54  | NULL
-(1 row)
+  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
+-----------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
+        37 | /Table/53                                                                                   | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | NULL
+        47 | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | 2262-04-11 23:47:16.854776+00:00:00
+        46 | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | 2262-04-11 23:47:16.854776+00:00:00
+        44 | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | 2262-04-11 23:47:16.854776+00:00:00
+        45 | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | 2262-04-11 23:47:16.854776+00:00:00
+        43 | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | 2262-04-11 23:47:16.854776+00:00:00
+        59 | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | 2262-04-11 23:47:16.854776+00:00:00
+        57 | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | 2262-04-11 23:47:16.854776+00:00:00
+        58 | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /Table/54                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
+(9 rows)
 ~~~
 
 Now [split](split-at.html) the `users` table ranges based on primary key values:
@@ -56,11 +64,11 @@ Now [split](split-at.html) the `users` table ranges based on primary key values:
 > ALTER TABLE users SPLIT AT VALUES ('chicago'), ('new york'), ('seattle');
 ~~~
 ~~~
-              key              |         pretty         |       split_enforced_until
-+------------------------------+------------------------+----------------------------------+
-  \275\211\022chicago\000\001  | /Table/53/1/"chicago"  | 2262-04-11 23:47:16.854776+00:00
-  \275\211\022new york\000\001 | /Table/53/1/"new york" | 2262-04-11 23:47:16.854776+00:00
-  \275\211\022seattle\000\001  | /Table/53/1/"seattle"  | 2262-04-11 23:47:16.854776+00:00
+              key              |   pretty    |        split_enforced_until
+-------------------------------+-------------+--------------------------------------
+  \275\211\022chicago\000\001  | /"chicago"  | 2262-04-11 23:47:16.854776+00:00:00
+  \275\211\022new york\000\001 | /"new york" | 2262-04-11 23:47:16.854776+00:00:00
+  \275\211\022seattle\000\001  | /"seattle"  | 2262-04-11 23:47:16.854776+00:00:00
 (3 rows)
 ~~~
 
@@ -71,13 +79,21 @@ You can see the additional ranges in the `crdb_internal.ranges` table:
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='users';
 ~~~
 ~~~
-  range_id |      start_pretty      |       end_pretty       |       split_enforced_until
-+----------+------------------------+------------------------+----------------------------------+
-        21 | /Table/53              | /Table/53/1/"chicago"  | NULL
-        27 | /Table/53/1/"chicago"  | /Table/53/1/"new york" | 2262-04-11 23:47:16.854776+00:00
-        28 | /Table/53/1/"new york" | /Table/53/1/"seattle"  | 2262-04-11 23:47:16.854776+00:00
-        29 | /Table/53/1/"seattle"  | /Table/54              | 2262-04-11 23:47:16.854776+00:00
-(4 rows)
+  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
+-----------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
+        37 | /Table/53                                                                                   | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | NULL
+        47 | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | 2262-04-11 23:47:16.854776+00:00:00
+        46 | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /Table/53/1/"chicago"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
+        67 | /Table/53/1/"chicago"                                                                       | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | 2262-04-11 23:47:16.854776+00:00:00
+        44 | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /Table/53/1/"new york"                                                                      | 2262-04-11 23:47:16.854776+00:00:00
+        77 | /Table/53/1/"new york"                                                                      | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | 2262-04-11 23:47:16.854776+00:00:00
+        45 | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | 2262-04-11 23:47:16.854776+00:00:00
+        43 | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | 2262-04-11 23:47:16.854776+00:00:00
+        59 | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /Table/53/1/"seattle"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
+        78 | /Table/53/1/"seattle"                                                                       | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | 2262-04-11 23:47:16.854776+00:00:00
+        57 | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | 2262-04-11 23:47:16.854776+00:00:00
+        58 | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /Table/54                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
+(12 rows)
 ~~~
 
 Now unsplit the table to remove the split enforcements:
@@ -88,7 +104,7 @@ Now unsplit the table to remove the split enforcements:
 ~~~
 ~~~
               key              |         pretty
-+------------------------------+------------------------+
+-------------------------------+-------------------------
   \275\211\022chicago\000\001  | /Table/53/1/"chicago"
   \275\211\022new york\000\001 | /Table/53/1/"new york"
   \275\211\022seattle\000\001  | /Table/53/1/"seattle"
@@ -100,13 +116,21 @@ Now unsplit the table to remove the split enforcements:
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='users';
 ~~~
 ~~~
-  range_id |      start_pretty      |       end_pretty       | split_enforced_until
-+----------+------------------------+------------------------+----------------------+
-        21 | /Table/53              | /Table/53/1/"chicago"  | NULL
-        27 | /Table/53/1/"chicago"  | /Table/53/1/"new york" | NULL
-        28 | /Table/53/1/"new york" | /Table/53/1/"seattle"  | NULL
-        29 | /Table/53/1/"seattle"  | /Table/54              | NULL
-(4 rows)
+  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
+-----------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
+        37 | /Table/53                                                                                   | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | NULL
+        47 | /Table/53/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | 2262-04-11 23:47:16.854776+00:00:00
+        46 | /Table/53/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | /Table/53/1/"chicago"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
+        67 | /Table/53/1/"chicago"                                                                       | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | NULL
+        44 | /Table/53/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | /Table/53/1/"new york"                                                                      | 2262-04-11 23:47:16.854776+00:00:00
+        77 | /Table/53/1/"new york"                                                                      | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | NULL
+        45 | /Table/53/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | 2262-04-11 23:47:16.854776+00:00:00
+        43 | /Table/53/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | 2262-04-11 23:47:16.854776+00:00:00
+        59 | /Table/53/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | /Table/53/1/"seattle"                                                                       | 2262-04-11 23:47:16.854776+00:00:00
+        78 | /Table/53/1/"seattle"                                                                       | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | NULL
+        57 | /Table/53/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | 2262-04-11 23:47:16.854776+00:00:00
+        58 | /Table/53/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | /Table/54                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
+(12 rows)
 ~~~
 
 The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](range-merges.html) in the table as needed.
@@ -125,11 +149,11 @@ Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue`
 > ALTER INDEX rides@revenue_idx SPLIT AT VALUES (25.00), (50.00), (75.00);
 ~~~
 ~~~
-         key        |      pretty      |       split_enforced_until
-+-------------------+------------------+----------------------------------+
-  \277\214*2\000    | /Table/55/4/25   | 2262-04-11 23:47:16.854776+00:00
-  \277\214*d\000    | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-  \277\214*\226\000 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
+         key        | pretty |        split_enforced_until
+--------------------+--------+--------------------------------------
+  \277\214*2\000    | /25    | 2262-04-11 23:47:16.854776+00:00:00
+  \277\214*d\000    | /5E+1  | 2262-04-11 23:47:16.854776+00:00:00
+  \277\214*\226\000 | /75    | 2262-04-11 23:47:16.854776+00:00:00
 (3 rows)
 ~~~
 
@@ -138,14 +162,22 @@ Add a new secondary [index](indexes.html) to the `rides` table, on the `revenue`
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
 ~~~
 ~~~
-  range_id |   start_pretty   |    end_pretty    |       split_enforced_until
-+----------+------------------+------------------+----------------------------------+
-        23 | /Table/55        | /Table/55/4      | NULL
-        32 | /Table/55/4      | /Table/55/4/25   | 2019-09-10 21:27:35.056275+00:00
-        33 | /Table/55/4/25   | /Table/55/4/5E+1 | 2262-04-11 23:47:16.854776+00:00
-        34 | /Table/55/4/5E+1 | /Table/55/4/75   | 2262-04-11 23:47:16.854776+00:00
-        35 | /Table/55/4/75   | /Table/56        | 2262-04-11 23:47:16.854776+00:00
-(5 rows)
+  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
+-----------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
+        39 | /Table/55                                                                                   | /Table/55/1/"amsterdam"/"\xc5\x1e\xb8Q\xeb\x85@\x00\x80\x00\x00\x00\x00\x00\x01\x81"        | NULL
+        56 | /Table/55/1/"amsterdam"/"\xc5\x1e\xb8Q\xeb\x85@\x00\x80\x00\x00\x00\x00\x00\x01\x81"        | /Table/55/1/"boston"/"8Q\xeb\x85\x1e\xb8B\x00\x80\x00\x00\x00\x00\x00\x00n"                 | 2262-04-11 23:47:16.854776+00:00:00
+        55 | /Table/55/1/"boston"/"8Q\xeb\x85\x1e\xb8B\x00\x80\x00\x00\x00\x00\x00\x00n"                 | /Table/55/1/"los angeles"/"\xa8\xf5\u008f\\(H\x00\x80\x00\x00\x00\x00\x00\x01J"             | 2262-04-11 23:47:16.854776+00:00:00
+        53 | /Table/55/1/"los angeles"/"\xa8\xf5\u008f\\(H\x00\x80\x00\x00\x00\x00\x00\x01J"             | /Table/55/1/"new york"/"\x1c(\xf5\u008f\\I\x00\x80\x00\x00\x00\x00\x00\x007"                | 2262-04-11 23:47:16.854776+00:00:00
+        66 | /Table/55/1/"new york"/"\x1c(\xf5\u008f\\I\x00\x80\x00\x00\x00\x00\x00\x007"                | /Table/55/1/"paris"/"\xe1G\xae\x14z\xe1H\x00\x80\x00\x00\x00\x00\x00\x01\xb8"               | 2262-04-11 23:47:16.854776+00:00:00
+        52 | /Table/55/1/"paris"/"\xe1G\xae\x14z\xe1H\x00\x80\x00\x00\x00\x00\x00\x01\xb8"               | /Table/55/1/"san francisco"/"\x8c\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x01\x13" | 2262-04-11 23:47:16.854776+00:00:00
+        65 | /Table/55/1/"san francisco"/"\x8c\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x01\x13" | /Table/55/1/"seattle"/"p\xa3\xd7\n=pD\x00\x80\x00\x00\x00\x00\x00\x00\xdc"                  | 2262-04-11 23:47:16.854776+00:00:00
+        64 | /Table/55/1/"seattle"/"p\xa3\xd7\n=pD\x00\x80\x00\x00\x00\x00\x00\x00\xdc"                  | /Table/55/1/"washington dc"/"Tz\xe1G\xae\x14L\x00\x80\x00\x00\x00\x00\x00\x00\xa5"          | 2262-04-11 23:47:16.854776+00:00:00
+        54 | /Table/55/1/"washington dc"/"Tz\xe1G\xae\x14L\x00\x80\x00\x00\x00\x00\x00\x00\xa5"          | /Table/55/4                                                                                 | 2262-04-11 23:47:16.854776+00:00:00
+        68 | /Table/55/4                                                                                 | /Table/55/4/25                                                                              | 2021-04-08 16:27:45.201336+00:00:00
+        69 | /Table/55/4/25                                                                              | /Table/55/4/5E+1                                                                            | 2262-04-11 23:47:16.854776+00:00:00
+        70 | /Table/55/4/5E+1                                                                            | /Table/55/4/75                                                                              | 2262-04-11 23:47:16.854776+00:00:00
+        71 | /Table/55/4/75                                                                              | /Table/56                                                                                   | 2262-04-11 23:47:16.854776+00:00:00
+(13 rows)
 ~~~
 
 Now unsplit the index to remove the split enforcements:
@@ -156,7 +188,7 @@ Now unsplit the index to remove the split enforcements:
 ~~~
 ~~~
          key        |      pretty
-+-------------------+------------------+
+--------------------+-------------------
   \277\214*2\000    | /Table/55/4/25
   \277\214*d\000    | /Table/55/4/5E+1
   \277\214*\226\000 | /Table/55/4/75
@@ -168,14 +200,22 @@ Now unsplit the index to remove the split enforcements:
 > SELECT range_id, start_pretty, end_pretty, split_enforced_until FROM crdb_internal.ranges WHERE table_name='rides';
 ~~~
 ~~~
-  range_id |   start_pretty   |    end_pretty    |       split_enforced_until
-+----------+------------------+------------------+----------------------------------+
-        23 | /Table/55        | /Table/55/4      | NULL
-        32 | /Table/55/4      | /Table/55/4/25   | 2019-09-10 21:27:35.056275+00:00
-        33 | /Table/55/4/25   | /Table/55/4/5E+1 | NULL
-        34 | /Table/55/4/5E+1 | /Table/55/4/75   | NULL
-        35 | /Table/55/4/75   | /Table/56        | NULL
-(5 rows)
+  range_id |                                        start_pretty                                         |                                         end_pretty                                          |        split_enforced_until
+-----------+---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+--------------------------------------
+        39 | /Table/55                                                                                   | /Table/55/1/"amsterdam"/"\xc5\x1e\xb8Q\xeb\x85@\x00\x80\x00\x00\x00\x00\x00\x01\x81"        | NULL
+        56 | /Table/55/1/"amsterdam"/"\xc5\x1e\xb8Q\xeb\x85@\x00\x80\x00\x00\x00\x00\x00\x01\x81"        | /Table/55/1/"boston"/"8Q\xeb\x85\x1e\xb8B\x00\x80\x00\x00\x00\x00\x00\x00n"                 | 2262-04-11 23:47:16.854776+00:00:00
+        55 | /Table/55/1/"boston"/"8Q\xeb\x85\x1e\xb8B\x00\x80\x00\x00\x00\x00\x00\x00n"                 | /Table/55/1/"los angeles"/"\xa8\xf5\u008f\\(H\x00\x80\x00\x00\x00\x00\x00\x01J"             | 2262-04-11 23:47:16.854776+00:00:00
+        53 | /Table/55/1/"los angeles"/"\xa8\xf5\u008f\\(H\x00\x80\x00\x00\x00\x00\x00\x01J"             | /Table/55/1/"new york"/"\x1c(\xf5\u008f\\I\x00\x80\x00\x00\x00\x00\x00\x007"                | 2262-04-11 23:47:16.854776+00:00:00
+        66 | /Table/55/1/"new york"/"\x1c(\xf5\u008f\\I\x00\x80\x00\x00\x00\x00\x00\x007"                | /Table/55/1/"paris"/"\xe1G\xae\x14z\xe1H\x00\x80\x00\x00\x00\x00\x00\x01\xb8"               | 2262-04-11 23:47:16.854776+00:00:00
+        52 | /Table/55/1/"paris"/"\xe1G\xae\x14z\xe1H\x00\x80\x00\x00\x00\x00\x00\x01\xb8"               | /Table/55/1/"san francisco"/"\x8c\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x01\x13" | 2262-04-11 23:47:16.854776+00:00:00
+        65 | /Table/55/1/"san francisco"/"\x8c\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x01\x13" | /Table/55/1/"seattle"/"p\xa3\xd7\n=pD\x00\x80\x00\x00\x00\x00\x00\x00\xdc"                  | 2262-04-11 23:47:16.854776+00:00:00
+        64 | /Table/55/1/"seattle"/"p\xa3\xd7\n=pD\x00\x80\x00\x00\x00\x00\x00\x00\xdc"                  | /Table/55/1/"washington dc"/"Tz\xe1G\xae\x14L\x00\x80\x00\x00\x00\x00\x00\x00\xa5"          | 2262-04-11 23:47:16.854776+00:00:00
+        54 | /Table/55/1/"washington dc"/"Tz\xe1G\xae\x14L\x00\x80\x00\x00\x00\x00\x00\x00\xa5"          | /Table/55/4                                                                                 | 2262-04-11 23:47:16.854776+00:00:00
+        68 | /Table/55/4                                                                                 | /Table/55/4/25                                                                              | 2021-04-08 16:27:45.201336+00:00:00
+        69 | /Table/55/4/25                                                                              | /Table/55/4/5E+1                                                                            | NULL
+        70 | /Table/55/4/5E+1                                                                            | /Table/55/4/75                                                                              | NULL
+        71 | /Table/55/4/75                                                                              | /Table/56                                                                                   | NULL
+(13 rows)
 ~~~
 
 The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](range-merges.html) in the table as needed.

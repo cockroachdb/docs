@@ -57,28 +57,13 @@ SHOW REGIONS FROM CLUSTER;
 
  _Database regions_ are a high-level abstraction for a geographic region. Each region is broken into multiple zones. These terms are meant to correspond directly to the region and zone terminology used by cloud providers.
 
-The regions added during node startup become _Database Regions_ when they are added to a database using the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE <db> PRIMARY REGION 'us-east-1';
-~~~
+The regions added during node startup become _Database Regions_ when they are added to a database. To add the first region, use the [`ALTER DATABASE ... PRIMARY REGION` statement](add-region.html#set-the-primary-region).
 
 While the database has only one region assigned to it, it is considered a "multi-region database."  This means that all data in that database is stored within its assigned regions, and CockroachDB optimizes access to the database's data from the primary region.
 
-To add another database region, use a statement like the following:
+To add another database region, use the [`ALTER DATABASE ... ADD REGION` statement](add-region.html#add-a-region-to-a-database).
 
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE <db> ADD REGION 'us-west-1';
-~~~
-
-To show all of a database's regions, execute the following SQL statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-SHOW REGIONS FROM DATABASE <db>;
-~~~
+To show all of a database's regions, execute the [`SHOW REGIONS FROM DATABASE` statement](add-region.html#view-a-databases-regions).
 
 {{site.data.alerts.callout_info}}
 If the default _Survival Goals_ and _Table Localities_ meet your needs, there is nothing else you need to do once you have set a database's primary region.
@@ -109,6 +94,8 @@ For more information about the survival goals supported by CockroachDB, see the 
 
 With the zone level survival goal, the database will remain fully available for reads and writes, even if a zone goes down. However, the database may not remain fully available if multiple zones fail in the same region.
 
+You can configure a database to survive zone failures using the [`ALTER DATABASE ... SURVIVE ZONE FAILURE` statement](survive-failure.html).
+
 {{site.data.alerts.callout_info}}
 Surviving zone failures is the default setting for multi-region databases.
 
@@ -119,12 +106,7 @@ If your application has performance or availability needs that are different tha
 
 The region level survival goal has the property that the database will remain fully available for reads and writes, even if an entire region goes down. This added survival comes at a cost: write latency will be increased by at least as much as the round-trip time to the nearest region. Read performance will be unaffected. In other words, you are adding network hops and making writes slower in exchange for robustness.
 
-You can upgrade a database to survive region failures using the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER DATABASE <db> SURVIVE REGION FAILURE;
-~~~
+You can configure a database to survive region failures using the [`ALTER DATABASE ... SURVIVE REGION FAILURE` statement](survive-failure.html).
 
 {{site.data.alerts.callout_info}}
 In order to survive region failures, you must have added at least 3 [database regions](#database-regions)
@@ -156,19 +138,7 @@ Regional tables work well when your application requires low-latency reads and w
 
 For _regional_ tables, access to the table will be fast in the table's "home region" and slower in other regions. In other words, CockroachDB optimizes access to data in regional tables from a single region. By default, a regional table's home region is the [database's primary region](#database-regions), but that can be changed to use any region added to the database.
 
-To optimize read and write access to the data in a table from the primary region, use the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER TABLE <table> SET LOCALITY REGIONAL BY TABLE IN PRIMARY REGION;
-~~~
-
-To optimize read and write access to the data in a table from the `us-east-1` region, use the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER TABLE <table> SET LOCALITY REGIONAL BY TABLE IN 'us-east-1';
-~~~
+For instructions showing how to set a table's locality to `REGIONAL BY TABLE`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#regional-by-table)
 
 {{site.data.alerts.callout_info}}
 By default, all tables in a multi-region database are _regional_ tables that use the database's primary region. Unless you know your application needs different performance characteristics than regional tables provide, there is no need to change this setting.
@@ -182,39 +152,7 @@ Use regional by row tables when your application requires low-latency reads and 
 
 For an example of a table that can benefit from the _regional by row_ setting in a multi-region deployment, see the `users` table from the [MovR application](movr.html).
 
-To make an existing table a _regional by row_ table, use the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER TABLE <table> SET LOCALITY REGIONAL BY ROW;
-~~~
-
-Every row in a regional by row table has a hidden `crdb_region` column that represents the row's home region. To see a row's region, issue a statement like the following:
-
-{% include copy-clipboard.html %}
-~~~ sql
-SELECT crdb_region, id FROM <table>;
-~~~
-
-To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
-
-{% include copy-clipboard.html %}
-~~~ sql
-UPDATE <table> SET crdb_region = 'eu-west' WHERE id IN (...)
-~~~
-
-To add a new row to a regional by row table, you must choose one of the following options.
-
-- Let CockroachDB set the row's home region automatically. It will use the region of the gateway node from which the row is inserted.
-
-- Set the home region explicitly using an [`INSERT`](insert.html) statement like the following:
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    INSERT INTO <table> (crdb_region, ...) VALUES ('us-east-1', ...);
-    ~~~
-
-This is necessary because every row in a regional by row table must have a home region.
+For instructions showing how to set a table's locality to `REGIONAL BY ROW`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#regional-by-row)
 
 ### Global tables
 
@@ -224,12 +162,7 @@ Use global tables when your application has a "read-mostly" table of reference d
 
 For an example of a table that can benefit from the _global_ table locality setting in a multi-region deployment, see the `promo_codes` table from the [MovR application](movr.html).
 
-To optimize read access to the data in a table from any region (that is, globally), use the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER TABLE <table> SET LOCALITY GLOBAL;
-~~~
+For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#global)
 
 ## Next steps
 

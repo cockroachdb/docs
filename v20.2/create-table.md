@@ -71,11 +71,6 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/diagrams/like_table_option_list.html %}
 </div>
 
-**opt_interleave ::=**
-
-<div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_interleave.html %}
-</div>
 
 **opt_with_storage_parameter_list ::=**
 
@@ -100,11 +95,11 @@ Parameter | Description
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `LIKE table_name like_table_option_list` | <span class="version-tag">New in v20.2:</span> Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
-`opt_interleave` | You can potentially optimize query performance by [interleaving tables](interleave-in-parent.html), which changes how CockroachDB stores your data.<br>{{site.data.alerts.callout_info}}[Hash-sharded indexes](hash-sharded-indexes.html) cannot be interleaved.{{site.data.alerts.end}}
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
 `opt_where_clause` | <span class="version-tag">New in v20.2:</span> An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 `opt_with_storage_parameter_list` | <span class="version-tag">New in v20.2:</span> A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
+`opt_interleave` | [Interleave table into parent table](interleave-in-parent.html).<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
 ## Table-level replication
 
@@ -131,7 +126,7 @@ The following options are supported:
 To exclude specifiers, use the `EXCLUDING` keyword. Excluding specifiers can be useful if you want to use `INCLUDING ALL`, and exclude just one or two specifiers. The last `INCLUDING`/`EXCLUDING` keyword for a given specifier takes priority.
 
 {{site.data.alerts.callout_info}}
-Column families, interleavings, partitioning, and foreign key constraints
+Column families, partitioning, interleavings, and foreign key constraints
 cannot be preserved from the old table and will have to be recreated
 manually in the new table if the user wishes.
 {{site.data.alerts.end}}

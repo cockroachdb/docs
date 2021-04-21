@@ -21,7 +21,7 @@ Encrypted [`BACKUP`](backup.html) is an [enterprise-only](https://www.cockroachl
 
 On [`RESTORE`](#restore-from-an-encrypted-backup-with-aws-kms), CockroachDB reads the `ENCRYPTION_INFO` file and attempts to decrypt the encrypted data key using the KMS URI provided in the `RESTORE` statement. Once CockroachDB successfully obtains the unencrypted data key, the `BACKUP` manifest and data files will be decrypted and the restoration will proceed. Similarly, the same KMS URI is needed to decrypt the file to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html#show-an-encrypted-backup).
 
-When used with [incremental backups](backup.html#incremental-backups), the `kms` option is applied to all the [backup file URLs](backup.html#backup-file-urls), which means each incremental must include at least one of the KMS URIs used to take the full backup. It can be any subset of the original URIs, but you cannot include any new KMS URIs. Similarly, when used with [locality-aware backups](take-and-restore-locality-aware-backups.html), the KMS URI provided is applied to files in all localities.
+When used with [incremental backups](take-full-and-incremental-backups.html#incremental-backups), the `kms` option is applied to all the [backup file URLs](backup.html#backup-file-urls), which means each incremental must include at least one of the KMS URIs used to take the full backup. It can be any subset of the original URIs, but you cannot include any new KMS URIs. Similarly, when used with [locality-aware backups](take-and-restore-locality-aware-backups.html), the KMS URI provided is applied to files in all localities.
 
 For more information about AWS KMS, see the [documentation](https://aws.amazon.com/kms/).
 
@@ -62,7 +62,7 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
+> BACKUP INTO 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
 ~~~
 
@@ -79,7 +79,7 @@ To take a backup with [multi-region encryption](#multi-region), use the `kms` op
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO 's3://test/backups/test_explicit_kms_2?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
+> BACKUP INTO 's3://test/backups/test_explicit_kms_2?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
     WITH KMS=(
       'aws:///<cmk>?AUTH=implicit&REGION=us-east-1',
       'aws:///<cmk>?AUTH=implict&REGION=us-west-1'
@@ -111,10 +111,6 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
   594193600274956291 | succeeded |                  1 | 2689 |          1217 | 1420108
 (1 row)
 ~~~
-
-### Known limitation
-
-{% include {{ page.version.version }}/known-limitations/kms-scheduled-backup.md %}
 
 ## Use a passphrase
 

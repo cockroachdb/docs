@@ -54,7 +54,7 @@ The DistSQL Plan Viewer displays the physical query plan, as well as execution s
 Field | Description
 ------+------------
 &lt;ProcessorName&gt;/&lt;n&gt; | The processor and processor ID used to read data into the SQL execution engine.<br><br>A processor is a component that takes streams of input rows, processes them according to a specification, and outputs one stream of rows. For example, an "aggregator" aggregates input rows.
-&lt;index&gt;@&lt;table&gt; | The index used.
+&lt;table&gt;@&lt;index&gt; | The index used.
 Out | The output columns.
 @&lt;n&gt; | The index of the column relative to the input.
 Render | The stage that renders the output.

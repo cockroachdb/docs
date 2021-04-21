@@ -1,6 +1,6 @@
 ---
 title: DATE
-summary: The DATE data type stores a year, month, and day.
+summary: CockroachDB's DATE data type stores a year, month, and day.
 toc: true
 ---
 

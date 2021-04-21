@@ -1,6 +1,6 @@
 ---
 title: cockroach nodelocal upload
-summary: Upload a file to a node's local file system.
+summary: The cockroach nodelocal upload command uploads a file to the external IO directory on a node's (the gateway node, by default) local file system.
 toc: true
 ---
 

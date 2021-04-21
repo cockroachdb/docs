@@ -92,7 +92,7 @@ table tr td:nth-child(2) {
  Database renames | ✓ | Standard | [`RENAME DATABASE` documentation](rename-database.html)
  Table renames | ✓ | Standard | [`RENAME TABLE` documentation](rename-table.html)
  Column renames | ✓ | Standard | [`RENAME COLUMN` documentation](rename-column.html)
- Altering a column's data type | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER COLUMN` documentation](alter-column.html#altering-column-data-types)
+ Altering a column's data type | ✓ | Standard | <span class="version-tag">New in v20.2:</span> [`ALTER COLUMN` documentation](alter-column.html#altering-column-types)
  Adding columns | ✓ | Standard | [`ADD COLUMN` documentation](add-column.html)
  Removing columns | ✓ | Standard | [`DROP COLUMN` documentation](drop-column.html)
  Adding constraints | ✓ | Standard | [`ADD CONSTRAINT` documentation](add-constraint.html)
@@ -168,7 +168,7 @@ table tr td:nth-child(2) {
  Component | Supported | Type | Details
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
- Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)
+ Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
  Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
  Views | ✓ | Standard | [Views documentation](views.html)
  Materialized views | ✓ | Common Extension | <span class="version-tag">New in v20.2:</span> [Materialized views documentation](views.html#materialized-views)

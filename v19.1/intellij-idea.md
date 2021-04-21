@@ -1,6 +1,6 @@
 ---
 title: Intellij IDEA
-summary: Learn how to use IntelliJ IDEA with CockroachDB.
+summary: Learn how to use IntelliJ IDEA with a CockroachDB cluster.
 toc: true
 ---
 

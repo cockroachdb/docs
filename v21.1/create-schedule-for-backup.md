@@ -75,7 +75,7 @@ If you encounter a bug, please [file an issue](file-an-issue.html).
 - We recommend that you schedule your backups at a cadence that your cluster can keep up with; for example, if a previous backup is still running when it is time to start the next one, adjust the schedule so the backups do not end up falling behind or update the [`on_previous_running` option](#on-previous-running-option).
 - To prevent scheduled backups from falling behind, first determine how long a single backup takes and use that as your starting point for the schedule's cadence.
 - Ensure you are monitoring your backup schedule (e.g., [Prometheus](monitor-cockroachdb-with-prometheus.html)) and alerting metrics that will confirm that your backups are completing, but also that they're not running more concurrently than you expect.
-- Ensure that your [GC window](configure-replication-zones.html#gc-ttlseconds) is long enough to accommodate your backup schedule, otherwise your incremental backups will fail. For example, if you set up your schedule to be `RECURRING '@daily'` but your GC window is less than 1 day, all your incremental backups will fail.
+- Ensure that your [GC window](configure-replication-zones.html#gc-ttlseconds) is long enough to accommodate your backup schedule, otherwise your incremental backups will throw [an error](common-errors.html#protected-ts-verification-error). For example, if you set up your schedule to be `RECURRING '@daily'` but your GC window is less than 1 day, all your incremental backups will fail.
 - The `AS OF SYSTEM TIME` clause cannot be set on scheduled backups. Scheduled backups are started shortly after the scheduled time has passed by an internal polling mechanism and are automatically run with `AS OF SYSTEM TIME` set to the time at which the backup was scheduled to run.
 - If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
 
@@ -219,16 +219,10 @@ Because the [`FULL BACKUP` clause](#full-backup-clause) was not included, Cockro
 
 When a [backup is created by a schedule](create-schedule-for-backup.html), it is stored within a collection of backups in the given location. To view details for a backup created by a schedule, you can use the following:
 
-- `SHOW BACKUPS IN y` statement to [view a list of the full backup's subdirectories](#view-a-list-of-the-full-backups-subdirectories).
-- `SHOW BACKUP x IN y` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
+- `SHOW BACKUPS IN y` statement to [view a list of the full backup's subdirectories](show-backup.html#view-a-list-of-the-available-full-backup-subdirectories).
+- `SHOW BACKUP x IN y` statement to [view a list of the full and incremental backups that are stored in a specific full backup's subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 For more details, see [`SHOW BACKUP`](show-backup.html).
-
-{% include {{ page.version.version }}/backups/show-scheduled-backups.md %}
-
-## Known limitation
-
-{% include {{ page.version.version }}/known-limitations/kms-scheduled-backup.md %}
 
 ## See also
 

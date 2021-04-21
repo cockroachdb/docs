@@ -76,13 +76,16 @@ For another example, see [Create a partial index that enforces uniqueness on a s
 When [inserted values](insert.html) conflict with a `UNIQUE` constraint on one or more columns, CockroachDB normally returns an error. We recommend adding an [`ON CONFLICT`](insert.html#on-conflict-clause) clause to all `INSERT` statements that might conflict with rows in the unique index.
 {{site.data.alerts.end}}
 
+## Partial inverted indexes
+
+<span class="version-tag">New in v21.1:</span> You can create partial [inverted indexes](inverted-indexes.html#partial-inverted-indexes), which are indexes on a subset of `JSON`, `ARRAY`, or geospatial container column data.
+
 ## Index hints
 
 You can force queries [to use a specific partial index](table-expressions.html#force-index-selection) (also known as "index hinting"), like you can with full indexes. However, unlike full indexes, partial indexes cannot be used to satisfy all queries. If a query's filter implies the partial index predicate expression, the partial index will be used in the query plan. If not, an error will be returned.
 
 ## Known limitations
 
-- CockroachDB does not currently support partial [inverted indexes](inverted-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50952).
 - CockroachDB does not currently support [`IMPORT`](import.html) statements on tables with partial indexes. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/50225).
 - CockroachDB does not currently support multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`, and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/53170).
 
@@ -94,14 +97,11 @@ The following examples use MovR, a fictional vehicle-sharing application, to dem
 
 To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory cluster with the `movr` workload:
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach demo --with-load
-~~~
+{% include {{ page.version.version }}/demo_movr.md %}
 
 ### Create an index on a subset of rows
 
-Suppose that you want to query the subset of `rides` with a `revenue` greater than 80.
+Suppose that you want to query the subset of `rides` with a `revenue` greater than 90.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -109,40 +109,47 @@ Suppose that you want to query the subset of `rides` with a `revenue` greater th
 ~~~
 
 ~~~
-  schema_name | table_name | type  | estimated_row_count
---------------+------------+-------+---------------------
-  public      | rides      | table |               29446
+  schema_name | table_name | type  | owner | estimated_row_count | locality
+--------------+------------+-------+-------+---------------------+-----------
+  public      | rides      | table | demo  |              125000 | NULL
 (1 row)
+
+Time: 21ms total (execution 21ms / network 0ms)
 ~~~
 
-Without a partial index, querying the `rides` table with a `WHERE revenue > 80` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement](explain.html):
+Without a partial index, querying the `rides` table with a `WHERE revenue > 90` clause will scan the entire table. To see the plan for such a query, you can use an [`EXPLAIN` statement](explain.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM rides WHERE revenue > 80;
+> EXPLAIN SELECT * FROM rides WHERE revenue > 90;
 ~~~
 
 ~~~
-    tree    |        field        |  description
-------------+---------------------+----------------
-            | distribution        | full
-            | vectorized          | true
-  filter    |                     |
-   │        | filter              | revenue > 80
-   └── scan |                     |
-            | estimated row count | 29446
-            | table               | rides@primary
-            | spans               | FULL SCAN
-(8 rows)
+                                           info
+------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • filter
+  │ estimated row count: 12,472
+  │ filter: revenue > 90
+  │
+  └── • scan
+        estimated row count: 125,000 (100% of the table; stats collected 12 seconds ago)
+        table: rides@primary
+        spans: FULL SCAN
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The `description` column for the `estimated row count` lists the number of rows that the query plan will scan (in this case, the entire table row count of 31337). The `description` for the `table` lists the index used in the scan (in this case, the [primary key index](primary-key.html)).
+The `estimated row count` in the scan node lists the number of rows that the query plan will scan (in this case, the entire table row count of 125,000). The `table` property lists the index used in the scan (in this case, the [primary key index](primary-key.html)).
 
 To limit the number of rows scanned to just the rows that you are querying, you can create a partial index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE INDEX ON rides (city, revenue) WHERE revenue > 80;
+> CREATE INDEX ON rides (city, revenue) WHERE revenue > 90;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -160,27 +167,34 @@ To limit the number of rows scanned to just the rows that you are querying, you 
   rides      | rides_city_revenue_idx                        |    true    |            2 | revenue      | ASC       |  false  |  false
   rides      | rides_city_revenue_idx                        |    true    |            3 | id           | ASC       |  false  |   true
 (12 rows)
+
+Time: 8ms total (execution 8ms / network 0ms)
 ~~~
 
 Another `EXPLAIN` statement shows that the number of rows scanned by the original query decreases significantly with a partial index on the `rides` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT * FROM rides WHERE revenue > 80;
+> EXPLAIN SELECT * FROM rides WHERE revenue > 90;
 ~~~
 
 ~~~
-     tree    |        field        |                 description
--------------+---------------------+-----------------------------------------------
-             | distribution        | full
-             | vectorized          | true
-  index join |                     |
-   │         | table               | rides@primary
-   └── scan  |                     |
-             | estimated row count | 5829
-             | table               | rides@rides_city_revenue_idx (partial index)
-             | spans               | FULL SCAN
-(8 rows)
+                                           info
+------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • index join
+  │ estimated row count: 12,472
+  │ table: rides@primary
+  │
+  └── • scan
+        estimated row count: 12,472 (10.0% of the table; stats collected 36 seconds ago)
+        table: rides@rides_city_revenue_idx (partial index)
+        spans: FULL SCAN
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Note that the query's `SELECT` statement queries all columns in the `rides` table, not just the indexed columns. As a result, an "index join" is required on both the primary index and the partial index.
@@ -189,22 +203,25 @@ Querying only the columns in the index will make the query more efficient by rem
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 80;
+> EXPLAIN SELECT city, revenue FROM rides WHERE revenue > 90;
 ~~~
 
 ~~~
-  tree |        field        |                 description
--------+---------------------+-----------------------------------------------
-       | distribution        | full
-       | vectorized          | true
-  scan |                     |
-       | estimated row count | 5829
-       | table               | rides@rides_city_revenue_idx (partial index)
-       | spans               | FULL SCAN
-(6 rows)
+                                        info
+------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • scan
+    estimated row count: 11,463 (9.2% of the table; stats collected 4 minutes ago)
+    table: rides@rides_city_revenue_idx (partial index)
+    spans: FULL SCAN
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-Querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 80`) will also use the partial index:
+Querying a subset of the rows implied by the partial index predicate expression (in this case, `revenue > 90`) will also use the partial index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -212,17 +229,22 @@ Querying a subset of the rows implied by the partial index predicate expression 
 ~~~
 
 ~~~
-    tree    |        field        |                 description
-------------+---------------------+-----------------------------------------------
-            | distribution        | full
-            | vectorized          | true
-  filter    |                     |
-   │        | filter              | revenue > 95
-   └── scan |                     |
-            | estimated row count | 5829
-            | table               | rides@rides_city_revenue_idx (partial index)
-            | spans               | FULL SCAN
-(8 rows)
+                                          info
+----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • filter
+  │ estimated row count: 5,037
+  │ filter: revenue > 95
+  │
+  └── • scan
+        estimated row count: 11,463 (9.2% of the table; stats collected 5 minutes ago)
+        table: rides@rides_city_revenue_idx (partial index)
+        spans: FULL SCAN
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 The number of rows scanned is the same, and an additional filter is applied to the query plan so that only the subset specified by the filter is returned.
@@ -231,19 +253,22 @@ So far, all the query scans in this example have spanned the entire partial inde
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 80;
+> EXPLAIN SELECT city, revenue FROM rides WHERE city = 'new york' AND revenue > 90;
 ~~~
 
 ~~~
-  tree |        field        |                 description
--------+---------------------+-----------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 660
-       | table               | rides@rides_city_revenue_idx (partial index)
-       | spans               | [/'new york' - /'new york']
-(6 rows)
+                                       info
+-----------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1,301 (1.0% of the table; stats collected 6 minutes ago)
+    table: rides@rides_city_revenue_idx (partial index)
+    spans: [/'new york' - /'new york']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Refining the `revenue` filter expression to match just a subset of the partial index will lower the scanned row count even more:
@@ -254,15 +279,22 @@ Refining the `revenue` filter expression to match just a subset of the partial i
 ~~~
 
 ~~~
-  tree |        field        |                 description
--------+---------------------+-----------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 174
-       | table               | rides@rides_city_revenue_idx (partial index)
-       | spans               | [/'new york'/90 - /'new york'/95)
-(6 rows)
+                                         info
+---------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • filter
+  │ estimated row count: 746
+  │ filter: (revenue >= 90) AND (revenue < 95)
+  │
+  └── • scan
+        estimated row count: 14,187 (11% of the table; stats collected 6 minutes ago)
+        table: rides@primary
+        spans: [/'new york' - /'new york']
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 ### Create an index that excludes values
@@ -277,17 +309,22 @@ A selection query on these values will require a full table scan, using the prim
 ~~~
 
 ~~~
-    tree    |        field        |     description
-------------+---------------------+-----------------------
-            | distribution        | full
-            | vectorized          | true
-  filter    |                     |
-   │        | filter              | end_time IS NOT NULL
-   └── scan |                     |
-            | estimated row count | 31337
-            | table               | rides@primary
-            | spans               | FULL SCAN
-(8 rows)
+                                          info
+-----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • filter
+  │ estimated row count: 125,000
+  │ filter: end_time IS NOT NULL
+  │
+  └── • scan
+        estimated row count: 125,000 (100% of the table; stats collected 7 minutes ago)
+        table: rides@primary
+        spans: FULL SCAN
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 You can create a partial index that excludes these rows, making queries that filter out the non-`NULL` values more efficient.
@@ -320,16 +357,21 @@ You can create a partial index that excludes these rows, making queries that fil
 ~~~
 
 ~~~
-    tree    |        field        |                 description
-------------+---------------------+-----------------------------------------------
-            | distribution        | full
-            | vectorized          | false
-  render    |                     |
-   └── scan |                     |
-            | estimated row count | 5822
-            | table               | rides@rides_city_revenue_idx (partial index)
-            | spans               | FULL SCAN
-(7 rows)
+                                          info
+-----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • render
+  │ estimated row count: 125,000
+  │
+  └── • scan
+        estimated row count: 125,000 (100% of the table; stats collected 8 minutes ago)
+        table: rides@rides_city_revenue_idx1 (partial index)
+        spans: FULL SCAN
+(10 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 

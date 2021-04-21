@@ -94,6 +94,10 @@ ds.setSslRootCert("{path to the CA certificate}")
 
 </section>
 
+{{site.data.alerts.callout_success}}
+For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
+{{site.data.alerts.end}}
+
 ### Run the code
 
 Compile and run the code:

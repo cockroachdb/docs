@@ -18,17 +18,17 @@ You can also create a user-defined schema by converting an existing database to 
 
 ## Syntax
 
-~~~
-CREATE SCHEMA [IF NOT EXISTS] { <schemaname> | [<schemaname>] AUTHORIZATION <user_name> }
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/create_schema.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 ----------|------------
-`IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the current database. If one does exist, do not return an error.
-`schemaname` | The name of the schema to create, which must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
+`IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the database. If one does exist, do not return an error.
+`name` | The name of the schema to create. The schema name must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`AUTHORIZATION role_spec` | Optionally identify a user (`role_spec`) to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no schema name is specified, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
 

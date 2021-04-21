@@ -1,6 +1,6 @@
 ---
 title: Known Limitations in CockroachDB v19.2
-summary: Known limitations in CockroachDB v19.2.
+summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 ---
 

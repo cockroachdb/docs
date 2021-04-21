@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud (30-day trial)</strong></button></a>
-    <a href="quickstart.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="quickstart.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud (30-day trial)</button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
@@ -78,7 +78,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xJ
@@ -86,7 +86,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar  xvz
@@ -101,14 +101,14 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -118,7 +118,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
     In the [connection string](../v20.2/connection-parameters.html), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
     'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
@@ -126,13 +126,13 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 4. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
     --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SHOW TABLES FROM movr;
     ~~~
@@ -151,7 +151,7 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 5. Run your first query:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM movr.users WHERE city='new york';
     ~~~

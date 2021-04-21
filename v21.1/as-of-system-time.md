@@ -4,13 +4,9 @@ summary: The AS OF SYSTEM TIME clause executes a statement as of a specified tim
 toc: true
 ---
 
-The `AS OF SYSTEM TIME timestamp` clause causes statements to execute
-using the database contents "as of" a specified time in the past.
+The `AS OF SYSTEM TIME timestamp` clause causes statements to execute using the database contents "as of" a specified time in the past.
 
-This clause can be used to read historical data (also known as "[time
-travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)") and can also be advantageous for performance as it decreases
-transaction conflicts. For more details, see [SQL Performance Best
-Practices](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
+This clause can be used to read historical data (also known as "[time travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future/)") and can also be advantageous for performance as it decreases transaction conflicts. For more details, see [SQL Performance Best Practices](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
 
 {{site.data.alerts.callout_info}}
 Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field in the [replication zone configuration](configure-replication-zones.html).
@@ -36,7 +32,11 @@ Format | Notes
 [`INT`](int.html) | Nanoseconds since the Unix epoch.
 negative [`INTERVAL`](interval.html) | Added to `statement_timestamp()`, and thus must be negative.
 [`STRING`](string.html) | A [`TIMESTAMP`](timestamp.html), [`INT`](int.html) of nanoseconds, or negative [`INTERVAL`](interval.html).
-`follower_read_timestamp()`| A [function](functions-and-operators.html) that runs your queries at a time as close as possible to the present time known as the [follower read timestamp](follower-reads.html#run-queries-that-use-follower-reads), while remaining safe for [follower reads](follower-reads.html).
+`follower_read_timestamp()`| A [function](functions-and-operators.html) that returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s` (known as the [follower read timestamp](follower-reads.html#run-queries-that-use-follower-reads)). Using this function will set the time as close as possible to the present time while remaining safe for [follower reads](follower-reads.html).
+
+{{site.data.alerts.callout_success}}
+<span class="version-tag">New in v21.1</span>: To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](set-vars.html) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+{{site.data.alerts.end}}
 
 ## Examples
 

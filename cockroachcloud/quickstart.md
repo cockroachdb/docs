@@ -8,8 +8,8 @@ redirect_from:
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud (30-day trial)</strong></button></a>
-    <a href="quickstart.html"><button class="filter-button page-level current"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="quickstart.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud (30-day trial)</button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements.
@@ -38,7 +38,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
     | tar -xJ
@@ -50,7 +50,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
     | tar  xvz
@@ -65,7 +65,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
@@ -76,7 +76,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
@@ -84,36 +84,36 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
 
 1. In your terminal, connect to your cluster using the [connection string](#step-2-set-up-your-cluster-connection):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
     ~~~
 
     In the connection string copied from the **Connection info** dialog, your username, password, and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 2](#step-2-set-up-your-cluster-connection). For example:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url 'postgres://maxroach:password123@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/test-cluster.defaultdb?sslmode=verify-full&sslrootcert=/Users/maxroach/certs/cc-ca.crt'
     ~~~
 
 1. Using the [built-in SQL client](../v20.2/cockroach-sql.html), you can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > INSERT INTO bank.accounts VALUES (1, 1000.50);
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SELECT * FROM bank.accounts;
     ~~~
@@ -127,7 +127,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
 
 1. To exit the SQL shell:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > \q
     ~~~

@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-run() {
-  echo "$@"
-  "$(dirname "$0")"/builder run "$@"
-}
-
-run bundle exec jekyll build --incremental --trace --config _config_base.yml,_config_cockroachdb.yml
-run htmltest -c .htmltest_nightly.yml

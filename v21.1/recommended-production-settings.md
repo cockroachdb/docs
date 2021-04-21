@@ -1,6 +1,6 @@
 ---
 title: Production Checklist
-summary: Recommended settings for production deployments.
+summary: Recommended settings for production deployments of CockroachDB.
 toc: true
 toc_not_nested: true
 ---
@@ -53,6 +53,8 @@ Each node should have **at least 2 vCPUs**. For best performance, we recommend a
       {{site.data.alerts.end}}
 
 - To optimize for resiliency, use many smaller nodes instead of fewer larger nodes. Recovery from a failed node is faster when data is spread across more nodes.
+
+- To optimize for the support of large numbers of tables, increase the amount of RAM. For more information, see [Quantity of tables and other schema objects](schema-design-overview.html#quantity-of-tables-and-other-schema-objects). Supporting a large number of rows is a matter of [Storage](#storage).
 
 - Avoid "burstable" or "shared-core" virtual machines that limit the load on CPU resources.
 
@@ -250,11 +252,9 @@ Environment | Featured Approach
 
 ## Connection pooling
 
-Multiple active connections to the database enable efficient use of the available database resources. However, creating new authenticated connections to the database is CPU and memory-intensive and also adds to the latency since the application has to wait for database to authenticate the connection.
+Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-Connection pooling helps resolve this dilemma by creating a set of authenticated connections that can be reused to connect to the database. To determine the size of the maximum connection pool, our recommendation is to start your testing with a pool size of  `(core_count * 2) + ssd_count)`, where `core_count` is the total number of cores in the cluster, and `ssd_count` is the total number of SSDs in the cluster. The optimal pool size will vary based on your workload and application, and may be smaller than that.
-
-In addition to setting a maximum connection pool size, the idle connection pool size must also be set. Our recommendation is to set the idle connection pool size equal to the maximum pool size. While this uses more application server memory, this allows there to be many connections when concurrency is high, without having to dial a new connection for every new operation.
+For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](connection-pooling.html).
 
 ## Monitoring and alerting
 

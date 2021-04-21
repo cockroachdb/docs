@@ -8,17 +8,17 @@ toc: true
 
 ## Syntax
 
-~~~
-ALTER SCHEMA ... RENAME TO <newschemaname>
-ALTER SCHEMA ... OWNER TO <newowner>
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/alter_schema.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 ----------|------------
-`RENAME TO ...` | Rename the schema. The new schema name must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`OWNER TO ...` | Change the owner of the schema.
+`schema_name` | The name of the schema to alter.
+`RENAME TO schema_name` | Rename the schema to `schema_name`. The new schema name must be unique within the database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`OWNER TO role_spec` | Change the owner of the schema to `role_spec`.
 
 ## Required privileges
 

@@ -168,7 +168,7 @@ table tr td:nth-child(2) {
  Component | Supported | Type | Details
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
- Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)
+ Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
  Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
  Views | ✓ | Standard | [Views documentation](views.html)
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)

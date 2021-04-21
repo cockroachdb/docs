@@ -5,14 +5,10 @@ toc: true
 toc_not_nested: true
 ---
 
-Interleaving tables improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same [key-value range](frequently-asked-questions.html#how-does-cockroachdb-scale) if it's likely to be read and written together.
-
-{{site.data.alerts.callout_info}}
-Interleaving tables does not affect their behavior within SQL.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_danger}}
-Interleaved tables will be deprecated in a future release. After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you [convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables-to-non-interleaved-tables) and replace any existing interleaved secondary indexes with non-interleaved indexes. We do not recommend interleaving tables in new clusters.
+`INTERLEAVE IN PARENT` is deprecated in CockroachDB v20.2, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
+
+For details, see [below](#deprecation).
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
@@ -47,51 +43,11 @@ For example, if you interleave `orders` into `customers`, the `orders` data is w
 
 By writing data in this way, related data is more likely to remain on the same key-value range, which can make it much faster to read from and write to. Using the above example, all of customer 1's data is going to be written to the same range, including its representation in both the `customers` and `orders` tables.
 
-## When to interleave tables
-
-{% include {{ page.version.version }}/faq/when-to-interleave-tables.html %}
-
 ### Interleaved hierarchy
 
 Interleaved tables typically work best when the tables form a hierarchy. For example, you could interleave the table `orders` (as the child) into the table `customers` (as the parent, which represents the people who placed the orders). You can extend this example by also interleaving the tables `invoices` (as a child) and `packages` (as a child) into `orders` (as the parent).
 
 The entire set of these relationships is referred to as the **interleaved hierarchy**, which contains all of the tables related through [interleave prefixes](#interleave-prefix).
-
-### Benefits
-
-In general, reads, writes, and joins of values related through the interleave prefix are *much* faster. However, you can also improve performance with any of the following:
-
-- Filtering more columns in the interleave prefix (from left to right).
-
-    For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on `customer` would be fast, but filtering on `customer` *and* `order` would be faster.
-
-- Using only tables in the interleaved hierarchy.
-
-<a name="fast-path-deletes"></a>
-
-Fast deletes are available for interleaved tables that use [`ON DELETE CASCADE`](add-constraint.html#add-the-foreign-key-constraint-with-cascade).  Deleting rows from such tables will use an optimized code path and run much faster, as long as the following conditions are met:
-
-- The table or any of its interleaved tables do not have any secondary indices.
-- The table or any of its interleaved tables are not referenced by any other table outside of them by foreign key.
-- All of the interleaved relationships use `ON DELETE CASCADE` clauses.
-
-The performance boost when using this fast path is several orders of magnitude, potentially reducing delete times from seconds to nanoseconds.
-
-For an example showing how to create tables that meet these criteria, see [Interleaved fast path deletes](#interleaved-fast-path-deletes) below.
-
-### Tradeoffs
-
-- In general, reads and deletes over ranges of table values (e.g., `WHERE column > value`) in interleaved tables are slower.
-
-    However, an exception to this is performing operations on ranges of table values in the greatest descendant in the interleaved hierarchy that filters on all columns of the interleave prefix with constant values.
-
-    For example, if the interleave prefix of `packages` is `(customer, order)`, filtering on the entire interleave prefix with constant values while calculating a range of table values on another column, like `WHERE customer = 1 AND order = 1001 AND delivery_date > DATE '2016-01-25'`, would still be fast.
-
-    Another exception is the [fast path delete optimization](#fast-path-deletes), which is available if you set up your tables according to certain criteria.
-
-- If the amount of interleaved data stored for any Primary Key value of the root table is larger than [a key-value range's maximum size](configure-replication-zones.html#replication-zone-variables) (512 MiB by default), the interleaved optimizations will be diminished.
-
-    For example, if one customer has 200MB of order data, their data is likely to be spread across multiple key-value ranges and CockroachDB will not be able to access it as quickly, despite it being interleaved.
 
 ## Syntax
 
@@ -111,41 +67,35 @@ For an example showing how to create tables that meet these criteria, see [Inter
  `WITH storage_parameter` | <span class="version-tag">New in v20.2:</span> A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
  `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 
-## Requirements
+## Deprecation
 
-- You can only interleave tables when creating the child table.
+Interleaving tables and indexes is deprecated in CockroachDB v20.2, and will be permanently disabled in a future release, for the following reasons:
 
-- Each child table's Primary Key must contain its parent table's Primary Key as a prefix (known as the **interleave prefix**).
+- Scans over tables or indexes with interleaved, child objects (i.e., interleaved tables or indexes) are much slower than scans over tables and indexes with no child objects, as the scans must traverse the parent object and all of its child objects.
+- Database schema changes are slower for interleaved objects and their parents than they are for non-interleaved objects and objects with no interleaved children. For example, if you add or remove a column to a parent or child table, CockroachDB must rewrite the entire interleaved hierarchy for that table and its parents/children.
+- [Internal benchmarks](https://github.com/cockroachdb/cockroach/issues/53455) have shown the performance benefits of interleaving tables and indexes are limited to a small number of use cases.
 
-    For example, if the parent table's primary key is `(a INT, b STRING)`, the child table's primary key could be `(a INT, b STRING, c DECIMAL)`.
+For more details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/52009).
 
-    {{site.data.alerts.callout_info}}This requirement is enforced only by ensuring that the columns use the same data types. However, we recommend ensuring the columns refer to the same values by using the  <a href="foreign-key.html">Foreign Key constraint</a>.{{site.data.alerts.end}}
+After [upgrading to v20.2](upgrade-cockroach-version.html), we recommend that you do the following:
 
-- Interleaved tables cannot be the child of more than 1 parent table. However, each parent table can have many children tables. Children tables can also be parents of interleaved tables.
+- [Convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables).
+- [Replace any existing interleaved secondary indexes with non-interleaved indexes](#replace-interleaved-indexes).
 
-- You cannot interleave a [hash-sharded index](hash-sharded-indexes.html).
+{{site.data.alerts.callout_success}}
+Test your [schema changes](online-schema-changes.html) in a non-production environment before implementing them in production.
+{{site.data.alerts.end}}
 
-## Recommendations
+### Convert interleaved tables
 
-- Use interleaved tables when your schema forms a hierarchy, and the Primary Key of the root table (for example, a "user ID" or "account ID") is a parameter to most of your queries.
+To convert an interleaved table to a non-interleaved table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause.
 
-- To enforce the relationship between the parent and children table's Primary Keys, use [Foreign Key constraints](foreign-key.html) on the child table.
+When converting interleaved tables with `ALTER PRIMARY KEY`, note the following:
 
-- In cases where you're uncertain if interleaving tables will improve your queries' performance, test how tables perform under load when they're interleaved and when they aren't.
+- CockroachDB executes `ALTER PRIMARY KEY` statements as [online schema changes](online-schema-changes.html). This means that you can convert your interleaved tables to non-interleaved tables without experiencing any downtime.
+- `ALTER PRIMARY KEY` statements can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
 
-## Convert interleaved tables to non-interleaved tables
-
-Interleaved tables will be deprecated in a future release. After upgrading to v20.2, we recommend that you convert any existing interleaved tables to non-interleaved tables.
-
-To convert an interleaved table to a non-interleaved table, issue an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement on the table, specifying the existing primary key column(s) for the table, and no `INTERLEAVE IN PARENT` clause. Note that an `ALTER PRIMARY KEY` statement can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
-
-Interleaved [secondary indexes](indexes.html) cannot be converted to non-interleaved indexes. You must [drop the existing index](drop-index.html), and then [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
-
-## Examples
-
-### Interleaving tables
-
-This example creates an interleaved hierarchy between `customers`, `orders`, and `packages`, as well as the appropriate Foreign Key constraints. You can see that each child table uses its parent table's Primary Key as a prefix of its own Primary Key (the **interleave prefix**).
+For example, suppose you created an interleaved hierarchy between the `customers`, `orders`, and `packages` tables, using the following [`CREATE TABLE`](create-table.html) statements:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -180,92 +130,107 @@ This example creates an interleaved hierarchy between `customers`, `orders`, and
   ) INTERLEAVE IN PARENT orders (customer, "order");
 ~~~
 
-### Interleaved fast path deletes
-
-This example shows how to create interleaved tables that enable our SQL engine to use a code path optimized to run much faster when deleting rows from these tables.  For more information about the criteria for enabling this optimization, see [fast path deletes](#fast-path-deletes) above.
+The `INTERLEAVE IN PARENT` clauses will appear in `SHOW CREATE` statements for the `packages` and `orders` tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE items (id INT PRIMARY KEY);
+> SHOW CREATE TABLE orders;
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE IF NOT EXISTS bundles (
-    id INT,
-    item_id INT,
-    PRIMARY KEY (item_id, id),
-    FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE ON UPDATE CASCADE
-  )
-  INTERLEAVE IN PARENT items (item_id);
 ~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE IF NOT EXISTS suppliers (
-    id INT,
-    item_id INT,
-    PRIMARY KEY (item_id, id),
-    FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE ON UPDATE CASCADE
-  )
-  INTERLEAVE IN PARENT items (item_id);
+  table_name |                                  create_statement
+-------------+-------------------------------------------------------------------------------------
+  orders     | CREATE TABLE public.orders (
+             |     customer INT8 NOT NULL,
+             |     id INT8 NOT NULL,
+             |     total DECIMAL(20,5) NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (customer ASC, id ASC),
+             |     CONSTRAINT fk_customer FOREIGN KEY (customer) REFERENCES public.customers(id),
+             |     FAMILY "primary" (customer, id, total)
+             | ) INTERLEAVE IN PARENT public.customers (customer)
+(1 row)
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE IF NOT EXISTS orders (
-    id INT,
-    item_id INT,
-    bundle_id INT,
-    FOREIGN KEY (item_id, bundle_id) REFERENCES bundles (item_id, id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY (item_id, bundle_id, id)
-  )
-  INTERLEAVE IN PARENT bundles (item_id, bundle_id);
+> SHOW CREATE TABLE packages;
 ~~~
 
-The following statement will delete some rows from the `parent` table, very quickly:
+~~~
+  table_name |                                        create_statement
+-------------+--------------------------------------------------------------------------------------------------
+  packages   | CREATE TABLE public.packages (
+             |     customer INT8 NOT NULL,
+             |     "order" INT8 NOT NULL,
+             |     id INT8 NOT NULL,
+             |     address STRING(50) NULL,
+             |     delivered BOOL NULL,
+             |     delivery_date DATE NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (customer ASC, "order" ASC, id ASC),
+             |     CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES public.orders(customer, id),
+             |     FAMILY "primary" (customer, "order", id, address, delivered, delivery_date)
+             | ) INTERLEAVE IN PARENT public.orders (customer, "order")
+(1 row)
+~~~
+
+To convert these tables to non-interleaved tables, use `ALTER PRIMARY KEY` statements, starting at the bottom of the hierarchy (i.e., with `packages`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> DELETE FROM items WHERE id <= 5;
-~~~
-
-### Key-value storage example
-
-It can be easier to understand what interleaving tables does by seeing what it looks like in the key-value store. For example, using the above example of interleaving `orders` in `customers`, we could insert the following values:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO customers (id, name) VALUES
-    (1, 'Ha-Yun'),
-    (2, 'Emanuela');
+> ALTER TABLE packages ALTER PRIMARY KEY USING COLUMNS (customer, "order", id);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO orders (customer, id, total) VALUES
-    (1, 1000, 100.00),
-    (2, 1001, 90.00),
-    (1, 1002, 80.00),
-    (2, 1003, 70.00);
+> ALTER TABLE orders ALTER PRIMARY KEY USING COLUMNS (customer, id);
 ~~~
 
-Using an illustrative format of the key-value store (keys are on the left; values are represented by `-> value`), the data would be written like this:
-
-~~~
-/customers/<customers.id = 1> -> 'Ha-Yun'
-/customers/<orders.customer = 1>/orders/<orders.id = 1000> -> 100.00
-/customers/<orders.customer = 1>/orders/<orders.id = 1002> -> 80.00
-/customers/<customers.id = 2> -> 'Emanuela'
-/customers/<orders.customer = 2>/orders/<orders.id = 1001> -> 90.00
-/customers/<orders.customer = 2>/orders/<orders.id = 1003> -> 70.00
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE orders;
 ~~~
 
-You'll notice that `customers.id` and `orders.customer` are written into the same position in the key-value store. This is how CockroachDB relates the two table's data for the interleaved structure. By storing data this way, accessing any of the `orders` data alongside the `customers` is much faster.
+~~~
+  table_name |                                  create_statement
+-------------+-------------------------------------------------------------------------------------
+  orders     | CREATE TABLE public.orders (
+             |     customer INT8 NOT NULL,
+             |     id INT8 NOT NULL,
+             |     total DECIMAL(20,5) NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (customer ASC, id ASC),
+             |     CONSTRAINT fk_customer FOREIGN KEY (customer) REFERENCES public.customers(id),
+             |     UNIQUE INDEX orders_customer_id_key (customer ASC, id ASC),
+             |     FAMILY "primary" (customer, id, total)
+             | )
+(1 row)
+~~~
 
-{{site.data.alerts.callout_info}}If we didn't set Foreign Key constraints between <code>customers.id</code> and <code>orders.customer</code> and inserted <code>orders.customer = 3</code>, the data would still get written into the key-value in the expected location next to the <code>customers</code> table identifier, but <code>SELECT * FROM customers WHERE id = 3</code> would not return any values.{{site.data.alerts.end}}
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE TABLE packages;
+~~~
 
-To better understand how CockroachDB writes key-value data, see our blog post [Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage/).
+~~~
+  table_name |                                        create_statement
+-------------+--------------------------------------------------------------------------------------------------
+  packages   | CREATE TABLE public.packages (
+             |     customer INT8 NOT NULL,
+             |     "order" INT8 NOT NULL,
+             |     id INT8 NOT NULL,
+             |     address STRING(50) NULL,
+             |     delivered BOOL NULL,
+             |     delivery_date DATE NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (customer ASC, "order" ASC, id ASC),
+             |     CONSTRAINT fk_order FOREIGN KEY (customer, "order") REFERENCES public.orders(customer, id),
+             |     UNIQUE INDEX packages_customer_order_id_key (customer ASC, "order" ASC, id ASC),
+             |     FAMILY "primary" (customer, "order", id, address, delivered, delivery_date)
+             | )
+(1 row)
+~~~
+
+### Replace interleaved indexes
+
+Interleaved [secondary indexes](indexes.html) cannot be converted to non-interleaved indexes. You must [drop the existing index](drop-index.html), and then [create a new index](create-index.html) without an `INTERLEAVE IN PARENT` clause.
 
 ## See also
 

@@ -27,6 +27,26 @@ If your application needs support for functions that are not yet implemented, pl
 
 For a list of other known limitations, see [Known Limitations](known-limitations.html#spatial-support-limitations).
 
+### ORM compatibility
+
+The following ORM spatial libraries are fully compatible with CockroachDB's spatial features:
+
+- [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial)
+
+    [Hibernate 5.4.30.Final](https://in.relation.to/2021/03/19/hibernate-orm-5430-final-release/) added the `CockroachDB202SpatialDialect` dialect to the `hibernate-spatial` module. The `CockroachDB202SpatialDialect` dialect supports spatial features available in CockroachDB v20.2 and later.
+
+- [RGeo/RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord)
+
+    CockroachDB's ActiveRecord adapter ([`activerecord-cockroachdb-adapter`](https://github.com/cockroachdb/activerecord-cockroachdb-adapter)) uses [RGeo](https://github.com/rgeo/rgeo) and [RGeo-ActiveRecord](https://github.com/rgeo/rgeo-activerecord) for spatial support with ActiveRecord v5.2.2+ and v6.0.0+. For information about using CockroachDB spatial features with ActiveRecord, see the [`activerecord-cockroachdb-adapter` README](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data).
+
+- [GeoDjango](https://github.com/cockroachdb/django-cockroachdb#gis-support)
+
+    Starting with CockroachDB 20.2.x and [`django-cockroachdb`](https://github.com/cockroachdb/django-cockroachdb) 3.1.3, CockroachDB is compatible with [GeoDjango](https://docs.djangoproject.com/en/3.1/ref/contrib/gis/). For information about using CockroachDB spatial features with GeoDjango, see the [`django-cockroachdb` README](https://github.com/cockroachdb/django-cockroachdb#gis-support).
+
+{{site.data.alerts.callout_info}}
+Most PostGIS-compatible client libraries are incompatible with CockroachDB's spatial features without an adapter.
+{{site.data.alerts.end}}
+
 ## Troubleshooting
 
 For general CockroachDB troubleshooting information, see [this troubleshooting overview](troubleshooting-overview.html).
