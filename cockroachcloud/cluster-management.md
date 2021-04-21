@@ -3,7 +3,7 @@ title: Cluster Management
 summary: Manage your cluster's schema, data, and more.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-cluster-management.html
+- ../v20.2/cockroachcloud-cluster-management.html
 ---
 
 This page describes the cluster management and cluster deletion workflows.
@@ -65,7 +65,7 @@ At this time, you cannot use the Console to scale up a single-node cluster or sc
 ### Considerations
 
 - Adding or removing nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic.
-- If you have changed the [replication factor](../stable/configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
+- If you have changed the [replication factor](../{{site.versions["stable"]}}/configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
 - Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data.
 
 To add or remove nodes from your cluster:
@@ -91,7 +91,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
-Additionally, you can [backup and restore](../stable/backup-and-restore.html) data on your own.
+Additionally, you can [backup and restore](../{{site.versions["stable"]}}/backup-and-restore.html) data on your own.
 </section>
 
 ## Delete cluster

@@ -34,7 +34,7 @@ Limiting latency improves the user experience, and it can also help avoid proble
 To reduce database latency in a distributed CockroachDB deployment, data can be [geo-partitioned](topology-geo-partitioned-replicas.html). Geo-partitioning enables you to control where specific rows of data are stored. Limiting database operations to specific partitions can reduce the distance requests need to travel between the client and the database.
 
 {{site.data.alerts.callout_info}}
-Geo-partitioned replicas can dramatically improve latency in multi-region deployments, but at the [cost of resiliency](https://www.cockroachlabs.com/docs/stable/topology-geo-partitioned-replicas.html#resiliency). Geo-partitioned replicas are resilient to availability zone failures, but not regional failures.
+Geo-partitioned replicas can dramatically improve latency in multi-region deployments, but at the [cost of resiliency](topology-geo-partitioned-replicas.html#resiliency). Geo-partitioned replicas are resilient to availability zone failures, but not regional failures.
 {{site.data.alerts.end}}
 
 If you are building an application, it's likely that the end user will not be making requests to the database directly. Instead, the user makes requests to the application, and the application makes requests to the database on behalf of the user. To limit the latency between the application and the database, you need to design and deploy your application such that:
