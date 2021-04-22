@@ -204,14 +204,14 @@ AS OF SYSTEM TIME '-10s';
 
 ### Run a backup asynchronously
 
-Use the `detached` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
+Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 AS OF SYSTEM TIME '-10s'
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:

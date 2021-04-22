@@ -61,10 +61,6 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
 `kv_option_list` | Control the backup behavior with a comma-separated list of [these options](#options).
 
-{{site.data.alerts.callout_info}}
-The `BACKUP` statement cannot be used within a [transaction](transactions.html).
-{{site.data.alerts.end}}
-
 ### Options
 
 {% include {{ page.version.version }}/backups/backup-options.md %}
@@ -218,14 +214,14 @@ This incremental backup syntax does not work for backups using HTTP storage; you
 
 ### Run a backup asynchronously
 
-<span class="version-tag">New in v20.2:</span> Use the `detached` [option](#options) to execute the backup job asynchronously:
+<span class="version-tag">New in v20.2:</span> Use the `DETACHED` [option](#options) to execute the backup job asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO \
 'gs://acme-co-backup/test-cluster' \
 AS OF SYSTEM TIME '-10s'
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:
