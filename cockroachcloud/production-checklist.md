@@ -3,20 +3,20 @@ title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachCloud cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-production-checklist.html
+- ../v20.2/cockroachcloud-production-checklist.html
 ---
 
 This page provides important recommendations for CockroachCloud production deployments.
 
 ## Follow the SQL Best Practices
 
-To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) guide.
+To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) guide.
 
 ## Use a pool of persistent connections
 
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](../stable/connection-pooling.html).
+For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
 
 ## Authorize the right network
 

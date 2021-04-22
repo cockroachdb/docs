@@ -11,7 +11,7 @@ toc: true
 
 This page shows you how to deploy a CockroachDB cluster on CockroachCloud (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](../{{site.versions["stable"]}}/secure-a-cluster.html).
 
 ## Before you begin
 
@@ -68,9 +68,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Step 5. Run your first query
 
-For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run the first query. On your local machine:
+For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"]}}/movr.html) to run the first query. On your local machine:
 
-1. [Download the CockroachDB binary](../stable/install-cockroachdb.html):
+1. [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html):
 
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
@@ -114,9 +114,9 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
     ~~~
     </section>
 
-3. Initialize the `movr` [workload](../v20.2/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
+3. Initialize the `movr` [workload](../{{site.versions["stable"]}}/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
 
-    In the [connection string](../v20.2/connection-parameters.html), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
+    In the [connection string](../{{site.versions["stable"]}}/connection-parameters.html), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -172,9 +172,9 @@ For this tutorial, we will use the [`movr` workload](../stable/movr.html) to run
 
 Learn more:
 
-- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- Build a ["Hello World" app with the Django framework](../v20.2/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
-- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../stable/demo-fault-tolerance-and-recovery.html).
+- Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Build a ["Hello World" app with the Django framework](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["stable"]}}/install-client-drivers.html) for your favorite language.
+- Use a local cluster to [explore CockroachDB capabilities like fault tolerance and automated repair](../{{site.versions["stable"]}}/demo-fault-tolerance-and-recovery.html).
 
 Before you move into production:
 

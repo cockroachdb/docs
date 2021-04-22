@@ -3,7 +3,7 @@ title: Upgrade Policy
 summary: Learn about the CockroachCloud upgrade policy.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-upgrade-policy.html
+- ../v20.2/cockroachcloud-upgrade-policy.html
 ---
 
 This page describes the upgrade policy for CockroachCloud.

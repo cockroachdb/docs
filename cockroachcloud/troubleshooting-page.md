@@ -3,7 +3,7 @@ title: Troubleshoot CockroachCloud
 summary: The SQL Users page displays a list of SQL users who can access the cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-troubleshooting-page.html
+- ../v20.2/cockroachcloud-troubleshooting-page.html
 ---
 
 This page describes common CockroachCloud errors and their solutions.
@@ -56,7 +56,7 @@ Failed running "sql"
 
 ### Issue with CockroachDB workloads
 
-The following error is displayed while trying to a run [CockroachDB workload](https://www.cockroachlabs.com/docs/stable/cockroach-workload.html) with `sslmode=verify-full`:
+The following error is displayed while trying to a run [CockroachDB workload](../{{site.versions["stable"]}}/cockroach-workload.html) with `sslmode=verify-full`:
 
 ~~~ shell
 Error: x509: certificate signed by unknown authority
