@@ -1876,6 +1876,12 @@
                     ]
                   },
                   {
+                    "title": "<code>SHOW REGIONS</code>",
+                    "urls": [
+                      "/${VERSION}/show-regions.html"
+                    ]
+                  },
+                  {
                     "title": "<code>SHOW ROLES</code>",
                     "urls": [
                       "/${VERSION}/show-roles.html"
