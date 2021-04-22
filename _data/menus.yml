@@ -65,7 +65,7 @@ resources_started:
   - identifier: architecture
     pre: ""
     name: Architecture Overview
-    url: https://www.cockroachlabs.com/docs/{{site.versions["stable"]}}/architecture/overview.html
+    url: https://www.cockroachlabs.com/docs/stable/architecture/overview.html
     weight: 120
   - identifier: quickstart
     pre: ""
@@ -75,7 +75,7 @@ resources_started:
   - identifier: faq
     pre: ""
     name: FAQ
-    url: https://www.cockroachlabs.com/docs/{{site.versions["stable"]}}/frequently-asked-questions.html
+    url: https://www.cockroachlabs.com/docs/stable/frequently-asked-questions.html
     weight: 140
 resources_technical:
   - identifier: docs
