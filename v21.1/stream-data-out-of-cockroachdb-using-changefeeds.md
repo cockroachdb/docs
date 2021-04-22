@@ -99,7 +99,13 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
     
 ## Delete messages
 
-Deleting a row will result in a changefeed message giving the primary key of the deleted row and a null value. If an attempt is made to delete a row that never existed, changefeed behavior is undefined to allow for optimizations at the storage layer: you may or may not get a delete message. Similarly, creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
+Deleting a row will result in a changefeed message giving the primary key of the deleted row and a null value. With default options, deleting the row with primary key `5` will look like
+
+~~~ shell
+[5] {"after": null}
+~~~
+
+In some unusual situations you may see a delete message for a row without first seeing an insert message. If an attempt is made to delete a row that does not exist, changefeed behavior is undefined to allow for optimizations at the storage layer: you may or may not get a delete message. Similarly, if there are multiple writes to a row within a single transaction, only the last one will propagate to a changefeed. This means that creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
 
 ## Avro schema changes
 
