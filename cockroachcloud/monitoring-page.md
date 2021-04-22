@@ -1,16 +1,18 @@
 ---
 title: Monitoring Page
-summary: The Monitoring page is currently under development. In the future, time series charts will display here.
+summary: The Monitoring page is under development. It will display CockroachDB time series charts.
 toc: true
 redirect_from:
 - ../stable/cockroachcloud-monitoring-page.html
 ---
 
+## Monitoring Page
+
 The **Monitoring** page is currently under development. In the future, time series charts will display here. In the meantime, you can use the cluster's built-in DB Console to see them.
 
 You can use the cluster's built-in DB Console to view time series data on SQL queries, troubleshoot query performance, view a list of jobs, and more.
 
-## Access the DB Console
+### Access the DB Console
 
 To access the DB Console:
 
@@ -24,7 +26,7 @@ To access the DB Console:
 For details on creating additional users that can connect to the cluster and access the DB Console, see [User Management](user-authorization.html).
 {{site.data.alerts.end}}
 
-## Explore the DB Console
+### Explore the DB Console
 
 - For an overview of all the areas of the DB Console, see [DB Console Overview](../stable/ui-overview.html).
 - Be sure to check out the [**Node Map**](../stable/ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.

@@ -143,6 +143,12 @@
           "title": "Monitor Your Cluster",
           "items": [
             {
+              "title": "Alerts Page",
+              "urls": [
+                "/cockroachcloud/alerts-page.html"
+              ]
+            },
+            {
               "title": "Monitoring Page",
               "urls": [
                 "/cockroachcloud/monitoring-page.html"
