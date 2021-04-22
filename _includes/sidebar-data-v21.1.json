@@ -2627,6 +2627,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach userfile get</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-userfile-get.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach userfile delete</code>",
                 "urls": [
                   "/${VERSION}/cockroach-userfile-delete.html"
