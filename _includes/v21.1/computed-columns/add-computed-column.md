@@ -31,11 +31,11 @@ Then, insert a row of data:
 (1 row)
 ~~~
 
-Now add another computed column to the table:
+Now add another virtual computed column to the table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> ALTER TABLE x ADD COLUMN d INT AS (a // 2) STORED;
+> ALTER TABLE x ADD COLUMN d INT AS (a // 2) VIRTUAL;
 ~~~
 
 The `d` column is added to the table and computed from the `a` column divided by 2.

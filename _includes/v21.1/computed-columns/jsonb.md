@@ -1,4 +1,4 @@
-In this example, create a table with a `JSONB` column and a computed column:
+In this example, create a table with a `JSONB` column and a stored computed column:
 
 {% include copy-clipboard.html %}
 ~~~ sql
