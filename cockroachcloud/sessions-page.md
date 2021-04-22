@@ -4,11 +4,7 @@ summary: The Sessions page provides details of all open sessions in the cluster.
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the CockroachCloud Console can only be accessed by a SQL user with the [`VIEWACTIVITY`](../v21.1/authorization.html#create-and-manage-users) role option. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
-{{site.data.alerts.end}}
-
- The **Sessions** page of the CockroachCloud Console provides details of all open sessions in the cluster.
+The **Sessions** page of the CockroachCloud Console provides details of all open sessions in the cluster.
 
 To view this page, click **Sessions** in the left-hand navigation of the CockroachCloud Console.
 
@@ -34,7 +30,7 @@ Txn Duration | Amount of time the transaction has been active, if there is an op
 Statement Age | Amount of time the SQL statement has been active, if there is an active statement.
 Memory Usage | Amount of memory currently allocated to this session / maximum amount of memory this session has ever been allocated.
 Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.
-Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY` role option](../v21.1/authorization.html#create-and-manage-users).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
+Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY` role option](../stable/authorization.html#create-and-manage-users).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
 
 {{site.data.alerts.callout_success}}
 Sort by **Txn Duration** to display all active sessions at the top.
@@ -56,14 +52,14 @@ Click the **Session Age** of any session to display details and possible actions
 - **Transaction** will display the following information for an open transaction.
 	- **Transaction Start Time** shows the timestamp at which the transaction started.
 	- **Number of Statements Executed** shows the total number of SQL statements executed by the transaction.
-	- **Number of Retries** shows the total number of [retries](../v21.1/transactions.html#transaction-retries) for the transaction.
-	- **Number of Automatic Retries** shows the total number of [automatic retries](../v21.1/transactions.html#automatic-retries) run by CockroachDB for the transaction.
-	- **Priority** shows the [priority](../v21.1/transactions.html#transaction-priorities) for the transaction.
+	- **Number of Retries** shows the total number of [retries](../stable/transactions.html#transaction-retries) for the transaction.
+	- **Number of Automatic Retries** shows the total number of [automatic retries](../stable/transactions.html#automatic-retries) run by CockroachDB for the transaction.
+	- **Priority** shows the [priority](../stable/transactions.html#transaction-priorities) for the transaction.
 	- **Read Only?** shows whether the transaction is read-only.
-	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`](../v21.1/performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
+	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`](../stable/performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
 	- **Memory Usage** shows the amount of memory currently allocated to this transaction / maximum amount of memory this transaction has ever allocated.
 - **Statement** will display the following information for an active statement.
 	- The SQL statement is shown.
 	- **Execution Start Time** shows the timestamp at which the statement was run.
-	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)](../v21.1/architecture/sql-layer.html#distsql) optimization.
+	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)](../stable/architecture/sql-layer.html#distsql) optimization.
 	- **View Statement Details** opens the [Statement Details](statements-page.html#statement-details-page) page for the statement.
