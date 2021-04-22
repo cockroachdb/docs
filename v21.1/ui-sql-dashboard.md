@@ -78,9 +78,9 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 ## Active Flows for Distributed SQL Statements
 
-- In the node view, the graph shows the number of flows on that node contributing to the currently running [distributed SQL](architecture/sql-layer#distsql) statements.
+- In the node view, the graph shows the number of flows on that node contributing to the currently running [distributed SQL](architecture/sql-layer.html#distsql) statements.
 
-- In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the currently running [distributed SQL](architecture/sql-layer#distsql) statements.
+- In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the currently running [distributed SQL](architecture/sql-layer.html#distsql) statements.
 
 ## Service Latency: SQL, 99th percentile
 
@@ -151,9 +151,9 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 ## SQL Memory
 
-- In the node view, the graph shows the current amount of memory in KiB allocated to the SQL layer on this node. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start#general).
+- In the node view, the graph shows the current amount of memory in KiB allocated to the SQL layer on this node. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start.html#general).
 
-- In the cluster view, the graph shows the current amount of memory in KiB allocated to the SQL layer on all nodes in the cluster. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start#general).
+- In the cluster view, the graph shows the current amount of memory in KiB allocated to the SQL layer on all nodes in the cluster. This amount is what is compared against the node's [`--max-sql-memory` flag](cockroach-start.html#general).
 
 ## Schema Changes
 

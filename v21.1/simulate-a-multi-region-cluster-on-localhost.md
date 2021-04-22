@@ -44,7 +44,7 @@ When the cluster starts, you'll see a message like the one shown below, followed
 #   (console) http://127.0.0.1:8080
 #   (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo956443538&port=26257
 #   (sql/tcp) postgres://root@127.0.0.1:26257?sslmode=disable
-# 
+#
 # To display connection parameters for other nodes, use \demo ls.
 # Server version: CockroachDB CCL v21.1.0-alpha.3-1368-g0ee391c3b9 (x86_64-apple-darwin19.6.0, built 2021/03/18 14:54:44, go1.16) (same version as client)
 # Cluster ID: 063fa964-1f43-4b7f-b1e6-f70afd9ad921
@@ -55,7 +55,7 @@ When the cluster starts, you'll see a message like the one shown below, followed
 Now that your simulated multi-region cluster is running, you are presented with a SQL prompt:
 
 ~~~
-root@127.0.0.1:26257/defaultdb> 
+root@127.0.0.1:26257/defaultdb>
 ~~~
 
 You can run some basic [CockroachDB SQL statements](learn-cockroachdb-sql.html):
@@ -104,7 +104,7 @@ Capacity metrics can be incorrect when running multiple nodes on a single machin
 
 To see which nodes are located in which regions, and to see the simulated latencies between them, go to the [**Network Diagnostics**](ui-network-latency-page.html) page at <a href="http://localhost:8080/#/reports/network/region" data-proofer-ignore>http://localhost:8080/#/reports/network/region</a>
 
-To access a variety of time series charts, including graphs of [SQL queries](ui-sql-dashboard.html#sql-queries) and [SQL service latency](ui-sql-dashboard.html#service-latency-sql-99th-percentile), go to the [**Metrics**](ui-overview-dashboard.html) page at <a href="http://localhost:8080/#/metrics" data-proofer-ignore>http://localhost:8080/#/metrics</a>
+To access a variety of time series charts, including graphs of [SQL queries](ui-sql-dashboard.html#sql-statements) and [SQL service latency](ui-sql-dashboard.html#service-latency-sql-99th-percentile), go to the [**Metrics**](ui-overview-dashboard.html) page at <a href="http://localhost:8080/#/metrics" data-proofer-ignore>http://localhost:8080/#/metrics</a>
 
 You may also find the following pages useful:
 
