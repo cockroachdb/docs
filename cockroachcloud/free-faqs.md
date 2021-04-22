@@ -100,3 +100,5 @@ In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select.
 ~~~
 $ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
 ~~~
+
+For an example on how to use this output to migrate to a paid CockroachCloud cluster, see [Migrate from a CockroachCloud Free (beta) to CockroachCloud Cluster](migrate-from-free-to-dedicated.html).
