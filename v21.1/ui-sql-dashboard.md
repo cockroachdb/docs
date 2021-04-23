@@ -11,13 +11,9 @@ The **SQL** dashboard in the DB Console lets you monitor the performance of your
 
 For monitoring CockroachDB, it is sufficient to use the [**Open SQL Sessions**](#open-sql-sessions), [**SQL Byte Traffic**](#sql-byte-traffic), [**SQL Statements**](#sql-statements), [**Service Latency**](#service-latency-sql-99th-percentile), and [**Transactions**](#transactions) graphs.
 
-{% include {{ page.version.version }}/ui/ui-summary-events.md %}
-
 The **SQL** dashboard displays the following time series graphs:
 
 ## Open SQL Sessions
-
-<img src="{{ 'images/v21.1/ui_sql_connections.png' | relative_url }}" alt="DB Console SQL Connections" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the number of connections currently open between the client and the selected node.
 
@@ -42,8 +38,6 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 ## SQL Byte Traffic
 
-<img src="{{ 'images/v21.1/ui_sql_byte_traffic.png' | relative_url }}" alt="DB Console SQL Byte Traffic" style="border:1px solid #eee;max-width:100%" />
-
 The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traffic, especially in bulk data inserts or analytic queries that return data in bulk.
 
 - In the node view, the graph shows the current byte throughput (bytes/second) between all the currently connected SQL clients and the node. There are lines for bytes in and bytes out.
@@ -52,15 +46,11 @@ The **SQL Byte Traffic** graph helps you correlate SQL query count to byte traff
 
 ## SQL Statements
 
-<img src="{{ 'images/v21.1/ui_sql_queries.png' | relative_url }}" alt="DB Console SQL Queries" style="border:1px solid #eee;max-width:100%" />
-
 - In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` statements per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current statement load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
 ## SQL Statement Errors
-
-<img src="{{ 'images/v21.1/ui_sql_query_errors.png' | relative_url }}" alt="DB Console SQL Query Errors" style="border:1px solid #eee;max-width:100%" />
 
 - In the node view, the graph shows the 10-second average of the number of SQL statements issued to the node that returned a [planning](architecture/sql-layer.html#sql-parser-planner-executor),  [runtime](architecture/sql-layer.html#sql-parser-planner-executor), or [retry error](transactions.html#error-handling).
 
@@ -119,8 +109,6 @@ KV execution latency is calculated as the time in milliseconds between when the 
 
 ## Transactions
 
-<img src="{{ 'images/v21.1/ui_transactions.png' | relative_url }}" alt="DB Console Transactions" style="border:1px solid #eee;max-width:100%" />
-
 - In the node view, the graph shows the 10-second average of the number of opened (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) [transactions](transactions.html) per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current [transactions](transactions.html) load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
@@ -173,6 +161,7 @@ Statement denials are statements that were denied due to a [cluster setting](clu
 
 - In the cluster view, the graph shows the total number of statements denied per second across all nodes in the cluster.
 
+{% include {{ page.version.version }}/ui/ui-summary-events.md %}
 
 ## See also
 
