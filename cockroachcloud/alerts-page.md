@@ -26,7 +26,7 @@ If alerts are enabled, CockroachCloud will send alerts to [specified email recei
 If you receive an alert repeatedly, you may need to [optimize your workload](../stable/make-queries-fast.html) or [scale your CockroachCloud cluster](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster).
 
 {{site.data.alerts.callout_success}}
-When scaling your cluster, we recommend first scaling machines above 2 vCPUs. If this doesn't sufficiently improve performance, then add more nodes.
+When scaling your cluster, we recommend first scaling VMs to include more than 2 vCPUs each. If this doesn't sufficiently improve performance, then add more nodes.
 {{site.data.alerts.end}}
 
 ## Configure alerts
@@ -40,6 +40,6 @@ Note that alerts are enabled for all clusters in your Organization. To filter al
 
 To send a test alert:
 
-- Under **Send test email**, select a cluster and alert type.
-- Add at least one email address and click **Add**.
-- Click **Send test email**.
+1. Under **Send test email**, select a cluster and an alert type.
+1. Add at least one email address and click **Add**.
+1. Click **Send test email**.
