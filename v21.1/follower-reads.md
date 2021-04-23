@@ -6,7 +6,7 @@ toc: true
 
 Follower reads are a mechanism that CockroachDB uses to provide faster reads in situations where you can afford to read data that may be slightly less than current (using [`AS OF SYSTEM TIME`](as-of-system-time.html)). Normally, reads have to be serviced by a replica's [leaseholder](architecture/overview.html#architecture-leaseholder). This can be slow, since the leaseholder may be geographically distant from the gateway node that is issuing the query.
 
-A follower read is a read taken from the closest [replica](architecture/overview.html#architecture-replica), regardless of the replica's leaseholder status. This can result in much better latency in [geo-distributed, multi-region deployments](topology-patterns.html#multi-region-patterns).
+A follower read is a read taken from the closest [replica](architecture/overview.html#architecture-replica), regardless of the replica's leaseholder status. This can result in much better latency in [geo-distributed, multi-region deployments](topology-patterns.html#multi-region).
 
  The shortest interval at which [`AS OF SYSTEM TIME`](as-of-system-time.html) can serve follower reads is 4.8 seconds. In prior versions of CockroachDB, the interval was 48 seconds.
 

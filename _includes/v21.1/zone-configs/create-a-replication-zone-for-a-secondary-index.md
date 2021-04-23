@@ -1,5 +1,5 @@
 {{site.data.alerts.callout_success}}
-The [Cost-based Optimizer](cost-based-optimizer.html) can take advantage of replication zones for secondary indexes when optimizing queries. For more information, see [Cost-based optimizer - preferring the nearest index](cost-based-optimizer.html#preferring-the-nearest-index).
+The [Cost-based Optimizer](cost-based-optimizer.html) can take advantage of replication zones for secondary indexes when optimizing queries.
 {{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}

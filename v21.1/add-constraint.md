@@ -296,7 +296,7 @@ To ensure that the uniqueness constraint is enforced properly across regions whe
 1. Run a one-time-only validation query to ensure that the existing data in the table satisfies the unique constraint.
 1. Thereafter, the [optimizer](cost-based-optimizer.html) will automatically add a "uniqueness check" when necessary to any [`INSERT`](insert.html), [`UPDATE`](update.html), or [`UPSERT`](upsert.html) statement affecting the columns in the unique constraint.
 
-Note that there is a performance benefit for queries that select a single email address (e.g., `SELECT * FROM users WHERE email = 'anemailaddress@gmail.com'`). If `'anemailaddress@gmail.com'` is found in the local region, there is no need to search remote regions. This feature, whereby the SQL engine will avoid sending requests to nodes in other regions when it can read a value from a unique column that is stored locally, is known as _locality optimized search_.
+{% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
 ### Using implicit vs. explicit index partitioning in `REGIONAL BY ROW` tables
 
