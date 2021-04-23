@@ -57,7 +57,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Core changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
 **[Enterprise changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
-**[Geo-partitioning](topology-geo-partitioned-replicas.html)** | | | ✓
+**[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓
 **[Node map](enable-node-map.html)** | | | ✓
 **[Locality-aware index selection](cost-based-optimizer.html#preferring-the-nearest-index)** | | | ✓

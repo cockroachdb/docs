@@ -12,7 +12,7 @@ In a multi-region deployment, the follower reads pattern is a good choice for ta
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-This pattern is compatible with all of the other multi-region patterns except [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html). However, if reads from a table must be exactly up-to-date, use the [Duplicate Indexes](topology-duplicate-indexes.html) or [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
+If reads from a table must be exactly up-to-date, use the [Global Table Locality Pattern](global-tables.html) or [Regional Table Locality Pattern](regional-tables.html) instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 {{site.data.alerts.end}}
 
 ## Prerequisites

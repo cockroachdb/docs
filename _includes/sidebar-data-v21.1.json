@@ -627,10 +627,10 @@
             ]
           },
           {
-            "title": "Multi-region Clusters",
+            "title": "Multi-region Capabilities",
             "items": [
               {
-                "title": "Multi-region Overview",
+                "title": "Overview",
                 "urls": [
                   "/${VERSION}/multiregion-overview.html"
                 ]
@@ -677,21 +677,15 @@
                 ]
               },
               {
-                "title": "Geo-Partitioned Replicas",
+                "title": "Global Tables",
                 "urls": [
-                  "/${VERSION}/topology-geo-partitioned-replicas.html"
+                  "/${VERSION}/global-tables.html"
                 ]
               },
               {
-                "title": "Geo-Partitioned Leaseholders",
+                "title": "Regional Tables",
                 "urls": [
-                  "/${VERSION}/topology-geo-partitioned-leaseholders.html"
-                ]
-              },
-              {
-                "title": "Duplicate Indexes",
-                "urls": [
-                  "/${VERSION}/topology-duplicate-indexes.html"
+                  "/${VERSION}/regional-tables.html"
                 ]
               },
               {
