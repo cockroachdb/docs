@@ -6,7 +6,7 @@ redirect_from: cluster-topology-patterns.html
 key: cluster-topology-patterns.html
 ---
 
-This section provides recommended topology patterns for running CockroachDB in a cloud environment, each with required configurations and latency and resiliency characteristics.
+This section provides recommended topology for running CockroachDB in a cloud environment, each with required configurations and latency and resiliency characteristics.
 
 {{site.data.alerts.callout_info}}
 You can observe latency patterns for your cluster on the [Network Latency page](ui-network-latency-page.html) of the DB Console.
@@ -23,19 +23,23 @@ Pattern | Latency | Resiliency | Configuration
 
 ## Multi-region patterns
 
-When your clients are in multiple geographic regions, it is important to deploy your cluster across regions properly and then carefully choose the right topology for each of your tables. Not doing so can result in unexpected latency and resiliency.
+When your clients are in multiple geographic regions, it is important to deploy your cluster across regions properly and then carefully choose:
+
+1. The right [survival goal](multiregion-overview.html#survival-goals) for each database.
+1. The right [table locality](multiregion-overview.html#table-locality) for each of your tables.
+
+Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
 {{site.data.alerts.callout_info}}
-Multi-region patterns are almost always table-specific. For example, you might use the [Geo-Partitioning Replicas](topology-geo-partitioned-replicas.html) pattern for frequently updated tables that are geographically specific and the [Duplicate Indexes](topology-duplicate-indexes.html) pattern for reference tables that are not tied to geography and that are read frequently but updated infrequently.
+The multi-region patterns described below are almost always table-specific. For example, you might use [Regional Tables](topology-regional-tables.html) for frequently updated tables that are geographically specific, and [Global Tables](topology-global-tables.html) pattern for reference tables that are not tied to geography and that are read frequently but updated infrequently.
 {{site.data.alerts.end}}
 
-Pattern | Latency | Resiliency | Configuration
---------|---------|------------|--------------
-[Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) | <ul><li>Fast regional reads and writes</li></ul> | <ul><li>1 AZ failure per partition</li></ul> | <ul><li>Geo-partitioned table</li><li>Partition replicas pinned to regions</li></ul>
-[Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) | <ul><li>Fast regional reads</li><li>Slower cross-region writes</li></ul> | <ul><li>1 region failure</li></ul> | <ul><li>Geo-partitioned table</li><li>Partition replicas spread across regions</li><li>Partition leaseholders pinned to regions</li></ul>
-[Duplicate Indexes](topology-duplicate-indexes.html) | <ul><li>Fast regional reads (current)</li><li>Much slower cross-region writes</li></ul> | <ul><li>1 region failure</li></ul> | <ul><li>Multiple identical indexes</li><li>Index replicas spread across regions</li><li>Index leaseholders pinned to regions</li></ul>
-[Follower Reads](topology-follower-reads.html) | <ul><li>Fast regional reads (historical)</li><li>Slower cross-region writes</li></ul> | <ul><li>1 region failure</li></ul> | <ul><li>App configured to use follower reads</li></ul>
-[Follow-the-Workload](topology-follow-the-workload.html) | <ul><li>Fast regional reads (active region)</li><li>Slower cross-region reads (elsewhere)</li><li>Slower cross-region writes</li> | <ul><li>1 region failure</li></ul> | <ul><li>None</li></ul>
+| Pattern                                                  | Latency                                                                                                    | Resiliency                                                                  |
+|----------------------------------------------------------+------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------|
+| [Regional Tables](topology-regional-tables.html)         | Low latency for single-region writes and multi-region stale reads.                                         | Depends on your [survival goals](multiregion-overview.html#survival-goals). |
+| [Global Tables](topology-global-tables.html)             | Low-latency multi-region reads; writes are higher latency than reads.                                      | Depends on your [survival goals](multiregion-overview.html#survival-goals). |
+| [Follower Reads](topology-follower-reads.html)           | Fast regional (historical) reads, slower cross-region writes.                                              | Depends on your [survival goals](multiregion-overview.html#survival-goals). |
+| [Follow-the-Workload](topology-follow-the-workload.html) | Fast regional reads in the active region; slower cross-region reads elsewhere. Slower cross-region writes. | Depends on your [survival goals](multiregion-overview.html#survival-goals). |
 
 ## Anti-patterns
 
@@ -43,4 +47,3 @@ The following anti-patterns are ineffective or risky:
 
 - Single-region deployments using 2 AZs, or multi-region deployments using 2 regions. In these cases, the cluster would be unable to survive the loss of a single AZ or a single region, respectively.
 - Broadly distributed multi-region deployments (e.g., `us-west`, `asia`, and `europe`) using only the default [Follow-the-Workload](topology-follow-the-workload.html) pattern. In this case, latency will likely be unacceptably high.
-- [Geo-partitioned tables](topology-geo-partitioned-replicas.html) with non-partitioned secondary indexes. In this case, writes will incur cross-region latency to achieve consensus on the non-partitioned indexes.

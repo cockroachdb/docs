@@ -160,6 +160,10 @@ When using Kubernetes, recovery actions happen automatically in many cases and n
 
 ### Multi-region survivability planning
 
+{{site.data.alerts.callout_success}}
+<span class="version-tag">New in v21.1:</span> By default, every [multi-region database](multiregion-overview.html) has a [survival goal](multiregion-overview.html#survival-goals) associated with it.  The survival goal setting provides an abstraction that handles the low-level details of replica placement to ensure your desired fault tolerance.  The information below is still useful for legacy deployments.
+{{site.data.alerts.end}}
+
 The table below shows the replication factor (RF) needed to achieve the listed fault tolerance (e.g., survive 1 failed node) for a multi-region, cloud-deployed cluster with 3 availability zones (AZ) per region and one node in each AZ:
 
 {{site.data.alerts.callout_danger}}
