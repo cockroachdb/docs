@@ -135,6 +135,8 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 ) STORED
 ~~~
 
+{% include {{page.version.version}}/sql/locality-optimized-search.md %}
+
 <a name="global"></a>
 
 ### Set the table locality to `GLOBAL`

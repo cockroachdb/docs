@@ -6,6 +6,8 @@ toc: true
 
 `PARTITION BY` is a subcommand of [`ALTER TABLE`](alter-table.html) and [`ALTER INDEX`](alter-index.html) that is used to partition, re-partition, or un-partition a table or secondary index. After defining partitions, [`CONFIGURE ZONE`](configure-zone.html) is used to control the replication and placement of partitions.
 
+{% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
+
 {{site.data.alerts.callout_info}}
 [Partitioning](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature. If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
 {{site.data.alerts.end}}
