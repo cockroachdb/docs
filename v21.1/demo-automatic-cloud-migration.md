@@ -166,9 +166,7 @@ Now that you have a load balancer running in front of your cluster, lets use the
 
 ## Step 6. Watch data balance across all 3 nodes
 
-Now open the DB Console at `http://localhost:8080` and click **Metrics** in the left-hand navigation bar. The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top. After a minute or so, you'll see that the load generator is executing approximately 95% reads and 5% writes across all nodes:
-
-<img src="{{ 'images/v21.1/ui_sql_queries.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
+Now open the DB Console at `http://localhost:8080` and click **Metrics** in the left-hand navigation bar. The **Overview** dashboard is displayed. Hover over the **SQL Queries** graph at the top. After a minute or so, you'll see that the load generator is executing approximately 95% reads and 5% writes across all nodes.
 
 Scroll down a bit and hover over the **Replicas per Node** graph. Because CockroachDB replicates each piece of data 3 times by default, the replica count on each of your 3 nodes should be identical:
 

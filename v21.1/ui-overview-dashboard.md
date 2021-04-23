@@ -17,8 +17,6 @@ The **Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries
 
-<img src="{{ 'images/v21.1/ui_sql_queries.png' | relative_url }}" alt="DB Console SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
-
 - In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
