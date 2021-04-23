@@ -36,7 +36,6 @@ CockroachDB supports the following join types:
 - [Left outer joins](#left-outer-joins)
 - [Right outer joins](#right-outer-joins)
 - [Full outer joins](#full-outer-joins)
-- [Inverted joins](#inverted-joins)
 
 ### Inner joins
 
