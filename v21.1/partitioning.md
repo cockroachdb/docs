@@ -12,6 +12,8 @@ Table partitioning is an [enterprise-only](enterprise-licensing.html) feature. F
 
 ## Why use table partitioning
 
+{% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
+
 Table partitioning helps you reduce latency and cost:
 
 - **Geo-partitioning** allows you to keep user data close to the user, which reduces the distance that the data needs to travel, thereby **reducing latency**. To geo-partition a table, define location-based partitions while creating a table, create location-specific zone configurations, and apply the zone configurations to the corresponding partitions.

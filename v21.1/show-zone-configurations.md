@@ -81,6 +81,8 @@ CONFIGURE ZONE 1
 
 ### View the replication zone for a partition
 
+{% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
+
 {% include {{ page.version.version }}/zone-configs/create-a-replication-zone-for-a-table-partition.md %}
 
 ## See also

@@ -92,7 +92,7 @@ table td:first-child {
 
 The default rules for [column families](column-families.html) apply.
 
-The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key) and [Specify a primary key for partitioning](create-table-as.html#specify-a-primary-key-for-partitioning).
+The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key).
 
 ## Examples
 
@@ -293,57 +293,6 @@ You can define the [column families](column-families.html) of a new table create
                |     FAMILY locs (city),
                |     FAMILY payments (credit_card)
                | )
-(1 row)
-~~~
-
-### Specify a primary key for partitioning
-
-If you are [partitioning](partitioning.html) a table based on a [primary key](primary-key.html), the primary key must be properly defined. To change the primary key after table creation, you can use an [`ALTER TABLE ... ALTER PRIMARY KEY`](alter-primary-key.html) statement.
-
-Suppose that you want to [geo-partition](demo-low-latency-multi-region-deployment.html) the `drivers` table that you created with the following statement:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE drivers (id, city, name) AS VALUES (gen_random_uuid(), 'new york', 'Harry Potter'), (gen_random_uuid(), 'seattle', 'Evelyn Martin');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE drivers;
-~~~
-~~~
-  table_name |               create_statement
-+------------+----------------------------------------------+
-  drivers    | CREATE TABLE drivers (
-             |     id UUID NULL,
-             |     city STRING NULL,
-             |     name STRING NULL,
-             |     FAMILY "primary" (id, city, name, rowid)
-             | )
-(1 row)
-~~~
-
-In order for this table to be properly geo-partitioned with the other tables in the `movr` dataset, the table must have a composite primary key defined that includes the unique row identifier (`id`, in this case) and the row locality identifier (`city`). Use the following statement to change the primary key to a composite primary key:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE drivers_pk (id, city, name, PRIMARY KEY (id, city)) AS SELECT id, city, name FROM drivers;
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE TABLE drivers_pk;
-~~~
-~~~
-  table_name |                     create_statement
-+------------+----------------------------------------------------------+
-  drivers_pk | CREATE TABLE drivers_pk (
-             |     id UUID NOT NULL,
-             |     city STRING NOT NULL,
-             |     name STRING NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (id ASC, city ASC),
-             |     FAMILY "primary" (id, city, name)
-             | )
 (1 row)
 ~~~
 
