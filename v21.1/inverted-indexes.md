@@ -73,7 +73,7 @@ If a query contains a filter against an indexed `JSONB` or `ARRAY` column that u
 
 Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
-To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting").
+To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting") or use an [inverted join hint](cost-based-optimizer.html#supported-join-algorithms).
 
 ### Storage
 
@@ -156,7 +156,7 @@ CREATE TABLE test (
 );
 ~~~
 
-## Example
+## Examples
 
 ### Create a table with inverted index on a JSONB column
 
@@ -337,6 +337,10 @@ SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND u
 
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
+
+### Inverted join examples
+
+{% include {{ page.version.version }}/sql/inverted-joins.md %}
 
 ## See also
 
