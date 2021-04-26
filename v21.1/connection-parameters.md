@@ -57,7 +57,7 @@ postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
  `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
  `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
  `<directory-path>` |  The directory path to the client listening for a socket connection.                                                                                             | Required when specifying a Unix domain socket URI.
- `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | `options=--cluster=<cluster name>` required for free CockroachCloud clusters.
+ `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | [`options=--cluster=<cluster name>`](#supported-options-parameters) is required for free CockroachCloud clusters.
 
 
 {{site.data.alerts.callout_info}}
@@ -79,7 +79,7 @@ future versions of CockroachDB may return an error in that case.
 
 ### Additional connection parameters
 
-The following additional parameters can be passed after the `?` character in the URL:
+The following additional parameters can be passed after the `?` character in the URL. After the first parameter is specified, any additional parameters must be separated by an ampersand (`&`).
 
 Parameter | Description | Default value
 ----------|-------------|---------------
@@ -88,7 +88,20 @@ Parameter | Description | Default value
 `sslrootcert` | Path to the [CA certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslcert` | Path to the [client certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslkey` | Path to the [client private key](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
-`options` | Additional command-line options to be passed to the server. Specify the cluster name when connecting to CockroachCloud free-tier clusters by setting `options=--cluster=<cluster name>`. | Empty string
+`options` | [Additional options](#supported-options-parameters) to be passed to the server. | Empty string
+
+#### Supported `options` parameters
+
+CockroachDB supports the following `options` parameters. After the first `options` parameter is specified, any additional parameters in the same connection string must be separated by a space.
+
+Parameter | Description
+----------|-------------
+`--cluster=<cluster name>` | Specifies the cluster name when connecting to [CockroachCloud free-tier clusters](connect-to-the-database-cockroachcloud.html#connect).
+`-c <session_variable>=<value>` | <span class="version-tag">New in v21.1:</span> Sets a [session variable](set-vars.html) for the SQL session.
+
+{{site.data.alerts.callout_info}}
+Note that some drivers require certain characters to be properly encoded in URL connection strings. For example, spaces in [a JDBC connection string](https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters) must specified as `%20`.
+{{site.data.alerts.end}}
 
 ### Secure connections with URLs
 
