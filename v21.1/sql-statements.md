@@ -85,6 +85,7 @@ Statement | Usage
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
+[`SHOW REGIONS`](show-regions.html) | <span class="version-tag">New in v21.1:</span> List the [cluster regions](multiregion-overview.html#cluster-regions) or [database regions](multiregion-overview.html#database-regions) in a [multi-region cluster](multiregion-overview.html).
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
