@@ -6,7 +6,7 @@ toc: true
 redirect_from: build-an-app-with-cockroachdb.html
 ---
 
-The examples in this section show you how to build simple "Hello World" applications **using CockroachCloud**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)](../v20.2/hello-world-example-apps.html).
+The examples in this section show you how to build simple "Hello World" applications **using CockroachCloud**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)](../{{site.versions["stable"]}}/hello-world-example-apps.html).
 
 Click the links in the table below to see simple but complete example applications for each supported language and library combination.
 
@@ -18,27 +18,27 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 
 | App Language | Drivers                                                                                                                                                                                                                                  | ORMs         | Support level                                        |
 |--------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------+------|
-| Python       | [psycopg2](../v20.2/build-a-python-app-with-cockroachdb.html)                                                                                                                                                                                    | [SQLAlchemy](../v20.2/build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Django](../v20.2/build-a-python-app-with-cockroachdb-django.html)<br>[PonyORM](../v20.2/build-a-python-app-with-cockroachdb-pony.html)  | Full |
-| Java         | [JDBC](../v20.2/build-a-java-app-with-cockroachdb.html)                                                                                                                                                                                          | [Hibernate](../v20.2/build-a-java-app-with-cockroachdb-hibernate.html)       | Full |
-| Go           | [pgx](../v20.2/build-a-go-app-with-cockroachdb.html)<br>[pq](../v20.2/build-a-go-app-with-cockroachdb-pq.html)                                                                                                                                                                                              | [GORM](../v20.2/build-a-go-app-with-cockroachdb-gorm.html)                  | Full |
+| Python       | [psycopg2](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb.html)                                                                                                                                                                                    | [SQLAlchemy](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Django](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)<br>[PonyORM](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-pony.html)  | Full |
+| Java         | [JDBC](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb.html)                                                                                                                                                                                          | [Hibernate](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb-hibernate.html)       | Full |
+| Go           | [pgx](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb.html)<br>[pq](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb-pq.html)                                                                                                                                                                                              | [GORM](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb-gorm.html)                  | Full |
 
 ## See also
 
 Reference information:
 
-- [Client drivers](../v20.2/install-client-drivers.html)
-- [Third-party database tools](../v20.2/third-party-database-tools.html)
-- [Connection parameters](../v20.2/connection-parameters.html)
-- [Transactions](../v20.2/transactions.html)
-- [Performance best practices](../v20.2/performance-best-practices-overview.html)
+- [Client drivers](../{{site.versions["stable"]}}/install-client-drivers.html)
+- [Third-party database tools](../{{site.versions["stable"]}}/third-party-database-tools.html)
+- [Connection parameters](../{{site.versions["stable"]}}/connection-parameters.html)
+- [Transactions](../{{site.versions["stable"]}}/transactions.html)
+- [Performance best practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html)
 
 <a name="tasks"></a>
 
 Specific tasks:
 
 - [Connect to Your Cluster](connect-to-a-free-cluster.html)
-- [Insert Data](../v20.2/insert-data.html)
+- [Insert Data](../{{site.versions["stable"]}}/insert-data.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Make Queries Fast](../v20.2/make-queries-fast.html)
-- [Run Multi-Statement Transactions](../v20.2/run-multi-statement-transactions.html)
-- [Error Handling and Troubleshooting](../v20.2/error-handling-and-troubleshooting.html)
+- [Make Queries Fast](../{{site.versions["stable"]}}/make-queries-fast.html)
+- [Run Multi-Statement Transactions](../{{site.versions["stable"]}}/run-multi-statement-transactions.html)
+- [Error Handling and Troubleshooting](../{{site.versions["stable"]}}/error-handling-and-troubleshooting.html)

@@ -20,7 +20,7 @@ layout: default
         </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="{{ '/stable/secure-a-cluster.html' | relative_url }}" class="h-100">
+          <a href="{{site.versions["stable"]}}/secure-a-cluster.html" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-sample-apps.svg' | relative_url }}" alt="sample app" />
               <h6 class="mt-2 mt-0 text-black">Start a local <br>cluster</h6>
@@ -32,7 +32,7 @@ layout: default
           </div>
         <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
           <div class="card card-link h-100 d-flex text-center">
-          <a href="{{ '/stable/hello-world-example-apps.html' | relative_url }}" class="h-100">
+          <a href="{{site.versions["stable"]}}/hello-world-example-apps.html" class="h-100">
             <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center h-100 card-header-overlap">
               <img class="m-0 mb-4 mt-3" src="{{ 'images/icon-deploy-cloud.svg' | relative_url }}" alt="icon cloud" />
               <h6 class="m-0 text-black">Sample <br>apps</h6>
@@ -70,10 +70,10 @@ layout: default
         <div class="landing-column-content">
           <ul>
             <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
-            <li><a href="{{ '/stable/secure-a-cluster.html' | relative_url }}">Start a Local Cluster</a></li>
-            <li><a href="{{ '/stable/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
-            <li><a href="{{ '/stable/hello-world-example-apps.html' | relative_url }}">Hello, World!</a></li>
-            <li><a href="{{ '/stable/demo-fault-tolerance-and-recovery.html' | relative_url }}">Explore Capabilities</a></li>
+            <li><a href="{{site.versions['stable']}}/secure-a-cluster.html">Start a Local Cluster</a></li>
+            <li><a href="{{site.versions['stable']}}/learn-cockroachdb-sql.html">Learn CockroachDB SQL</a></li>
+            <li><a href="{{site.versions['stable']}}/hello-world-example-apps.html">Hello, World!</a></li>
+            <li><a href="{{site.versions['stable']}}/demo-fault-tolerance-and-recovery.html">Explore Capabilities</a></li>
           </ul>
         </div>
       </div>
@@ -81,11 +81,11 @@ layout: default
         <h3 class="mt-3">Develop</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="{{ '/stable/developer-guide-overview.html' | relative_url }}">Common Dev Tasks</a></li>
-            <li><a href="{{ '/stable/hello-world-example-apps.html' | relative_url }}">Sample Apps</a></li>
-            <li><a href="{{ '/stable/sql-feature-support.html' | relative_url }}">SQL Reference</a></li>
-            <li><a href="{{ '/stable/performance-best-practices-overview.html' | relative_url }}">SQL Best Practices</a></li>
-            <li><a href="{{ '/stable/error-handling-and-troubleshooting.html' | relative_url }}">SQL Troubleshooting</a></li>
+            <li><a href="{{site.versions['stable']}}/developer-guide-overview.html">Common Dev Tasks</a></li>
+            <li><a href="{{site.versions['stable']}}/hello-world-example-apps.html">Sample Apps</a></li>
+            <li><a href="{{site.versions['stable']}}/sql-feature-support.html">SQL Reference</a></li>
+            <li><a href="{{site.versions['stable']}}/performance-best-practices-overview.html">SQL Best Practices</a></li>
+            <li><a href="{{site.versions['stable']}}/error-handling-and-troubleshooting.html">SQL Troubleshooting</a></li>
           </ul>
         </div>
       </div>
@@ -94,10 +94,10 @@ layout: default
         <div class="landing-column-content">
           <ul>
             <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">CockroachCloud Deployment</a></li>
-            <li><a href="{{ '/stable/orchestration.html' | relative_url }}">Self-Managed Deployment</a></li>
-            <li><a href="{{ '/stable/recommended-production-settings.html' | relative_url }}">Production Checklist</a></li>
-            <li><a href="{{ '/stable/performance.html' | relative_url }}">Performance Profiles</a></li>
-            <li><a href="{{ '/stable/upgrade-cockroach-version.html' | relative_url }}">Cluster Maintenance</a></li>
+            <li><a href="{{site.versions['stable']}}/orchestration.html">Self-Managed Deployment</a></li>
+            <li><a href="{{site.versions['stable']}}/recommended-production-settings.html">Production Checklist</a></li>
+            <li><a href="{{site.versions['stable']}}/performance.html">Performance Profiles</a></li>
+            <li><a href="{{site.versions['stable']}}/upgrade-cockroach-version.html">Cluster Maintenance</a></li>
           </ul>
         </div>
       </div>
@@ -105,11 +105,11 @@ layout: default
         <h3 class="mt-3">FAQs</h3>
         <div class="landing-column-content">
           <ul>
-            <li><a href="{{ '/stable/frequently-asked-questions.html' | relative_url }}">CockroachDB FAQs</a></li>
+            <li><a href="{{site.versions['stable']}}/frequently-asked-questions.html">CockroachDB FAQs</a></li>
             <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachCloud FAQs</a></li>
-            <li><a href="{{ '/stable/sql-faqs.html' | relative_url }}">SQL FAQs</a></li>
-            <li><a href="{{ '/stable/licensing-faqs.html' | relative_url }}">Licensing FAQs</a></li>
-            <li><a href="{{ '/stable/cockroachdb-in-comparison.html' | relative_url }}">DB Comparisons</a></li>
+            <li><a href="{{site.versions['stable']}}/sql-faqs.html">SQL FAQs</a></li>
+            <li><a href="{{site.versions['stable']}}/licensing-faqs.html">Licensing FAQs</a></li>
+            <li><a href="{{site.versions['stable']}}/cockroachdb-in-comparison.html">DB Comparisons</a></li>
           </ul>
         </div>
       </div>

@@ -1684,12 +1684,6 @@
                     ]
                   },
                   {
-                    "title": "<code>RENAME SEQUENCE</code>",
-                    "urls": [
-                      "/${VERSION}/rename-sequence.html"
-                    ]
-                  },
-                  {
                     "title": "<code>RELEASE SAVEPOINT</code>",
                     "urls": [
                       "/${VERSION}/release-savepoint.html"
@@ -1873,6 +1867,12 @@
                     "title": "<code>SHOW RANGE FOR ROW</code>",
                     "urls": [
                       "/${VERSION}/show-range-for-row.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW REGIONS</code>",
+                    "urls": [
+                      "/${VERSION}/show-regions.html"
                     ]
                   },
                   {
