@@ -71,6 +71,8 @@ To make an existing table a _regional by row_ table, use the following statement
 ALTER TABLE {table} SET LOCALITY REGIONAL BY ROW;
 ~~~
 
+<a name="crdb_region"></a>
+
 Every row in a regional by row table has a hidden `crdb_region` column that represents the row's home region. To see a row's region, issue a statement like the following:
 
 {% include copy-clipboard.html %}
