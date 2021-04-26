@@ -25,6 +25,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 Parameter | Description
 ----------|------------
 `object_name` | The name of the table, view, or sequence for which to show the `CREATE` statement.
+`ALL TABLES` | <span class="version-tag">New in v21.1:</span> Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
 
 ## Response
 
@@ -185,7 +186,7 @@ To return just the `create_statement` value:
 
 ### Show the `CREATE TABLE` statement for a table with a comment
 
- If you [add a comment](comment-on.html) on a table, `SHOW CREATE TABLE` will display the comment.
+If you [add a comment](comment-on.html) on a table, `SHOW CREATE TABLE` will display the comment.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -237,6 +238,113 @@ To return just the `create_statement` value:
 ~~~
 
 For more information, see [`COMMENT ON`](comment-on.html).
+
+### Show the statements needed to recreate all tables, views, and sequences in the current database
+
+<span class="version-tag">New in v21.1:</span> To return the `CREATE` statements for all of the tables, views, and sequences in the current database, use `SHOW CREATE ALL TABLES`.
+
+Note that this statement also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE VIEW user_view (city, name) AS SELECT city, name FROM users;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE ALL TABLES;
+~~~
+
+~~~
+                                                                  create_statement
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE public.users (
+      id UUID NOT NULL,
+      city VARCHAR NOT NULL,
+      name VARCHAR NULL,
+      address VARCHAR NULL,
+      credit_card VARCHAR NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      FAMILY "primary" (id, city, name, address, credit_card)
+  );
+  CREATE TABLE public.vehicles (
+      id UUID NOT NULL,
+      city VARCHAR NOT NULL,
+      type VARCHAR NULL,
+      owner_id UUID NULL,
+      creation_time TIMESTAMP NULL,
+      status VARCHAR NULL,
+      current_location VARCHAR NULL,
+      ext JSONB NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+      FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+  );
+  CREATE TABLE public.rides (
+      id UUID NOT NULL,
+      city VARCHAR NOT NULL,
+      vehicle_city VARCHAR NULL,
+      rider_id UUID NULL,
+      vehicle_id UUID NULL,
+      start_address VARCHAR NULL,
+      end_address VARCHAR NULL,
+      start_time TIMESTAMP NULL,
+      end_time TIMESTAMP NULL,
+      revenue DECIMAL(10,2) NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+      INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
+      INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
+      FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
+      CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
+  );
+  CREATE TABLE public.vehicle_location_histories (
+      city VARCHAR NOT NULL,
+      ride_id UUID NOT NULL,
+      "timestamp" TIMESTAMP NOT NULL,
+      lat FLOAT8 NULL,
+      long FLOAT8 NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, ride_id ASC, "timestamp" ASC),
+      FAMILY "primary" (city, ride_id, "timestamp", lat, long)
+  );
+  CREATE TABLE public.promo_codes (
+      code VARCHAR NOT NULL,
+      description VARCHAR NULL,
+      creation_time TIMESTAMP NULL,
+      expiration_time TIMESTAMP NULL,
+      rules JSONB NULL,
+      CONSTRAINT "primary" PRIMARY KEY (code ASC),
+      FAMILY "primary" (code, description, creation_time, expiration_time, rules)
+  );
+  CREATE TABLE public.user_promo_codes (
+      city VARCHAR NOT NULL,
+      user_id UUID NOT NULL,
+      code VARCHAR NOT NULL,
+      "timestamp" TIMESTAMP NULL,
+      usage_count INT8 NULL,
+      CONSTRAINT "primary" PRIMARY KEY (city ASC, user_id ASC, code ASC),
+      FAMILY "primary" (city, user_id, code, "timestamp", usage_count)
+  );
+  CREATE VIEW public.user_view (city, name) AS SELECT city, name FROM movr.public.users;
+  CREATE SEQUENCE public.desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1;
+  ALTER TABLE public.vehicles ADD CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES public.users(city, id);
+  ALTER TABLE public.rides ADD CONSTRAINT fk_city_ref_users FOREIGN KEY (city, rider_id) REFERENCES public.users(city, id);
+  ALTER TABLE public.rides ADD CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (vehicle_city, vehicle_id) REFERENCES public.vehicles(city, id);
+  ALTER TABLE public.vehicle_location_histories ADD CONSTRAINT fk_city_ref_rides FOREIGN KEY (city, ride_id) REFERENCES public.rides(city, id);
+  ALTER TABLE public.user_promo_codes ADD CONSTRAINT fk_city_ref_users FOREIGN KEY (city, user_id) REFERENCES public.users(city, id);
+  -- Validate foreign key constraints. These can fail if there was unvalidated data during the SHOW CREATE ALL TABLES
+  ALTER TABLE public.vehicles VALIDATE CONSTRAINT fk_city_ref_users;
+  ALTER TABLE public.rides VALIDATE CONSTRAINT fk_city_ref_users;
+  ALTER TABLE public.rides VALIDATE CONSTRAINT fk_vehicle_city_ref_vehicles;
+  ALTER TABLE public.vehicle_location_histories VALIDATE CONSTRAINT fk_city_ref_rides;
+  ALTER TABLE public.user_promo_codes VALIDATE CONSTRAINT fk_city_ref_users;
+(19 rows)
+~~~
+
 
 ## See also
 
