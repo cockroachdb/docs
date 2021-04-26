@@ -83,7 +83,7 @@ If you have not done so already, install the CockroachDB binary:
 </section>
     
 <section class="filter-content" markdown="1" data-scope="linux">
-1. Open the command line and run the following command:
+1. Open the command line interface and run the following command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
