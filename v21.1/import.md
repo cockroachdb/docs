@@ -18,7 +18,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-`IMPORT` is a blocking statement. To run an import job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+`IMPORT` is a blocking statement. To run an import job asynchronously, use the `DETACHED` option. See the [options](#import-options) below.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
