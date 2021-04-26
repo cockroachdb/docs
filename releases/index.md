@@ -5,7 +5,7 @@ toc: true
 redirect_from: /releases.html
 ---
 
-After downloading your desired release, learn how to [Install CockroachDB](../stable/install-cockroachdb.html). Also be sure to review Cockroach Lab's [Release Support Policy](release-support-policy.html).
+After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Lab's [Release Support Policy](release-support-policy.html).
 
 
 {% for section in site.data.releases %}
@@ -17,6 +17,10 @@ After downloading your desired release, learn how to [Install CockroachDB](../st
     <button id="docker" class="filter-button" data-scope="docker">Docker</button>
     <button id="source" class="filter-button" data-scope="source">Source</button>
 </div>
+
+<section class="filter-content" data-scope="windows">
+{% include windows_warning.md %}
+</section>
 
 <table class="release-table">
 <thead>

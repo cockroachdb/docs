@@ -1,6 +1,6 @@
 ---
 title: CREATE SEQUENCE
-summary:
+summary: The CREATE SEQUENCE statement creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
 toc: true
 ---
 
@@ -129,6 +129,115 @@ In this example, we create a sequence with default settings.
 (1 row)
 ~~~
 
+### Use a sequence when creating a table
+
+In this example, we [create a table](create-table.html), using the [`nextval()` function](functions-and-operators.html#sequence-functions) for a [default value](default-value.html), with the `customer_seq` sequence as its input:
+
+{% include copy-clipboard.html %}
+~~~ sql
+CREATE TABLE customers (
+    uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    rownum INT DEFAULT nextval('customer_seq'),
+    name STRING
+);
+~~~
+
+Inserting into this table with an `INSERT` statement that relies on default values will call `nextval`, which increments the sequence.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers (name) VALUES ('Max'), ('Alice');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers;
+~~~
+
+~~~
+                  uid                  | rownum | name
+---------------------------------------+--------+--------
+  1c7f5b79-88c4-49ec-b40b-6098d28bb822 |      2 | Alice
+  7ce844af-6a3f-4c52-ba07-25623f345804 |      1 | Max
+(2 rows
+~~~
+
+### View the current value of a sequence
+
+To view the current value without incrementing the sequence, use:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customer_seq;
+~~~
+
+~~~
+  last_value | log_cnt | is_called
+-------------+---------+------------
+           2 |       0 |   true
+(1 row)
+~~~
+
+{{site.data.alerts.callout_info}}The <code>log_cnt</code> and <code>is_called</code> columns are returned only for PostgreSQL compatibility; they are not stored in the database.{{site.data.alerts.end}}
+
+If a value has been obtained from the sequence in the current session, you can also use the `currval('seq_name')` function to get that most recently obtained value:
+
+~~~ sql
+> SELECT currval('customer_seq');
+~~~
+
+~~~
+  currval
+-----------
+        2
+(1 row)
+~~~
+
+### Set the next value of a sequence
+
+In this example, we're going to change the next value of `customer_seq` using the [`setval()` function](functions-and-operators.html#sequence-functions). Currently, the next value will be `3` (i.e., `2` + `INCREMENT 1`). We will change the next value to `5`.
+
+{{site.data.alerts.callout_info}}
+You cannot set a value outside the <code>MAXVALUE</code> or <code>MINVALUE</code> of the sequence.
+{{site.data.alerts.end}}
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT setval('customer_seq', 5, false);
+~~~
+
+~~~
+  setval
+----------
+       5
+(1 row)
+~~~
+
+{{site.data.alerts.callout_info}}
+The `setval('seq_name', value, is_called)` function in CockroachDB SQL mimics the `setval()` function in PostgreSQL, but it does not store the `is_called` flag. Instead, it sets the value to `val - increment` for `false` or `val` for `true`.
+{{site.data.alerts.end}}
+
+Let's add another record to the table to check that the new record adheres to the new next value.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO customers (name) VALUES ('Sam');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM customers;
+~~~
+
+~~~
+                  uid                  | rownum | name
+---------------------------------------+--------+--------
+  19ffe03d-5eac-4a2f-8aa8-1569b998aa44 |      5 | Sam
+  1c7f5b79-88c4-49ec-b40b-6098d28bb822 |      2 | Alice
+  7ce844af-6a3f-4c52-ba07-25623f345804 |      1 | Max
+(3 rows)
+~~~
+
 ### Create a sequence with user-defined settings
 
 In this example, we create a sequence that starts at -1 and descends in increments of 2.
@@ -147,37 +256,6 @@ In this example, we create a sequence that starts at -1 and descends in incremen
       table_name     |                                          create_statement
 ---------------------+-----------------------------------------------------------------------------------------------------
   desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
-(1 row)
-~~~
-
-### View the current value of a sequence
-
-To view the current value without incrementing the sequence, use:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM customer_seq;
-~~~
-
-~~~
-  last_value | log_cnt | is_called
--------------+---------+------------
-           3 |       0 |   true
-(1 row)
-~~~
-
-{{site.data.alerts.callout_info}}The <code>log_cnt</code> and <code>is_called</code> columns are returned only for PostgreSQL compatibility; they are not stored in the database.{{site.data.alerts.end}}
-
-If a value has been obtained from the sequence in the current session, you can also use the `currval('seq_name')` function to get that most recently obtained value:
-
-~~~ sql
-> SELECT currval('customer_seq');
-~~~
-
-~~~
-  currval
------------
-        3
 (1 row)
 ~~~
 

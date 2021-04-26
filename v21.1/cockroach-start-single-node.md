@@ -1,6 +1,6 @@
 ---
 title: cockroach start-single-node
-summary: Start a single-node cluster for app development.
+summary: The cockroach start-single-node command starts a single-node cluster with replication disabled.
 toc: true
 ---
 

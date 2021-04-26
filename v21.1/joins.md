@@ -24,6 +24,7 @@ Parameter | Description
 ----------|------------
 `joined_table` | Another join expression.
 `table_ref` | A [table expression](table-expressions.html).
+`opt_join_hint` | A [join hint](cost-based-optimizer.html#join-hints).
 `a_expr` | A [scalar expression](scalar-expressions.html) to use as [`ON` join condition](#supported-join-conditions).
 `name` | A column name to use as [`USING` join condition](#supported-join-conditions)
 
@@ -101,6 +102,7 @@ CockroachDB supports the following algorithms for performing a join:
 - [Merge joins](#merge-joins)
 - [Hash joins](#hash-joins)
 - [Lookup joins](#lookup-joins)
+- [Inverted joins](#inverted-joins)
 
 ### Merge joins
 
@@ -141,12 +143,21 @@ Lookup joins are performed on two tables as follows:
 You can override the use of lookup joins using [join hints](cost-based-optimizer.html#join-hints).
 
 {{site.data.alerts.callout_info}}
-With queries on [interleaved tables](interleave-in-parent.html), the [optimizer](cost-based-optimizer.html) might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
-
- To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
+To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
 The output of [`EXPLAIN (VERBOSE)`](explain.html#verbose-option) shows whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+
+### Inverted joins
+
+<span class="version-tag">New in v21.1:</span> Inverted joins force the optimizer to use a join using an [inverted index](inverted-indexes.html) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
+
+~~~
+<table expr> INNER INVERTED JOIN <table expr> ON <val expr>
+<table expr> LEFT INVERTED JOIN <table expr> ON <val expr>
+~~~
+
+See the [cost-based optimizer examples](cost-based-optimizer.html#inverted-join-examples) for statements that use inverted joins.
 
 ## `LATERAL` joins
 
@@ -156,7 +167,6 @@ CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins
 
 {{site.data.alerts.callout_info}}CockroachDBs is currently undergoing major changes to evolve and improve the performance of queries using joins. The restrictions and workarounds listed in this section will be lifted or made unnecessary over time.{{site.data.alerts.end}}
 
-- Joins over [interleaved tables](interleave-in-parent.html) are usually (but not always) processed more effectively than over non-interleaved tables.
 - When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
 - Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins)) are generally processed less efficiently than [inner joins](#inner-joins). Use inner joins whenever possible. Full outer joins are the least optimized.
 - Use [`EXPLAIN`](explain.html) over queries containing joins to verify that indexes are used.

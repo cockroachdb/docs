@@ -1,5 +1,6 @@
 ---
 title: Transactions Page
+summary: The Transactions page helps you identify frequently retried or high latency transactions and view transaction details.
 toc: true
 redirect_from: admin-ui-transactions-page.html
 ---
@@ -9,7 +10,7 @@ On a secure cluster, this area of the DB Console can only be accessed by an `adm
 {{site.data.alerts.end}}
 
 <span class="version-tag">New in v20.2:</span> The **Transactions** page helps you:
-	
+
 - Identify frequently retried or high latency transactions.
 - View transaction [details](#transaction-details-page).
 
@@ -23,7 +24,7 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 
 By default, this page shows transactions from all applications running on the cluster, and hides internal CockroachDB transactions.
 
-To filter the transactions by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** pulldown in the **Filters** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`. 
+To filter the transactions by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** pulldown in the **Filters** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`.
 
 - CockroachDB's internal transactions are only displayed under the `$ internal` app.
 - Transactions from the SQL shell are displayed under the `$ cockroach sql` app.
@@ -63,7 +64,7 @@ By default, the Transactions page displays all transactions executed within a on
 
 ## Transaction Details page
 
-Click on a transaction fingerprint to open **Transaction Details**. 
+Click on a transaction fingerprint to open **Transaction Details**.
 
 The *transaction fingerprint* is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction:
 
@@ -74,7 +75,7 @@ The following details are also displayed for the SQL statements in the transacti
 Parameter | Description
 -----|------------
 Statement | SQL statement [fingerprint](ui-statements-page.html#sql-statement-fingerprints).<br><br>To view additional details of a SQL statement fingerprint, click this to open the [**Statement Details** page](ui-statements-page.html#statement-details-page).
-Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions. 
+Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](begin-transaction.html) and [`COMMIT`](commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachDB wraps each statement in individual implicit transactions.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval).
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](ui-statements-page.html#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.

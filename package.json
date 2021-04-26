@@ -1,0 +1,12 @@
+{
+  "name": "cockroachdb-docs-tests",
+  "version": "0.0.1",
+  "devDependencies": {
+    "jest": "^26",
+    "jest-cli": "^26"
+  },
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "yaml": "^1.10.2"
+  }
+}

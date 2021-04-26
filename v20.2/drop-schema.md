@@ -12,16 +12,16 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 ## Syntax
 
-~~~
-DROP SCHEMA [IF EXISTS] <schema_name> [, ...] [CASCADE | RESTRICT]
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/diagrams/drop_schema.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the schema if it exists. If it does not exist, do not return an error.
-`schema_name`  | The name of the schema you want to drop from the current database.
+`name_list`  | The schema, or a list of schemas, that you want to drop.
 `CASCADE` | Drop all tables and views in the schema as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT` | _(Default)_ Do not drop the schema if it contains any [tables](create-table.html) or [views](create-view.html).
 

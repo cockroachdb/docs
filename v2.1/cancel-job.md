@@ -1,6 +1,6 @@
 ---
 title: CANCEL JOB
-summary: The CANCEL JOB statement stops long-running jobs.
+summary: The CANCEL JOB statement stops long-running jobs such as imports, backups, and schema changes.
 toc: true
 ---
 

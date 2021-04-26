@@ -4,21 +4,21 @@ summary: The ALTER SCHEMA statement modifies a user-defined schema in a database
 toc: true
 ---
 
- The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy) in the current database. CockroachDB currently supports changing the name of the schema and the owner of the schema.
+ The `ALTER SCHEMA` [statement](sql-statements.html) modifies a user-defined [schema](sql-name-resolution.html#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
 
 ## Syntax
 
-~~~
-ALTER SCHEMA ... RENAME TO <newschemaname>
-ALTER SCHEMA ... OWNER TO <newowner>
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/alter_schema.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 ----------|------------
-`RENAME TO ...` | Rename the schema. The new schema name must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`OWNER TO ...` | Change the owner of the schema.
+`name`<br>`name.name` | The name of the schema to alter, or the name of the database containing the schema and the schema name, separated by a "`.`".
+`RENAME TO schema_name` | Rename the schema to `schema_name`. The new schema name must be unique within the database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`OWNER TO role_spec` | Change the owner of the schema to `role_spec`.
 
 ## Required privileges
 

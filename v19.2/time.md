@@ -1,6 +1,6 @@
 ---
 title: TIME
-summary: The TIME data type stores a time of day in UTC.
+summary: CockroachDB's TIME data type stores a time of day in UTC.
 toc: true
 ---
 The `TIME` [data type](data-types.html) stores the time of day in UTC.

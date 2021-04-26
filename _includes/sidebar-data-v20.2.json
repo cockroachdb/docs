@@ -10,8 +10,8 @@
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart-trial-cluster.html",
-      "/cockroachcloud/quickstart.html"
+      "/cockroachcloud/quickstart.html",
+      "/cockroachcloud/quickstart-trial-cluster.html"
     ]
   },
   {% include_cached sidebar-data-cockroachcloud.json %},
@@ -1191,12 +1191,6 @@
                 ]
               },
               {
-                "title": "Name Resolution",
-                "urls": [
-                  "/${VERSION}/sql-name-resolution.html"
-                ]
-              },
-              {
                 "title": "SQL Statements",
                 "items": [
                   {
@@ -1308,7 +1302,7 @@
                     ]
                   },
                   {
-                    "title": "<code>BACKUP</code> (Enterprise)",
+                    "title": "<code>BACKUP</code>",
                     "urls": [
                       "/${VERSION}/backup.html"
                     ]
@@ -1680,7 +1674,7 @@
                     ]
                   },
                   {
-                    "title": "<code>RESTORE</code> (Enterprise)",
+                    "title": "<code>RESTORE</code>",
                     "urls": [
                       "/${VERSION}/restore.html"
                     ]
@@ -2201,6 +2195,47 @@
                 ]
               },
               {
+                "title": "Name Resolution",
+                "urls": [
+                  "/${VERSION}/sql-name-resolution.html"
+                ]
+              },
+              {
+                "title": "System Catalogs",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/system-catalogs.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>crdb_internal</code>",
+                    "urls": [
+                      "/${VERSION}/crdb-internal.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>information_schema</code>",
+                    "urls": [
+                      "/${VERSION}/information-schema.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_catalog</code>",
+                    "urls": [
+                      "/${VERSION}/pg-catalog.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_extension</code>",
+                    "urls": [
+                      "/${VERSION}/pg-extension.html"
+                    ]
+                  }
+                ]
+              },
+              {
                 "title": "Transactions",
                 "items": [
                   {
@@ -2219,6 +2254,35 @@
                     "title": "Transaction Retry Error Reference",
                     "urls": [
                       "/${VERSION}/transaction-retry-error-reference.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Performance Optimization",
+                "items": [
+                  {
+                    "title": "Indexes",
+                    "urls": [
+                      "/${VERSION}/indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Interleaved Tables",
+                    "urls": [
+                      "/${VERSION}/interleave-in-parent.html"
+                    ]
+                  },
+                  {
+                    "title": "Cost-Based Optimizer",
+                    "urls": [
+                      "/${VERSION}/cost-based-optimizer.html"
+                    ]
+                  },
+                  {
+                    "title": "Vectorized Execution",
+                    "urls": [
+                      "/${VERSION}/vectorized-execution.html"
                     ]
                   }
                 ]
@@ -2382,41 +2446,6 @@
                       "/${VERSION}/st_union.html"
                     ]
                   }
-                ]
-              },
-              {
-                "title": "Performance Optimization",
-                "items": [
-                  {
-                    "title": "Indexes",
-                    "urls": [
-                      "/${VERSION}/indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Interleaved Tables",
-                    "urls": [
-                      "/${VERSION}/interleave-in-parent.html"
-                    ]
-                  },
-                  {
-                    "title": "Cost-Based Optimizer",
-                    "urls": [
-                      "/${VERSION}/cost-based-optimizer.html"
-                    ]
-                  },
-                  {
-                    "title": "Vectorized Execution",
-                    "urls": [
-                      "/${VERSION}/vectorized-execution.html"
-                    ]
-                  }
-                ]
-              },
-              {
-                "title": "Information Schema",
-                "urls": [
-                  "/${VERSION}/information-schema.html"
                 ]
               },
               {

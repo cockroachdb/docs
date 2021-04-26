@@ -3,7 +3,7 @@ title: SQL Audit Logging
 summary: Learn about the SQL Audit Logging feature for CockroachCloud clusters.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-sql-audit-logging.html
+- ../v20.2/cockroachcloud-sql-audit-logging.html
 ---
 
 SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).
@@ -12,9 +12,9 @@ To enable the feature, [enable auditing](#enable-auditing) for a table and then 
 
 ## Enable auditing
 
-Use the [`EXPERIMENTAL_AUDIT`](../stable/experimental-audit.html) subcommand of [`ALTER TABLE`](../stable/alter-table.html):
+Use the [`EXPERIMENTAL_AUDIT`](../{{site.versions["stable"]}}/experimental-audit.html) subcommand of [`ALTER TABLE`](../{{site.versions["stable"]}}/alter-table.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE customers EXPERIMENTAL_AUDIT SET READ WRITE;
 ~~~

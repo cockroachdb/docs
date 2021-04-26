@@ -1,8 +1,12 @@
 - title: Production releases
   releases:
+    - date: April 23, 2021
+      version: v20.2.8
+      latest: true
+    - date: March 29, 2021
+      version: v20.2.7
     - date: March 15, 2021
       version: v20.2.6
-      latest: true
     - date: Feb 16, 2021
       version: v20.2.5
     - date: Jan 21, 2021
@@ -15,6 +19,10 @@
       version: v20.2.1
     - date: Nov 10, 2020
       version: v20.2.0
+    - date: Apr 26, 2021
+      version: v20.1.15
+    - date: Apr 19, 2021
+      version: v20.1.14
     - date: Mar 15, 2021
       version: v20.1.13
     - date: Feb 16, 2021
@@ -221,6 +229,14 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Apr 19, 2021
+      version: v21.1.0-beta.4
+    - date: Apr 12, 2021
+      version: v21.1.0-beta.3
+    - date: Mar 30, 2021
+      version: v21.1.0-beta.2
+    - date: Mar 22, 2021
+      version: v21.1.0-beta.1
     - date: Feb 8, 2021
       version: v21.1.0-alpha.3
     - date: Feb 1, 2021

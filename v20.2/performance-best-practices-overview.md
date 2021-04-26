@@ -73,17 +73,6 @@ A column family is a group of columns in a table that is stored as a single key-
 
 When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](column-families.html).
 
-## Interleave tables
-
-[Interleaving tables](interleave-in-parent.html) improves query performance by optimizing the key-value structure of closely related tables, attempting to keep data on the same key-value range if it's likely to be read and written together. This is particularly helpful if the tables are frequently joined on the columns that consist of the interleaving relationship.
-
-However, the above is only true for tables where all operations (e.g., [`SELECT`](selection-queries.html) or [`INSERT`](insert.html)) are performed on a single value shared between both tables. The following types of operations may actually become slower after interleaving:
-
-- Operations that span multiple values.
-- Operations that do not specify the interleaved parent ID.
-
-This happens because when data is interleaved, queries that work on the parent table(s) will need to "skip over" the data in interleaved children, which increases the read and write latencies to the parent in proportion to the number of interleaved values.
-
 ## Unique ID best practices
 
 The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a legacy single-node database. Traditional approaches for generating unique IDs for legacy single-node databases include:
@@ -350,8 +339,7 @@ Transaction contention occurs when the following three conditions are met:
   cluster).
 - They operate on the same data, specifically over table rows with the
   same index key values (either on [primary keys](primary-key.html) or
-  secondary [indexes](indexes.html), or via
-  [interleaving](interleave-in-parent.html)) or using index key values
+  secondary [indexes](indexes.html)) or using index key values
   that are close to each other, and thus place the indexed data on the
   same [data ranges](architecture/overview.html).
 - At least some of the transactions write or modify the data.
@@ -392,6 +380,9 @@ To avoid contention, multiple strategies can be applied:
   [`SELECT`](select-clause.html) and
   [`INSERT`](insert.html)/[`UPDATE`](update.html)/[`DELETE`](delete.html)/[`UPSERT`](upsert.html)
   clauses together in a single SQL statement.
+
+  - For an example showing how to break up large transactions in an application, see [Break up large transactions into smaller units of work](build-a-python-app-with-cockroachdb-sqlalchemy.html#break-up-large-transactions-into-smaller-units-of-work).
+  - If you are experiencing contention (retries) when doing bulk deletes, see [Bulk-delete data](bulk-delete-data.html).
 
 - In combination with the above, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can automatically retry the transaction for you.
 

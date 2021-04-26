@@ -1,5 +1,6 @@
 ---
 title: Database Page
+summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
 redirect_from: admin-ui-databases-page.html
 ---
@@ -12,7 +13,7 @@ The **Databases** page of the DB Console provides details of the following:
 
 - The databases configured.
 - The tables in each database.
-- The grants assigned to each user. 
+- The grants assigned to each user.
 
 To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
 
@@ -50,7 +51,7 @@ Click any table name in [Tables](#tables-view) view to display details for that 
 
 The **Grants** view shows the [privileges](authorization.html#assign-privileges) granted to users for each database.
 
-For more details about grants and privileges, see [`GRANT <privileges>`](grant.html).
+For more details about grants and privileges, see [`GRANT`](grant.html).
 
 <img src="{{ 'images/v21.1/ui_database_grants_view.png' | relative_url }}" alt="DB Console Database Grants View" style="border:1px solid #eee;max-width:100%" />
 
@@ -58,5 +59,5 @@ For more details about grants and privileges, see [`GRANT <privileges>`](grant.h
 
 - [Statements page](ui-statements-page.html)
 - [Assign privileges](authorization.html#assign-privileges)
-- [`GRANT <privileges>`](grant.html)
+- [`GRANT`](grant.html)
 - [Raw status endpoints](monitoring-and-alerting.html#raw-status-endpoints)

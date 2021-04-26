@@ -26,7 +26,7 @@ You can also back up:
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 {{site.data.alerts.callout_info}}
-`BACKUP` only offers table-level granularity; it _does not_ support backing up subsets of a table.
+`BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -35,8 +35,13 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 
 ## Required privileges
 
-- Only members of the `admin` role can run `BACKUP`. By default, the `root` user belongs to the `admin` role.
+- [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](authorization.html#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
+
+### Destination privileges
+
+{% include {{ page.version.version }}/backups/destination-file-privileges.md %}
 
 ## Synopsis
 
@@ -55,10 +60,6 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 `full_backup_location` | Create an incremental backup using the backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** After a full backup for an explicit list of tables and/or databases, it is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html). In these cases, you must create a new [full backup](#full-backups) before more incremental backups can be created. To avoid this, [backup the cluster](#backup-a-cluster) instead of the explicit list of tables/databases.
 `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
 `kv_option_list` | Control the backup behavior with a comma-separated list of [these options](#options).
-
-{{site.data.alerts.callout_info}}
-The `BACKUP` statement cannot be used within a [transaction](transactions.html).
-{{site.data.alerts.end}}
 
 ### Options
 
@@ -101,7 +102,7 @@ Full backups contain an un-replicated copy of your data and can always be used t
 Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
 
 {{site.data.alerts.callout_danger}}
-Incremental backups can only be created within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process.
+Incremental backups can only be created within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process. Incremental backups that fail because of a recent garbage collection will throw [an error](common-errors.html#pq-failed-to-verify-protection-id).
 
 You can configure garbage collection periods using the `ttlseconds` [replication zone setting](configure-replication-zones.html).
 {{site.data.alerts.end}}
@@ -213,14 +214,14 @@ This incremental backup syntax does not work for backups using HTTP storage; you
 
 ### Run a backup asynchronously
 
-<span class="version-tag">New in v20.2:</span> Use the `detached` [option](#options) to execute the backup job asynchronously:
+<span class="version-tag">New in v20.2:</span> Use the `DETACHED` [option](#options) to execute the backup job asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO \
 'gs://acme-co-backup/test-cluster' \
 AS OF SYSTEM TIME '-10s'
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:

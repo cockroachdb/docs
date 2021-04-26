@@ -1,6 +1,6 @@
 ---
 title: Cost-Based Optimizer
-summary: Learn about the cost-based optimizer
+summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
 redirect_from: sql-optimizer.html
 ---
@@ -122,7 +122,7 @@ Finally, note that only the following statements use the plan cache:
 
 ## Join reordering
 
-The cost-based optimizer will explore additional join orderings in an attempt to find the lowest-cost execution plan for a query involving multiple joins, which can lead to significantly better performance in some cases.
+The cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan for a query involving multiple joins, which can lead to significantly better performance in some cases.
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
 
@@ -141,12 +141,14 @@ For more information about the difficulty of selecting an optimal join ordering,
 
 ## Join hints
 
-The optimizer supports hint syntax to force the use of a specific join algorithm. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
+The optimizer supports hint syntax to force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
 
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
 - `CROSS MERGE JOIN`
+- `INNER INVERTED JOIN`
+- `LEFT INVERTED JOIN`
 
 Note that the hint cannot be specified with a bare hint keyword (e.g., `MERGE`) - in that case, the `INNER` keyword must be added. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
 
@@ -162,13 +164,17 @@ Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to S
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
+- `INVERTED`: <span class="version-tag">New in v21.1:</span> Forces an inverted join into the right side; the right side must be a table with a suitable [inverted index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
+
+{{site.data.alerts.callout_info}}
+You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
+{{site.data.alerts.end}}
+
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
 
 {{site.data.alerts.callout_info}}
-With queries on [interleaved tables](interleave-in-parent.html), the optimizer might choose to use a merge join to perform a [foreign key](foreign-key.html) check when a lookup join would be more optimal.
-
- To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
+To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
 ### Additional considerations
@@ -215,6 +221,10 @@ The optimizer does not actually understand geographic locations, i.e., the relat
 
 ### Examples
 
+#### Inverted join examples
+
+{% include {{ page.version.version }}/sql/inverted-joins.md %}
+
 #### Zone constraints
 
 We can demonstrate the necessary configuration steps using a local cluster. The instructions below assume that you are already familiar with:
@@ -223,46 +233,11 @@ We can demonstrate the necessary configuration steps using a local cluster. The 
 - The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
 - Using [the built-in SQL client](cockroach-sql.html).
 
-First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
+First, start 3 local demo nodes as shown below. The `--demo-locality` flag uses the [`--locality`](cockroach-start.html#locality) internally flag to put the nodes each in a different region as denoted by `region=usa`, `region=eu`, and `region=apac`.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --locality=region=usa  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
-  --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --locality=region=eu   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
-  --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
-  --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
-~~~
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach init --insecure --host=localhost --port=26257
-~~~
-
-Next, from the SQL client, add your organization name and enterprise license:
-
-{% include copy-clipboard.html %}
-~~~ sh
-$ cockroach sql --insecure --host=localhost --port=26257
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING enterprise.license = 'xxxxx';
+./cockroach demo --nodes 3 --demo-locality=region=usa:region=eu:region=apac
 ~~~
 
 Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
@@ -315,64 +290,101 @@ In a geo-distributed scenario with a cluster that spans multiple datacenters, it
 
 For example, if you have 11 nodes, you may see 11 queries with high latency due to schema cache misses.  Once all nodes have cached the schema locally, the latencies will drop.
 
-This behavior may also cause the [Statements page of the Web UI](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
+This behavior may also cause the [Statements page of the DB Console](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
 {{site.data.alerts.end}}
 
 As expected, the node in the USA region uses the primary key index.
 
 {% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~ sql
+EXPLAIN SELECT * FROM postal_codes WHERE id=1;
 ~~~
 
 ~~~
-  tree |        field        |     description
--------+---------------------+-----------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | postal_codes@primary
-       | spans               | [/1 - /1]
-(6 rows)
+              info
+---------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (100% of the table; stats collected 22 seconds ago)
+    table: postal_codes@primary
+    spans: [/1 - /1]
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-As expected, the node in the EU uses the `idx_eu` index.
+Find the connection string for the nodes in the demo cluster.
+
+{% include copy-clipboard.html %}
+~~~ sql
+\demo ls
+~~~
+
+~~~
+node 1:
+  (webui)    http://127.0.0.1:8080/demologin?password=demo65395&username=demo
+  (sql)      postgres://demo:demo65395@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo65395@?host=%2Fvar%2Ffolders%2Fr5%2F7q2jzh4n0rj5lgcwc47st58m0000gp%2FT%2Fdemo064093534&port=26257
+
+node 2:
+  (webui)    http://127.0.0.1:8081/demologin?password=demo65395&username=demo
+  (sql)      postgres://demo:demo65395@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo65395@?host=%2Fvar%2Ffolders%2Fr5%2F7q2jzh4n0rj5lgcwc47st58m0000gp%2FT%2Fdemo064093534&port=26258
+
+node 3:
+  (webui)    http://127.0.0.1:8082/demologin?password=demo65395&username=demo
+  (sql)      postgres://demo:demo65395@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo65395@?host=%2Fvar%2Ffolders%2Fr5%2F7q2jzh4n0rj5lgcwc47st58m0000gp%2FT%2Fdemo064093534&port=26259
+~~~
+
+Note the `(sql)` connection string for nodes 2 and 3.
+
+Open a new terminal and connect to node 2, which is in the `eu` region, and run the same `EXPLAIN` query. Use the connection string from node 2 in your demo cluster, as it will differ from this example.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+cockroach sql --url 'postgres://demo:demo65395@127.0.0.1:26258?sslmode=require' --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
 
+The node in the EU uses the `idx_eu` index.
+
 ~~~
-  tree |        field        |     description
--------+---------------------+----------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | postal_codes@idx_eu
-       | spans               | [/1 - /1]
-(6 rows)
+---------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (100% of the table; stats collected 5 minutes ago)
+    table: postal_codes@idx_eu
+    spans: [/1 - /1]
+(7 rows)
+
+Time: 11ms
 ~~~
 
-As expected, the node in APAC uses the `idx_apac` index.
+Connect to node 3, which is in the `apac` region, and run the same `EXPLAIN` query. Use the connection string from node 3 in your demo cluster, as it will differ from this example.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+$ cockroach sql --url 'postgres://demo:demo65395@127.0.0.1:26259?sslmode=require' --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
 
+The node in APAC uses the `idx_apac` index.
+
 ~~~
-  tree |        field        |      description
--------+---------------------+------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | postal_codes@idx_apac
-       | spans               | [/1 - /1]
-(6 rows)
+---------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (100% of the table; stats collected 9 minutes ago)
+    table: postal_codes@idx_apac
+    spans: [/1 - /1]
+(7 rows)
+
+Time: 1ms
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
@@ -635,15 +647,18 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West
 ~~~
 
 ~~~
-  tree |        field        |                                     description
--------+---------------------+--------------------------------------------------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | token@token_id_east_idx
-       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
-(6 rows)
+                                              info
+------------------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (100% of the table; stats collected 34 seconds ago)
+    table: token@token_id_west_idx
+    spans: [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Similarly, queries from the `us-east` node should use the `token_id_east_idx` index (and the same should be true for `us-central`).
@@ -665,21 +680,25 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East
 ~~~
 
 ~~~
-  tree |        field        |                                     description
--------+---------------------+--------------------------------------------------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | token@token_id_east_idx
-       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
-(6 rows)
+                                              info
+------------------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (0.01% of the table; stats collected 18 seconds ago)
+    table: token@token_id_west_idx
+    spans: [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
 
 ## See also
 
+- [`JOIN` expressions](joins.html)
 - [`SET (session variable)`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)

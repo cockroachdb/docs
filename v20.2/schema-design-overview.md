@@ -101,6 +101,34 @@ We do not recommend using client drivers or ORM frameworks to execute database s
 
     The CockroachDB SQL client allows you to execute commands from the command line, or through the [CockroachDB SQL shell](cockroach-sql.html#sql-shell) interface. From the command line, you can pass a string to the client for execution, or you can pass a `.sql` file populated with SQL commands. From the SQL shell, you can execute SQL commands directly. Throughout the guide, we pass a `.sql` file to the SQL client to perform most database schema changes.
 
+## Object size and scaling considerations
+
+CockroachDB does not place hard limits on most database objects. Extremely large attributes are not supported in certain scenarios as described in this section.
+
+### Hard limits
+
+The following table lists specific limits imposed by CockroachDB.
+
+| Object | Limit | Comments |
+| ------ | ----- | -------- |
+| Role names | 63 bytes | Other [restrictions](create-role.html#role-name-limitations) apply. |
+| User names | 63 bytes | These are [equivalent](create-user.html) to role names. |
+| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. | 
+
+### Quantity of tables and other schema objects
+
+CockroachDB has been shown to perform well with clusters containing 2,500 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes) and hardware specifications.
+
+As you scale to a large number of tables, note that:
+
+- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, inverted indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
+- The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
+
+See the [Hardware](recommended-production-settings.html#hardware) section for additional recommendations based on your expected workloads.
+
+### Quantity of rows
+
+CockroachDB can support any number of rows by adding additional nodes and [storage](recommended-production-settings.html#storage).
 
 ## What's next?
 

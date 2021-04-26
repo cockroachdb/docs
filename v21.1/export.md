@@ -6,7 +6,7 @@ toc: true
 
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.
 
-Using the [CockroachDB distributed execution engine](https://www.cockroachlabs.com/docs/stable/architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
+Using the [CockroachDB distributed execution engine](architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
 
 {{site.data.alerts.callout_info}}
  `EXPORT` no longer requires an enterprise license.
@@ -143,16 +143,16 @@ $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > 
 
 ### View a running export
 
-View running exports by using [`SHOW QUERIES`](show-queries.html):
+View running exports by using [`SHOW STATEMENTS`](show-statements.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW QUERIES;
+> SHOW STATEMENTS;
 ~~~
 
 ### Cancel a running export
 
-Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
+Use [`SHOW STATEMENTS`](show-statements.html) to get a running export's `query_id`, which can be used to [cancel the export](cancel-query.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

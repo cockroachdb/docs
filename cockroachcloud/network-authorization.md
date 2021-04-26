@@ -117,7 +117,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
   
 1.  Substitute the values from the previous steps and run the following AWS CLI command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ aws ec2 create-vpc-endpoint --region $REGION \
     --vpc-id $VPC_ID --subnet-ids $SUBNET_ID1 $SUBNET_ID2 \ 
@@ -150,7 +150,7 @@ Alternatively, use the AWS CLI to modify the Private DNS Name:
 
 1.  After the endpoint status changes to Available, run the following AWS CLI command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ aws ec2 modify-vpc-endpoint --region $REGION \
     --private-dns-enabled --vpc-endpoint-id $VPC_ENDPOINT_ID
@@ -162,5 +162,5 @@ After a short (less than 5 minute) delay, the status will change to Available. Y
 
 ## See also
 
-- [Client Connection Parameters](../stable/connection-parameters.html)
+- [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
 - [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)

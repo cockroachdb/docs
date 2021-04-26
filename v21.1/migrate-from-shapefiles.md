@@ -89,7 +89,7 @@ Since the file is being served from a local server and is formatted as Postgres-
 
 {% include copy-clipboard.html %}
 ~~~ sql
-IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql');
+IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupported_statements;
 ~~~
 
 ~~~

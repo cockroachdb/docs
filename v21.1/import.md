@@ -1,6 +1,6 @@
 ---
 title: IMPORT
-summary: Import data into your CockroachDB cluster.
+summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
 ---
 
@@ -18,7 +18,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-`IMPORT` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
+`IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -94,6 +94,8 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `row_limit`           | General         |<span class="version-tag">New in v21.1:</span> The number of rows to import. Useful for doing a test run of an import and finding errors quickly. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file.
 `skip_foreign_keys`    | `PGDUMP`, `MYSQLDUMP` | Ignore foreign key constraints in the dump file's DDL. **Default:** Off.  May be necessary to import a table with unsatisfied foreign key constraints from a full database dump.
 `max_row_size`         | `PGDUMP`        | Override limit on line size. **Default: 0.5MB**.  This setting may need to be tweaked if your Postgres dump file has extremely long lines, for example as part of a `COPY` statement.
+`ignore_unsupported_statements` | `PGDUMP`  | <span class="version-tag">New in v21.1:</span> Ignore SQL statements in the dump file that are unsupported by CockroachDB.
+`log_ignored_statements` | `PGDUMP` | <span class="version-tag">New in v21.1:</span> Log unsupported statements when using `ignore_unsupported_statements` to a specified destination (i.e., [cloud storage](use-cloud-storage-for-bulk-operations.html) or [userfile storage](use-userfile-for-bulk-operations.html).
 `rows_terminated_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character to indicate new lines in the input file. **Default:** `\n`
 `fields_terminated_by` | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character used to separate fields in each input line. **Default:** `\t`
 `fields_enclosed_by`   | [`DELIMITED DATA`](#delimited-data-files)  | The unicode character that encloses fields. **Default:** `"`
@@ -104,9 +106,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
 `schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
 `schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
-
-<!--
-`experimental_save_rejected` | `CSV DATA` | Skip faulty rows during import and save them in a file called `<original_csv_file>.rejected`. Once the rows are fixed, use this file with [`IMPORT INTO`](import-into.html) to finish the import. **Default:** Off -->
+`DETACHED`             | N/A            | <span class="version-tag">New in v21.1:</span> When running an import using the `DETACHED` option, the import will run asynchronously and return the job ID immediately without waiting for the job to finish. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -712,24 +712,24 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH ignore_unsupported_statements;
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
+> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH ignore_unsupported_statements;
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 'gs://acme-co/employees.sql';
+> IMPORT PGDUMP 'gs://acme-co/employees.sql' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres][postgres].
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
 
 ### Import a table from a Postgres database dump
 
@@ -737,21 +737,21 @@ Amazon S3:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
 
 Azure:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
 
 Google Cloud:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys WITH ignore_unsupported_statements;
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
@@ -1029,6 +1029,75 @@ AVRO DATA ('gs://acme-co/customers.avro')
 ~~~
 
 For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+
+### Run an import within a transaction
+
+<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+
+The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
+WITH DETACHED;
+
+COMMIT;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+WITH DETACHED;
+
+COMMIT;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv')
+WITH DETACHED;
+
+COMMIT;
+~~~
 
 ## Known limitation
 

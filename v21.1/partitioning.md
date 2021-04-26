@@ -115,10 +115,6 @@ Indexes are not required to be partitioned, but creating a non-partitioned index
 
  When you create a non-partitioned index on a partitioned table, CockroachDB sends a [`NOTICE` message](https://www.postgresql.org/docs/current/plpgsql-errors-and-messages.html) to the client stating that creating a non-partitioned index on a partitioned table may not perform well.
 
-#### Define partitions on interleaved tables
-
-For [interleaved tables](interleave-in-parent.html), partitions can be defined only on the root table of the interleave hierarchy, while children are interleaved the same as their parents.
-
 ### Replication zones
 
 On their own, partitions are inert and simply apply a label to the rows of the table that satisfy the criteria of the defined partitions. Applying functionality to a partition requires creating and applying [replication zone](configure-replication-zones.html) to the corresponding partitions.
@@ -377,7 +373,7 @@ To create replication zone and apply them to corresponding partitions, use the [
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SHOW ZONE CONFIGURATION FOR PARTITION north_america OF TABLE students;
+    > SHOW ZONE CONFIGURATION FROM PARTITION north_america OF TABLE students;
     ~~~
 
     ~~~
@@ -719,8 +715,6 @@ Other databases use partitioning for three additional use cases: secondary index
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
 
 - CockroachDB does not support partitioning [inverted indexes](inverted-indexes.html), including [spatial indexes](spatial-indexes.html). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/43643).
-
-- Partitions cannot be created on columns of type `ENUM`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/55342).
 
 ## See also
 

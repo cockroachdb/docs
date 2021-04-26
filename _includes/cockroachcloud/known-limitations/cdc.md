@@ -1,9 +1,9 @@
-- Changefeeds only work on tables with a single [column family](../stable/column-families.html) (which is the default for new tables).
+- Changefeeds only work on tables with a single [column family](../{{site.versions["stable"]}}/column-families.html) (which is the default for new tables).
 - Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
-- Many DDL queries (including [`TRUNCATE`](../stable/truncate.html) and [`DROP TABLE`](../stable/drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](../v20.1/create-changefeed.html#start-a-new-changefeed-where-another-ended).
-- Changefeeds cannot be [backed up](../stable/backup.html) or [restored](../stable/restore.html).
-- Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](../v20.1/change-data-capture.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](../v20.1/change-data-capture.html#monitor-a-changefeed).
-- Changefeeds cannot be altered. To alter, cancel the changefeed and [create a new one with updated settings from where it left off](../v20.1/create-changefeed.html#start-a-new-changefeed-where-another-ended).
+- Many DDL queries (including [`TRUNCATE`](../{{site.versions["stable"]}}/truncate.html) and [`DROP TABLE`](../{{site.versions["stable"]}}/drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](../{{site.versions["stable"]}}/create-changefeed.html#start-a-new-changefeed-where-another-ended).
+- Changefeeds cannot be [backed up](../{{site.versions["stable"]}}/backup.html) or [restored](../{{site.versions["stable"]}}/restore.html).
+- Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed).
+- Changefeeds cannot be altered. To alter, cancel the changefeed and [create a new one with updated settings from where it left off](../{{site.versions["stable"]}}/create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Additional target options will be added, including partitions and ranges of primary key rows.
-- Changefeeds do not pick up data ingested with the [`IMPORT INTO`](../stable/import-into.html) statement.
-- Using a [cloud storage sink](../v20.1/create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files.
+- Changefeeds do not pick up data ingested with the [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html) statement.
+- Using a [cloud storage sink](../{{site.versions["stable"]}}/create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files.

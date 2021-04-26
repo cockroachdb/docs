@@ -1,24 +1,25 @@
 ---
 title: Common Errors
-summary: Understand and resolve common errors.
+summary: Understand and resolve common error messages written to stderr or logs.
 toc: false
 redirect_from: general-troubleshooting.html
 ---
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](debug-and-error-logs.html).
 
-| Topic                                  | Message                                                                                                                                                                                                                                         |
-|----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     |
-| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  |
-| Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   |
-| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) |
-| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  |
-| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   |
-| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   |
-| Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)                                   |
-| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       |
-| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                   |
+| Topic                                  | Message                                                                                                                                                                                                                                         
+|----------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     
+| Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  
+| Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   
+| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) 
+| Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  
+| Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   
+| Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   
+| Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)                                   
+| Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       
+| [Incremental backups](take-full-and-incremental-backups.html#incremental-backups) | <span class="version-tag"> New in v21.1: </span> [`protected ts verification error...`](#protected-ts-verification-error)                                                                                        
+| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                     |
 
 ## connection refused
 
@@ -139,6 +140,17 @@ To resolve this issue, make sure you are not repeatedly updating a single row. I
 ## context deadline exceeded
 
 This message occurs when a component of CockroachDB gives up because it was relying on another component that has not behaved as expected, for example, another node dropped a network connection. To investigate further, look in the node's logs for the primary failure that is the root cause.
+
+## protected ts verification error...
+
+<span class="version-tag"> New in v21.1: </span> Messages that begin with `protected ts verification error…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail. 
+
+The error message will specify which part of your backup is causing the failure. For example, `range span: /Table/771` indicates that table `771` is part of the problem. You can then inspect this table by running [`SELECT * FROM crdb_internal.tables WHERE id=771`](select-clause.html). You can also run [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) and look for any `gc.ttlseconds` values that are set lower than your incremental backup frequency.
+
+To resolve this issue, take a new [full backup](take-full-and-incremental-backups.html) after doing either of the following:
+
+- Increase the garbage collection period by [configuring the `gc.ttlseconds` replication zone variable](configure-replication-zones.html#gc-ttlseconds), or
+- [Increase the frequency of incremental backups](manage-a-backup-schedule.html).
 
 ## result is ambiguous
 

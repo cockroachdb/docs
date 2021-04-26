@@ -16,8 +16,7 @@ You can configure vectorized execution with the `vectorize` [session variable](s
 
 Option    | Description
 ----------|------------
-`on`   | Turns on vectorized execution for all queries on rows over the [`vectorize_row_count_threshold`](#setting-the-row-threshold-for-vectorized-execution) (1000 rows, by default).<br><br>**Default:** `vectorize=on`
-`201auto` | Follows the [vectorized execution behavior of CockroachDB v20.1](../v20.1/vectorized-execution.html), instructing CockroachDB to use the vectorized execution engine on queries that use a constant amount of memory, on [data types supported by the vectorized engine in CockroachDB v20.1](../v20.1/data-types.html).
+`on`   | Turns on vectorized execution for all queries on rows over the [`vectorize_row_count_threshold`](#setting-the-row-threshold-for-vectorized-execution) (0 rows, by default, meaning all queries will use the vectorized engine).<br><br>**Default:** `vectorize=on`
 `off`  | Turns off vectorized execution for all queries.
 
 For information about setting session variables, see [`SET` &lt;session variable&gt;](set-vars.html).
@@ -30,7 +29,7 @@ To see if CockroachDB will use the vectorized execution engine for a query, run 
 
 The efficiency of vectorized execution increases with the number of rows processed. If you are querying a table with a small number of rows, it is more efficient to use row-oriented execution.
 
-By default, vectorized execution is enabled for queries on tables of 1000 rows or more. If the number of rows in a table falls below 1000, CockroachDB uses the row-oriented execution engine instead.
+By default, vectorized execution is enabled for all queries.
 
 For performance tuning, you can change the minimum number of rows required to use the vectorized engine to execute a query plan in the current session with the `vectorize_row_count_threshold` [session variable](set-vars.html).
 
@@ -75,6 +74,10 @@ Support for certain [window functions](window-functions.html) is limited in the 
 ### Spatial features
 
 The vectorized engine does not support [working with spatial data](spatial-data.html). Queries with [geospatial functions](functions-and-operators.html#spatial-functions) or [spatial data](spatial-data.html) will revert to the row-oriented execution engine.
+
+### Unordered distinct operations
+
+{% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
 
 ## See also
 

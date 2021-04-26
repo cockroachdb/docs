@@ -3,12 +3,12 @@ title: Create a CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-create-your-cluster.html
+- ../v20.2/cockroachcloud-create-your-cluster.html
 ---
 
 <div class="filters clearfix">
-    <a href="create-your-cluster.html"><button class="filter-button page-level current"><strong>CockroachCloud</strong></button></a>
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level"><strong>CockroachCloud Free (beta)</strong></button></a>
+    <a href="create-a-free-cluster.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
 </div>
 
 This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.

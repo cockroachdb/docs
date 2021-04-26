@@ -3,7 +3,7 @@ title: CockroachCloud Free (beta) Frequently Asked Questions
 summary: Get answers to frequently asked questions about CockroachCloud Free (beta)
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-frequently-asked-questions.html
+- ../v20.2/cockroachcloud-frequently-asked-questions.html
 - free-closed-beta.html
 ---
 
@@ -37,10 +37,6 @@ For examples of applications that use CockroachCloud Free (beta), check out the 
 
 CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
-### Can I use a specific region in AWS or GCP?
-
-At this time, CockroachCloud Free (beta) is only available in the GCP `us-central-1` and AWS `us-east-1` regions. More regions may be available in the future.
-
 ### How do I connect to my cluster?
 
 To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
@@ -49,7 +45,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### Why is CockroachCloud Free in beta?
 
-CockroachCloud Free is in beta while we work on adding core features like [import](../v20.2/import.html) and [backups](backups-page.html).
+CockroachCloud Free is in beta while we work on adding core features like [import](../{{site.versions["stable"]}}/import.html) and [backups](backups-page.html).
 
 ### Where can I submit feedback or bugs on the beta?
 
@@ -68,7 +64,7 @@ Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by
 - Data stored in clusters running in GCP are encrypted-at-rest using [persistent disk encryption](https://cloud.google.com/compute/docs/disks#pd_encryption).
 - Data stored in clusters running in AWS are encrypted-at-rest using [EBS encryption-at-rest](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html).
 
-Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../v20.2/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../v20.2/ui-overview.html), since it is unaware of cloud provider encryption.
+Because we are relying on the cloud provider's encryption implementation (as noted above), we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since it is unaware of cloud provider encryption.
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -92,15 +88,15 @@ No, change data capture and partitioning are not available on CockroachCloud Fre
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../v20.2/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for CockroachCloud Free (beta) clusters.
+Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for CockroachCloud Free (beta) clusters.
 
 ### Can I backup my CockroachCloud Free (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
 Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CockroachCloud Free (beta) cluster yourself. We expect to support user-initiated backup and restore of free clusters in the future.
 
-In the meantime, you can run a [`SELECT`](../v20.2/select.html) statement using the [`--format=csv` flag](../v20.2/cockroach-sql.html#general) to print the output into a file. For example:
+In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~
 $ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
 ~~~

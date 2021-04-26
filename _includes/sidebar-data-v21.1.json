@@ -10,8 +10,8 @@
     "title": "Quickstart",
     "is_top_level": true,
     "urls": [
-      "/cockroachcloud/quickstart-trial-cluster.html",
-      "/cockroachcloud/quickstart.html"
+      "/cockroachcloud/quickstart.html",
+      "/cockroachcloud/quickstart-trial-cluster.html"
     ]
   },
   {% include_cached sidebar-data-cockroachcloud.json %},
@@ -58,6 +58,12 @@
                   "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
                   "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
                   "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
+                ]
+              },
+              {
+                "title": "Simulate a Multi-Region Cluster on localhost",
+                "urls": [
+                  "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
                 ]
               }
             ]
@@ -870,8 +876,7 @@
               {
                 "title": "Tuning Tutorial",
                 "urls": [
-                  "/${VERSION}/performance-tuning.html",
-                  "/${VERSION}/performance-tuning-insecure.html"
+                  "/${VERSION}/performance-tuning.html"
                 ]
               }
             ]
@@ -1220,12 +1225,6 @@
                 ]
               },
               {
-                "title": "Name Resolution",
-                "urls": [
-                  "/${VERSION}/sql-name-resolution.html"
-                ]
-              },
-              {
                 "title": "SQL Statements",
                 "items": [
                   {
@@ -1244,6 +1243,12 @@
                     "title": "<code>ADD CONSTRAINT</code>",
                     "urls": [
                       "/${VERSION}/add-constraint.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>ADD REGION</code>",
+                    "urls": [
+                      "/${VERSION}/add-region.html"
                     ]
                   },
                   {
@@ -1337,7 +1342,7 @@
                     ]
                   },
                   {
-                    "title": "<code>BACKUP</code> (Enterprise)",
+                    "title": "<code>BACKUP</code>",
                     "urls": [
                       "/${VERSION}/backup.html"
                     ]
@@ -1577,15 +1582,9 @@
                     ]
                   },
                   {
-                    "title": "<code>GRANT &lt;privileges&gt;</code>",
+                    "title": "<code>GRANT</code>",
                     "urls": [
                       "/${VERSION}/grant.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>GRANT &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/grant-roles.html"
                     ]
                   },
                   {
@@ -1685,12 +1684,6 @@
                     ]
                   },
                   {
-                    "title": "<code>RENAME SEQUENCE</code>",
-                    "urls": [
-                      "/${VERSION}/rename-sequence.html"
-                    ]
-                  },
-                  {
                     "title": "<code>RELEASE SAVEPOINT</code>",
                     "urls": [
                       "/${VERSION}/release-savepoint.html"
@@ -1709,7 +1702,7 @@
                     ]
                   },
                   {
-                    "title": "<code>RESTORE</code> (Enterprise)",
+                    "title": "<code>RESTORE</code>",
                     "urls": [
                       "/${VERSION}/restore.html"
                     ]
@@ -1727,15 +1720,9 @@
                     ]
                   },
                   {
-                    "title": "<code>REVOKE &lt;privileges&gt;</code>",
+                    "title": "<code>REVOKE</code>",
                     "urls": [
                       "/${VERSION}/revoke.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>REVOKE &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/revoke-roles.html"
                     ]
                   },
                   {
@@ -1772,6 +1759,12 @@
                     "title": "<code>SET CLUSTER SETTING</code>",
                     "urls": [
                       "/${VERSION}/set-cluster-setting.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SET LOCALITY</code>",
+                    "urls": [
+                      "/${VERSION}/set-locality.html"
                     ]
                   },
                   {
@@ -1865,12 +1858,6 @@
                     ]
                   },
                   {
-                    "title": "<code>SHOW QUERIES</code>",
-                    "urls": [
-                      "/${VERSION}/show-queries.html"
-                    ]
-                  },
-                  {
                     "title": "<code>SHOW RANGES</code>",
                     "urls": [
                       "/${VERSION}/show-ranges.html"
@@ -1880,6 +1867,12 @@
                     "title": "<code>SHOW RANGE FOR ROW</code>",
                     "urls": [
                       "/${VERSION}/show-range-for-row.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW REGIONS</code>",
+                    "urls": [
+                      "/${VERSION}/show-regions.html"
                     ]
                   },
                   {
@@ -1910,6 +1903,12 @@
                     "title": "<code>SHOW SESSIONS</code>",
                     "urls": [
                       "/${VERSION}/show-sessions.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW STATEMENTS</code>",
+                    "urls": [
+                      "/${VERSION}/show-statements.html"
                     ]
                   },
                   {
@@ -1964,6 +1963,12 @@
                     "title": "<code>SPLIT AT</code>",
                     "urls": [
                       "/${VERSION}/split-at.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SURVIVE {ZONE,REGION} FAILURE</code>",
+                    "urls": [
+                      "/${VERSION}/survive-failure.html"
                     ]
                   },
                   {
@@ -2229,6 +2234,48 @@
                   }
                 ]
               },
+
+              {
+                "title": "Name Resolution",
+                "urls": [
+                  "/${VERSION}/sql-name-resolution.html"
+                ]
+              },
+              {
+                "title": "System Catalogs",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/system-catalogs.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>crdb_internal</code>",
+                    "urls": [
+                      "/${VERSION}/crdb-internal.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>information_schema</code>",
+                    "urls": [
+                      "/${VERSION}/information-schema.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_catalog</code>",
+                    "urls": [
+                      "/${VERSION}/pg-catalog.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>pg_extension</code>",
+                    "urls": [
+                      "/${VERSION}/pg-extension.html"
+                    ]
+                  }
+                ]
+              },
               {
                 "title": "Transactions",
                 "items": [
@@ -2248,6 +2295,35 @@
                     "title": "Transaction Retry Error Reference",
                     "urls": [
                       "/${VERSION}/transaction-retry-error-reference.html"
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "Performance Optimization",
+                "items": [
+                  {
+                    "title": "Indexes",
+                    "urls": [
+                      "/${VERSION}/indexes.html"
+                    ]
+                  },
+                  {
+                    "title": "Interleaved Tables",
+                    "urls": [
+                      "/${VERSION}/interleave-in-parent.html"
+                    ]
+                  },
+                  {
+                    "title": "Cost-Based Optimizer",
+                    "urls": [
+                      "/${VERSION}/cost-based-optimizer.html"
+                    ]
+                  },
+                  {
+                    "title": "Vectorized Execution",
+                    "urls": [
+                      "/${VERSION}/vectorized-execution.html"
                     ]
                   }
                 ]
@@ -2411,41 +2487,6 @@
                       "/${VERSION}/st_union.html"
                     ]
                   }
-                ]
-              },
-              {
-                "title": "Performance Optimization",
-                "items": [
-                  {
-                    "title": "Indexes",
-                    "urls": [
-                      "/${VERSION}/indexes.html"
-                    ]
-                  },
-                  {
-                    "title": "Interleaved Tables",
-                    "urls": [
-                      "/${VERSION}/interleave-in-parent.html"
-                    ]
-                  },
-                  {
-                    "title": "Cost-Based Optimizer",
-                    "urls": [
-                      "/${VERSION}/cost-based-optimizer.html"
-                    ]
-                  },
-                  {
-                    "title": "Vectorized Execution",
-                    "urls": [
-                      "/${VERSION}/vectorized-execution.html"
-                    ]
-                  }
-                ]
-              },
-              {
-                "title": "Information Schema",
-                "urls": [
-                  "/${VERSION}/information-schema.html"
                 ]
               },
               {

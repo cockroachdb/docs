@@ -11,7 +11,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | Language | Driver | Recommended version | Support level |
 |----------+--------+---------------------+---------------|
-| C | [libpq](http://www.postgresql.org/docs/9.5/static/libpq.html) | [PostgreSQL 9.5](http://www.postgresql.org/docs/9.5/static/libpq.html) | Beta |
+| C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html) | [PostgreSQL 13](http://www.postgresql.org/docs/13/static/libpq.html) | Beta |
 | C++ | [libpqxx](build-a-c++-app-with-cockroachdb.html) | [7.1.1](https://github.com/jtv/libpqxx/releases) (Windows)<br>[4.0.1](https://github.com/jtv/libpqxx/releases) or higher (macOS) | Beta |
 | C# (.NET) | [Npgsql](build-a-csharp-app-with-cockroachdb.html) | [4.1.3.1](https://www.nuget.org/packages/Npgsql/) | Beta |
 | Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | [0.7.11](https://search.maven.org/search?q=g:org.clojure%20AND%20a:java.jdbc) | Beta |
@@ -28,10 +28,10 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | Language | Framework | Recommended version | Support level |
 |----------+-----+---------------------+---------------|
 | Go | [GORM](build-a-go-app-with-cockroachdb-gorm.html)<hr>[upper/db](build-a-go-app-with-cockroachdb-upperdb.html) | [1.9.11](https://github.com/jinzhu/gorm/releases)<hr>[v4](https://github.com/upper/db/releases) | Full<hr>Full |
-| Java | [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html)<hr>[jOOQ](build-a-java-app-with-cockroachdb-jooq.html)<hr>[MyBatis](build-a-spring-app-with-cockroachdb-mybatis.html) | [5.4.19](https://hibernate.org/orm/releases/)<hr>[3.13.2](https://www.jooq.org/download/versions) (must be 3.13.0 or higher)<hr>[3.5.5 and higher](https://mybatis.org/mybatis-3/) | Full<hr>Full<hr>Full |
-| JavaScript/TypeScript | [Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html)<br><br><hr>[TypeORM](https://typeorm.io/#/) | [sequelize 5.21.9](https://www.npmjs.com/package/sequelize)<br>[sequelize-cockroachdb 1.1.0](https://www.npmjs.com/package/sequelize-cockroachdb)<hr>[0.2.24](https://www.npmjs.com/package/typeorm) | Beta<br><br><hr>Full |
-| Ruby | [ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html) | [activerecord 5.2](https://rubygems.org/gems/activerecord/versions)<br>[activerecord-cockroachdb-adpater 5.2.2](https://rubygems.org/gems/activerecord-cockroachdb-adapter/versions)<hr>[activerecord 6.0](https://rubygems.org/gems/activerecord/versions)<br>[activerecord-cockroachdb-adpater 6.0.0beta3](https://rubygems.org/gems/activerecord-cockroachdb-adapter/versions) | Full<br><br><hr>Beta |
-| Python | [Django](build-a-python-app-with-cockroachdb-django.html)<br><br><hr>[peewee](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database)<hr>[PonyORM](build-a-python-app-with-cockroachdb-pony.html)<hr>[SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html) | [Django 3.1.0](https://pypi.org/project/Django/)<br>[django-cockroachdb 3.1.0](https://pypi.org/project/django-cockroachdb/)<hr>[3.13.3](https://pypi.org/project/peewee/)<hr>[0.7.13](https://pypi.org/project/pony/)<hr>[SQLAlchemy 1.3.17](https://pypi.org/project/SQLAlchemy/)<br>[sqlalchemy-cockroachdb 1.3.0](https://pypi.org/project/sqlalchemy-cockroachdb/) | Full<br><br> <hr>Full<hr>Full<hr>Full |
+| Java | [Hibernate](build-a-java-app-with-cockroachdb-hibernate.html)<br>(including [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial))<hr>[jOOQ](build-a-java-app-with-cockroachdb-jooq.html)<hr>[MyBatis](build-a-spring-app-with-cockroachdb-mybatis.html) | [5.4.30](https://hibernate.org/orm/releases/) (must be 5.4.19 and higher)<br><br><hr>[3.13.2](https://www.jooq.org/download/versions) (must be 3.13.0 or higher)<hr>[3.5.5 and higher](https://mybatis.org/mybatis-3/) | Full<br><br><hr>Full<hr>Full |
+| JavaScript/TypeScript | [Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html)<br><br><hr>[TypeORM](build-a-typescript-app-with-cockroachdb.html) | [sequelize 5.21.9](https://www.npmjs.com/package/sequelize)<br>[sequelize-cockroachdb 1.1.0](https://www.npmjs.com/package/sequelize-cockroachdb)<hr>[0.2.24](https://www.npmjs.com/package/typeorm) | Beta<br><br><hr>Full |
+| Ruby | [ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html)<br>[RGeo/RGeo-ActiveRecord](https://github.com/cockroachdb/activerecord-cockroachdb-adapter#working-with-spatial-data) | [activerecord 5.2](https://rubygems.org/gems/activerecord/versions)<br>[activerecord-cockroachdb-adpater 5.2.2](https://rubygems.org/gems/activerecord-cockroachdb-adapter/versions)<hr>[activerecord 6.0](https://rubygems.org/gems/activerecord/versions)<br>[activerecord-cockroachdb-adpater 6.0.0beta3](https://rubygems.org/gems/activerecord-cockroachdb-adapter/versions) | Full<br><br><hr>Beta |
+| Python | [Django](build-a-python-app-with-cockroachdb-django.html)<br>(including [GeoDjango](https://docs.djangoproject.com/en/3.1/ref/contrib/gis/))<hr>[peewee](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database)<hr>[PonyORM](build-a-python-app-with-cockroachdb-pony.html)<hr>[SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html) | [Django 3.1.3](https://pypi.org/project/Django/)<br>[django-cockroachdb 3.1.3](https://pypi.org/project/django-cockroachdb/)<hr>[3.13.3](https://pypi.org/project/peewee/)<hr>[0.7.13](https://pypi.org/project/pony/)<hr>[SQLAlchemy 1.3.17](https://pypi.org/project/SQLAlchemy/)<br>[sqlalchemy-cockroachdb 1.3.0](https://pypi.org/project/sqlalchemy-cockroachdb/) | Full<br><br> <hr>Full<hr>Full<hr>Full |
 
 ## Application frameworks
 
@@ -56,8 +56,8 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 
 | IDE | Recommended version | Support level |
 |-----+---------------------+---------------|
-| [DataGrip](https://www.jetbrains.com/datagrip/) | [2019.1 or higher](https://www.jetbrains.com/datagrip/download) | Beta |
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2018.1 or higher](https://www.jetbrains.com/idea/download) | Beta |
+| [DataGrip](https://www.jetbrains.com/datagrip/) | [2021.1 or higher](https://www.jetbrains.com/datagrip/download) | Full |
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2021.1 or higher](https://www.jetbrains.com/idea/download) | Beta |
 
 ## Schema migration tools
 

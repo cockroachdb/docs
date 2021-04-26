@@ -4,7 +4,7 @@ summary: The DROP SCHEMA statement removes a schema and all its objects from a C
 toc: true
 ---
 
- The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy) from the current database.
+ The `DROP SCHEMA` [statement](sql-statements.html) removes a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
 
 ## Required privileges
 
@@ -12,16 +12,16 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 ## Syntax
 
-~~~
-DROP SCHEMA [IF EXISTS] <schema_name> [, ...] [CASCADE | RESTRICT]
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/drop_schema.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 ----------|------------
 `IF EXISTS`   | Drop the schema if it exists. If it does not exist, do not return an error.
-`schema_name`  | The name of the schema you want to drop from the current database.
+`schema_name_list`  | The schema, or a list of schemas, that you want to drop.<br>To drop a schema in a database other than the current database, specify the name of the database and the name of the schema, separated by a "`.`" (e.g., `DROP SCHEMA IF EXISTS database.schema;`).
 `CASCADE` | Drop all tables and views in the schema as well as all objects (such as [constraints](constraints.html) and [views](views.html)) that depend on those tables.<br><br>`CASCADE` does not list objects it drops, so should be used cautiously.
 `RESTRICT` | _(Default)_ Do not drop the schema if it contains any [tables](create-table.html) or [views](create-view.html).
 

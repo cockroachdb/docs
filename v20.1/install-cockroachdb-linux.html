@@ -16,8 +16,12 @@ key: install-cockroachdb.html
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
+<h2>Install options</h2>
+
+Use one of the options below to install CockroachDB.
+
 <div id="download-the-binary-linux" class="install-option">
-  <h2>Download the Binary</h2>
+  <h3>Download the Binary</h3>
 
   {% include {{ page.version.version }}/misc/linux-binary-prereqs.md %}
 
@@ -45,7 +49,7 @@ key: install-cockroachdb.html
 </div>
 
 <div id="use-kubernetes" class="install-option">
-  <h2>Use Kubernetes</h2>
+  <h3>Use Kubernetes</h3>
 
   <p>To orchestrate CockroachDB using <a href="https://kubernetes.io/">Kubernetes</a>, either with configuration files or the <a href="https://helm.sh/">Helm</a> package manager, use the following tutorials:</p>
 
@@ -57,7 +61,7 @@ key: install-cockroachdb.html
 </div>
 
 <div id="use-docker-linux" class="install-option">
-  <h2>Use Docker</h2>
+  <h3>Use Docker</h3>
 
   {{site.data.alerts.callout_danger}}Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.{{site.data.alerts.end}}
 
@@ -95,7 +99,7 @@ key: install-cockroachdb.html
 </div>
 
 <div id="build-from-source-linux" class="install-option">
-  <h2>Build from Source</h2>
+  <h3>Build from Source</h3>
   <ol>
     <li>
       <p>Install the following prerequisites, as necessary:</p>

@@ -45,11 +45,11 @@ void executeTx(
       fn(&s);
       s.commit();
       break;
-    } catch (const pqxx::pqxx_exception& e) {
+    } catch (const pqxx::sql_error& e) {
       // Swallow "transaction restart" errors; the transaction will be retried.
       // Unfortunately libpqxx doesn't give us access to the error code, so we
       // do string matching to identify retryable errors.
-      if (string(e.base().what()).find("restart transaction:") == string::npos) {
+      if (string(e.what()).find("restart") == string::npos) {
         throw;
       }
     }
@@ -59,7 +59,7 @@ void executeTx(
 
 int main() {
   try {
-    pqxx::connection c("dbname=bank user=maxroach sslmode=require sslkey=certs/client.maxroach.key sslcert=certs/client.maxroach.crt port=26257 host=localhost");
+    pqxx::connection c("postgresql://{username}:{password}@{host}:{port}/bank");
 
     executeTx(&c, [](pqxx::dbtransaction *tx) {
           transferFunds(tx, 1, 2, 100);

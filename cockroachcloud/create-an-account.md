@@ -8,7 +8,7 @@ Before you [create a CockroachCloud cluster](create-your-cluster.html), you must
 
 ## Register a new account
 
-To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs).
+To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="github">Register with GitHub</button>
@@ -18,14 +18,12 @@ To register a new account, navigate to the [CockroachCloud registration page](ht
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-{{site.data.alerts.callout_info}}
-This feature is only available to select users at this time. If you do not have access yet, you can register a new account with an email.
-{{site.data.alerts.end}}
-
 1. Click **Sign up with GitHub**.
-1. Enter your GitHub **Username or email address** associated with your account.
-1. Enter your GitHub **Password**
-1. Click **Sign in**
+1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
+1. Log in to GitHub if you haven't already.
+1. Click **Authorize CockroachCloud by Cockroach Labs**.
+
+    A confirmation email will be sent.
 
 {{site.data.alerts.callout_info}}
 GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/github/authenticating-to-github/about-two-factor-authentication), if you have it enabled.
@@ -34,7 +32,7 @@ GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/g
 
 <section class="filter-content" markdown="1" data-scope="email">
 1. Enter your **Email address**.
-1. Enter your **First name** and **Last name**.
+1. Enter your **Name**.
 1. Enter a **Password**.
 1. Enter your **Organization name (optional)**.
 
@@ -89,7 +87,7 @@ To change your account name:
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
 1. Click the pencil icon in the **Name** row.
-1. In the **Edit name** dialog, enter your **First name** and **Last name**.
+1. In the **Edit name** dialog, enter your **Name**.
 1. Click **Save**.
 
 ### Change your email
@@ -129,3 +127,37 @@ If you are a [Console Admin](console-access-management.html#console-admin), you 
 1. Click the pencil icon in the **Organization name** row.
 1. In the **Edit organization name** dialog, enter the new **Organization name**.
 1. Click **Save**.
+
+## Change your login method
+
+If you want to change your login method, you can do so at any time:
+
+- [Switch from a GitHub login to email](#switch-from-a-github-login-to-email)
+- [Switch from an email login to GitHub](#switch-from-an-email-login-to-github)
+
+### Switch from a GitHub login to email
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. Click **Switch to email login**.
+1. In the **Log in with email and password** dialog, click **Continue**.
+1. Enter a **Password**.
+1. Click **Save**.
+
+    A confirmation email will be sent.
+  
+{{site.data.alerts.callout_info}}
+As a best security practice, you can also [remove CockroachCloud's access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
+{{site.data.alerts.end}}
+
+### Switch from an email login to GitHub
+
+1. Click the account icon in the top right corner.
+1. From the dropdown, select **My Account**.
+1. Click **Switch to GitHub login**.
+1. In the **Log in with GitHub** dialog, enter your **Password**.
+1. Click **Continue**.
+1. Log in to GitHub if you haven't already.
+1. Click **Authorize CockroachCloud by Cockroach Labs**.
+
+    A confirmation email will be sent.

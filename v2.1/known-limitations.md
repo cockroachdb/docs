@@ -1,6 +1,6 @@
 ---
 title: Known Limitations in CockroachDB v2.1
-summary: Known limitations in CockroachDB v2.1.
+summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 ---
 
@@ -29,7 +29,7 @@ To exit this state, you should:
 
 Once restarted, you should monitor the Replica Quiescence graph on the Replication Dashboard. When >90% of the replicas have become Quiescent, you can conduct a rolling restart and remove the environment variables. Be sure to ensure that underreplicated ranges do not increase between restarts.
 
-Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [range_max_bytes](https://www.cockroachlabs.com/docs/stable/configure-zone.html#variables) to 134217728 (128MiB). We always recommend testing changes to max_range_bytes in a development environment before making changes on production.
+Once in a stable state, the risk of this issue recurring can be mitigated by increasing your [range_max_bytes](configure-zone.html#variables) to 134217728 (128MiB). We always recommend testing changes to max_range_bytes in a development environment before making changes on production.
 
 [Tracking Github Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
@@ -140,7 +140,7 @@ This conversion is currently only well defined for a small range of integers, i.
 
 ### Importing data using the PostgreSQL COPY protocol
 
-Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
+Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 

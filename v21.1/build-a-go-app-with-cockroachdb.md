@@ -68,7 +68,17 @@ config, err := pgx.ParseConfig("postgresql://{user}:{password}@{globalhost}:2625
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
+Then, remove the following line of code:
+
+~~~ go
+config.TLSConfig.ServerName = "localhost"
+~~~
+
 </section>
+
+{{site.data.alerts.callout_success}}
+For guidance on connection pooling, with an example using the pgx connection pooling library ([pgxpool](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool)), see [Connection Pooling](connection-pooling.html).
+{{site.data.alerts.end}}
 
 ### Run the code
 

@@ -90,7 +90,6 @@ table td:first-child {
 
 ## Limitations
 
-Tables created with `CREATE TABLE ... AS` are not [interleaved](interleave-in-parent.html) with other tables.
 The default rules for [column families](column-families.html) apply.
 
 The [primary key](primary-key.html) of tables created with `CREATE TABLE ... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](create-table-as.html#specify-a-primary-key) and [Specify a primary key for partitioning](create-table-as.html#specify-a-primary-key-for-partitioning).

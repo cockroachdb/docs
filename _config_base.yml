@@ -13,11 +13,14 @@ defaults:
   values:
     layout: page
 exclude:
-- ci
+- __tests__
+- netlify
 - scripts
 - vendor
 - jekyll-algolia-dev
 - archived
+- package.json
+- package-lock.json
 include:
 - _redirects
 keep_files:
@@ -64,22 +67,22 @@ release_info:
     start_time: 2019-01-29 15:10:52.34274101 +0000 UTC
     version: v2.1.11
   v20.1:
-    build_time: 2021/03/15 11:00:26 (go1.13.4)
+    build_time: 2021/04/26 11:00:26 (go1.13.4)
     docker_image: cockroachdb/cockroach
-    name: v20.1.13
-    start_time: 2021-03-15 11:01:26.34274101 +0000 UTC
-    version: v20.1.13
+    name: v20.1.15
+    start_time: 2021-04-26 11:01:26.34274101 +0000 UTC
+    version: v20.1.15
   v20.2:
-    build_time: 2021/03/15 11:00:26 (go1.13.4)
+    build_time: 2021/04/23 11:00:26 (go1.13.4)
     docker_image: cockroachdb/cockroach
-    name: v20.2.6
-    start_time: 2021-03-15 11:01:26.34274101 +0000 UTC
-    version: v20.2.6
+    name: v20.2.8
+    start_time: 2021-04-23 11:01:26.34274101 +0000 UTC
+    version: v20.2.8
   v21.1:
-    build_time: 2021/2/8 11:00:26 (go1.15.5)
+    build_time: 2021/4/19 11:00:26 (go1.15.5)
     docker_image: cockroachdb/cockroach-unstable
     name: v21.1.0
-    start_time: 2021-2-08 11:01:26.34274101 +0000 UTC
-    version: v21.1.0-alpha.3
+    start_time: 2021-4-19 11:01:26.34274101 +0000 UTC
+    version: v21.1.0-beta.4
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com

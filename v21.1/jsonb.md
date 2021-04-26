@@ -254,11 +254,60 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 {% include {{ page.version.version }}/computed-columns/jsonb.md %}
 
+### Create a table with a `JSONB` column and a virtual computed column
+
+{% include {{ page.version.version }}/computed-columns/virtual.md %}
+
 ## Supported casting and conversion
 
-`JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
+All `JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
 
-- `STRING`
+- [`STRING`](string.html)
+
+<span class="version-tag">New in v21.1:</span> Numeric `JSONB` values can be cast to the following numeric data types:
+
+- [`DECIMAL`](decimal.html)
+- [`FLOAT`](float.html)
+- [`INT`](int.html)
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT '100'::jsonb::int;
+~~~
+
+~~~
+  int8
+--------
+   100
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT '100000'::jsonb::float;
+~~~
+
+~~~
+  float8
+----------
+  100000
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT '100.50'::jsonb::decimal;
+~~~
+
+~~~
+  numeric
+-----------
+   100.50
+(1 row)
+~~~
+
 
 ## See also
 

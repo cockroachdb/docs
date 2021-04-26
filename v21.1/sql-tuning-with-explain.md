@@ -19,14 +19,12 @@ You'll get generally poor performance when retrieving a single row based on a co
 > SELECT * FROM users WHERE name = 'Cheyenne Smith';
 ~~~
 
-~~~
-                   id                  | city  |      name      |      address      | credit_card
----------------------------------------+-------+----------------+-------------------+--------------
-  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
+id                  |   city   |      name      |      address      | credit_card
+---------------------------------------+----------+----------------+-------------------+--------------
+00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Server Execution Time: 928µs
-Network Latency: 315µs
+Time: 14ms total (execution 14ms / network 0ms)
 ~~~
 
 To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
@@ -37,20 +35,25 @@ To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
 ~~~
 
 ~~~
-    tree    |        field        |       description
-------------+---------------------+--------------------------
-            | distribution        | full
-            | vectorized          | false
-  filter    |                     |
-   │        | filter              | name = 'Cheyenne Smith'
-   └── scan |                     |
-            | estimated row count | 279
-            | table               | users@primary
-            | spans               | FULL SCAN
-(8 rows)
+                                          info
+-----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • filter
+  │ estimated row count: 1
+  │ filter: name = 'Cheyenne Smith'
+  │
+  └── • scan
+        estimated row count: 12,500 (100% of the table; stats collected 56 minutes ago)
+        table: users@primary
+        spans: FULL SCAN
+(11 rows)
+
+Time: 2ms total (execution 1ms / network 2ms)
 ~~~
 
-The row with `table | users@primary` indicates the index used (`primary`) to scan the table (`users`). The row with `spans | FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
+`table: users@primary` indicates the index used (`primary`) to scan the table (`users`). `spans: FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
 
 ### Solution: Filter by a secondary index
 
@@ -69,13 +72,12 @@ The query will now return much faster:
 ~~~
 
 ~~~
-                   id                  | city  |      name      |      address      | credit_card
----------------------------------------+-------+----------------+-------------------+--------------
-  e147ae14-7ae1-4800-8000-00000000002c | paris | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
+                   id                  |   city   |      name      |      address      | credit_card
+---------------------------------------+----------+----------------+-------------------+--------------
+  00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 
-Server Execution Time: 304µs
-Network Latency: 251µs
+Time: 7ms total (execution 7ms / network 0ms)
 ~~~
 
 To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -86,17 +88,22 @@ To understand why the performance improved, use [`EXPLAIN`](explain.html) to see
 ~~~
 
 ~~~
-     tree    |        field        |               description
--------------+---------------------+------------------------------------------
-             | distribution        | local
-             | vectorized          | false
-  index join |                     |
-   │         | table               | users@primary
-   └── scan  |                     |
-             | estimated row count | 1
-             | table               | users@users_name_idx
-             | spans               | [/'Cheyenne Smith' - /'Cheyenne Smith']
-(8 rows)
+                                         info
+--------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • index join
+  │ estimated row count: 1
+  │ table: users@primary
+  │
+  └── • scan
+        estimated row count: 1 (<0.01% of the table; stats collected 58 minutes ago)
+        table: users@users_name_idx
+        spans: [/'Cheyenne Smith' - /'Cheyenne Smith']
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 This shows you that CockroachDB starts with the secondary index (`users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`/'Cheyenne Smith' - /'Cheyenne Smith'`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
@@ -120,8 +127,7 @@ For example, let's say you frequently retrieve a user's name and credit card num
   Cheyenne Smith | 4374468739
 (1 row)
 
-Server Execution Time: 379µs
-Network Latency: 189µs
+Time: 6ms total (execution 6ms / network 0ms)
 ~~~
 
 With the current secondary index on `name`, CockroachDB still needs to scan the primary index to get the credit card number:
@@ -133,17 +139,22 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
 
 
 ~~~
-     tree    |        field        |               description
--------------+---------------------+------------------------------------------
-             | distribution        | local
-             | vectorized          | false
-  index join |                     |
-   │         | table               | users@primary
-   └── scan  |                     |
-             | estimated row count | 1
-             | table               | users@users_name_idx
-             | spans               | [/'Cheyenne Smith' - /'Cheyenne Smith']
-(8 rows)
+                                        info
+-------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • index join
+  │ estimated row count: 1
+  │ table: users@primary
+  │
+  └── • scan
+        estimated row count: 1 (<0.01% of the table; stats collected 2 minutes ago)
+        table: users@users_name_idx
+        spans: [/'Cheyenne Smith' - /'Cheyenne Smith']
+(11 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
@@ -166,15 +177,18 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
 ~~~
 
 ~~~
-  tree |        field        |               description
--------+---------------------+------------------------------------------
-       | distribution        | local
-       | vectorized          | false
-  scan |                     |
-       | estimated row count | 1
-       | table               | users@users_name_idx
-       | spans               | [/'Cheyenne Smith' - /'Cheyenne Smith']
-(6 rows)
+                                      info
+---------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • scan
+    estimated row count: 1 (<0.01% of the table; stats collected 2 minutes ago)
+    table: users@users_name_idx
+    spans: [/'Cheyenne Smith' - /'Cheyenne Smith']
+(7 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 This results in even faster performance:
@@ -185,13 +199,12 @@ This results in even faster performance:
 ~~~
 
 ~~~
-       name      | credit_card
+name      | credit_card
 -----------------+--------------
-  Cheyenne Smith | 4374468739
+Cheyenne Smith | 4374468739
 (1 row)
 
-Server Execution Time: 217µs
-Network Latency: 274µs
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 To reset the database for following examples, let's drop the index on `name`:
@@ -209,50 +222,58 @@ For example, let's say you want to count the number of users who started rides o
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
+SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-16 00:00:00' AND '2018-12-17 00:00:00';
 ~~~
 
 ~~~
   count
 ---------
-    149
+   17
 (1 row)
 
-Server Execution Time: 2.431ms
-Network Latency: 302µs
+Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
 To understand what's happening, use [`EXPLAIN`](explain.html) to see the query plan:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
+> EXPLAIN SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-16 00:00:00' AND '2018-12-17 00:00:00';
 ~~~
 
 ~~~
-            tree           |        field        |                                   description
----------------------------+---------------------+----------------------------------------------------------------------------------
-                           | distribution        | full
-                           | vectorized          | false
-  group (scalar)           |                     |
-   └── distinct            |                     |
-        │                  | distinct on         | id
-        └── hash join      |                     |
-             │             | equality            | (rider_id) = (id)
-             ├── filter    |                     |
-             │    │        | filter              | (start_time >= '2020-09-16 00:00:00') AND (start_time <= '2020-09-17 00:00:00')
-             │    └── scan |                     |
-             │             | estimated row count | 817
-             │             | table               | rides@primary
-             │             | spans               | FULL SCAN
-             └── scan      |                     |
-                           | estimated row count | 279
-                           | table               | users@primary
-                           | spans               | FULL SCAN
-(17 rows)
+                                                  info
+---------------------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
 
-Server Execution Time: 202µs
-Network Latency: 296µs
+  • group (scalar)
+  │ estimated row count: 1
+  │
+  └── • distinct
+      │ estimated row count: 14
+      │ distinct on: id
+      │
+      └── • hash join
+          │ estimated row count: 16
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     estimated row count: 50 (100% of the table; stats collected 2 minutes ago)
+          │     table: users@primary
+          │     spans: FULL SCAN
+          │
+          └── • filter
+              │ estimated row count: 16
+              │ filter: (start_time >= '2018-12-16 00:00:00') AND (start_time <= '2018-12-17 00:00:00')
+              │
+              └── • scan
+                    estimated row count: 500 (100% of the table; stats collected 2 minutes ago)
+                    table: rides@primary
+                    spans: FULL SCAN
+(27 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 CockroachDB does a full table scan first on `rides` to get all rows with a `start_time` in the specified range and then does another full table scan on `users` to find matching rows and calculate the count.
@@ -272,17 +293,16 @@ Adding the secondary index reduced the query time:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2020-09-16 00:00:00' AND '2020-09-17 00:00:00';
+SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = users.id WHERE start_time BETWEEN '2018-12-16 00:00:00' AND '2018-12-17 00:00:00';
 ~~~
 
 ~~~
   count
 ---------
-    149
+   17
 (1 row)
 
-Server Execution Time: 1.562ms
-Network Latency: 311µs
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 To understand why performance improved, again use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -293,24 +313,34 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
 ~~~
 
 ~~~
-         tree         |        field        |                    description
-----------------------+---------------------+----------------------------------------------------
-                      | distribution        | full
-                      | vectorized          | false
-  group (scalar)      |                     |
-   └── distinct       |                     |
-        │             | distinct on         | id
-        └── hash join |                     |
-             │        | equality            | (id) = (rider_id)
-             ├── scan |                     |
-             │        | estimated row count | 279
-             │        | table               | users@primary
-             │        | spans               | FULL SCAN
-             └── scan |                     |
-                      | estimated row count | 2
-                      | table               | rides@rides_start_time_idx
-                      | spans               | [/'2020-09-16 00:00:00' - /'2020-09-17 00:00:00']
-(15 rows)
+                                            info
+--------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • group (scalar)
+  │ estimated row count: 1
+  │
+  └── • distinct
+      │ estimated row count: 14
+      │ distinct on: id
+      │
+      └── • hash join
+          │ estimated row count: 16
+          │ equality: (id) = (rider_id)
+          │
+          ├── • scan
+          │     estimated row count: 50 (100% of the table; stats collected 4 minutes ago)
+          │     table: users@primary
+          │     spans: FULL SCAN
+          │
+          └── • scan
+                estimated row count: 16 (3.2% of the table; stats collected 4 minutes ago)
+                table: rides@rides_start_time_idx
+                spans: [/'2018-12-16 00:00:00' - /'2018-12-17 00:00:00']
+(23 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 Notice that CockroachDB now starts by using `rides@rides_start_time_idx` secondary index to retrieve the relevant rides without needing to scan the full `rides` table.
@@ -327,23 +357,30 @@ For the following query, the cost-based optimizer can’t perform a lookup join 
 ~~~
 
 ~~~
-       tree      |        field        |     description
------------------+---------------------+----------------------
-                 | distribution        | full
-                 | vectorized          | false
-  limit          |                     |
-   │             | count               | 1
-   └── hash join |                     |
-        │        | equality            | (vehicle_id) = (id)
-        ├── scan |                     |
-        │        | estimated row count | 817
-        │        | table               | rides@primary
-        │        | spans               | FULL SCAN
-        └── scan |                     |
-                 | estimated row count | 15
-                 | table               | vehicles@primary
-                 | spans               | FULL SCAN
-(14 rows)
+------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • limit
+  │ estimated row count: 1
+  │ count: 1
+  │
+  └── • hash join
+      │ estimated row count: 500
+      │ equality: (vehicle_id) = (id)
+      │
+      ├── • scan
+      │     estimated row count: 500 (100% of the table; stats collected 23 seconds ago)
+      │     table: rides@primary
+      │     spans: FULL SCAN
+      │
+      └── • scan
+            estimated row count: 15 (100% of the table; stats collected 4 minutes ago)
+            table: vehicles@primary
+            spans: FULL SCAN
+(20 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 ### Solution: Provide primary key to allow lookup join
@@ -356,21 +393,28 @@ To speed up the query, you can provide the primary key to allow the cost-based o
 ~~~
 
 ~~~
-        tree       |         field         |          description
--------------------+-----------------------+---------------------------------
-                   | distribution          | full
-                   | vectorized            | false
-  limit            |                       |
-   │               | count                 | 1
-   └── lookup join |                       |
-        │          | table                 | vehicles@primary
-        │          | equality              | (city, vehicle_id) = (city,id)
-        │          | equality cols are key |
-        └── scan   |                       |
-                   | estimated row count   | 817
-                   | table                 | rides@primary
-                   | spans                 | FULL SCAN
-(12 rows)
+                                          info
+----------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • limit
+  │ estimated row count: 1
+  │ count: 1
+  │
+  └── • lookup join
+      │ estimated row count: 56
+      │ table: vehicles@primary
+      │ equality: (city, vehicle_id) = (city,id)
+      │ equality cols are key
+      │
+      └── • scan
+            estimated row count: 500 (100% of the table; stats collected 1 minute ago)
+            table: rides@primary
+            spans: FULL SCAN
+(17 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 ## See also

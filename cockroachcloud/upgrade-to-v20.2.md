@@ -1,6 +1,6 @@
 ---
 title: Upgrade to CockroachDB v20.2
-summary:
+summary: Learn how to upgrade your CockroachDB cluster to v20.2.
 toc: true
 ---
 
@@ -23,7 +23,7 @@ The upgrade process depends on the number of nodes in your cluster. Select wheth
 
 <section class="filter-content" markdown="1" data-scope="multi-node">
 
-In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../stable/multi-active-availability.html) design.
+In a multi-node cluster, the upgrade happens without interrupting the cluster's overall health and availability. One node is stopped and restarted with the new version, then the next, and so on, with a few minutes pause between each. In total, this "rolling upgrade" approach takes approximately 4-5 minutes per node and is possible due to CockroachDB's [multi-active availability](../{{site.versions["stable"]}}/multi-active-availability.html) design.
 
 Approximately 72 hours after all nodes are running v20.2, the upgrade will be automatically finalized. This enables certain [features and performance improvements introduced in v20.2](#respect-temporary-limitations). Finalization also removes the ability to roll back to v20.1, so it's important to monitor your application during this 72-hour window and, if you see unexpected behavior, trigger a rollback from the CockroachCloud Console.
 
@@ -88,19 +88,19 @@ Use the [DB Console](monitoring-page.html) or your own tooling to monitor your a
 
 Most v20.2 features can be used right away, but there are some that will be enabled only after the upgrade has been finalized. Attempting to use these features before then will result in errors:
 
-- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../v20.2/spatial-indexes.html), and [spatial functions](../v20.2/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../v20.2/migrate-from-shapefiles.html), [GeoJSON](../v20.2/migrate-from-geojson.html), [GeoPackages](../v20.2/migrate-from-geopackage.html), and [OpenStreetMap](../v20.2/migrate-from-openstreetmap.html).
+- **Spatial features:** After finalization, it will be possible to use [spatial indexes](../{{site.versions["stable"]}}/spatial-indexes.html), and [spatial functions](../{{site.versions["stable"]}}/functions-and-operators.html#spatial-functions), as well as the ability to migrate spatial data from various formats such as [Shapefiles](../{{site.versions["stable"]}}/migrate-from-shapefiles.html), [GeoJSON](../{{site.versions["stable"]}}/migrate-from-geojson.html), [GeoPackages](../{{site.versions["stable"]}}/migrate-from-geopackage.html), and [OpenStreetMap](../{{site.versions["stable"]}}/migrate-from-openstreetmap.html).
 
-- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../v20.2/enum.html) consisting of sets of enumerated, static values.
+- **`ENUM` data types:** After finalization, it will be possible to create and manage [user-defined `ENUM` data types](../{{site.versions["stable"]}}/enum.html) consisting of sets of enumerated, static values.
 
-- **Altering column data types:** After finalization, it will be possible to [alter column data types](../v20.2/alter-column.html#altering-column-data-types) where column data must be rewritten.
+- **Altering column data types:** After finalization, it will be possible to [alter column data types](../{{site.versions["stable"]}}/alter-column.html#altering-column-types) where column data must be rewritten.
 
-- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../v20.2/create-schema.html), as well [alter user-defined schemas](../v20.2/alter-schema.html), [drop user-defined schemas](../v20.2/drop-schema.html), and [convert databases to user-defined schemas](../v20.2/convert-to-schema.html).
+- **User-defined schemas:** After finalization, it will be possible to [create user-defined logical schemas](../{{site.versions["stable"]}}/create-schema.html), as well [alter user-defined schemas](../{{site.versions["stable"]}}/alter-schema.html), [drop user-defined schemas](../{{site.versions["stable"]}}/drop-schema.html), and [convert databases to user-defined schemas](../{{site.versions["stable"]}}/convert-to-schema.html).
 
-- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../v20.2/foreign-key.html) constraint.
+- **Foreign key index requirement:** After finalization, it will no longer be required to have an index on the referencing columns of a [`FOREIGN KEY`](../{{site.versions["stable"]}}/foreign-key.html) constraint.
 
-- **Minimum password length:** After finalization, the `server.user_login.min_password_length` [cluster setting](../v20.2/cluster-settings.html) will be respected as the minimum length for passwords.
+- **Minimum password length:** After finalization, the `server.user_login.min_password_length` [cluster setting](../{{site.versions["stable"]}}/cluster-settings.html) will be respected as the minimum length for passwords.
 
-- **Materialized views:** After finalization, it will be possible to create [materialized views](../v20.2/views.html#materialized-views), or views that store their selection query results on-disk.
+- **Materialized views:** After finalization, it will be possible to create [materialized views](../{{site.versions["stable"]}}/views.html#materialized-views), or views that store their selection query results on-disk.
 
 - **`CREATELOGIN` privilege:** After finalization, the `CREATELOGIN` privilege will be required to define or change authentication principals or their credentials.  
 

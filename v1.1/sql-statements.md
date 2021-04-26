@@ -1,6 +1,6 @@
 ---
 title: SQL Statements
-summary: SQL statements supported by CockroachDB.
+summary: Overview of SQL statements supported by CockroachDB.
 toc: true
 ---
 

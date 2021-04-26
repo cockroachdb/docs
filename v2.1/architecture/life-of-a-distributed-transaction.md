@@ -1,6 +1,6 @@
 ---
 title: Life of a Distributed Transaction
-summary: This guide details the path through CockroachDB's architecture that a query takes, starting with a SQL client and progressing all the way to RocksDB (and then back out again).
+summary: Learn how a query moves through the layers of CockroachDB's architecture.
 toc: true
 ---
 
@@ -141,7 +141,7 @@ If an operation encounters a write intent for a key, it attempts to "resolve" th
 
   If the push succeeds, the operation continues.
 
-  If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](https://www.cockroachlabs.com/docs/stable/architecture/transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
+  If this push fails (which is the majority of the time), this transaction goes into the [`TxnWaitQueue`](transaction-layer.html#txnwaitqueue) on this node. The incoming transaction can only continue once the blocking transaction completes (i.e., commits or aborts).
 
 Check out our architecture documentation for more information about [CockroachDB's transactional model](transaction-layer.html).
 

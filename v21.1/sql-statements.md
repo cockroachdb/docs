@@ -1,6 +1,6 @@
 ---
 title: SQL Statements
-summary: SQL statements supported by CockroachDB.
+summary: Overview of SQL statements supported by CockroachDB.
 toc: true
 ---
 
@@ -75,9 +75,8 @@ Statement | Usage
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
 [`RENAME DATABASE`](rename-database.html) | Rename a database.
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
-[`RENAME SEQUENCE`](rename-sequence.html) | Rename a sequence.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
-[`SET SCHEMA`](set-schema.html) |  Change the schema of a table, sequence, or view.
+[`SET SCHEMA`](set-schema.html) |  Change the schema of a table.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
@@ -86,6 +85,7 @@ Statement | Usage
 [`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
+[`SHOW REGIONS`](show-regions.html) | <span class="version-tag">New in v21.1:</span> List the [cluster regions](multiregion-overview.html#cluster-regions) or [database regions](multiregion-overview.html#database-regions) in a [multi-region cluster](multiregion-overview.html).
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
@@ -119,10 +119,8 @@ Statement | Usage
 [`CREATE USER`](create-user.html) | Create SQL users, which lets you control [privileges](authorization.html#assign-privileges) on your databases and tables.
 [`DROP ROLE`](drop-role.html) | Remove one or more SQL [roles](authorization.html#create-and-manage-roles).
 [`DROP USER`](drop-user.html) | Remove one or more SQL users.
-[`GRANT <privileges>`](grant.html) | Grant privileges to [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles).
-[`GRANT <roles>`](grant-roles.html) | Add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
-[`REVOKE <privileges>`](revoke.html) | Revoke privileges from [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles).
-[`REVOKE <roles>`](revoke-roles.html) | Revoke a [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) membership to a role.
+[`GRANT`](grant.html) | Grant privileges to [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or add a [role](authorization.html#create-and-manage-roles) or [user](authorization.html#create-and-manage-users) as a member to a role.
+[`REVOKE`](revoke.html) | Revoke privileges from [users](authorization.html#create-and-manage-users) or [roles](authorization.html#create-and-manage-roles), or revoke a [role](authorization.html#create-and-manage-roles) or [user's](authorization.html#create-and-manage-users) membership to a role.
 [`SHOW GRANTS`](show-grants.html) | View privileges granted to users.
 [`SHOW ROLES`](show-roles.html) | Lists the roles for all databases.
 [`SHOW USERS`](show-users.html) | Lists the users for all databases.
@@ -152,7 +150,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`CANCEL QUERY`](cancel-query.html) | Cancel a running SQL query.
-[`SHOW QUERIES`](show-queries.html) | List details about current active SQL queries.
+[`SHOW STATEMENTS`/`SHOW QUERIES`](show-statements.html) | List details about current active SQL queries.
 
 ## Query planning statements
 

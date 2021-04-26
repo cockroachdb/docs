@@ -1,11 +1,11 @@
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW ZONE CONFIGURATION FOR RANGE default;
+> SHOW ZONE CONFIGURATION FROM RANGE default;
 ~~~
 
 ~~~
      target     |              raw_config_sql
-+---------------+------------------------------------------+
+----------------+-------------------------------------------
   RANGE default | ALTER RANGE default CONFIGURE ZONE USING
                 |     range_min_bytes = 134217728,
                 |     range_max_bytes = 536870912,

@@ -115,7 +115,8 @@ The `tree` column of the output shows the tree structure of the query plan, in t
 The `field` and `description` columns describe a set of properties, some global to the query, and some specific to an operation listed in the `tree` column (in this case, `sort`, `filter`, or `scan`):
 
 - `distribution`:`full`
-  <br>The query plan will be distributed across all nodes on a distributed cluster.
+  <br>The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes.
+  <br>An execution plan with `local` distribution, on the other hand, is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`false`
   <br>The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
 - `order`:`+revenue`

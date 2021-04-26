@@ -1,6 +1,6 @@
 ---
 title: Known Limitations in CockroachDB v20.1
-summary: Known limitations in CockroachDB v20.1.
+summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 ---
 
@@ -401,7 +401,7 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 
 ### Importing data using the PostgreSQL COPY protocol
 
-Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. For details, see [Import from generic SQL dump](https://www.cockroachlabs.com/docs/stable/import-data.html#import-from-generic-sql-dump).
+Currently, the built-in SQL shell provided with CockroachDB (`cockroach sql` / `cockroach demo`) does not support importing data using the `COPY` statement. Users can use the `psql` client command provided with PostgreSQL to load this data into CockroachDB instead. 
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/16392)
 

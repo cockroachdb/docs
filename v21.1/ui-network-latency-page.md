@@ -1,5 +1,6 @@
 ---
 title: Network Latency Page
+summary: The Network Latency page displays round-trip latencies between all nodes in your cluster.
 toc: true
 redirect_from: admin-ui-network-latency-page.html
 ---
@@ -24,7 +25,7 @@ Each cell in the matrix displays the round-trip latency in milliseconds between 
 
 Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to see round-trip latency and locality metadata for origin and destination nodes.
 
-On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html#step-4-access-the-db-console), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
+On a [typical multi-region cluster](demo-low-latency-multi-region-deployment.html), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
 
 For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
 

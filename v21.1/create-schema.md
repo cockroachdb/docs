@@ -4,7 +4,7 @@ summary: The CREATE SCHEMA statement creates a new user-defined schema.
 toc: true
 ---
 
- The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy) in the current database.
+ The `CREATE SCHEMA` [statement](sql-statements.html) creates a user-defined [schema](sql-name-resolution.html#naming-hierarchy).
 
 {{site.data.alerts.callout_info}}
 You can also create a user-defined schema by converting an existing database to a schema using [`ALTER DATABASE ... CONVERT TO SCHEMA`](convert-to-schema.html).
@@ -18,17 +18,17 @@ You can also create a user-defined schema by converting an existing database to 
 
 ## Syntax
 
-~~~
-CREATE SCHEMA [IF NOT EXISTS] { <schemaname> | [<schemaname>] AUTHORIZATION <user_name> }
-~~~
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/create_schema.html %}
+</div>
 
 ### Parameters
 
 Parameter | Description
 ----------|------------
-`IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the current database. If one does exist, do not return an error.
-`schemaname` | The name of the schema to create, which must be unique within the current database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
-`AUTHORIZATION ...` | Optionally identify a user to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no `schemaname`, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
+`IF NOT EXISTS` | Create a new schema only if a schema of the same name does not already exist within the database. If one does exist, do not return an error.
+`name`<br>`name.name` | The name of the schema to create, or the name of the database in which to create the schema and the schema name, separated by a "`.`". The schema name must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers).
+`AUTHORIZATION role_spec` | Optionally identify a user (`role_spec`) to be the owner of the schema.<br><br>If a `CREATE SCHEMA` statement has an `AUTHORIZATION` clause, but no schema name is specified, the schema will be named after the specified owner of the schema. If a `CREATE SCHEMA` statement does not have an `AUTHORIZATION` clause, the user executing the statement will be named the owner.
 
 ## Example
 
@@ -216,7 +216,7 @@ If no schema name is specified in a `CREATE SCHEMA` statement with an `AUTHORIZA
 
 When you [use a table without specifying a schema](sql-name-resolution.html#search-path), CockroachDB looks for the table in the `$user` schema (i.e., a schema named after the current user). If no schema exists with the name of the current user, the `public` schema is used.
 
-For example, suppose that you [grant the `root` role](grant-roles.html) (i.e., the role of the current user `root`) to the `max` user:
+For example, suppose that you [grant the `root` role](grant.html) (i.e., the role of the current user `root`) to the `max` user:
 
 {% include copy-clipboard.html %}
 ~~~ sql

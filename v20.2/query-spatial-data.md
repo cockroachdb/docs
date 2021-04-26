@@ -1,6 +1,6 @@
 ---
 title: Query Spatial Data
-summary: Query a dataset of spatial data in CockroachDB.
+summary: How to query a spatial dataset imported into CockroachDB.
 toc: true
 ---
 

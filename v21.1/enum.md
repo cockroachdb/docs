@@ -1,6 +1,6 @@
 ---
 title: ENUM
-summary: ENUM data types comprise a set of values.
+summary: CockroachDB's ENUM data types comprise a set of values.
 toc: true
 ---
 
@@ -38,7 +38,7 @@ To modify an `ENUM` type, use [`ALTER TYPE`](alter-type.html):
 > ALTER TYPE <name> ADD VALUE '<value>';
 ~~~
 
-where `<value>` is a string literal to add to the existing list of type values. You can also use `ALTER TYPE` to rename types, rename type values, set a type's schema, or change the type owner's [role specification](grant-roles.html).
+where `<value>` is a string literal to add to the existing list of type values. You can also use `ALTER TYPE` to rename types, rename type values, set a type's schema, or change the type owner's [role specification](grant.html).
 
 To drop the type, use [`DROP TYPE`](drop-type.html):
 
@@ -54,10 +54,6 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 - To [alter a type](alter-type.html), a user must be the owner of the type.
 - To [grant privileges](grant.html) on a type, a user must have the `GRANT` privilege and the privilege that they want to grant.
 - To create an object that depends on a type, a user must have the `USAGE` privilege on the type.
-
-## Known limitations
-
-[Partitions](partitioning.html) cannot be created on columns of type `ENUM`. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/55342).
 
 ## Example
 

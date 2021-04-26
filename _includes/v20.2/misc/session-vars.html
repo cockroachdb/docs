@@ -234,6 +234,16 @@
 
   <tr>
    <td>
+    <code>locality</code>
+   </td>
+   <td>The location of the node. For more information, see <a href="cockroach-start.html#locality">Locality</a>.</td>
+   <td>Node-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>node_id</code>
    </td>
    <td>The ID of the node currently connected to.<br />
@@ -486,11 +496,11 @@
    <td>
     <code>vectorize</code>
    </td>
-   <td>The vectorized execution engine mode. Options include <code>auto</code>, <code>on</code>, and <code>off</code>.
+   <td>The vectorized execution engine mode. Options include <code>201auto</code>, <code>on</code>, and <code>off</code>.
      For more details, see <a href="vectorized-execution.html#configuring-vectorized-execution">Configuring vectorized execution for CockroachDB</a>.
    </td>
    <td>
-    <code>auto</code>
+    <code>on</code>
    </td>
    <td>Yes</td>
    <td>Yes</td>

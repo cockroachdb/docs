@@ -142,7 +142,7 @@ To exclude sessions from the [built-in SQL client](cockroach-sql.html), filter f
 
 ### Identify and cancel a problematic query
 
-If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW QUERIES`](show-queries.html) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`](cancel-query.html) statement to cancel it.
+If a session has been open for a long time and you are concerned that the oldest active SQL query may be problematic, you can use the [`SHOW STATEMENTS`](show-statements.html) statement to further investigate the query and then, if necessary, use the [`CANCEL QUERY`](cancel-query.html) statement to cancel it.
 
 For example, let's say you run `SHOW SESSIONS` and notice that the following session has been open for more than 2 hours:
 
@@ -154,11 +154,11 @@ For example, let's say you run `SHOW SESSIONS` and notice that the following ses
 +---------+-----------+--------------------+------------------+------------------------------------+--------------------|----------------------------------+----------------------------------+--------+
 ~~~
 
-Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW QUERIES`](show-queries.html) statement to get more information about the query, filtering based on details you already have:
+Since the `oldest_query_start` timestamp is the same as the `session_start` timestamp, you are concerned that the `SELECT` query shown in `active_queries` has been running for too long and may be consuming too many resources. So you use the [`SHOW STATEMENTS`](show-statements.html) statement to get more information about the query, filtering based on details you already have:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT * FROM [SHOW CLUSTER QUERIES]
+> SELECT * FROM [SHOW CLUSTER STATEMENTS]
       WHERE client_address = '192.168.0.72:56194'
           AND user_name = 'mroach'
           AND query = 'SELECT * FROM test.kv ORDER BY k';
@@ -183,7 +183,7 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER QUERIES]
+> CANCEL QUERY (SELECT query_id FROM [SHOW CLUSTER STATEMENTS]
       WHERE client_address = '192.168.0.72:56194'
           AND user_name = 'mroach'
           AND query = 'SELECT * FROM test.kv ORDER BY k');
@@ -191,6 +191,6 @@ Alternatively, if you know that you want to cancel the query based on the detail
 
 ## See also
 
-- [`SHOW QUERIES`](show-queries.html)
+- [`SHOW STATEMENTS`](show-statements.html)
 - [`CANCEL QUERY`](cancel-query.html)
 - [Other SQL Statements](sql-statements.html)

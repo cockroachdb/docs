@@ -3,20 +3,20 @@ title: Production Checklist
 summary: Learn how to move from testing to production on your CockroachCloud cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-production-checklist.html
+- ../v20.2/cockroachcloud-production-checklist.html
 ---
 
 This page provides important recommendations for CockroachCloud production deployments.
 
 ## Follow the SQL Best Practices
 
-To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) guide.
+To ensure optimal SQL performance for your CockroachCloud cluster, follow the best practices described in the [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) guide.
 
-## Use a small pool of persistent connections
+## Use a pool of persistent connections
 
-Multiple active connections to the database enable efficient use of the available database resources. However, creating new authenticated connections to the database is CPU and memory-intensive and also adds to the latency since the application has to wait for database to authenticate the connection.
+Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
-Connection pooling helps resolve this dilemma by creating a set of authenticated connections that can be reused to connect to the database. To determine the size of the connection pool, our recommendation is to start your testing with a pool size of  `(core_count * 2) + ssd_count)`, where `core_count` is the total number of cores in the cluster, and `ssd_count` is the total number of SSDs in the cluster (for CockroachCloud, consider 1 SSD per node). The optimal pool size will vary based on your workload and application, and may be smaller than that.
+For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
 
 ## Authorize the right network
 
