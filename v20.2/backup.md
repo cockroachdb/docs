@@ -29,6 +29,10 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 `BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+`BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
@@ -230,6 +234,15 @@ The job ID is returned immediately without waiting for the job to finish:
         job_id
 ----------------------
   592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
 

@@ -18,7 +18,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-`IMPORT` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
+`IMPORT` is a blocking statement and cannot be used within a [transaction](transactions.html). Also, `IMPORT` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -103,9 +103,6 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
 `schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
 `schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
-
-<!--
-`experimental_save_rejected` | `CSV DATA` | Skip faulty rows during import and save them in a file called `<original_csv_file>.rejected`. Once the rows are fixed, use this file with [`IMPORT INTO`](import-into.html) to finish the import. **Default:** Off -->
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 

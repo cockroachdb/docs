@@ -18,6 +18,10 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+{{site.data.alerts.callout_info}}
+`RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 - Full cluster restores can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
@@ -42,11 +46,7 @@ You can restore:
  `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
- `kv_option_list` | Control your backup's behavior with [these options](#options).
-
-{{site.data.alerts.callout_info}}
-The `RESTORE` statement cannot be used within a [transaction](transactions.html).
-{{site.data.alerts.end}}
+ `kv_option_list` | Control your backup's behavior with [these options](#options)
 
 ### Options
 
@@ -60,7 +60,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 `skip_missing_sequence_owners`                                      | N/A                                         | <span class="version-tag">New in v20.2:</span> Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
-`detached`                                                          | N/A                                         | <span class="version-tag">New in v20.2:</span> When a restore runs in `detached` mode, the restore job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that the job completion status will not be returned. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement.
+`DETACHED`                                                          | N/A                                         | <span class="version-tag">New in v20.2:</span> When `RESTORE` runs with `DETACHED`, the job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 
 ### Backup file URLs
 
@@ -93,7 +93,7 @@ When you restore a full cluster with an enterprise license, it will restore the 
 
 #### Databases
 
-**The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup. 
+**The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
 
 ~~~ sql
 RESTORE DATABASE backup_database_name FROM 'your_backup_location';
@@ -236,13 +236,13 @@ If you are restoring from HTTP storage, provide the previous full and incrementa
 
 ### Restore a backup asynchronously
 
-<span class="version-tag">New in v20.2:</span> Use the `detached` [option](#options) to execute the restore job asynchronously:
+<span class="version-tag">New in v20.2:</span> Use the `DETACHED` [option](#options) to execute the restore job asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM \
 'gs://acme-co-backup/test-cluster' \
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:
@@ -251,6 +251,15 @@ The job ID is returned immediately without waiting for the job to finish:
         job_id
 ----------------------
   592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
 

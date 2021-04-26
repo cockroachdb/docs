@@ -40,7 +40,7 @@ Only members of the `admin` role can run `RESTORE`. By default, the `root` user 
  `kv_option_list` | Control your backup's behavior with [these options](#options).
 
 {{site.data.alerts.callout_info}}
-The `RESTORE` statement cannot be used within a [transaction](transactions.html).
+The `RESTORE` statement is a blocking statement and cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
 
 ### Options
@@ -92,7 +92,7 @@ The created database will have the name of the database in the backup. The datab
 If [dropping](drop-database.html) or [renaming](rename-database.html) an existing database is not an option, you can use _table_ restore to restore all tables into the existing database:
 
 ```sql
-RESTORE backup_database_name.* FROM 'your_backup_location' 
+RESTORE backup_database_name.* FROM 'your_backup_location'
 WITH into_db = 'your_target_db'
 ```
 
@@ -104,7 +104,7 @@ The [`into_db`](#into_db) option only applies to [table restores](#tables).
 
 You can also restore individual tables (which automatically includes their indexes) or [views](views.html) from a backup. This process uses the data stored in the backup to create entirely new tables or views in the target database.
 
-By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database with the [`into_db` option](#into_db). 
+By default, tables and views are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it](create-database.html). You can choose to change the target database with the [`into_db` option](#into_db).
 
 The target database must not have tables or views with the same name as the tables or views you're restoring. If any of the restore target's names are being used, you can:
 
