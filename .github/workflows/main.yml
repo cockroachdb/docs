@@ -1,0 +1,28 @@
+name: List files changed
+
+on:
+  push:
+    branches-ignore:
+      - master
+  pull_request:
+    branches-ignore:
+      - master
+      
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+          
+      - name: Get changed files
+        id: changed_files
+        uses: tj-actions/changed-files@v4.2
+      
+      - name: List all modified files
+        run: |
+          for file in "${{ steps.changed_files.outputs.all_modified_files }}"; do
+            echo "$file"
+          done
