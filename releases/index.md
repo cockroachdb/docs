@@ -5,7 +5,7 @@ toc: true
 redirect_from: /releases.html
 ---
 
-After downloading your desired release, learn how to [Install CockroachDB](../stable/install-cockroachdb.html). Also be sure to review Cockroach Lab's [Release Support Policy](release-support-policy.html).
+After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Lab's [Release Support Policy](release-support-policy.html).
 
 
 {% for section in site.data.releases %}

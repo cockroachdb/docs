@@ -88,7 +88,6 @@ DROP SEQUENCE
 ## See also
 - [`CREATE SEQUENCE`](create-sequence.html)
 - [`ALTER SEQUENCE`](alter-sequence.html)
-- [`RENAME SEQUENCE`](rename-sequence.html)
 - [`SHOW SEQUENCES`](show-sequences.html)
 - [Functions and Operators](functions-and-operators.html)
 - [Other SQL Statements](sql-statements.html)

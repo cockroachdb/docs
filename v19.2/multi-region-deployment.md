@@ -261,7 +261,7 @@ This tutorial demonstrates how to develop and deploy an example multi-region app
 
 ### Upgrade your deployment
 
-Some time after you have deployed your application, you will likely need to push changes that you've made locally. When pushing changes, be aware that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, see [Online Schema Changes](https://www.cockroachlabs.com/docs/stable/online-schema-changes.html).
+Some time after you have deployed your application, you will likely need to push changes that you've made locally. When pushing changes, be aware that you defined the database separate from the application. If you change a data type, for example, in your application, you will also need to modify the database schema to be compatible with your application's requests. For information about making online changes to database schemas, see [Online Schema Changes](online-schema-changes.html).
 
 ## See also
 

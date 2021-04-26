@@ -6,5 +6,5 @@ To follow along, run [`cockroach demo`](cockroach-demo.html) with the [`--nodes`
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo --nodes=3 --demo-locality=region=us-east1:region=us-central1:region=us-west1
+$ cockroach demo --nodes=6 --demo-locality=region=us-east,zone=us-east-a:region=us-east,zone=us-east-b:region=us-central,zone=us-central-a:region=us-central,zone=us-central-b:region=us-west,zone=us-west-a:region=us-west,zone=us-west-b
 ~~~

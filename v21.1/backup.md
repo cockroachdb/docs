@@ -35,6 +35,12 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+[Interleaving data](interleave-in-parent.html) is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
+
+To backup interleaved data in v21.1, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.

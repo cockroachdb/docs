@@ -74,7 +74,7 @@ Only regions that are defined at [node startup time](cockroach-start.html#locali
 
 ### View a database's regions
 
-To view the regions associated with a multi-region database, use the following statement:
+To view the regions associated with a multi-region database, use a [`SHOW REGIONS`](show-regions.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -113,4 +113,5 @@ For more information, see [Database regions](multiregion-overview.html#database-
 
 - [Multi-region overview](multiregion-overview.html)
 - [`ALTER TABLE`](alter-table.html)
+- [`SHOW REGIONS`](show-regions.html)
 - [Other SQL Statements](sql-statements.html)

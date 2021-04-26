@@ -3,7 +3,7 @@ title: Quickstart with CockroachCloud Free (beta)
 summary: Learn how to create and use your free CockroachCloud cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-quickstart.html
+- ../v20.2/cockroachcloud-quickstart.html
 - create-your-account.html
 ---
 
@@ -127,7 +127,6 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     $ cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
     ~~~
 
-
 1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
@@ -168,7 +167,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
 
 Learn more:
 
-- Use the [built-in SQL client](../v20.2/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
-- Build a ["Hello World" app with the Django framework](../v20.2/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
-- Explore our [sample apps](../stable/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
+- Build a ["Hello World" app with the Django framework](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["stable"]}}/install-client-drivers.html) for your favorite language.
+- Explore our [sample apps](../{{site.versions["stable"]}}/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
