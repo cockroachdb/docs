@@ -12,7 +12,7 @@ redirect_from:
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../v20.2/cockroach-sql.html), and run sample SQL statements. This is the simplest way to get started with CockroachCloud using the default options and minimal security. To create a more advanced CockroachCloud cluster, see [Create a Free Cluster](create-a-free-cluster.html).
+This page guides you through the simplest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal security. To create a more advanced CockroachCloud cluster, see [Create a Free Cluster](create-a-free-cluster.html).
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -40,6 +40,12 @@ Once your cluster is created, the **Connection info** dialog displays. Use the i
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](https://www.cockroachlabs.com/docs/cockroachcloud/user-authorization.html).
     {{site.data.alerts.end}}
+
+2. Replace `sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt` with `sslmode=require` and save your new connection string:
+
+~~~
+cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
+~~~
 
 ## Step 3. Install CockroachDB
 
