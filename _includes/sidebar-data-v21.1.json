@@ -90,7 +90,7 @@
                 ]
               },
               {
-                "title": "Multi-Region Topologies",
+                "title": "Multi-Region Performance",
                 "urls": [
                   "/${VERSION}/demo-low-latency-multi-region-deployment.html"
                 ]
