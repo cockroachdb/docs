@@ -29,7 +29,7 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster.
     - Select the **Database** you want to connect to.
     - Click **Next**.
 
-1. Select a connection method (the instructions below will adjust accordingly):
+1. Select a connection method (the instructions in Step 2 below will adjust accordingly):
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="command-line">Command line</button>
