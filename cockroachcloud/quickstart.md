@@ -33,15 +33,15 @@ Your cluster will be created in approximately 20-30 seconds.
 
 ## Step 2. Set up your cluster connection
 
-Once your cluster is created, the **Connection info** dialog displays. Use the information provided in the dialog to set up your cluster connection for the SQL user that was created by default:
+Once your cluster is created, the **Connection info** dialog displays. A default SQL user and database have already been set up for you, so you will be taken to the **Command Line** tab of the **Connect** step.
 
-1. Copy the connection string provided, which will be used in the next steps (and to connect to your cluster in the future).
+1. Skip the first two steps and copy the connection string provided, which will be used in the next steps (and to connect to your cluster in the future).
 
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](https://www.cockroachlabs.com/docs/cockroachcloud/user-authorization.html).
     {{site.data.alerts.end}}
 
-2. Replace `sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt` with `sslmode=require` and save your new connection string:
+1. Edit your connection string by replacing `sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt` with `sslmode=require`:
 
 ~~~
 cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
@@ -120,11 +120,21 @@ If you have not done so already, install the CockroachDB binary:
 
 You can now connect to your cluster using CockroachDB's built-in SQL client:
 
-1. In your terminal, run the following command to connect to your cluster using the [connection string](#step-2-set-up-your-cluster-connection):
+1. In your terminal, run the command with the updated connection string that you saved in [Step 2](#step-2-set-up-your-cluster-connection):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
+    ~~~
+    
+    A welcome message displays:
+    
+    ~~~
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
     ~~~
 
 1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
