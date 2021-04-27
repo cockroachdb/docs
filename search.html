@@ -8,6 +8,8 @@ contribute: false
 <div id="search-stats"></div>
 <div id="search-hits"></div>
 <div id="search-pages"></div>
+<script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
+<script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
 <script>
   const queryString = (function() {
     // This function is anonymous, is executed immediately and
@@ -127,12 +129,12 @@ contribute: false
         .map(
           hit =>
             `<div class="search-item">
-  			  <div class="search-title">
-  			    <a href="${hit.url}">${hit.title}</a>
-  			  </div>
-  			  <div class="search-snippet">${showResult(hit._highlightResult)}</div>
-  			  <div class="search-link">${hit.doc_type}</div>
-  			</div>`
+          <div class="search-title">
+            <a href="${hit.url}">${hit.title}</a>
+          </div>
+          <div class="search-snippet">${showResult(hit._highlightResult)}</div>
+          <div class="search-link">${hit.doc_type}</div>
+        </div>`
         )
         .join("");
     } else {

@@ -40,7 +40,7 @@
 }
 
 @mixin headline-24-30 {
-  @include graphik_sb(24px);
+  @include sourcesanspro_m(24px);
   line-height: 35px;
 
   @include at-query($min, $screen-md) {
@@ -53,22 +53,22 @@
 // subheadings
 //
 @mixin subhead-adelle-lg {
-  @include graphik_sb(24px);
+  @include sourcesanspro_m(24px);
   line-height: 35px;
 }
 
 @mixin subhead-adelle-sm {
-  @include graphik_sb(17px);
+  @include sourcesanspro_m(17px);
   line-height: 30px;
 }
 
 @mixin subhead-avenir-lg {
-  @include graphik_sb(24px);
+  @include sourcesanspro_m(24px);
   line-height: 35px;
 }
 
 @mixin subhead-avenir-sm {
-  @include graphik_sb(17px);
+  @include sourcesanspro_m(17px);
   line-height: 30px;
 }
 
@@ -95,7 +95,7 @@
 // miscellaneous
 //
 @mixin type-button {
-  @include graphik_sb(13px);
+  @include sourcesanspro_m(13px);
   line-height: 20px;
   letter-spacing: 1.5px;
 }
@@ -119,19 +119,19 @@
 }
 
 @mixin button-text--heavy--small {
-  @include graphik_sb(11px);
+  @include sourcesanspro_m(11px);
   line-height: 15px;
   letter-spacing: 1.5px;
 }
 
 @mixin button-text--heavy--medium {
-  @include graphik_sb(13px);
+  @include sourcesanspro_m(13px);
   line-height: 15px;
   letter-spacing: 1.5px;
 }
 
 @mixin button-text--heavy--large {
-  @include graphik_sb(15px);
+  @include sourcesanspro_m(15px);
   line-height: 25px;
   letter-spacing: 1.5px;
 }

@@ -16,7 +16,6 @@
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
 <link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
-<link rel="stylesheet" type="text/css" href="{{ 'css/theme-blue.css' | relative_url }}">
 {% if page.asciicast == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/asciinema-player.css' | relative_url }}">{% endif %}
 
 <script>
@@ -25,30 +24,27 @@ var pageConfig = {
 };
 </script>
 
-{% include_cached vwo.html %}
-
 <script src="{{ 'js/jquery.min.js' | relative_url }}"></script>
-<script src="{{ 'js/jquery.cookie.min.js' | relative_url }}"></script>
-<script src="{{ 'js/jquery.navgoco.min.js' | relative_url }}"></script>
-<!-- bs 4.X -->
-<script src="{{'js/bootstrap453.bundle.min.js' | relative_url }}" crossorigin="anonymous"></script>
 
-<script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
-<script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
-
-<script src="{{ 'js/toc.js' | relative_url }}"></script>
-<script src="{{ 'js/cookieUtils.js' | relative_url }}"></script>
-<script src="{{ 'js/clipboard.min.js' | relative_url }}"></script>
-<script src="{{ 'js/customscripts.js' | relative_url }}"></script>
-<script src="{{ 'js/setDocsContext.js' | relative_url }}"></script>
-<script src="{{ 'js/anchor.js' | relative_url }}"></script>
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
 {% endif %}
 {% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}
 {% if page.license == true %}<script src="{{ 'js/license-on-page.js' | relative_url }}"></script>{% endif %}
-<script async src="//js.convertflow.co/production/websites/5329.js"></script>
-<script src="https://kit.fontawesome.com/4e4d5754e5.js" crossorigin="anonymous"></script>
+
+<link rel="preconnect dns-prefetch" href="//go.cockroachlabs.com" />
+<link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
+
+<link rel="preload" href="//go.cockroachlabs.com/js/forms2/js/forms2.min.js" as="script" />
 <script src="//go.cockroachlabs.com/js/forms2/js/forms2.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,200;1,300;1,400&Source+Code+Pro&display=swap" rel="stylesheet">
+
+<link rel="preload" href="{{ "/fonts/SourceSansPro-Regular.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
+<link rel="preload" href="{{ "/fonts/SourceSansPro-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
+<link rel="preload" href="{{ "/fonts/Poppins-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
+
+<link rel="preconnect dns-prefetch" href="https://app.convertflow.co/" >
+<link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" >
+
+<link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-3-1.png?auto=format,compress&w=1200&q=40" />
+<link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-early-3-1.png?auto=format,compress&w=1200&q=40" />

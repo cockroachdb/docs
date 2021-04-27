@@ -109,7 +109,7 @@
             return $("<ul>").append(lis);
           }
 
-          document.write(renderItems({% include {{ page.sidebar_data }} %}, []).html());
+          document.getElementById('sidebar').innerHTML = renderItems({% include {{ page.sidebar_data }} %}, []).html();
         })();
       </script>
     </ul>

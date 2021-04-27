@@ -5,7 +5,7 @@
   float: right;
   z-index: 1;
   @include button-text;
-  @include avenir_bl(12px);
+  @include sourcesanspro_b(12px);
   text-transform: uppercase;
   color: #a2a2a2;
   @include groovy(color);
