@@ -18,10 +18,14 @@ You can restore:
 - [Databases](#databases)
 - [Tables](#tables)
 
+{{site.data.alerts.callout_info}}
+`RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 - [Full cluster restores](#full-cluster) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other restores, the user must have [write access](authorization#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
+- For all other restores, the user must have [write access](authorization.html#assign-privileges) (`CREATE` or `INSERT`) on all objects affected.
 
 ### Source privileges
 
@@ -44,10 +48,6 @@ You can restore:
  `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html).
  `kv_option_list` | Control your backup's behavior with [these options](#options).
 
-{{site.data.alerts.callout_info}}
-The `RESTORE` statement cannot be used within a [transaction](transactions.html).
-{{site.data.alerts.end}}
-
 ### Options
 
 You can include the following options as key-value pairs in the `kv_option_list` to control the restore process's behavior:
@@ -60,7 +60,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
-`detached`                                                          | N/A                                         |  When a restore runs in `detached` mode, the restore job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that the job completion status will not be returned. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement.
+`DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 
 ### Backup file URLs
 
@@ -257,13 +257,13 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 
 ### Restore a backup asynchronously
 
-Use the `detached` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
+Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM \
 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:
@@ -272,6 +272,15 @@ The job ID is returned immediately without waiting for the job to finish:
         job_id
 ----------------------
   592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
 

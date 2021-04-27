@@ -35,10 +35,20 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+`BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+[Interleaving data](interleave-in-parent.html) is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
+
+To backup interleaved data in v21.1, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
+{{site.data.alerts.end}}
+
 ## Required privileges
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have [read access](authorization#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
+- For all other backups, the user must have [read access](authorization.html#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges
@@ -204,14 +214,14 @@ AS OF SYSTEM TIME '-10s';
 
 ### Run a backup asynchronously
 
-Use the `detached` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
+Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
 AS OF SYSTEM TIME '-10s'
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:
@@ -220,6 +230,15 @@ The job ID is returned immediately without waiting for the job to finish:
         job_id
 ----------------------
   592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
 

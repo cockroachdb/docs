@@ -6,7 +6,7 @@ redirect_from: debug-merge-logs.html
 key: debug-merge-logs.html
 ---
 
-The `cockroach debug merge-logs` [command](cockroach-commands.html) merges log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node. You can use it in conjunction with logs collected using the [`debug zip`](https://www.cockroachlabs.com/docs/stable/cockroach-debug-zip.html) command to aid in debugging.
+The `cockroach debug merge-logs` [command](cockroach-commands.html) merges log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node. You can use it in conjunction with logs collected using the [`debug zip`](cockroach-debug-zip.html) command to aid in debugging.
 
 {{site.data.alerts.callout_danger}}
 The file produced by `cockroach debug merge-log` can contain highly sensitive, unanonymized information, such as usernames, passwords, and possibly your table's data. You should share this data only with Cockroach Labs developers and only after determining the most secure method of delivery.

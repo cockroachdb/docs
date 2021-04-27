@@ -3,7 +3,7 @@ title: Create a CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-create-your-cluster.html
+- ../v20.2/cockroachcloud-create-your-cluster.html
 ---
 
 <div class="filters clearfix">

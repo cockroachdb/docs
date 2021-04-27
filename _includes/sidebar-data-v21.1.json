@@ -90,7 +90,7 @@
                 ]
               },
               {
-                "title": "Multi-Region Topologies",
+                "title": "Multi-Region Performance",
                 "urls": [
                   "/${VERSION}/demo-low-latency-multi-region-deployment.html"
                 ]
@@ -1582,15 +1582,9 @@
                     ]
                   },
                   {
-                    "title": "<code>GRANT &lt;privileges&gt;</code>",
+                    "title": "<code>GRANT</code>",
                     "urls": [
                       "/${VERSION}/grant.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>GRANT &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/grant-roles.html"
                     ]
                   },
                   {
@@ -1690,12 +1684,6 @@
                     ]
                   },
                   {
-                    "title": "<code>RENAME SEQUENCE</code>",
-                    "urls": [
-                      "/${VERSION}/rename-sequence.html"
-                    ]
-                  },
-                  {
                     "title": "<code>RELEASE SAVEPOINT</code>",
                     "urls": [
                       "/${VERSION}/release-savepoint.html"
@@ -1732,15 +1720,9 @@
                     ]
                   },
                   {
-                    "title": "<code>REVOKE &lt;privileges&gt;</code>",
+                    "title": "<code>REVOKE</code>",
                     "urls": [
                       "/${VERSION}/revoke.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>REVOKE &lt;roles&gt;</code>",
-                    "urls": [
-                      "/${VERSION}/revoke-roles.html"
                     ]
                   },
                   {
@@ -1885,6 +1867,12 @@
                     "title": "<code>SHOW RANGE FOR ROW</code>",
                     "urls": [
                       "/${VERSION}/show-range-for-row.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW REGIONS</code>",
+                    "urls": [
+                      "/${VERSION}/show-regions.html"
                     ]
                   },
                   {

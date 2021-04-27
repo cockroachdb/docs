@@ -83,7 +83,7 @@ This then lets the node primarily responsible for the range (i.e., the leasehold
 
 #### Max clock offset enforcement
 
-CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), **it crashes immediately**.
+CockroachDB requires moderate levels of clock synchronization to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the [maximum offset allowed](../cockroach-start.html#flags-max-offset), **it crashes immediately**.
 
 While [serializable consistency](https://en.wikipedia.org/wiki/Serializability) is maintained regardless of clock skew, skew outside the configured clock offset bounds can result in violations of single-key linearizability between causally dependent transactions. It's therefore important to prevent clocks from drifting too far by running [NTP](http://www.ntp.org/) or other clock synchronization software on each node.
 
@@ -365,6 +365,32 @@ The transaction is now considered atomically committed, even though the state of
 Despite their logical equivalence, the transaction coordinator now works as quickly as possible to move the transaction record from the `STAGING` to the `COMMITTED` state so that other transactions do not encounter a possibly conflicting transaction in the `STAGING` state and then have to do the work of verifying that the staging transaction's list of pending writes has succeeded. Doing that verification (also known as the "transaction status recovery process") would be slow.
 
 Additionally, when other transactions encounter a transaction in `STAGING` state, they check whether the staging transaction is still in progress by verifying that the transaction coordinator is still heartbeating that staging transaction’s record. If the coordinator is still heartbeating the record, the other transactions will wait, on the theory that letting the coordinator update the transaction record with the final result of the attempt to commit will be faster than going through the transaction status recovery process. This means that in practice, the transaction status recovery process is only used if the transaction coordinator dies due to an untimely crash.
+
+## Non-blocking transactions
+
+<span class="version-tag">New in v21.1:</span> CockroachDB supports low-latency, global reads of read-mostly data in [multi-region clusters](../multiregion-overview.html) using _non-blocking transactions_: an extension of the [standard read-write transaction protocol](#overview) that allows a writing transaction to perform [locking](#concurrency-control) in a manner such that contending reads by other transactions can avoid waiting on its locks.
+
+The non-blocking transaction protocol and replication scheme differ from standard read-write transactions as follows:
+
+- Non-blocking transactions use a replication scheme over the [ranges](overview.html#terms) they operate on that allows all followers in these ranges to serve consistent (non-stale) reads.
+- Non-blocking transactions are minimally disruptive to reads over the data they modify, even in the presence of read/write [contention](../performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+These properties of non-blocking transactions combine to provide predictable read latency for a configurable subset of data in [global deployments](../multiregion-overview.html). This is useful since there exists a sizable class of data which is heavily skewed towards read traffic.
+
+Most users will not interact with the non-blocking transaction mechanism directly. Instead, they will [set a `GLOBAL` table locality](../multiregion-overview.html#global-tables) using the SQL API.
+
+### How non-blocking transactions work
+
+The consistency guarantees offered by non-blocking transactions are enforced through semi-synchronized clocks with bounded uncertainty, _not_ inter-node communication, since the latter would struggle to provide the same guarantees without incurring excessive latency costs in global deployments.
+
+Non-blocking transactions are implemented via _non-blocking ranges_. Every non-blocking range has the following properties:
+
+- Any transaction that writes to this range has its write timestamp pushed into the future.
+- The range is able to propagate a [closed timestamp](../follower-reads.html#how-follower-reads-work) in the future of present time.
+- A transaction that writes to this range and commits with a future time commit timestamp needs to wait until the HLC advances past its commit timestamp. This process is known as _"commit-wait"_. Essentially, the HLC waits until it advances past the future timestamp on its own, or it advances due to updates from other timestamps.
+- A transaction that reads a future-time write to this range can have its commit timestamp bumped into the future as well, if the write falls in the read's uncertainty window (this is dictated by the [maximum clock offset](#max-clock-offset-enforcement) configured for the cluster). Such transactions (a.k.a. "conflicting readers") may also need to commit-wait.
+
+As a result of the above properties, all replicas in a non-blocking range are expected to be able to serve transactionally-consistent reads at the present. This means that all follower replicas in a non-blocking range (which includes all [non-voting replicas](replication-layer.html#non-voting-replicas)) implicitly behave as "consistent read replicas", which are exactly what they sound like: read-only replicas that always have a consistent view of the range's current state.
 
 ## Technical interactions with other layers
 

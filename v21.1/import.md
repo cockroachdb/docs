@@ -17,8 +17,12 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+`IMPORT` is a blocking statement. To run an import job asynchronously, use the `DETACHED` option. See the [options](#import-options) below.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_danger}}
-`IMPORT` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
+`IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -106,9 +110,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
 `schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
 `schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
-
-<!--
-`experimental_save_rejected` | `CSV DATA` | Skip faulty rows during import and save them in a file called `<original_csv_file>.rejected`. Once the rows are fixed, use this file with [`IMPORT INTO`](import-into.html) to finish the import. **Default:** Off -->
+`DETACHED`             | N/A            | <span class="version-tag">New in v21.1:</span> When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -1031,6 +1033,93 @@ AVRO DATA ('gs://acme-co/customers.avro')
 ~~~
 
 For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+
+### Run an import within a transaction
+
+<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+
+The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
+
+Amazon S3:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
+WITH DETACHED;
+
+COMMIT;
+~~~
+
+Azure:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+WITH DETACHED;
+
+COMMIT;
+~~~
+
+Google Cloud:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://acme-co/customers.csv')
+WITH DETACHED;
+
+COMMIT;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `IMPORT` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+~~~
 
 ## Known limitation
 

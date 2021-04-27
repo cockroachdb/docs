@@ -27,16 +27,12 @@ Because the instructions on this page describe how to simulate a multi-region cl
 - To show the _relative_ magnitude of the performance improvements to expect when you configure a multi-region cluster correctly.
 - To be as easy to try as possible with minimal configuration and setup.
 
-## Prerequisites
+## Before you begin
+
+Make sure you have:
 
 - [A basic understanding of the MovR application](#a-basic-understanding-of-the-movr-application)
 - [Docker](https://www.docker.com) installed on the local machine
-
-### A CockroachDB trial enterprise license
-
-The CockroachDB [multi-region features](multiregion-overview.html) used in this tutorial require an enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise/) before you get started.
-
-You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
 ### A basic understanding of the MovR application
 
@@ -56,13 +52,13 @@ The data in the `promo_codes` table is different: it is not tied to geography, a
 
 For a description of the sequence of SQL statements issued by the MovR application in response to user actions, see [How the MovR application works](movr.html#how-the-movr-application-works).
 
-## Step 1. Simulate a multi-region cluster on your local machine
+## Step 1. Simulate a multi-region cluster
 
-To set up a simulated multi-region cluster on your local machine, follow the instructions in [Simulate a multi-region cluster on localhost](simulate-a-multi-region-cluster-on-localhost.html).
+{% include {{page.version.version}}/sql/start-a-multi-region-demo-cluster.md %}
 
 To verify that the simulated latencies are working as expected, check the [Network Latency Page](ui-network-latency-page.html) in the DB Console. Round trip times between  `us-west1` and `europe-west1` should be in the 150 ms range.
 
-## Step 2. Determine which nodes are in which regions
+## Step 2. Determine node locations
 
 To determine which nodes are in which regions, you will need to refer to two (2) things:
 
@@ -152,7 +148,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     CREATE DATABASE movr;
     ~~~
 
-1. In Terminal window #1, run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
+1. Open a second terminal and run the command below to populate the MovR data set. The options are mostly self-explanatory. We limit the application to 1 thread because using multiple threads quickly overloads this small demo cluster's ability to ingest data. As a result, loading the data takes about 90 seconds on a fast laptop.
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -175,7 +171,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
             --city="seattle"
     ~~~
 
-    ~~~ 
+    ~~~
     [INFO] (MainThread) connected to movr database @ postgres://root@docker.for.mac.localhost:26257/movr?sslmode=disable
     [INFO] (MainThread) Loading single region MovR
     [INFO] (MainThread) initializing tables
@@ -187,7 +183,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     [INFO] (MainThread) populated 9 cities in 86.986230 seconds
     ~~~
 
-1. Still in Terminal window #1, run the following command:
+1. In the same terminal window, run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -208,7 +204,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     ...
     ~~~
 
-1. In Terminal window #2, run the following command:
+1. Open a third terminal and run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -228,7 +224,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     [INFO] (MainThread) running single region queries...
     ~~~
 
-1. In Terminal window #3, run the following command:
+1. Open a fourth terminal and run the following command:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -249,23 +245,21 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
     ...
     ~~~
 
-## Step 4. Check latencies in the DB Console
+## Step 4. Check service latency
 
-Now that you have load hitting the cluster from different regions, let's see how the service latencies look before we do any multi-region configuration from SQL. This is the "before" case in the "before and after".
+Now that you have load hitting the cluster from different regions, check how the service latencies look before you do any multi-region configuration from SQL. This is the "before" case in the "before and after".
 
-In the [DB Console](admin-ui-overview.html) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**](ui-overview-dashboard.html) on the left and hover over the [**Service Latency: SQL, 99th percentile**](ui-overview-dashboard.html#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload. 
+In the [DB Console](admin-ui-overview.html) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**](ui-overview-dashboard.html) on the left and hover over the [**Service Latency: SQL, 99th percentile**](ui-overview-dashboard.html#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
 
 <img src="{{ 'images/v21.1/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 
-For each of the 3 nodes that we are pointing the movr workload at, the max latency of 99% of queries are in the 1-2 seconds range.
-
-The SQL latency is high because of the network latency between regions.
+For each of the 3 nodes that we are pointing the movr workload at, the max latency of 99% of queries are in the 1-2 seconds range. The SQL latency is high because of the network latency between regions.
 
 To see the network latency between any two nodes in the cluster, click [**Network Latency**](ui-network-latency-page.html) in the left-hand navigation.
 
 <img src="{{ 'images/v21.1/geo-partitioning-network-latency.png' | relative_url }}" alt="Geo-partitioning network latency" style="max-width:100%" />
 
-Within a single region, round-trip latency is under 6 ms (milliseconds). Across regions, round-trip latency is significantly higher. 
+Within a single region, round-trip latency is under 6 ms (milliseconds). Across regions, round-trip latency is significantly higher.
 
 For example:
 
@@ -307,7 +301,7 @@ ALTER DATABASE movr ADD REGION "us-west1";
 
 #### Configure GLOBAL tables
 
-As mentioned earlier, all of the tables except `promo_codes` are geographically specific. Because the data in `promo_codes` is not updated frequently (a.k.a. "read-mostly"), and needs to be available from any region, we choose the [`GLOBAL` table locality](multiregion-overview.html#global-tables).
+As mentioned earlier, all of the tables except `promo_codes` are geographically specific. Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostly"), and needs to be available from any region, the right table locality is [`GLOBAL`](multiregion-overview.html#global-tables).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -318,41 +312,120 @@ Next, alter the `user_promo_codes` table to have a foreign key into the `promo_c
 
 {% include copy-clipboard.html %}
 ~~~ sql
-ALTER TABLE user_promo_codes ADD CONSTRAINT user_promo_codes_code_fk FOREIGN KEY (code) REFERENCES promo_codes (code) ON UPDATE CASCADE;
+ALTER TABLE user_promo_codes
+  ADD CONSTRAINT user_promo_codes_code_fk
+    FOREIGN KEY (code)
+    REFERENCES promo_codes (code)
+    ON UPDATE CASCADE;
 ~~~
 
 #### Configure REGIONAL BY ROW tables
 
-All of the tables except `promo_codes` are geographically specific, and updated very frequently. For these tables, the right table locality setting for optimizing access to their data is the [`REGIONAL BY ROW` table locality](multiregion-overview.html#regional-by-row-tables).
+All of the tables except `promo_codes` are geographically specific, and updated very frequently. For these tables, the right table locality for optimizing access to their data is [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables).
 
-To apply this setting to the `rides` table, issue the statement below. It uses a `CASE` statement to put data for a given city in the right region for that city.
+Apply this table locality to the remaining tables. These statements use a `CASE` statement to put data for a given city in the right region and can take around 1 minute to complete for each table.
 
-{% include copy-clipboard.html %}
-~~~ sql
-ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
-  CASE WHEN city = 'amsterdam' THEN 'europe-west1'
-       WHEN city = 'paris' THEN 'europe-west1'
-       WHEN city = 'rome' THEN 'europe-west1'
-       WHEN city = 'new york' THEN 'us-east1'
-       WHEN city = 'boston' THEN 'us-east1'
-       WHEN city = 'washington dc' THEN 'us-east1'
-       WHEN city = 'san francisco' THEN 'us-west1'
-       WHEN city = 'seattle' THEN 'us-east1'
-       WHEN city = 'los angeles' THEN 'us-east1'
-  END
-) STORED;
-ALTER TABLE rides ALTER COLUMN REGION SET NOT NULL;
-ALTER TABLE rides SET LOCALITY REGIONAL BY ROW AS "region";
-~~~
+- `rides`
 
-Next, issue the statement shown above for each of the following tables, substituting the new table name in for `rides`.
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-east1'
+           WHEN city = 'los angeles' THEN 'us-east1'
+      END
+    ) STORED;
+    ALTER TABLE rides ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE rides SET LOCALITY REGIONAL BY ROW AS "region";
+    ~~~
 
 - `user_promo_codes`
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE user_promo_codes ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-east1'
+           WHEN city = 'los angeles' THEN 'us-east1'
+      END
+    ) STORED;
+    ALTER TABLE user_promo_codes ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE user_promo_codes SET LOCALITY REGIONAL BY ROW AS "region";
+    ~~~
+
 - `users`
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE users ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-east1'
+           WHEN city = 'los angeles' THEN 'us-east1'
+      END
+    ) STORED;
+    ALTER TABLE users ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE users SET LOCALITY REGIONAL BY ROW AS "region";
+    ~~~
+
 - `vehicle_location_histories`
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE vehicle_location_histories ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-east1'
+           WHEN city = 'los angeles' THEN 'us-east1'
+      END
+    ) STORED;
+    ALTER TABLE vehicle_location_histories ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE vehicle_location_histories SET LOCALITY REGIONAL BY ROW AS "region";
+    ~~~
+
 - `vehicles`
 
-## Step 7. Re-check latency
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE vehicles ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-east1'
+           WHEN city = 'los angeles' THEN 'us-east1'
+      END
+    ) STORED;
+    ALTER TABLE vehicles ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE vehicles SET LOCALITY REGIONAL BY ROW AS "region";
+    ~~~
+
+## Step 7. Re-check service latency
 
 As the multi-region schema changes complete, you should see changes to the following metrics:
 

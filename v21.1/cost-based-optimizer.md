@@ -122,7 +122,7 @@ Finally, note that only the following statements use the plan cache:
 
 ## Join reordering
 
-The cost-based optimizer will explore additional join orderings in an attempt to find the lowest-cost execution plan for a query involving multiple joins, which can lead to significantly better performance in some cases.
+The cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan for a query involving multiple joins, which can lead to significantly better performance in some cases.
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
 
@@ -141,12 +141,14 @@ For more information about the difficulty of selecting an optimal join ordering,
 
 ## Join hints
 
-The optimizer supports hint syntax to force the use of a specific join algorithm. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
+The optimizer supports hint syntax to force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
 
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
 - `CROSS MERGE JOIN`
+- `INNER INVERTED JOIN`
+- `LEFT INVERTED JOIN`
 
 Note that the hint cannot be specified with a bare hint keyword (e.g., `MERGE`) - in that case, the `INNER` keyword must be added. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
 
@@ -161,6 +163,12 @@ Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to S
 - `MERGE`: Forces a merge join, even if it requires re-sorting both sides of the join.
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
+
+- `INVERTED`: <span class="version-tag">New in v21.1:</span> Forces an inverted join into the right side; the right side must be a table with a suitable [inverted index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
+
+{{site.data.alerts.callout_info}}
+You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
+{{site.data.alerts.end}}
 
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
@@ -212,6 +220,10 @@ The optimizer does not actually understand geographic locations, i.e., the relat
 {{site.data.alerts.end}}
 
 ### Examples
+
+#### Inverted join examples
+
+{% include {{ page.version.version }}/sql/inverted-joins.md %}
 
 #### Zone constraints
 
@@ -686,6 +698,7 @@ You'll need to make changes to the above configuration to reflect your [producti
 
 ## See also
 
+- [`JOIN` expressions](joins.html)
 - [`SET (session variable)`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)

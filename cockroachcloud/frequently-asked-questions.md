@@ -3,7 +3,7 @@ title: Frequently Asked Questions
 summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-frequently-asked-questions.html
+- ../v20.2/cockroachcloud-frequently-asked-questions.html
 ---
 
 This page answers the frequently asked questions about the paid version of CockroachCloud. For answers to frequently asked questions about the CockroachCloud Free (beta), see [CockroachCloud Free (beta) FAQs](free-faqs.html).
@@ -50,7 +50,7 @@ We use separate certificate authorities for each cluster, and all connections to
 
 Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
-Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest]({{ '/stable/encryption.html#encryption-at-rest-enterprise' | relative_url }}). This means that encryption will appear to be disabled in the [DB Console](../stable/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
+Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
@@ -88,11 +88,11 @@ You can also [backup and restore](backups-page.html#back-up-and-restore-data-man
 
 ### Can I download the backups that CockroachCloud takes for me?
 
-CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](backups-page.html#back-up-and-restore-data-manually) to your own [storage location]({{ '/stable/backup.html#backup-file-urls' | relative_url }}) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](backups-page.html#back-up-and-restore-data-manually) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
-Yes. You can [backup](../stable/backup.html) your self-hosted CockroachDB databases to an [external location]({{ '/stable/backup.html#backup-file-urls' | relative_url }}) and then [restore](../stable/restore.html) to your CockroachCloud cluster.
+Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["stable"]}}/restore.html) to your CockroachCloud cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -102,7 +102,7 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../stable/partitioning.html), [change data capture](../stable/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../{{site.versions["stable"]}}/partitioning.html), [change data capture](../{{site.versions["stable"]}}/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
 ### Is there a public API for CockroachCloud?
 
@@ -127,7 +127,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my CockroachCloud clusters?
 
-Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart]({{ '/stable/connection-pooling.html#validating-connections-in-a-pool' | relative_url }}). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
@@ -145,6 +145,6 @@ The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a pu
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../stable/performance-best-practices-overview.html) and [Performance Tuning](../stable/performance-tuning.html) docs for more information.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Performance Tuning](../{{site.versions["stable"]}}/performance-tuning.html) docs for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).

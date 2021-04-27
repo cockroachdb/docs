@@ -6,7 +6,7 @@ toc: true
 redirect_from: build-an-app-with-cockroachdb.html
 ---
 
-The examples in this section show you how to build simple "Hello World" applications **using CockroachCloud**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)]({{ '/stable/hello-world-example-apps.html' | relative_url }}).
+The examples in this section show you how to build simple "Hello World" applications **using CockroachCloud**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)](../{{site.versions["stable"]}}/hello-world-example-apps.html).
 
 Click the links in the table below to see simple but complete example applications for each supported language and library combination.
 
@@ -18,27 +18,27 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 
 | App Language | Drivers                                                                                                                                                                                                                                  | ORMs         | Support level                                        |
 |--------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------+------|
-| Python       | [psycopg2]({{ '/stable/build-a-python-app-with-cockroachdb.html' | relative_url }})                                                                                                                                                                                    | [SQLAlchemy]({{ '/stable/build-a-python-app-with-cockroachdb-sqlalchemy.html' | relative_url }})<br>[Django]({{ '/stable/build-a-python-app-with-cockroachdb-django.html' | relative_url }})<br>[PonyORM]({{ '/stable/build-a-python-app-with-cockroachdb-pony.html' | relative_url }})  | Full |
-| Java         | [JDBC]({{ '/stable/build-a-java-app-with-cockroachdb.html' | relative_url }})                                                                                                                                                                                          | [Hibernate]({{ '/stable/build-a-java-app-with-cockroachdb-hibernate.html' | relative_url }})       | Full |
-| Go           | [pgx]({{ '/stable/build-a-go-app-with-cockroachdb.html' | relative_url }})<br>[pq]({{ '/stable/build-a-go-app-with-cockroachdb-pq.html' | relative_url }})                                                                                                                                                                                              | [GORM]({{ '/stable/build-a-go-app-with-cockroachdb-gorm.html' | relative_url }})                  | Full |
+| Python       | [psycopg2](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb.html)                                                                                                                                                                                    | [SQLAlchemy](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[Django](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)<br>[PonyORM](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-pony.html)  | Full |
+| Java         | [JDBC](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb.html)                                                                                                                                                                                          | [Hibernate](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb-hibernate.html)       | Full |
+| Go           | [pgx](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb.html)<br>[pq](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb-pq.html)                                                                                                                                                                                              | [GORM](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb-gorm.html)                  | Full |
 
 ## See also
 
 Reference information:
 
-- [Client drivers]({{ '/stable/install-client-drivers.html' | relative_url }})
-- [Third-party database tools]({{ '/stable/third-party-database-tools.html' | relative_url }})
-- [Connection parameters]({{ '/stable/connection-parameters.html' | relative_url }})
-- [Transactions]({{ '/stable/transactions.html' | relative_url }})
-- [Performance best practices]({{ '/stable/performance-best-practices-overview.html' | relative_url }})
+- [Client drivers](../{{site.versions["stable"]}}/install-client-drivers.html)
+- [Third-party database tools](../{{site.versions["stable"]}}/third-party-database-tools.html)
+- [Connection parameters](../{{site.versions["stable"]}}/connection-parameters.html)
+- [Transactions](../{{site.versions["stable"]}}/transactions.html)
+- [Performance best practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html)
 
 <a name="tasks"></a>
 
 Specific tasks:
 
 - [Connect to Your Cluster](connect-to-a-free-cluster.html)
-- [Insert Data]({{ '/stable/insert-data.html' | relative_url }})
+- [Insert Data](../{{site.versions["stable"]}}/insert-data.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Make Queries Fast]({{ '/stable/make-queries-fast.html' | relative_url }})
-- [Run Multi-Statement Transactions]({{ '/stable/run-multi-statement-transactions.html' | relative_url }})
-- [Error Handling and Troubleshooting]({{ '/stable/error-handling-and-troubleshooting.html' | relative_url }})
+- [Make Queries Fast](../{{site.versions["stable"]}}/make-queries-fast.html)
+- [Run Multi-Statement Transactions](../{{site.versions["stable"]}}/run-multi-statement-transactions.html)
+- [Error Handling and Troubleshooting](../{{site.versions["stable"]}}/error-handling-and-troubleshooting.html)

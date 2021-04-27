@@ -3,7 +3,7 @@ title: Quickstart with CockroachCloud Free (beta)
 summary: Learn how to create and use your free CockroachCloud cluster.
 toc: true
 redirect_from:
-- ../stable/cockroachcloud-quickstart.html
+- ../v20.2/cockroachcloud-quickstart.html
 - create-your-account.html
 ---
 
@@ -12,11 +12,11 @@ redirect_from:
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud (30-day trial)</button></a>
 </div>
 
-This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client]({{ '/stable/cockroach-sql.html' | relative_url }}), and run sample SQL statements.
+This page shows you how to deploy a CockroachDB cluster on CockroachCloud Free (beta), connect to it using the CockroachDB [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html), and run sample SQL statements.
 
 {% include cockroachcloud/free-limitations.md %}
 
-To run CockroachDB on your local machine instead, see [Start a Local Cluster](../stable/secure-a-cluster.html).
+To run CockroachDB on your local machine instead, see [Start a Local Cluster](../{{site.versions["stable"]}}/secure-a-cluster.html).
 
 ## Step 1. Create a free cluster
 
@@ -30,7 +30,7 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 You can now connect to your cluster using CockroachDB's built-in SQL client:
 
-1. If you have not done so already, [download the CockroachDB binary](../stable/install-cockroachdb.html):
+1. If you have not done so already, [download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html):
 
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
@@ -96,7 +96,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     $ cockroach sql --url 'postgres://maxroach:password123@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/test-cluster.defaultdb?sslmode=verify-full&sslrootcert=/Users/maxroach/certs/cc-ca.crt'
     ~~~
 
-1. Using the [built-in SQL client]({{ '/stable/cockroach-sql.html' | relative_url }}), you can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
+1. Using the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html), you can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -136,7 +136,7 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
 
 Learn more:
 
-- Use the [built-in SQL client]({{ '/stable/cockroach-sql.html' | relative_url }}) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
+- Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
-- Build a ["Hello World" app with the Django framework]({{ '/stable/build-a-python-app-with-cockroachdb-django.html' | relative_url }}), or [install a client driver](../stable/install-client-drivers.html) for your favorite language.
-- Explore our [sample apps](../stable/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
+- Build a ["Hello World" app with the Django framework](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["stable"]}}/install-client-drivers.html) for your favorite language.
+- Explore our [sample apps](../{{site.versions["stable"]}}/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).

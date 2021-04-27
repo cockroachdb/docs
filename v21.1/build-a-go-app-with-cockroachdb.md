@@ -68,6 +68,12 @@ config, err := pgx.ParseConfig("postgresql://{user}:{password}@{globalhost}:2625
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
+Then, remove the following line of code:
+
+~~~ go
+config.TLSConfig.ServerName = "localhost"
+~~~
+
 </section>
 
 {{site.data.alerts.callout_success}}

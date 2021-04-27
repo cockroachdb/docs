@@ -57,7 +57,7 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 `kv_option_list` | Control the backup behavior with a comma-separated list of [these options](#options).
 
 {{site.data.alerts.callout_info}}
-The `BACKUP` statement cannot be used within a [transaction](transactions.html).
+The `BACKUP` statement is a blocking statement and cannot be used within a [transaction](transactions.html).
 {{site.data.alerts.end}}
 
 ### Options

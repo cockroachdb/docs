@@ -29,6 +29,10 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 `BACKUP` only backs up entire tables; it _does not_ support backing up subsets of a table.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+`BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
@@ -36,7 +40,7 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 ## Required privileges
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have [read access](authorization#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
+- For all other backups, the user must have [read access](authorization.html#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges
@@ -60,10 +64,6 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 `full_backup_location` | Create an incremental backup using the backup stored at the URL `full_backup_location` as its base. For information about this URL structure, see [Backup File URLs](#backup-file-urls).<br><br>**Note:** After a full backup for an explicit list of tables and/or databases, it is not possible to create an incremental backup if one or more tables were [created](create-table.html), [dropped](drop-table.html), or [truncated](truncate.html). In these cases, you must create a new [full backup](#full-backups) before more incremental backups can be created. To avoid this, [backup the cluster](#backup-a-cluster) instead of the explicit list of tables/databases.
 `incremental_backup_location` | Create an incremental backup that includes all backups listed at the provided URLs. <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
 `kv_option_list` | Control the backup behavior with a comma-separated list of [these options](#options).
-
-{{site.data.alerts.callout_info}}
-The `BACKUP` statement cannot be used within a [transaction](transactions.html).
-{{site.data.alerts.end}}
 
 ### Options
 
@@ -218,14 +218,14 @@ This incremental backup syntax does not work for backups using HTTP storage; you
 
 ### Run a backup asynchronously
 
-<span class="version-tag">New in v20.2:</span> Use the `detached` [option](#options) to execute the backup job asynchronously:
+<span class="version-tag">New in v20.2:</span> Use the `DETACHED` [option](#options) to execute the backup job asynchronously:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP TO \
 'gs://acme-co-backup/test-cluster' \
 AS OF SYSTEM TIME '-10s'
-WITH detached;
+WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:
@@ -234,6 +234,15 @@ The job ID is returned immediately without waiting for the job to finish:
         job_id
 ----------------------
   592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
 
