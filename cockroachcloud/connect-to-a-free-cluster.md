@@ -22,7 +22,7 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster.
 
 1. In the top right corner of the CockroachCloud Console, click the **Connect** button.
 
-    The **Connection info** modal displays on the **Step 2. Connect > CockroachDB client** subtab.
+    The **Connection info** modal displays on the **Step 2. Connect > Command Line** subtab.
 
 1. _(Optional)_ To configure your connection information, click **Go Back**:
     - Select the **SQL User** you want to connect with.
