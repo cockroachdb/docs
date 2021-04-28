@@ -4,22 +4,22 @@
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
 <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' | escape }}{% endif %}">
 {% if page.block_search or page.url contains 'v1.0' or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1' %}
-<meta name="robots" content="noindex">
-<meta name="robots" content="nofollow">
-<meta name="robots" content="noarchive">
-<meta name="robots" content="nocache">
+  <meta name="robots" content="noindex">
+  <meta name="robots" content="nofollow">
+  <meta name="robots" content="noarchive">
+  <meta name="robots" content="nocache">
 {% endif %}
 <title>{{ page.title }} | {{ site.site_title }}</title>
 {% assign page_url = page.url | relative_url | split: "/" %}
 {% if page.version %}
-<link rel="canonical" href="{{ site.versions["stable"] | absolute_url | append: "/" | append: page_url[3] }}">
+  <link rel="canonical" href="{{ site.versions["stable"] | absolute_url | append: "/" | append: page_url[3] }}">
 {% else %}
-<link rel="canonical" href="{{ page.canonical | absolute_url }}">
+  <link rel="canonical" href="{{ page.canonical | absolute_url }}">
 {% endif %}
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
-<link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
+  <link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
 {% if page.asciicast == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/asciinema-player.css' | relative_url }}">{% endif %}
 
 <script>
@@ -34,8 +34,12 @@ var pageConfig = {
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
 {% endif %}
-{% if page.asciicast == true %}<script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>{% endif %}
-{% if page.license == true %}<script src="{{ 'js/license-on-page.js' | relative_url }}"></script>{% endif %}
+{% if page.asciicast == true %}
+  <script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>
+{% endif %}
+{% if page.license == true %}
+  <script src="{{ 'js/license-on-page.js' | relative_url }}"></script>
+{% endif %}
 
 <link rel="preconnect dns-prefetch" href="//go.cockroachlabs.com" />
 <link rel="preconnect dns-prefetch" href="//cockroach-labs-docs.imgix.net" />
