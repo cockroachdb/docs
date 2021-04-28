@@ -96,16 +96,16 @@ The `kv.closed_timestamp.target_duration` [cluster setting](cluster-settings.htm
     Resolved timestamp notifications on every Kafka partition can be used to provide strong ordering and global consistency guarantees by buffering records in between timestamp closures. Use the "resolved" timestamp to see every row that changed at a certain time.
 
     The complexity with timestamps is necessary because CockroachDB supports transactions that can affect any part of the cluster, and it is not possible to horizontally divide the transaction log into independent changefeeds. For more information about this, [read our blog post on CDC](https://www.cockroachlabs.com/blog/change-data-capture/).
-    
+
 ## Delete messages
 
-Deleting a row will result in a changefeed message giving the primary key of the deleted row and a null value. With default options, deleting the row with primary key `5` will look like
+Deleting a row will result in a changefeed outputting the primary key of the deleted row and a null value. With default options, deleting the row with primary key `5` will output:
 
 ~~~ shell
 [5] {"after": null}
 ~~~
 
-In some unusual situations you may see a delete message for a row without first seeing an insert message. If an attempt is made to delete a row that does not exist, changefeed behavior is undefined to allow for optimizations at the storage layer: you may or may not get a delete message. Similarly, if there are multiple writes to a row within a single transaction, only the last one will propagate to a changefeed. This means that creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
+In some unusual situations you may receive a delete message for a row without first seeing an insert message. For example, if an attempt is made to delete a row that does not exist; changefeed behavior is undefined to allow for optimizations at the storage layer, therefore, you may or may not get a delete message. Similarly, if there are multiple writes to a row within a single transaction, only the last one will propagate to a changefeed. This means that creating and deleting a row within the same transaction will never result in an insert message, but may result in a delete message.
 
 ## Avro schema changes
 
