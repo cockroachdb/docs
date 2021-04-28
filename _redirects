@@ -4,7 +4,7 @@ layout: null
 
 {%- if site.baseurl == "/docs" %}
 / /docs/ 301!
-/docs/v21.1/api/cluster/reference/ https://cockroachdb-api-docs.netlify.com/ 200!
+/docs/v21.1/api/cluster/reference/* https://cockroachdb-api-docs.netlify.com/#cockroachdb-v2-api/:splat 200!
 /docs/cockroachcloud /docs/cockroachcloud/stable/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
 /docs/managed/* /docs/cockroachcloud/:splat 301!
