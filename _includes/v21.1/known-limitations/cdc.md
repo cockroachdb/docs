@@ -6,5 +6,5 @@
 - Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed).
 - Changefeeds cannot be altered. To alter, cancel the changefeed and [create a new one with updated settings from where it left off](create-changefeed.html#start-a-new-changefeed-where-another-ended).
 - Additional target options will be added, including partitions.
-- Changefeeds do not pick up data ingested with the [`IMPORT INTO`](import-into.html) statement.
+- When an [`IMPORT INTO`](import-into.html) statement is run, changefeed jobs targeting that table will fail.
 - Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files.
