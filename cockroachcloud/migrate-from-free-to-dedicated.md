@@ -7,7 +7,7 @@ toc: true
 This page has instructions for migrating data from a CockroachCloud Free (beta) cluster to a paid CockroachCloud cluster CSV using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
 
 - You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per CockroachCloud Free (beta) cluster.
-- You want to use any of the capabilities that are not yet available in CockroachCloud Free (beta) clusters, like the ability to enable backups or to import data.
+- You want to use any of the capabilities that are not yet available in CockroachCloud Free (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
 
 The steps below use sample data from the [`tpcc` workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads).
 
@@ -46,7 +46,7 @@ Repeat this step for each table you want to migrate. For example, let's export o
 ~~~ shell
 $ cockroach sql \
 --url 'postgres://<username>:<password>@free-tier.<region>.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=<path/to/certs_dir>/cc-ca.crt&options=--cluster=<cluster_name>' \
---execute "SELECT * FROM tpcc.distrcit" --format=csv > /Users/<username>/<path/to/file>/district.csv
+--execute "SELECT * FROM tpcc.district" --format=csv > /Users/<username>/<path/to/file>/district.csv
 ~~~
 
 This will create the `district.csv` file with the following data:
@@ -67,9 +67,9 @@ d_id,d_w_id,d_name,d_street_1,d_street_2,d_city,d_state,d_zip,d_tax,d_ytd,d_next
 
 ## Step 2. Host the files where the CockroachCloud cluster can access them
 
-After you've exported your Cockroach Free (beta) cluster data to your local machine, you now need to upload the files to a storage location where the paid CockroachCloud cluster can access them. **We recommend using [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).**
+After you've exported your Cockroach Free (beta) cluster data to your local machine, you now need to upload the files to a storage location where the paid CockroachCloud cluster can access them. **We recommend using [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) or [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html).**
 
-In this example, we'll use S3 to host the two files (`warehouse.csv` and `district.csv`) created in [Step 1](#step-1-export-data-to-a-local-csv-file).
+In this example, we'll use Amazon S3 to host the two files (`warehouse.csv` and `district.csv`) created in [Step 1](#step-1-export-data-to-a-local-csv-file).
 
 ## Step 3. Import the CSV
 
