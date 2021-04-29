@@ -6,7 +6,7 @@ toc: false
 comparison: true
 ---
 
-This page shows you how the key features of CockroachDB stack up against other databases. Hover over the features for their intended meanings, and click CockroachDB answers to view related documentation.
+This page shows you how the key features of CockroachDB stack up against other databases. Hover over the features for their intended meanings.
 
 <table class="comparison-chart">
   <tr>
