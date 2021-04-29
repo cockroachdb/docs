@@ -19,6 +19,10 @@ You can restore:
 - [Tables](#tables)
 
 {{site.data.alerts.callout_info}}
+`RESTORE` cannot restore backups made by newer versions of CockroachDB.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 {{site.data.alerts.end}}
 
