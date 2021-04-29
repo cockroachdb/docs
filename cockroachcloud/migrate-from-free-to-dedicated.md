@@ -173,7 +173,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 4. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the CockroachCloud cluster, add the foreign key relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
+Once all of the tables you want to migrate have been imported into the CockroachCloud cluster, add the [foreign key](../{{site.versions["stable"]}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
