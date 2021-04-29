@@ -12,7 +12,7 @@ redirect_from:
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page guides you through the simplest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal security. To create a more advanced CockroachCloud cluster, see [Create a Free Cluster](create-a-free-cluster.html).
+This page guides you through the quickest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see [Create a Free Cluster](create-a-free-cluster.html).
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -22,32 +22,13 @@ This page guides you through the simplest way to get started with CockroachDB by
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 1. On the **Clusters** page, click **Create Cluster**.
 1. On the **Create your cluster** page, select **CockroachCloud Free**.
-
-    {{site.data.alerts.callout_info}}
-    This cluster will be free forever.
-    {{site.data.alerts.end}}
-
 1. Click **Create your free cluster**.
 
-Your cluster will be created in approximately 20-30 seconds.
+    Your cluster will be created in approximately 20-30 seconds and the **Connection info** dialog will display.
+    
+1. Skip Step 1 (downloading the CA certificate) since we are going to connect with the less secure option `sslmode=required` instead.
 
-## Step 2. Set up your cluster connection
-
-Once your cluster is created, the **Connection info** dialog displays. A default SQL user and database have already been set up for you, so you will be taken to the **Command Line** tab of the **Connect** step.
-
-1. Skip the first two steps and copy the connection string provided, which will be used in the next steps (and to connect to your cluster in the future).
-
-    {{site.data.alerts.callout_danger}}
-    This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](https://www.cockroachlabs.com/docs/cockroachcloud/user-authorization.html).
-    {{site.data.alerts.end}}
-
-1. Edit your connection string by replacing `sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt` with `sslmode=require`:
-
-~~~
-cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
-~~~
-
-## Step 3. Install CockroachDB
+## Step 2. Install CockroachDB
 
 If you have not done so already, install the CockroachDB binary:
 
@@ -58,49 +39,30 @@ If you have not done so already, install the CockroachDB binary:
 </div>
 
 <section class="filter-content" markdown="1" data-scope="mac">
-1. Open your terminal and run the following command:
+
+1. In your terminal, use [Homebrew](https://brew.sh/) to install CockroachDB by running the following command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xJ
+    brew install cockroachdb/tap/cockroach
     ~~~
-
-    {{site.data.alerts.callout_info}}
-    You can also use Homebrew to install the CockroachDB binary by running `brew install cockroachdb/tap/cockroach`.
-    {{site.data.alerts.end}}
     
-1. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
-    
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    If you used Homebrew, Homebrew will automatically add the CockroachDB binary to your path.
-    {{site.data.alerts.end}}
 </section>
     
 <section class="filter-content" markdown="1" data-scope="linux">
-1. Open the command line interface and run the following command:
+
+1. In the command line interface, use [Homebrew](https://brew.sh/) to install CockroachDB by running the following command:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    brew install cockroachdb/tap/cockroach
     ~~~
     
-1. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
 </section>
     
 <section class="filter-content" markdown="1" data-scope="windows">
-  {% include windows_warning.md %}
+
+{% include windows_warning.md %}
 
 1. Download and extract the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip" class="windows-binary-download" id="windows-binary-download-{{page.version.version}}" data-eventcategory="windows-binary-download">CockroachDB {{ page.release_info.version }} archive for Windows</a>.
     
@@ -114,13 +76,31 @@ If you have not done so already, install the CockroachDB binary:
       <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
     </div>
     <div class="highlight"><pre class="highlight"><code><span class="nb">PS </span>C:\cockroach-{{ page.release_info.version }}.windows-6.2-amd64> .\cockroach.exe version</code></pre></div>
+    
 </section>
 
+## Step 3. Edit your connection string
+
+1. Copy the connection string provided in Step 3 of the dialog, which will be used in the next steps (and to connect to your cluster in the future).
+
+    {{site.data.alerts.callout_danger}}
+    This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    {{site.data.alerts.end}}
+
+1. Edit your connection string by replacing `sslmode=verify-full&sslrootcert=<your_certs_directory>/cc-ca.crt` with `sslmode=require`:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
+    ~~~
+    
+    Your username, password, and cluster name are pre-populated for you.
+    
 ## Step 4. Use the built-in SQL client
 
 You can now connect to your cluster using CockroachDB's built-in SQL client:
 
-1. In your terminal, run the command with the updated connection string that you saved in [Step 2](#step-2-set-up-your-cluster-connection):
+1. In your terminal, run the command with the updated connection string:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
