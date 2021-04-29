@@ -80,7 +80,7 @@ This article assumes you have already installed the OpenShift Container Platform
 	cockroach-operator-65c4f6df45-h5r5n   1/1     Running   0          51s
 	~~~
 
-### Step 3. Start CockroachDB
+## Step 3. Start CockroachDB
 
 1. When the Operator is ready, click **View Operator** to navigate to the **Installed Operators** page.
 
@@ -88,7 +88,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 	<img src="{{ 'images/v21.1/cockroachdb-operator-instance-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
-1. Make sure **CockroachDB Version** is set to an Operator-supported version. For a list of compatible image names, see the [Operator deployment definition](https://github.com/cockroachdb/cockroach-operator/blob/master/manifests/operator.yaml) on GitHub.
+1. Make sure **CockroachDB Version** is set to an valid CockroachDB version. For a list of compatible image names, see `spec.containers.env` in the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/f096daf45086136387a75092c0763689cb2a5b59/manifests/operator.yaml) on GitHub.
 
 1. This will open the **Create CrdbCluster** page. By default, this deploys a 3-node secure cluster. Leave the other fields unchanged and click **Create**.
 
@@ -118,9 +118,10 @@ To use the CockroachDB SQL client, first launch a secure pod running the `cockro
 This can be defined with the following YAML, which mounts the Operator's generated certificates:
 
 {{site.data.alerts.callout_success}}
-`spec.containers.image` should refer to the CockroachDB version you specified when [starting the nodes](#step-3-start-cockroachdb).
+`spec.containers.image` should match the **Image** value that is displayed under **Containers** when you select a CockroachDB pod on the **Pods** page. OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA with  `spec.containers.image`.
 {{site.data.alerts.end}}
 
+{% include copy-clipboard.html %}
 ~~~ yaml
 apiVersion: v1
 kind: Pod
@@ -207,7 +208,7 @@ spec:
 
 	{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 
-If you can't access the SQL client, this may be related to your `--certs-dir` or `--host` flags. 
+**Note:** If you can't access the SQL client, this may be related to your `--certs-dir` or `--host` flags. 
 
 1. Shell into the client pod and check for the necessary certs in the `--certs-dir` directory:
 
@@ -274,14 +275,14 @@ To access the CockroachDB cluster's [DB Console](ui-overview.html):
 
 1. In a new terminal window, port-forward from your local machine to the `crdb-tls-example-public` service:
 
-{% include copy-clipboard.html %}
-~~~ shell
-oc port-forward service/crdb-tls-example-public 8080
-~~~
+	{% include copy-clipboard.html %}
+	~~~ shell
+	oc port-forward service/crdb-tls-example-public 8080
+	~~~
 
-~~~
-Forwarding from [::1]:8080 -> 8080
-~~~
+	~~~
+	Forwarding from [::1]:8080 -> 8080
+	~~~
 
 1. Go to <a href="https://localhost:8080/" data-proofer-ignore>https://localhost:8080</a> and log in with the username and password you created earlier.
 
