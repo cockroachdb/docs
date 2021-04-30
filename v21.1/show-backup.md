@@ -32,7 +32,7 @@ Parameter | Description
 
 Option       | Value | Description
 -------------+-------+-----------------------------------------------------
-`privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Display original ownership of the backup.
+`privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
 
 ## Response
