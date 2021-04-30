@@ -89,7 +89,13 @@
       		      "/{{site.versions["stable"]}}/migration-overview.html"
       	      ]
       	    },
-      	    {
+            {
+      	      "title": "Migrate from a Free to Paid Cluster",
+      	      "urls": [
+      		      "/cockroachcloud/migrate-from-free-to-dedicated.html"
+      	      ]
+      	    },
+            {
       	      "title": "Migrate from Oracle",
       	      "urls": [
       		      "/{{site.versions["stable"]}}/migrate-from-oracle.html"
