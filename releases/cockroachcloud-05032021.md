@@ -13,15 +13,14 @@ Get future release notes emailed to you:
 ### General changes
 
 - New CockroachCloud clusters will now run CockroachDB [v20.2.8](v20.2.8.html).
-- [CockroachCloud Free](../cockroachcloud/quickstart.html) clusters are now available in four new regions:
+- [CockroachCloud Free](../cockroachcloud/quickstart.html) clusters are now available in four additional regions:
     - GCP: `europe-west1`, `asia-southeast1`
     - AWS: `eu-west-1`, `ap-southeast-1`
   
 ### Console changes
 
-- New users can now [sign up](../cockroachcloud/create-an-account.html) for CockroachCloud with Github Authorization. Current users can [switch their login method](../cockroachcloud/create-an-account.html#change-your-login-method) between email and GitHub.
+- New users can now [sign up](../cockroachcloud/create-an-account.html) for CockroachCloud with Github Authorization. Current users can [switch their login method](../cockroachcloud/create-an-account.html#change-your-login-method) between email and GitHub. Logging in with GitHub allows users to enforce [GitHub's two-factor authentication (2FA)](https://docs.github.com/en/github/authenticating-to-github/securing-your-account-with-two-factor-authentication-2fa) on their CockroachCloud account.
 - When logging in fails due to user input, the error message now includes [login method](../cockroachcloud/create-an-account.html#change-your-login-method) as a potential reason for failure.
-- In the **Send test email** form on the [**Alerts** page](../cockroachcloud/alerts-page.html), three new node-level options have been added to the **Alert type** dropdown menu, a success message is now shown when a test email is sent, and the recipient list is now reset after a successful send.
 - Previously, selecting a new cloud provider while [creating a cluster](../cockroachcloud/create-a-free-cluster.html) reset the **Region** and **Hardware per node** options to default. Now, equivalent region and hardware options are preselected, and the number of nodes per region is preserved when a new cloud provider is selected.
 
 ### Bug fixes
