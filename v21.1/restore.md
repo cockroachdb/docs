@@ -178,6 +178,10 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
 {{site.data.alerts.end}}
 
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
+
 ## Examples
 
 ### View the backup subdirectories
