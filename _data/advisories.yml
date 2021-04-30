@@ -1,3 +1,7 @@
+- advisory: 64325
+  summary: Race condition between long running reads and replica removal
+  versions: 19.2 and later
+  date: May 3, 2021
 - advisory: 63162
   summary: Invalid incremental backups under certain circumstances
   versions: 19.1 and later
