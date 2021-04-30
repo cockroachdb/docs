@@ -23,7 +23,7 @@ CockroachDB achieves this performance in [`SERIALIZABLE` isolation](demo-seriali
 
 <img src="{{ 'images/v21.1/tpcc140k.png' | relative_url }}" alt="TPC-C 140,000" style="border:1px solid #eee;max-width:100%" />
 
-| Metric                                          | CockroachDB 19.2 | CockroachDB 20.2 |
+| Metric                                          | CockroachDB 19.2 | CockroachDB 21.1 |
 |-------------------------------------------------+------------------+------------------|
 | Max warehouses with max efficiency (warehouses) |          100,000 |          140,000 |
 | Max throughput (tpmC)                           |        1,245,462 |        1,684,437 |
@@ -105,7 +105,7 @@ CockroachDB has no theoretical limitations to scaling, throughput, latency, or c
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multi-region-overview.html).
 
 - TPC-C Replication Instructions
 
