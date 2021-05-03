@@ -1,24 +1,23 @@
 ## Support levels
 
-Cockroach Labs has partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools.
+Cockroach Labs has partnered with open-source projects, vendors, and individuals to offer the following levels of support with third-party tools:
 
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the recommended version documented here.
 - **Beta support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
 
 If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
 
+For a list of tools supported by the CockroachDB community, see [Third-Party Tools Supported by the Community](community-tooling.html).
+
 ## Drivers
 
 | Language | Driver | Recommended version | Support level |
 |----------+--------+---------------------+---------------|
 | C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html) | [PostgreSQL 13](http://www.postgresql.org/docs/13/static/libpq.html) | Beta |
-| C++ | [libpqxx](build-a-c++-app-with-cockroachdb.html) | [7.1.1](https://github.com/jtv/libpqxx/releases) (Windows)<br>[4.0.1](https://github.com/jtv/libpqxx/releases) or higher (macOS) | Beta |
 | C# (.NET) | [Npgsql](build-a-csharp-app-with-cockroachdb.html) | [4.1.3.1](https://www.nuget.org/packages/Npgsql/) | Beta |
-| Clojure | [java.jdbc](build-a-clojure-app-with-cockroachdb.html) | [0.7.11](https://search.maven.org/search?q=g:org.clojure%20AND%20a:java.jdbc) | Beta |
 | Go | [pgx](build-a-go-app-with-cockroachdb.html)<hr>[pq](build-a-go-app-with-cockroachdb-pq.html) | [4.6.0](https://github.com/jackc/pgx/releases)<hr>[1.5.2](https://github.com/lib/pq/releases) | Full<hr>Full |
 | Java | [JDBC](build-a-java-app-with-cockroachdb.html) | [42.2.9](https://jdbc.postgresql.org/download.html#others) | Full |
 | JavaScript | [pg](build-a-nodejs-app-with-cockroachdb.html) | [8.2.1](https://www.npmjs.com/package/pg) | Beta |
-| PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | [PHP 7.4.6](https://www.php.net/downloads) | Beta |
 | Python | [psycopg2](build-a-python-app-with-cockroachdb.html) | [2.8.6](https://www.psycopg.org/docs/install.html) | Full |
 | Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [1.2.3](https://rubygems.org/gems/pg) | Full |
 
@@ -43,14 +42,13 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | GUI | Recommended version | Support level |
 |-----+---------------------+---------------|
 | [DBeaver](https://dbeaver.com/) | [5.2.3 or higher](https://dbeaver.com/download/) | Full |
-| [DbVisualizer](https://www.dbvis.com/) | [10.0.22 or higher](https://www.dbvis.com/download/) | Beta |
 
 ## Integrated development environments (IDEs)
 
 | IDE | Recommended version | Support level |
 |-----+---------------------+---------------|
 | [DataGrip](https://www.jetbrains.com/datagrip/) | [2021.1 or higher](https://www.jetbrains.com/datagrip/download) | Full |
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2021.1 or higher](https://www.jetbrains.com/idea/download) | Beta |
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | [2021.1 or higher](https://www.jetbrains.com/idea/download) | Full |
 
 ## Schema migration tools
 

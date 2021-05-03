@@ -574,13 +574,13 @@
             "title": "Third-Party Database Tools",
             "items": [
               {
-                "title": "Tools Supported by Cockroach Labs",
+                "title": "Supported by Cockroach Labs",
                 "urls": [
                   "/${VERSION}/third-party-database-tools.html"
                 ]
               },
               {
-                "title": "Tools Supported by the Community",
+                "title": "Supported by the Community",
                 "urls": [
                   "/${VERSION}/community-tooling.html"
                 ]
