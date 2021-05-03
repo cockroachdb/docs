@@ -35,7 +35,7 @@ Use this page to identify SQL statements that you may want to [troubleshoot](que
 If you haven't yet executed any queries in the cluster as a user, this page will initially be blank.
 {{site.data.alerts.end}}
 
-Parameter | Description
+Columns | Description
 -----|------------
 Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [**Statement Details** page](#statement-details-page).
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
@@ -170,17 +170,12 @@ Service latency can be affected by network latency, which is displayed for your 
 
 **Other Execution Statistics** displays the following statistics.
 
-Parameter | Description
+Statistic | Description
 ----------|------------
 Rows Read | The number of rows read by the statement. The gray bar indicates the mean number of rows read. The blue bar indicates one standard deviation from the mean.
 Disk Bytes Read | The size of the data read by the statement. The gray bar indicates the mean number of bytes read. The blue bar indicates one standard deviation from the mean.
 
 The **Statistics by Node** table provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Make Queries Fast](make-queries-fast.html#cluster-topology)).
-
-Parameter | Description
-----------|------------
-Node | ID of the gateway node.
-Details | The details for the statement for each node, similar to the [cluster-wide table in the Statements overview](#understand-the-statements-page).
 
 ## See also
 
