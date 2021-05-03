@@ -12,7 +12,7 @@ redirect_from:
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page guides you through the quickest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see [Create a Free Cluster](create-a-free-cluster.html).
+This page guides you through the quickest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see the [appendix](#appendix).
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -153,6 +153,14 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     > \q
     ~~~
 
+## Appendix
+
+This page outlines the quickest way to get started with CockroachDB. For information on other options that are available when creating a CockroachCloud Free (beta) cluster, see the following:
+
+- To create a free cluster with other configurations, see [Create a CockroachCloud Free (beta) Cluster](create-a-free-cluster.html).
+- To connect to a free cluster with other options and connection methods, see [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
+- For information about how to connect securely to your cluster (recommended), see [Authentication](authentication.html).
+    
 ## What's next?
 
 Learn more:
