@@ -4,8 +4,6 @@
 
 A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
 
-<img src="{{ 'images/v21.1/ui_summary_panel.png' | relative_url }}" alt="DB Console Summary Panel" style="border:1px solid #eee;max-width:40%" />
-
 Metric | Description
 --------|----
 Total Nodes | The total number of nodes in the cluster. [Decommissioned nodes](remove-nodes.html) are not included in this count.
