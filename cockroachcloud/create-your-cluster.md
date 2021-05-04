@@ -78,7 +78,7 @@ Node Size  | IOPS
 8 vCPU     | 1800
 16 vCPU    | 2000
  
-To change the hardware configuration after the cluster is created, you will have to [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+To change the hardware configuration after the cluster is created, [contact Support](https://support.cockroachlabs.com).
 
 See [Example](#example) for further guidance.
 
