@@ -81,7 +81,7 @@ If you have not done so already, install the CockroachDB binary:
 
 ## Step 3. Edit your connection string
 
-1. Copy the connection string provided in Step 3 of the dialog, and save it in a secure place to use in the next steps (and to connect to your cluster in the future).
+1. Copy the connection string provided in Step 3 of the dialog, and save it in a secure place (e.g., in a password manager) to use in the next steps (and to connect to your cluster in the future).
 
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
