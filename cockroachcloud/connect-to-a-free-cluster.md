@@ -22,14 +22,14 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster.
 
 1. In the top right corner of the CockroachCloud Console, click the **Connect** button.
 
-    The **Connection info** modal displays on the **Step 2. Connect > CockroachDB client** subtab.
+    The **Connection info** modal displays on the **Step 2. Connect > Command Line** subtab.
 
 1. _(Optional)_ To configure your connection information, click **Go Back**:
     - Select the **SQL User** you want to connect with.
     - Select the **Database** you want to connect to.
     - Click **Next**.
 
-1. Select a connection method (the instructions below will adjust accordingly):
+1. Select a connection method (the instructions in Step 2 below will adjust accordingly):
 
     <div class="filters clearfix">
         <button class="filter-button page-level" data-scope="command-line">Command line</button>
@@ -45,6 +45,9 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster.
 To connect to your cluster with the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html):
 
 1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
+
+    Alternatively, you can set [`sslmode=require`](authentication.html#ssl-mode-settings). This is less secure than using a CA certificate and should not be used with sensitive data.
+    
 1. Create a `certs` directory on your local machine:
 
     {% include_cached copy-clipboard.html %}

@@ -19,6 +19,10 @@ You can restore:
 - [Tables](#tables)
 
 {{site.data.alerts.callout_info}}
+`RESTORE` cannot restore backups made by newer versions of CockroachDB.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 `RESTORE` is a blocking statement. To run a restore job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 {{site.data.alerts.end}}
 
@@ -173,6 +177,10 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 {{site.data.alerts.callout_info}}
 If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
 {{site.data.alerts.end}}
+
+## Known limitations
+
+{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
 
 ## Examples
 

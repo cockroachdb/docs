@@ -17,21 +17,15 @@ The **Overview** dashboard displays the following time series graphs:
 
 ## SQL Queries
 
-<img src="{{ 'images/v21.1/ui_sql_queries.png' | relative_url }}" alt="DB Console SQL Queries graph" style="border:1px solid #eee;max-width:100%" />
-
 - In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
 
+See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
+
 ## Service Latency: SQL, 99th percentile
 
-<img src="{{ 'images/v21.1/ui_service_latency_99_percentile.png' | relative_url }}" alt="DB Console Service Latency graph" style="border:1px solid #eee;max-width:100%" />
-
-Service latency is calculated as the time between when the cluster receives a query and finishes executing the query. This time does not include returning results to the client.
-
-- In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node.
-
-- In the cluster view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster.
+{% include {{ page.version.version }}/ui/ui-sql-latency-99th-percentile.md %}
 
 ## Replicas per Node
 
@@ -53,7 +47,7 @@ The timeseries data used to power the graphs in the DB Console is stored within 
 
 <img src="{{ 'images/v21.1/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)).
 
 Metric | Description
 --------|--------

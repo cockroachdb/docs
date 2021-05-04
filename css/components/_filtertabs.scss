@@ -273,7 +273,9 @@
 			width: 140px;
 
 			&:before {
-				background-size: 22px;
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-size: contain;
 				width: 22px;
 				height: 22px;
 				content: ''; 
@@ -282,35 +284,35 @@
 			&#mac {
 
 				&:before {
-					background: url(../images/icon-apple.png) no-repeat center center;
+					background-image: url(../images/icon-apple.png);
 	        }
 			}
 
 			&#linux {
 
 				&:before {
-					background: url(../images/icon-linux.png) no-repeat center center;
+					background-image: url(../images/icon-linux.png);
 	        }
 			}
 
 			&#windows {
 
 				&:before {
-					background: url(../images/icon-windows.png) no-repeat center center;
+					background-image: url(../images/icon-windows.png);
 	        }
 			}
 
 			&#source {
 
 				&:before {
-					background: url(../images/icon-zipfile.png) no-repeat center center;
+					background-image: url(../images/icon-zipfile.png);
 				}
 			}
 
 			&#docker {
 
 				&:before {
-					background: url(../images/icon-docker.png) no-repeat center center;
+					background-image: url(../images/icon-docker.png);
 				}
 			}
 		}

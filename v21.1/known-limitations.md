@@ -33,6 +33,12 @@ If you are [performing an `IMPORT` of a `PGDUMP`](migrate-from-postgres.html) wi
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/50225)
 
+### Historical reads on restored objects
+
+{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
+
 ### Spatial support limitations
 
 CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html), with the following limitations:
@@ -182,18 +188,6 @@ To work around this limitation, you can adjust the `kv.snapshot_recovery.max_rat
 Before increasing this value, however, verify that you will not end up saturating your network interfaces, and once the problem has resolved, be sure to reset to the original value.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/37906)
-
-### Location-based time zone names
-
-Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. When starting a CockroachDB node on a machine missing time zone data, the node will not start.
-
-To resolve this issue on Linux, install the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`).
-
-To resolve this issue on Windows, download Go's official [zoneinfo.zip](https://github.com/golang/go/raw/master/lib/time/zoneinfo.zip) and set the `ZONEINFO` environment variable to point to the zip file. For step-by-step guidance on setting environment variables on Windows, see this [external article](https://www.techjunkie.com/environment-variables-windows-10/).
-
-Make sure to do this across all nodes in the cluster and to keep this time zone data up-to-date.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/36864)
 
 ### Change data capture
 
