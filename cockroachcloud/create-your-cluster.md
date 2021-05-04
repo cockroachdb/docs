@@ -38,12 +38,15 @@ For optimal performance, select the cloud provider region in which you are runni
 Some regions in GCP and AWS might not be displayed in the **Regions** list. We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See list of [EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and list of [GKE regions](https://cloud.google.com/about/locations/) for details.
 {{site.data.alerts.end}}
 
-**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following 4 GCP regions due to GCP's technical limitations:
+**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
 
-- `asia-northeast2`
-- `europe-north1`
-- `europe-west3`
-- `europe-west6`
+- Mumbai (`asia-south1`)
+- Osaka (`asia-northeast2`)
+- Hamina (`europe-north1`)
+- Frankfurt (`europe-west3`)
+- Zurich (`europe-west6`)
+
+If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
 
