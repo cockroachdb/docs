@@ -111,6 +111,10 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 > RESTORE FROM '{subdirectory}' IN '{destination}';
 ~~~
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v21.1:</span> If an index is restored from an incremental backup that was taken while the index was being created, `RESTORE` re-validates the restored [index](indexes.html).
+{{site.data.alerts.end}}
+
 ## Incremental backups with explicitly specified destinations
 
 To explicitly control where your incremental backups go, use the [`INCREMENTAL FROM`](backup.html#synopsis) syntax:

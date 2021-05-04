@@ -263,6 +263,10 @@ To explicitly point to where your incremental backups are, provide the previous 
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v21.1:</span> If an index is restored from an [incremental backup](take-full-and-incremental-backups.html) that was taken while the index was being created, `RESTORE` re-validates the restored [index](indexes.html).
+{{site.data.alerts.end}}
+
 ### Restore a backup asynchronously
 
 Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
