@@ -189,18 +189,6 @@ Before increasing this value, however, verify that you will not end up saturatin
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/37906)
 
-### Location-based time zone names
-
-Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. When starting a CockroachDB node on a machine missing time zone data, the node will not start.
-
-To resolve this issue on Linux, install the [`tzdata`](https://www.iana.org/time-zones) library (sometimes called `tz` or `zoneinfo`).
-
-To resolve this issue on Windows, download Go's official [zoneinfo.zip](https://github.com/golang/go/raw/master/lib/time/zoneinfo.zip) and set the `ZONEINFO` environment variable to point to the zip file. For step-by-step guidance on setting environment variables on Windows, see this [external article](https://www.techjunkie.com/environment-variables-windows-10/).
-
-Make sure to do this across all nodes in the cluster and to keep this time zone data up-to-date.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/36864)
-
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
