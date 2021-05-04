@@ -153,17 +153,15 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     > \q
     ~~~
 
-## Appendix
+## Learn more
 
 This page outlines the quickest way to get started with CockroachDB. For information on other options that are available when creating a CockroachCloud Free (beta) cluster, see the following:
 
-- To create a free cluster with other configurations, see [Create a CockroachCloud Free (beta) Cluster](create-a-free-cluster.html).
-- To connect to a free cluster with other options and connection methods, see [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
+- To create a free cluster with other configurations (e.g., a different cloud provider or region), see [Create a CockroachCloud Free (beta) Cluster](create-a-free-cluster.html).
+- To connect to a free cluster with other options (e.g., a CA certificate or different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
 - For information about how to connect securely to your cluster (recommended), see [Authentication](authentication.html).
     
-## What's next?
-
-Learn more:
+Next steps:
 
 - Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
