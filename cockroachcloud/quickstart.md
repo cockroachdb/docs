@@ -12,7 +12,7 @@ redirect_from:
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page guides you through the quickest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see the [appendix](#appendix).
+This page guides you through the quickest way to get started with CockroachDB by setting up a CockroachCloud Free (beta) cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see the [Learn more](#learn-more) section.
 
 {% include cockroachcloud/free-limitations.md %}
 
