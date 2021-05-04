@@ -26,6 +26,8 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
 
+Date format: MM/DD/YY
+
 <table>
 	<thead>
 		<tr>
