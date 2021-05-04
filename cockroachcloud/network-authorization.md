@@ -77,15 +77,15 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 
     This will probably be the same VPC as the VPC your EC2 instances and application are running in. You can also choose a different VPC as long as it is peered to the VPC your application is running in.
     
-1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 3.
+1. On the **Your VPCs** page, locate the IPv4 CIDR corresponding to the VPC you chose in Step 4.
 1. Click **Subnets** in the sidebar. 
-1. Locate the subnet IDs corresponding to the VPC you chose in Step 3.
+1. Locate the subnet IDs corresponding to the VPC you chose in Step 4.
 1. Click **Security Groups** in the sidebar. 
 1. <a name="step-8"></a> Click **Create security group** to create a security group within your VPC that allows inbound access from your EC2 instances on Port 26257:
   - In the **Security group name** field, enter a name for the security group.
   - In the **Description** field, enter a description for the security group. 
-  - From the **VPC** dropdown, select the VPC you chose in Step 3.
-  - In the **Inbound rules** section, click **Add rule**. Enter *26257* in the **Port range** field. In the **Source** field, enter the CIDR range from Step 4. 
+  - From the **VPC** dropdown, select the VPC you chose in Step 4.
+  - In the **Inbound rules** section, click **Add rule**. Enter *26257* in the **Port range** field. In the **Source** field, enter the CIDR range from Step 5. 
   - Click **Create security group**.
 
 Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli/) to continue:
