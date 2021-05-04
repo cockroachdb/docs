@@ -45,7 +45,7 @@ If you haven't yet run any transactions in the cluster as a user, this page will
 
 Column | Description
 -----|------------
-Transactions | Transaction.<br><br>To view the transaction fingerprint and details, click this to open the [**Transaction Details** page](#transaction-details-page).
+Transactions | The [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) that make up the transaction.<br><br>To view the transaction fingerprint and details, click this to open the [**Transaction Details** page](#transaction-details-page).
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
 Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing this transaction within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
 Bytes Read | Aggregation of all bytes [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean.
@@ -68,17 +68,15 @@ By default, the Transactions page displays all transactions executed within a on
 
 Click on a transaction fingerprint to open **Transaction Details**.
 
-- The *transaction fingerprint* is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction.
+- The **transaction fingerprint** is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction.
 - The **mean transaction time** is the mean average time it took to execute the transaction within the last hour or specified [time interval](#time-interval).
+- **Transaction resource** usage shows overall statistics about the transaction.
+    - **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour or specified [time interval](#time-interval).
+    - **Bytes read over network** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the statement was executed on a single node.
+    - **Max memory usage** is the maximum memory used by this transaction at any time during its execution within the last hour or specified time interval.
+    - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk](vectorized-execution.html#disk-spilling-operations) while executing this transaction within the last hour or specified time interval.
 
-**Transaction resource** usage shows overall statistics about the transaction.
-
-- **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour or specified [time interval](#time-interval).
-- **Bytes read over network** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the statement was executed on a single node.
-- **Max memory usage** is the maximum memory used by this transaction at any time during its execution within the last hour or specified time interval.
-- **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk](vectorized-execution.html#disk-spilling-operations) while executing this transaction within the last hour or specified time interval.
-
-The following details are also displayed for the SQL statements in the transaction:
+The statement table gives details for each SQL statement in the transaction:
 
 Column | Description
 -------|------------
