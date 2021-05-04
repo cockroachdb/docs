@@ -150,6 +150,6 @@ The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a pu
 
 ### What do I do if my queries are too slow?
 
-To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Performance Tuning](../{{site.versions["stable"]}}/performance-tuning.html) docs for more information.
+To optimize schema design to achieve your performance goals, we recommend working with our Sales Engineering team before you set up your cluster. You can also read our [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) and [Query Performance Optimization](../{{site.versions["stable"]}}/make-queries-fast.html) docs for more information.
 
 If you need additional help, contact [Support](https://support.cockroachlabs.com/hc/en-us).

@@ -8,7 +8,7 @@ redirect_from:
 
 This page describes the **Backups** page and how to restore your data.
 
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/backup.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/backup.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
 
