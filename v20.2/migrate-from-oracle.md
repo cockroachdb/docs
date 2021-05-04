@@ -118,7 +118,7 @@ import sys
 for lstfile in sys.argv[1:]:
   filename = lstfile.split(".")[0]
 
-  with open(sys.argv[1]) as f:
+  with open(lstfile) as f:
     reader = csv.reader(f, delimiter="|")
     with open(filename+".csv", "w") as fo:
       writer = csv.writer(fo)
