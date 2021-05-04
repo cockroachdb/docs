@@ -1521,6 +1521,12 @@
                     ]
                   },
                   {
+                    "title": "<code>DROP REGION</code>",
+                    "urls": [
+                      "/${VERSION}/drop-region.html"
+                    ]
+                  },
+                  {
                     "title": "<code>DROP TYPE</code>",
                     "urls": [
                       "/${VERSION}/drop-type.html"

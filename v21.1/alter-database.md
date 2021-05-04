@@ -17,6 +17,7 @@ Subcommand | Description
 [`OWNER TO`](owner-to.html) |  Change the owner of a database.
 [`RENAME`](rename-database.html) | Change the name of a database.
 [`ADD REGION`](add-region.html) | <span class="version-tag">New in v21.1:</span> Add a region to a [multi-region database](multiregion-overview.html).
+[`DROP REGION`](drop-region.html) | <span class="version-tag">New in v21.1:</span> Drop a region from a [multi-region database](multiregion-overview.html).
 [`SURVIVE {ZONE,REGION} FAILURE`](survive-failure.html) | <span class="version-tag">New in v21.1:</span> Add a survival goal to a [multi-region database](multiregion-overview.html).
 
 ## Viewing schema changes
