@@ -52,6 +52,10 @@ Some regions in GCP and AWS might not be displayed in the **Regions** list. We r
 - For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
 
 {{site.data.alerts.callout_info}}
+At this time, we do not support adding nodes to existing single-node clusters.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
 You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
 {{site.data.alerts.end}}
 
