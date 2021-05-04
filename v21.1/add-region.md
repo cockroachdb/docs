@@ -92,7 +92,7 @@ For more information, see [Database regions](multiregion-overview.html#database-
 
 ### Drop a region from a database
 
-To drop a region from a multi-region database, use the following statement:
+To [drop a region](drop-region.html) from a multi-region database, use the following statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -112,6 +112,7 @@ For more information, see [Database regions](multiregion-overview.html#database-
 ## See also
 
 - [Multi-region overview](multiregion-overview.html)
-- [`ALTER TABLE`](alter-table.html)
+- [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
+- [`ALTER TABLE`](alter-table.html)
 - [Other SQL Statements](sql-statements.html)

@@ -34,6 +34,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
+[`ADD REGION`](add-region.html) | <span class="version-tag">New in v21.1:</span> Add a [region](multiregion-overview.html) to a database.
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
@@ -63,6 +64,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP REGION`](drop-region.html) | <span class="version-tag">New in v21.1:</span> Drop a [region](multiregion-overview.html) from a database. 
 [`DROP SCHEMA`](drop-schema.html) |  Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
