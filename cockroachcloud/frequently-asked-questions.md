@@ -23,6 +23,8 @@ We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS 
 - Frankfurt (`europe-west3`)
 - Zurich (`europe-west6`)
 
+If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
+
 ### How do CockroachCloud free trials work?
 
 CockroachCloud offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
