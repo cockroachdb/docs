@@ -69,7 +69,13 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v20.2 to v21.1, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-TBD
+- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](architecture/replication-layer#non-voting-replicas) and [non-blocking transactions](transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
+
+- **Empty arrays in inverted indexes:** After finalization, [inverted indexes](inverted-indexes.html) can contain rows containing empty arrays in [`ARRAY`](array.html) columns. Note, however, that rows containing `NULL` values in an indexed column will still not be included in inverted indexes.
+
+- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](computed-columns).
+
+- **Changefeed support for primary key changes:** After finalization, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds) will detect primary key changes.
 
 ## Step 4. Perform the rolling upgrade
 
