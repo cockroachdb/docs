@@ -125,14 +125,13 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 #### Storage engine
 
- The `--storage-engine` flag is used to choose the storage engine used by the node.  Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
+The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
 
-Supported options:
+<span class="version-tag">Changed in v21.1:</span> As of v21.1, CockroachDB always uses the [Pebble storage engine](https://github.com/cockroachdb/pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
 
-- `pebble`: **Default** unless specified otherwise at node startup. Uses the [Pebble storage engine](https://github.com/cockroachdb/pebble).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format.  Pebble differs from RocksDB in that it:
-  - Is written in Go and implements a subset of RocksDB's large feature set.
-  - Contains optimizations that benefit CockroachDB.
-- `rocksdb`: Uses the [RocksDB](https://rocksdb.org) storage engine.
+{{site.data.alerts.callout_danger}}
+If you specified `--storage-engine=rocksdb` when starting nodes with v20.2, be sure to change that to `--storage-enginee=pebble` or remove the flag entirely before [upgrading to v21.1](upgrade-cockroach-version.html). Pebble is intended to be bi-directionally compatible with the RocksDB on-disk format, so the switch will be seamless during the upgrade process.
+{{site.data.alerts.end}}
 
 #### Store
 
