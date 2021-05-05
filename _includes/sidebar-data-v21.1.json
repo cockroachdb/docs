@@ -988,12 +988,6 @@
                 "urls": [
                   "/${VERSION}/logging-use-cases.html"
                 ]
-              },
-              {
-                "title": "Parse Logging Output",
-                "urls": [
-                  "/${VERSION}/parse-logging-output.html"
-                ]
               }
             ]
           },
