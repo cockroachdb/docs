@@ -12,7 +12,7 @@ This page describes some common logging use cases, their relevant [logging chann
 
 We provide an example [file sink configuration](configure-logs.html#output-to-files) for each use case. These configurations are entirely optional and are intended to highlight the contents of each logging channel. A sink can include any combination of logging channels. Moreover, a single logging channel can be used in more than one sink in your logging configuration. 
 
-Your deployment may use an external service to collect and programmatically read logging data. For an example that uses Elasticsearch, see [Parse Logging Output](parse-logging-output.html).
+Your deployment may use an external service (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)) to collect and programmatically read logging data.
 
 {{site.data.alerts.callout_info}}
 All log examples on this page use the default `crdb-v2` format. Most of the log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html). Logging channels may also contain events that are *unstructured*. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented.
@@ -76,27 +76,9 @@ All possible `OPS` event types are detailed in the [reference documentation](eve
 
 The [`HEALTH`](logging.html#health) channel logs operational events initiated by CockroachDB or reported by automatic processes. These can include resource usage details, connection errors, [gossip](https://en.wikipedia.org/wiki/Gossip_protocol) status, [replication](architecture/replication-layer.html) events, and runtime statistics.
 
-#### Example: Runtime stats
-
-This event contains various runtime statistics:
-
-~~~
-I210323 20:53:53.714286 232 2@server/status/runtime.go:553 ⋮ [n1] 1  runtime stats: 106 MiB RSS, 248 goroutines (stacks: 4.3 MiB), 28 MiB/51 MiB Go alloc/total (heap fragmentation: 5.2 MiB, heap reserved: 2.5 MiB, heap released: 24 MiB), 18 MiB/30 MiB CGO alloc/total (0.0 CGO/sec), 0.0/0.0 %%(u/s)time, 0.0 %%gc (0x), 46 KiB/107 KiB (r/w)net
-~~~
-
-- Preceding the entry counter `1` is the [`crdb-v2`](logformats.html#format-crdb-v2) event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
-- The rest of the log message consists of an unstructured event payload.
-
-#### Example: Node connection error
-
-This event describes a node connection error:
-
-~~~
-I210402 01:24:38.576326 40084 2@rpc/nodedialer/nodedialer.go:160 ⋮ [n4] 283  unable to connect to n3: failed to connect to n3 at ‹localhost:26259›: ‹initial connection heartbeat failed›: ‹rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp: i/o timeout"›
-~~~
-
-- Preceding the entry counter `283` is the [`crdb-v2`](logformats.html#format-crdb-v2) event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
-- The rest of the log message consists of an unstructured event payload. This entry indicates a [node liveness issue](cluster-setup-troubleshooting.html#node-liveness-issues) that may need troubleshooting.
+{{site.data.alerts.callout_info}}
+At this time, events logged in `HEALTH` are unstructured. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented. Structured `HEALTH` events will be added in the future.
+{{site.data.alerts.end}}
 
 ### SQL_SCHEMA
 
@@ -406,6 +388,5 @@ All possible `SQL_PERF` event types are detailed in the [reference documentation
 ## See also
 
 - [Notable Event Types](eventlog.html)
-- [Parse Logging Output](parse-logging-output.html)
 - [SQL Audit Logging](sql-audit-logging.html)
 - [Use Prometheus and Alertmanager](monitor-cockroachdb-with-prometheus.html)
