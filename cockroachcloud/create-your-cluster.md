@@ -51,6 +51,8 @@ Some regions in GCP and AWS might not be displayed in the **Regions** list. We r
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
 - For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
 
+{% include cockroachcloud/nodes-limitation.md %}
+
 {{site.data.alerts.callout_info}}
 You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
 {{site.data.alerts.end}}
