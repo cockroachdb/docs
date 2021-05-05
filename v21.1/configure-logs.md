@@ -11,7 +11,7 @@ This page describes how to configure CockroachDB logs with the [`--log` flag](co
 - The [format](logformats.html) used by the log messages.
 - The [redaction](#redact-logs) of log messages.
 
-For examples of how these settings can be used in practice, see [Logging Use Cases](logging-use-cases.html) and [Parse Logging Output](parse-logging-output.html).
+For examples of how these settings can be used in practice, see [Logging Use Cases](logging-use-cases.html).
 
 {{site.data.alerts.callout_info}}
 The logging flags previously used with `cockroach` commands are now deprecated. Instead, use the YAML definitions as described below. The [default logging configuration](#default-logging-configuration) uses YAML settings that are backward-compatible with v20.2 and earlier.
@@ -180,7 +180,7 @@ Fluentd servers accept the following parameters along with the [common sink para
 | `address` | Network address and port of the log collector.                                                                     |
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
 
-For an example of collecting logs over a network, see [Parse Logging Output](parse-logging-output.html). Further details about the network implementation are in [Logging sinks](logsinks.html#output-to-fluentd-compatible-log-collectors).
+Further details about the network implementation are in [Logging sinks](logsinks.html#output-to-fluentd-compatible-log-collectors).
 
 ### Output to `stderr`
 
@@ -218,7 +218,7 @@ Defaults for log files are set in `file-defaults`, which accepts all [common sin
 By default, CockroachDB adds log files to a `logs` subdirectory in the first on-disk [`store` directory](cockroach-start.html#store) (default: `cockroach-data`):
 
 ~~~
-/cockroach-data/logs
+cockroach-data/logs
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -266,8 +266,6 @@ file-defaults:
   format: json
 ~~~
 
-JSON uses a structured format that can be easily parsed by an external service. For an example, see [Parse Logging Output](parse-logging-output.html).
-
 {{site.data.alerts.callout_info}}
 `format` refers to the envelope of the log message, which contains the event metadata. This is separate from the event payload, which corresponds to its [event type](eventlog.html).
 {{site.data.alerts.end}}
@@ -293,8 +291,6 @@ fluent-defaults:
 {{site.data.alerts.callout_info}}
 `format` refers to the envelope of the log message. This is separate from the event payload, which is structured according to [event type](eventlog.html).
 {{site.data.alerts.end}}
-
-For an example of sending logs to an external log collector, see [Parse Logging Output](parse-logging-output.html).
 
 ### Set logging levels
 
