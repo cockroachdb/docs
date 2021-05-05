@@ -371,7 +371,7 @@ Time: 2ms total (execution 1ms / network 0ms)
 
 ### Rule 3. Use the right join type
 
-Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your statement in the majority of cases, and the optimizer is being improved in every new release of CockroachDB. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
+Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your statement in the majority of cases. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
 
 We can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
 
