@@ -6,6 +6,8 @@ toc: true
 
 <span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html) with database regions.
 
+{% include enterprise-feature.md %}
+
 {{site.data.alerts.callout_info}}
 `DROP REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
 {{site.data.alerts.end}}
@@ -29,7 +31,8 @@ You can only drop the primary region from a multi-region database if it's the la
 
 ## Required privileges
 
-The user must be a member of the [`admin`](authorization.html#roles) or [owner](authorization.html#object-ownership) roles, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+- To drop any database region, the user must be a member of the [`admin`](authorization.html#roles) or [owner](authorization.html#object-ownership) roles, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
+- To drop the primary (and final) database region, the user must be a member of the [`admin`](authorization.html#roles) or [owner](authorization.html#object-ownership) roles, or have the [`CREATE` privilege](authorization.html#supported-privileges) *and the `ZONECONFIG` privilege* on the database.
 
 ## Examples
 
@@ -113,6 +116,7 @@ SHOW REGIONS FROM DATABASE foo;
 ## See also
 
 - [Multi-region overview](multiregion-overview.html)
+- [`SET PRIMARY REGION`](set-primary-region.html)
 - [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)

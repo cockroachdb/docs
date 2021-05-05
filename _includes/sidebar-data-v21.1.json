@@ -1791,6 +1791,12 @@
                     ]
                   },
                   {
+                    "title": "<code>SET PRIMARY REGION</code>",
+                    "urls": [
+                      "/${VERSION}/set-primary-region.html"
+                    ]
+                  },
+                  {
                     "title": "<code>SET SCHEMA</code>",
                     "urls": [
                       "/${VERSION}/set-schema.html"

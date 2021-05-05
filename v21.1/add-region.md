@@ -6,12 +6,14 @@ toc: true
 
 <span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. ADD REGION` [statement](sql-statements.html) adds a [region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html).
 
+{% include enterprise-feature.md %}
+
 {{site.data.alerts.callout_info}}
 `ADD REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-In order to add a region with `ADD REGION`, you must first set a primary database region.  For an example showing how to add a primary region, see [Set the primary region](#set-the-primary-region).
+In order to add a region with `ADD REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](set-primary-region.html), or at [database creation](create-database.html).<br>For an example showing how to add a primary region with `ALTER DATABASE`, see [Set the primary region](#set-the-primary-region).
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -112,6 +114,7 @@ For more information, see [Database regions](multiregion-overview.html#database-
 ## See also
 
 - [Multi-region overview](multiregion-overview.html)
+- [`SET PRIMARY REGION`](set-primary-region.html)
 - [`DROP REGION`](drop-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
