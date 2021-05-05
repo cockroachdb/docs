@@ -56,7 +56,7 @@ Indexes create a trade-off: they greatly improve the speed of queries, but may s
 To maximize your indexes' performance, we recommend following the [secondary index best practices](schema-design-indexes.html#best-practices).
 
 {{site.data.alerts.callout_success}}
-For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html) and the [Performance Tuning](performance-tuning.html) tutorial.
+For more information about how to tune CockroachDB's performance, see [SQL Performance Best Practices](performance-best-practices-overview.html).
 {{site.data.alerts.end}}
 
 ### Storing columns

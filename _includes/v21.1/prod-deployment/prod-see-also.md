@@ -3,5 +3,5 @@
 - [Orchestrated Deployment](orchestration.html)
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [Performance Benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html)
-- [Performance Tuning](performance-tuning.html)
+- [Performance Tuning](performance-best-practices-overview.html)
 - [Local Deployment](start-a-local-cluster.html)

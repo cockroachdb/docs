@@ -10,9 +10,21 @@ If a [SQL statement](sql-statements.html) returns an unexpected result or takes 
 For a developer-centric walkthrough of optimizing SQL query performance, see [Make Queries Fast](make-queries-fast.html).
 {{site.data.alerts.end}}
 
-## Identify slow queries
+## Identify slow statements
 
-Use the [slow query log](#using-the-slow-query-log) or [DB Console](#using-the-db-console) to detect slow queries in your cluster.
+Use the [DB Console](#using-the-db-console) or [slow query log](#using-the-slow-query-log) to detect slow statements in your cluster.
+
+### Using the DB Console
+
+The [**Statements**](ui-statements-page.html) and [**Transactions**](ui-transactions-page.html) pages of the DB Console can be used to find slow queries. The **Statements** page displays information about individual statements on the cluster or node. The **Transactions** displays information about transactions, which are made up of one or more statements. To view the pages, [access the DB Console](ui-overview.html#db-console-access) and click either **Statements** or **Transactions** on the left.
+
+You can also check the [SQL metrics graphs](ui-sql-dashboard.html) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
+
+The tables and graphs show information on execution time, contention, network usage, and the number of rows [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer).
+
+By examining these graphs and tables in the DB Console, you can identify transactions and statements within those transactions that are performing poorly, and then use [`EXPLAIN`](explain.html) and [`EXPLAIN ANALYZE`](explain-analyze.html) to examine the statement plan and execution steps.
+
+For example, if you see a statement that reads a large number of rows from storage, you can investigate whether [adding an index](indexes.html) would reduce the number of rows scanned in the statement.
 
 ### Using the slow query log
 
@@ -69,12 +81,6 @@ Setting `sql.log.slow_query.latency_threshold` to a non-zero value enables traci
 {{site.data.alerts.callout_success}}
 {% include {{ page.version.version }}/ui/ui-log-files.md %}
 {{site.data.alerts.end}}
-
-### Using the DB Console
-
-High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
-
-You can also check the [service latency graph](ui-sql-dashboard.html#service-latency-sql-99th-percentile) and the [CPU graph](ui-hardware-dashboard.html#cpu-percent) on the SQL and Hardware Dashboards, respectively. If the graphs show latency spikes or CPU usage spikes, these might indicate slow queries in your cluster.
 
 ## Visualize statement traces in Jaeger
 
