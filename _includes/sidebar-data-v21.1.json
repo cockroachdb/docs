@@ -887,7 +887,12 @@
               {
                 "title": "Improving statement performance",
                 "urls": [
-                  "/${VERSION}/make-queries-fast.html",
+                  "/${VERSION}/make-queries-fast.html"
+                ]
+              },
+              {
+                "title": "Tuning with EXPLAIN",
+                "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
                 ]
               }
