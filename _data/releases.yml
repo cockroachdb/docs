@@ -229,6 +229,8 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: May 10, 2021
+      version: v21.1.0-rc.2
     - date: Apr 29, 2021
       version: v21.1.0-beta.5
     - date: Apr 19, 2021
