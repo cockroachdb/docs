@@ -1,17 +1,17 @@
 ---
-title: Optimize Query Performance
-summary: How to make your queries run faster during application development
+title: Optimize Statement Performance
+summary: How to make your statements run faster during application development
 toc: true
 ---
 
-This page provides an overview for optimizing query performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
+This page provides an overview for optimizing statement performance in CockroachDB. To get good performance, you need to look at how you're accessing the database through several lenses:
 
-- [SQL query performance](#sql-query-performance): This is the most common cause of performance problems, and where most developers should start.
+- [SQL statement performance](#sql-statement-performance): This is the most common cause of performance problems, and where most developers should start.
 - [Schema design](#schema-design): Depending on your SQL schema and the data access patterns of your workload, you may need to make changes to avoid creating "hotspots".
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## SQL statement performance
@@ -462,7 +462,7 @@ The results are consistently about 20-26ms with a merge join vs. 16-23ms when we
 
 ## Schema design
 
-If you are following the instructions in [the SQL performance section](#sql-query-performance) and still not getting the performance you want, you may need to look at your schema design and data access patterns to make sure you are not creating "hotspots" in your cluster that will lead to performance problems due to transaction contention.
+If you are following the instructions in [the SQL performance section](#sql-statement-performance) and still not getting the performance you want, you may need to look at your schema design and data access patterns to make sure you are not creating "hotspots" in your cluster that will lead to performance problems due to transaction contention.
 
 You can avoid contention with the following strategies:
 

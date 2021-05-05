@@ -885,9 +885,10 @@
                 ]
               },
               {
-                "title": "Tuning Tutorial",
+                "title": "Improving statement performance",
                 "urls": [
-                  "/${VERSION}/performance-tuning.html"
+                  "/${VERSION}/make-queries-fast.html",
+                  "/${VERSION}/sql-tuning-with-explain.html"
                 ]
               }
             ]
