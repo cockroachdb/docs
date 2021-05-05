@@ -94,8 +94,6 @@ $ cockroach demo movr
 
 For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies](topology-patterns.html) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment](demo-low-latency-multi-region-deployment.html).
 
-For a tutorial about performance tuning in CockroachDB, see [Performance Tuning](performance-tuning.html).
-
 For a tutorial on developing and deploying a multi-region web application for MovR, see [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html).
 
 ## See also

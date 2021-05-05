@@ -11,22 +11,26 @@ This page provides an overview for optimizing query performance in CockroachDB. 
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
-## SQL query performance
+## SQL statement performance
 
-To get good SQL query performance, follow the rules below (in approximate order of importance):
+To get good SQL statement performance, follow the rules below (in approximate order of importance):
 
 {{site.data.alerts.callout_info}}
-These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) queries are being run per second, and each query needs to run in milliseconds. These rules are not intended to apply to analytical queries.
+These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
 {{site.data.alerts.end}}
 
-- [Rule 1. Scan as few rows as possible](#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given query, it's going to be difficult to scale.
-- [Rule 2. Use the right index](#rule-2-use-the-right-index): Your query should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
+- [Rule 1. Scan as few rows as possible](#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given statement, it's going to be difficult to scale.
+- [Rule 2. Use the right index](#rule-2-use-the-right-index): Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
 - [Rule 3. Use the right join type](#rule-3-use-the-right-join-type): Depending on the relative sizes of the tables you are querying, the type of [join][joins] may be important. This should rarely be necessary because the [cost-based optimizer](cost-based-optimizer.html) should pick the best-performing join type if you add the right indexes as described in Rule 2.
 
-To show each of these rules in action, we will optimize a query against the [MovR data set](movr.html) as follows:
+{{site.data.alerts.callout_info}}
+To identify poorly performing statements, use the [DB Console and slow query log](query-behavior-troubleshooting.html#identify-slow-statements).
+{{site.data.alerts.end}}
+
+To show each of these rules in action, we will optimize a statement against the [MovR data set](movr.html) as follows:
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
@@ -367,9 +371,9 @@ Time: 2ms total (execution 1ms / network 0ms)
 
 ### Rule 3. Use the right join type
 
-Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your query in the majority of cases. This statement becomes more and more true with every new release of CockroachDB. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
+Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your statement in the majority of cases, and the optimizer is being improved in every new release of CockroachDB. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
 
-We can confirm that in this case the optimizer has already found the right join type for this query by using a hint to force another join type.
+We can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
 
 For example, we might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
 
@@ -493,7 +497,7 @@ Specific tasks:
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
+- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
 - [Hello World Example apps](hello-world-example-apps.html)
 
