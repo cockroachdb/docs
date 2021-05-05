@@ -64,7 +64,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
-[`DROP REGION`](drop-region.html) | <span class="version-tag">New in v21.1:</span> Drop a [region](multiregion-overview.html) from a database. 
+[`DROP REGION`](drop-region.html) | <span class="version-tag">New in v21.1:</span> Drop a [region](multiregion-overview.html) from a database.
 [`DROP SCHEMA`](drop-schema.html) |  Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
@@ -79,6 +79,7 @@ Statement | Usage
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SET SCHEMA`](set-schema.html) |  Change the schema of a table.
+[`SET PRIMARY REGION`](set-primary-region.html) | <span class="version-tag">New in v21.1:</span> Change the [primary region](multiregion-overview.html) of a multi-region database.
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
