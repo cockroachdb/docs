@@ -9,7 +9,7 @@ toc: true
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud Free (beta) cluster.
+This page shows you how to connect to your CockroachCloud Free (beta) cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
 {% include cockroachcloud/free-limitations.md %}
 
