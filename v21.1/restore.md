@@ -264,7 +264,9 @@ FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup
 ~~~
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v21.1:</span> If an index is restored from an [incremental backup](take-full-and-incremental-backups.html) that was taken while the index was being created, `RESTORE` re-validates the restored [index](indexes.html).
+<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version, but restored from a newer version.
+
+Incremental backups created by v20.2.2 and prior v20.2.x releases or v20.1.4 and prior v20.1.x releases may include incomplete data for indexes that were in the process of being created. Therefore, when incremental backups taken by these versions are restored by v21.1.0+, any indexes created during those incremental backups will be re-validated by `RESTORE`.
 {{site.data.alerts.end}}
 
 ### Restore a backup asynchronously
