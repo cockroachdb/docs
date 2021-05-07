@@ -28,7 +28,7 @@ All [`cockroach` commands](cockroach-commands.html) support logging. However, no
 
 Log messages in CockroachDB are directed into logging channels, which can in turn be assigned to output to one or more [logging sinks](configure-logs.html#configure-logging-sinks).
 
-This allows you to group channels that log related information (e.g., operational, security, or SQL events) into their own sinks. Each sink can output to a predetermined destination where the logs can be collected and parsed. For usage examples, see [Logging Use Cases](logging-use-caes.html).
+This allows you to group channels that log related information (e.g., operational, security, or SQL events) into their own sinks. Each sink can output to a predetermined destination where the logs can be collected and parsed. For usage examples, see [Logging Use Cases](logging-use-cases.html).
 
 | Channel                                             | Description                                                                                                                                                                                                                                                                                                                |
 |-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

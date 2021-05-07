@@ -91,7 +91,7 @@ Flag | Description
 
 ### Logging
 
-By default, the `debug zip` command logs errors it experiences to `stderr`. This includes events with `WARNING` [severity](logging.html#logging-levels) and higher.
+By default, the `debug zip` command logs errors it experiences to `stderr`. This includes events with `WARNING` [severity](logging.html#logging-levels-severities) and higher.
 
 Note that these are errors executing `debug zip`; these are not errors that the logs collected by `debug zip` contain.
 
