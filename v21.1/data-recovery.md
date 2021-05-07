@@ -11,7 +11,7 @@ For this tutorial, you'll use the [`movr`](movr.html) workload as an example. Mo
 This is a practical scenario of [data failure recovery](https://www.cockroachlabs.com/docs/v20.2/disaster-recovery.html#run-differentials) within the garbage collection window.
 
 {{site.data.alerts.callout_info}}
-You can use the workflow in this tutorial if the data issue is discovered within CockroachDB's [garbage collection](storage-layer.html#garbage-collection) window for a particular zone configuration, which by default is 25 hours.
+You can use the workflow in this tutorial if the data issue is discovered within CockroachDB's [garbage collection](architecture/storage-layer.html#garbage-collection) window for a particular zone configuration, which by default is 25 hours.
 {{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
@@ -251,5 +251,5 @@ If you will not use the cluster again, follow the process to [stop your cluster]
 
 - [Disaster Recovery](disaster-recovery.html)
 - [SQL Audit Logging](sql-audit-logging.html)
-- [`EXPERIMENTAL_AUDIT`](experimental_audit.html)
+- [`EXPERIMENTAL_AUDIT`](experimental-audit.html)
 - [`AS OF SYSTEM TIME`](as-of-system-time.html)
