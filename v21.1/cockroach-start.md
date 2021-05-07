@@ -153,7 +153,7 @@ Field | Description
 
 ### Logging
 
-By [default](configure-logs.html#default-logging-configuration), `cockroach start` writes all messages to log files, and prints nothing to `stderr`. This includes events with `INFO` [severity](logging.html#logging-levels) and higher. However, you can [customize the logging behavior](configure-logs.html) of this command by using the `--log` flag:
+By [default](configure-logs.html#default-logging-configuration), `cockroach start` writes all messages to log files, and prints nothing to `stderr`. This includes events with `INFO` [severity](logging.html#logging-levels-severities) and higher. However, you can [customize the logging behavior](configure-logs.html) of this command by using the `--log` flag:
 
 {% include {{ page.version.version }}/misc/logging-flags.md %}
 
