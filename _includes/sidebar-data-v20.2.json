@@ -955,6 +955,12 @@
                 "urls": [
                   "/${VERSION}/disaster-recovery.html"
                 ]
+              },
+              {
+                "title": "Data Recovery Tutorial",
+                "urls": [
+                  "/${VERSION}/data-recovery.html"
+                ]
               }
             ]
           },
