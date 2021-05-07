@@ -55,5 +55,5 @@ Network latency limits the performance of individual operations. You can use the
 
 - [Topology Patterns](topology-patterns.html)
 - [CockroachDB Performance](performance.html#latency)
-- [Performance Tuning](performance-tuning.html)
+- [Performance Tuning](performance-best-practices-overview.html)
 - [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html)

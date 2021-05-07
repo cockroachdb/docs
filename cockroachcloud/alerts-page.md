@@ -43,3 +43,22 @@ To send a test alert:
 1. Under **Send test email**, select a cluster and an alert type.
 1. Add at least one email address and click **Add**.
 1. Click **Send test email**.
+
+## Repeated alerts
+
+If the condition triggering an alert does not change, the alert will repeat at a specific cadence:
+
+**Storage Utilization:**
+
+- Cluster-wide alerts: every 60 minutes
+- Node-level alerts: every 60 minutes
+
+**CPU Utilization:**
+
+- Cluster-wide alerts: every 60 minutes
+- Node-level alerts: every 90 minutes
+
+**Memory Utilization:**
+
+- Cluster-wide alerts: every 60 minutes
+- Node-level alerts: every 90 minutes

@@ -19,7 +19,7 @@ If you have already optimized your SQL queries as described in [Make Queries Fas
 Take a look at [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html).
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## Transaction retry errors
@@ -88,7 +88,7 @@ Other common tasks:
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
-- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries)
+- [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements)
 - [Make Queries Fast][fast]
 - [Hello World Example apps](hello-world-example-apps.html)
 

@@ -7,11 +7,11 @@ toc: true
 This page provides best practices for optimizing query performance in CockroachDB.
 
 {{site.data.alerts.callout_success}}
-For a demonstration of some of these techniques, see [Performance Tuning](performance-tuning.html). For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
+For guidance on deployment and data location techniques to minimize network latency, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-queries).
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## DML best practices
@@ -334,7 +334,7 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 ## Understanding and avoiding transaction contention
 
 {{site.data.alerts.callout_success}}
-You can use a [statement trace](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) to identify transaction contention on a running cluster.
+You can use the DB Console [Statements](ui-statements-page.html) and [Transactions](ui-transactions-page.html) pages or a [statement trace](query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger) to identify transaction contention on a running cluster.
 {{site.data.alerts.end}}
 
 Transaction contention occurs when the following three conditions are met:
