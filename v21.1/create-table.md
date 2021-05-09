@@ -10,7 +10,11 @@ The `CREATE TABLE` [statement](sql-statements.html) creates a new table in a dat
 
 ## Required privileges
 
-The user must have the `CREATE` [privilege](authorization.html#assign-privileges) on the parent database.
+To create a table, the user must have one of the following:
+
+- Membership to the [`admin`](authorization.html#roles) role for the cluster.
+- Membership to the [owner](authorization.html#object-ownership) role for the database.
+- The [`CREATE` privilege](authorization.html#supported-privileges) on the database.
 
 ## Synopsis
 
@@ -77,6 +81,12 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
   {% include {{ page.version.version }}/sql/generated/diagrams/opt_with_storage_parameter_list.html %}
 </div>
 
+**opt_locality ::=**
+
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/opt_locality.html %}
+</div>
+
 </div>
 
 {{site.data.alerts.callout_success}}To create a table from the results of a <code>SELECT</code> statement, use <a href="create-table-as.html"><code>CREATE TABLE AS</code></a>.
@@ -95,20 +105,12 @@ Parameter | Description
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `LIKE table_name like_table_option_list` |  Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
 `opt_partition_by` | An [enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+`opt_locality` | <span class="version-tag">New in v21.1:</span> Specify a [locality](multiregion-overview.html#table-locality) for the table. In order to set a locality, the table must belong to a [multi-region database](multiregion-overview.html).<br><br>Note that multi-region features require an [enterprise license](enterprise-licensing.html).
 `opt_where_clause` |  An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 `opt_interleave` | [Interleave table into parent object](interleave-in-parent.html).<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
-## Table-level replication
-
-By default, tables are created in the default replication zone but can be placed into a specific replication zone. See [Create a Replication Zone for a Table](configure-replication-zones.html#create-a-replication-zone-for-a-table) for more information.
-
-## Row-level replication
-
-CockroachDB allows [enterprise users](enterprise-licensing.html) to [define table partitions](partitioning.html), thus providing row-level control of how and where the data is stored. See [Create a Replication Zone for a Table Partition](configure-replication-zones.html#create-a-replication-zone-for-a-partition) for more information.
-
-{{site.data.alerts.callout_info}}The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See <a href=partitioning.html#partition-using-primary-key>Partition using Primary Key</a> for more details.{{site.data.alerts.end}}
 
 ## Create a table like an existing table
 
@@ -461,104 +463,6 @@ You can use the [`CREATE TABLE AS`](create-table-as.html) statement to create a 
 
 {% include {{ page.version.version }}/computed-columns/simple.md %}
 
-### Create a table with partitions
-
-{{site.data.alerts.callout_info}}
-The primary key required for partitioning is different from the conventional primary key. To define the primary key for partitioning, prefix the unique identifier(s) in the primary key with all columns you want to partition and subpartition the table on, in the order in which you want to nest your subpartitions. See [Partition using Primary Key](partitioning.html#partition-using-primary-key) for more details.
-{{site.data.alerts.end}}
-
-#### Create a table with partitions by list
-
-In this example, we create a table and [define partitions by list](partitioning.html#partition-by-list).
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE rides (
-        id UUID NOT NULL,
-        city STRING NOT NULL,
-        vehicle_city STRING,
-        rider_id UUID,
-        vehicle_id UUID,
-        start_address STRING,
-        end_address STRING,
-        start_time TIMESTAMP,
-        end_time TIMESTAMP,
-        revenue DECIMAL(10,2),
-        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-        INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
-        INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
-        FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
-        CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city))
-        PARTITION BY LIST (city)
-          (PARTITION new_york VALUES IN ('new york'),
-          PARTITION chicago VALUES IN ('chicago'),
-          PARTITION seattle VALUES IN ('seattle'));
-~~~
-
-#### Create a table with partitions by range
-
-In this example, we create a table and [define partitions by range](partitioning.html#partition-by-range).
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE rides (
-        id UUID NOT NULL,
-        city STRING NOT NULL,
-        vehicle_city STRING,
-        rider_id UUID,
-        vehicle_id UUID,
-        start_address STRING,
-        end_address STRING,
-        start_time TIMESTAMP,
-        end_time TIMESTAMP,
-        ride_length INTERVAL as (start_time - end_time) STORED,
-        revenue DECIMAL(10,2),
-        CONSTRAINT "primary" PRIMARY KEY (ride_length ASC, city ASC, id ASC),
-        INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
-        INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
-        FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue),
-        CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city))
-        PARTITION BY RANGE (ride_length)
-          (PARTITION short_rides VALUES FROM ('0 seconds') TO ('30 minutes'),
-          PARTITION long_rides VALUES FROM ('30 minutes') TO (MAXVALUE));
-~~~
-
-### Show the definition of a table
-
-To show the definition of a table, use the [`SHOW CREATE`](show-create.html) statement. The contents of the `create_statement` column in the response is a string with embedded line breaks that, when echoed, produces formatted output.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CREATE rides;
-~~~
-
-~~~
-  table_name |                                                               create_statement
-+------------+----------------------------------------------------------------------------------------------------------------------------------------------+
-  rides      | CREATE TABLE rides (
-             |     id UUID NOT NULL,
-             |     city STRING NOT NULL,
-             |     vehicle_city STRING NULL,
-             |     rider_id UUID NULL,
-             |     vehicle_id UUID NULL,
-             |     start_address STRING NULL,
-             |     end_address STRING NULL,
-             |     start_time TIMESTAMP NULL,
-             |     end_time TIMESTAMP NULL,
-             |     ride_length INTERVAL NOT NULL AS (start_time - end_time) STORED,
-             |     revenue DECIMAL(10,2) NULL,
-             |     CONSTRAINT "primary" PRIMARY KEY (ride_length ASC, city ASC, id ASC),
-             |     INDEX rides_auto_index_fk_city_ref_users (city ASC, rider_id ASC),
-             |     INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (vehicle_city ASC, vehicle_id ASC),
-             |     FAMILY "primary" (id, city, vehicle_city, rider_id, vehicle_id, start_address, end_address, start_time, end_time, revenue, ride_length),
-             |     CONSTRAINT check_vehicle_city_city CHECK (vehicle_city = city)
-             | ) PARTITION BY RANGE (ride_length) (
-             |     PARTITION short_rides VALUES FROM ('00:00:00') TO ('00:30:00'),
-             |     PARTITION long_rides VALUES FROM ('00:30:00') TO (MAXVALUE)
-             | )
-(1 row)
-~~~
-
 ### Create a table with a hash-sharded primary index
 
 {% include {{page.version.version}}/performance/use-hash-sharded-indexes.md %}
@@ -763,6 +667,142 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
              | )
 (1 row)
 ~~~
+
+### Create tables in a multi-region database
+
+<span class="version-tag">New in v21.1:</span> To create a table with a specific [table locality](multiregion-overview.html#table-locality) in a [multi-region database](multiregion-overview.html), add a `LOCALITY` clause to the end of the table's `CREATE TABLE` statement.
+
+{{site.data.alerts.callout_info}}
+In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
+
+By default, all tables in a multi-region database have a [`REGIONAL`](multiregion-overview.html#regional-tables) locality.
+{{site.data.alerts.end}}
+
+#### Create a table with a global locality
+
+To create a table with a [`GLOBAL`](multiregion-overview.html#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
+
+The `GLOBAL` locality is useful for "read-mostly" tables of reference data that are rarely updated, but need to be available to all regions.
+
+For example, the `promo_codes` table of the [`movr` database](movr.html) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE promo_codes (
+    code STRING PRIMARY KEY,
+    description STRING,
+    creation_time TIMESTAMP,
+    expiration_time TIMESTAMP,
+    rules JSONB)
+    LOCALITY GLOBAL
+  ;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW TABLES] WHERE table_name='promo_codes';
+~~~
+
+~~~
+  schema_name | table_name  | type  | owner | estimated_row_count | locality
+--------------+-------------+-------+-------+---------------------+-----------
+  public      | promo_codes | table | demo  |                   0 | GLOBAL
+(1 row)
+~~~
+
+#### Create a table with a regional-by-table locality
+
+To create a table with a [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) locality, add a `LOCALITY REGIONAL BY TABLE` clause to the end of the `CREATE TABLE` statement.
+
+{{site.data.alerts.callout_info}}
+`REGIONAL BY TABLE IN PRIMARY REGION` is the default locality for all tables created in a multi-region database.
+{{site.data.alerts.end}}
+
+The `REGIONAL BY TABLE` locality is useful for tables that require low-latency reads and writes from specific region.
+
+For example, suppose you want to create a table for your application's end users in a specific state:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users_ny (
+    id UUID PRIMARY KEY,
+    name STRING,
+    address STRING)
+    LOCALITY REGIONAL BY TABLE IN "us-east1"
+  ;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM [SHOW TABLES] WHERE table_name='users_ny';
+~~~
+
+~~~
+  schema_name | table_name | type  | owner | estimated_row_count |            locality
+--------------+------------+-------+-------+---------------------+----------------------------------
+  public      | users_ny   | table | demo  |                   0 | REGIONAL BY TABLE IN "us-east1"
+(1 row)
+~~~
+
+#### Create a table with a regional-by-row locality
+
+To create a table with a [`REGIONAL-BY-ROW`](multiregion-overview.html#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
+
+The `REGIONAL BY ROW` locality is useful for tables that require low-latency reads and writes from different regions, depending on the row in the table.
+
+For example, the `vehicles` table of the [`movr` database](movr.html) is read to and written from nodes in different regions.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles (
+    id UUID PRIMARY KEY,
+    type STRING,
+    city STRING,
+    owner_id UUID,
+    creation_time TIMESTAMP,
+    status STRING,
+    current_location STRING,
+    ext JSONB)
+    LOCALITY REGIONAL BY ROW
+  ;
+~~~
+
+CockroachDB will automatically assign rows to regions, based on the locality of the node from which a row is inserted. It will then optimize all read queries on the table, based on the locality of the node.
+
+To override CockroachDB's automatic region assignment, you can assign rows to regions based on the value of a column of type `crdb_internal_region`.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles (
+    id UUID PRIMARY KEY,
+    type STRING,
+    city STRING,
+    region crdb_internal_region,
+    owner_id UUID,
+    creation_time TIMESTAMP,
+    status STRING,
+    current_location STRING,
+    ext JSONB)
+    LOCALITY REGIONAL BY ROW AS region;
+  ;
+~~~
+
+You can then manually set the values of the region with each [`INSERT`](insert.html) statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO vehicles (region, ...) VALUES ('us-east1', ...);
+~~~
+
+Alternatively, you could update the rows in the `region` column to compute the region based on the value of another column, like the `city` column.
+
+~~~ sql
+> UPDATE vehicles SET region = "us-east1" WHERE city IN (...) ...
+~~~
+
+For a more extended example, see [Set the table locality to `REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row).
 
 ## See also
 
