@@ -122,17 +122,12 @@ In fact, you can specify any column definition you like for the `REGIONAL BY ROW
 {% include copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
-  CASE WHEN city = 'amsterdam' THEN 'europe-west1'
-       WHEN city = 'paris' THEN 'europe-west1'
-       WHEN city = 'rome' THEN 'europe-west1'
-       WHEN city = 'new york' THEN 'us-east1'
-       WHEN city = 'boston' THEN 'us-east1'
-       WHEN city = 'washington dc' THEN 'us-east1'
-       WHEN city = 'san francisco' THEN 'us-west1'
-       WHEN city = 'seattle' THEN 'us-east1'
-       WHEN city = 'los angeles' THEN 'us-east1'
+  CASE
+    WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east-1'
+    WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west-1'
+    WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'eu-west-1'  
   END
-) STORED
+) STORED;
 ~~~
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
