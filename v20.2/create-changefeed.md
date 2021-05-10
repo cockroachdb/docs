@@ -53,7 +53,7 @@ URI Component      | Description
 Example of a Kafka sink URI:
 
 ~~~
-'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones&sasl_mechanism=SASL-SCRAM-SHA-256'
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user=petee&sasl_password=bones'
 ~~~
 
 #### Cloud storage sink
@@ -85,8 +85,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 `ca_cert`          | [Kafka](#kafka)                               | [`STRING`](string.html)             | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
 `client_cert`      | [Kafka](#kafka)                               | [`STRING`](string.html)             | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | [Kafka](#kafka)                               | [`STRING`](string.html)             | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
-`sasl_enabled`     | [Kafka](#kafka)                               | [`BOOL`](bool.html)                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
-`sasl_mechanism`   | [Kafka](#kafka)                               | [`STRING`](string.html)             | Can be set to [`SASL-SCRAM-SHA-256`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), [`SASL-SCRAM-SHA-512`](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram.html), or [`SASL-PLAIN`](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). A `sasl_user` and `sasl_password` are required. <br><br> **Default:** `SASL-PLAIN`
+`sasl_enabled`     | [Kafka](#kafka)                               | [`BOOL`](bool.html)                 | If `true`, [use SASL/PLAIN to authenticate](https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain.html). This requires a `sasl_user` and `sasl_password` (see below). <br><br>**Default:** `false`
 `sasl_user`        | [Kafka](#kafka)                               | [`STRING`](string.html)             | Your SASL username.
 `sasl_password`    | [Kafka](#kafka)                               | [`STRING`](string.html)             | Your SASL password.
 `file_size`        | [cloud](#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
