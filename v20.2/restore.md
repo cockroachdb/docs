@@ -328,7 +328,7 @@ WITH into_db = 'newdb';
 ## See also
 
 - [`BACKUP`][backup]
-- [Take Full and Incremental Backups](take-and-restore-encrypted-backups.html)
+- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
