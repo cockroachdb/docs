@@ -57,13 +57,13 @@ SHOW REGIONS FROM CLUSTER;
 
  _Database regions_ are a high-level abstraction for a geographic region. Each region is broken into multiple zones. These terms are meant to correspond directly to the region and zone terminology used by cloud providers.
 
-The regions added during node startup become _Database Regions_ when they are added to a database. To add the first region, use the [`ALTER DATABASE ... PRIMARY REGION` statement](add-region.html#set-the-primary-region).
+The regions added during node startup become _Database Regions_ when they are added to a database. To add the first region, use the [`ALTER DATABASE ... PRIMARY REGION` statement](set-primary-region.html).
 
 While the database has only one region assigned to it, it is considered a "multi-region database."  This means that all data in that database is stored within its assigned regions, and CockroachDB optimizes access to the database's data from the primary region.
 
-To add another database region, use the [`ALTER DATABASE ... ADD REGION` statement](add-region.html#add-a-region-to-a-database).
+To add another database region, use the [`ALTER DATABASE ... ADD REGION` statement](add-region.html).
 
-To show all of a database's regions, execute the [`SHOW REGIONS FROM DATABASE` statement](add-region.html#view-a-databases-regions).
+To show all of a database's regions, execute the [`SHOW REGIONS FROM DATABASE` statement](show-regions.html).
 
 {{site.data.alerts.callout_info}}
 If the default _Survival Goals_ and _Table Localities_ meet your needs, there is nothing else you need to do once you have set a database's primary region.
