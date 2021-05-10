@@ -41,6 +41,7 @@ table tr td:nth-child(2) {
  `INTERVAL` | ✓ | Standard | [`INTERVAL` documentation](interval.html)
  `JSON`/`JSONB` | ✓ | Common Extension | [`JSONB` documentation](jsonb.html)
  `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html)
+ `SERIAL`| ✓ | PostgreSQL Extension | [`SERIAL` documentation](serial.html)
  `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.
  `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html)
  `TIME` | ✓ | Standard | [`TIME` documentation](time.html)
@@ -113,7 +114,7 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Common statements | ✓ | Standard | [SQL Statements documentation](sql-statements.html)
+ Common statements | ✓ | Standard, PostgreSQL/CockroachDB Extension | [SQL Statements documentation](sql-statements.html)
  `UPSERT` | ✓ | PostgreSQL, MSSQL Extension | [`UPSERT` documentation](upsert.html)
  `EXPLAIN` | ✓ | Common Extension | [`EXPLAIN` documentation](explain.html)
  `SELECT INTO` | Alternative | Common Extension | You can replicate similar functionality using [`CREATE TABLE`](create-table.html) and then `INSERT INTO ... SELECT ...`.
@@ -163,7 +164,9 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Users | ✓ | Standard | [`GRANT` documentation](grant.html)
+ Users | ✓ | Standard | [Users documentation](authorization.html#sql-users)
+ Roles | ✓ | Standard | [Roles documentation](authorization.html#roles)
+ Object ownership | ✓ | Common Extension | [Ownership documentation](authorization.html#object-ownership)
  Privileges | ✓ | Standard | [Privileges documentation](authorization.html#assign-privileges)
 
 ### Miscellaneous
@@ -171,13 +174,15 @@ table tr td:nth-child(2) {
  Component | Supported | Type | Details
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
+ Computed columns (stored and virtual) | ✓ | Common Extension | [Computed Columns documentation](computed-columns.html)
  Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
- Information Schema | ✓ | Standard | [Information Schema documentation](information-schema.html)
+ Multi-region capabilities | ✓ | CockroachDB Extension | [Multi-region documentation](multiregion-overview.html)
+ System catalog schemas | ✓ | Standard, PostgreSQL/CockroachDB Extension | [`crdb_internal`](crdb-internal.html) (CockroachDB Extension)<br>[`information_schema`](information-schema.html) (Standard)<br>[`pg_catalog`](pg_catalog.html) (PostgreSQL Extension)<br>[`pg_extension`](pg_extension.html) (PostgreSQL Extension)
+ Sequences |  ✓ | Common Extension | [`CREATE SEQUENCE` documentation](create-sequence.html)
  Views | ✓ | Standard | [Views documentation](views.html)
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
- Common Table Expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
- Stored Procedures | Planned | Common Extension | Execute a procedure explicitly.
+ Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
+ Stored procedures | Planned | Common Extension | Execute a procedure explicitly.
  Cursors | ✗ | Standard | Traverse a table's rows.
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.
- Sequences |  ✓ | Common Extension | [`CREATE SEQUENCE` documentation](create-sequence.html)
