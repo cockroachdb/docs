@@ -263,6 +263,12 @@ To explicitly point to where your incremental backups are, provide the previous 
 FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
 ~~~
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version, but restored from a newer version.
+
+Incremental backups created by v20.2.2 and prior v20.2.x releases or v20.1.4 and prior v20.1.x releases may include incomplete data for indexes that were in the process of being created. Therefore, when incremental backups taken by these versions are restored by v21.1.0+, any indexes created during those incremental backups will be re-validated by `RESTORE`.
+{{site.data.alerts.end}}
+
 ### Restore a backup asynchronously
 
 Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
@@ -347,7 +353,7 @@ WITH into_db = 'newdb';
 ## See also
 
 - [`BACKUP`](backup.html)
-- [Take Full and Incremental Backups](take-and-restore-encrypted-backups.html)
+- [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
