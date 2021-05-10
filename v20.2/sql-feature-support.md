@@ -164,7 +164,7 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Users | ✓ | Standard | [Users documentation](authorization.html#sql-users)
+ Users | ✓ | Standard | [Users documentation](authorization.html#users)
  Roles | ✓ | Standard | [Roles documentation](authorization.html#roles)
  Object ownership | ✓ | Common Extension | <span class="version-tag">New in v20.2:</span> [Ownership documentation](authorization.html#object-ownership)
  Privileges | ✓ | Standard | [Privileges documentation](authorization.html#assign-privileges)
