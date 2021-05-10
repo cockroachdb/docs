@@ -4,16 +4,12 @@ summary: The DROP REGION statement drops a region from a multi-region database.
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html) with database regions.
+<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html).
 
 {% include enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
 `DROP REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_danger}}
-You can only drop the primary region from a multi-region database if it's the last remaining region.  After that, the database will no longer be a multi-region database.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -27,50 +23,59 @@ You can only drop the primary region from a multi-region database if it's the la
 | Parameter       | Description                                                                                                                                                       |
 |-----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `database_name` | The database from which you are dropping a [region](multiregion-overview.html#database-regions).                                                                      |
-| `region_name`   | The [region](multiregion-overview.html#database-regions) being dropped from this database.  Allowed values include any region present in `SHOW REGIONS FROM DATABASE database_name`. You can only drop the primary region from a multi-region database if it's the last remaining region. |
+| `region_name`   | The [region](multiregion-overview.html#database-regions) being dropped from this database.  Allowed values include any region present in `SHOW REGIONS FROM DATABASE database_name`.<br>You can only drop the primary region from a multi-region database if it's the last remaining region. |
 
 ## Required privileges
 
-- To drop any database region, the user must be a member of the [`admin`](authorization.html#roles) or [owner](authorization.html#object-ownership) roles, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
-- To drop the primary (and final) database region, the user must be a member of the [`admin`](authorization.html#roles) or [owner](authorization.html#object-ownership) roles, or have the [`CREATE` privilege](authorization.html#supported-privileges) *and the `ZONECONFIG` privilege* on the database.
+To drop a region from a database, the user must have one of the following:
+
+- Membership to the [`admin`](authorization.html#roles) role for the cluster.
+- Membership to the [owner](authorization.html#object-ownership) role, or the [`CREATE` privilege](authorization.html#supported-privileges), for the database and all [`REGIONAL BY ROW`](multiregion-overview#regional-by-row-tables) tables in the database.
 
 ## Examples
 
+{% include {{page.version.version}}/sql/multiregion-example-setup.md %}
+
 ### Set the primary region
 
-To add the first region, or to set an already-added region as the primary region, use the following statement:
+Suppose you have a database `foo` in your cluster, and you want to make it a multi-region database.
+
+To add the first region to the database, or to set an already-added region as the primary region, use a [`SET PRIMARY REGION`](set-primary-region.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-ALTER DATABASE foo PRIMARY REGION "us-east1";
+ALTER DATABASE foo SET PRIMARY REGION "us-east1";
 ~~~
 
 ~~~
 ALTER DATABASE PRIMARY REGION
 ~~~
 
-### Add a region to a database
+### Add regions to a database
 
-To add another region to a database that already has at least one region, use a statement like the following:
+To add more regions to a database that already has at least one region, use an [`ADD REGION`](add-region.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-ALTER database foo ADD REGION "us-west1";
+ALTER database foo ADD region "us-west1";
 ~~~
 
 ~~~
 ALTER DATABASE ADD REGION
 ~~~
 
-For more information, see [Database regions](multiregion-overview.html#database-regions).
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER database foo ADD region "europe-west1";
+~~~
 
-{{site.data.alerts.callout_info}}
-Only regions that are defined at [node startup time](cockroach-start.html#locality) can be added to a multi-region database. For more information, see [Cluster regions](multiregion-overview.html#cluster-regions).
-{{site.data.alerts.end}}
+~~~
+ALTER DATABASE ADD REGION
+~~~
 
 ### View a database's regions
 
-To view the regions associated with a multi-region database, use a [`SHOW REGIONS`](show-regions.html) statement:
+To view the regions associated with a multi-region database, use a [`SHOW REGIONS FROM DATABASE`](show-regions.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -78,18 +83,17 @@ SHOW REGIONS FROM DATABASE foo;
 ~~~
 
 ~~~
-  database |  region  | primary |          zones
------------+----------+---------+--------------------------
-  foo      | us-east1 |  true   | {us-east1-a,us-east1-b}
-  foo      | us-west1 |  false  | {us-west1-a,us-west1-b}
-(2 rows)
+  database |    region    | primary |  zones
+-----------+--------------+---------+----------
+  foo      | us-east1     |  true   | {b,c,d}
+  foo      | europe-west1 |  false  | {b,c,d}
+  foo      | us-west1     |  false  | {a,b,c}
+(3 rows)
 ~~~
 
-For more information, see [Database regions](multiregion-overview.html#database-regions).
+### Drop regions from a database
 
-### Drop a region from a database
-
-To drop a region from a multi-region database, use the following statement:
+To drop a region from a multi-region database, use a `DROP REGION` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -106,12 +110,68 @@ SHOW REGIONS FROM DATABASE foo;
 ~~~
 
 ~~~
-  database |  region  | primary |          zones
------------+----------+---------+--------------------------
-  foo      | us-east1 |  true   | {us-east1-a,us-east1-b}
+  database |    region    | primary |  zones
+-----------+--------------+---------+----------
+  foo      | us-east1     |  true   | {b,c,d}
+  foo      | europe-west1 |  false  | {b,c,d}
+(2 rows)
+~~~
+
+You can only drop the primary region from a multi-region database if it's the last remaining region.
+
+If you try to drop the primary region when there is more than one region, CockroachDB will return an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "us-east1";
+~~~
+
+~~~
+ERROR: cannot drop region "us-east1"
+SQLSTATE: 42P12
+HINT: You must designate another region as the primary region using ALTER DATABASE foo PRIMARY REGION <region name> or remove all other regions before attempting to drop region "us-east1"
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "europe-west1";
+~~~
+
+~~~
+ALTER DATABASE DROP REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW REGIONS FROM DATABASE foo;
+~~~
+
+~~~
+  database |  region  | primary |  zones
+-----------+----------+---------+----------
+  foo      | us-east1 |  true   | {b,c,d}
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "us-east1";
+~~~
+
+~~~
+ALTER DATABASE DROP REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW REGIONS FROM DATABASE foo;
+~~~
+
+~~~
+  database | region | primary | zones
+-----------+--------+---------+--------
+(0 rows)
+~~~
 
 ## See also
 

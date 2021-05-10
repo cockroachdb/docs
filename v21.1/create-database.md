@@ -28,7 +28,7 @@ Parameter | Description
 `CONNECTION LIMIT` |  Supported for compatibility with PostgreSQL. A value of `-1` indicates no connection limit. Values other than `-1` are currently not supported. By default, `CONNECTION LIMIT = -1`.
 `PRIMARY REGION region_name` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with `region_name` as [the primary region](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
 `REGIONS region_name_list` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with `region_name_list` as [database regions](multiregion-overview.html#database-regions).<br>Allowed values include any region returned by [`SHOW REGIONS FROM CLUSTER`](show-regions.html).<br>To set database regions at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.
-`SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with regional failure or zone failure [survival goals](multiregion-overview.html#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions](multiregion-overview.html#database-regions). To set a regional failure survival goal at database creation, a primary region must be specified in the same `CREATE DATABASE` statement.<br>Surviving zone failures is the default setting for multi-region databases.
+`SURVIVE ZONE FAILURE` (*Default*)<br>`SURVIVE REGION FAILURE` | <span class="version-tag">New in v21.1:</span> Create a [multi-region database](multiregion-overview.html) with regional failure or zone failure [survival goals](multiregion-overview.html#survival-goals).<br>To set the regional failure survival goal, the database must have at least 3 [database regions](multiregion-overview.html#database-regions).<br>Surviving zone failures is the default setting for multi-region databases.
 
 ## Example
 
@@ -129,7 +129,7 @@ Use the following command to specify regions and survival goals at database crea
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-central1", "us-west1" SURVIVE REGION FAILURE;
+> CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1", "us-west1" SURVIVE REGION FAILURE;
 ~~~
 
 {% include copy-clipboard.html %}
