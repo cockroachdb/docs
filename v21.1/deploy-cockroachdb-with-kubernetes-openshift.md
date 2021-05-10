@@ -58,9 +58,9 @@ This article assumes you have already installed the OpenShift Container Platform
 
 ## Step 2. Install the Operator
 
-1. Navigate to your OpenShift web console and click on **OperatorHub**.
+1. Navigate to your OpenShift web console and click **OperatorHub**.
 
-1. Enter "cockroach" in the search filter. There are two tiles called **CockroachDB Operator**. Find the tile _without_ the `Marketplace` label (which requires a subscription).
+1. Enter "cockroach" in the search box. There are two tiles called **CockroachDB Operator**. Find the tile _without_ the `Marketplace` label (which requires a subscription).
 
 	<img src="{{ 'images/v21.1/cockroachdb-operator-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
@@ -68,7 +68,7 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. On the **Install Operator** page, select `cockroachdb` in the **Installed Namespace** dropdown and click **Install**.
 
-1. Validate that the Operator is running:
+1. Confirm that the Operator is running:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -118,7 +118,7 @@ To use the CockroachDB SQL client, first launch a secure pod running the `cockro
 This can be defined with the following YAML, which mounts the Operator's generated certificates:
 
 {{site.data.alerts.callout_success}}
-`spec.containers.image` should match the **Image** value that is displayed under **Containers** when you select a CockroachDB pod on the **Pods** page. OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA with  `spec.containers.image`.
+`spec.containers.image` should match the **Image** value that is displayed on the **Pods** page under **Containers** when you select a CockroachDB pod. OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA for `spec.containers.image`.
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
@@ -206,7 +206,7 @@ spec:
 
 	Now you can run SQL commands against the cluster.
 
-	{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
+{% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 
 **Note:** If you can't access the SQL client, this may be related to your `--certs-dir` or `--host` flags. 
 
@@ -312,11 +312,11 @@ To run a sample [CockroachDB workload](cockroach-workload.html):
 
 ## Step 8. Delete the cluster
 
-1. To delete the custom resource, go to the **Installed Operators** page and find the cluster name of the CockroachDB cluster. Select **Delete CrdbCluster** from the menu.
+1. Go to the **Installed Operators** page and find the cluster name of the CockroachDB cluster. Select **Delete CrdbCluster** from the menu.
 
 	<img src="{{ 'images/v21.1/cockroachdb-operator-delete-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
-This will delete the CockroachDB cluster being run by the Operator. It will *not* delete: 
+This will delete the CockroachDB cluster being run by the Operator. It will *not* delete:
 
 - The persistent volumes that were attached to the pods. This can be done by deleting the PVCs via **Storage** > **Persistent Volume Claims**.
 - The opaque secrets used to authenticate the cluster. This can be done via **Workloads** > **Secrets**.
