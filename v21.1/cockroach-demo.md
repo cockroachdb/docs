@@ -52,7 +52,7 @@ Start a multi-node demo cluster:
 $ cockroach demo --nodes=<number of nodes> <other flags>
 ~~~
 
-Start a multi-region demo cluster with automatic geo-partitioning
+Start a multi-region demo cluster with automatic [geo-partitioning](#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning)
 
 ~~~ shell
 $ cockroach demo --geo-partitioned-replicas <other flags>
@@ -115,7 +115,7 @@ Flag | Description
 `--empty` | Start the demo cluster without a pre-loaded dataset.
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
-`--geo-partitioned-replicas` | Start a 9-node demo cluster with the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern applied to the [`movr`](movr.html) database.
+`--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning) applied to the [`movr`](movr.html) database.
 `--global` | <a name="global-flag"></a> This experimental flag is used to simulate a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
 `--insecure` |  Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` gives you an easy way test out CockroachDB [authorization features](authorization.html) and also creates a password (`admin`) for the `root` user for logging into the DB Console.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--max-sql-memory` | For each demo node, the maximum in-memory storage capacity for temporary SQL data, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** `128MiB`
@@ -446,7 +446,9 @@ You can also use this URL to connect an application to the demo cluster.
 $ cockroach demo --geo-partitioned-replicas
 ~~~
 
-This command starts a 9-node demo cluster with the `movr` database preloaded, and [partitions](partitioning.html) and [zone constraints](configure-replication-zones.html) applied to the primary and secondary indexes. For more information, see the [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html) topology pattern.
+This command starts a 9-node demo cluster with the `movr` database preloaded, and [partitions](partitioning.html) and [zone constraints](configure-replication-zones.html) applied to the primary and secondary indexes.
+
+{% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
 ### Shut down and restart nodes in a multi-node demo cluster
 

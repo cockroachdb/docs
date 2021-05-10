@@ -638,10 +638,10 @@
             ]
           },
           {
-            "title": "Multi-region Clusters",
+            "title": "Multi-region Capabilities",
             "items": [
               {
-                "title": "Multi-region Overview",
+                "title": "Overview",
                 "urls": [
                   "/${VERSION}/multiregion-overview.html"
                 ]
@@ -663,58 +663,52 @@
                 "urls": [
                   "/${VERSION}/when-to-use-regional-vs-global-tables.html"
                 ]
-              }
-            ]
-          },
-          {
-            "title": "Topology Patterns",
-            "items": [
-              {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/topology-patterns.html"
-                ]
               },
               {
-                "title": "Development",
-                "urls": [
-                  "/${VERSION}/topology-development.html"
-                ]
-              },
-              {
-                "title": "Basic Production",
-                "urls": [
-                  "/${VERSION}/topology-basic-production.html"
-                ]
-              },
-              {
-                "title": "Geo-Partitioned Replicas",
-                "urls": [
-                  "/${VERSION}/topology-geo-partitioned-replicas.html"
-                ]
-              },
-              {
-                "title": "Geo-Partitioned Leaseholders",
-                "urls": [
-                  "/${VERSION}/topology-geo-partitioned-leaseholders.html"
-                ]
-              },
-              {
-                "title": "Duplicate Indexes",
-                "urls": [
-                  "/${VERSION}/topology-duplicate-indexes.html"
-                ]
-              },
-              {
-                "title": "Follower Reads",
-                "urls": [
-                  "/${VERSION}/topology-follower-reads.html"
-                ]
-              },
-              {
-                "title": "Follow-the-Workload",
-                "urls": [
-                  "/${VERSION}/topology-follow-the-workload.html"
+                "title": "Topology Patterns",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/topology-patterns.html"
+                    ]
+                  },
+                  {
+                    "title": "Development",
+                    "urls": [
+                      "/${VERSION}/topology-development.html"
+                    ]
+                  },
+                  {
+                    "title": "Basic Production",
+                    "urls": [
+                      "/${VERSION}/topology-basic-production.html"
+                    ]
+                  },
+                  {
+                    "title": "Regional Tables",
+                    "urls": [
+                      "/${VERSION}/regional-tables.html"
+                    ]
+                  },
+                  {
+                    "title": "Global Tables",
+                    "urls": [
+                      "/${VERSION}/global-tables.html"
+                    ]
+                  },
+                  {
+                    "title": "Follower Reads",
+                    "urls": [
+                      "/${VERSION}/topology-follower-reads.html"
+                    ]
+                  },
+                  {
+                    "title": "Follow-the-Workload",
+                    "urls": [
+                      "/${VERSION}/topology-follow-the-workload.html"
+                    ]
+                  }
                 ]
               }
             ]
@@ -779,6 +773,12 @@
                 "urls": [
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "OpenShift Single-Cluster Deployment",
+                "urls": [
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
                 ]
               },
               {
@@ -885,9 +885,15 @@
                 ]
               },
               {
-                "title": "Tuning Tutorial",
+                "title": "Improving statement performance",
                 "urls": [
-                  "/${VERSION}/performance-tuning.html"
+                  "/${VERSION}/make-queries-fast.html"
+                ]
+              },
+              {
+                "title": "Tuning with EXPLAIN",
+                "urls": [
+                  "/${VERSION}/sql-tuning-with-explain.html"
                 ]
               }
             ]
