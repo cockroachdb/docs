@@ -4,7 +4,7 @@ summary: Guidance on using the follow-the-workload topology in a multi-region de
 toc: true
 ---
 
-In a multi-region deployment, follow-the-workload is the default pattern for tables that use no other pattern. In general, this default pattern is a good choice only for tables with the following requirements:
+In a multi-region deployment, follow-the-workload is the default behavior for tables that do not have a [table locality](multiregion-overview.html#table-locality). In general, this is a good choice only for tables with the following requirements:
 
 - The table is active mostly in one region at a time, e.g., following the sun.
 - In the active region, read latency must be low, but write latency can be higher.
@@ -12,7 +12,7 @@ In a multi-region deployment, follow-the-workload is the default pattern for tab
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider the [Duplicate Indexes](topology-duplicate-indexes.html) or [Follower Reads](topology-follower-reads.html) pattern.
+If read performance is your main focus for a table, but you want low-latency reads everywhere instead of just in the most active region, consider [Global Tables](global-tables.html) or [Follower Reads](topology-follower-reads.html).
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -27,12 +27,12 @@ If read performance is your main focus for a table, but you want low-latency rea
 
 ## Configuration
 
-Aside from [deploying a cluster across three regions](#cluster-setup) properly, with each node started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and AZ combination, this pattern requires no extra configuration. CockroachDB will balance the replicas for a table across the three regions and will assign the range lease to the replica in the region with the greatest demand at any given time (the follow-the-workload feature). This means that read latency in the active region will be low while read latency in other regions will be higher due to having to leave the region to reach the leaseholder. Write latency will be higher as well due to always involving replicas in multiple regions.
+Aside from [deploying a cluster across three regions](#cluster-setup) properly, with each node started with the [`--locality`](cockroach-start.html#locality) flag specifying its region and zone combination, this behavior requires no extra configuration. CockroachDB will balance the replicas for a table across the three regions and will assign the range lease to the replica in the region with the greatest demand at any given time (the follow-the-workload feature). This means that read latency in the active region will be low while read latency in other regions will be higher due to having to leave the region to reach the leaseholder. Write latency will be higher as well due to always involving replicas in multiple regions.
 
 <img src="{{ 'images/v21.1/topology-patterns/topology_follower_reads1.png' | relative_url }}" alt="Follower reads topology" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-This pattern is also used by [system ranges containing important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range).
+Follow-the-workload is also used by [system ranges containing important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range).
 {{site.data.alerts.end}}
 
 ## Characteristics

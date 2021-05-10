@@ -1,12 +1,12 @@
 ---
-title: Multi-region Overview
-summary: Learn how to use CockroachDB's improved multi-region user experience.
+title: Multi-region Capabilities Overview
+summary: Learn how to use CockroachDB's improved multi-region capabilities.
 toc: true
 ---
 
 ## Overview
 
-<span class="version-tag">New in v21.1:</span> CockroachDB has improved multi-region capabilities that make it easier to run global applications. It is intended that these capabilities will supersede the current set of [Multi-region Topology Patterns](topology-patterns.html#multi-region-patterns). The capabilities described here are still in development; they are available in [testing releases of v21.1](../releases/#testing-releases).
+<span class="version-tag">New in v21.1:</span> CockroachDB has improved multi-region capabilities that make it easier to run global applications. It is intended that these capabilities will supersede the current set of [Multi-region Topology Patterns](topology-patterns.html#multi-region). The capabilities described here are still in development; they are available in [testing releases of v21.1](../releases/#testing-releases).
 
 To take advantage of these improved capabilities, you will need to understand the following concepts:
 
@@ -134,17 +134,11 @@ Table locality settings are used for optimizing latency under different read/wri
 
 ### Regional tables
 
-Regional tables work well when your application requires low-latency reads and writes for an entire table from a single region.
-
-For _regional_ tables, access to the table will be fast in the table's "home region" and slower in other regions. In other words, CockroachDB optimizes access to data in regional tables from a single region. By default, a regional table's home region is the [database's primary region](#database-regions), but that can be changed to use any region added to the database.
-
-For instructions showing how to set a table's locality to `REGIONAL BY TABLE`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#regional-by-table)
-
-{{site.data.alerts.callout_info}}
-By default, all tables in a multi-region database are _regional_ tables that use the database's primary region. Unless you know your application needs different performance characteristics than regional tables provide, there is no need to change this setting.
-{{site.data.alerts.end}}
+{% include {{page.version.version}}/sql/regional-table-description.md %}
 
 ### Regional by row tables
+
+{% include {{page.version.version}}/sql/regional-by-row-table-description.md %}
 
 In _regional by row_ tables, individual rows are optimized for access from different regions. This setting divides a table and all of [its indexes](#indexes-on-regional-by-row-tables) into [partitions](partitioning.html), with each partition optimized for access from a different region. Like [regional tables](#regional-tables), _regional by row_ tables are optimized for access from a single region. However, that region is specified at the row level instead of applying to the whole table.
 
@@ -156,13 +150,7 @@ For instructions showing how to set a table's locality to `REGIONAL BY ROW`, see
 
 ### Global tables
 
- _Global_ tables are optimized for low-latency reads from every region in the database. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible.
-
-Use global tables when your application has a "read-mostly" table of reference data that is rarely updated, and needs to be available to all regions.
-
-For an example of a table that can benefit from the _global_ table locality setting in a multi-region deployment, see the `promo_codes` table from the [MovR application](movr.html).
-
-For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE ... SET LOCALITY`](set-locality.html#global)
+{% include {{page.version.version}}/sql/global-table-description.md %}
 
 ## Additional Features
 

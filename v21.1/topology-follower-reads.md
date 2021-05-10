@@ -4,7 +4,7 @@ summary: Guidance on using the follower reads topology in a multi-region deploym
 toc: true
 ---
 
-In a multi-region deployment, the follower reads pattern is a good choice for tables with the following requirements:
+In a multi-region deployment, [Follower Reads](follower-reads.html) are a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
 - Reads can be historical (4.8 seconds or more in the past).
@@ -12,7 +12,7 @@ In a multi-region deployment, the follower reads pattern is a good choice for ta
 - Table data must remain available during a region failure.
 
 {{site.data.alerts.callout_success}}
-This pattern is compatible with all of the other multi-region patterns except [Geo-Partitioned Replicas](topology-geo-partitioned-replicas.html). However, if reads from a table must be exactly up-to-date, use the [Duplicate Indexes](topology-duplicate-indexes.html) or [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
+If reads from a table must be exactly up-to-date, use [Global Tables](global-tables.html) or [Regional Tables](regional-tables.html) instead. Up-to-date reads are required by tables referenced by [foreign keys](foreign-key.html), for example.
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -33,7 +33,7 @@ Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/ge
 
 ### Summary
 
-Using this pattern, you configure your application to use the [follower reads](follower-reads.html) feature by adding an `AS OF SYSTEM TIME` clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.  
+You configure your application to use [follower reads](follower-reads.html) by adding an [`AS OF SYSTEM TIME`](as-of-system-time.html) clause when reading from the table. This tells CockroachDB to read slightly historical data from the closest replica so as to avoid being routed to the leaseholder, which may be in an entirely different region. Writes, however, will still leave the region to get consensus for the table.  
 
 ### Steps
 
