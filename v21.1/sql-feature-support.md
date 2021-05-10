@@ -26,27 +26,30 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Identifiers | ✓ | Standard | [Identifiers documentation](keywords-and-identifiers.html#identifiers)
- `INT` | ✓ | Standard | [`INT` documentation](int.html)
- `FLOAT`, `REAL` | ✓ | Standard | [`FLOAT` documentation](float.html)
- `BOOLEAN` | ✓ | Standard | [`BOOL` documentation](bool.html)
- `DECIMAL`, `NUMERIC` | ✓ | Standard | [`DECIMAL` documentation](decimal.html)
- `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html)
- `BYTES` | ✓ | CockroachDB Extension | [`BYTES` documentation](bytes.html)
- Automatic key generation | ✓ | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
- `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html)
- `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html)
- `AUTO INCREMENT` | Alternative | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
- Key-value pairs | Alternative | Extension | [Key-Value FAQ](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store)
  `ARRAY` | ✓ | Standard | [`ARRAY` documentation](array.html)
- `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html)
- JSON | ✓ | Common Extension | [`JSONB` documentation](jsonb.html)
- `TIME` | ✓ | Standard | [`TIME` documentation](time.html)
- XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing.
- `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we do not plan to support it.
- `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.
- `INET` | ✓ | PostgreSQL Extension | [`INET` documentation](inet.html)
+ `AUTO INCREMENT`<br>(Automatic key generation) | Alternative | Common Extension | [Automatic key generation FAQ](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb)
+ `BIT` | ✓ | Standard | [`BIT` documentation](bit.html)
+ `BYTES` | ✓ | CockroachDB Extension | [`BYTES` documentation](bytes.html)
+ `BOOLEAN` | ✓ | Standard | [`BOOL` documentation](bool.html)
+ `COLLATE` | ✓ | Standard | [`COLLATE` documentation](collate.html)
+ `DATE` | ✓ | Standard | [`DATE` documentation](date.html)
+ `DECIMAL`, `NUMERIC` | ✓ | Standard | [`DECIMAL` documentation](decimal.html)
  `ENUM` | ✓ | PostgreSQL Extension |  [`ENUM` documentation](enum.html)
+ `FLOAT`, `REAL` | ✓ | Standard | [`FLOAT` documentation](float.html)
+ `INET` | ✓ | PostgreSQL Extension | [`INET` documentation](inet.html)
+ `INT` | ✓ | Standard | [`INT` documentation](int.html)
+ `INTERVAL` | ✓ | Standard | [`INTERVAL` documentation](interval.html)
+ `JSON`/`JSONB` | ✓ | Common Extension | [`JSONB` documentation](jsonb.html)
+ `NULL` | ✓ | Standard | [*NULL*-handling documentation](null-handling.html)
+ `SET`| ✗ | MySQL| Only allow rows to contain values from a defined set of terms.
+ `STRING`, `CHARACTER` | ✓ | Standard | [`STRING` documentation](string.html)
+ `TIME` | ✓ | Standard | [`TIME` documentation](time.html)
+ `TIMESTAMP`/`TIMESTAMPTZ` | ✓ | Standard | [`TIMESTAMP` documentation](timestamp.html)
+ `UNSIGNED INT` | ✗ | Common Extension | `UNSIGNED INT` causes numerous casting issues, so we do not plan to support it.
+ `UUID` | ✓ | PostgreSQL Extension | [`UUID` documentation](uuid.html)
+  Identifiers | ✓ | Standard | [Identifiers documentation](keywords-and-identifiers.html#identifiers)
+  Key-value pairs | Alternative | Extension | [Key-Value FAQ](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store)
+  XML | ✗ | Standard | XML data can be stored as `BYTES`, but we do not offer XML parsing.
 
 ### Constraints
 
