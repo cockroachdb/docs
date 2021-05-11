@@ -4,7 +4,7 @@ summary: Programmatically access and monitor cluster and node status information
 toc: true
 ---
 
-The CockroachDB Cluster API enables you to obtain information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](ui-overview.html) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
+The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](ui-overview.html) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
 
 The Cluster API is hosted by all nodes of your cluster and provides information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console.
 
@@ -12,7 +12,7 @@ The Cluster API is hosted by all nodes of your cluster and provides information 
 
 The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). Additional endpoints are planned for future versions of CockroachDB.
 
-Each endpoint links to full [API reference documentation](../api/cluster/v2.html).
+Each listed endpoint links to its full [API reference documentation](../api/cluster/v2.html).
 
 Endpoint | Name | Description
 --- | --- | ---
