@@ -145,9 +145,9 @@ Because this kind of behavior is entirely unexpected, you should [file an issue]
 
 ## Local query testing
 
-If you are testing CockroachDB locally and want to log queries executed just by a specific node, you can either pass a CLI flag at node startup, or execute a SQL function on a running node.
+If you are testing CockroachDB locally and want to log queries executed just by a specific node, you can either pass a CLI flag at node startup or execute a SQL function on a running node.
 
-Using the CLI to start a new node, pass the `--vmodule` flag to the [`cockroach start`](cockroach-start.html) command. For example, to start a single node locally and log all client-generated SQL queries it executes, you'd run:
+Using the CLI to start a new node, use the `--vmodule` flag with the [`cockroach start`](cockroach-start.html) command. For example, to start a single node locally and log all client-generated SQL queries it executes, you'd run:
 
 ~~~ shell
 $ cockroach start --insecure --listen-addr=localhost --vmodule=exec_log=2 --join=<join addresses>

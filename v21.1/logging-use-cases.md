@@ -51,7 +51,7 @@ This [`node_decommissioning`](eventlog.html#node_decommissioning) event shows th
 I210401 23:30:49.319360 5943 1@util/log/event_log.go:32 ⋮ [-] 42 ={"Timestamp":1617319848793433000,"EventType":"node_decommissioning","RequestingNodeID":4,"TargetNodeID":4}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `TargetNodeID` shows that the decommissioning node is `4`.
 - `RequestingNodeID` shows that decommissioning was also started by node `4`. You will see this when using the `--self` flag with [`cockroach node decommission`](cockroach-node.html).
 
@@ -63,7 +63,7 @@ This [`node_restart`](eventlog.html#node_restart) event shows that a node has re
 I210323 20:53:44.765068 611 1@util/log/event_log.go:32 ⋮ [n1] 20 ={"Timestamp":1616532824096394000,"EventType":"node_restart","NodeID":1,"StartedAt":1616532823668899000,"LastUp":1616532816150919000}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `NodeID` shows that the restarted node is `1`.
 - `StartedAt` shows the timestamp when the node was most recently restarted.
 - `LastUp` shows the timestamp when the node was up before being restarted.
@@ -92,7 +92,7 @@ This [`alter_table`](eventlog.html#alter_table) event shows an [`ALTER TABLE ...
 I210323 20:21:04.621132 113397 5@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:50812›,hostnossl,user=root] 14 ={"Timestamp":1616530864502127000,"EventType":"alter_table","Statement":"‹ALTER TABLE movr.public.vehicles ADD FOREIGN KEY (city, owner_id) REFERENCES movr.public.users (city, id)›","User":"‹root›","DescriptorID":59,"ApplicationName":"‹movr›","TableName":"‹movr.public.vehicles›","MutationID":1}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the events originated from an application named `movr`. You can use this field to filter the logging output by application.
 - `DescriptorID` identifies the object descriptor (e.g., `movr.public.vehicles`) undergoing the schema change.
 - `MutationID` identifies the job that is processing the schema change.
@@ -105,7 +105,7 @@ This [`finish_schema_change`](eventlog.html#finish_schema_change) event shows th
 I210323 20:21:05.916626 114212 5@util/log/event_log.go:32 ⋮ [n1,job=643761650092900353,scExec,id=59,mutation=1] 15 ={"Timestamp":1616530865791439000,"EventType":"finish_schema_change","InstanceID":1,"DescriptorID":59,"MutationID":1}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `DescriptorID` identifies the object descriptor (e.g., `movr.public.vehicles`) affected by the schema change.
 - `MutationID` identifies the job that processed the schema change.
 
@@ -161,7 +161,7 @@ I210323 21:53:58.300180 53298 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]
 I210323 21:53:58.305074 53298 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:52632›,hostssl] 54 ={"Timestamp":1616536438305072000,"EventType":"client_connection_end","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:52632›","Duration":4896000}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `Network` shows the network protocol of the connection.
 - `RemoteAddress` shows the address of the SQL client, proxy, or other intermediate server.
 
@@ -182,7 +182,7 @@ I210323 23:35:19.458136 122619 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1
 I210323 23:35:19.458154 122619 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:53884›,hostssl,user=‹roach›] 64 ={"Timestamp":1616542519458154000,"EventType":"client_authentication_ok","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:53884›","Transport":"hostssl","User":"‹roach›","Method":"cert-password"}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - The two [`client_authentication_info`](eventlog.html#client_authentication_info) events show the progress of certificate authentication. The `Info` fields show the progress of certificate validation.
 - The [`client_authentication_ok`](eventlog.html#client_authentication_ok) event shows that certificate authentication was successful.
 - `User` shows that the SQL session is authenticated for user `roach`.
@@ -196,7 +196,7 @@ I210323 21:53:58.304797 53299 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]
 I210323 21:53:58.305016 53298 4@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:52632›,hostssl,user=‹roach›] 53 ={"Timestamp":1616536438305014000,"EventType":"client_session_end","InstanceID":1,"Network":"tcp","RemoteAddress":"‹[::1]:52632›","Duration":2273000}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - The two [`client_authentication_info`](eventlog.html#client_authentication_info) events show the progress of certificate authentication. The `Info` fields show that password authentication was attempted, in the absence of a client certificate.
 - The [`client_authentication_failed`](eventlog.html#client_authentication_failed) event shows that password authentication was unsuccessful. The `Detail` field shows the related error.
 - The [`client_session_end`](eventlog.html#client_session_end) event shows that the SQL session was terminated. This would typically be followed by a [`client_connection_end`](eventlog.html#client_connection_end) event.
@@ -233,7 +233,7 @@ This [`sensitive_table_access`](eventlog.html#sensitive_table_access) event show
 I210323 18:50:04.518707 1182 8@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:49851›,hostnossl,user=root] 2 ={"Timestamp":1616525404415644000,"EventType":"sensitive_table_access","Statement":"‹INSERT INTO \"\".\"\".customers(name, address, national_id, telephone, email) VALUES ('Pritchard M. Cleveland', '23 Crooked Lane, Garden City, NY USA 11536', 778124477, 12125552000, 'pritchmeister@aol.com')›","User":"‹root›","DescriptorID":52,"ApplicationName":"‹$ cockroach sql›","ExecMode":"exec","NumRows":1,"Age":103.066,"TxnCounter":28,"TableName":"‹defaultdb.public.customers›","AccessMode":"rw"}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `AccessMode` shows that the table was accessed with a read/write (`rw`) operation.
 - `ApplicationName` shows that the event originated from the [`cockroach sql`](cockroach-sql.html) shell. You can use this field to filter the logging output by application.
 
@@ -253,7 +253,7 @@ This [`change_database_privilege`](eventlog.html#change_database_privilege) even
 I210329 22:54:48.888312 1742207 7@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:52487›,hostssl,user=root] 1 ={"Timestamp":1617058488747117000,"EventType":"change_database_privilege","Statement":"‹GRANT ALL ON DATABASE movr TO roach›","User":"‹root›","DescriptorID":57,"ApplicationName":"‹$ cockroach sql›","Grantee":"‹roach›","GrantedPrivileges":["ALL"],"DatabaseName":"‹movr›"}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the event originated from the [`cockroach sql`](cockroach-sql.html) shell. You can use this field to filter the logging output by application.
 - `GrantedPrivileges` shows the privileges that were granted.
 
@@ -273,7 +273,7 @@ This [`create_role`](eventlog.html#create_role) event shows that a user `roach` 
 I210323 20:54:53.122681 1943 6@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:51676›,hostssl,user=root] 1 ={"Timestamp":1616532892887402000,"EventType":"create_role","Statement":"‹CREATE USER 'roach' WITH PASSWORD *****›","User":"‹root›","ApplicationName":"‹$ cockroach sql›","RoleName":"‹roach›"}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the event originated from the [`cockroach sql`](cockroach-sql.html) shell. You can use this field to filter the logging output by application.
 - `RoleName` shows the name of the user/role. For details on user and role terminology, see [Users and roles](authorization.html#users-and-roles).
 
@@ -317,7 +317,7 @@ I210401 22:57:20.047235 5475 9@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:
 
 Note the `FullTableScan` value in the logged event, which shows that this query performed a full table scan and likely caused a performance hit. To learn more about when this issue appears and how it can be resolved, see [SQL Tuning with EXPLAIN](sql-tuning-with-explain.html#issue-full-table-scans).
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the event originated from the [`cockroach sql`](cockroach-sql.html) shell. You can use this field to filter the logging output by application.
 
 #### Example: Internal SQL query
@@ -376,7 +376,7 @@ The following query was logged with a service latency (`age`) of 9329.26 millise
 I210323 20:02:12.095253 59168 10@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:50621›,hostnossl,user=root] 361 ={"Timestamp":1616529731816553000,"EventType":"slow_query","Statement":"‹UPDATE \"\".\"\".bank SET balance = CASE id WHEN $1 THEN balance - $3 WHEN $2 THEN balance + $3 END WHERE id IN ($1, $2)›","User":"‹root›","ApplicationName":"‹bank›","PlaceholderValues":["‹351›","‹412›","‹206›"],"ExecMode":"exec","SQLSTATE":"40001","ErrorText":"‹TransactionRetryWithProtoRefreshError: WriteTooOldError: write at timestamp 1616529731.152644000,2 too old; wrote at 1616529731.816553000,1: \"sql txn\" meta={id=6c8f776f pri=0.02076160 epo=1 ts=1616529731.816553000,1 min=1616529722.766004000,0 seq=0} lock=true stat=PENDING rts=1616529731.152644000,2 wto=false gul=1616529723.266004000,0›","Age":9329.26,"NumRetries":1,"TxnCounter":1}
 ~~~
 
-- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](logformats.html#format-crdb-v2) for details on the fields.
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the events originated from an application named `bank`. You can use this field to filter the logging output by application.
 - `ErrorText` shows that this query encountered a type of [transaction retry error](transaction-retry-error-reference.html#retry_write_too_old). For details on transaction retry errors and how to resolve them, see [Transaction retry error reference]](transaction-retry-error-reference.html).
 - `NumRetries` shows that the transaction was retried once before succeeding.

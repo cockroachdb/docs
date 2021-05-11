@@ -125,7 +125,7 @@ I210323 18:50:10.951550 1182 8@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:
 ~~~
 
 {{site.data.alerts.callout_info}}
-The above example shows the default [`crdb-v2`](logformats.html#format-crdb-v2) log format. This can be changed to another format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
+The above example shows the default [`crdb-v2`](log-formats.html#format-crdb-v2) log format. This can be changed to another format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -186,7 +186,7 @@ I210323 19:12:14.228964 1182 8@util/log/event_log.go:32 ⋮ [n1,client=‹[::1]:
 ~~~
 
 {{site.data.alerts.callout_info}}
-The above example shows the default [`crdb-v2`](logformats.html#format-crdb-v2) log format. This can be changed to another format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
+The above example shows the default [`crdb-v2`](log-formats.html#format-crdb-v2) log format. This can be changed to another format (e.g., JSON). For details, see [Configure Logs](configure-logs.html#file-logging-format).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}

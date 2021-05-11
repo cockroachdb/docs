@@ -6,15 +6,15 @@ toc: true
 
 This page describes how to configure CockroachDB logs with the [`--log` flag](cockroach-start.html#logging) and a [YAML payload](#yaml-payload). Most logging behaviors are configurable, including:
 
-- The [logging sinks](#configure-logging-sinks) that output logs to different locations, including over the network.
+- The [log sinks](#configure-log-sinks) that output logs to different locations, including over the network.
 - The [logging channels](logging-overview.html#logging-channels) that are mapped to each sink.
-- The [format](logformats.html) used by the log messages.
+- The [format](log-formats.html) used by the log messages.
 - The [redaction](#redact-logs) of log messages.
 
 For examples of how these settings can be used in practice, see [Logging Use Cases](logging-use-cases.html).
 
 {{site.data.alerts.callout_info}}
-The logging flags previously used with `cockroach` commands are now deprecated. Instead, use the YAML definitions as described below. The [default logging configuration](#default-logging-configuration) uses YAML settings that are backward-compatible with v20.2 and earlier.
+The logging flags previously used with `cockroach` commands are now deprecated. Instead, use the YAML definitions as described below. The [default logging configuration](#default-logging-configuration) uses YAML settings that are backward-compatible with the log files used in v20.2 and earlier.
 {{site.data.alerts.end}}
 
 ## Flag
@@ -63,9 +63,9 @@ Providing a logging configuration is optional. Any fields included in the YAML p
 You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
 {{site.data.alerts.end}}
 
-## Configure logging sinks
+## Configure log sinks
 
-Logging *sinks* route events from specified [logging channels](logging-overview.html#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-network), and the [standard error stream (`stderr`)](#output-to-stderr).
+Log *sinks* route events from specified [logging channels](logging-overview.html#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-network), and the [standard error stream (`stderr`)](#output-to-stderr).
 
 All supported output destinations are configured under `sinks`:
 
@@ -91,9 +91,9 @@ All supported sink types use the following common parameters.
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `filter`        | Minimum severity level at which logs enter the channel. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                                     |
-| `format`        | Log message format to use. Accepts one of the valid [log formats](logformats.html). For details, see [file logging format](#file-logging-format) and [network logging format](#network-logging-format).                                                                                                                                                                                                                      |
+| `format`        | Log message format to use. Accepts one of the valid [log formats](log-formats.html). For details, see [file logging format](#file-logging-format) and [network logging format](#network-logging-format).                                                                                                                                                                                                                      |
 | `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or [over a network](#output-to-network). For details, see [Redact logs](#redact-logs).                                                                                                                                           |
-| `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats](logformats.html).              |
+| `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats](log-formats.html).              |
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
 | `auditable`     | If `true`, enables `exit-on-error` on the sink. Also disables `buffered-writes` if the sink is under `file-groups`. This guarantees [non-repudiability](https://en.wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically enabled for [security-related logs](logging-use-cases.html#security-and-audit-monitoring). |
 
@@ -127,7 +127,7 @@ File groups accept the following parameters along with the [common sink paramete
 
 | Parameter         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `channels`        | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format).                                                                                                                                                                                        |
+| `channels`        | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [log sinks](log-sinks.html#channel-format).                                                                                                                                                                                        |
 | `dir`             | Output directory for log files generated by this sink.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `max-file-size`   | Approximate maximum size of individual files generated by this sink.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `max-group-size`  | Approximate maximum combined size of all files to be preserved for this sink. An asynchronous garbage collection removes files that cause the file set to grow beyond this specified size.                                                                                                                                                                                                                                                                                                                                                       |
@@ -176,11 +176,11 @@ Fluentd servers accept the following parameters along with the [common sink para
 
 | Parameter | Description                                                                                                        |
 |-----------|--------------------------------------------------------------------------------------------------------------------|
-| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format). |
+| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [log sinks](log-sinks.html#channel-format). |
 | `address` | Network address and port of the log collector.                                                                     |
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
 
-Further details about the network implementation are in [Logging sinks](logsinks.html#output-to-fluentd-compatible-log-collectors).
+Further details about the network implementation are in [log sinks](log-sinks.html#output-to-fluentd-compatible-log-collectors).
 
 ### Output to `stderr`
 
@@ -196,7 +196,7 @@ The `stderr` configuration accepts the following parameters along with the [comm
 
 | Parameter  | Description                                                       |
 |------------|-------------------------------------------------------------------|
-| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging sinks](logsinks.html#channel-format). |
+| `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [log sinks](log-sinks.html#channel-format). |
 | `no-color` | When `true`, removes terminal color [escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code) from the output. |
 
 {{site.data.alerts.callout_info}}
@@ -257,9 +257,9 @@ To ensure that you are protecting sensitive information, also [redact your logs]
 
 #### File logging format
 
-The default message format for log files is [`crdb-v2`](logformats.html#format-crdb-v2). Each `crdb-v2` log message starts with a flat prefix that contains event metadata (e.g., severity, date, timestamp, channel), followed by the event payload. For details on the metadata, see [Log formats](logformats.html#format-crdb-v2).
+The default message format for log files is [`crdb-v2`](log-formats.html#format-crdb-v2). Each `crdb-v2` log message starts with a flat prefix that contains event metadata (e.g., severity, date, timestamp, channel), followed by the event payload. For details on the metadata, see [Log formats](log-formats.html#format-crdb-v2).
 
-If you plan to read logs programmatically, you can switch to a [JSON](logformats.html#format-json) or [compact JSON](logformats.html#format-json-compact) format:
+If you plan to read logs programmatically, you can switch to a [JSON](log-formats.html#format-json) or [compact JSON](log-formats.html#format-json-compact) format:
 
 ~~~ yaml
 file-defaults:
@@ -281,7 +281,7 @@ Note that the [server parameters](#output-to-network) `address` and `net` are *n
 
 #### Network logging format
 
-The default message format for network output is [`json-fluent-compact`](logformats.html#format-json-fluent-compact). Each log message is structured as a JSON payload that can be read programmatically. The `json-fluent-compact` and [`json-fluent`](logformats.html#format-json-fluent) formats include a `tag` field that is required by the [Fluentd protocol](https://docs.fluentd.org/configuration/config-file). For details, see [Log formats](logformats.html#format-json-fluent-compact).
+The default message format for network output is [`json-fluent-compact`](log-formats.html#format-json-fluent-compact). Each log message is structured as a JSON payload that can be read programmatically. The `json-fluent-compact` and [`json-fluent`](log-formats.html#format-json-fluent) formats include a `tag` field that is required by the [Fluentd protocol](https://docs.fluentd.org/configuration/config-file). For details, see [Log formats](log-formats.html#format-json-fluent-compact).
 
 ~~~ yaml
 fluent-defaults:
@@ -425,5 +425,5 @@ Note that a default `dir` is not specified for `file-defaults` and `capture-stra
 ## See also
 
 - [Logging Use Cases](logging-use-cases.html)
-- [Logging sinks](logsinks.html)
-- [Log formats](logformats.html)
+- [log sinks](log-sinks.html)
+- [Log formats](log-formats.html)
