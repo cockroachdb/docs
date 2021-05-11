@@ -20,7 +20,17 @@ The DB Console is accessible from every node at `http://<host>:<http-port>`, or 
 Because the DB Console is built into CockroachDB, if a cluster becomes unavailable, most of the DB Console becomes unavailable as well. Therefore, it's essential to plan additional methods of monitoring cluster health as described below.
 {{site.data.alerts.end}}
 
+### Cluster API
+
+The [Cluster API](cluster-api.html) provides much of the same information about your cluster and nodes as is available in the DB Console. It is accessible at the same address and port on each node.
+
+For more information, see the Cluster API [overview](cluster-api.html) and [reference](../api/cluster/v2.html).
+
 ### Prometheus endpoint
+
+{{site.data.alerts.callout_info}}
+The listed `/_status/vars` endpoint is deprecated in favor of the [Cluster API](#cluster-api).
+{{site.data.alerts.end}}
 
 Every node of a CockroachDB cluster exports granular timeseries metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying timeseries data, but the format is **easy-to-parse** and can be massaged to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
@@ -52,6 +62,8 @@ replicas_quiescent{store="1"} 20
 ### Health endpoints
 
 CockroachDB provides two HTTP endpoints for checking the health of individual nodes.
+
+Note that these are also available as part of the [Cluster API](cluster-api.html) under `/v2/health/`.
 
 #### /health
 
@@ -109,6 +121,10 @@ Otherwise, it returns an HTTP `200 OK` status response code with an empty body:
 ~~~
 
 ### Raw status endpoints
+
+{{site.data.alerts.callout_info}}
+These endpoints are deprecated in favor of the [Cluster API](#cluster-api).
+{{site.data.alerts.end}}
 
 Several endpoints return raw status metrics in JSON at `http://<host>:<http-port>/#/debug`. Feel free to investigate and use these endpoints, but note that they are subject to change.  
 
