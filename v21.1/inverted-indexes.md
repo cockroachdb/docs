@@ -156,6 +156,12 @@ CREATE TABLE test (
 );
 ~~~
 
+## Inverted indexes on `REGIONAL BY ROW` tables in multi-region databases
+
+{% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
+
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+
 ## Examples
 
 ### Create a table with inverted index on a JSONB column
