@@ -38,17 +38,22 @@ All endpoints except `health/` and `login/` require authentication using a sessi
 ## Authentication
 
 1. Retrieve a session token using the `login/` endpoint. For example:
+
    ``` shell
    curl -d "username=user&password=pass" \
    -H 'Content-Type: application/x-www-form-urlencoded' \
    --cacert certs/ca.crt \
    https://localhost:8080/api/v2/login/
    ```
+
    A token is returned.
+
    ``` shell
    {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
    ```
+
 2. Pass the token (`session` value) with each call using the `X-Cockroach-API-Session` header. For example:
+
    ``` shell
    curl -H "X-Cockroach-API-Session: <token>" \
    --cacert certs/ca.crt \
