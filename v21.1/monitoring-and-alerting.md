@@ -22,7 +22,9 @@ Because the DB Console is built into CockroachDB, if a cluster becomes unavailab
 
 ### Cluster API
 
-The [Cluster API](cluster-api.html) provides much of the same information about your cluster and nodes as is available in the DB Console. It is accessible at the same address and port on each node.
+The [Cluster API](cluster-api.html) is a REST API that provides much of the same information about your cluster and nodes as is available from the DB Console.
+
+The API is accessible from each node at the same address and port as the DB Console.
 
 For more information, see the Cluster API [overview](cluster-api.html) and [reference](../api/cluster/v2.html).
 
