@@ -38,13 +38,13 @@ The timeseries data used to power the graphs in the DB Console is stored within 
 
 ## Can I reduce or disable the storage of timeseries data?
 
-Yes. By default, CockroachDB stores timeseries data for the last 10 days for display in the DB Console, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
+Yes. By default, CockroachDB stores timeseries data for the last 90 days for display in the DB Console, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
 
 {{site.data.alerts.callout_info}}After reducing or disabling timeseries storage, it can take up to 24 hours for timeseries data to be deleted and for the change to be reflected in DB Console metrics.{{site.data.alerts.end}}
 
 ### Reduce the interval for timeseries storage
 
-To reduce the interval for storage of timeseries data, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days). For example, to store timeseries data for the last 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+To reduce the interval for storage of timeseries data with 10s resolution, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days). For example, to store timeseries data for the last 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -59,9 +59,11 @@ To reduce the interval for storage of timeseries data, change the `timeseries.st
 ~~~
   timeseries.storage.resolution_10s.ttl
 +---------------------------------------+
-  360:00:00
+  120:00:00
 (1 row)
 ~~~
+
+You can follow similar steps to reduce the interval for storage of timeseries data with 30m resolution. You will need to change the `timeseries.storage.resolution_30m.ttl` cluster setting for this.
 
 ### Disable timeseries storage entirely
 
@@ -88,11 +90,16 @@ To disable the storage of timeseries data entirely, run the following command:
 (1 row)
 ~~~
 
-If you want all existing timeseries data to be deleted, change the `timeseries.storage.resolution_10s.ttl` cluster setting as well:     
+If you want all existing timeseries data to be deleted, change the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster setting as well:     
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '0s';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING timeseries.storage.resolution_30m.ttl = '0s';
 ~~~
 
 ## What happens when a node runs out of disk space?
