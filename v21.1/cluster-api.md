@@ -1,6 +1,6 @@
 ---
 title: Cluster API
-summary: Programmatically access and monitor cluster and node status information with this RESTful API.
+summary: Programmatically access and monitor cluster and node status information with a RESTful API.
 toc: true
 ---
 
