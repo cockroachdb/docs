@@ -2737,15 +2737,15 @@
                 ]
               },
               {
-                "title": "Logging Sinks",
+                "title": "Log Sinks",
                 "urls": [
-                  "/${VERSION}/logsinks.html"
+                  "/${VERSION}/log-sinks.html"
                 ]
               },
               {
                 "title": "Log Formats",
                 "urls": [
-                  "/${VERSION}/logformats.html"
+                  "/${VERSION}/log-formats.html"
                 ]
               },
               {
