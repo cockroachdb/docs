@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <div id="content">
+    {{content}}
+  </div>
+  {% include google_tag_manager.html %}
+  {% include google_remarketing.html %}
+  {% if page.twitter == true %}
+    {% include twitter_analytics.html %}
+  {% endif %}
+</body>
+</html>
