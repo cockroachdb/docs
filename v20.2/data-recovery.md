@@ -128,7 +128,7 @@ With the bad actor set up and the malicious transactions committed, Tyler Dalton
 
     The output provides the name of the malicious user and the timestamp for the transactions that you can use to correct Tyler Dalton's account. For more information on the format of the log, read [Audit Log File Format](experimental-audit.html#audit-log-file-format).
 
-## Step 5. Remove the bad actor
+## Step 4. Remove the bad actor
 
 Before correcting the data, you'll identify the privileges the user `bad_actor` has on the `movr` database.
 
@@ -171,7 +171,7 @@ Before correcting the data, you'll identify the privileges the user `bad_actor` 
     > DROP USER bad_actor;
     ~~~
 
-## Step 6. Restore the correct data values
+## Step 5. Restore the correct data values
 
 With the bad actor removed from the database, you'll now restore Tyler Dalton's ride balances from before the malicious data attack.
 
@@ -236,7 +236,7 @@ With the bad actor removed from the database, you'll now restore Tyler Dalton's 
 
     After updating each of the IDs with the corresponding ride values, Tyler Dalton's account will be restored to the state prior to the malicious data transactions.
 
-## Step 7. Clean up
+## Step 6. Clean up
 
 To remove the database from your cluster:
 
