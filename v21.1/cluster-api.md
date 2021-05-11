@@ -4,9 +4,9 @@ summary: Programmatically access and monitor cluster and node status information
 toc: true
 ---
 
-The CockroachDB Cluster API enables you to obtain information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console]() user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
+The CockroachDB Cluster API enables you to obtain information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](ui-overview.html) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
 
-The Cluster API is hosted by all nodes of your cluster and offers information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console.
+The Cluster API is hosted by all nodes of your cluster and provides information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console.
 
 ## Resources
 
@@ -33,7 +33,7 @@ To connect with the API on a secure cluster, you will need:
 
 All endpoints except `health/` and `login/` require authentication using a session token. To obtain a session token, you will need:
 
-* A [SQL role](../v21.1/create-role) that is a member of the admin role and has login permissions and a password. You will use these credentials with the `login/` endpoint to retrieve the session token which you can then use with further API cals.
+* A [SQL role](create-role.html) that is a member of the admin role and has login permissions and a password. You will use these credentials with the `login/` endpoint to retrieve the session token which you can then use with further API cals.
 
 ## Authentication
 
