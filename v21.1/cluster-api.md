@@ -59,3 +59,9 @@ All endpoints except `health/` and `login/` require authentication using a sessi
    --cacert certs/ca.crt \
    https://localhost:8080/api/v2/nodes/
    ```
+
+## Versioning and Stability
+
+Future versions of CockroachDB will continue to provide access to the v2.0 API until it is deprecated and may conconurrently provide multiple API versions.
+
+All endpoint paths and payloads will remain available within a major API version number (v2.x). Minor versions could add new endpoints but would not remove existing endpoints.
