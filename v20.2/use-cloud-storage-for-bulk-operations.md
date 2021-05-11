@@ -35,6 +35,10 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
  If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when performing bulk operations (e.g., `BACKUP`, `RESTORE`, etc.) by using the [`--external-io-disable-http` flag](cockroach-start.html#security). You can also disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure. <br><br>For encryption at rest, if your cloud provider offers transparent data encryption (e.g., [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)), you can use that to ensure that your backups are not stored on disk in cleartext.
+{{site.data.alerts.end}}
+
 <a name="considerations"></a>
 
 - <sup>1</sup> If the `AUTH` parameter is not provided, AWS connections default to `specified` and the access keys must be provided in the URI parameters. If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/).

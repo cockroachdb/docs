@@ -41,6 +41,10 @@ The location parameters often contain special characters that need to be URI-enc
 You can disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_info}}
+[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure. <br><br>For encryption at rest, if your cloud provider offers transparent data encryption (e.g., [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)), you can use that to ensure that your backups are not stored on disk in cleartext.
+{{site.data.alerts.end}}
+
 <a name="considerations"></a>
 
 <sup>1</sup> The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled.
