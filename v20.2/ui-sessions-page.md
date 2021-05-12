@@ -18,11 +18,16 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 Use the **Sessions** list to see the open sessions in the cluster. This includes active and idle sessions.
 
 {{site.data.alerts.callout_info}}
-A session is *active* if it has an open transaction (including implicit transactions, which are individual SQL statements), and *idle* if it has no open transaction. Active sessions consume [hardware resources](recommended-production-settings.html#hardware).
+A session is *active* if it has an open transaction (including implicit transactions, which are individual SQL statements), and *idle* if it has no open transaction. Active sessions consume hardware resources.
 {{site.data.alerts.end}}
 
-- If an active session also has an open transaction, the most recent SQL statement will be displayed in the **Statement** column.
-- To view [details of a session](#session-details), click on the **Session Age**.
+- If a session is active, the most recent SQL statement is displayed in the **Statement** column.
+- If a session is idle, **Transaction Duration**, **Statement Duration**, and **Statement** will display `N/A`.
+- To view [details of a session](#session-details), click the **Session Duration**.
+
+{{site.data.alerts.callout_info}}
+An active session can have an open transaction that is not currently running SQL. In this case, the **Statement** and **Statement Duration** columns will display `N/A` and **Transaction Duration** will display a value. Transactions that are held open can cause [contention](performance-best-practices-overview#understanding-and-avoiding-transaction-contention).
+{{site.data.alerts.end}}
 
 <img src="{{ 'images/v20.2/ui-sessions-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 

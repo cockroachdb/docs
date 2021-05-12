@@ -2,16 +2,11 @@
 title: Sessions Page
 summary: The Sessions page provides details of all open sessions in the cluster.
 toc: true
-redirect_from: admin-ui-sessions-page.html
 ---
 
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by a SQL user with the [`VIEWACTIVITY`](authorization.html#create-and-manage-users) role option. Note that non-`admin` users will see only their own sessions, while `admin` users see sessions for all users.
-{{site.data.alerts.end}}
+The **Sessions** page of the CockroachCloud Console provides details of all open sessions in the cluster.
 
- The **Sessions** page of the DB Console provides details of all open sessions in the cluster.
-
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Sessions** in the left-hand navigation.
+To view this page, click **Sessions** in the left-hand navigation of the CockroachCloud Console.
 
 ## Sessions list
 
@@ -29,7 +24,7 @@ A session is *active* if it has an open transaction (including implicit transact
 An active session can have an open transaction that is not currently running SQL. In this case, the **Statement** and **Statement Duration** columns will display `N/A` and **Transaction Duration** will display a value. Transactions that are held open can cause [contention](performance-best-practices-overview#understanding-and-avoiding-transaction-contention).
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/v21.1/ui-sessions-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/sessions-page.png' | relative_url }}" alt="CockroachCloud Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 The following are displayed for each active session:
 
@@ -40,7 +35,7 @@ Transaction Duration | Amount of time the transaction has been active, if there 
 Statement Duration | Amount of time the SQL statement has been active, if there is an active statement.
 Memory Usage | Amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever been allocated.
 Statement | Active SQL statement. If more than one statement is active, the most recent statement is shown.
-Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY` role option](authorization.html#create-and-manage-users).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
+Actions | Options to terminate the active query and/or terminate the session. These require the [`CANCELQUERY` role option](../stable/authorization.html#create-and-manage-users).<br><br>**Terminate Statement:** Ends the SQL statement. The session running this statement will receive an error.<br><br>**Terminate Session:** Ends the session. The client that holds this session will receive a "connection terminated" event.
 
 {{site.data.alerts.callout_success}}
 Sort by **Transaction Duration** to display all active sessions at the top.
@@ -50,7 +45,7 @@ Sort by **Transaction Duration** to display all active sessions at the top.
 
 Click the **Session Duration** of any session to display details and possible actions for that session.
 
-<img src="{{ 'images/v21.1/ui-sessions-details-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/sessions-details-page.png' | relative_url }}" alt="CockroachCloud Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 - **Session** shows the ID of the connected session.
 	- **Session Start Time** shows the timestamp at which the session started.
@@ -62,23 +57,14 @@ Click the **Session Duration** of any session to display details and possible ac
 - **Transaction** will display the following information for an open transaction.
 	- **Transaction Start Time** shows the timestamp at which the transaction started.
 	- **Number of Statements Executed** shows the total number of SQL statements executed by the transaction.
-	- **Number of Retries** shows the total number of [retries](transactions.html#transaction-retries) for the transaction.
-	- **Number of Automatic Retries** shows the total number of [automatic retries](transactions.html#automatic-retries) run by CockroachDB for the transaction.
-	- **Priority** shows the [priority](transactions.html#transaction-priorities) for the transaction.
+	- **Number of Retries** shows the total number of [retries](../stable/transactions.html#transaction-retries) for the transaction.
+	- **Number of Automatic Retries** shows the total number of [automatic retries](../stable/transactions.html#automatic-retries) run by CockroachDB for the transaction.
+	- **Priority** shows the [priority](../stable/transactions.html#transaction-priorities) for the transaction.
 	- **Read Only?** shows whether the transaction is read-only.
-	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
+	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`](../stable/performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
 	- **Memory Usage** shows the amount of memory currently allocated to this transaction, followed by the maximum amount of memory this transaction has ever allocated.
 - **Statement** will display the following information for an active statement.
 	- The SQL statement is shown.
 	- **Execution Start Time** shows the timestamp at which the statement was run.
-	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)](architecture/sql-layer.html#distsql) optimization.
-	- **View Statement Details** opens the [Statement Details](ui-statements-page.html#statement-details-page) page for the statement.
-
-## See also
-
-- [`SHOW SESSIONS`](show-sessions.html)
-- [Statements page](ui-statements-page.html)
-- [SQL Statements](sql-statements.html)
-- [Transactions](transactions.html)
-- [Transaction Error Retry Reference](transaction-retry-error-reference.html)
-- [Production Checklist](recommended-production-settings.html#hardware)
+	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)](../stable/architecture/sql-layer.html#distsql) optimization.
+	- **View Statement Details** opens the [Statement Details](statements-page.html#statement-details-page) page for the statement.

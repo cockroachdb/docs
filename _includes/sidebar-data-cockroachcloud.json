@@ -165,6 +165,12 @@
               "urls": [
                 "/cockroachcloud/statements-page.html"
               ]
+            },
+            {
+              "title": "Sessions Page",
+              "urls": [
+                "/cockroachcloud/sessions-page.html"
+              ]
             }
           ]
         },
