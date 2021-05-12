@@ -250,8 +250,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 {% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/52009)
-
 ## See also
 
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)

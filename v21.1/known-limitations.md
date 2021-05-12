@@ -541,5 +541,3 @@ CockroachDB does not support partitioning inverted indexes, including [spatial i
 ### Using interleaved tables in backups
 
 {% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/52009)
