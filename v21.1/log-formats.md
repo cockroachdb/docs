@@ -83,12 +83,12 @@ Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker
 | chan            | The channel number (omitted if zero for backward compatibility).                                                          |
 | file            | The file name where the entry originated.                                                                                 |
 | line            | The line number where the entry originated.                                                                               |
-| marker          | Redactability marker ` + redactableIndicator + ` (see below for details).                                       |
+| marker          | Redactability marker "⋮" (see below for details).                                       |
 
 The redactability marker can be empty; in this case, its position in the common prefix is
 a double ASCII space character which can be used to reliably identify this situation.
 
-If the marker ` + redactableIndicator + ` is present, the remainder of the log entry
+If the marker "⋮" is present, the remainder of the log entry
 contains delimiters (‹...›) around
 fields that are considered sensitive. These markers are automatically recognized
 by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) when log redaction is requested.
@@ -150,14 +150,14 @@ Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker tags counter
 | chan            | The channel number (omitted if zero for backward compatibility).                                                          |
 | file            | The file name where the entry originated.                                                                                 |
 | line            | The line number where the entry originated.                                                                               |
-| marker          | Redactability marker ` + redactableIndicator + ` (see below for details).                                       |
+| marker          | Redactability marker "⋮" (see below for details).                                       |
 | tags    | The logging tags, enclosed between `[` and `]`. May be absent. |
 | counter | The entry counter. Always present.                                                 |
 
 The redactability marker can be empty; in this case, its position in the common prefix is
 a double ASCII space character which can be used to reliably identify this situation.
 
-If the marker ` + redactableIndicator + ` is present, the remainder of the log entry
+If the marker "⋮" is present, the remainder of the log entry
 contains delimiters (‹...›) around
 fields that are considered sensitive. These markers are automatically recognized
 by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) when log redaction is requested.

@@ -22,7 +22,7 @@ configurable logging directory.
 The configuration key under the `sinks` key in the YAML
 configuration is `file-groups`. Example configuration:
 
-~~~
+~~~ yaml
 sinks:
    file-groups:           # file group configurations start here
       health:             # defines one group called "health"
@@ -45,7 +45,7 @@ the configurations set in the `file-defaults` section.
 
 For example:
 
-~~~
+~~~ yaml
 file-defaults:
     redactable: false # default: disable redaction markers
     dir: logs
@@ -120,7 +120,7 @@ the logging event is dropped.
 The configuration key under the `sinks` key in the YAML
 configuration is `fluent-servers`. Example configuration:
 
-~~~
+~~~ yaml
 sinks:
    fluent-servers:        # fluent configurations start here
       health:             # defines one sink called "health"
@@ -132,7 +132,7 @@ Every new server sink configured automatically inherits the configurations set i
 
 For example:
 
-~~~
+~~~ yaml
 fluent-defaults:
     redactable: false # default: disable redaction markers
 sinks:
@@ -188,7 +188,7 @@ process.
 The configuration key under the `sinks` key in the YAML configuration
 is `stderr`. Example configuration:
 
-~~~
+~~~ yaml
 sinks:
    stderr:           # standard error sink configuration starts here
       channels: DEV
@@ -247,7 +247,7 @@ be specified as a YAML array or as a string.
 
 Example configurations:
 
-~~~
+~~~ yaml
 # Select just these two channels. Space is important.
 channels: [OPS, HEALTH]
 
@@ -270,7 +270,7 @@ channels:
 It is also possible to select all channels, using the "all" keyword.
 For example:
 
-~~~
+~~~ yaml
 channels: all
 channels: 'all'
 channels: [all]
@@ -281,7 +281,7 @@ It is also possible to select all channels except for a subset, using the
 "all except" keyword prefix. This makes it possible to define sinks
 that capture "everything else". For example:
 
-~~~
+~~~ yaml
 channels: all except ops,health
 channels: all except [ops,health]
 channels: 'all except ops, health'
