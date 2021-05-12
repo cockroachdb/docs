@@ -1,6 +1,6 @@
 ---
 title: Log sinks
-summary: Reference documentation for log sinks.
+summary: Reference documentation for log sinks and supported fields.
 toc: true
 ---
 
