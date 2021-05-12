@@ -85,18 +85,13 @@ Field | Description
 
 ### Logging
 
-By default, `cockroach start-single-node` writes all messages to log files, and prints nothing to `stderr`. However, you can control the process's [logging](debug-and-error-logs.html) behavior with the following flags:
+By default, `cockroach start-single-node` writes all messages to log files, and prints nothing to `stderr`. This includes events with `INFO` [severity](logging.html#logging-levels-severities) and higher. However, you can [customize the logging behavior](configure-logs.html) of this command by using the `--log` flag:
 
 {% include {{ page.version.version }}/misc/logging-flags.md %}
 
 #### Defaults
 
-`cockroach start-single-node` uses the equivalent values for these logging flags by default:
-
-- `--log-dir=<first store dir>/logs`
-- `--logtostderr=NONE`
-
-This means, by default, CockroachDB writes all messages to log files, and never prints to `stderr`.
+See the [default logging configuration](configure-logs.html#default-logging-configuration).
 
 ## Standard output
 

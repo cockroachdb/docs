@@ -219,9 +219,9 @@ Flag | Description
 
 ### Logging
 
-By default, the `cockroach workload` command logs errors to `stderr`.
+By default, the `cockroach workload` command logs messages to `stderr`. This includes events with `INFO` [severity](logging.html#logging-levels-severities) and higher.
 
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
 
 ## Examples
 

@@ -969,6 +969,29 @@
             ]
           },
           {
+            "title": "Logging",
+            "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/logging-overview.html"
+                ]
+              },
+              {
+                "title": "Configure Logs",
+                "urls": [
+                  "/${VERSION}/configure-logs.html"
+                ]
+              },
+              {
+                "title": "Logging Use Cases",
+                "urls": [
+                  "/${VERSION}/logging-use-cases.html"
+                ]
+              }
+            ]
+          },
+          {
             "title": "Cluster Maintenance",
             "items": [
               {
@@ -2712,6 +2735,35 @@
                 "title": "Range Merges",
                 "urls": [
                   "/${VERSION}/range-merges.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Logging System",
+            "items": [
+              {
+                "title": "Logging Levels and Channels",
+                "urls": [
+                  "/${VERSION}/logging.html"
+                ]
+              },
+              {
+                "title": "Log Sinks",
+                "urls": [
+                  "/${VERSION}/log-sinks.html"
+                ]
+              },
+              {
+                "title": "Log Formats",
+                "urls": [
+                  "/${VERSION}/log-formats.html"
+                ]
+              },
+              {
+                "title": "Notable Event Types",
+                "urls": [
+                  "/${VERSION}/eventlog.html"
                 ]
               }
             ]

@@ -108,9 +108,7 @@ The user specified with `--user` must have the `SELECT` privilege on the target 
 
 ### Logging
 
-By default, the `dump` command logs errors to `stderr`.
-
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+{% include {{ page.version.version }}/misc/logging-defaults.md %}
 
 ## Examples
 

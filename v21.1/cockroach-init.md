@@ -42,9 +42,7 @@ See [Client Connection Parameters](connection-parameters.html) for details.
 
 ### Logging
 
-By default, the `init` command logs errors to `stderr`.
-
-If you need to troubleshoot this command's behavior, you can change its [logging behavior](debug-and-error-logs.html).
+{% include {{ page.version.version }}/misc/logging-defaults.md %}
 
 ## Examples
 

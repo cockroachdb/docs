@@ -84,7 +84,7 @@ If you'd like to tell the query planner which index to use, you can do so via so
 
 ## How do I log SQL queries?
 
-{% include {{ page.version.version }}/faq/sql-query-logging.md %}
+You can enable the CockroachDB [logging channels](logging-overview.html#logging-channels) that record SQL events.
 
 ## Does CockroachDB support a UUID type?
 

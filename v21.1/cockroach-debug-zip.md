@@ -8,8 +8,7 @@ key: debug-zip.html
 
 The `cockroach debug zip` [command](cockroach-commands.html) connects to your cluster and gathers information from each active node into a single file (inactive nodes are not included):
 
-- [Log files](debug-and-error-logs.html)
-- Secondary log files (e.g., storage engine logs, [execution logs](query-behavior-troubleshooting.html#cluster-wide-execution-logs), [slow query logs](query-behavior-troubleshooting.html#using-the-slow-query-log))
+- [Log files](logging-overview.html)
 - Cluster events
 - Schema change events
 - Node liveness
@@ -31,7 +30,7 @@ The `cockroach debug zip` [command](cockroach-commands.html) connects to your cl
 Additionally, you can run the [`debug merge-logs`](cockroach-debug-merge-logs.html) command to merge the collected logs in one file, making it easier to parse them to locate an issue with your cluster.
 
 {{site.data.alerts.callout_danger}}
-The file produced by `cockroach debug zip` can contain highly [sensitive, identifiable information](debug-and-error-logs.html#redacted-logs), such as usernames, hashed passwords, and possibly your table's data. You can use the [`--redact-logs`](#redact-sensitive-information-from-the-logs) flag to redact the sensitive data out of log files and crash reports before sharing them with Cockroach Labs.
+The file produced by `cockroach debug zip` can contain highly [sensitive, identifiable information](configure-logs.html#redact-logs), such as usernames, hashed passwords, and possibly your table's data. You can use the [`--redact-logs`](#redact-sensitive-information-from-the-logs) flag to redact the sensitive data out of log files and crash reports before sharing them with Cockroach Labs.
 {{site.data.alerts.end}}
 
 ## Details
@@ -82,7 +81,7 @@ Flag | Description
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--nodes` |  Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
 `--exclude-nodes` |  Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
-`--redact-logs` | Redact [sensitive data](debug-and-error-logs.html#redacted-logs) from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed above) collected by the `debug zip` command may still contain sensitive information.
+`--redact-logs` | Redact [sensitive data](configure-logs.html#redact-logs) from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed above) collected by the `debug zip` command may still contain sensitive information.
 
 ### Client connection
 
@@ -92,9 +91,11 @@ Flag | Description
 
 ### Logging
 
-By default, the `debug zip` command logs errors it experiences to `stderr`. Note that these are errors executing `debug zip`; these are not errors that the logs collected by `debug zip` contain.
+By default, the `debug zip` command logs errors it experiences to `stderr`. This includes events with `WARNING` [severity](logging.html#logging-levels-severities) and higher.
 
-If you need to troubleshoot this command's behavior, you can also change its [logging behavior](debug-and-error-logs.html).
+Note that these are errors executing `debug zip`; these are not errors that the logs collected by `debug zip` contain.
+
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](configure-logs.html).
 
 ## Examples
 

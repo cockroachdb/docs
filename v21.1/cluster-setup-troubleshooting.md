@@ -446,7 +446,7 @@ To see when a node last updated its liveness record:
 
 2. On the Node Diagnostics page, you will see a table listing information about the nodes in your cluster.  To see when a node last updated its liveness record, check the **Updated at** field at the bottom of that node's column.
 
-**Expected values for a healthy cluster**: When you load this page, the **Updated at** field should be within 4.5 seconds of the current time.  If it's higher than that, you will see errors [in the logs](debug-and-error-logs.html).
+**Expected values for a healthy cluster**: When you load this page, the **Updated at** field should be within 4.5 seconds of the current time.  If it's higher than that, you will see errors [in the logs](logging-overview.html).
 
 ### Check command commit latency
 
