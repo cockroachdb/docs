@@ -26,7 +26,7 @@ A session is *active* if it has an open transaction (including implicit transact
 - To view [details of a session](#session-details), click the **Session Duration**.
 
 {{site.data.alerts.callout_info}}
-An active session can have an open transaction that is not currently running SQL. In this case, the **Statement** and **Statement Duration** columns will display `N/A` and **Transaction Duration** will display a value. Transactions that are held open can cause [contention](performance-best-practices-overview#understanding-and-avoiding-transaction-contention).
+An active session can have an open transaction that is not currently running SQL. In this case, the **Statement** and **Statement Duration** columns will display `N/A` and **Transaction Duration** will display a value. Transactions that are held open can cause [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 {{site.data.alerts.end}}
 
 <img src="{{ 'images/v21.1/ui-sessions-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
