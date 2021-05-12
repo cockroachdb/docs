@@ -809,6 +809,34 @@ a.accordion-toggle {
   line-height: 22px;
 }
 
+.apidocs table {
+  border: none;
+}
+
+.apidocs table td {
+  border-right: 0px;
+  border-left: 0px;
+}
+
+.apidocs pre, code {
+  line-height: 1.5em;
+  overflow-x: auto;
+}
+
+.apidocs code {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.redoc-json ul, ol {
+  li {
+    font-family: Courier, monospace;
+    font-size: 13px;
+    line-height: 1.5em;
+    margin-bottom: 1px;
+  }
+} 
+
 .form-control {
   &:focus {
     border-color: $electric-purple;
