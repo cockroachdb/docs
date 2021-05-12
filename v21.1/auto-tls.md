@@ -10,22 +10,22 @@ To secure your CockroachDB cluster's inter-node and client-node communication, y
 - Clients
 - the DB Console (optional)
 
-{{}}
+{{site.data.alerts.callout_info}}
 This feature is an alpha release in CockroachDB v21.1 with core functionality that may not yet meet your requirements. Planned enhancements in future versions include:
 
 - Auto TLS cert generation when adding nodes to an existing cluster.
 - Support for cross-region deployments (cases where not all nodes are on the same subnet, and the listening and advertised addresses are different).
 - Identification of misconfigurations leading to helpful error messages.
 - Other CLI instructions and feedback.
-{{}}
+{{site.data.alerts.end}}
 
 With Auto TLS, your cluster creates the CA (certificate authority) required for secure communication with other nodes and clients and then distributes it among the nodes. The cluster also creates the certificates that nodes require to connect to other nodes.
 
 To receive all certificates, each node must be started with the same secure token that you provide. This simplifies the default cluster creation process. Rather than requiring an operator to generate and distribute cert files, each node only requires this single token string that you will include as part of a one-time `cockroach connect` command.
 
-{{}}
+{{site.data.alerts.callout_info}}
 To create client certificates, you will still need to run [`cockroach cert create-client`](cockroach-cert?#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands](create-security-certificates-openssl#step-3-create-the-certificate-and-key-pair-for-the-first-user).
-{{}}
+{{site.data.alerts.end}}
 
 ## Step 1: Configure nodes
 
