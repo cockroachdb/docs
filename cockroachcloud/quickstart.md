@@ -51,7 +51,7 @@ If you have not done so already, install the CockroachDB binary:
     
 <section class="filter-content" markdown="1" data-scope="linux">
 
-1. Open your command line interface and run the following command to download and extract the CockroachDB {{ page.release_info.version }} archive for Linux:
+1. In your terminal, run the following command to download and extract the CockroachDB {{ page.release_info.version }} archive for Linux:
 
     <div class="copy-clipboard">
       <svg data-eventcategory="linux-binary-step1-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
@@ -70,14 +70,8 @@ If you have not done so already, install the CockroachDB binary:
     
 <section class="filter-content" markdown="1" data-scope="windows">
 
-{% include windows_warning.md %}
-
 1. Download and extract the <a href="https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip" class="windows-binary-download" id="windows-binary-download-{{page.version.version}}" data-eventcategory="windows-binary-download">CockroachDB {{ page.release_info.version }} archive for Windows</a>.
-    
-    
-1. To ensure that CockroachDB can use location-based names as time zone identifiers, download Go's official [zoneinfo.zip](https://github.com/golang/go/raw/master/lib/time/zoneinfo.zip) and set the `ZONEINFO` [environment variable](https://www.techjunkie.com/environment-variables-windows-10/).
-    
-    
+  
 1. Open PowerShell, navigate to the directory containing the executable, and make sure it works:
     <div class="copy-clipboard">
       <svg data-eventcategory="windows-binary-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
