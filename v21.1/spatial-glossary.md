@@ -48,7 +48,14 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="geometry"></a>
 
-- `GEOMETRY`: Used to represent shapes relative to 2-, 3-, or higher-dimensional plane geometry.
+- `GEOMETRY`: Used to represent shapes relative to 2-, 3-, or higher-dimensional plane geometry.  For more information about the spatial objects used to represent geometries, see:
+  - [`POINT`](point.html)
+  - [`LINESTRING`](linestring.html)
+  - [`POLYGON`](polygon.html)
+  - [`MULTIPOINT`](multipoint.html)
+  - [`MULTILINESTRING`](multilinestring.html)
+  - [`MULTIPOLYGON`](multipolygon.html)
+  - [`GEOMETRYCOLLECTION`](geometrycollection.html)
 
 <a name="geography"></a>
 
