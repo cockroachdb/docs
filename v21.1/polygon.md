@@ -8,6 +8,8 @@ A `POLYGON` is a shape with a closed exterior that is made up of lines. Polygons
 
 The coordinates of each Point and line that make up the Polygon are translated according to the current [spatial reference system](spatial-glossary.html#spatial-reference-system) (denoted by an [SRID](spatial-glossary.html#srid)) to determine what the point "is", or what it "means" relative to the [other spatial objects](spatial-features.html#spatial-objects) (if any) in the data set.
 
+{% include {{page.version.version}}/spatial/zmcoords.md %}
+
 ## Examples
 
 ### Well known text

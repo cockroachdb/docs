@@ -6,6 +6,8 @@ toc: true
 
 A `POINT` is a sizeless location identified by its X and Y coordinates. These coordinates are then translated according to the current [spatial reference system](spatial-glossary.html#spatial-reference-system) (denoted by an [SRID](spatial-glossary.html#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](spatial-features.html#spatial-objects) (if any) in the data set. 
 
+{% include {{page.version.version}}/spatial/zmcoords.md %}
+
 ## Examples
 
 ### SQL

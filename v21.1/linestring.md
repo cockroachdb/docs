@@ -8,6 +8,8 @@ A `LINESTRING` is a collection of [Points](point.html) that are "strung together
 
 The coordinates of each Point that makes up the LineString are translated according to the current [spatial reference system](spatial-glossary.html#spatial-reference-system) (denoted by an [SRID](spatial-glossary.html#srid)) to determine what the Point "is", or what it "means" relative to the [other spatial objects](spatial-features.html#spatial-objects) (if any) in the data set.
 
+{% include {{page.version.version}}/spatial/zmcoords.md %}
+
 ## Examples
 
 A LineString can be created from SQL by calling the `st_geomfromtext` function on a LineString definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format as shown below.
