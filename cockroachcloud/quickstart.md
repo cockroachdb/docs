@@ -51,11 +51,19 @@ If you have not done so already, install the CockroachDB binary:
     
 <section class="filter-content" markdown="1" data-scope="linux">
 
-1. In the command line interface, use [Homebrew](https://brew.sh/) to install CockroachDB by running the following command:
+1. Open your command line interface and run the following command to download and extract the CockroachDB {{ page.release_info.version }} archive for Linux:
+
+    <div class="copy-clipboard">
+      <svg data-eventcategory="linux-binary-step1-button" id="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12"><style>.st0{fill:#A2A2A2;}</style><title>icon/buttons/copy</title><g id="Mask"><path id="path-1_1_" class="st0" d="M4.9 4.9v6h6v-6h-6zM3.8 3.8H12V12H3.8V3.8zM2.7 7.1v1.1H.1S0 5.5 0 0h8.2v2.7H7.1V1.1h-6v6h1.6z"/></g></svg>
+      <svg id="copy-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 10"><style>.st1{fill:#54B30E;}</style><path id="path-1_2_" class="st1" d="M3.8 9.1c-.3 0-.5-.1-.6-.2L.3 6C0 5.7-.1 5.2.2 4.8c.3-.4.9-.4 1.3-.1L3.8 7 10.6.2c.3-.3.9-.4 1.2 0 .3.3.3.9 0 1.2L4.4 8.9c-.2.1-.4.2-.6.2z"/></svg>
+    </div>
+    <div class="highlight"><pre><code data-eventcategory="linux-binary-step1" data-lang="shell"><span class="nv language-shell linux-binary-step1" id="linux-binary-step1-{{ page.version.version }}" data-eventcategory="linux-binary-step1">$ </span>wget -qO- https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz | tar xvz</code></pre></div>
+    
+1. Run the following command to copy the binary into your `PATH`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    brew install cockroachdb/tap/cockroach
+    cp -i cockroach-v20.2.9.linux-amd64/cockroach /usr/local/bin/
     ~~~
     
 </section>
