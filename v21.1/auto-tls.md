@@ -24,7 +24,7 @@ With Auto TLS, your cluster creates the CA (certificate authority) required for 
 To receive all certificates, each node must be started with the same secure token that you provide. This simplifies the default cluster creation process. Rather than requiring an operator to generate and distribute cert files, each node only requires this single token string that you will include as part of a one-time `cockroach connect` command.
 
 {{site.data.alerts.callout_info}}
-To create client certificates, you will still need to run [`cockroach cert create-client`](cockroach-cert?#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands](create-security-certificates-openssl#step-3-create-the-certificate-and-key-pair-for-the-first-user).
+To create client certificates, you will still need to run [`cockroach cert create-client`](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands](create-security-certificates-openssl.html#step-3-create-the-certificate-and-key-pair-for-the-first-user).
 {{site.data.alerts.end}}
 
 ## Step 1: Configure nodes
