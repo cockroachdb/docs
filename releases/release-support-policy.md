@@ -37,6 +37,12 @@ Date format: MM/DD/YY
 			<th>Assistance Support ends (EOL Date)</th>
 		</tr>
 	</thead>
+  <tr>
+    <td><a href="v21.1.0.html">v21.1</a></td>
+    <td>5/18/21</td>
+    <td>5/18/22</td>
+    <td>11/18/22</td>
+  </tr>
 	<tr>
 		<td><a href="v20.2.0.html">v20.2</a></td>
 		<td>11/10/20</td>
@@ -49,11 +55,11 @@ Date format: MM/DD/YY
 		<td>5/12/21</td>
 		<td>11/12/21</td>
 	</tr>
-	<tr>
+	<tr class=eol>
 		<td><a href="v19.2.0.html">v19.2</a></td>
 		<td>11/12/19</td>
 		<td>11/12/20</td>
-		<td>5/12/21</td>
+		<td>5/12/21*</td>
 	</tr>
 	<tr class=eol>
 		<td><a href="v19.1.0.html">v19.1</a></td>
