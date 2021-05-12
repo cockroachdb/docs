@@ -13,7 +13,7 @@ toc: true
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-If a database's zone configuration has been directly set with an [`ALTER DATABASE ... CONFIGURE ZONE`](configure-zone.html) statement, CockroachDB will block all `ALTER DATABASE ... SET PRIMARY REGION` statements on the database.
+If a database's [zone configuration](configure-replication-zones.html) has been directly set with an [`ALTER DATABASE ... CONFIGURE ZONE`](configure-zone.html) statement, CockroachDB will block all `ALTER DATABASE ... SET PRIMARY REGION` statements on the database.
 
 To remove existing, manually-configured zones from a database (and unblock `SET PRIMARY REGION` statements on the database), use an [`ALTER DATABASE ... CONFIGURE ZONE DISCARD`](configure-zone.html#remove-a-replication-zone) statement.
 {{site.data.alerts.end}}
@@ -33,10 +33,12 @@ To remove existing, manually-configured zones from a database (and unblock `SET 
 
 ## Required privileges
 
-To set a primary region for a database, the user must have one of the following:
+To add a primary region to a database with no existing regions, the user must have one of the following:
 
 - Membership to the [`admin`](authorization.html#roles) role for the cluster.
 - Membership to the [owner](authorization.html#object-ownership) role, or the [`CREATE` privilege](authorization.html#supported-privileges), for the database and all tables in the database.
+
+To switch primary regions to a region that has already been added to a database, the user must have membership to the [owner](authorization.html#object-ownership) role for the database, or have the [`CREATE` privilege](authorization.html#supported-privileges) on the database.
 
 ## Examples
 
@@ -64,7 +66,7 @@ Given a cluster with multiple regions, any databases in that cluster that have n
 
 ### Add more regions to the database
 
-To add more regions to the database, use an `ADD REGION` statement:
+To add more regions to the database, use an [`ADD REGION`](add-region.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
