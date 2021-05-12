@@ -22,10 +22,12 @@ configurable logging directory.
 The configuration key under the `sinks` key in the YAML
 configuration is `file-groups`. Example configuration:
 
-    sinks:
-       file-groups:           # file group configurations start here
-          health:             # defines one group called "health"
-             channels: HEALTH
+~~~
+sinks:
+   file-groups:           # file group configurations start here
+      health:             # defines one group called "health"
+         channels: HEALTH
+~~~
 
 Each generated log file is prefixed by the name of the process,
 followed by the name of the group, separated by a hyphen. For example,
@@ -43,19 +45,21 @@ the configurations set in the `file-defaults` section.
 
 For example:
 
-     file-defaults:
-         redactable: false # default: disable redaction markers
-         dir: logs
-     sinks:
-       file-groups:
-         health:
-            channels: HEALTH
-            # This sink has redactable set to false,
-            # as the setting is inherited from file-defaults
-            # unless overridden here.
-            #
-            # Example override:
-            dir: health-logs # override the default 'logs'
+~~~
+file-defaults:
+    redactable: false # default: disable redaction markers
+    dir: logs
+sinks:
+  file-groups:
+    health:
+       channels: HEALTH
+       # This sink has redactable set to false,
+       # as the setting is inherited from file-defaults
+       # unless overridden here.
+       #
+       # Example override:
+       dir: health-logs # override the default 'logs'
+~~~
 
 {{site.data.alerts.callout_success}}
 Run `cockroach debug check-log-config` to verify the effect of defaults inheritance.
@@ -116,25 +120,29 @@ the logging event is dropped.
 The configuration key under the `sinks` key in the YAML
 configuration is `fluent-servers`. Example configuration:
 
-    sinks:
-       fluent-servers:        # fluent configurations start here
-          health:             # defines one sink called "health"
-             channels: HEALTH
-             address: 127.0.0.1:5170
+~~~
+sinks:
+   fluent-servers:        # fluent configurations start here
+      health:             # defines one sink called "health"
+         channels: HEALTH
+         address: 127.0.0.1:5170
+~~~
 
 Every new server sink configured automatically inherits the configurations set in the `fluent-defaults` section.
 
 For example:
 
-     fluent-defaults:
-         redactable: false # default: disable redaction markers
-     sinks:
-       fluent-servers:
-         health:
-            channels: HEALTH
-            # This sink has redactable set to false,
-            # as the setting is inherited from fluent-defaults
-            # unless overridden here.
+~~~
+fluent-defaults:
+    redactable: false # default: disable redaction markers
+sinks:
+  fluent-servers:
+    health:
+       channels: HEALTH
+       # This sink has redactable set to false,
+       # as the setting is inherited from fluent-defaults
+       # unless overridden here.
+~~~
 
 The default output format for Fluent sinks is
 `json-fluent-compact`. The `fluent` variants of the JSON formats
@@ -180,9 +188,11 @@ process.
 The configuration key under the `sinks` key in the YAML configuration
 is `stderr`. Example configuration:
 
-    sinks:
-       stderr:           # standard error sink configuration starts here
-          channels: DEV
+~~~
+sinks:
+   stderr:           # standard error sink configuration starts here
+      channels: DEV
+~~~
 
 {{site.data.alerts.callout_info}}
 The server start-up messages are still emitted at the start of the standard error
@@ -237,37 +247,43 @@ be specified as a YAML array or as a string.
 
 Example configurations:
 
-    # Select just these two channels. Space is important.
-    channels: [OPS, HEALTH]
+~~~
+# Select just these two channels. Space is important.
+channels: [OPS, HEALTH]
 
-    # The selection is case-insensitive.
-    channels: [ops, HeAlTh]
+# The selection is case-insensitive.
+channels: [ops, HeAlTh]
 
-    # Same configuration, as a YAML string. Avoid space around comma
-    # if using the YAML "inline" format.
-    channels: OPS,HEALTH
+# Same configuration, as a YAML string. Avoid space around comma
+# if using the YAML "inline" format.
+channels: OPS,HEALTH
 
-    # Same configuration, as a quoted string.
-    channels: 'OPS, HEALTH'
+# Same configuration, as a quoted string.
+channels: 'OPS, HEALTH'
 
-    # Same configuration, as a multi-line YAML array.
-    channels:
-    - OPS
-    - HEALTH
+# Same configuration, as a multi-line YAML array.
+channels:
+- OPS
+- HEALTH
+~~~
 
 It is also possible to select all channels, using the "all" keyword.
 For example:
 
-    channels: all
-    channels: 'all'
-    channels: [all]
-    channels: ['all']
+~~~
+channels: all
+channels: 'all'
+channels: [all]
+channels: ['all']
+~~~
 
 It is also possible to select all channels except for a subset, using the
 "all except" keyword prefix. This makes it possible to define sinks
 that capture "everything else". For example:
 
-    channels: all except ops,health
-    channels: all except [ops,health]
-    channels: 'all except ops, health'
-    channels: 'all except [ops, health]'
+~~~
+channels: all except ops,health
+channels: all except [ops,health]
+channels: 'all except ops, health'
+channels: 'all except [ops, health]'
+~~~
