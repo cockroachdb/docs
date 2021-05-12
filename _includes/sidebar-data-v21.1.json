@@ -1263,7 +1263,7 @@
                     ]
                   },
                   {
-                    "title": "<code>ADD REGION</code>",
+                    "title": "<code>ADD REGION (Enterprise)</code>",
                     "urls": [
                       "/${VERSION}/add-region.html"
                     ]
@@ -1518,6 +1518,12 @@
                     "title": "<code>DROP DATABASE</code>",
                     "urls": [
                       "/${VERSION}/drop-database.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>DROP REGION (Enterprise)</code>",
+                    "urls": [
+                      "/${VERSION}/drop-region.html"
                     ]
                   },
                   {
@@ -1782,6 +1788,12 @@
                     "title": "<code>SET LOCALITY</code>",
                     "urls": [
                       "/${VERSION}/set-locality.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SET PRIMARY REGION (Enterprise)</code>",
+                    "urls": [
+                      "/${VERSION}/set-primary-region.html"
                     ]
                   },
                   {

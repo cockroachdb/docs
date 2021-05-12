@@ -34,6 +34,7 @@ Statement | Usage
 Statement | Usage
 ----------|------------
 [`ADD COLUMN`](add-column.html) | Add columns to a table.
+[`ADD REGION`](add-region.html) | <span class="version-tag">New in v21.1:</span> Add a [region](multiregion-overview.html#database-regions) to a database. Note that [multi-region features](multiregion-overview.html) require an [enterprise license](enterprise-licensing.html).
 [`ADD CONSTRAINT`](add-constraint.html) | Add a constraint to a column.
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
@@ -63,6 +64,7 @@ Statement | Usage
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from a column.
 [`DROP DATABASE`](drop-database.html) | Remove a database and all its objects.
 [`DROP INDEX`](drop-index.html) | Remove an index for a table.
+[`DROP REGION`](drop-region.html) | <span class="version-tag">New in v21.1:</span> Drop a [region](multiregion-overview.html#database-regions) from a database. Note that [multi-region features](multiregion-overview.html) require an [enterprise license](enterprise-licensing.html).
 [`DROP SCHEMA`](drop-schema.html) |  Drop a user-defined schema.
 [`DROP SEQUENCE`](drop-sequence.html) | Remove a sequence.
 [`DROP TABLE`](drop-table.html) | Remove a table.
@@ -77,6 +79,7 @@ Statement | Usage
 [`RENAME INDEX`](rename-index.html) | Rename an index for a table.
 [`RENAME TABLE`](rename-table.html) | Rename a table or move a table between databases.
 [`SET SCHEMA`](set-schema.html) |  Change the schema of a table.
+[`SET PRIMARY REGION`](set-primary-region.html) | <span class="version-tag">New in v21.1:</span> Assign a [primary region](multiregion-overview.html#database-regions) to a multi-region database, or change an existing primary region. Note that [multi-region features](multiregion-overview.html) require an [enterprise license](enterprise-licensing.html).
 [`SHOW COLUMNS`](show-columns.html) | View details about columns in a table.
 [`SHOW CONSTRAINTS`](show-constraints.html) | List constraints on a table.
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.

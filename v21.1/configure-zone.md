@@ -52,11 +52,11 @@ If the target is a [`system` range](#create-a-replication-zone-for-a-system-rang
 
  Parameter | Description
 -----------+-------------
-`range_name` | The name of the system [range](architecture/overview.html#glossary) for which to show [replication zone configurations](configure-replication-zones.html).
-`database_name` | The name of the [database](create-database.html) for which to show [replication zone configurations](configure-replication-zones.html).
-`table_name` | The name of the [table](create-table.html) for which to show [replication zone configurations](configure-replication-zones.html).
-`partition_name` | The name of the [partition](partitioning.html) for which to show [replication zone configurations](configure-replication-zones.html).
-`index_name` | The name of the [index](indexes.html) for which to show [replication zone configurations](configure-replication-zones.html).
+`range_name` | The name of the system [range](architecture/overview.html#glossary) whose [replication zone configurations](configure-replication-zones.html) you want to change.
+`database_name` | The name of the [database](create-database.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.<br><span class="version-tag">New in v21.1:</span> If you directly change a database's zone configuration with `ALTER DATABASE ... CONFIGURE ZONE`, CockroachDB will block all [`ALTER DATABASE ... SET PRIMARY REGION`](set-primary-region.html) statements on the database.
+`table_name` | The name of the [table](create-table.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.
+`partition_name` | The name of the [partition](partitioning.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.
+`index_name` | The name of the [index](indexes.html) whose [replication zone configurations](configure-replication-zones.html) you want to change.
 `variable` | The name of the [variable](#variables) to change.
 `value` | The value of the variable to change.
 `DISCARD` | Remove a replication zone.

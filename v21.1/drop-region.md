@@ -1,37 +1,33 @@
 ---
-title: ADD REGION
-summary: The ADD REGION statement adds a region to a multi-region database.
+title: DROP REGION
+summary: The DROP REGION statement drops a region from a multi-region database.
 toc: true
 ---
 
-<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. ADD REGION` [statement](sql-statements.html) adds a [region](multiregion-overview.html#database-regions) to a [multi-region database](multiregion-overview.html).
+<span class="version-tag">New in v21.1:</span> The `ALTER DATABASE .. DROP REGION` [statement](sql-statements.html) drops a [region](multiregion-overview.html#database-regions) from a [multi-region database](multiregion-overview.html).
 
 {% include enterprise-feature.md %}
 
 {{site.data.alerts.callout_info}}
-`ADD REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_danger}}
-In order to add a region with `ADD REGION`, you must first set a primary database region with [`SET PRIMARY REGION`](set-primary-region.html), or at [database creation](create-database.html).<br>For an example showing how to add a primary region with `ALTER DATABASE`, see [Set the primary region](#set-the-primary-region).
+`DROP REGION` is a subcommand of [`ALTER DATABASE`](alter-database.html).
 {{site.data.alerts.end}}
 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_database_add_region.html %}
+  {% include {{ page.version.version }}/sql/generated/diagrams/alter_database_drop_region.html %}
 </div>
 
 ## Parameters
 
 | Parameter       | Description                                                                                                                                                       |
 |-----------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `database_name` | The database to which you are adding a [region](multiregion-overview.html#database-regions).                                                                      |
-| `region_name`   | The [region](multiregion-overview.html#database-regions) being added to this database.  Allowed values include any region present in `SHOW REGIONS FROM CLUSTER`. |
+| `database_name` | The database from which you are dropping a [region](multiregion-overview.html#database-regions).                                                                      |
+| `region_name`   | The [region](multiregion-overview.html#database-regions) being dropped from this database.  Allowed values include any region present in `SHOW REGIONS FROM DATABASE database_name`.<br>You can only drop the primary region from a multi-region database if it's the last remaining region. |
 
 ## Required privileges
 
-To add a region to a database, the user must have one of the following:
+To drop a region from a database, the user must have one of the following:
 
 - Membership to the [`admin`](authorization.html#roles) role for the cluster.
 - Membership to the [owner](authorization.html#object-ownership) role, or the [`CREATE` privilege](authorization.html#supported-privileges), for the database and all [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables in the database.
@@ -55,14 +51,9 @@ ALTER DATABASE foo SET PRIMARY REGION "us-east1";
 ALTER DATABASE PRIMARY REGION
 ~~~
 
-Given a cluster with multiple regions, any databases in that cluster that have not yet had their primary regions set will have their replicas spread as broadly as possible for resiliency. When a primary region is added to one of these databases:
-
-- All tables will be [`REGIONAL BY TABLE`](set-locality.html#regional-by-table) in the primary region by default.
-- This means that all such tables will have all of their voting replicas and leaseholders moved to the primary region. This process is known as [rebalancing](architecture/replication-layer.html#leaseholder-rebalancing).
-
 ### Add regions to a database
 
-To add more regions to a database that already has at least one region, use an `ADD REGION` statement:
+To add more regions to a database that already has at least one region, use an [`ADD REGION`](add-region.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -100,13 +91,50 @@ SHOW REGIONS FROM DATABASE foo;
 (3 rows)
 ~~~
 
-### Drop a region from a database
+### Drop regions from a database
 
-To [drop a region](drop-region.html) from a multi-region database, use a [`DROP REGION`](drop-region.html) statement:
+To drop a region from a multi-region database, use a `DROP REGION` statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 ALTER DATABASE foo DROP REGION "us-west1";
+~~~
+
+~~~
+ALTER DATABASE DROP REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW REGIONS FROM DATABASE foo;
+~~~
+
+~~~
+  database |    region    | primary |  zones
+-----------+--------------+---------+----------
+  foo      | us-east1     |  true   | {b,c,d}
+  foo      | europe-west1 |  false  | {b,c,d}
+(2 rows)
+~~~
+
+You can only drop the primary region from a multi-region database if it's the last remaining region.
+
+If you try to drop the primary region when there is more than one region, CockroachDB will return an error:
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "us-east1";
+~~~
+
+~~~
+ERROR: cannot drop region "us-east1"
+SQLSTATE: 42P12
+HINT: You must designate another region as the primary region using ALTER DATABASE foo PRIMARY REGION <region name> or remove all other regions before attempting to drop region "us-east1"
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "europe-west1";
 ~~~
 
 ~~~
@@ -125,11 +153,31 @@ SHOW REGIONS FROM DATABASE foo;
 (1 row)
 ~~~
 
+{% include copy-clipboard.html %}
+~~~ sql
+ALTER DATABASE foo DROP REGION "us-east1";
+~~~
+
+~~~
+ALTER DATABASE DROP REGION
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW REGIONS FROM DATABASE foo;
+~~~
+
+~~~
+  database | region | primary | zones
+-----------+--------+---------+--------
+(0 rows)
+~~~
+
 ## See also
 
 - [Multi-region overview](multiregion-overview.html)
 - [`SET PRIMARY REGION`](set-primary-region.html)
-- [`DROP REGION`](drop-region.html)
+- [`ADD REGION`](add-region.html)
 - [`SHOW REGIONS`](show-regions.html)
 - [`ALTER TABLE`](alter-table.html)
 - [Other SQL Statements](sql-statements.html)
