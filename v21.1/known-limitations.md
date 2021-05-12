@@ -8,6 +8,53 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## Unresolved limitations
 
+### `IMPORT` into a `REGIONAL BY ROW` table
+
+CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/61133)
+
+To work around this limitation, you will need to take the following steps:
+
+1. In the source database, export the [`crdb_region` column](set-locality.html#crdb_region) separately when exporting your data.
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    EXPORT INTO CSV 'nodelocal://0/src_rbr' FROM SELECT crdb_region, i from src_rbr;
+    ~~~
+
+    For more information about the syntax, see [`EXPORT`](export.html).
+
+1. In the destination database, create a table that has a `crdb_region` column of the right type as shown below.
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    CREATE TABLE dest_rbr (crdb_region public.crdb_internal_region NOT NULL, i INT);
+    ~~~
+
+1. Import the data (including the `crdb_region` column explicitly) using [`IMPORT INTO`](import-into.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    IMPORT INTO dest_rbr (crdb_region, i) CSV DATA ('nodelocal://0/src_rbr/export*.csv')
+    ~~~
+
+1. Convert the destination table to `REGIONAL BY ROW` using [`ALTER TABLE ... ALTER COLUMN`](alter-column.html) and [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE dest_rbr ALTER COLUMN crdb_region SET DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
+    ~~~
+
+In addition to the limitation above, note that CockroachDB cannot yet make the `crdb_region` column hidden in the destination table.
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/62892)
+
 ### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 
 CockroachDB does not currently support multiple arbiter indexes for [`INSERT ON CONFLICT DO UPDATE`](insert.html#on-conflict-clause), and will return an error if there are multiple unique or exclusion constraints matching the `ON CONFLICT DO UPDATE` specification.
