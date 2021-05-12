@@ -246,6 +246,10 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
+## Known limitation
+
+{% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
+
 ## See also
 
 - [Take Full and Incremental Backups](take-full-and-incremental-backups.html)
