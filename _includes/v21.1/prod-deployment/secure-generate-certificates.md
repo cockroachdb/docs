@@ -1,4 +1,4 @@
-You can use `cockroach cert` commands, [`openssl` commands](create-security-certificates-openssl.html), or [Auto TLS cert generation](auto-tls.md) (alpha) to generate security certificates. This section features the `cockroach cert` commands.
+You can use `cockroach cert` commands, [`openssl` commands](create-security-certificates-openssl.html), or [Auto TLS cert generation](auto-tls.html) (alpha) to generate security certificates. This section features the `cockroach cert` commands.
 
 Locally, you'll need to [create the following certificates and keys](cockroach-cert.html):
 

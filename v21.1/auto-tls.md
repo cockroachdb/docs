@@ -29,9 +29,14 @@ To create client certificates, you will still need to run [`cockroach cert creat
 
 ## Step 1: Configure nodes
 
-1. On each node, ensure that the machine has a directory for the node to use to store cert files.
+The example commands below must be tailored for your environment and run for each node. In a production environment, this would typically require running the commands once on each machine for the single node that each one hosts. However, these examples depict multiple nodes running on                a single machine, varying their ports rather than their hosts.
 
-  `mkdir certs`
+1. For each node, ensure that the machine has a directory for the node to use to store cert files.
+
+  ``` shell
+  cd node1
+  mkdir certs
+  ```
 
 2. For each node, run `cockroach connect`, specifying the initial number of nodes and the address and ports that each will use.
 
