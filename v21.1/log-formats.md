@@ -74,7 +74,7 @@ Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker
 
 | Field           | Description                                                                                                               |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
-| L               | A single character, representing the [log level](logging.html#logging-levels) (e.g., `I` for `INFO`). |
+| L               | A single character, representing the [log level](logging.html#logging-levels-severities) (e.g., `I` for `INFO`). |
 | yy              | The year (zero padded; i.e., 2016 is `16`).                                                                     |
 | mm              | The month (zero padded; i.e., May is `05`).                                                                     |
 | dd              | The day (zero padded).                                                                                                    |
@@ -141,7 +141,7 @@ Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker tags counter
 
 | Field           | Description                                                                                                               |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
-| L               | A single character, representing the [log level](logging.html#logging-levels) (e.g., `I` for `INFO`). |
+| L               | A single character, representing the [log level](logging.html#logging-levels-severities) (e.g., `I` for `INFO`). |
 | yy              | The year (zero padded; i.e., 2016 is `16`).                                                                     |
 | mm              | The month (zero padded; i.e., May is `05`).                                                                     |
 | dd              | The day (zero padded).                                                                                                    |
@@ -196,7 +196,7 @@ Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker [tags...] counter cont
 
 | Field           | Description                                                                                                               |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
-| L               | A single character, representing the [log level](logging.html#logging-levels) (e.g., `I` for `INFO`). |
+| L               | A single character, representing the [log level](logging.html#logging-levels-severities) (e.g., `I` for `INFO`). |
 | yy              | The year (zero padded; i.e., 2016 is `16`).                                                                     |
 | mm              | The month (zero padded; i.e., May is `05`).                                                                     |
 | dd              | The day (zero padded).                                                                                                    |
