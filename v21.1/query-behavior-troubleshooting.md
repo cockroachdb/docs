@@ -12,7 +12,7 @@ For a developer-centric walkthrough of optimizing SQL query performance, see [Ma
 
 ## Identify slow statements
 
-Use the [slow query log](logging-use-cases.html#sql_perf) or [DB Console](#using-the-db-console) to detect slow queries in your cluster.
+Use the [slow query log](logging-use-cases.html#sql_perf) or DB Console to detect slow queries in your cluster.
 
 High latency SQL statements are displayed on the [**Statements page**](ui-statements-page.html) of the DB Console. To view the Statements page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** on the left.
 
