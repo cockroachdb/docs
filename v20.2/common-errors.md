@@ -12,14 +12,15 @@ This page helps you understand and resolve error messages written to `stderr` or
 | Client connection                      | [`connection refused`](#connection-refused)                                                                                                                                                                                                     
 | Client connection                      | [`node is running secure mode, SSL connection required`](#node-is-running-secure-mode-ssl-connection-required)                                                                                                                                  
 | Transaction retries                    | [`restart transaction`](#restart-transaction)                                                                                                                                                                                                   
-| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id) 
+| Node startup                           | [`node belongs to cluster <cluster ID> but is attempting to connect to a gossip network for cluster <another cluster ID>`](#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id)
 | Node configuration                     | [`clock synchronization error: this node is more than 500ms away from at least half of the known nodes`](#clock-synchronization-error-this-node-is-more-than-500ms-away-from-at-least-half-of-the-known-nodes)                                  
 | Node configuration                     | [`open file descriptor limit of <number> is under the minimum required <number>`](#open-file-descriptor-limit-of-number-is-under-the-minimum-required-number)                                                                                   
 | Replication                            | [`replicas failing with "0 of 1 store with an attribute matching []; likely not enough nodes in cluster"`](#replicas-failing-with-0-of-1-store-with-an-attribute-matching-likely-not-enough-nodes-in-cluster)                                   
 | Split failed                           | [`split failed while applying backpressure; are rows updated in a tight loop?`](#split-failed-while-applying-backpressure-are-rows-updated-in-a-tight-loop)                                   
 | Deadline exceeded                      | [`context deadline exceeded`](#context-deadline-exceeded)                                                                                                                                                                                       
 | [Incremental backups](take-full-and-incremental-backups.html#incremental-backups) | [`pq: failed to verify protection id...`](#pq-failed-to-verify-protection-id)                                                                                                         
-| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)                                                                                                                                                                                                   
+| Ambiguous results                      | [`result is ambiguous`](#result-is-ambiguous)
+| [Import key collision](import-into.html#considerations) | [`checking for key collisions: ingested key collides with an existing one`](#checking-for-key-collisions-ingested-key-collides-with-an-existing-one)                                                                                                                                                                             
 
 ## connection refused
 
@@ -143,7 +144,7 @@ This message occurs when a component of CockroachDB gives up because it was rely
 
 ## pq: failed to verify protection id...
 
-Messages that begin with `pq: failed to verify protection id…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail. 
+Messages that begin with `pq: failed to verify protection id…` indicate that your [incremental backup](take-full-and-incremental-backups.html#incremental-backups) failed because the data you are trying to backup was garbage collected. This happens when incremental backups are taken less frequently than the garbage collection periods for any of the objects in the base backup. For example, if your incremental backups recur daily, but the garbage collection period of one table in your backup is less than one day, all of your incremental backups will fail.
 
 The error message will specify which part of your backup is causing the failure. For example, `r13485:/Table/771` indicates that table `771` is part of the problem. You can then inspect this table by running [`SELECT * FROM crdb_internal.tables WHERE id=771`](select-clause.html). You can also run [`SHOW ZONE CONFIGURATIONS`](show-zone-configurations.html) and look for any `gc.ttlseconds` values that are set lower than your incremental backup frequency.
 
@@ -182,6 +183,10 @@ idempotent. If your transaction is not idempotent, then you should
 decide whether to retry or not based on whether it would be better for
 your application to apply the transaction twice or return an error to
 the user.
+
+## checking for key collisions: ingested key collides with an existing one
+
+When importing into an existing table with [`IMPORT INTO`](import-into.html), this error occurs because the rows in the import file conflict with an existing primary key. The import will fail as a result. `IMPORT INTO` is an insert-only statement, so you cannot use it to update existing rows. To update rows in an existing table, use the [`UPDATE`](update.html) statement.
 
 ## Something else?
 
