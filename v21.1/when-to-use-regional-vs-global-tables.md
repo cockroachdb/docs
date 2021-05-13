@@ -25,6 +25,8 @@ Use [`GLOBAL` tables](multiregion-overview.html#global-tables) if:
 For more information about how to choose an overall multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
 {{site.data.alerts.end}}
 
+{% include enterprise-feature.md %}
+
 ## See also
 
 - [Multi-region Overview](multiregion-overview.html)
