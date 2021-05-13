@@ -965,6 +965,12 @@
                 "urls": [
                   "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
                 ]
+              },
+              {
+                "title": "Cluster API",
+                "urls": [
+                  "/${VERSION}/cluster-api.html"
+                ]
               }
             ]
           },
@@ -2710,6 +2716,12 @@
               }
             ]
           },
+          {
+            "title": "Cluster API",
+            "urls": [
+              "/api/cluster/v2.html"
+            ]
+          }
           {
             "title": "Cluster Settings",
             "items": [
