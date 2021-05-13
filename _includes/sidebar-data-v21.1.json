@@ -2721,7 +2721,7 @@
             "urls": [
               "/api/cluster/v2.html"
             ]
-          }
+          },
           {
             "title": "Cluster Settings",
             "items": [
