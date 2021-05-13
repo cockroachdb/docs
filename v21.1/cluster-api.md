@@ -45,15 +45,15 @@ To connect with the API on a secure cluster, you will need:
    -H 'Content-Type: application/x-www-form-urlencoded' \
    https://localhost:8080/api/v2/login/
    ~~~
-
+   
    A token is returned.
-
+   
    {% include copy-clipboard.html %}
    ~~~ shell
    {"session":"CIGAiPis4fj3CBIQ3u0rRQJ3tD8yIqee4hipow=="}
    ~~~
 
-2. Pass the token (`session` value) with each call using the `X-Cockroach-API-Session` header. For example:
+1. Pass the token (`session` value) with each call using the `X-Cockroach-API-Session` header. For example:
 
    {% include copy-clipboard.html %}
    ~~~ shell
