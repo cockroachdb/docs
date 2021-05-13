@@ -12,18 +12,18 @@ The Cluster API is hosted by all nodes of your cluster and provides information 
 
 The following endpoints are available as URLs under the `/api/v2` base path (for example, `https://localhost:8080/api/v2/health/`). Additional endpoints are planned for future versions of CockroachDB.
 
-Each listed endpoint links to its full [API reference documentation](https://www.cockroachlabs.com/docs/api/cluster/v2.html).
+Each listed endpoint links to its full [API reference documentation](https://cockroachlabs.com/docs/api/cluster/v2.html).
 
 Endpoint | Name | Description
 --- | --- | ---
-[`/health`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections.
-[`/nodes`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get information on all nodes in the cluster including node IDs, software versions, and hardware.
-[`/nodes/{node_id}/ranges`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | For a specified node, obtain details on the ranges that it hosts. 
-[`/ranges/hot`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/listHotRanges) | List hot ranges | Get information on ranges receiving a high number of reads or writes.
-[`/ranges/{range_id}`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically of use only to Cockroach Labs engineers.
-[`/sessions`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get details of all current users' SQL sessions or sessions by a specific user.
-[`/login`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as an admin on the cluster to retrieve a session token to use with further API calls.
-[`/logout`](https://www.cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token.
+[`/health`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/health) | Check node health | Determine if the node is running and ready to accept SQL connections.
+[`/nodes`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodes) | List nodes | Get information on all nodes in the cluster including node IDs, software versions, and hardware.
+[`/nodes/{node_id}/ranges`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listNodeRanges) | List node ranges | For a specified node, obtain details on the ranges that it hosts. 
+[`/ranges/hot`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listHotRanges) | List hot ranges | Get information on ranges receiving a high number of reads or writes.
+[`/ranges/{range_id}`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listRange) | Get range details | Get detailed technical information on a range. Typically of use only to Cockroach Labs engineers.
+[`/sessions`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/listSessions) | List sessions | Get details of all current users' SQL sessions or sessions by a specific user.
+[`/login`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/login) | Log in | Authenticate as an admin on the cluster to retrieve a session token to use with further API calls.
+[`/logout`](https://cockroachlabs.com/docs/api/cluster/v2.html#operation/logout) | Log out | Invalidate the session token.
 
 ## Requirements
 
