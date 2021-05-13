@@ -91,6 +91,12 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
 ## Unresolved limitations
 
+### Differences in syntax and behavior between CockroachDB and PostgreSQL
+
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.
+
+For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL](postgresql-compatibility.html#features-that-differ-from-postgresql).
+
 ### Collation names that include upper-case or hyphens may cause errors
 
 Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
@@ -145,30 +151,11 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
-### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
-
-CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
-
-If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO t (x)
-    SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)
-      FROM (values (3)) AS v(x)
-    ON CONFLICT (x)
-      DO UPDATE SET x = excluded.x;
-~~~
-
-An `x` value less than `1` would result in the following error:
-
-~~~
-pq: check constraint violated
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
-
 ### Cold starts of large clusters may require manual intervention
+
+{{site.data.alerts.callout_info}}
+Resolved as of [v20.2.9](../releases/v20.2.9.html). See [#64567](https://github.com/cockroachdb/cockroach/pull/64567).
+{{site.data.alerts.end}}
 
 If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
 
@@ -183,6 +170,10 @@ Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashb
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/39117)
 
 ### Requests to restarted node in need of snapshots may hang
+
+{{site.data.alerts.callout_info}}
+Resolved as of [v20.2.4](../releases/v20.2.4.html). See [#57789](https://github.com/cockroachdb/cockroach/pull/57789).
+{{site.data.alerts.end}}
 
 When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.  
 
@@ -358,6 +349,10 @@ When inserting/updating all columns of a table, and the table has no secondary i
 
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
 
+### Size limits on statement input from SQL clients
+
+CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input
+
 ### Using `\|` to perform a large input in the SQL shell
 
 In the [built-in SQL shell](cockroach-sql.html), using the [`\|`](cockroach-sql.html#commands) operator to perform a large number of inputs from a file can cause the server to close the connection. This is because `\|` sends the entire file as a single query to the server, which can exceed the upper bound on the size of a packet the server can accept from any client (16MB).
@@ -456,32 +451,6 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46414)
-
-### Column name from an outer column inside a subquery differs from PostgreSQL
-
-CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
-
-~~~ sql
-> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
-~~~
-
-CockroachDB:
-
-~~~
-  ?column?
-------------
-         1
-~~~
-
-PostgreSQL:
-
-~~~
- x
----
- 1
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
 
 ### Concurrent SQL shells overwrite each other's history
 
