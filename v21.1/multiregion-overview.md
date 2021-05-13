@@ -158,7 +158,9 @@ The features listed in this section are designed to make working with multi-regi
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-For an example that uses unique indexes, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
+Note that the behavior described above also applies to [inverted indexes](inverted-indexes.html).
+
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
 ## Next steps
 
