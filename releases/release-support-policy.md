@@ -26,7 +26,7 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
 
-Date format: MM/DD/YY
+Date format: YYYY-MM-DD
 
 <table>
 	<thead>
@@ -39,45 +39,45 @@ Date format: MM/DD/YY
 	</thead>
   <tr>
     <td><a href="v21.1.0.html">v21.1</a></td>
-    <td>5/18/21</td>
-    <td>5/18/22</td>
-    <td>11/18/22</td>
+    <td>2021-05-18</td>
+    <td>2022-05-18</td>
+    <td>2022-11-18</td>
   </tr>
 	<tr>
 		<td><a href="v20.2.0.html">v20.2</a></td>
-		<td>11/10/20</td>
-		<td>11/10/21</td>
-		<td>5/10/22</td>
+		<td>2020-11-10</td>
+		<td>2021-11-10</td>
+		<td>2022-05-10</td>
 	</tr>
 	<tr>
 		<td><a href="v20.1.0.html">v20.1</a></td>
-		<td>5/12/20</td>
-		<td>5/12/21</td>
-		<td>11/12/21</td>
+		<td>2020-05-12</td>
+		<td>2021-05-12</td>
+		<td>2021-11-12</td>
 	</tr>
 	<tr class=eol>
-		<td><a href="v19.2.0.html">v19.2</a></td>
-		<td>11/12/19</td>
-		<td>11/12/20</td>
-		<td>5/12/21*</td>
+		<td><a href="v19.2.0.html">v19.2*</a></td>
+		<td>2019-11-12</td>
+		<td>2020-11-12</td>
+		<td>2021-05-12</td>
 	</tr>
 	<tr class=eol>
-		<td><a href="v19.1.0.html">v19.1</a></td>
-		<td>4/30/19</td>
-		<td>4/30/20</td>
-		<td>11/1/20*</td>
+		<td><a href="v19.1.0.html">v19.1*</a></td>
+		<td>2019-04-30</td>
+		<td>2020-04-30</td>
+		<td>2020-11-01</td>
 	</tr>
 	<tr class=eol>
-		<td><a href="v2.1.0.html">v2.1</a></td>
-		<td>11/19/18</td>
-		<td>11/19/19</td>
-		<td>7/1/20*</td>
+		<td><a href="v2.1.0.html">v2.1*</a></td>
+		<td>2018-11-19</td>
+		<td>2019-11-19</td>
+		<td>2020-07-01</td>
 	</tr>
 	<tr class=eol>
-		<td><a href="v2.0.0.html">v2.0</a></td>
-		<td>4/4/18</td>
-		<td>4/4/19</td>
-		<td>11/4/19*</td>
+		<td><a href="v2.0.0.html">v2.0*</a></td>
+		<td>2018-04-04</td>
+		<td>2019-04-04</td>
+		<td>2019-11-04</td>
 	</tr>
 </table>
 
