@@ -4,7 +4,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach start \
+    $ cockroach start-single-node \
     --insecure \
     --listen-addr=localhost \
     --background
