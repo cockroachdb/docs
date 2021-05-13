@@ -17,7 +17,18 @@ This document currently only covers unsupported SQL and how to rewrite SQL expre
 
 ## Unsupported Features
 
+### Unsupported PostgreSQL features
+
+The following PostgreSQL features are not supported in CockroachDB {{ page.version.version }}:
+
 {% include {{page.version.version}}/sql/unsupported-postgres-features.md %}
+
+### Unsupported PostgreSQL wire protocol features
+
+The following features of the PostgreSQL wire protocol are not supported in CockroachDB {{ page.version.version }}:
+
+- [Multiple active portals](https://github.com/cockroachdb/cockroach/issues/40195)
+- [Query cancellation](https://github.com/cockroachdb/cockroach/issues/41335)
 
 ## Features that differ from PostgreSQL
 
