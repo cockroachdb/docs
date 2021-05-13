@@ -6,6 +6,8 @@ toc: true
 
 This page has high-level information about how to configure a [multi-region cluster's](multiregion-overview.html) [survival goals](multiregion-overview.html#survival-goals) and [table locality](multiregion-overview.html#table-locality).
 
+{% include enterprise-feature.md %}
+
 The options for configuring your multi-region cluster include:
 
 - _Change nothing_: Using the [default settings](multiregion-overview.html#default-settings), you get:

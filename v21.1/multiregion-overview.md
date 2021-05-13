@@ -6,7 +6,7 @@ toc: true
 
 ## Overview
 
-<span class="version-tag">New in v21.1:</span> CockroachDB has improved multi-region capabilities that make it easier to run global applications. It is intended that these capabilities will supersede the current set of [Multi-region Topology Patterns](topology-patterns.html#multi-region). The capabilities described here are still in development; they are available in [testing releases of v21.1](../releases/#testing-releases).
+<span class="version-tag">New in v21.1:</span> CockroachDB has improved multi-region capabilities that make it easier to run global applications.
 
 To take advantage of these improved capabilities, you will need to understand the following concepts:
 
@@ -28,9 +28,7 @@ The steps above describe the simplest case, where you accept all of the default 
 
 For more information about CockroachDB's multi-region capabilities and the customization options that are available, see below.
 
-{{site.data.alerts.callout_info}}
-The documentation for the new multi-region features described below is still in development. More documentation on these features will be published in the run-up to the v21.1 release.
-{{site.data.alerts.end}}
+{% include enterprise-feature.md %}
 
 ## Cluster Regions
 
