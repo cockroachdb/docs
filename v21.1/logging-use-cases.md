@@ -378,7 +378,7 @@ I210323 20:02:12.095253 59168 10@util/log/event_log.go:32 ⋮ [n1,client=‹[::1
 
 - Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
 - `ApplicationName` shows that the events originated from an application named `bank`. You can use this field to filter the logging output by application.
-- `ErrorText` shows that this query encountered a type of [transaction retry error](transaction-retry-error-reference.html#retry_write_too_old). For details on transaction retry errors and how to resolve them, see [Transaction retry error reference]](transaction-retry-error-reference.html).
+- `ErrorText` shows that this query encountered a type of [transaction retry error](transaction-retry-error-reference.html#retry_write_too_old). For details on transaction retry errors and how to resolve them, see the [Transaction retry error reference](transaction-retry-error-reference.html).
 - `NumRetries` shows that the transaction was retried once before succeeding.
 
 {{site.data.alerts.callout_info}}
