@@ -337,8 +337,8 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
            WHEN city = 'boston' THEN 'us-east1'
            WHEN city = 'washington dc' THEN 'us-east1'
            WHEN city = 'san francisco' THEN 'us-west1'
-           WHEN city = 'seattle' THEN 'us-east1'
-           WHEN city = 'los angeles' THEN 'us-east1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
       END
     ) STORED;
     ALTER TABLE rides ALTER COLUMN REGION SET NOT NULL;
@@ -357,8 +357,8 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
            WHEN city = 'boston' THEN 'us-east1'
            WHEN city = 'washington dc' THEN 'us-east1'
            WHEN city = 'san francisco' THEN 'us-west1'
-           WHEN city = 'seattle' THEN 'us-east1'
-           WHEN city = 'los angeles' THEN 'us-east1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
       END
     ) STORED;
     ALTER TABLE user_promo_codes ALTER COLUMN REGION SET NOT NULL;
@@ -377,8 +377,8 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
            WHEN city = 'boston' THEN 'us-east1'
            WHEN city = 'washington dc' THEN 'us-east1'
            WHEN city = 'san francisco' THEN 'us-west1'
-           WHEN city = 'seattle' THEN 'us-east1'
-           WHEN city = 'los angeles' THEN 'us-east1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
       END
     ) STORED;
     ALTER TABLE users ALTER COLUMN REGION SET NOT NULL;
@@ -397,8 +397,8 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
            WHEN city = 'boston' THEN 'us-east1'
            WHEN city = 'washington dc' THEN 'us-east1'
            WHEN city = 'san francisco' THEN 'us-west1'
-           WHEN city = 'seattle' THEN 'us-east1'
-           WHEN city = 'los angeles' THEN 'us-east1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
       END
     ) STORED;
     ALTER TABLE vehicle_location_histories ALTER COLUMN REGION SET NOT NULL;
@@ -417,8 +417,8 @@ Apply this table locality to the remaining tables. These statements use a `CASE`
            WHEN city = 'boston' THEN 'us-east1'
            WHEN city = 'washington dc' THEN 'us-east1'
            WHEN city = 'san francisco' THEN 'us-west1'
-           WHEN city = 'seattle' THEN 'us-east1'
-           WHEN city = 'los angeles' THEN 'us-east1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
       END
     ) STORED;
     ALTER TABLE vehicles ALTER COLUMN REGION SET NOT NULL;
