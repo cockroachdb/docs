@@ -6,7 +6,7 @@ toc: true
 
 The CockroachDB Cluster API is a REST API that provides information about a cluster and its nodes. The API offers programmatic access to much of the information available in the [DB Console](ui-overview.html) user interface, enabling you to monitor and troubleshoot your cluster using your choice of tooling.
 
-The Cluster API is hosted by all nodes of your cluster and provides information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console. This defaults to `8080` and can be specified using `--listen-addr` when configuring your node.
+The Cluster API is hosted by all nodes of your cluster and provides information about all nodes. The API is available on the same port that is listening for HTTP connections to the DB Console. This defaults to `8080` and can be specified using `--http-addr={server}:{port}` when configuring your node.
 
 ## Resources
 
