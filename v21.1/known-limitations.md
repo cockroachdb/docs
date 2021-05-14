@@ -14,7 +14,7 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are the same as the input columns.
 
-For example, suppose you have the following [multi-region database](multi-region.html) and tables:
+For example, suppose you have the following [multi-region database](multiregion-overview.html) and tables:
 
 ``` sql
 CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1" SURVIVE REGION FAILURE;
