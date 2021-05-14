@@ -186,7 +186,7 @@ the user.
 
 ## checking for key collisions: ingested key collides with an existing one
 
-When importing into an existing table with [`IMPORT INTO`](import-into.html), this error occurs because the rows in the import file conflict with an existing primary key. The import will fail as a result. `IMPORT INTO` is an insert-only statement, so you cannot use it to update existing rows. To update rows in an existing table, use the [`UPDATE`](update.html) statement.
+When importing into an existing table with [`IMPORT INTO`](import-into.html), this error occurs because the rows in the import file conflict with an existing primary key or another constraint on uniqueness of data. The import will fail as a result. `IMPORT INTO` is an insert-only statement, so you cannot use it to update existing rows. To update rows in an existing table, use the [`UPDATE`](update.html) statement.
 
 ## Something else?
 
