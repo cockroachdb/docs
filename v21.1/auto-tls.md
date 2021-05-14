@@ -31,24 +31,58 @@ To create client certificates, you will still need to run [`cockroach cert creat
 
 The example commands below must be tailored for your environment and run for each node. In a production environment, this would typically require running the commands once on each machine for the single node that each one hosts. However, these examples depict multiple nodes running on a single machine, varying their ports rather than their hosts.
 
-1. For each node, ensure that the machine has a directory for the node to use to store cert files.
+1. For each node, ensure that the machine has a directory for the node to use to store the generated certificates and keys.
 
+~~~ shell
+cd node1
+mkdir certs
+~~~
+
+2. For each node, run `cockroach connect`, specifying the initial number of nodes. For the first node:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
-    cd node1
-    mkdir certs
+    cockroach connect \
+    --listen-addr=localhost:26257 --http-addr=localhost:8080 \
+    --num-expected-initial-nodes 3 \
+    --certs-dir=certs \
+    --init-token={secret}
     ~~~
 
-1. For each node, run `cockroach connect`, specifying the initial number of nodes. For the first node:
+    The interface responds that it is `waiting for handshake from 2 peers`. This process remains active until the cluster and all its nodes have initialized.
 
+    Configure each additional node, specifying the addresses of those which are awaiting the handshake. 
+
+    {% include copy-clipboard.html %}
     ~~~ shell
-    cockroach connect --listen-addr=localhost:26257 --certs-dir=certs --num-expected-initial-nodes 3 \
-    --init-token=<secret>
+    cockroach connect \
+    --listen-addr=localhost:26258 --http-addr=localhost:8081 \
+    --num-expected-initial-nodes 3 \
+    --join=localhost:26257 \
+    --certs-dir=certs \
+    --init-token={secret}
     ~~~
 
-This process will not terminate until the cluster and all its nodes have initialized.
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    cockroach connect \
+    --listen-addr=localhost:26259 --http-addr=localhost:8082 \
+    --num-expected-initial-nodes 3 \
+    --join=localhost:26257,localhost:26258 \
+    --certs-dir=certs \
+    --init-token={secret}
+    ~~~
 
-3. Run `cockroach start` for each node from within the directory where you want node data to be stored. This starts the node, but does not yet initialize the cluster.
+    Each node displays feedback as it connects to its peers. For example, the first would report.
 
+    ~~~ shell
+    trusted peer: 127.0.0.1:26258
+    trusted peer: 127.0.0.1:26259
+    ~~~
+
+2. Run `cockroach start` for each node from within the directory where you want node data to be stored. This starts the node, but does not yet initialize the cluster.
+
+  {% include copy-clipboard.html %}
   ~~~ shell
   cockroach start --listen-addr=localhost:26257 --certs-dir=certs \
   --join=localhost:26258,localhost:26259 --http-addr=localhost:8080
@@ -56,18 +90,18 @@ This process will not terminate until the cluster and all its nodes have initial
 
 ## Step 2: Create client certs
 
-On any node’s machine, create client keys to securely distribute for cluster administration.
+On any node’s machine, create client keys for cluster administration.
 
 ~~~ shell
 cockroach cert create-client root --ca-key=certs/ca.key --certs-dir=certs
 ~~~
 
 {{site.data.alerts.callout_info}}
-After using the root user to create additional users, distribute certs for additional users using the principle of least privilege.
+After using the root user to create additional users, distribute certs for additional users using the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
 {{site.data.alerts.end}}
 
 ## Step 3: Initialize the cluster
 
 ~~~ shell
-cockroach init --certs-dir=certs --host=localhost:26257`
+cockroach init --certs-dir=certs --host=localhost:26257
 ~~~
