@@ -1,11 +1,23 @@
+To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
+
 <section class="filter-content" markdown="1" data-scope="operator">
-1. Get a shell into one of the pods and start the CockroachDB [built-in SQL client](cockroach-sql.html):
+~~~ shell
+$ kubectl create \
+-f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/client-secure-operator.yaml
+~~~
+
+{{site.data.alerts.callout_info}}
+By default, this client pod mounts the Operator's generated certificates. If you [use a custom CA](kubernetes-operation.html#set-certificates), replace the `secret.name` values with the names of your generated secrets. Also replace the `secret.items.key` values with the generated filenames.
+{{site.data.alerts.end}}
+
+1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-2 \
+    $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
-    --certs-dir cockroach-certs
+    --certs-dir=/cockroach/cockroach-certs \
+    --host=cockroachdb-public
     ~~~
 
     ~~~
@@ -13,43 +25,31 @@
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
-    # Server version: CockroachDB CCL v20.1.4 (x86_64-unknown-linux-gnu, built 2020/07/29 22:56:36, go1.13.9) (same version as client)
-    # Cluster ID: f82abd88-5d44-4493-9558-d6c75a3b80cc
+    # Server version: CockroachDB CCL v20.2.8 (x86_64-unknown-linux-gnu, built 2021/04/23 13:54:57, go1.13.14) (same version as client)
+    # Cluster ID: a96791d9-998c-4683-a3d3-edbf425bbf11
     #
     # Enter \? for a brief introduction.
     #
-    root@:26257/defaultdb>
+    root@cockroachdb-public:26257/defaultdb>
     ~~~
 
 {% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, get a shell into the pod, and then start the built-in SQL client.
+{% include copy-clipboard.html %}
+~~~ shell
+$ kubectl create \
+-f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
+~~~
 
-- Using the Kubernetes CA: [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml)
+{{site.data.alerts.callout_info}}
+The pod uses the `root` client certificate created earlier to initialize the cluster. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
+{{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
-    ~~~
-
-- Using a non-Kubernetes CA: [`client.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/client.yaml)
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl create \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-    {{site.data.alerts.end}}
-
-    ~~~
-    pod/cockroachdb-client-secure created
-    ~~~
+~~~
+pod/cockroachdb-client-secure created
+~~~
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
@@ -86,8 +86,6 @@ To use the built-in SQL client, you need to launch a pod that runs indefinitely 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-To use the built-in SQL client, you need to launch a pod that runs indefinitely with the `cockroach` binary inside it, get a shell into the pod, and then start the built-in SQL client.
-
 1. From your local workstation, use our [`client-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/client-secure.yaml) file to launch a pod and keep it running indefinitely.
 
     1. Download the file:

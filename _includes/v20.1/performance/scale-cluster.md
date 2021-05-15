@@ -1,4 +1,4 @@
-1. SSH to one of the `n1-standard-4` instances in the `us-west1-a` zone.
+1. SSH to one of the `n2-standard-4` instances in the `us-west1-a` zone.
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
@@ -27,9 +27,9 @@
     --background
     ~~~
 
-4. Repeat steps 1 - 3 for the other two `n1-standard-4` instances in the `us-west1-a` zone.
+4. Repeat steps 1 - 3 for the other two `n2-standard-4` instances in the `us-west1-a` zone.
 
-5. SSH to one of the `n1-standard-4` instances in the `us-west2-a` zone.
+5. SSH to one of the `n2-standard-4` instances in the `us-west2-a` zone.
 
 6. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
@@ -58,4 +58,4 @@
     --background
     ~~~
 
-8. Repeat steps 5 - 7 for the other two `n1-standard-4` instances in the `us-west2-a` zone.
+8. Repeat steps 5 - 7 for the other two `n2-standard-4` instances in the `us-west2-a` zone.

@@ -15,7 +15,7 @@ To shut down the CockroachDB cluster:
     $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
     ~~~
 
-    This will delete the StatefulSet but will not delete the persistent volumes that were attached to the pods. 
+    This will delete the CockroachDB cluster being run by the Operator. It will *not* delete the persistent volumes that were attached to the pods. 
 
     {{site.data.alerts.callout_danger}}
     If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).

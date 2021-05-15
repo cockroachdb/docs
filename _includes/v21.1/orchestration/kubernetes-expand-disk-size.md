@@ -1,5 +1,9 @@
 You can expand certain [types of persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#types-of-persistent-volumes
-) (including GCE Persistent Disk and Amazon Elastic Block Store) by editing their persistent volume claims. Increasing disk size is often beneficial for CockroachDB performance. Read our [Kubernetes performance guide](kubernetes-performance.html#disk-size) for guidance on disks.
+) (including GCE Persistent Disk and Amazon Elastic Block Store) by editing their persistent volume claims.
+
+{{site.data.alerts.callout_info}}
+These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html).
+{{site.data.alerts.end}}
 
 1. Get the persistent volume claims for the volumes:
 
@@ -26,7 +30,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
     ~~~
 	</section>
 
-2. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
+1. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -57,7 +61,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
     storageclass.storage.k8s.io/standard patched
     ~~~
 
-3. Edit one of the persistent volume claims to request more space:
+1. Edit one of the persistent volume claims to request more space:
 
     {{site.data.alerts.callout_info}}
     The requested `storage` value must be larger than the previous value. You cannot use this method to decrease the disk size.
@@ -85,7 +89,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
     ~~~
 	</section>
 
-4. Check the capacity of the persistent volume claim:
+1. Check the capacity of the persistent volume claim:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
     {% include copy-clipboard.html %}
@@ -117,7 +121,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
     Running `kubectl get pv` will display the persistent volumes with their *requested* capacity and not their actual capacity. This can be misleading, so it's best to use `kubectl get pvc`.
     {{site.data.alerts.end}}
 
-5. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
+1. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
 	{% include copy-clipboard.html %}
@@ -137,7 +141,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
     Waiting for user to (re-)start a pod to finish file system resize of volume on node.
     ~~~
 
-6.  Delete the corresponding pod to restart it:
+1.  Delete the corresponding pod to restart it:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
 	{% include copy-clipboard.html %}
@@ -155,7 +159,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 
     The `FileSystemResizePending` condition and message will be removed.
 
-7. View the updated persistent volume claim:
+1. View the updated persistent volume claim:
 
 	<section class="filter-content" markdown="1" data-scope="helm">
 	{% include copy-clipboard.html %}
@@ -165,7 +169,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 
     ~~~
 	NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
     ~~~	
 	</section>
 
@@ -177,8 +181,8 @@ datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e
 
     ~~~
 	NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
+    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
     ~~~
 	</section>
 
-8. The CockroachDB cluster needs to be expanded one node at a time. Repeat steps 3 - 6 to increase the capacities of the remaining volumes by the same amount.
+1. The CockroachDB cluster needs to be expanded one node at a time. Repeat steps 3 - 6 to increase the capacities of the remaining volumes by the same amount.

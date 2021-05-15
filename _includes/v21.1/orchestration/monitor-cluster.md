@@ -9,9 +9,10 @@ To access the cluster's [DB Console](ui-overview.html):
     <section class="filter-content" markdown="1" data-scope="operator">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl exec -it cockroachdb-2 \
+    $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
-    --certs-dir cockroach-certs
+    --certs-dir=/cockroach/cockroach-certs \
+    --host=cockroachdb-public
     ~~~
     </section>
 
