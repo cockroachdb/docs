@@ -17,7 +17,9 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 
 - [Helm](https://helm.sh/) package manager for Kubernetes
 
+{{site.data.alerts.callout_info}}
 If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](kubernetes-operation.html) for details on configuring, scaling, and upgrading the cluster.
+{{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
