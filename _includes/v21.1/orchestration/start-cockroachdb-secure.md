@@ -46,7 +46,8 @@
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
 
-1. Add a [`--locality`](cockroach-start.html#locality) flag to the `cockroach start` command to specify a `region` for your CockroachDB nodes. This is an arbitrary string, but should correspond to the region you configured in [Step 1](#step-1-start-kubernetes). For example:
+{% comment %}
+<!-- 1. Add a [`--locality`](cockroach-start.html#locality) flag to the `cockroach start` command to specify a `region` for your CockroachDB nodes. This is an arbitrary string, but should correspond to the region you configured in [Step 1](#step-1-start-kubernetes). For example:
 
   {% include copy-clipboard.html %}
   ~~~ yaml
@@ -59,7 +60,8 @@
 
   {{site.data.alerts.callout_info}}
   The `region` value is required when specifying `--locality`. For more information, see the [Locality](cockroach-start.html#locality) flag documentation.
-  {{site.data.alerts.end}}
+  {{site.data.alerts.end}} -->
+{% endcomment %}
 
 1. Update `secretName` with the name of the corresponding client secret.
 
