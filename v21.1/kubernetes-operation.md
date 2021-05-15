@@ -402,9 +402,9 @@ Then [apply](#apply-settings) the new values.
 </section> -->
 {% endcomment %}
 
-{{% comment %}}
+{% comment %}
 <!-- ## Rotate security certificates -->
-{{% endcomment %}}
+{% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="operator">
 ## Configure ports
@@ -578,7 +578,7 @@ This only applies when performing a feature version upgrade (for example, from v
       name: cockroachdb/cockroach:{{page.release_info.version}}
     ~~~
 
-{{% comment %}}
+{% comment %}
 <!-- tk PodDisruptionBudget
 
 ~~~ yaml
@@ -590,7 +590,7 @@ spec:
 `maxUnavailable` is The maximum number of pods that can be unavailable during a rolling update. This number is set in the PodDistruptionBudget and defaults to 1.
 
 `minAvailable` is The min number of pods that can be available during a rolling update. This number is set in the PodDistruptionBudget and defaults to 1. -->
-{{% endcomment %}}
+{% endcomment %}
 
 1. [Apply](#apply-settings) the new value.
 

@@ -130,3 +130,11 @@ To delete the Kubernetes cluster:
 {{site.data.alerts.callout_danger}}
 If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
 {{site.data.alerts.end}}
+
+## See also
+
+- [Kubernetes Operation](kubernetes-operation.html)
+- [Kubernetes Monitoring](kubernetes-monitoring.html)
+- [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
+- [Kubernetes Performance Guide](kubernetes-performance.html)
+{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
