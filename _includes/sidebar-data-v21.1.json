@@ -770,8 +770,20 @@
               {
                 "title": "Kubernetes Single-Cluster Deployment",
                 "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "Kubernetes Operation",
+                "urls": [
+                  "/${VERSION}/kubernetes-operation.html"
+                ]
+              },
+              {
+                "title": "Kubernetes Monitoring",
+                "urls": [
+                  "/${VERSION}/kubernetes-monitoring.html"
                 ]
               },
               {

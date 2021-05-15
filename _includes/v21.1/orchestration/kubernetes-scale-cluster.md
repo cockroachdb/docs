@@ -1,48 +1,6 @@
-Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods. A CockroachDB node runs in each pod. As recommended in our [production best practices](recommended-production-settings.html#topology), you should ensure that two pods are not placed on the same worker node. 
+Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance](recommended-production-settings.html#topology).
 
-<section class="filter-content" markdown="1" data-scope="operator">
-1. Open and edit `example.yaml`.
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ vi example.yaml
-    ~~~
-
-1. In `example.yaml`, update the number of `nodes`:
-
-    ~~~
-    nodes: 4
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    Note that you must scale by updating the `nodes` value in the Operator configuration. Using `kubectl scale statefulset <cluster-name> --replicas=4` will result in new pods immediately being terminated.
-    {{site.data.alerts.end}}
-
-1. Apply `example.yaml` with the new configuration:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl apply -f example.yaml
-    ~~~
-
-1. Verify that the new pod started successfully:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get pods
-    ~~~
-
-    ~~~
-    NAME                        READY     STATUS    RESTARTS   AGE
-    cockroachdb-0               1/1       Running   0          51m
-    cockroachdb-1               1/1       Running   0          47m
-    cockroachdb-2               1/1       Running   0          3m
-    cockroachdb-3               1/1       Running   0          1m
-    ...
-    ~~~
-
-1. Back in the DB Console, view the **Node List** to ensure that the fourth node successfully joined the cluster.
-</section>
+For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`.
 
 <section class="filter-content" markdown="1" data-scope="manual">
 1. On a production deployment, first add a worker node, bringing the total from 3 to 4:
@@ -62,69 +20,6 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     statefulset.apps/cockroachdb scaled
     ~~~
 
-    {{site.data.alerts.callout_success}}
-    If you aren't using the Kubernetes CA to sign certificates, you can now skip to step 6.
-    {{site.data.alerts.end}}
-
-1. Get the name of the `Pending` CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get csr
-    ~~~
-
-    ~~~
-    NAME                                                   AGE       REQUESTOR                               CONDITION
-    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-2                             1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-3                             2m        system:serviceaccount:default:default   Pending
-    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
-    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
-    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
-    ...
-    ~~~
-
-1. Examine the CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl describe csr default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    Name:               default.node.cockroachdb-3
-    Labels:             <none>
-    Annotations:        <none>
-    CreationTimestamp:  Wed, 30 Oct 2019 13:46:52 -0400
-    Requesting User:    system:serviceaccount:default:cockroachdb
-    Status:             Pending
-    Subject:
-      Common Name:    node
-      Serial Number:
-      Organization:   Cockroach
-    Subject Alternative Names:
-             DNS Names:     localhost
-                            cockroachdb-1.cockroachdb.default.svc.cluster.local
-                            cockroachdb-1.cockroachdb
-                            cockroachdb-public
-                            cockroachdb-public.default.svc.cluster.local
-             IP Addresses:  127.0.0.1
-    Events:  <none>
-    ~~~    
-
-1. If everything looks correct, approve the CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl certificate approve default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
-    ~~~
-
 1. Verify that the new pod started successfully:
 
     {% include copy-clipboard.html %}
@@ -142,7 +37,7 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     ...
     ~~~
 
-1. Back in the DB Console, view the **Node List** to ensure that the fourth node successfully joined the cluster.
+1. You can also open the [**Node List**](ui-cluster-overview-page.html#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
@@ -259,5 +154,5 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     ...
     ~~~
 
-1. Back in the DB Console, view the **Node List** to ensure that the fourth node successfully joined the cluster.
+1. You can also open the [**Node List**](ui-cluster-overview-page.html#node-list) in the DB Console to ensure that the fourth node successfully joined the cluster.
 </section>

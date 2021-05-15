@@ -1,19 +1,34 @@
 ---
-title: Orchestrate CockroachDB in a Single Kubernetes Cluster
-summary: How to orchestrate the deployment, management, and monitoring of a secure 3-node CockroachDB cluster with Kubernetes.
+title: Deploy CockroachDB in a Single Kubernetes Cluster
+summary: Deploy a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
 secure: true
+redirect_from: orchestrate-cockroachdb-with-kubernetes.html
 ---
 
 <div class="filters filters-big clearfix">
   <button class="filter-button current"><strong>Secure</strong></button>
-  <a href="orchestrate-cockroachdb-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
+  <a href="deploy-cockroachdb-with-kubernetes-insecure.html"><button class="filter-button">Insecure</button></a>
 </div>
 
-This page shows you how to orchestrate the deployment, management, and monitoring of a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature directly or via the [Helm](https://helm.sh/) package manager for Kubernetes.
+This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
+- [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator)
+    
+    {{site.data.alerts.callout_info}}
+    The CockroachDB Kubernetes Operator is also available from the [Red Hat Marketplace](https://marketplace.redhat.com/en-us/products/cockroachdb-operator). To deploy a cluster on OpenShift, see [Deploy CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html).
+    {{site.data.alerts.end}}
+
+- Manual [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) configuration
+
+- [Helm](https://helm.sh/) package manager for Kubernetes
+
+If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](kubernetes-operation.html) for details on configuring, scaling, and upgrading the cluster.
+
+{{site.data.alerts.callout_success}}
 To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+{{site.data.alerts.end}}
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -39,30 +54,18 @@ Feature | Description
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
-#### CSR names
-
-When Kubernetes issues a [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) (Certificate Signing Request) to have a node or client certificate signed by the Kubernetes CA, Kubernetes requires the CSR name to start and end with an alphanumeric character and otherwise consist of lowercase alphanumeric characters, `-`, or `.`
-
-CSR names contain the StatefulSet or Helm chart `name`, so if you customize that value, be sure to conform to these naming requirements. For client certificates, CSR names also contain the username of the SQL user for which the certificate is being generated, so be sure SQL usernames also conform to these naming requirements. For example, avoid using the underscore character (`_`) in these names.
-
 ## Step 1. Start Kubernetes
 
 {% include {{ page.version.version }}/orchestration/start-kubernetes.md %}
 
 ## Step 2. Start CockroachDB
 
-Choose how you want to deploy and maintain the CockroachDB cluster:
-
-- [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) (recommended)
-- [Helm](https://helm.sh/) package manager
-- Manually apply our StatefulSet configuration and related files
-
-{{site.data.alerts.callout_success}}
- The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases the creation of StatefulSets, pod authentication, cluster scaling, and rolling upgrades. The Operator is currently in **beta** and is not yet production-ready.
-{{site.data.alerts.end}}
+Choose how you want to deploy and maintain the CockroachDB cluster.
 
 {{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is also available from the [Red Hat Marketplace](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
+The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases CockroachDB cluster creation and management on a single Kubernetes cluster.
+
+Note that the Operator does not provision or apply an enterprise license key. To use [enterprise features](enterprise-licensing.html) with the Operator, [set a license](licensing-faqs.html#set-a-license) in the SQL shell.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -91,49 +94,11 @@ The CockroachDB Kubernetes Operator is also available from the [Red Hat Marketpl
 
 {% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
 
-## Step 5. Simulate node failure
-
-{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
-
-## Step 6. Monitor the cluster
-
-{% include {{ page.version.version }}/orchestration/kubernetes-prometheus-alertmanager.md %}
-
-## Step 7. Maintain the cluster
-
-- [Add nodes](#add-nodes)
-- [Remove nodes](#remove-nodes)
-- [Expand disk size](#expand-disk-size)
-- [Upgrade the cluster](#upgrade-the-cluster)
-- [Stop the cluster](#stop-the-cluster)
-
-### Add nodes
-
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
-
-### Remove nodes
-
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
-
-### Expand disk size
-
-<section class="filter-content" markdown="1" data-scope="operator">
-{{site.data.alerts.callout_info}}
-Expansion of persistent volumes with the Operator is forthcoming. See the [GitHub project](https://github.com/cockroachdb/cockroach-operator) for progress.
-{{site.data.alerts.end}}
-</section>
-
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-
-### Upgrade the cluster
-
-{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
-
-### Stop the cluster
+## Step 5. Stop the cluster
 
 {% include {{ page.version.version }}/orchestration/kubernetes-stop-cluster.md %}
 
-#### Stop Kubernetes
+### Stop Kubernetes
 
 To delete the Kubernetes cluster:
 
@@ -165,9 +130,3 @@ To delete the Kubernetes cluster:
 {{site.data.alerts.callout_danger}}
 If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
 {{site.data.alerts.end}}
-
-## See also
-
-- [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
-- [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
