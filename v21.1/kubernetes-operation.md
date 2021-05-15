@@ -88,8 +88,6 @@ If you want to change the values in the Helm chart, it's easiest to create a loc
 ~~~ shell
 $ helm upgrade -f my-values.yaml {release-name} cockroachdb/cockroachdb
 ~~~
-
-tk
 </section>
 
 ## Allocate resources
@@ -262,6 +260,7 @@ To verify that the storage capacity has been updated, run `kubectl get pvc` to v
 </section>
 
 <section class="filter-content" markdown="1" data-scope="operator">
+
 ## Use a custom CA
 
 By default, the Operator will generate and sign certificates to secure the cluster. 
@@ -407,6 +406,7 @@ Then [apply](#apply-settings) the new values.
 {% endcomment %}
 
 <section class="filter-content" markdown="1" data-scope="operator">
+
 ## Configure ports
 
 The Operator separates traffic into three ports:
@@ -462,13 +462,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 1. To verify that the new pods were successfully started, run `kubectl get pods`.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="manual">
 {% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
-</section>
 
 ### Remove nodes
 
@@ -550,13 +544,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 1. To verify that the pod was successfully removed, run `kubectl get pods`.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="manual">
 {% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="manual">
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
-</section>
 
 ## Upgrade the cluster
 
@@ -643,13 +631,7 @@ spec:
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="manual">
 {% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
-</section>
 
 ## See also
 
