@@ -201,6 +201,12 @@
       		       "/cockroachcloud/upgrade-policy.html"
       	      ]
       	    },
+            {
+      	      "title": "Upgrade to v21.1",
+      	      "urls": [
+      		       "/cockroachcloud/upgrade-to-v21.1.html"
+      	      ]
+      	    },
       	    {
       	      "title": "Upgrade to v20.2",
       	      "urls": [
