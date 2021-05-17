@@ -6,6 +6,8 @@ toc: true
 
 A `MULTIPOLYGON` is a collection of [Polygons](polygon.html).  MultiPolygons are useful for gathering a group of Polygons into one geometry. For example, you may want to gather the Polygons denoting a group of properties in a particular municipality.  Another use of MultiPolygons is to represent states or countries that include islands, or that are otherwise made up of non-overlapping shapes.
 
+{% include {{page.version.version}}/spatial/zmcoords.md %}
+
 ## Examples
 
 A MultiPolygon can be created from SQL by calling the `st_geomfromtext` function on a MultiPolygon definition expressed in the [Well Known Text (WKT)](spatial-glossary.html#wkt) format.
