@@ -31,12 +31,14 @@ To create client certificates, you will still need to run [`cockroach cert creat
 
 The example commands below must be tailored for your environment and run for each node. In a production environment, this would typically require running the commands once on each machine for the single node that each one hosts. However, these examples depict multiple nodes running on a single machine, varying their ports rather than their hosts.
 
-1. For each node, ensure that the machine has a directory for the node to use to store the generated certificates and keys.
+1. For each node, prepare a directory for the node to use to store the generated certificates and keys.
 
     ~~~ shell
     cd node1
     mkdir certs
     ~~~
+
+    Alternatively, the directory `~/.cockroach-certs` is used, by default, if none is specified in the next step.
 
 2. For each node, run `cockroach connect`. Specify a shared token, certs directory, number of nodes you'll have when starting the cluster, and the address and port on which the node will listen for connections from the others (which defaults to `localhost:26257`).
 
@@ -98,17 +100,18 @@ The example commands below must be tailored for your environment and run for eac
   --http-addr=localhost:8080
   ~~~
 
-## Step 2: Create client certificates
+## Step 2: Create a client certificate for the root user
 
-On any node’s machine, create client keys for cluster administration.
+On any node’s machine, manually [create the certificate and key pair](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) for the root user.
+
+{{site.data.alerts.callout_danger}}
+Do not share the root cert. In a later step, you can use the root user to create additional administrative users, specifying their privileges. You can then create and securely share their certs, as appropriate, using the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
+{{site.data.alerts.end}}
 
 ~~~ shell
-cockroach cert create-client root --ca-key=certs/ca.key --certs-dir=certs
+cockroach cert create-client root \
+--ca-key=certs/ca.key --certs-dir=certs
 ~~~
-
-{{site.data.alerts.callout_info}}
-After using the `root` user to create additional users, distribute certs for additional users using the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
-{{site.data.alerts.end}}
 
 ## Step 3: Initialize the cluster
 
@@ -117,3 +120,16 @@ Run [`cockroach-init`](cockroach-init.html).
 ~~~ shell
 cockroach init --certs-dir=certs --host=localhost:26257
 ~~~
+
+## Step 4: Create additional users to administer the cluster
+
+1. Using the `root` user, log in to the [SQL shell](cockroach-sql.html). [Create additional users](create-role.html#create-a-role-that-can-log-in-to-the-database), specifying privileges as [parameters](create-role.html#parameters), or add the users as members of the admin role to confer all priviliges, if appropriate.
+
+2. Create the certificate and key pair for each of the additional users.
+
+    ~~~ shell
+    cockroach cert create-client {username} \
+    --ca-key=certs/ca.key --certs-dir=certs
+    ~~~
+
+3. Securely send each user the certificate and key that matches their username: `client.{username}.crt` and `client.{username}.key`.
