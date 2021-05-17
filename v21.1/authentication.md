@@ -4,7 +4,7 @@ summary: Learn about the authentication features for secure CockroachDB clusters
 toc: true
 ---
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the DB Console. This document discusses how CockroachDB uses digital certificates and also gives [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB requires TLS 1.3 digital certificates for inter-node authentication and accepts TLS 1.2 and TLS 1.3 certificates for client-node authentication. This document discusses how CockroachDB uses digital certificates and what your options are for configuring user authentication for SQL clients and the DB Console UI. It also offers a [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) of public key cryptography and digital certificates.
 
 - If you are familiar with public key cryptography and digital certificates, then reading the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section should be enough.
 - If you are unfamiliar with public key cryptography and digital certificates, you might want to skip over to the [conceptual overview](#background-on-public-key-cryptography-and-digital-certificates) first and then come back to the [Using digital certificates with CockroachDB](#using-digital-certificates-with-cockroachdb) section.
@@ -12,7 +12,7 @@ Authentication refers to the act of verifying the identity of the other party in
 
 ## Using digital certificates with CockroachDB
 
-CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.2 server certificate. Note that the node certificate is multi-functional, which means that the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes.  Node certificates have the following requirements:
+Each CockroachDB node in a secure cluster must have a **node certificate**, which is a TLS 1.3 certificate. This certificate is multi-functional: the same certificate is presented irrespective of whether the node is acting as a server or a client. The nodes use these certificates to establish secure connections with clients and with other nodes. Node certificates have the following requirements:
 
 - The hostname or address (IP address or DNS name) used to reach a node, either directly or through a load balancer, must be listed in the **Common Name** or **Subject Alternative Names** fields of the certificate:
 
@@ -23,7 +23,7 @@ CockroachDB uses both TLS 1.2 server and client certificates. Each CockroachDB n
 
 - CockroachDB must be configured to trust the certificate authority that signed the certificate.
 
-Based on your security setup, you can use the [`cockroach cert` commands](cockroach-cert.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
+Based on your security setup, you can use the [`cockroach cert` commands](cockroach-cert.html), [Auto TLS](auto-tls.html), [`openssl` commands](create-security-certificates-openssl.html), or a [custom CA](create-security-certificates-custom-ca.html) to generate all the keys and certificates.
 
 A CockroachDB cluster consists of multiple nodes and clients. The nodes can communicate with each other, with the SQL clients, and the DB Console. In client-node SQL communication and client-UI communication, the node acts as a server, but in inter-node communication, a node may act as a server or a client. Hence authentication in CockroachDB involves:
 
@@ -242,9 +242,9 @@ For details about when and how to change security certificates without restartin
 
 ## Background on public key cryptography and digital certificates
 
-As mentioned above, CockroachDB uses the [TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocol that takes advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
+As mentioned above, CockroachDB supports the [TLS 1.3 and TLS 1.2](https://en.wikipedia.org/wiki/Transport_Layer_Security) security protocols, which take advantage of both symmetric (to encrypt data in flight) as well as asymmetric encryption (to establish a secure channel as well as **authenticate** the communicating parties).
 
-Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.2 digital certificates for inter-node and client-node authentication, which require a Certificate Authority (CA) as well as keys and certificates for nodes, clients, and (optionally) the DB Console.
+Authentication refers to the act of verifying the identity of the other party in communication. CockroachDB uses TLS 1.3 digital certificates for inter-node authentication, and your choice of TLS 1.2 and TLS 1.3 certificates for client-node authentication. These authentication methods require a certificate authority (CA) as well as keys and certificates for nodes, clients, and, optionally, the [DB Console](#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 To understand how CockroachDB uses digital certificates, let's first understand what each of these terms means.
 
