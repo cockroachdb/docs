@@ -16,7 +16,7 @@ CockroachCloud supports the latest major version of CockroachDB and the version 
 
 ## Minor version upgrades
 
-[Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. All clusters, including both CockroachCloud Free (beta) and CockroachCloud clusters, are subject to automatic upgrades to the latest supported minor version (for example, v21.1.0 → v21.1.1).
+[Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. All clusters, including both CockroachCloud Free (beta) and CockroachCloud clusters, are subject to automatic upgrades to the latest supported minor version (for example, v20.1.1 → v20.1.2).
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
@@ -24,17 +24,17 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 ## Major version upgrades
 
-[Major version releases](../releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.2.x → v21.1.x).
+[Major version releases](../releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.1.x → v20.2.x).
 
-When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the CockroachCloud Console](upgrade-to-v21.1.html) for clusters using the paid version of CockroachCloud. CockroachCloud Free (beta) clusters are subject to automatic upgrades to the latest supported major version.
+When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the CockroachCloud Console](upgrade-to-v20.2.html) for clusters using the paid version of CockroachCloud. CockroachCloud Free (beta) clusters are subject to automatic upgrades to the latest supported major version.
 
 ### Support downgrade for older CockroachDB versions
 
-As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on CockroachCloud. A CockroachDB version reaches EOS when it is 2 major versions behind the latest version. For example, now that CockroachDB v21.1 has been released, CockroachDB v20.1 has reached EOS.
+As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on CockroachCloud. A CockroachDB version reaches EOS when it is 2 major versions behind the latest version. For example, now that CockroachDB v20.2 has been released, CockroachDB v19.2 has reached EOS.
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
 
-If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. You can [upgrade your cluster](upgrade-to-v21.1.html) directly from the CockroachCloud Console.
+If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. You can [upgrade your cluster](upgrade-to-v20.2.html) directly from the CockroachCloud Console.
 
 ### Rollback support
 
@@ -42,4 +42,4 @@ When you upgrade to a new major version, once all nodes are running the new vers
 
 ## See also
 
-For more details about the upgrade and finalization process, see [Upgrade to the Latest CockroachDB Version](upgrade-to-v21.1.html).
+For more details about the upgrade and finalization process, see [Upgrade to the Latest CockroachDB Version](upgrade-to-v20.2.html).
