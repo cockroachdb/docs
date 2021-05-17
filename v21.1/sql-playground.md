@@ -4,7 +4,7 @@ summary: The SQL Playground gives you an interactive SQL shell to a single-node 
 toc: false
 ---
 
-This playground gives you an interactive SQL shell to a single-node CockroachDB cluster running a testing release of v21.1. The cluster is pre-loaded with a sample dataset, configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality, and set up with a DB Console user (login: max/roach).
+This playground gives you an interactive SQL shell to a single-node CockroachDB cluster running v21.1. The cluster is pre-loaded with a sample dataset, configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality, and set up with a DB Console user (login: max/roach).
 
 For docs on our SQL dialect, see <a href="sql-statements.html" target="_blank">SQL Reference</a>. For a more guided experience, see our [interactive tutorials](#interactive-tutorials).
 
@@ -24,3 +24,4 @@ For docs on our SQL dialect, see <a href="sql-statements.html" target="_blank">S
 - [Learn CockroachDB SQL](../tutorials/learn-cockroachdb-sql-interactive.html)
 - [Build a Python App with CockroachDB](../tutorials/build-a-python-app-with-cockroachdb-interactive.html)
 - [Store and Query JSON](../tutorials/demo-json-support-interactive.html)
+- [Working with Spatial Data](../tutorials/spatial-tutorial-interactive.html)
