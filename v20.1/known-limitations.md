@@ -484,7 +484,7 @@ This issue is particularly relevant when using a simple SQL table of two columns
 
 ### Size limits on statement input from SQL clients
 
-CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input
+CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
 
 ### Using `\|` to perform a large input in the SQL shell
 

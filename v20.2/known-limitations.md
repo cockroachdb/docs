@@ -89,6 +89,12 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 
+- CockroachDB does not support using [schema name prefixes](sql-name-resolution.html#how-name-resolution-works) to refer to [data types](data-types.html) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
+
+    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
+
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
+
 ## Unresolved limitations
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
@@ -351,7 +357,7 @@ This issue is particularly relevant when using a simple SQL table of two columns
 
 ### Size limits on statement input from SQL clients
 
-CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input
+CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
 
 ### Using `\|` to perform a large input in the SQL shell
 

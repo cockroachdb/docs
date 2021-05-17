@@ -8,11 +8,11 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
-### CockroachDB does not properly optimize some left and inverted joins with inverted indexes
+### CockroachDB does not properly optimize some left and anti joins with inverted indexes
 
-[Left joins](joins.html#left-outer-joins) and [inverted joins](joins.html#inverted-joins) involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [inverted index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [inverted index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
 
-To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are the same as the input columns.
+To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
 
 For example, suppose you have the following [multi-region database](multiregion-overview.html) and tables:
 
@@ -41,7 +41,7 @@ INSERT INTO t2 (crdb_region, k, geom) SELECT 'us-west1', generate_series(1001, 2
 INSERT INTO t2 (crdb_region, k, geom) SELECT 'europe-west1', generate_series(2001, 3000), 'POINT(3.0 3.0)';
 ```
 
-If you attempt a left join between `t1` and `t2` on only the geometry columns, CockroachDB will not be able to plan an inverted join:
+If you attempt a left join between `t1` and `t2` on only the geometry columns, CockroachDB will not be able to plan an [inverted join](joins.html#inverted-joins):
 
 ```
 > EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom);
