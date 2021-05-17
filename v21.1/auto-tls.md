@@ -8,7 +8,7 @@ To secure your CockroachDB cluster's inter-node and client-node communication, t
 
 - Nodes
 - Clients
-- Optionally: the [DB Console](authentication.html#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster) and Cluster API.
+- Optionally: the [DB Console](authentication.html#using-a-public-ca-certificate-to-access-the-db-console-for-a-secure-cluster).
 
 With Auto TLS, your cluster creates the CA (certificate authority) certificate and key pair required for secure communication with other nodes and clients and then securely distributes these among the nodes. The cluster also creates the additional certificates that each node requires to connect to other nodes and enable connections from clients.
 
