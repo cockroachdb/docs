@@ -150,6 +150,54 @@ CockroachDB supports the `SELECT FOR UPDATE` statement, which is used to order t
 
 For more information, see [`SELECT FOR UPDATE`](select-for-update.html).
 
+### `CHECK` constraint validation for `INSERT ON CONFLICT`
+
+CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
+
+If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO t (x)
+    SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)
+      FROM (values (3)) AS v(x)
+    ON CONFLICT (x)
+      DO UPDATE SET x = excluded.x;
+~~~
+
+An `x` value less than `1` would result in the following error:
+
+~~~
+pq: check constraint violated
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
+
+### Column name from an outer column inside a subquery
+
+CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
+
+~~~ sql
+> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
+~~~
+
+CockroachDB:
+
+~~~
+  ?column?
+------------
+         1
+~~~
+
+PostgreSQL:
+
+~~~
+ x
+---
+ 1
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
 
 ### SQL Compatibility
 

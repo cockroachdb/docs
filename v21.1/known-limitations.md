@@ -6,6 +6,159 @@ toc: true
 
 This page describes newly identified limitations in the CockroachDB {{page.release_info.version}} release as well as unresolved limitations identified in earlier releases.
 
+## New limitations
+
+### CockroachDB does not properly optimize some left and anti joins with inverted indexes
+
+[Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [inverted index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
+
+To work around this limitation, make sure that the prefix columns of the index are either constrained to single constant values, or are part of an equality condition with an input column (e.g., `col1 = col2`, where `col1` is a prefix column and `col2` is an input column).
+
+For example, suppose you have the following [multi-region database](multiregion-overview.html) and tables:
+
+``` sql
+CREATE DATABASE multi_region_test_db PRIMARY REGION "europe-west1" REGIONS "us-west1", "us-east1" SURVIVE REGION FAILURE;
+USE multi_region_test_db;
+
+CREATE TABLE t1 (
+  k INT PRIMARY KEY,
+  geom GEOMETRY
+);
+
+CREATE TABLE t2 (
+  k INT PRIMARY KEY,
+  geom GEOMETRY,
+  INVERTED INDEX geom_idx (geom)
+) LOCALITY REGIONAL BY ROW;
+```
+
+And you [insert](insert.html) some data into the tables:
+
+``` sql
+INSERT INTO t1 SELECT generate_series(1, 1000), 'POINT(1.0 1.0)';
+INSERT INTO t2 (crdb_region, k, geom) SELECT 'us-east1', generate_series(1, 1000), 'POINT(1.0 1.0)';
+INSERT INTO t2 (crdb_region, k, geom) SELECT 'us-west1', generate_series(1001, 2000), 'POINT(2.0 2.0)';
+INSERT INTO t2 (crdb_region, k, geom) SELECT 'europe-west1', generate_series(2001, 3000), 'POINT(3.0 3.0)';
+```
+
+If you attempt a left join between `t1` and `t2` on only the geometry columns, CockroachDB will not be able to plan an [inverted join](joins.html#inverted-joins):
+
+```
+> EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom);
+                info
+------------------------------------
+  distribution: full
+  vectorized: true
+
+  • cross join (right outer)
+  │ pred: st_contains(geom, geom)
+  │
+  ├── • scan
+  │     estimated row count: 3,000
+  │     table: t2@primary
+  │     spans: FULL SCAN
+  │
+  └── • scan
+        estimated row count: 1,000
+        table: t1@primary
+        spans: FULL SCAN
+(15 rows)
+```
+
+However, if you constrain the `crdb_region` column to a single value, CockroachDB can plan an inverted join:
+
+```
+> EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-east1';
+                       info
+--------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join (left outer)
+  │ table: t2@primary
+  │ equality: (crdb_region, k) = (crdb_region,k)
+  │ equality cols are key
+  │ pred: st_contains(geom, geom)
+  │
+  └── • inverted join (left outer)
+      │ table: t2@geom_idx
+      │
+      └── • render
+          │
+          └── • scan
+                estimated row count: 1,000
+                table: t1@primary
+                spans: FULL SCAN
+(18 rows)
+```
+
+If you do not know which region to use, you can combine queries with [`UNION ALL`](selection-queries.html#union-combine-two-queries):
+
+```
+> EXPLAIN SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-east1'
+UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'us-west1'
+UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.crdb_region = 'europe-west1';
+                           info
+----------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • union all
+  │
+  ├── • union all
+  │   │
+  │   ├── • lookup join (left outer)
+  │   │   │ table: t2@primary
+  │   │   │ equality: (crdb_region, k) = (crdb_region,k)
+  │   │   │ equality cols are key
+  │   │   │ pred: st_contains(geom, geom)
+  │   │   │
+  │   │   └── • inverted join (left outer)
+  │   │       │ table: t2@geom_idx
+  │   │       │
+  │   │       └── • render
+  │   │           │
+  │   │           └── • scan
+  │   │                 estimated row count: 1,000
+  │   │                 table: t1@primary
+  │   │                 spans: FULL SCAN
+  │   │
+  │   └── • lookup join (left outer)
+  │       │ table: t2@primary
+  │       │ equality: (crdb_region, k) = (crdb_region,k)
+  │       │ equality cols are key
+  │       │ pred: st_contains(geom, geom)
+  │       │
+  │       └── • inverted join (left outer)
+  │           │ table: t2@geom_idx
+  │           │
+  │           └── • render
+  │               │
+  │               └── • scan
+  │                     estimated row count: 1,000
+  │                     table: t1@primary
+  │                     spans: FULL SCAN
+  │
+  └── • lookup join (left outer)
+      │ table: t2@primary
+      │ equality: (crdb_region, k) = (crdb_region,k)
+      │ equality cols are key
+      │ pred: st_contains(geom, geom)
+      │
+      └── • inverted join (left outer)
+          │ table: t2@geom_idx
+          │
+          └── • render
+              │
+              └── • scan
+                    estimated row count: 1,000
+                    table: t1@primary
+                    spans: FULL SCAN
+(54 rows)
+```
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59649)
+
 ## Unresolved limitations
 
 ### `IMPORT` into a `REGIONAL BY ROW` table
@@ -54,6 +207,12 @@ To work around this limitation, you will need to take the following steps:
 In addition to the limitation above, note that CockroachDB cannot yet make the `crdb_region` column hidden in the destination table.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/62892)
+
+### Differences in syntax and behavior between CockroachDB and PostgreSQL
+
+CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.
+
+For a list of known differences in syntax and behavior between CockroachDB and PostgreSQL, see [Features that differ from PostgreSQL](postgresql-compatibility.html#features-that-differ-from-postgresql).
 
 ### Multiple arbiter indexes for `INSERT ON CONFLICT DO UPDATE`
 
@@ -114,10 +273,6 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/41412)
 
-- CockroachDB does not yet support storing spatial objects of more than two dimensions.
-
-    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53091)
-
 - CockroachDB does not yet support Triangle or [`TIN`](https://en.wikipedia.org/wiki/Triangulated_irregular_network) spatial shapes.
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56196)
@@ -130,34 +285,11 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55227)
 
-### Collation names that include upper-case or hyphens may cause errors
+- CockroachDB does not support using [schema name prefixes](sql-name-resolution.html#how-name-resolution-works) to refer to [data types](data-types.html) with type modifiers (e.g., `public.geometry(linestring, 4326)`). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)`).
 
-Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
+    Note that, in [`IMPORT PGDUMP`](migrate-from-postgres.html) output, [`GEOMETRY` and `GEOGRAPHY`](spatial-data.html) data type names are prefixed by `public.`. If the type has a type modifier, you must remove the `public.` from the type name in order for the statements to work in CockroachDB.
 
-For example, the following SQL will result in an error:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> CREATE TABLE nocase_strings (s STRING COLLATE "en-US-u-ks-level2");
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO nocase_strings VALUES ('Aaa' COLLATE "en-US-u-ks-level2"), ('Bbb' COLLATE "en-US-u-ks-level2");
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT s FROM nocase_strings WHERE s = ('bbb' COLLATE "en-US-u-ks-level2");
-~~~
-
-~~~
-ERROR: internal error: "$0" = 'bbb' COLLATE en_us_u_ks_level2: unsupported comparison operator: <collatedstring{en-US-u-ks-level2}> = <collatedstring{en_us_u_ks_level2}>
-~~~
-
-As a workaround, only use collation names that have lower-case letters and underscores.
-
-[Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/56335)
+    [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 
 ### Subqueries in `SET` statements
 
@@ -184,58 +316,6 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
-### `CHECK` constraint validation for `INSERT ON CONFLICT` differs from PostgreSQL
-
-CockroachDB validates [`CHECK`](check.html) constraints on the results of [`INSERT ON CONFLICT`](insert.html#on-conflict-clause) statements, preventing new or changed rows from violating the constraint. Unlike PostgreSQL, CockroachDB does not also validate `CHECK` constraints on the input rows of `INSERT ON CONFLICT` statements.
-
-If this difference matters to your client, you can `INSERT ON CONFLICT` from a `SELECT` statement and check the inserted value as part of the `SELECT`. For example, instead of defining `CHECK (x > 0)` on `t.x` and using `INSERT INTO t(x) VALUES (3) ON CONFLICT (x) DO UPDATE SET x = excluded.x`, you could do the following:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO t (x)
-    SELECT if (x <= 0, crdb_internal.force_error('23514', 'check constraint violated'), x)
-      FROM (values (3)) AS v(x)
-    ON CONFLICT (x)
-      DO UPDATE SET x = excluded.x;
-~~~
-
-An `x` value less than `1` would result in the following error:
-
-~~~
-pq: check constraint violated
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35370)
-
-### Cold starts of large clusters may require manual intervention
-
-If a cluster contains a large amount of data (>500GiB / node), and all nodes are stopped and then started at the same time, clusters can enter a state where they're unable to startup without manual intervention. In this state, logs fill up rapidly with messages like `refusing gossip from node x; forwarding to node y`, and data and metrics may become inaccessible.
-
-To exit this state, you should:
-
-1. Stop all nodes.
-2. Set the following environment variables: `COCKROACH_SCAN_INTERVAL=60m`, and `COCKROACH_SCAN_MIN_IDLE_TIME=1s`.
-3. Restart the cluster.
-
-Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashboard**](ui-replication-dashboard.html). When >90% of the replicas have become quiescent, conduct a rolling restart and remove the environment variables. Make sure that under-replicated ranges do not increase between restarts.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/39117)
-
-### Requests to restarted node in need of snapshots may hang
-
-When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.  
-
-To work around this limitation, you can adjust the `kv.snapshot_recovery.max_rate` [cluster setting](cluster-settings.html) to temporarily relax the throughput rate limiting applied to snapshots. For example, changing the rate limiting from the default 8 MB/s, at which 1 GB of snapshots takes at least 2 minutes, to 64 MB/s can result in an 8x speedup in snapshot transfers and, therefore, a much shorter interruption of requests to an impacted node:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING kv.snapshot_recovery.max_rate = '64mb';
-~~~
-
-Before increasing this value, however, verify that you will not end up saturating your network interfaces, and once the problem has resolved, be sure to reset to the original value.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/37906)
-
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
@@ -260,33 +340,11 @@ To work around this issue, we recommend limiting the size of primary and seconda
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30515)
 
-### DB Console: Statements page latency reports
-
-The Statements page does not correctly report "mean latency" or "latency by phase" for statements that result in schema changes or other background jobs.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30381)
-
 ### Using `LIKE...ESCAPE` in `WHERE` and `HAVING` constraints
 
 CockroachDB tries to optimize most comparisons operators in `WHERE` and `HAVING` clauses into constraints on SQL indexes by only accessing selected rows. This is done for `LIKE` clauses when a common prefix for all selected rows can be determined in the search pattern (e.g., `... LIKE 'Joe%'`). However, this optimization is not yet available if the `ESCAPE` keyword is also used.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/30192)
-
-### Using SQLAlchemy with CockroachDB
-
-Users of the SQLAlchemy adapter provided by Cockroach Labs must [upgrade the adapter to the latest release](https://github.com/cockroachdb/sqlalchemy-cockroachdb) before upgrading to CockroachDB {{ page.version.version }}.
-
-### DB Console: CPU percentage calculation
-
-For multi-core systems, the user CPU percent can be greater than 100%. Full utilization of one core is considered as 100% CPU usage. If you have _n_ cores, then the user CPU percent can range from 0% (indicating an idle system) to (_n_*100)% (indicating full utilization).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/28724)
-
-### DB Console: CPU count in containerized environments
-
-When CockroachDB is run in a containerized environment (e.g., Kubernetes), the DB Console does not detect CPU limits applied to a container. Instead, the UI displays the actual number of CPUs provisioned on a VM.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/34988)
 
 ### `TRUNCATE` does not behave like `DELETE`
 
@@ -321,7 +379,6 @@ As a workaround, set `default_int_size` via your database driver, or ensure that
 ### `COPY` syntax not supported by CockroachDB
 
 {% include {{ page.version.version }}/known-limitations/copy-syntax.md %}
-
 
 ### Import with a high amount of disk contention
 
@@ -385,6 +442,10 @@ SQLSTATE: 0A000
 When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
 
 This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
+
+### Size limits on statement input from SQL clients
+
+CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
 
 ### Using `\|` to perform a large input in the SQL shell
 
@@ -462,12 +523,6 @@ Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are a
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
-### Correlated common table expressions
-
-{% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42540)
-
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
 Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
@@ -484,32 +539,6 @@ See: https://github.com/cockroachdb/cockroach/issues/46414
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46414)
-
-### Column name from an outer column inside a subquery differs from PostgreSQL
-
-CockroachDB returns the column name from an outer column inside a subquery as `?column?`, unlike PostgreSQL. For example:
-
-~~~ sql
-> SELECT (SELECT t.*) FROM (VALUES (1)) t(x);
-~~~
-
-CockroachDB:
-
-~~~
-  ?column?
-------------
-         1
-~~~
-
-PostgreSQL:
-
-~~~
- x
----
- 1
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/46563)
 
 ### Concurrent SQL shells overwrite each other's history
 
@@ -578,12 +607,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Inverted indexes cannot be partitioned
-
-CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)
 
 ### Using interleaved tables in backups
 

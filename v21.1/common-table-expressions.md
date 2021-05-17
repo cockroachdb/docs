@@ -309,14 +309,6 @@ While this practice works for testing and debugging, we do not recommend it in p
 CockroachDB does not currently support the [Postgres recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
 {{site.data.alerts.end}}
 
-## Known limitations
-
-### Correlated common table expressions
-
-{% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
-
-For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/42540).
-
 ## See also
 
 - [Subqueries](subqueries.html)
