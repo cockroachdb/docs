@@ -694,8 +694,7 @@ For example, the `promo_codes` table of the [`movr` database](movr.html) is rare
     creation_time TIMESTAMP,
     expiration_time TIMESTAMP,
     rules JSONB)
-    LOCALITY GLOBAL
-  ;
+    LOCALITY GLOBAL;
 ~~~
 
 {% include copy-clipboard.html %}
@@ -728,8 +727,7 @@ For example, suppose you want to create a table for your application's end users
     id UUID PRIMARY KEY,
     name STRING,
     address STRING)
-    LOCALITY REGIONAL BY TABLE IN "us-east1"
-  ;
+    LOCALITY REGIONAL BY TABLE IN "us-east1";
 ~~~
 
 {% include copy-clipboard.html %}
@@ -767,17 +765,16 @@ For example, the `vehicles` table of the [`movr` database](movr.html) is read to
     status STRING,
     current_location STRING,
     ext JSONB)
-    LOCALITY REGIONAL BY ROW
-  ;
+    LOCALITY REGIONAL BY ROW;
 ~~~
 
-CockroachDB will automatically assign each row to a region, based on the locality of the node from which the row is inserted. It will then optimize subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
+CockroachDB will automatically assign each row to a region based on the locality of the node from which the row is inserted. It will then optimize subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
 
 {{site.data.alerts.callout_info}}
 If the node from which a row is inserted has a locality that does not correspond to a region in the database, then the row will be assigned to the database's primary region.
 {{site.data.alerts.end}}
 
-To assign rows to regions, CockroachDB creates and manages a hidden `crdb_region` column, of [`ENUM`](enum.html) type `crdb_internal_region`. To override the automatic region assignment and choose the region in which rows will be placed, you can provide a value for the `crdb_region` column in `INSERT` and `UPDATE` queries on the table.
+To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](set-locality.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. To override the automatic region assignment and choose the region in which rows will be placed, you can provide a value for the `crdb_region` column in `INSERT` and `UPDATE` queries on the table.
 
 {{site.data.alerts.callout_info}}
 The region value for `crdb_region` must be one of the regions added to the database, and present in the `crdb_internal_region` `ENUM`. To return the available regions, use a [`SHOW REGIONS FROM DATABASE <database name>`](show-regions.html) statement, or a [`SHOW ENUMS`](show-enums.html) statement.
@@ -797,7 +794,6 @@ For example:
     current_location STRING,
     ext JSONB)
     LOCALITY REGIONAL BY ROW;
-  ;
 ~~~
 
 ~~~ sql
