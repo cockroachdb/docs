@@ -675,14 +675,14 @@ Note that the foreign key constraint `fk_owner_id_ref_users` in the source table
 {{site.data.alerts.callout_info}}
 In order to set table localities, the database that contains the table must have [database regions](multiregion-overview.html#database-regions).
 
-By default, all tables in a multi-region database have a [`REGIONAL`](multiregion-overview.html#regional-tables) locality.
+By default, all tables in a multi-region database have a [`REGIONAL BY TABLE IN PRIMARY REGION`](multiregion-overview.html#regional-tables) locality.
 {{site.data.alerts.end}}
 
 #### Create a table with a global locality
 
 To create a table with a [`GLOBAL`](multiregion-overview.html#global-tables) locality, add a `LOCALITY GLOBAL` clause to the end of the `CREATE TABLE` statement.
 
-The `GLOBAL` locality is useful for "read-mostly" tables of reference data that are rarely updated, but need to be available to all regions.
+The `GLOBAL` locality is useful for "read-mostly" tables of reference data that are rarely updated, but need to be read with low latency from all regions.
 
 For example, the `promo_codes` table of the [`movr` database](movr.html) is rarely updated after being initialized, but it needs to be read by nodes in all regions.
 
@@ -744,11 +744,15 @@ For example, suppose you want to create a table for your application's end users
 (1 row)
 ~~~
 
+{{site.data.alerts.callout_success}}
+`LOCALITY REGIONAL` is an alias for `LOCALITY REGIONAL BY TABLE`.
+{{site.data.alerts.end}}
+
 #### Create a table with a regional-by-row locality
 
 To create a table with a [`REGIONAL-BY-ROW`](multiregion-overview.html#regional-by-row-tables) locality, add a `LOCALITY REGIONAL BY ROW` clause to the end of the `CREATE TABLE` statement.
 
-The `REGIONAL BY ROW` locality is useful for tables that require low-latency reads and writes from different regions, depending on the row in the table.
+The `REGIONAL BY ROW` locality is useful for tables that require low-latency reads and writes from different regions, where the low-latency region is specified at the row level.
 
 For example, the `vehicles` table of the [`movr` database](movr.html) is read to and written from nodes in different regions.
 
@@ -767,9 +771,17 @@ For example, the `vehicles` table of the [`movr` database](movr.html) is read to
   ;
 ~~~
 
-CockroachDB will automatically assign rows to regions, based on the locality of the node from which a row is inserted. It will then optimize all read queries on the table, based on the locality of the node.
+CockroachDB will automatically assign each row to a region, based on the locality of the node from which the row is inserted. It will then optimize subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
 
-To override CockroachDB's automatic region assignment, you can assign rows to regions based on the value of a column of type `crdb_internal_region`.
+{{site.data.alerts.callout_info}}
+If the node from which a row is inserted has a locality that does not correspond to a region in the database, then the row will be assigned to the database's primary region.
+{{site.data.alerts.end}}
+
+To assign rows to regions, CockroachDB creates and manages a hidden `crdb_region` column, of [`ENUM`](enum.html) type `crdb_internal_region`. To override the automatic region assignment and choose the region in which rows will be placed, you can provide a value for the `crdb_region` column in `INSERT` and `UPDATE` queries on the table.
+
+{{site.data.alerts.callout_info}}
+The region value for `crdb_region` must be one of the regions added to the database, and present in the `crdb_internal_region` `ENUM`. To return the available regions, use a [`SHOW REGIONS FROM DATABASE <database name>`](show-regions.html) statement, or a [`SHOW ENUMS`](show-enums.html) statement.
+{{site.data.alerts.end}}
 
 For example:
 
@@ -779,30 +791,81 @@ For example:
     id UUID PRIMARY KEY,
     type STRING,
     city STRING,
-    region crdb_internal_region,
     owner_id UUID,
     creation_time TIMESTAMP,
     status STRING,
     current_location STRING,
     ext JSONB)
-    LOCALITY REGIONAL BY ROW AS region;
+    LOCALITY REGIONAL BY ROW;
   ;
+~~~
+
+~~~ sql
+> SHOW REGIONS FROM DATABASE movr;
+~~~
+
+~~~
+  database |    region    | primary |  zones
+-----------+--------------+---------+----------
+  movr     | us-east1     |  true   | {b,c,d}
+  movr     | europe-west1 |  false  | {b,c,d}
+  movr     | us-west1     |  false  | {a,b,c}
+(3 rows)
+~~~
+
+~~~ sql
+> SHOW ENUMS;
+~~~
+
+~~~
+  schema |         name         |              values              | owner
+---------+----------------------+----------------------------------+--------
+  public | crdb_internal_region | {europe-west1,us-east1,us-west1} | root
+(1 row)
 ~~~
 
 You can then manually set the values of the region with each [`INSERT`](insert.html) statement:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO vehicles (region, ...) VALUES ('us-east1', ...);
+> INSERT INTO vehicles (crdb_region, ...) VALUES ('us-east1', ...);
 ~~~
 
-Alternatively, you could update the rows in the `region` column to compute the region based on the value of another column, like the `city` column.
+Alternatively, you could update the rows in the `crdb_region` column to compute the region based on the value of another column, like the `city` column.
 
 ~~~ sql
-> UPDATE vehicles SET region = "us-east1" WHERE city IN (...) ...
+> UPDATE vehicles SET crdb_region = "us-east1" WHERE city IN (...) ...
 ~~~
 
-For a more extended example, see [Set the table locality to `REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row).
+#### Create a table with a regional-by-row locality, using a custom region column
+
+To create a table with a [`REGIONAL-BY-ROW`](multiregion-overview.html#regional-by-row-tables) locality, where the region of each row in a table is based on the value of a specific column that you create, you can add a `LOCALITY REGIONAL BY ROW AS <region>` clause to the end of the `CREATE TABLE` statement.
+
+Using the `LOCALITY REGIONAL BY ROW AS <region>` clause, you can assign rows to regions based on the value of any custom column of type `crdb_internal_region`.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE vehicles (
+    id UUID PRIMARY KEY,
+    type STRING,
+    city STRING,
+    region crdb_internal_region AS (
+      CASE
+        WHEN city IN ('new york', 'boston', 'washington dc', 'chicago', 'detroit', 'minneapolis') THEN 'us-east1'
+        WHEN city IN ('san francisco', 'seattle', 'los angeles') THEN 'us-west1'
+        WHEN city IN ('amsterdam', 'paris', 'rome') THEN 'europe-west1'  
+      END) STORED,
+    owner_id UUID,
+    creation_time TIMESTAMP,
+    status STRING,
+    current_location STRING,
+    ext JSONB)
+    LOCALITY REGIONAL BY ROW AS region;
+~~~
+
+CockroachDB will then assign a region to each row, based on the value of the `region` column. In this example, the `region` column is computed from the value of the `city` column.
 
 ## See also
 
