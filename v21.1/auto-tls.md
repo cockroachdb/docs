@@ -24,7 +24,7 @@ With Auto TLS, your cluster creates the CA (certificate authority) certificate a
 Auto TLS simplifies the default method for [creating secure clusters](secure-a-cluster.html). Rather than manually generating certificates and keys and distributing them to all nodes, you run a one-time `cockroach connect` command for each node, specifiying a common token. A CA cert and key are distributed to all nodes, along with all other certificates that nodes require to communicate with other nodes and with clients, all signed by the CA.
 
 {{site.data.alerts.callout_info}}
-To create client certificates, you will still need to run [`cockroach cert create-client`](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands](create-security-certificates-openssl.html#step-3-create-the-certificate-and-key-pair-for-the-first-user).
+To create client certificates, you will still need to run [`cockroach cert create-client`](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands](create-security-certificates-openssl.html#step-3-create-the-certificate-and-key-pair-for-the-first-user)and manually distribute these.
 {{site.data.alerts.end}}
 
 ## Step 1: Configure nodes
@@ -102,7 +102,7 @@ The example commands below must be tailored for your environment and run for eac
 
 ## Step 2: Create a client certificate for the root user
 
-On any node’s machine, manually [create the certificate and key pair](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) for the root user.
+On any node's machine, manually [create the certificate and key pair](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) for the root user.
 
 {{site.data.alerts.callout_danger}}
 Do not share the root cert. In a later step, you can use the root user to create additional administrative users, specifying their privileges. You can then create and securely share their certs, as appropriate, using the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege).
