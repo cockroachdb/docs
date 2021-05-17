@@ -608,12 +608,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
 
-### Inverted indexes cannot be partitioned
-
-CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)
-
 ### Using interleaved tables in backups
 
 {% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
