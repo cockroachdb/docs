@@ -13,7 +13,12 @@
     "license": {
       "name": "Business Source License"
     },
-    "version": "2.0"
+    "version": "2.0",
+    "x-logo": {
+      "url": "https://www.cockroachlabs.com/docs/images/cockroachlabs-logo-170.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Cockroach Labs logo"
+    }
   },
   "host": "localhost",
   "basePath": "/api/v2/",
