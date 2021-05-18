@@ -3,8 +3,8 @@
     "application/json"
   ],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "swagger": "2.0",
   "info": {
@@ -13,7 +13,7 @@
     "license": {
       "name": "Business Source License"
     },
-    "version": "2.0.0"
+    "version": "2.0"
   },
   "host": "localhost",
   "basePath": "/api/v2/",
@@ -58,7 +58,7 @@
         "operationId": "login",
         "parameters": [
           {
-            "description": "Credentials for login",
+            "description": "Credentials for login.",
             "name": "credentials",
             "in": "body",
             "required": true,
@@ -102,7 +102,7 @@
             "api_session": []
           }
         ],
-        "description": "Logs out on a previously-created API session.",
+        "description": "Logs out, invalidating the API session token.",
         "produces": [
           "application/json",
           "text/plain"
@@ -117,7 +117,7 @@
             }
           },
           "400": {
-            "description": "Bad request, if API session not present in headers, or invalid session."
+            "description": "Bad request, returned if API session token is not present or invalid."
           }
         }
       }
@@ -129,7 +129,7 @@
             "api_session": []
           }
         ],
-        "description": "List all nodes on this cluster.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "List all nodes on this cluster.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -219,7 +219,7 @@
             "api_session": []
           }
         ],
-        "description": "Lists information about hot ranges. If a list of range IDs\nis specified, only information about those ranges is returned.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "Lists information about hot ranges. If a list of range IDs\nis specified, only information about those ranges is returned.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -333,7 +333,7 @@
   "definitions": {
     "ActiveQuery": {
       "type": "object",
-      "title": "ActiveQuery represents a query in flight on some Session.",
+      "title": "A query in flight on a session.",
       "properties": {
         "id": {
           "description": "ID of the query (uint128 presented as a hexadecimal string).",
@@ -349,7 +349,7 @@
           "$ref": "#/definitions/ActiveQuery_Phase"
         },
         "progress": {
-          "description": "progress is an estimate of the fraction of this query that has been\nprocessed.",
+          "description": "An estimate of the fraction of this query that has been\nprocessed.",
           "type": "number",
           "format": "float",
           "x-go-name": "Progress"
@@ -379,7 +379,7 @@
     "ActiveQuery_Phase": {
       "type": "integer",
       "format": "int32",
-      "title": "Enum for phase of execution.",
+      "title": "Phase of execution: `0` for PREPARING, `1` for EXECUTING. For more information see the doc \"SHOW QUERIES\".",
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
     },
     "Attributes": {
@@ -397,16 +397,16 @@
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
     },
     "ClockTimestamp": {
-      "description": "ClockTimestamp is the statically typed version of a Timestamp with its\nSynthetic flag set to false.",
-      "title": "ClockTimestamp is a Timestamp with the added capability of being able to\nupdate a peer's HLC clock. It possesses this capability because the clock\ntimestamp itself is guaranteed to have come from an HLC clock somewhere in\nthe system. As such, a clock timestamp is an promise that some node in the\nsystem has a clock with a reading equal to or above its value.",
+      "description": "The statically typed version of a Timestamp with its\nSynthetic flag set to false.",
+      "title": "A timestamp with the added capability of being able to\nupdate a peer's hybrid logical clock (HLC). It possesses this capability because the clock\ntimestamp itself is guaranteed to have come from an HLC clock somewhere in\nthe system. As such, a clock timestamp is a promise that some node in the\nsystem has a clock with a reading equal to or above its value.",
       "$ref": "#/definitions/Timestamp"
     },
     "Constraint": {
         "type": "object",
-        "title": "Constraint constrains the stores that a replica can be stored on.",
+        "title": "Constrains the stores that a replica can be stored on.",
         "properties": {
           "key": {
-            "description": "Key is only set if this is a constraint on locality.",
+            "description": "Only set if this is a constraint on locality.",
             "type": "string",
             "x-go-name": "Key"
           },
@@ -427,7 +427,7 @@
         "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
       },
       "ConstraintsConjunction": {
-        "description": "ConstraintsConjunction is a set of constraints that need to be satisfied\ntogether by a replica (i.e. by the replica's store).",
+        "description": "A set of constraints that need to be satisfied\ntogether by a replica (i.e. by the replica's store).",
         "type": "object",
         "properties": {
           "constraints": {
@@ -802,10 +802,10 @@
     },
     "TxnInfo": {
       "type": "object",
-      "title": "TxnInfo represents an in flight user transaction on some Session.",
+      "title": "Represents an in-flight user transaction on a session. This is for internal Cockroach Labs use.",
       "properties": {
         "alloc_bytes": {
-          "description": "Number of currently allocated bytes in the txn memory monitor.",
+          "description": "Number of currently allocated bytes in the transaction memory monitor.",
           "type": "integer",
           "format": "int64",
           "x-go-name": "AllocBytes"
@@ -820,7 +820,7 @@
           "$ref": "#/definitions/UUID"
         },
         "implicit": {
-          "description": "implicit is true if this transaction was an implicit SQL transaction.",
+          "description": "Implicit is true if this transaction was an implicit SQL transaction.",
           "type": "boolean",
           "x-go-name": "Implicit"
         },
@@ -888,10 +888,12 @@
       "title": "UnresolvedAddr is an unresolved version of net.Addr.",
       "properties": {
         "address_field": {
+          "description": "IP address on the network (e.g., 192.168.1.1).",
           "type": "string",
           "x-go-name": "AddressField"
         },
         "network_field": {
+          "description": "Type of network (e.g. TCP, TCP4, TCP6).",
           "type": "string",
           "x-go-name": "NetworkField"
         }
@@ -1103,7 +1105,7 @@
           "x-go-name": "StartedAt"
         },
         "total_system_memory": {
-          "description": "TotalSystemMemory is the total amount of available system memory on this\nnode (or cgroup), in bytes.",
+          "description": "TotalSystemMemory is the total amount of available system memory on this\nnode (or container), in bytes.",
           "type": "integer",
           "format": "int64",
           "x-go-name": "TotalSystemMemory"
@@ -1139,11 +1141,11 @@
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server"
     },
     "rangeDescriptorInfo": {
-      "description": "rangeDescriptorInfo contains a subset of fields from the Cockroach-internal\nrange descriptor that are safe to be returned from APIs.",
+      "description": "Contains a subset of fields from the Cockroach-internal\nrange descriptor that are safe to be returned from APIs.",
       "type": "object",
       "properties": {
         "end_key": {
-          "description": "EndKey is the resolved Cockroach-internal key that denotes the end of\nthis range.",
+          "description": "The resolved Cockroach-internal key that denotes the end of\nthis range.",
           "type": "array",
           "items": {
             "type": "integer",
@@ -1152,19 +1154,19 @@
           "x-go-name": "EndKey"
         },
         "queries_per_second": {
-          "description": "QueriesPerSecond is the number of queries per second this range is\nserving. Only set for hot ranges.",
+          "description": "The number of queries per second this range is\nserving. Only set for hot ranges.",
           "type": "number",
           "format": "double",
           "x-go-name": "QueriesPerSecond"
         },
         "range_id": {
-          "description": "RangeID is the integer id of this range.",
+          "description": "The integer ID of this range.",
           "type": "integer",
           "format": "int64",
           "x-go-name": "RangeID"
         },
         "start_key": {
-          "description": "StartKey is the resolved Cockroach-internal key that denotes the start of\nthis range.",
+          "description": "The resolved Cockroach-internal key that denotes the start of\nthis range.",
           "type": "array",
           "items": {
             "type": "integer",
