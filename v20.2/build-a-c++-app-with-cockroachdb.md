@@ -3,6 +3,7 @@ title: Build a C++ App with CockroachDB and libpqxx
 summary: Learn how to use CockroachDB from a simple C++ application with a low-level client driver.
 toc: true
 twitter: false
+referral_id: docs_hello_world_c++_libpgxx
 ---
 
 This tutorial shows you how build a simple C++ application with CockroachDB and the C++ libpqxx driver.
