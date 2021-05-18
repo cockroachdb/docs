@@ -7,7 +7,7 @@ function build {
 # Transform API spec for API docs generation
 pushd api/
 npx swagger2openapi api-spec.json > spec_30.json
-npx snippet-enricher-cli --targets="shell_curl,node_request" --input=spec_30.json > spec_30_enriched.json
+npx snippet-enricher-cli --targets="shell_curl" --input=spec_30.json > spec_30_enriched.json
 rm spec_30.json
 popd
 
