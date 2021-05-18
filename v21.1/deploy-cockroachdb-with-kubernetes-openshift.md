@@ -118,7 +118,9 @@ To use the CockroachDB SQL client, first launch a secure pod running the `cockro
 This can be defined with the following YAML, which mounts the Operator's generated certificates:
 
 {{site.data.alerts.callout_success}}
-`spec.containers.image` should match the **Image** value that is displayed on the **Pods** page under **Containers** when you select a CockroachDB pod. OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA for `spec.containers.image`.
+`spec.containers.image` should match the **Image** value that is displayed under the **Containers** section on the **Pods** page when you select a CockroachDB pod. Be sure to select a CockroachDB pod and not the Operator pod.
+
+Note that OpenShift may display the image SHA instead of the tag. In this case, you should use the SHA for `spec.containers.image`.
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}

@@ -6,9 +6,11 @@ $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/client-secure-operator.yaml
 ~~~
 
-{{site.data.alerts.callout_info}}
-By default, this client pod mounts the Operator's generated certificates. If you [use a custom CA](kubernetes-operation.html#set-certificates), replace the `secret.name` values with the names of your generated secrets. Also replace the `secret.items.key` values with the generated filenames.
-{{site.data.alerts.end}}
+{% comment %}
+<!-- {{site.data.alerts.callout_info}}
+By default, this client pod mounts the Operator's generated certificates. If you [use a custom CA](operate-cockroachdb-kubernetes.html#use-a-custom-ca), replace the `secret.name` values with the names of your generated secrets. Also replace the `secret.items.key` values with the generated filenames.
+{{site.data.alerts.end}} -->
+{% endcomment %}
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 

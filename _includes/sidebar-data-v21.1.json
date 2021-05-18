@@ -776,15 +776,15 @@
                 ]
               },
               {
-                "title": "Kubernetes Operation",
+                "title": "Operate CockroachDB on Kubernetes",
                 "urls": [
-                  "/${VERSION}/kubernetes-operation.html"
+                  "/${VERSION}/operate-cockroachdb-kubernetes.html"
                 ]
               },
               {
-                "title": "Kubernetes Monitoring",
+                "title": "Monitor CockroachDB on Kubernetes",
                 "urls": [
-                  "/${VERSION}/kubernetes-monitoring.html"
+                  "/${VERSION}/monitor-cockroachdb-kubernetes.html"
                 ]
               },
               {
