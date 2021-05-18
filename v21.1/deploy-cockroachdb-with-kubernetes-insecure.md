@@ -17,11 +17,9 @@ This page shows you how to start and stop a 3-node CockroachDB insecure test clu
 
 - [Helm](https://helm.sh/) package manager for Kubernetes
 
-{{site.data.alerts.callout_info}}
-If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
-{{site.data.alerts.end}}
-
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
+
+The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, [deploy a secure cluster](operate-cockroachdb-kubernetes.html) and then see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html).
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -79,10 +77,6 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 6. Stop the cluster
-
-{{site.data.alerts.callout_info}}
-If you want to continue testing this cluster, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
-{{site.data.alerts.end}}
 
 To shut down the CockroachDB cluster, delete the resources you created, including the logs:
 

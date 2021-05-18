@@ -3,10 +3,11 @@ title: Operate CockroachDB on Kubernetes
 summary: How to operate and manage a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
+secure: true
 ---
 
 {{site.data.alerts.callout_info}}
-This article assumes you have already [deployed CockroachDB on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html). However, it's possible to configure these settings before starting CockroachDB on Kubernetes.
+This article assumes you have already [deployed CockroachDB securely on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html). However, it's possible to configure these settings before starting CockroachDB on Kubernetes.
 {{site.data.alerts.end}}
 
 You can configure, scale, and upgrade a CockroachDB deployment on Kubernetes by updating its StatefulSet values. This page describes how to:
@@ -45,9 +46,9 @@ If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kuber
 {{site.data.alerts.end}}
 </section>
 
+<section class="filter-content" markdown="1" data-scope="operator">
 ## Apply settings
 
-<section class="filter-content" markdown="1" data-scope="operator">
 Cluster parameters are configured in a `CrdbCluster` custom resource object. This tells the Operator how to configure the Kubernetes cluster. We provide a custom resource template called [`example.yaml`](https://github.com/cockroachdb/cockroach-operator/blob/master/examples/example.yaml):
 
 ~~~ yaml
@@ -71,6 +72,8 @@ The Operator will trigger a rolling restart of the pods to effect the change, if
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
+## Apply settings
+
 Cluster parameters are configured in the StatefulSet manifest. We provide several StatefulSet templates:
 
 - [Secure deployment](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml)
@@ -136,7 +139,7 @@ spec:
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-Specify CPU and memory values in `resources.requests` and `resources.limits` in your values file:
+Specify CPU and memory values in `resources.requests` and `resources.limits` in your [values file](deploy-cockroachdb-with-kubernetes.html?filters=helm#step-2-start-cockroachdb):
 
 ~~~ yaml
 statefulset:
