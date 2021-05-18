@@ -3,6 +3,7 @@ title: Build a Go App with CockroachDB the Go pgx Driver
 summary: Learn how to use CockroachDB from a simple Go application with the Go pgx driver.
 toc: true
 twitter: false
+referral_id: docs_hello_world_go_pgx
 ---
 
 <div class="filters filters-big clearfix">
