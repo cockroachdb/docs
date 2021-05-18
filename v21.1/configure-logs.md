@@ -423,4 +423,4 @@ Note that a default `dir` is not specified for `file-defaults` and `capture-stra
 
 - [Logging Use Cases](logging-use-cases.html)
 - [Log Sinks](log-sinks.html)
-- [Log formats](log-formats.html)
+- [Log Formats](log-formats.html)
