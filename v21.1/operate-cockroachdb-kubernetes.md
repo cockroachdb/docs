@@ -74,16 +74,13 @@ The Operator will trigger a rolling restart of the pods to effect the change, if
 <section class="filter-content" markdown="1" data-scope="manual">
 ## Apply settings
 
-Cluster parameters are configured in the StatefulSet manifest. We provide several StatefulSet templates:
-
-- [Secure deployment](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml)
-- [Insecure deployment](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml)
+Cluster parameters are configured in the StatefulSet manifest. We provide a [StatefulSet template](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml) for use in our [deployment tutorial](deploy-cockroachdb-with-kubernetes.html).
 
 It's easiest to keep a local copy of the manifest file. After you modify its parameters, run this command to apply the new values to the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ kubectl apply -f {manifest filename}.yaml
+$ kubectl apply -f {manifest-filename}.yaml
 ~~~
 
 You will see:
@@ -252,7 +249,7 @@ Then [apply](#apply-settings) the new values. The Operator updates the StatefulS
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 </section>
 
- <section class="filter-content" markdown="1" data-scope="operator">
+<section class="filter-content" markdown="1" data-scope="operator">
 {% comment %}
 <!-- ## Use a custom CA
 
@@ -396,7 +393,13 @@ Then [apply](#apply-settings) the new values. -->
 {% endcomment %}
 </section>
 
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
+<section class="filter-content" markdown="1" data-scope="manual">
+{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-manual.md %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="helm">
+{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-helm.md %}
+</section>
 
 <section class="filter-content" markdown="1" data-scope="operator">
 ## Configure ports
@@ -419,7 +422,7 @@ spec:
 Then [apply](#apply-settings) the new values. The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
 
 {{site.data.alerts.callout_danger}}
-Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the Operator, it will use the new port. This is a known limitation that will be fixed in the future.
+Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the Operator, it will use the new port. This is a known limitation that will be fixed in an Operator update.
 {{site.data.alerts.end}}
 </section>
 
@@ -452,7 +455,12 @@ Note that you must scale by updating the `nodes` value in the custom resource. U
 To verify that the new pods were successfully started, run `kubectl get pods`.
 </section>
 
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
+<section class="filter-content" markdown="1" data-scope="manual">
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster-manual.md %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="helm">
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster-helm.md %}</section>
 
 ### Remove nodes
 
@@ -478,7 +486,13 @@ The Operator will remove the node with the highest number in its address (in thi
 To verify that the pod was successfully removed, run `kubectl get pods`.
 </section>
 
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
+<section class="filter-content" markdown="1" data-scope="manual">
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-manual.md %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="helm">
+{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-helm.md %}
+</section>
 
 ## Upgrade the cluster
 
@@ -572,7 +586,13 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 </section>
 
-{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
+<section class="filter-content" markdown="1" data-scope="manual">
+{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster-manual.md %}
+</section>
+
+<section class="filter-content" markdown="1" data-scope="helm">
+{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster-helm.md %}
+</section>
 
 ## See also
 
