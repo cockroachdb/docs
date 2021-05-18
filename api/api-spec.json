@@ -58,7 +58,7 @@
         "produces": [
           "application/json"
         ],
-        "summary": "API Login",
+        "summary": "Log in",
         "operationId": "login",
         "parameters": [
           {
@@ -110,7 +110,7 @@
         "produces": [
           "application/json"
         ],
-        "summary": "API Logout",
+        "summary": "Log out",
         "operationId": "logout",
         "responses": {
           "200": {
@@ -173,7 +173,7 @@
         "produces": [
           "application/json"
         ],
-        "summary": "List ranges on a node",
+        "summary": "List node ranges",
         "operationId": "listNodeRanges",
         "parameters": [
           {
@@ -269,7 +269,7 @@
         "produces": [
           "application/json"
         ],
-        "summary": "Get info about a range",
+        "summary": "Get range details",
         "operationId": "listRange",
         "parameters": [
           {
