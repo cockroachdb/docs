@@ -56,7 +56,7 @@ stray-error-capture: ... # parameters for the stray error capture system
 ~~~
 
 {{site.data.alerts.callout_info}}
-Providing a logging configuration is optional. Any fields included in the YAML payload will override the [default logging configuration](#default-logging-configuration).
+Providing a logging configuration is optional. Any fields included in the YAML payload will override the same fields in the [default logging configuration](#default-logging-configuration).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
@@ -97,10 +97,6 @@ All supported sink types use the following common parameters.
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
 | `auditable`     | If `true`, enables `exit-on-error` on the sink. Also disables `buffered-writes` if the sink is under `file-groups`. This guarantees [non-repudiability](https://en.wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically enabled for [security-related logs](logging-use-cases.html#security-and-audit-monitoring). |
 
-
-
-
-
 If not specified for a given sink, these parameter values are inherited from [`file-defaults`](#set-file-defaults) (for file sinks) and [`fluent-defaults`](#set-network-defaults) (for network sinks).
 
 ### Output to files
@@ -117,6 +113,7 @@ sinks:
     health:
       channels: [HEALTH]
       dir: health-logs
+    ...
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -232,29 +229,6 @@ file-defaults:
   dir: /custom/dir/path/
 ~~~
 
-#### DEV channel
-
-The `DEV` channel is used for debug and uncategorized messages. It can therefore be noisy and contain sensitive (PII) information. 
-
-We recommend configuring `DEV` separately from the other logging channels. When sending logs [over the network](#output-to-network), `DEV` logs should also be excluded from network collection. 
-
-In this example, the `dev` file group is reserved for `DEV` logs. These are output to a `cockroach-dev.log` file in a custom disk `dir`:
-
-~~~ yaml
-sinks:
-  file-groups:
-    dev:
-      channels: [DEV]
-    dir: /custom/dir/path/
-	...
-  fluent-servers:
-    ...
-~~~
-
-{{site.data.alerts.callout_success}}
-To ensure that you are protecting sensitive information, also [redact your logs](#redact-logs).
-{{site.data.alerts.end}}
-
 #### File logging format
 
 The default message format for log files is [`crdb-v2`](log-formats.html#format-crdb-v2). Each `crdb-v2` log message starts with a flat prefix that contains event metadata (e.g., severity, date, timestamp, channel), followed by the event payload. For details on the metadata, see [Log formats](log-formats.html#format-crdb-v2).
@@ -298,8 +272,8 @@ Log messages are associated with a [severity level](logging.html#logging-levels-
 
 The [default configuration](#default-logging-configuration) uses the following severity levels for [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html):
 
-- File and network sinks emit messages with `INFO` severity or higher. Since `INFO` is the lowest severity level, this includes all log messages.
-- `stderr` is configured with `filter: NONE` and does not emit log messages.
+- `file-defaults` and `fluent-defaults` each use `filter: INFO`. Since `INFO` is the lowest severity level, file and network sinks will emit all log messages.
+- `stderr` uses `filter: NONE` and does not emit log messages.
 
 {{site.data.alerts.callout_info}}
 All other `cockroach` commands use `filter: WARNING` and log to `stderr` by default, with these exceptions:
@@ -308,7 +282,7 @@ All other `cockroach` commands use `filter: WARNING` and log to `stderr` by defa
 - [`cockroach demo`](cockroach-demo.html#logging) uses `filter: NONE` (discards all log messages).
 {{site.data.alerts.end}}
 
-You can override the default severity levels on a per-sink basis. For example, use `filter: NONE` to disable logging for certain channels:
+You can also override the `file-defaults` and `fluent-defaults` severity levels on a per-sink basis. For example, use `filter: NONE` to disable logging for certain channels:
 
 ~~~ yaml
 sinks:
@@ -344,6 +318,29 @@ External log collectors can misinterpret the `cockroach debug` redaction markers
 fluent-defaults:
   redactable: false
 ~~~
+
+### DEV channel
+
+The `DEV` channel is used for debug and uncategorized messages. It can therefore be noisy and contain sensitive (PII) information. 
+
+We recommend configuring `DEV` separately from the other logging channels. When sending logs [over the network](#output-to-network), `DEV` logs should also be excluded from network collection. 
+
+In this example, the `dev` file group is reserved for `DEV` logs. These are output to a `cockroach-dev.log` file in a custom disk `dir`:
+
+~~~ yaml
+sinks:
+  file-groups:
+    dev:
+      channels: [DEV]
+      dir: /custom/dir/path/
+    ...
+  fluent-servers:
+    ...
+~~~
+
+{{site.data.alerts.callout_success}}
+To ensure that you are protecting sensitive information, also [redact your logs](#redact-logs).
+{{site.data.alerts.end}}
 
 ## Stray error capture
 
@@ -425,5 +422,5 @@ Note that a default `dir` is not specified for `file-defaults` and `capture-stra
 ## See also
 
 - [Logging Use Cases](logging-use-cases.html)
-- [log sinks](log-sinks.html)
-- [Log formats](log-formats.html)
+- [Log Sinks](log-sinks.html)
+- [Log Formats](log-formats.html)
