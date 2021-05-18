@@ -51,8 +51,7 @@
           "application/x-www-form-urlencoded"
         ],
         "produces": [
-          "application/json",
-          "text/plain"
+          "application/json"
         ],
         "summary": "API Login",
         "operationId": "login",
@@ -104,8 +103,7 @@
         ],
         "description": "Logs out, invalidating the API session token.",
         "produces": [
-          "application/json",
-          "text/plain"
+          "application/json"
         ],
         "summary": "API Logout",
         "operationId": "logout",
