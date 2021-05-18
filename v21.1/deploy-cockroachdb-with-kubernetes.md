@@ -28,10 +28,6 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_csucess}}
-To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
-{{site.data.alerts.end}}
-
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
 ## Before you begin
@@ -98,6 +94,10 @@ Note that the Operator does not provision or apply an enterprise license key. To
 
 ## Step 5. Stop the cluster
 
+{{site.data.alerts.callout_info}}
+If you want to continue using this cluster, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
+{{site.data.alerts.end}}
+
 {% include {{ page.version.version }}/orchestration/kubernetes-stop-cluster.md %}
 
 ### Stop Kubernetes
@@ -135,8 +135,8 @@ If you stop Kubernetes without first deleting the persistent volumes, they will 
 
 ## See also
 
-- [Kubernetes Operation](operate-cockroachdb-kubernetes.html)
-- [Kubernetes Monitoring](monitor-cockroachdb-kubernetes.html)
+- [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html)
+- [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
+- [Production Checklist](recommended-production-settings.html)

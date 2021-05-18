@@ -11,7 +11,7 @@ redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
   <button class="filter-button current"><strong>Insecure</strong></button>
 </div>
 
-This page shows you how to start and stop a secure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
+This page shows you how to start and stop a 3-node CockroachDB insecure test cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
 
 - Manual [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) configuration
 
@@ -22,8 +22,6 @@ If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate C
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
-
-To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -81,6 +79,10 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
 ## Step 6. Stop the cluster
+
+{{site.data.alerts.callout_info}}
+If you want to continue testing this cluster, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
+{{site.data.alerts.end}}
 
 To shut down the CockroachDB cluster, delete the resources you created, including the logs:
 
@@ -156,8 +158,8 @@ To delete the Kubernetes cluster:
 
 ## See also
 
-- [Kubernetes Operation](operate-cockroachdb-kubernetes.html)
-- [Kubernetes Monitoring](monitor-cockroachdb-kubernetes.html)
+- [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html)
+- [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
+- [Production Checklist](recommended-production-settings.html)

@@ -1,12 +1,31 @@
 <section class="filter-content" markdown="1" data-scope="manual">
+1. Verify that you can upgrade.
+
+    To upgrade to a new version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
+
+    Therefore, if you are upgrading from v20.1 to v20.2, or from a testing release (alpha/beta) of v20.2 to v21.1:
+
+    1. First [upgrade to a production release of v20.2](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
+
+    1. Then return to this page and perform a second upgrade to v21.1.
+
+    1. If you are upgrading from any production release of v20.2, or from any earlier v21.1 release, you do not have to go through intermediate releases; continue to step 2.
+
+1. Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - In the **Node List**:
+        - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#add-nodes) to your cluster before beginning your upgrade.
+
+1. Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
+
 1. Decide how the upgrade will be finalized.
 
-    By default, the upgrade process is **auto-finalized** after all nodes are running the new version. After finalization, it is longer possible to perform a downgrade to the previous feature version. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade.
-
-    We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade:
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.1](upgrade-cockroach-version.html#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to v20.2. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
     {{site.data.alerts.callout_info}}
-    This only applies when performing a feature version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) are auto-finalized.
+    Finalization only applies when performing a feature version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) can always be downgraded.
     {{site.data.alerts.end}}
 
     {% if page.secure == true %}
@@ -170,7 +189,7 @@
 
     You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
 
-1. If you disabled auto-finalization in step 1 above, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
+1. If you disabled auto-finalization earlier, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
 
     If you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
@@ -249,12 +268,10 @@
 
 1. Decide how the upgrade will be finalized.
 
-    By default, the upgrade process is **auto-finalized** after all nodes are running the new version. After finalization, it is longer possible to perform a downgrade to the previous feature version. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade.
-
-    We recommend disabling auto-finalization so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade:
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.1](upgrade-cockroach-version.html#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to v20.2. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
     {{site.data.alerts.callout_info}}
-    This only applies when performing a feature version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) are auto-finalized.
+    Finalization only applies when performing a feature version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) can always be downgraded.
     {{site.data.alerts.end}}
 
     {% if page.secure == true %}
@@ -429,7 +446,7 @@
     You can also check the CockroachDB version of each node in the [DB Console](ui-cluster-overview-page.html#node-details).
 
 
-1. If you disabled auto-finalization in step 1 above, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
+1. If you disabled auto-finalization earlier, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
 
     If you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
