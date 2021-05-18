@@ -7,6 +7,10 @@ secure: true
 
 This page shows you how to start and stop a secure 3-node CockroachDB cluster on the Red Hat OpenShift platform, using the [CockroachDB Kubernetes Operator](https://marketplace.redhat.com/en-us/products/cockroachdb-operator).
 
+{{site.data.alerts.callout_info}}
+If you have already deployed a CockroachDB cluster on OpenShift, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
+{{site.data.alerts.end}}
+
 ## Prerequisites
 
 - A running OpenShift cluster
@@ -313,6 +317,10 @@ To run a sample [CockroachDB workload](cockroach-workload.html):
 	<img src="{{ 'images/v21.1/cockroachdb-operator-logs-openshift.png' | relative_url }}" alt="OpenShift OperatorHub" style="border:1px solid #eee;max-width:100%" />
 
 ## Step 8. Delete the cluster
+
+{{site.data.alerts.callout_info}}
+If you want to continue using this cluster, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
+{{site.data.alerts.end}}
 
 1. Go to the **Installed Operators** page and find the cluster name of the CockroachDB cluster. Select **Delete CrdbCluster** from the menu.
 

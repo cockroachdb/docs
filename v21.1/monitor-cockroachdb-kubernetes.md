@@ -3,7 +3,6 @@ title: Monitor CockroachDB on Kubernetes
 summary: How to monitor a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
-secure: true
 ---
 
 {{site.data.alerts.callout_info}}
@@ -66,13 +65,13 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml):
     
     {{site.data.alerts.callout_info}}
-    If you run into an error when installing the Prometheus Operator, first try updating the [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) specified in the below command and reapplying the manifest. If this doesn't work, please [file an issue](file-an-issue.html).
+    We recommend checking for the latest Prometheus Operator [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) and specifying this in the below command.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
-    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml
+    -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.47.1/bundle.yaml
     ~~~
 
     ~~~
@@ -103,12 +102,20 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     prometheus-operator   1/1     1            1           27s
     ~~~
 
-1. Use our [`prometheus.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/prometheus.yaml) file to create the various objects necessary to run a Prometheus instance:
+1. Download our Prometheus manifest:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply \
-    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
+    ~~~
+
+    By default, this manifest uses the 
+
+1. Apply the Prometheus manifest. This creates the various objects necessary to run a Prometheus instance:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl apply -f prometheus.yaml
     ~~~
 
     ~~~

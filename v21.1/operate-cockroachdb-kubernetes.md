@@ -3,7 +3,6 @@ title: Operate CockroachDB on Kubernetes
 summary: How to operate and manage a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
-secure: true
 ---
 
 {{site.data.alerts.callout_info}}
@@ -65,7 +64,7 @@ $ kubectl apply -f example.yaml
 You will see:
 
 ~~~
-crdbcluster.crdb.cockroachlabs.com/cockroachdb configured
+crdbcluster.crdb.cockroachlabs.com/{cluster-name} configured
 ~~~
 
 The Operator will trigger a rolling restart of the pods to effect the change, if necessary. You can observe its progress by running `kubectl get pods`.
@@ -87,18 +86,7 @@ $ kubectl apply -f {manifest filename}.yaml
 You will see:
 
 ~~~
-crdbcluster.crdb.cockroachlabs.com/cockroachdb configured
-~~~
-</section>
-
-<section class="filter-content" markdown="1" data-scope="helm">
-Cluster parameters are set in our Helm chart's [`values.yaml`](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
-
-If you want to change the values in the Helm chart, it's easiest to create a local `my-values.yaml` file that contains your own values. After you modify these values, run this command to override the defaults in `values.yaml`:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ helm upgrade -f my-values.yaml {release-name} cockroachdb/cockroachdb
+crdbcluster.crdb.cockroachlabs.com/{cluster-name} configured
 ~~~
 </section>
 
@@ -261,10 +249,7 @@ Then [apply](#apply-settings) the new values. The Operator updates the StatefulS
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 </section>
 
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-
-<section class="filter-content" markdown="1" data-scope="operator">
-
+ <section class="filter-content" markdown="1" data-scope="operator">
 {% comment %}
 <!-- ## Use a custom CA
 
@@ -406,9 +391,11 @@ Then [apply](#apply-settings) the new values. -->
     Then [apply](#apply-settings) the new values.
 </section> -->
 {% endcomment %}
+</section>
+
+{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
 
 <section class="filter-content" markdown="1" data-scope="operator">
-
 ## Configure ports
 
 The Operator separates traffic into three ports:
@@ -426,9 +413,11 @@ spec:
   sqlPort: 5432
 ~~~
 
-<!-- tk add callout steps to manually work around the issue where changing sqlPort/httpPost doesn't update the service port - pending https://github.com/cockroachdb/cockroach-operator/issues/498 -->
-
 Then [apply](#apply-settings) the new values. The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
+
+{{site.data.alerts.callout_danger}}
+Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the Operator, it will use the new port. This is a known limitation that will be fixed in the future.
+{{site.data.alerts.end}}
 </section>
 
 ## Scale the cluster
@@ -438,11 +427,11 @@ Then [apply](#apply-settings) the new values. The Operator updates the StatefulS
 <section class="filter-content" markdown="1" data-scope="operator">
 Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance](recommended-production-settings.html#topology).
 
-For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`. If you need to add worker nodes, run this command and specify the desired number of nodes:
+If you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should therefore have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`. If you need to add worker nodes on GKE, for example, run this command and specify the desired number of nodes:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-gcloud container clusters resize cockroachdb --num-nodes 4
+gcloud container clusters resize {cluster-name} --num-nodes 4
 ~~~
 
 Update `nodes` in the custom resource with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one Kubernetes pod:
@@ -495,11 +484,26 @@ We strongly recommend that you regularly upgrade your CockroachDB version in ord
 The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) in which the Docker image is applied to the pods one at a time, with each pod being stopped and restarted in turn. This is to ensure that the cluster remains available during the upgrade.
 
 <section class="filter-content" markdown="1" data-scope="operator">
-The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade.
+1. Verify that you can upgrade.
 
-{{site.data.alerts.callout_info}}
-This only applies when performing a feature version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) are auto-finalized.
-{{site.data.alerts.end}}
+    To upgrade to a new feature version, you must first be on a [production release](releases/index.html#production-releases) of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release and not a testing release (alpha/beta).
+
+    Therefore, in order to upgrade to v21.1, you must be on a production release of v20.2.
+
+    1. If you are upgrading to v21.1 from a production release earlier than v20.2, or from a testing release (alpha/beta), first [upgrade to a production release of v20.2](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
+
+    1. Then return to this page and perform a second upgrade to v21.1.
+
+    1. If you are upgrading from a production release of v20.2, or from any earlier v21.1 patch release, you do not have to go through intermediate releases; continue to step 2.
+
+1. Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - In the **Node List**:
+        - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#add-nodes) to your cluster before beginning your upgrade.
+
+1. Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
 
 1. Change the desired Docker image in the custom resource:
 
@@ -508,21 +512,15 @@ This only applies when performing a feature version upgrade (for example, from v
       name: cockroachdb/cockroach:{{page.release_info.version}}
     ~~~
 
-{% comment %}
-<!-- tk PodDisruptionBudget
-
-~~~ yaml
-spec:
-  maxUnavailable: 1
-  minAvailable: 1
-~~~
-
-`maxUnavailable` is The maximum number of pods that can be unavailable during a rolling update. This number is set in the PodDistruptionBudget and defaults to 1.
-
-`minAvailable` is The min number of pods that can be available during a rolling update. This number is set in the PodDistruptionBudget and defaults to 1. -->
-{% endcomment %}
-
 1. [Apply](#apply-settings) the new value. The Operator will perform the staged update.
+
+    {{site.data.alerts.callout_info}}
+    The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade. This will enable certain [features and performance improvements introduced in v21.1](upgrade-cockroach-version.html#features-that-require-upgrade-finalization).
+
+    Note that after finalization, it will no longer be possible to perform a downgrade to v20.2. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to performing the upgrade.
+
+    Finalization only applies when performing a feature version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) can always be downgraded.
+    {{site.data.alerts.end}}
 
 1. To check the status of the rolling upgrade, run `kubectl get pods`. The pods are restarted one at a time with the new image.
 
@@ -552,7 +550,7 @@ spec:
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
         --certs-dir=/cockroach/cockroach-certs \
-        --host=cockroachdb-public
+        --host={cluster-name}-public
         ~~~
 
     1. Re-enable auto-finalization:

@@ -1,42 +1,3 @@
-{% comment %}
-<!-- ### Create a CockroachDB namespace
-
-1. Create a `cockroachdb` namespace. You will create the CockroachDB cluster in this namespace:
-
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  kubectl create namespace cockroachdb
-  ~~~
-
-  ~~~
-  namespace/cockroachdb created
-  ~~~
-
-1. Set `cockroachdb` as the default namespace:
-
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  kubectl config set-context --current --namespace=cockroachdb
-  ~~~
-
-  ~~~
-  Context "admin" modified.
-  ~~~
-
-  Validate that this was successful:
-
-  {% include copy-clipboard.html %}
-  ~~~ shell
-  kubectl config view --minify | grep namespace:
-  ~~~
-
-  ~~~
-  namespace: cockroachdb
-  ~~~
-
-  This lets you issue `kubectl` commands without having to specify the namespace each time. -->
-{% endcomment %}
-
 ### Configure the cluster
 
 1. Download and modify our StatefulSet configuration:
@@ -46,31 +7,14 @@
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
 
-{% comment %}
-<!-- 1. Add a [`--locality`](cockroach-start.html#locality) flag to the `cockroach start` command to specify a `region` for your CockroachDB nodes. This is an arbitrary string, but should correspond to the region you configured in [Step 1](#step-1-start-kubernetes). For example:
-
-  {% include copy-clipboard.html %}
-  ~~~ yaml
-  command:
-    - exec:
-      /cockroach/cockroach
-      start
-      --locality=region=us-east1
-  ~~~
-
-  {{site.data.alerts.callout_info}}
-  The `region` value is required when specifying `--locality`. For more information, see the [Locality](cockroach-start.html#locality) flag documentation.
-  {{site.data.alerts.end}} -->
-{% endcomment %}
-
 1. Update `secretName` with the name of the corresponding client secret.
 
-  The secret names depend on your method for generating secrets. For example, if you follow the below [steps using `cockroach cert`](#create-certificates), use this secret name:
+    The secret names depend on your method for generating secrets. For example, if you follow the below [steps using `cockroach cert`](#create-certificates), use this secret name:
 
-  ~~~ yaml
-  secret:
-    secretName: cockroachdb.node
-  ~~~
+    ~~~ yaml
+    secret:
+      secretName: cockroachdb.node
+    ~~~
 
 {{site.data.alerts.callout_info}}
 By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html?filters=manual).
