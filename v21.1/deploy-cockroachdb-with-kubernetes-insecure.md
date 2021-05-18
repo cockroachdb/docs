@@ -18,7 +18,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster in
 - [Helm](https://helm.sh/) package manager for Kubernetes
 
 {{site.data.alerts.callout_info}}
-If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](kubernetes-operation.html) for details on configuring, scaling, and upgrading the cluster.
+If you have already deployed a CockroachDB cluster on Kubernetes, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html) for details on configuring, scaling, and upgrading the cluster.
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
@@ -156,8 +156,8 @@ To delete the Kubernetes cluster:
 
 ## See also
 
-- [Kubernetes Operation](kubernetes-operation.html)
-- [Kubernetes Monitoring](kubernetes-monitoring.html)
+- [Kubernetes Operation](operate-cockroachdb-kubernetes.html)
+- [Kubernetes Monitoring](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
 {% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}

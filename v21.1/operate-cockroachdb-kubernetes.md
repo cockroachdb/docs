@@ -12,15 +12,27 @@ This article assumes you have already [deployed CockroachDB on a single Kubernet
 
 You can configure, scale, and upgrade a CockroachDB deployment on Kubernetes by updating its StatefulSet values. This page describes how to:
 
+<section class="filter-content" markdown="1" data-scope="operator">
 - [Allocate CPU and memory resources](#allocate-resources)
 - [Provision and expand volumes](#provision-volumes)
 - [Scale the cluster](#scale-the-cluster)
 - [Configure ports](#configure-ports)
 - [Perform rolling upgrades](#upgrade-the-cluster)
+</section>
 
-{% comment %}
-- [Rotate security certificates](#rotate-security-certificates)
-{% endcomment %}
+<section class="filter-content" markdown="1" data-scope="manual">
+- [Allocate CPU and memory resources](#allocate-resources)
+- [Provision and expand volumes](#provision-volumes)
+- [Scale the cluster](#scale-the-cluster)
+- [Perform rolling upgrades](#upgrade-the-cluster)
+</section>
+
+<section class="filter-content" markdown="1" data-scope="helm">
+- [Allocate CPU and memory resources](#allocate-resources)
+- [Provision and expand volumes](#provision-volumes)
+- [Scale the cluster](#scale-the-cluster)
+- [Perform rolling upgrades](#upgrade-the-cluster)
+</section>
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="operator">Operator</button>
@@ -56,7 +68,7 @@ You will see:
 crdbcluster.crdb.cockroachlabs.com/cockroachdb configured
 ~~~
 
-The Operator will trigger a rolling restart of the pods to effect the change, if necessary. You can observe this by running `kubectl get pods`.
+The Operator will trigger a rolling restart of the pods to effect the change, if necessary. You can observe its progress by running `kubectl get pods`.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -244,24 +256,17 @@ spec:
             storage: "100Gi"
 ~~~
 
-Then [apply](#apply-settings) the new values.
-
-The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity. 
+Then [apply](#apply-settings) the new values. The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity. 
 
 To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
 </section>
 
-<section class="filter-content" markdown="1" data-scope="manual">
 {% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-</section>
-
-<section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-</section>
 
 <section class="filter-content" markdown="1" data-scope="operator">
 
-## Use a custom CA
+{% comment %}
+<!-- ## Use a custom CA
 
 By default, the Operator will generate and sign certificates to secure the cluster. 
 
@@ -277,7 +282,8 @@ spec:
 You should have also created Kubernetes secrets using these names. For details on this, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/).
 {{site.data.alerts.end}}
 
-Then [apply](#apply-settings) the new values.
+Then [apply](#apply-settings) the new values. -->
+{% endcomment %}
 
 {% comment %}
 <!-- ### Example: Authenticating with `cockroach cert`
@@ -401,10 +407,6 @@ Then [apply](#apply-settings) the new values.
 </section> -->
 {% endcomment %}
 
-{% comment %}
-<!-- ## Rotate security certificates -->
-{% endcomment %}
-
 <section class="filter-content" markdown="1" data-scope="operator">
 
 ## Configure ports
@@ -421,12 +423,12 @@ Specify alternate port numbers in the custom resource (for example, to match the
 
 ~~~ yaml
 spec:
-  grpcPort: 5432
+  sqlPort: 5432
 ~~~
 
-Then [apply](#apply-settings) the new values.
+<!-- tk add callout steps to manually work around the issue where changing sqlPort/httpPost doesn't update the service port - pending https://github.com/cockroachdb/cockroach-operator/issues/498 -->
 
-The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
+Then [apply](#apply-settings) the new values. The Operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings. 
 </section>
 
 ## Scale the cluster
@@ -436,121 +438,61 @@ The Operator updates the StatefulSet and triggers a rolling restart of the pods 
 <section class="filter-content" markdown="1" data-scope="operator">
 Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worker nodes to host the number of pods you want to add. This is to ensure that two pods are not placed on the same worker node, as recommended in our [production guidance](recommended-production-settings.html#topology).
 
-For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`.
+For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`. If you need to add worker nodes, run this command and specify the desired number of nodes:
 
-1. If you need to add worker nodes, run this command and specify the desired number of nodes:
+{% include copy-clipboard.html %}
+~~~ shell
+gcloud container clusters resize cockroachdb --num-nodes 4
+~~~
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    gcloud container clusters resize cockroachdb --num-nodes 4
-    ~~~
+Update `nodes` in the custom resource with the target size of the CockroachDB cluster. This value refers to the number of CockroachDB nodes, each running in one Kubernetes pod:
 
-1. Update `nodes` in the custom resource with the target size of the CockroachDB cluster:
+~~~
+nodes: 4
+~~~
 
-    ~~~
-    nodes: 4
-    ~~~
+Then [apply](#apply-settings) the new value.
 
-    This value refers to the number of CockroachDB nodes. Each node runs in one Kubernetes pod.
+{{site.data.alerts.callout_info}}
+Note that you must scale by updating the `nodes` value in the custom resource. Using `kubectl scale statefulset <cluster-name> --replicas=4` will result in new pods immediately being terminated.
+{{site.data.alerts.end}}
 
-    {{site.data.alerts.callout_info}}
-    Note that you must scale by updating the `nodes` value in the custom resource. Using `kubectl scale statefulset <cluster-name> --replicas=4` will result in new pods immediately being terminated.
-    {{site.data.alerts.end}}
-
-1. [Apply](#apply-settings) the new value.
-
-1. To verify that the new pods were successfully started, run `kubectl get pods`.
+To verify that the new pods were successfully started, run `kubectl get pods`.
 </section>
 
 {% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
 
 ### Remove nodes
 
-Before removing a node from your cluster, you must first decommission the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
-
-{{site.data.alerts.callout_danger}}
-If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_danger}}
 Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="operator">
-1. Use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
+{{site.data.alerts.callout_info}}
+Before removing a node, the Operator first decommissions the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+{{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure \
-    -- ./cockroach node status \
-    --certs-dir=/cockroach/cockroach-certs \
-    --host=cockroachdb-public
-    ~~~
+Update `nodes` in the custom resource with the target size of the CockroachDB cluster. For instance, to scale from 4 down to 3 nodes:
 
-    ~~~
-      id |                 address                 |               sql_address               |  build  |            started_at            |            updated_at            | locality | is_available | is_live
-    -----+-----------------------------------------+-----------------------------------------+---------+----------------------------------+----------------------------------+----------+--------------+----------
-       1 | cockroachdb-0.cockroachdb.default:26257 | cockroachdb-0.cockroachdb.default:26257 | v20.1.4 | 2020-10-22 23:02:10.084425+00:00 | 2020-10-27 20:18:22.117115+00:00 |          | true         | true
-       2 | cockroachdb-1.cockroachdb.default:26257 | cockroachdb-1.cockroachdb.default:26257 | v20.1.4 | 2020-10-22 23:02:46.533911+00:00 | 2020-10-27 20:18:22.558333+00:00 |          | true         | true
-       3 | cockroachdb-2.cockroachdb.default:26257 | cockroachdb-2.cockroachdb.default:26257 | v20.1.4 | 2020-10-26 21:46:38.90803+00:00  | 2020-10-27 20:18:22.601021+00:00 |          | true         | true
-       4 | cockroachdb-3.cockroachdb.default:26257 | cockroachdb-3.cockroachdb.default:26257 | v20.1.4 | 2020-10-27 19:54:04.714241+00:00 | 2020-10-27 20:18:22.74559+00:00  |          | true         | true
-    (4 rows)
-    ~~~
+~~~
+nodes: 3
+~~~
 
-1. Use the [`cockroach node decommission`](cockroach-node.html) command to decommission the node with the highest number in its address, specifying its ID (in this example, `4`):
+Then [apply](#apply-settings) the new value.
 
-    {{site.data.alerts.callout_info}}
-    It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
-    {{site.data.alerts.end}}
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl exec -it cockroachdb-client-secure \
-    -- ./cockroach node decommission 4 \
-    --certs-dir=/cockroach/cockroach-certs \
-    --host=cockroachdb-public
-    ~~~
-
-    You'll then see the decommissioning status print to `stderr` as it changes:
-
-    ~~~
-     id | is_live | replicas | is_decommissioning | is_draining  
-    +---+---------+----------+--------------------+-------------+
-      4 |  true   |       73 |        true        |    false     
-    (1 row)
-    ~~~
-
-    Once the node has been fully decommissioned and stopped, you'll see a confirmation:
-
-    ~~~
-     id | is_live | replicas | is_decommissioning | is_draining  
-    +---+---------+----------+--------------------+-------------+
-      4 |  true   |        0 |        true        |    false     
-    (1 row)
-
-    No more data reported on target nodes. Please verify cluster health before removing the nodes.
-    ~~~
-
-1. Once the node has been decommissioned, update the number of `nodes` in the custom resource:
-
-    ~~~
-    nodes: 3
-    ~~~
-
-1. [Apply](#apply-settings) the new value.
-
-    The Operator will remove the node with the highest number in its address (in this case, the address including `cockroachdb-3`) from the cluster. It will also remove the persistent volume that was mounted to the pod.
+The Operator will remove the node with the highest number in its address (in this case, the address including `cockroachdb-3`) from the cluster. It will also remove the persistent volume that was mounted to the pod.
     
-1. To verify that the pod was successfully removed, run `kubectl get pods`.
+To verify that the pod was successfully removed, run `kubectl get pods`.
 </section>
 
 {% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
 
 ## Upgrade the cluster
 
-It is strongly recommended that you regularly upgrade your CockroachDB version in order to pick up bug fixes, performance improvements, and new features. The [CockroachDB upgrade documentation](upgrade-cockroach-version.html) describes how to perform a "rolling upgrade" of a CockroachDB cluster by stopping and restarting nodes one at a time. This is to ensure that the cluster remains available during the upgrade.
+We strongly recommend that you regularly upgrade your CockroachDB version in order to pick up bug fixes, performance improvements, and new features.  
 
-The corresponding process on Kubernetes is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update), in which the Docker image is updated in the CockroachDB StatefulSet and then applied to the pods one at a time.
+The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) in which the Docker image is applied to the pods one at a time, with each pod being stopped and restarted in turn. This is to ensure that the cluster remains available during the upgrade.
 
 <section class="filter-content" markdown="1" data-scope="operator">
 The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade.
@@ -580,9 +522,7 @@ spec:
 `minAvailable` is The min number of pods that can be available during a rolling update. This number is set in the PodDistruptionBudget and defaults to 1. -->
 {% endcomment %}
 
-1. [Apply](#apply-settings) the new value.
-
-    The Operator will perform the staged update.
+1. [Apply](#apply-settings) the new value. The Operator will perform the staged update.
 
 1. To check the status of the rolling upgrade, run `kubectl get pods`. The pods are restarted one at a time with the new image.
 

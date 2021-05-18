@@ -1,3 +1,13 @@
+Before removing a node from your cluster, you must first decommission the node. This lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+
+{{site.data.alerts.callout_danger}}
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Decommission Nodes](remove-nodes.html).
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern on CockroachDB and will cause errors.
+{{site.data.alerts.end}}
+
 <section class="filter-content" markdown="1" data-scope="manual">
 1. Use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
 
