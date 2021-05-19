@@ -50,6 +50,9 @@ layout: null
 /docs/cockroachcloud/dev/managed-sql-users-page.html /docs/cockroachcloud/dev/cockroachcloud-sql-users-page.html 301!
 /docs/cockroachcloud/stable/managed-troubleshooting-page.html /docs/cockroachcloud/stable/cockroachcloud-troubleshooting-page.html 301!
 /docs/cockroachcloud/dev/managed-troubleshooting-page.html /docs/cockroachcloud/dev/cockroachcloud-troubleshooting-page.html 301!
+
+# Redirects for Homebrew
+/docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301!
 {% endif %}
 
 {%- for version in site.versions -%}
