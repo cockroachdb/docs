@@ -571,7 +571,7 @@ If you plan to run your instances exclusively on private subnets, set the follow
 ### Generate certificates
 
 {{site.data.alerts.callout_info}}
-Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication](authentication.html#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
+The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly generate and sign the CockroachDB node and client certificates. Read our [Authentication](authentication.html#using-digital-certificates-with-cockroachdb) docs to learn about other methods of signing certificates.
 {{site.data.alerts.end}}
 
 1. Create two directories:
@@ -734,10 +734,6 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     ~~~
 
 1. Save this StatefulSet configuration, giving it a filename like `cockroachdb-statefulset-secure-eks-1.yaml`.
-
-    {{site.data.alerts.callout_success}}
-    If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-    {{site.data.alerts.end}}
 
 1. Create and save a StatefulSet configuration for each of the other 2 regions in the same way, being sure to use the correct namespaces for those regions in steps 2 and 4.
 

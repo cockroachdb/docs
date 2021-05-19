@@ -4,7 +4,7 @@ Kubernetes 1.15 or higher is required in order to use our current configuration 
 
 #### Helm version
 
-Helm 3.0 or higher is required when using our instructions to [deploy via Helm](orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb).
+Helm 3.0 or higher is required when using our instructions to deploy via Helm.
 
 #### Storage
 
