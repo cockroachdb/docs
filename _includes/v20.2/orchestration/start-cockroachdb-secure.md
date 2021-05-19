@@ -50,10 +50,6 @@ On a production cluster, you will need to modify the StatefulSet configuration w
         storage: "100Gi"
     ~~~
 
-{{site.data.alerts.callout_success}}
-If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-{{site.data.alerts.end}}
-
 #### Initialize the cluster
 
 Choose the authentication method that corresponds to the StatefulSet configuration you downloaded and modified above.
