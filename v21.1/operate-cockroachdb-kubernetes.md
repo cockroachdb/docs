@@ -161,7 +161,7 @@ If no resource limits are specified, the pods will be able to consume the maximu
 <section class="filter-content" markdown="1" data-scope="operator">
 ### Cache and SQL memory size
 
-Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](recommended-production-settings#cache-and-sql-memory-size).
+Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](recommended-production-settings.html#cache-and-sql-memory-size).
 
 Our Kubernetes manifests dynamically set cache size and SQL memory size each to 1/4 (the recommended fraction) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. If you want to customize these values, set them explicitly.
 
@@ -504,7 +504,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 <section class="filter-content" markdown="1" data-scope="operator">
 1. Verify that you can upgrade.
 
-    To upgrade to a new feature version, you must first be on a [production release](releases/index.html#production-releases) of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release and not a testing release (alpha/beta).
+    To upgrade to a new feature version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release and not a testing release (alpha/beta).
 
     Therefore, in order to upgrade to v21.1, you must be on a production release of v20.2.
 

@@ -39,12 +39,6 @@ Feature | Description
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
 
-#### CSR names
-
-When Kubernetes issues a [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) (Certificate Signing Request) to have a node or client certificate signed by the Kubernetes CA, Kubernetes requires the CSR name to start and end with an alphanumeric character and otherwise consist of lowercase alphanumeric characters, `-`, or `.`
-
-CSR names contain the StatefulSet or Helm chart `name`, so if you customize that value, be sure to conform to these naming requirements. For client certificates, CSR names also contain the username of the SQL user for which the certificate is being generated, so be sure SQL usernames also conform to these naming requirements. For example, avoid using the underscore character (`_`) in these names.
-
 ## Step 1. Start Kubernetes
 
 {% include {{ page.version.version }}/orchestration/start-kubernetes.md %}

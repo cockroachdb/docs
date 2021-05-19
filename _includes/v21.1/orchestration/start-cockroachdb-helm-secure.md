@@ -64,7 +64,7 @@ Secure CockroachDB deployments on Amazon EKS via Helm are [not yet supported](ht
     Provide a "release" name to identify and track this particular deployment of the chart, and override the default values with those in `my-values.yaml`.
 
     {{site.data.alerts.callout_info}}
-    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands. Also be sure to start and end the name with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
+    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
     {{site.data.alerts.end}}
 
     {% include copy-clipboard.html %}
