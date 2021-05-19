@@ -38,6 +38,32 @@ If you do have internet access, check if you have [authorized the right network]
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
+- An `i/o timeout` can also be caused by firewall rules, which require your network administrator to investigate.
+
+### No such host
+
+The following error is displayed when you supply an incorrect host name:
+
+~~~ shell
+ERROR: cannot dial server.
+Is the server running?
+If the server is running, check --host client-side and --advertise server-side.
+
+dial tcp: lookup gcp-us-east4.crdb.io: no such host
+Failed running "sql"
+~~~
+
+**Solution:**
+Check if you are using the correct host name.
+
+You can find your host name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
+
+### Application with a short timeout fails to connect
+
+**Solution:**
+- Increase the timeout value (30s) and see if connection succeeds
+- If you can connect and run the same query with sql cli, investigate your application environment
+- Investigate your network infrastructure to see if there is a network related performance problem, or contact support with these details.
 
 ## Security errors
 
