@@ -146,7 +146,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
         <img src="{{ 'images/v21.1/kubernetes-prometheus-graph.png' | relative_url }}" alt="Prometheus graph" style="border:1px solid #eee;max-width:100%" />
 
     {{site.data.alerts.callout_success}}
-    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the DB Console](#step-4-access-the-db-console){% else %}[Access the DB Console](#step-4-access-the-db-console){% endif %} and then point your browser to <a href="http://localhost:8080/_status/vars" data-proofer-ignore>http://localhost:8080/_status/vars</a>.
+    Prometheus auto-completes CockroachDB time series metrics for you, but if you want to see a full listing, with descriptions, port-forward as described in {% if page.secure == true %}[Access the DB Console](deploy-cockroachdb-with-kubernetes.html#step-4-access-the-db-console){% else %}[Access the DB Console](deploy-cockroachdb-with-kubernetes.html#step-4-access-the-db-console){% endif %} and then point your browser to <a href="http://localhost:8080/_status/vars" data-proofer-ignore>http://localhost:8080/_status/vars</a>.
 
     For more details on using the Prometheus UI, see their [official documentation](https://prometheus.io/docs/introduction/getting_started/).
     {{site.data.alerts.end}}
