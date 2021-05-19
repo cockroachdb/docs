@@ -40,7 +40,7 @@ Run the `movr` workload against a demo cluster:
 $ cockroach demo --with-load <other flags>
 ~~~
 
-Execute SQL from the command line against a demo cluster
+Execute SQL from the command line against a demo cluster:
 
 ~~~ shell
 $ cockroach demo --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <other flags>
@@ -52,13 +52,13 @@ Start a multi-node demo cluster:
 $ cockroach demo --nodes=<number of nodes> <other flags>
 ~~~
 
-Start a multi-region demo cluster with automatic [geo-partitioning](#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning)
+Start a multi-region demo cluster with default region and zone localities:
 
 ~~~ shell
-$ cockroach demo --geo-partitioned-replicas <other flags>
+$ cockroach demo --global --nodes=<number of nodes>
 ~~~
 
-Start a multi-region demo cluster with manually defined localities
+Start a multi-region demo cluster with manually defined localities:
 
 ~~~ shell
 $ cockroach demo --nodes=<number of nodes> --demo-locality=<key:value pair per node> <other flags>
@@ -140,7 +140,7 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # Welcome to the CockroachDB demo database!
 #
-# You are connected to a temporary, in-memory CockroachDB cluster of 3 nodes.
+# You are connected to a temporary, in-memory CockroachDB cluster of 1 node.
 #
 # This demo session will attempt to enable enterprise features
 # by acquiring a temporary license from Cockroach Labs in the background.
@@ -155,16 +155,15 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
-#   (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
-#   (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo36965&username=demo
+#   (sql)     postgres://demo:demo36965@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo885159696&port=26257
+#   (sql/tcp) postgres://demo:demo36965@127.0.0.1:26257?sslmode=require
 #
-# To display connection parameters for other nodes, use \demo ls.
 #
-# The user "demo" with password "demo53628" has been created. Use it to access the Web UI!
+# The user "demo" with password "demo36965" has been created. Use it to access the Web UI!
 #
-# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, built 2021/03/31 10:29:32, go1.15.6) (same version as client)
-# Cluster ID: fe842d74-430d-4868-b21a-d41065e6e395
+# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, built 2021/05/17 13:52:51, go1.15.11) (same version as client)
+# Cluster ID: 5448bb81-6d2f-4545-a36c-4236df7e3d7d
 # Organization: Cockroach Demo
 #
 # Enter \? for a brief introduction.
@@ -177,9 +176,9 @@ The SQL shell welcome text includes connection parameters for accessing the DB C
 
 ~~~
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
-#   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
-#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo36965&username=demo
+#   (sql)     postgres://demo:demo36965@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo885159696&port=26257
+#   (sql/tcp) postgres://demo:demo36965@127.0.0.1:26257?sslmode=require
 ~~~
 
 Parameter | Description
@@ -232,6 +231,7 @@ node 3:
 Command | Usage
 --------|------
 `\demo ls` | List the demo nodes and their connection URLs.
+`\demo add region=<region>,zone=<zone>` | Add a node to a single- or multi-region demo cluster.
 `\demo shutdown <node number>` | Shuts down a node in a multi-node demo cluster.<br><br>This command simulates stopping a node that can be restarted. [See an example](#shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
 `\demo restart <node number>` | Restarts a node in a multi-node demo cluster. [See an example](#shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
 `\demo decommission <node number>` | Decommissions a node in a multi-node demo cluster.<br><br>This command simulates [decommissioning a node](remove-nodes.html).
