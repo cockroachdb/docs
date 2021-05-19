@@ -5,7 +5,6 @@ layout: null
 {%- if site.baseurl == "/docs" %}
 / /docs/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
-/docs/managed/* /docs/cockroachcloud/:splat 301!
 /docs/releases/ /docs/releases/index.html 200!
 /docs/advisories/ /docs/advisories/index.html 200!
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!
@@ -18,38 +17,8 @@ layout: null
 /docs/dev/demo-follow-the-workload.html /docs/dev/topology-follow-the-workload.html 301!
 /docs/*/orchestrate-cockroachdb-with-mesosphere-insecure.html /docs/stable/orchestration.html 301!
 
-# Old training pages redirect to Cockroach University
-/docs/*/training/* https://university.cockroachlabs.com 301!
-
-# CockroachCloud page renames
-/docs/cockroachcloud/stable/managed-authentication.html /docs/cockroachcloud/stable/cockroachcloud-authentication.html 301!
-/docs/cockroachcloud/dev/managed-authentication.html /docs/cockroachcloud/dev/cockroachcloud-authentication.html 301!
-/docs/cockroachcloud/stable/managed-authorization.html /docs/cockroachcloud/stable/cockroachcloud-authorization.html 301!
-/docs/cockroachcloud/dev/managed-authorization.html /docs/cockroachcloud/dev/cockroachcloud-authorization.html 301!
-/docs/cockroachcloud/stable/managed-cluster-management.html /docs/cockroachcloud/stable/cockroachcloud-cluster-management.html 301!
-/docs/cockroachcloud/dev/managed-cluster-management.html /docs/cockroachcloud/dev/cockroachcloud-cluster-management.html 301!
-/docs/cockroachcloud/stable/managed-cluster-overview.html /docs/cockroachcloud/stable/cockroachcloud-cluster-overview.html 301!
-/docs/cockroachcloud/dev/managed-cluster-overview.html /docs/cockroachcloud/dev/cockroachcloud-cluster-overview.html 301!
-/docs/cockroachcloud/stable/managed-clusters-page.html /docs/cockroachcloud/stable/cockroachcloud-clusters-page.html 301!
-/docs/cockroachcloud/dev/managed-clusters-page.html /docs/cockroachcloud/dev/cockroachcloud-clusters-page.html 301!
-/docs/cockroachcloud/stable/managed-connect-to-your-cluster.html /docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html 301!
-/docs/cockroachcloud/dev/managed-connect-to-your-cluster.html /docs/cockroachcloud/dev/cockroachcloud-connect-to-your-cluster.html 301!
-/docs/cockroachcloud/stable/managed-console-access-management.html /docs/cockroachcloud/stable/cockroachcloud-console-access-management.html 301!
-/docs/cockroachcloud/dev/managed-console-access-management.html /docs/cockroachcloud/dev/cockroachcloud-console-access-management.html 301!
-/docs/cockroachcloud/stable/managed-frequently-asked-questions.html /docs/cockroachcloud/stable/cockroachcloud-frequently-asked-questions.html 301!
-/docs/cockroachcloud/dev/managed-frequently-asked-questions.html /docs/cockroachcloud/dev/cockroachcloud-frequently-asked-questions.html 301!
-/docs/cockroachcloud/stable/managed-monitoring-page.html /docs/cockroachcloud/stable/cockroachcloud-monitoring-page.html 301!
-/docs/cockroachcloud/dev/managed-monitoring-page.html /docs/cockroachcloud/dev/cockroachcloud-monitoring-page.html 301!
-/docs/cockroachcloud/stable/managed-security-overview.html /docs/cockroachcloud/stable/cockroachcloud-security-overview.html 301!
-/docs/cockroachcloud/dev/managed-security-overview.html /docs/cockroachcloud/dev/cockroachcloud-security-overview.html 301!
-/docs/cockroachcloud/stable/managed-sign-up-for-a-cluster.html /docs/cockroachcloud/stable/cockroachcloud-sign-up-for-a-cluster.html 301!
-/docs/cockroachcloud/dev/managed-sign-up-for-a-cluster.html /docs/cockroachcloud/dev/cockroachcloud-sign-up-for-a-cluster.html 301!
-/docs/cockroachcloud/stable/managed-sql-audit-logging.html /docs/cockroachcloud/stable/cockroachcloud-sql-audit-logging.html 301!
-/docs/cockroachcloud/dev/managed-sql-audit-logging.html /docs/cockroachcloud/dev/cockroachcloud-sql-audit-logging.html 301!
-/docs/cockroachcloud/stable/managed-sql-users-page.html /docs/cockroachcloud/stable/cockroachcloud-sql-users-page.html 301!
-/docs/cockroachcloud/dev/managed-sql-users-page.html /docs/cockroachcloud/dev/cockroachcloud-sql-users-page.html 301!
-/docs/cockroachcloud/stable/managed-troubleshooting-page.html /docs/cockroachcloud/stable/cockroachcloud-troubleshooting-page.html 301!
-/docs/cockroachcloud/dev/managed-troubleshooting-page.html /docs/cockroachcloud/dev/cockroachcloud-troubleshooting-page.html 301!
+# Redirects for Homebrew
+/docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301!
 {% endif %}
 
 {%- for version in site.versions -%}
