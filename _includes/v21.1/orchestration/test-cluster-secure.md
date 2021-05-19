@@ -39,10 +39,6 @@ $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
 ~~~
 
-{{site.data.alerts.callout_info}}
-The pod uses the `root` client certificate created earlier to initialize the cluster. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-{{site.data.alerts.end}}
-
 ~~~
 pod/cockroachdb-client-secure created
 ~~~
@@ -104,10 +100,6 @@ pod/cockroachdb-client-secure created
         ~~~
         pod "cockroachdb-client-secure" created
         ~~~
-
-        {{site.data.alerts.callout_info}}
-        The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required. If you issue client certificates for other users, however, be sure your SQL usernames contain only lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-        {{site.data.alerts.end}}
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 

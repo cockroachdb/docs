@@ -440,7 +440,7 @@ To set up a CockroachDB `DaemonSet`:
 
 5. [Manually check and approve each node's certificates](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
 
-6. [Use the `cluster-init-secure.yaml` file to initialize the cluster](orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
+6. [Use the `cluster-init-secure.yaml` file to initialize the cluster](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
 
     For the initialization step to work, you will need to change the address on the `--host=cockroachdb-0.cockroach` line from `cockroachdb-0.cockroach` to the address of one of your nodes.
 
@@ -448,7 +448,7 @@ To set up a CockroachDB `DaemonSet`:
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-1. [Start Kubernetes](orchestrate-cockroachdb-with-kubernetes-insecure.html#step-1-start-kubernetes) as described in the tutorial on using the `StatefulSet` feature.
+1. [Start Kubernetes](deploy-cockroachdb-with-kubernetes-insecure.html#step-1-start-kubernetes) as described in the tutorial on using the `StatefulSet` feature.
 
 2. Download the [`cockroachdb-daemonset-insecure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-insecure.yaml) configuration file:
 

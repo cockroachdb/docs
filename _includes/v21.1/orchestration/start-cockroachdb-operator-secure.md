@@ -56,9 +56,7 @@
     ~~~
 
     {{site.data.alerts.callout_info}}
-    By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should [substitute values](operate-cockroachdb-kubernetes.html#allocate-resources) that are appropriate for your machines and workload. 
-
-    `example.yaml` also defaults to letting the Operator generate and sign certificates to secure the cluster. If you want to [authenticate using a custom CA](operate-cockroachdb-kubernetes.html#use-a-custom-ca), you can modify the custom resource to recognize your certificates.
+    By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should [substitute values](operate-cockroachdb-kubernetes.html#allocate-resources) that are appropriate for your machines and workload.
     {{site.data.alerts.end}}
 
 1. Apply `example.yaml`:
