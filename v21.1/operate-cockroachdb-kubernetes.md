@@ -460,7 +460,8 @@ To verify that the new pods were successfully started, run `kubectl get pods`.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster-helm.md %}</section>
+{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster-helm.md %}
+</section>
 
 ### Remove nodes
 
