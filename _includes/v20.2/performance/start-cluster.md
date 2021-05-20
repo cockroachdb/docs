@@ -7,7 +7,7 @@
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -40,7 +40,7 @@
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
 
 3. Copy the binary into the `PATH`:

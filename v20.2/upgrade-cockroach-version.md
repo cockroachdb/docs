@@ -120,7 +120,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
@@ -132,7 +132,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
 

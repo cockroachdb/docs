@@ -55,7 +55,7 @@ If you have not done so already, install the CockroachDB binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    wget -qO- https://binaries.cockroachdb.com/{{ page.release_info.version }}.linux-amd64.tgz | tar xvz
+    wget -qO- https://binaries.cockroachdb.com/{{ page.release_info.version }}.linux-amd64.tgz | tar -xz
     ~~~
     
 1. Run the following command to copy the binary into your `PATH`:

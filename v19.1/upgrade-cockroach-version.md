@@ -129,7 +129,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
@@ -141,7 +141,7 @@ Also, refrain from starting [schema changes](online-schema-changes.html) during 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
 

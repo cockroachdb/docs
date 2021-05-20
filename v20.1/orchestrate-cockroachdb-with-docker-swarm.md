@@ -126,7 +126,7 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Extract the binary:
-    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    $ tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 

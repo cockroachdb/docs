@@ -42,7 +42,7 @@ This tutorial shows you how to manually deploy an insecure multi-node CockroachD
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary:
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
@@ -71,7 +71,7 @@ At this point, your cluster is live and operational but contains only a single n
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary:
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
@@ -162,7 +162,7 @@ Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.

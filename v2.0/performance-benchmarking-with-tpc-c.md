@@ -77,7 +77,7 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -235,7 +235,7 @@ To add an enterprise license to your cluster once it is started, [use the built-
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}

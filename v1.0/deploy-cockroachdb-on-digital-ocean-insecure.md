@@ -90,7 +90,7 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary:
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:
@@ -122,7 +122,7 @@ At this point, your cluster is live and operational but contains only a single n
 	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary:
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xz cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary:

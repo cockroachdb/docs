@@ -87,7 +87,7 @@ On your local workstation's terminal:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xJ
+    |
     ~~~
     </section>
 
@@ -95,7 +95,7 @@ On your local workstation's terminal:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
     </section>
 

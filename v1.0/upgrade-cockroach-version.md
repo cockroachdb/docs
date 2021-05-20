@@ -71,7 +71,7 @@ For each node in your cluster, complete the following steps.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
@@ -83,7 +83,7 @@ For each node in your cluster, complete the following steps.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
 

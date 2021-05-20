@@ -114,7 +114,7 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
@@ -126,7 +126,7 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ tar -xz cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
 

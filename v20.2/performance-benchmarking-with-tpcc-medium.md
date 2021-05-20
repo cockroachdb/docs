@@ -101,7 +101,7 @@ CockroachDB requires TCP communication on two ports:
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -192,7 +192,7 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
     {% include copy-clipboard.html %}
     ~~~ shell
     $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
