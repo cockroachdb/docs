@@ -308,6 +308,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
 3. Download and extract the [Confluent Open Source platform](https://www.confluent.io/download/) (which includes Kafka).
 
+{{site.data.alerts.callout_info}}
+Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1.
+{{site.data.alerts.end}}
+
 4. Move into the extracted `confluent-<version>` directory and start Confluent:
 
     {% include copy-clipboard.html %}
