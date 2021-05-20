@@ -116,7 +116,7 @@ Flag | Description
 `--empty` | Start the demo cluster without a pre-loaded dataset.
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
-`--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning) applied to the [`movr`](movr.html) database.
+`--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
 `--global` | <a name="global-flag"></a> This experimental flag is used to simulate a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
 `--http-port` | <span class="version-tag">New in v21.1:</span> Specifies a custom HTTP port to the [DB Console](ui-overview.html) for the first node of the demo cluster.<br><br>In multi-node clusters, the HTTP ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has an HTTP port of `5000`, the second node will have the HTTP port `5001`.
 `--insecure` |  Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` gives you an easy way test out CockroachDB [authorization features](authorization.html) and also creates a password (`admin`) for the `root` user for logging into the DB Console.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
@@ -234,9 +234,9 @@ node 3:
 Command | Usage
 --------|------
 `\demo ls` | List the demo nodes and their connection URLs.
-`\demo add region=<region>,zone=<zone>` | <span class="version-tag">New in v21.1:</span> Add a node to a single-region or multi-region demo cluster.
-`\demo shutdown <node number>` | Shuts down a node in a multi-node demo cluster.<br><br>This command simulates stopping a node that can be restarted. [See an example](#shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
-`\demo restart <node number>` | Restarts a node in a multi-node demo cluster. [See an example](#shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
+`\demo add region=<region>,zone=<zone>` | <span class="version-tag">New in v21.1:</span> Add a node to a single-region or multi-region demo cluster. [See an example](#add-shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
+`\demo shutdown <node number>` | Shuts down a node in a multi-node demo cluster.<br><br>This command simulates stopping a node that can be restarted. [See an example](#add-shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
+`\demo restart <node number>` | Restarts a node in a multi-node demo cluster. [See an example](#add-shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
 `\demo decommission <node number>` | Decommissions a node in a multi-node demo cluster.<br><br>This command simulates [decommissioning a node](remove-nodes.html).
 `\demo recommission <node number>` | Recommissions a decommissioned node in a multi-node demo cluster.
 
