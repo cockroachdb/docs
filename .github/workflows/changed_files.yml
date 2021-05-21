@@ -27,7 +27,7 @@ jobs:
             if [[ $file == *.md ]] && [[ $file != _* ]]
             then
               html_file=${file%.md}.html
-              file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\">$file</a>"
+              file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target="_blank">$file</a>"
             fi
             output+="$file\n"
           done;
