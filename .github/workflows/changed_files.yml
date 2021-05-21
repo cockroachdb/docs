@@ -22,7 +22,7 @@ jobs:
 
           files=(${{ steps.changed_files.outputs.all_modified_files }})
           pr_num=${{ github.event.pull_request.number }}
-          for file in $files; do
+          for file in ${files[@]}; do
             # only create links for Markdown files that are not includes
             if [[ $file == *.md ]] && [[ $file != _* ]]
             then
