@@ -91,24 +91,24 @@ Upgrade only one node at a time, and wait at least one minute after a node rejoi
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ tar -xzf cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ tar -xzf cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
 

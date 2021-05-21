@@ -240,13 +240,13 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% include copy-clipboard.html %}
     ~~~ shell
     # Get the latest CockroachDB tarball.
-    $ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Extract the binary.
-    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 
@@ -281,13 +281,13 @@ At this point, your cluster is live and operational but contains only a single n
     {% include copy-clipboard.html %}
     ~~~ shell
     # Get the latest CockroachDB tarball.
-    $ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Extract the binary.
-    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 
