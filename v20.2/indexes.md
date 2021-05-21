@@ -124,7 +124,7 @@ For best practices, see [Add a Secondary Index: Best Practices](schema-design-in
 - [Inverted Indexes](inverted-indexes.html)
 - [Partial indexes](partial-indexes.html)
 - [Spatial Indexes](spatial-indexes.html)
-- [Hash-sharded Indexes](has-sharded-indexes.html)
+- [Hash-sharded Indexes](hash-sharded-indexes.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
