@@ -33,15 +33,15 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-v19.1.1.darwin-10.9-amd64.tgz \
-    | tar -xJ
+    | tar -xz
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v19.1.1.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-v19.1.1.linux-amd64.tgz \
+    | tar -xz
     ~~~
     </div>
 
