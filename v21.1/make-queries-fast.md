@@ -38,6 +38,10 @@ It's common to offer users promo codes to increase usage and customer loyalty. I
 
 To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"
 
+{% comment %}
+This is a test
+{% endcomment %}
+
 ### Rule 1. Scan as few rows as possible
 
 First, let's study the schema so we understand the relationships between the tables.
