@@ -29,9 +29,9 @@ jobs:
               html_file=${file%.md}.html
               file="<a href=\"https://deploy-preview-$pr_num--cockroachdb-docs.netlify.app/docs/$html_file\" target="_blank">$file</a>"
             fi
-            output+="$file\n"
+            output+="$file%0A"
           done;
-          body="${output[@]//$'\n'/'%0A'}"
+          body="${output[@]}"
           echo ::set-output name=body::$body
 
       - name: Create comment
