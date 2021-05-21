@@ -120,13 +120,13 @@ A secure CockroachDB cluster uses TLS certificates for encrypted inter-node and 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Get the latest CockroachDB tarball:
-    $ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+     $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Extract the binary:
-    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 

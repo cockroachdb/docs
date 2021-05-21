@@ -118,7 +118,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
@@ -149,10 +149,10 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+	$ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.

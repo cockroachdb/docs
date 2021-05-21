@@ -105,7 +105,7 @@ With the above examples in mind, it's always important to consider network laten
 <!-- roachprod instructions for single-region deployment
 1. Reserve 12 instances across 3 GCE zone: roachprod create <yourname>-tuning --geo --gce-zones us-east1-b,us-west1-a,us-west2-a --local-ssd -n 12
 2. Put cockroach` on all instances:
-   - roachprod run <yourname>-tuning "curl https://binaries.cockroachdb.com/cockroach-v2.0.4.linux-amd64.tgz | tar -xvz"
+   - roachprod run <yourname>-tuning "curl -s https://binaries.cockroachdb.com/cockroach-v2.0.4.linux-amd64.tgz | tar -xvz"
    - roachprod run <yourname>-tuning "sudo cp -i cockroach-v2.0.4.linux-amd64/cockroach /usr/local/bin/"
 3. Start the cluster in us-east1-b: roachprod start -b "/usr/local/bin/cockroach" <yourname>-tuning:1-3
 4. You'll need the addresses of all instances later, so list and record them somewhere: roachprod list -d <yourname>-tuning
@@ -164,8 +164,8 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -208,8 +208,8 @@ Now you'll import Movr data representing users, vehicles, and rides in 3 eastern
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
 3. Copy the binary into the `PATH`:
@@ -1370,8 +1370,8 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -1401,8 +1401,8 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl -s https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
