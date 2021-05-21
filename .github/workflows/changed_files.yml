@@ -31,7 +31,7 @@ jobs:
             fi
             output+="$file\n"
           done;
-          body="${files//$'\n'/'%0A'}"
+          body="${output[@]//$'\n'/'%0A'}"
           echo ::set-output name=body::$body
 
       - name: Create comment
