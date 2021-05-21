@@ -70,7 +70,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"]}}/movr.html) to run the first query. On your local machine:
 
-1. [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html):
+1. Download the CockroachDB binary:
 
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
@@ -81,15 +81,15 @@ For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xJ
+    | tar -xz
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
     </section>
 
@@ -103,7 +103,7 @@ For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
     ~~~
     </section>
 
