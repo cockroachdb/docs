@@ -417,7 +417,7 @@ The `system.replication_critical_localities` report contains which of your local
 
 That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
 
-By default, the [movr demo cluster](cockroach-demo.html#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning) has some ranges in critical localities. This is expected because it ties data for latency-sensitive queries to specific geographies at the cost of data unavailability during a region-wide failure.
+By default, the [movr demo cluster](cockroach-demo.html) has some ranges in critical localities. This is expected because it ties data for latency-sensitive queries to specific geographies at the cost of data unavailability during a region-wide failure.
 
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
