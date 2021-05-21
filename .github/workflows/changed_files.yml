@@ -20,7 +20,7 @@ jobs:
         run: |
           declare -a output
 
-          files='${{ steps.changed_files.outputs.all_modified_files }}'
+          files=(${{ steps.changed_files.outputs.all_modified_files }})
           pr_num=${{ github.event.pull_request.number }}
           for file in $files; do
             # only create links for Markdown files that are not includes
