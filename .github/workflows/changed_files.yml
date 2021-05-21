@@ -34,10 +34,20 @@ jobs:
           body="${output[@]}"
           echo ::set-output name=body::$body
 
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Files changed
+
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
           body: |
             Files changed:
 
