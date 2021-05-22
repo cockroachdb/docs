@@ -230,7 +230,7 @@ When setting a time zone, note the following:
 `cluster` | Trace recording is enabled; distributed traces are collected.
 `on`  | Same as `cluster`.
 `kv`  | Same as `cluster` except that "kv messages" are collected instead of regular trace messages. See [`SHOW TRACE FOR SESSION`](show-trace.html).
-`results` | Result rows and row counts are copied to the session trace. This must be specified to in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
+`results` | Result rows and row counts are copied to the session trace. This must be specified in order for the output of a query to be printed in the session trace.<br><br>Example: `SET tracing = kv, results;`
 
 ## See also
 
