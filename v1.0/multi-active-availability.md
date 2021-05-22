@@ -35,7 +35,7 @@ For this example, we have 2 replicas (**A**, **B**) in an active-active high ava
 1. **A** receives a write for key `xyz` of `'123'`, and then immediately fails.
 2. **B** receives a read of key `xyz`, and returns a `NULL` because it cannot find the key.
 3. **B** then receives a write for key `xyz` of `'456'`.
-4. **A** is restarted and attempts to rejoin **B**––but what do you about key `xyz`? There's an inconsistency in the system without a clear way to resolve it.
+4. **A** is restarted and attempts to rejoin **B**––but what do you do about key `xyz`? There's an inconsistency in the system without a clear way to resolve it.
 
 {{site.data.alerts.callout_info}}In this example, the cluster remained active the entire time. But in terms of the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>, this is an AP system; it favored being available instead of consistent when partitions occur.{{site.data.alerts.end}}
 
