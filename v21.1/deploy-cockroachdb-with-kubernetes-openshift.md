@@ -12,7 +12,7 @@ This page shows you how to start and stop a secure 3-node CockroachDB cluster on
 - A running OpenShift cluster
 
 {{site.data.alerts.callout_info}}
-This article assumes you have already installed the OpenShift Container Platform on a Kubernetes cluster. For details on this, see the [OpenShift documentation](https://docs.openshift.com/container-platform/4.7/installing/index.html).
+This article assumes you have already installed the OpenShift Container Platform as your Kubernetes cluster. For details on this, see the [OpenShift documentation](https://docs.openshift.com/container-platform/4.7/installing/index.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Create a CockroachDB namespace
