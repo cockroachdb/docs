@@ -12,6 +12,31 @@ defaults:
     type: pages
   values:
     layout: page
+-
+  scope:
+    path: "v1.0/**/*"
+  values:
+    sitemap:  false
+-
+  scope:
+    path: "v1.1/**/*"
+  values:
+    sitemap:  false
+-
+  scope:
+    path: "v2.0/**/*"
+  values:
+    sitemap:  false
+-
+  scope:
+    path: "v2.1/**/*"
+  values:
+    sitemap:  false
+-
+  scope:
+    path: "v19.1/**/*"
+  values:
+    sitemap:  false
 exclude:
 - __tests__
 - netlify
