@@ -70,16 +70,62 @@ At this time, you cannot use the Console to scale up a single-node cluster or sc
 
 To add or remove nodes from your cluster:
 
-1. Navigate to the cluster's **Overview** page
+1. Navigate to the cluster's **Overview** page.
 1. Click the **Actions** button in the top right corner.
-1. Select **Add/remove nodes**.
+1. Select **Edit regions and nodes**.
 
     The **Edit <cluster name>** page displays.
 
 1. From the **Nodes** dropdown, select the number of nodes you want in your cluster.
-1. Click **Next**.
-1. On the **Summary** page, verify the hourly estimated cost for the cluster.
-1. Click **Add/remove nodes**.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Continue to payment**.
+1. In the **Confirmation** dialog, verify your new cluster configuration.
+1. Click **OK**.
+
+## Add or remove regions from a cluster
+
+You can add or remove regions from your cluster through the Console.
+
+### Considerations
+
+- You can add or remove up to three regions at a time. The maximum number of regions is seven, and two-region clusters are not allowed because they would be unable to survive a single region failure.
+- We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
+- When a region is removed from a cluster, access to the database from that region will no longer be as fast.
+- Adding or removing regions incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. We recommend you add or remove regions from a cluster when the cluster isn't experiencing heavy traffic.
+
+### Add a region to your cluster
+
+1. Navigate to the cluster's **Overview** page.
+1. Click the **Actions** button in the top right corner.
+1. Select **Edit regions and nodes**.
+
+    The **Edit <cluster name>** page displays.
+
+1. Click **Add a region**.
+
+    If you have [VPC peering](network-authorization.html) enabled, the IP range will be automatically populated for added regions.
+    
+1. From the **Choose a region** dropdown, select the region you want to use.
+1. From the **Nodes** dropdown, select the number of nodes in the new region.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Continue to payment**.
+1. In the **Confirmation** dialog, verify your new cluster configuration.
+1. Click **OK**.
+
+
+### Remove a region from your cluster
+
+1. Navigate to the cluster's **Overview** page.
+1. Click the **Actions** button in the top right corner.
+1. Select **Edit regions and nodes**.
+
+    The **Edit <cluster name>** page displays.
+
+1. Click the **X** button next to each region you want to remove.
+1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
+1. Click **Continue to payment**.
+1. In the **Confirmation** dialog, verify your new cluster configuration.
+1. Click **OK**.
 
 ## Restore data from a backup
 

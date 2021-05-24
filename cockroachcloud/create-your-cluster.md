@@ -32,9 +32,11 @@ CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/d
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
-## Step 3. Select the region
+## Step 3. Select the region(s)
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
+
+To create a multi-region cluster, click **Add regions** until you have the desired number of regions. In order to survive a single region failure, you must use at least three regions.
 
 {{site.data.alerts.callout_info}}
 Some regions in GCP and AWS might not be displayed in the **Regions** list. We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See list of [EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and list of [GKE regions](https://cloud.google.com/about/locations/) for details.
@@ -54,15 +56,15 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 
 - For single-region application development and testing, you may create a one-node cluster.
 - For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
-- For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
+- For multi-region deployments, we recommend a minimum of three nodes per region. For best performance and stability, you should use the same number of nodes in each region.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
 {{site.data.alerts.callout_info}}
-You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
+You cannot create a two-node or two-region cluster because two-replica configurations are less reliable than a single replica.
 {{site.data.alerts.end}}
 
-As of now, you can add a maximum of 24 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Currently, you can add a maximum of 50 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## Step 5. Select the hardware per node
 
@@ -100,12 +102,16 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
+        
+        {{site.data.alerts.callout_info}}
+        Custom IP ranges are temporarily unavailable for multi-region clusters.
+        {{site.data.alerts.end}}
 
 1. Click **Next**.
 
 ## Step 8. Enter billing details
 
-1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
+1. On the **Summary** page, verify your selections for the cloud provider, region(s), number of nodes, and the hardware configuration per node.
 1. Verify the hourly estimated cost for the cluster.
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
