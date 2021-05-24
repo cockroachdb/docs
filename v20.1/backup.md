@@ -64,10 +64,10 @@ The `BACKUP` statement is a blocking statement and cannot be used within a [tran
 
  Option                                                          | Value                   | Description
 -----------------------------------------------------------------+-------------------------+------------------------------
-`revision_history`<a name="with-revision-history"></a>           | N/A                     | Create a backup with full [revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore), which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.
-`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to [encrypt the files](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) (`BACKUP` manifest and data files) that the `BACKUP` statement generates. This same passphrase is needed to decrypt the file when it is used to [restore](backup-and-restore-advanced-options.html#restore-from-an-encrypted-backup) and to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html). There is no practical limit on the length of the passphrase.
+`revision_history`<a name="with-revision-history"></a>           | N/A                     | Create a backup with full [revision history](backup-and-restore.html), which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.
+`encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to [encrypt the files](backup-and-restore.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates. This same passphrase is needed to decrypt the file when it is used to [restore](backup-and-restore.html) and to list the contents of the backup when using [`SHOW BACKUP`](show-backup.html). There is no practical limit on the length of the passphrase.
 
-For more information about these options, see [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html).
+For more information about these options, see [Back up and Restore Data - Advanced Options](backup-and-restore.html).
 
 ### Backup file URLs
 
@@ -90,7 +90,7 @@ Table with a [sequence](create-sequence.html) | The sequence it uses; however, t
 
 ### Users and privileges
 
-The `system.users` table stores your users and their passwords. To restore your users and privilege [grants](grant.html), do a cluster backup and restore the cluster to a fresh cluster with no user data. You can also backup the `system.users` table, and then use [this procedure](backup-and-restore-advanced-options.html#restoring-users-from-system-users-backup).
+The `system.users` table stores your users and their passwords. To restore your users and privilege [grants](grant.html), do a cluster backup and restore the cluster to a fresh cluster with no user data. You can also backup the `system.users` table, and then use [this procedure](backup-and-restore.html).
 
 ### Backup types
 
@@ -98,11 +98,11 @@ CockroachDB offers two types of backups: [full](#full-backups) and [incremental]
 
 #### Full backups
 
-Full backups contain an unreplicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available [revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
+Full backups contain an unreplicated copy of your data and can always be used to restore your cluster. These files are roughly the size of your data and require greater resources to produce than incremental backups. You can take full backups as of a given timestamp and (optionally) include the available [revision history](backup-and-restore.html).
 
 #### Incremental backups
 
-Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
+Incremental backups are smaller and faster to produce than full backups because they contain only the data that has changed since a base set of backups you specify (which must include one full backup, and can include many incremental backups). You can take incremental backups either as of a given timestamp or with full [revision history](backup-and-restore.html).
 
 {{site.data.alerts.callout_danger}}
 Incremental backups can only be created within the garbage collection period of the base backup's most recent timestamp. This is because incremental backups are created by finding which data has been created or modified since the most recent timestamp in the base backup––that timestamp data, though, is deleted by the garbage collection process.
@@ -208,7 +208,7 @@ AS OF SYSTEM TIME '-10s';
 ~~~
 
 {{site.data.alerts.callout_info}}
-This incremental backup syntax does not work for backups using HTTP storage; you must [explicitly control where your incremental backups go](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations) by using the [`INCREMENTAL FROM` syntax](#synopsis).
+This incremental backup syntax does not work for backups using HTTP storage; you must [explicitly control where your incremental backups go](backup-and-restore.html) by using the [`INCREMENTAL FROM` syntax](#synopsis).
 {{site.data.alerts.end}}
 
 ### Advanced examples
@@ -218,7 +218,7 @@ This incremental backup syntax does not work for backups using HTTP storage; you
 ## See also
 
 - [Backup and Restore Data](backup-and-restore.html)
-- [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
+- [Back up and Restore Data - Advanced Options](backup-and-restore.html)
 - [`SHOW BACKUP`](show-backup.html)
 - [`RESTORE`](restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)

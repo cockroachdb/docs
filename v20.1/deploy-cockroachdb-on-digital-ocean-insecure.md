@@ -104,7 +104,7 @@ For guidance, you can use Digital Ocean's guide to configuring firewalls based o
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
-2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
+2. [Create users](authorization.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the Digital Ocean Load Balancer, not to a CockroachDB node.
 
 ## See also

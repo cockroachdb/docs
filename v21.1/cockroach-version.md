@@ -2,8 +2,6 @@
 title: cockroach version
 summary: To view version details for a specific cockroach binary, run the cockroach version command.
 toc: true
-redirect_from: view-version-details.html
-key: view-version-details.html
 ---
 
 To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html), or run `cockroach --version` (new in v21.1):

@@ -2,8 +2,6 @@
 title: Console Access Management
 summary: Manage your account roles and permissions.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-console-access-management.html
 ---
 
 The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
@@ -124,7 +122,7 @@ Your credit card will be charged after the trial ends. You can check the expirat
 ### Delete an Organization
 
 {{site.data.alerts.callout_danger}}
-Deleting an Organization will delete all clusters and user data within the Organization. This action cannot be reversed. To delete a single cluster instead, see [Cluster Management](cluster-management.html#delete-cluster). 
+Deleting an Organization will delete all clusters and user data within the Organization. This action cannot be reversed. To delete a single cluster instead, see [Cluster Management](cluster-management.html#delete-cluster).
 {{site.data.alerts.end}}
 
 If you are sure you want to delete the Organization, proceed with the following steps:
@@ -135,4 +133,3 @@ If you are sure you want to delete the Organization, proceed with the following 
 1. Click **Delete**.
 
     You will be automatically logged out of your account.
-

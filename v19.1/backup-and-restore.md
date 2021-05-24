@@ -165,7 +165,7 @@ $ cockroach sql --database=[database name] < backup.sql
 ~~~
 
 {{site.data.alerts.callout_success}}
-If you created a backup from another database and want to import it into CockroachDB, see [Import data](import-data.html).
+If you created a backup from another database and want to import it into CockroachDB, see [Import data](migration-overview.html).
 {{site.data.alerts.end}}
 
 ## See also
@@ -173,6 +173,6 @@ If you created a backup from another database and want to import it into Cockroa
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
 - [`SQL DUMP`](sql-dump.html)
-- [`IMPORT`](import-data.html)
+- [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)

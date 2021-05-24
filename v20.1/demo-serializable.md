@@ -483,7 +483,7 @@ Around the same time, doctor 2, Betty, starts to request leave for the same day 
     ~~~
 
     {{site.data.alerts.callout_success}}
-    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](build-an-app-with-cockroachdb.html) tutorials.
+    For this kind of error, CockroachDB recommends a [client-side transaction retry loop](transactions.html#client-side-intervention) that would transparently observe that the one doctor cannot take time off because the other doctor already succeeded in asking for it. You can find generic transaction retry functions for various languages in our [Build an App](hello-world-example-apps.html) tutorials.
     {{site.data.alerts.end}}
 
 4. In the terminal for doctor 2, the application tries to commit the transaction:

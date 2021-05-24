@@ -2,7 +2,6 @@
 title: Authorization
 summary: Learn about the authorization features for secure CockroachDB clusters.
 toc: true
-redirect_from: [create-and-manage-users.html, roles.html]
 ---
 
 You can map SQL [roles](#roles) to SQL [privileges](#assign-privileges) and use role membership to group [users](#users-and-roles) that share privileges.
@@ -33,7 +32,7 @@ You can use the [`CREATE USER`](create-user.html) and [`DROP USER`](drop-user.ht
 
 The statements [`CREATE ROLE`](create-role.html), [`DROP ROLE`](drop-role.html), [`ALTER ROLE`](alter-role.html), and [`SHOW ROLES`](show-roles.html) are equivalent to these, respectively, with the exception of the default `NOLOGIN` setting added with `CREATE ROLE`.
 
-Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges. 
+Use the [`GRANT <privileges>`](grant.html) and [`REVOKE <privileges>`](revoke.html) statements to manage the user’s privileges.
 
 For each database and table that the user needs to access, a user must be granted the required privileges or granted membership to roles that confer these privileges.
 

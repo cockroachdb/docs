@@ -61,7 +61,7 @@ AS OF SYSTEM TIME '2017-02-28 10:00:00';
 - [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html)
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [`SQL DUMP`](cockroach-dump.html)
-- [`IMPORT`](import-data.html)
+- [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 
