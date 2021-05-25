@@ -3,8 +3,6 @@ title: Low Latency Reads and Writes in a Multi-Region Cluster
 summary: Use data topologies to get low-latency reads and writes in a multi-region CockroachDB cluster.
 toc: true
 toc_not_nested: true
-redirect_from: demo-geo-partitioning.html
-key: demo-geo-partitioning.html
 ---
 
 In CockroachDB, data is replicated and distributed across the nodes of a cluster for consistency and resiliency, and [read and write requests are automatically routed between nodes](architecture/reads-and-writes-overview.html) as appropriate. In a single-region cluster, this behavior doesn't affect performance because network latency between nodes is sub-millisecond. In a cluster spread across multiple geographic regions, however, the distribution of data becomes a key performance bottleneck, and for that reason, it is important to think about the latency requirements of each table and then use the appropriate [data topologies](topology-patterns.html) to locate data for optimal performance.

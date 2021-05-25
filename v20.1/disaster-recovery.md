@@ -303,23 +303,23 @@ If you are outside of the garbage collection window, you will need to use a [bac
 ### Restore to a point in time
 
 - If you are a core user, use a [backup](backup.html) that was taken with [`AS OF SYSTEM TIME`](as-of-system-time.html) to restore to a specific point.
-- If you are an enterprise user, use your [backup](backup.html) file to [restore to a point in time](backup-and-restore-advanced-options.html#point-in-time-restore) where you are certain there was no corruption. Note that the backup must have been taken with [revision history](backup.html#with-revision-history).
+- If you are an enterprise user, use your [backup](backup.html) file to [restore to a point in time](backup-and-restore.html) where you are certain there was no corruption. Note that the backup must have been taken with [revision history](backup.html#with-revision-history).
 
 ### Create a new backup
 
 If your cluster is running, you do not have a backup that encapsulates the time you want to [restore](restore.html) to, and the data you want to recover is still in the [garbage collection window](configure-replication-zones.html#replication-zone-variables), there are two actions you can take:
 
 - If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
-- If you are an enterprise user, trigger a new [backup `with_revision_history`](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
+- If you are an enterprise user, trigger a new [backup `with_revision_history`](backup-and-restore.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
 
 ### Recover from corrupted data in a database or table
 
-If you have corrupted data in a database or table, [restore](restore.html) the object from a prior [backup](backup.html). If revision history is in the backup, you can restore from a [point in time](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
+If you have corrupted data in a database or table, [restore](restore.html) the object from a prior [backup](backup.html). If revision history is in the backup, you can restore from a [point in time](backup-and-restore.html).
 
 Instead of dropping the corrupted table or database, we recommend [renaming the table](rename-table.html) or [renaming the database](rename-database.html) so you have historical data to compare to later. If you drop a database, the database cannot be referenced with `AS OF SYSTEM TIME` queries (see [#51380](https://github.com/cockroachdb/cockroach/issues/51380) for more information), and you will need to take a backup that is backdated to the system time when the database still existed.
 
 {{site.data.alerts.callout_info}}
-If the table you are restoring has foreign keys, [careful consideration](backup-and-restore-advanced-options.html#remove-the-foreign-key-before-restore) should be applied to make sure data integrity is maintained during the restore process.
+If the table you are restoring has foreign keys, [careful consideration](backup-and-restore.html) should be applied to make sure data integrity is maintained during the restore process.
 {{site.data.alerts.end}}
 
 ## Compromised security keys

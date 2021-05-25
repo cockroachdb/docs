@@ -346,7 +346,7 @@ When you no longer need a table, use [`DROP TABLE`](drop-table.html) followed by
 
 - Explore all [SQL Statements](sql-statements.html)
 - [Use the built-in SQL client](cockroach-sql.html) to execute statements from a shell or directly from the command line
-- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](build-an-app-with-cockroachdb.html)
+- [Install the client driver](install-client-drivers.html) for your preferred language and [build an app](hello-world-example-apps.html)
 - [Explore core CockroachDB features](demo-data-replication.html) like automatic replication, rebalancing, and fault tolerance
 {% endunless %}
 

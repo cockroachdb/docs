@@ -387,6 +387,6 @@ You will have to refactor Oracle SQL and functions that do not comply with [ANSI
 - [Migrate from MySQL](migrate-from-mysql.html)
 - [Migrate from Postgres](migrate-from-postgres.html)
 - [SQL Dump (Export)](cockroach-dump.html)
-- [Back Up and Restore Data](backup-and-restore.html)
+- [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

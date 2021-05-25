@@ -359,6 +359,6 @@ As a best practice, [keys should be rotated](rotate-certificates.html). In the e
 ## See also
 
 - [Fault Tolerance & Recovery](demo-fault-tolerance-and-recovery.html)
-- [Back up and Restore Data](backup-and-restore.html)
+- [Back up and Restore Data](take-full-and-incremental-backups.html)
 - [Topology Patterns](topology-patterns.html)
 - [Production Checklist](recommended-production-settings.html)

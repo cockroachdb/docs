@@ -382,7 +382,7 @@ WITH into_db = 'newdb';
 - [`BACKUP`][backup]
 - [`RESTORE`][restore]
 - [`SQL DUMP`](cockroach-dump.html)
-- [`IMPORT`](import-data.html)
+- [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 

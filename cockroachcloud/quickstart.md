@@ -2,9 +2,6 @@
 title: Quickstart with CockroachCloud Free (beta)
 summary: Learn how to create and use your free CockroachCloud cluster.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-quickstart.html
-- create-your-account.html
 ---
 
 <div class="filters clearfix">

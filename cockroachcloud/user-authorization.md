@@ -2,8 +2,6 @@
 title: User Authorization
 summary: Learn about the user authorization features for CockroachCloud CockroachDB clusters.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-authorization.html
 ---
 
 CockroachCloud requires you to create SQL users to access the cluster.
