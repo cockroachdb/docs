@@ -22,7 +22,7 @@ layout: null
 {% endif %}
 
 {%- for version in site.versions -%}
-{{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 301
+{{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
 
 # Redirects for DockerHub
