@@ -11,12 +11,17 @@ npx snippet-enricher-cli --targets="shell_curl" --input=spec_30.json > spec_30_e
 rm spec_30.json
 popd
 
+# Generate site
 gem install bundler
 bundle install
 build _config_cockroachdb.yml
 
 cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
+
+# Use /stable links in sitemap
+stable_version=$(awk '/(stable: )(v.*)/{print $2}' _config_cockroachdb.yml)
+sed -in 's/docs\/'"$stable_version"'/docs\/stable/g' _site/docs/sitemap.xml
 
 # Set up htmltest
 go get -u github.com/cockroachdb/htmltest

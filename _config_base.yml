@@ -37,6 +37,21 @@ defaults:
     path: "v19.1/**/*"
   values:
     sitemap:  false
+-
+  scope:
+    path: "v19.2/**/*"
+  values:
+    sitemap:  false
+-
+  scope:
+    path: "v20.1/**/*"
+  values:
+    sitemap:  false
+-
+  scope:
+    path: "v20.2/**/*"
+  values:
+    sitemap:  false
 exclude:
 - __tests__
 - netlify
