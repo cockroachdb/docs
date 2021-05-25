@@ -1037,9 +1037,9 @@
                 ]
               },
               {
-                "title": "Data Recovery Tutorial",
+                "title": "Run Differential Queries for Data Recovery",
                 "urls": [
-                  "/${VERSION}/data-recovery.html"
+                  "/${VERSION}/run-differential-queries-data-recovery.html"
                 ]
               }
             ]

@@ -1,17 +1,17 @@
 ---
-title: Run Differentials for Data Recovery
-summary: Learn how to recover data after a malicious data attack with CockroachDB's garbage collection window.
+title: Run Differential Queries for Data Recovery
+summary: Learn how to recover data after a malicious data attack within CockroachDB's garbage collection window.
 toc: true
 ---
 
-In this tutorial, you will recover data after a malicious data attack. In the process, you will learn how to identify malicious transactions, search the [audit logs](sql-audit-logging.html) to find the transactions, and correct and restore the data values.
+In this tutorial, you will recover data after a malicious data attack. You'll use the [`movr`](movr.html) workload as an example, which is a fictional vehicle-sharing company. You'll insert a user called `bad_actor` into the `movr` database who will create a malicious transaction that updates all of Tyler Dalton's ride values to $1000.
 
-For this tutorial, you'll use the [`movr`](movr.html) workload as an example. MovR is a fictional vehicle-sharing company. You'll insert a user called `bad_actor` into the `movr` database who will create a malicious transaction that updates all of Tyler Dalton's ride values to $1000.
+In the process of recovering the data, you will learn how to identify malicious transactions, search the [audit logs](sql-audit-logging.html) to find the transactions—making use of CockroachDB's logging channels, and finally, correct and restore the data values.
 
-This is a practical scenario of [data failure recovery](https://www.cockroachlabs.com/docs/v20.2/disaster-recovery.html#run-differentials) within the garbage collection window.
+This is a practical scenario of [disaster recovery](https://www.cockroachlabs.com/docs/v20.2/disaster-recovery.html#run-differentials) within CockroachDB's [garbage collection window](architecture/storage-layer.html#garbage-collection) for a particular zone configuration, which by default is 25 hours.
 
 {{site.data.alerts.callout_info}}
-You can use the workflow in this tutorial if the data issue is discovered within CockroachDB's [garbage collection](architecture/storage-layer.html#garbage-collection) window for a particular zone configuration, which by default is 25 hours.
+In this tutorial, we'll use the [`SENSITIVE_ACCESS`](logging-use-cases.html#sensitive_access) logging channel. Enabling these logs can negatively impact performance. We recommend using this for security purposes only.
 {{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
@@ -39,7 +39,7 @@ With your cluster ready, you'll begin by initiating the workload and setting up 
     > ALTER TABLE movr.rides EXPERIMENTAL_AUDIT SET READ WRITE;
     ~~~
 
-    You use the [`EXPERIMENTAL_AUDIT`](experimental-audit.html) subcommand of `ALTER TABLE` to turn audit logging on and off. This will log all reads and writes, so both `READ` and `WRITE` are required here.
+    You use the [`EXPERIMENTAL_AUDIT`](experimental-audit.html) subcommand of `ALTER TABLE` to turn audit logging on and off. This will direct all reads and writes for the `rides` table to the `SENSITIVE_ACCESS` logging channel.
 
 1. Back in your terminal, run the workload:
 
@@ -66,7 +66,7 @@ With your cluster ready, you'll begin by initiating the workload and setting up 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --insecure -execute "UPDATE rides SET revenue = 1000 WHERE rider_id = (SELECT id FROM users WHERE name = 'Tyler Dalton');" --user bad_actor --host=localhost:26257 --database movr
+    cockroach sql --insecure --execute="UPDATE rides SET revenue = 1000 WHERE rider_id = (SELECT id FROM users WHERE name = 'Tyler Dalton');" --user bad_actor --host=localhost:26257 --database movr
     ~~~
 
 1. Finally, run the workload again:
@@ -108,13 +108,17 @@ With the bad actor set up and the malicious transactions committed, Tyler Dalton
     (13 rows)
     ~~~
 
-1. Now that you've confirmed the malicious transactions, you'll use the audit log to identify the bad actor. For a local cluster, you can [find the audit log](experimental-audit.html#audit-log-file-storage-location) in your node's directory and then within `logs`. The file name will begin with `cockroach-sql-audit` and follow this format:
+1. Now that you've confirmed the malicious transactions, you'll use the audit log to identify the bad actor. By default, you can [find the audit log](experimental-audit.html#audit-log-file-storage-location) in your node's data directory and then within `logs`. The file name will begin with `cockroach-sql-audit` and follow this format:
 
     ~~~
     cockroach-sql-audit.[host].[user].[start timestamp in UTC].[process ID].log
     ~~~
 
-    Run the following command to locate the bad actor:
+    {{site.data.alerts.callout_info}}
+    The location of your node's logs is [configurable](configure-logs.html#logging-directory) as well as other logging behavior. For more details, read [Configure Logs](configure-logs.html).
+    {{site.data.alerts.end}}
+
+    Run the following command to locate the bad actor. Remember to adjust the name of the file if you've named it differently to the default:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -132,7 +136,7 @@ With the bad actor set up and the malicious transactions committed, Tyler Dalton
 
 Before correcting the data, you'll identify the privileges the user `bad_actor` has on the `movr` database.
 
-1. Show the privileges for `bad_actor`.
+1. Show the privileges for `bad_actor`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -157,14 +161,14 @@ Before correcting the data, you'll identify the privileges the user `bad_actor` 
     (12 rows)
     ~~~
 
-1. Since `bad_actor` has `SELECT` and `UPDATE` privileges on the database, you'll remove these:
+1. Since `bad_actor` has `SELECT` and `UPDATE` privileges on the database remove these:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > REVOKE ALL ON movr.* FROM bad_actor;
     ~~~
 
-1. Now, you'll remove the `bad_actor` user from the database:
+1. Now, remove the `bad_actor` user from the database:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -173,9 +177,9 @@ Before correcting the data, you'll identify the privileges the user `bad_actor` 
 
 ## Step 5. Restore the correct data values
 
-With the bad actor removed from the database, you'll now restore Tyler Dalton's ride balances from before the malicious data attack.
+With the bad actor removed from the database, you'll restore Tyler Dalton's ride balances to **before** the malicious data attack.
 
-1. First, you can find the correct data values by using the timestamp from the audit log. For example, if your audit log entries began with `I210503 19:36:34.032312`, you would adapt that to `2021-05-03 19:36:33.032312`. Here, you'll also adjust the timestamp to **1 second earlier** and pass that to [`AS OF SYSTEM TIME`](as-of-system-time.html) to read the historical data of the values before the malicious change was made:
+1. First, you can find the correct data values by using the timestamp from the audit log. For example, if your audit log entries begin with `I210503 19:36:34.032312`, you would adapt that to `2021-05-03 19:36:33.032312`. Here, you'll also adjust the timestamp to **1 second earlier** and pass that to [`AS OF SYSTEM TIME`](as-of-system-time.html) to read the historical data of the values before the malicious change was made:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -238,14 +242,21 @@ With the bad actor removed from the database, you'll now restore Tyler Dalton's 
 
 ## Step 6. Clean up
 
-To remove the database from your cluster:
+1. If you would like to turn off audit logging via the `SENSITIVE_ACCESS` logging channel for a particular table, run the following:
 
-{% include copy-clipboard.html %}
-~~~ shell
-cockroach sql --insecure -execute "SET sql_safe_updates = false; DROP DATABASE movr;"
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE movr.rides EXPERIMENTAL_AUDIT SET OFF;
+    ~~~
 
-If you will not use the cluster again, follow the process to [stop your cluster](secure-a-cluster.html#step-8-stop-the-cluster).
+1. To remove the tutorial database from your cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --insecure -execute "SET sql_safe_updates = false; DROP DATABASE movr;"
+    ~~~
+
+1. If you will not use the cluster again, follow the process to [stop your cluster](secure-a-cluster.html#step-8-stop-the-cluster).
 
 ## See also
 
