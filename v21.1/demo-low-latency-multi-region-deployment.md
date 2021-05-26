@@ -3,6 +3,7 @@ title: Low Latency Reads and Writes in a Multi-Region Cluster
 summary: Use data topologies to get low-latency reads and writes in a multi-region CockroachDB cluster.
 toc: true
 toc_not_nested: true
+key: demo-geo-partitioning.html
 ---
 
 <span class="version-tag">New in v21.1:</span> CockroachDB has improved multi-region capabilities that make it easier to run global applications. For an overview of these capabilities, see the [Multi-region Overview](multiregion-overview.html).
