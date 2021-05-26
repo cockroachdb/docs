@@ -6,32 +6,41 @@ toc: true
 
 The `STRING` [data type](data-types.html) stores a string of Unicode characters.
 
+{{site.data.alerts.callout_info}}
+`STRING` is not a data type supported by PostgreSQL. For PostgreSQL compatibility, CockroachDB supports additional [aliases](#aliases) and [`STRING`-related types](#related-types).
+{{site.data.alerts.end}}
+
 ## Aliases
 
-In CockroachDB, the following are aliases for `STRING`:
+CockroachDB supports the following alias for `STRING`:
 
-- `CHARACTER`
-- `CHAR`
-- `VARCHAR`
 - `TEXT`
 
-And the following are aliases for `STRING(n)`:
+## Related types
 
-- `CHARACTER(n)`
-- `CHARACTER VARYING(n)`
-- `CHAR(n)`
-- `CHAR VARYING(n)`
-- `VARCHAR(n)`  
+For PostgreSQL compatibility, CockroachDB supports the following `STRING`-related types and their aliases:
+
+- `VARCHAR` (and alias `CHARACTER VARYING`)
+- `CHAR` (and alias `CHARACTER`)
+
+These types are functionality identical to `STRING`.
 
 ## Length
 
-To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed.
+To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. This applies to all related types as well (e.g., to limit the length of a `VARCHAR` type, use `VARCHAR(n)`).
 
-When inserting a string:
+When inserting a `STRING` value or a `STRING`-related-type value:
 
-- If the value exceeds the column's length limit, CockroachDB gives an error.
-- If the value is cast as a string with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit.
-- If the value is under the column's length limit, CockroachDB does **not** add padding. This applies to `STRING(n)` and all its aliases.
+- If the value is cast with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit. This applies to `STRING(n)` and all related types.
+- If the value exceeds the column's length limit, CockroachDB returns an error. This applies to `STRING(n)` and all related types.
+- For `STRING(n)` and `VARCHAR(n)`/`CHARACTER VARYING(n)` types, if the value is under the column's length limit, CockroachDB does **not** add space padding to the end of the value.
+- For `CHAR(n)`/`CHARACTER(n)` types, if the value is under the column's length limit, CockroachDB adds space padding from the end of the value to the length limit.
+
+                        Type                      |          Length                  
+--------------------------------------------------|------------------------------
+`CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`    | Fixed-length                
+`CHARACTER VARYING(n)`, `VARCHAR(n)`, `STRING(n)` | Variable-length, with a limit  
+`TEXT`, `VARCHAR`, `CHARACTER VARYING`, `STRING`  | Variable-length, with no limit
 
 ## Syntax
 
