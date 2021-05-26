@@ -12,31 +12,6 @@ defaults:
     type: pages
   values:
     layout: page
--
-  scope:
-    path: "v1.0/**/*"
-  values:
-    sitemap:  false
--
-  scope:
-    path: "v1.1/**/*"
-  values:
-    sitemap:  false
--
-  scope:
-    path: "v2.0/**/*"
-  values:
-    sitemap:  false
--
-  scope:
-    path: "v2.1/**/*"
-  values:
-    sitemap:  false
--
-  scope:
-    path: "v19.1/**/*"
-  values:
-    sitemap:  false
 exclude:
 - __tests__
 - netlify
@@ -53,7 +28,6 @@ keep_files:
 markdown: Redcarpet
 plugins:
 - jekyll-include-cache
-- jekyll-sitemap
 release_info:
   v1.0:
     build_time: 2017/02/13 15:13:51 (go1.8.3)
