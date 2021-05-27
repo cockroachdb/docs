@@ -36,7 +36,7 @@ Install the latest version of the [Npgsql driver](https://www.nuget.org/packages
 $ dotnet add package Npgsql
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="secure">
+<section class="filter-content" markdown="1" data-scope="CockroachCloud">
 
 ## Step 3. Create the `maxroach` user and `bank` database
 
@@ -51,20 +51,7 @@ Create a certificate and key for the `maxroach` user by running the following co
 $ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
 ~~~
 
-## Step 5. Convert the key file for use by C# programs
-
-The private key generated for user `maxroach` by CockroachDB is [PEM encoded](https://tools.ietf.org/html/rfc1421).  To read the key in a C# application, you will need to convert it into PKCS#12 format.
-
-To convert the key to PKCS#12 format, run the following OpenSSL command on the `maxroach` user's key file in the directory where you stored your certificates:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ openssl pkcs12 -inkey client.maxroach.key -password pass: -in client.maxroach.crt -export -out client.maxroach.pfx
-~~~
-
-As of December 2018, you need to provide a password for this to work on macOS. See <https://github.com/dotnet/corefx/issues/24225>.
-
-## Step 6. Run the C# code
+## Step 5. Run the C# code
 
 Now that you have created a database and set up encryption keys, in this section you will:
 
@@ -141,7 +128,7 @@ $ cockroach sql --certs-dir=certs --database=bank -e 'SELECT id, balance FROM ac
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="insecure">
+<section class="filter-content" markdown="1" data-scope="local">
 
 ## Step 3. Create the `maxroach` user and `bank` database
 
