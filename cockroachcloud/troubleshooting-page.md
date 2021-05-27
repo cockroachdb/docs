@@ -60,6 +60,14 @@ You can find your host name in the CockroachCloud Console by navigating to **Clu
 
 ### Application with a short timeout fails to connect
 
+~~~ shell
+Is the server running?
+If the server is running, check --host client-side and --advertise server-side.
+
+dial tcp 35.196.33.161:26257: i/o timeout
+Failed running "sql"
+~~~
+
 **Solution:**
 
 - Increase the timeout value (e.g., from 5 seconds to 30 seconds) and see if connection succeeds.
