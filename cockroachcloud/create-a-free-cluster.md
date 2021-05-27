@@ -25,7 +25,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 2. Select Free Plan
 
-1. On the **Create your cluster** page, select the **Free Plan**.
+1. On the **Create your cluster** page, select the **CockroachCloud Free**.
 
     {{site.data.alerts.callout_info}}
     This cluster will be free forever.

@@ -15,6 +15,8 @@ We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim 
 
 ## Step 2. Create a .NET project
 
+In your terminal, run the following commands:
+
 {% include copy-clipboard.html %}
 ~~~ shell
 $ dotnet new console -o cockroachdb-test-app
@@ -42,61 +44,67 @@ $ dotnet add package Npgsql
 
 ## Step 5. Run the C# code
 
-Now that you have created a database and set up encryption keys, in this section you will:
-
-- [Create a table and insert some rows](#basic-example)
-- [Execute a batch of statements as a transaction](#transaction-example-with-retry-logic)
+Now that you have set up your project and created a database, you will run a basic application that creates a table and inserts some rows.
 
 ### Get the code
 
-Clone the `hello-world-sharp` repo to your machine:
+Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-csharp
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
 ~~~
 
 ### Update the connection parameters
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-In a text editor modify `main/basic.cs` and `main/transaction.cs` with the settings to connect to the demo cluster:
-
-Modify the options in the `NpgsqlConnectionStringBuilder` instance:
+In a text editor, modify `Program.cs` with the settings to connect to the demo cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ csharp
-connStringBuilder.Host = "<host-name>";
+connStringBuilder.Host = "{host-name}";
 connStringBuilder.Port = 26257;
 connStringBuilder.SslMode = SslMode.Require;
-connStringBuilder.Username = "<username>";
-connStringBuilder.Password = "<password>";
-connStringBuilder.Database = "<cluster-name>.bank";
+connStringBuilder.Username = "{username}";
+connStringBuilder.Password = "{password}";
+connStringBuilder.Database = "{cluster-name}.bank";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
 
-Where `<host-name>` is `localhost`, `<username>` is the database username you created, `<password>` is the database user's password, and `<cluster-name>.bank` is replaced with `bank`.
+Where:
+
+- `{host-name}` is `localhost`.
+- `{username}` and `{password}` are database username and password you created earlier.
+- `{cluster-name}.bank` is replaced with `bank`.
+- The line `connStringBuilder.RootCertificate = "<certs-dir>/cc-ca.crt";` is deleted.
+
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-In a text editor modify `main/basic.cs` and `main/transaction.cs` with the settings to connect to the cluster:
+1. In the CockroachCloud Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
 
-Modify the options in the `NpgsqlConnectionStringBuilder` instance:
+1. In a text editor, modify the connection parameters in `Program.cs` with the settings to connect to your cluster:
 
 {% include_cached copy-clipboard.html %}
 ~~~ csharp
-connStringBuilder.Host = "<host-name>";
+connStringBuilder.Host = "{host-name}";
 connStringBuilder.Port = 26257;
 connStringBuilder.SslMode = SslMode.Require;
-connStringBuilder.Username = "<username>";
-connStringBuilder.Password = "<password>";
-connStringBuilder.Database = "<cluster-name>.bank";
-connStringBuilder.RootCertificate = "<certs-dir>/cc-ca.crt";
+connStringBuilder.Username = "{username}";
+connStringBuilder.Password = "{password}";
+connStringBuilder.Database = "{cluster-name}.bank";
+connStringBuilder.RootCertificate = "{certs-dir}/cc-ca.crt";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
 
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
+Where:
+
+- `{username}` and `{password}` specify the SQL username and password that you created earlier.
+- `{host-name}` is the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `{certs-dir}` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+- `{cluster_name}` is the name of your cluster.
 
 </section>
 
@@ -109,15 +117,6 @@ Compile and run the code:
 dotnet run
 ~~~
 
-### Basic example
-
-The contents of `basic.cs`:
-
-{% include_cached copy-clipboard.html %}
-~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
-~~~
-
 The output should be:
 
 ~~~
@@ -125,45 +124,6 @@ Initial balances:
 	account 1: 1000
 	account 2: 250
 ~~~
-
-### Transaction example (with retry logic)
-
-The contents of `transaction.cs`:
-
-{% include {{page.version.version}}/client-transaction-retry.md %}
-
-{% include copy-clipboard.html %}
-~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/transaction.cs %}
-~~~
-
-The output should be:
-
-~~~
-Initial balances:
-	account 1: 1000
-	account 2: 250
-Final balances:
-	account 1: 900
-	account 2: 350
-~~~
-
-However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank -e 'SELECT id, balance FROM accounts'
-~~~
-
-~~~
-  id | balance
-+----+---------+
-   1 |     900
-   2 |     350
-(2 rows)
-~~~
-
-</section>
 
 ## What's next?
 
