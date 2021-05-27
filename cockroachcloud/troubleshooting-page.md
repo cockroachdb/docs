@@ -61,6 +61,7 @@ You can find your host name in the CockroachCloud Console by navigating to **Clu
 ### Application with a short timeout fails to connect
 
 **Solution:**
+
 - Increase the timeout value (e.g., from 5 seconds to 30 seconds) and see if connection succeeds.
 - If you can connect and run the same query in the SQL CLI, investigate your application environment.
 - Investigate your network infrastructure to see if there is a network related performance problem, or [contact support](https://support.cockroachlabs.com/) with these details.
