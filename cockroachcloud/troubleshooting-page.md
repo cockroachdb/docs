@@ -96,3 +96,7 @@ Error: x509: certificate signed by unknown authority
 ~~~
 
 **Solution:** This is a known issue. Use `sslmode=require` instead.
+
+{{site.data.alerts.callout_info}}
+Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
+{{site.data.alerts.end}}
