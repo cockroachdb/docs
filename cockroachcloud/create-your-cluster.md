@@ -90,7 +90,7 @@ VPC peering is only available for GCP clusters. For AWS clusters, you can [set u
 
 {{site.data.alerts.callout_info}}
 If you have multiple clusters, you will have to create a new VPC Peering or AWS PrivateLink connection for each cluster.
-{{site.data.alerts.callout_info}}
+{{site.data.alerts.end}}
 
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the CockroachCloud cluster. To enable VPC peering:
 
