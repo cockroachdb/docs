@@ -47,7 +47,7 @@ After creating your CockroachCloud cluster, [request a peering connection](conne
 
 ## AWS PrivateLink
 
-If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachCloud cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency.
+If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachCloud cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 
 There are four steps to setting up an AWS PrivateLink connection between your CockroachCloud cluster and AWS application:
 
