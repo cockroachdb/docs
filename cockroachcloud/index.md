@@ -140,7 +140,7 @@ homepage: true
         <div class="row no-gutters p-3">
           <div class="col-md-6 m-0">
           <div class="embed-responsive embed-responsive-16by9">
-            <iframe src="https://www.youtube.com/embed/3hxSBeE-1tM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/XJZD1rorEQE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
           </div>
           <div class="col-md-6">
@@ -151,7 +151,7 @@ homepage: true
                 CockroachCloud
               </p>
               <h6 class="card-title font-weight-bold mt-3">
-                Getting Started with CockroachCloud
+                Connecting to Your CockroachCloud Cluster
               </h6>
             </div>
           </div>
