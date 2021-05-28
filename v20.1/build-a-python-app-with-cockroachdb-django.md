@@ -55,7 +55,7 @@ The major version of `django-cockroachdb` must correspond to the major version o
 
 ## Step 2. Create the `django` user and `bank` database and generate certificates
 
-Open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+Open a [SQL shell](cockroach-sql.html) to the running CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -101,7 +101,7 @@ $ cockroach cert create-client django --certs-dir=certs --ca-key=my-safe-directo
 
 ## Step 2. Create the `django` user and `bank` database
 
-Open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+Open a [SQL shell](cockroach-sql.html) to the running CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -309,7 +309,7 @@ This initializes the `bank` database with the tables defined in `models.py`, in 
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-To verify that the migration succeeded, open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+To verify that the migration succeeded, open a [SQL shell](cockroach-sql.html) to the running CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -320,7 +320,7 @@ $ cockroach sql --certs-dir=certs --host=localhost:26257
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-To verify that the migration succeeded, open a [SQL shell](use-the-built-in-sql-client.html) to the running CockroachDB cluster:
+To verify that the migration succeeded, open a [SQL shell](cockroach-sql.html) to the running CockroachDB cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell

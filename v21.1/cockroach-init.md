@@ -2,7 +2,6 @@
 title: cockroach init
 summary: Perform a one-time-only initialization of a CockroachDB cluster.
 toc: true
-redirect_from: initialize-a-cluster.html
 key: initialize-a-cluster.html
 ---
 

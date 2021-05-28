@@ -91,7 +91,7 @@ Yes, you can view and your clusters in the [CockroachCloud Console](https://cock
 
 Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CockroachCloud Free (beta) cluster yourself. We expect to support user-initiated backup and restore of free clusters in the future.
 
-In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
+In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select-clause.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~

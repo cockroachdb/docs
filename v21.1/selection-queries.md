@@ -2,7 +2,6 @@
 title: Selection Queries
 summary: Selection queries can read and process data in CockroachDB.
 toc: true
-redirect_from: selection-clauses.html
 key: selection-clauses.html
 ---
 

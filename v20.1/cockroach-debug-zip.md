@@ -2,7 +2,6 @@
 title: cockroach debug zip
 summary: Learn the commands for collecting debug information from all nodes in your cluster.
 toc: true
-redirect_from: debug-zip.html
 key: debug-zip.html
 ---
 

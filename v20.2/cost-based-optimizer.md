@@ -114,7 +114,7 @@ The query plan cache is enabled by default. To disable it, execute the following
 
 Finally, note that only the following statements use the plan cache:
 
-- [`SELECT`](select.html)
+- [`SELECT`](select-clause.html)
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)

@@ -9,7 +9,7 @@ This page shows you how to decommission one or more nodes. Decommissioning a nod
 You might do this, for example, when downsizing a cluster or reacting to hardware failures.
 
 {{site.data.alerts.callout_info}}
-Node decommissioning should not be performed when [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or performing planned maintenance (e.g., upgrading system software). In these scenarios, you will want to temporarily [stop the node](stop-a-node.html) and restart it later.
+Node decommissioning should not be performed when [upgrading your cluster's version of CockroachDB](upgrade-cockroach-version.html) or performing planned maintenance (e.g., upgrading system software). In these scenarios, you will want to temporarily [stop the node](cockroach-quit.html) and restart it later.
 {{site.data.alerts.end}}
 
 ## Overview

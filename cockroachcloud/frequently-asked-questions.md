@@ -105,7 +105,7 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 ### Are enterprise features like partitioning or change data capture available to me?
 
-Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../{{site.versions["stable"]}}/partitioning.html), [change data capture](../{{site.versions["stable"]}}/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../{{site.versions["stable"]}}/partitioning.html), [change data capture](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
 
 ### Is there a public API for CockroachCloud?
 

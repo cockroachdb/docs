@@ -267,7 +267,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_TIMES
 
 _Description_:
 
-The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge](range-merges.html) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
+The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge](architecture/distribution-layer.html#range-merges) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
 
 _Action_:
 

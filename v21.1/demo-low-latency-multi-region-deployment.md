@@ -248,7 +248,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
 
 Now that you have load hitting the cluster from different regions, check how the service latencies look before you do any multi-region configuration from SQL. This is the "before" case in the "before and after".
 
-In the [DB Console](admin-ui-overview.html) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**](ui-overview-dashboard.html) on the left and hover over the [**Service Latency: SQL, 99th percentile**](ui-overview-dashboard.html#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
+In the [DB Console](ui-overview.html) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**](ui-overview-dashboard.html) on the left and hover over the [**Service Latency: SQL, 99th percentile**](ui-overview-dashboard.html#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
 
 <img src="{{ 'images/v21.1/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 

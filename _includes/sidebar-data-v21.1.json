@@ -372,7 +372,7 @@
               {
                 "title": "Log Events",
                 "urls": [
-                  "/${VERSION}/debug-and-error-logs.html"
+                  "/${VERSION}/logging-overview.html"
                 ]
               },
               {
@@ -1176,7 +1176,7 @@
           {
             "title": "Understand Debug Logs",
             "urls": [
-              "/${VERSION}/debug-and-error-logs.html"
+              "/${VERSION}/logging-overview.html"
             ]
           },
           {
@@ -2741,12 +2741,6 @@
                 "title": "Load-Based Splitting",
                 "urls": [
                   "/${VERSION}/load-based-splitting.html"
-                ]
-              },
-              {
-                "title": "Range Merges",
-                "urls": [
-                  "/${VERSION}/range-merges.html"
                 ]
               }
             ]

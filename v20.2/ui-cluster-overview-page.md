@@ -2,7 +2,6 @@
 title: Cluster Overview Page
 summary: The Cluster Overview page of the DB Console displays key metrics about your cluster and individual nodes.
 toc: true
-redirect_from: admin-ui-cluster-overview-page.html
 ---
 
 The **Cluster Overview** page of the DB Console displays key metrics about your cluster and individual nodes. These include:

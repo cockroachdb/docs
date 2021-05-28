@@ -3,15 +3,6 @@ title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
 toc: true
-redirect_from:
-- simplified-deployment.html
-- strong-consistency.html
-- sql.html
-- distributed-transactions.html
-- automated-scaling-and-repair.html
-- high-availability.html
-- go-implementation.html
-- open-source.html
 ---
 
 ## What is CockroachDB?
