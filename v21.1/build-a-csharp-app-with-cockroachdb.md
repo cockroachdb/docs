@@ -44,18 +44,36 @@ $ dotnet add package Npgsql
 
 ## Step 5. Run the C# code
 
-Now that you have set up your project and created a database, you will run a basic application that creates a table and inserts some rows.
+Now that you have set up your project and created a database, in this section you will:
 
-### Get the code
+- [Create a table and insert some rows](#basic-example)
+- [Execute a batch of statements as a transaction](#transaction-example-with-retry-logic)
+
+### Basic example
+
+#### Get the code
 
 Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
+
+<section class="filter-content" markdown="1" data-scope="local">
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
 ~~~
 
-### Update the connection parameters
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/basic.cs %}
+~~~
+
+</section>
+
+#### Update the connection parameters
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -63,21 +81,16 @@ In a text editor, modify `Program.cs` with the settings to connect to the demo c
 
 {% include_cached copy-clipboard.html %}
 ~~~ csharp
-connStringBuilder.Host = "{host-name}";
+connStringBuilder.Host = "{localhost}";
 connStringBuilder.Port = 26257;
 connStringBuilder.SslMode = SslMode.Require;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
-connStringBuilder.Database = "{cluster-name}.bank";
+connStringBuilder.Database = "bank";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
 
-Where:
-
-- `{host-name}` is `localhost`.
-- `{username}` and `{password}` are database username and password you created earlier.
-- `{cluster-name}.bank` is replaced with `bank`.
-- The line `connStringBuilder.RootCertificate = "<certs-dir>/cc-ca.crt";` is deleted.
+Where `{username}` and `{password}` are the database username and password you created earlier.
 
 </section>
 
@@ -108,7 +121,7 @@ Where:
 
 </section>
 
-### Run the code
+#### Run the code
 
 Compile and run the code:
 
@@ -124,6 +137,66 @@ Initial balances:
 	account 1: 1000
 	account 2: 250
 ~~~
+
+### Transaction example (with retry logic)
+
+#### Get the code
+
+Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below. Make sure to keep the connection parameters the same as in the [previous example](#update-the-connection-parameters).
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/transaction.cs %}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/transaction.cs %}
+~~~
+
+</section>
+
+#### Run the code
+
+This time, running the code will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ dotnet run
+~~~
+
+The output should be:
+
+~~~
+Initial balances:
+	account 1: 1000
+	account 2: 250
+Final balances:
+	account 1: 900
+	account 2: 350
+~~~
+
+However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts'
+~~~
+
+~~~
+  id | balance
++----+---------+
+   1 |     900
+   2 |     350
+(2 rows)
+~~~
+
 
 ## What's next?
 
