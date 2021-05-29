@@ -3,7 +3,6 @@ title: Fault Tolerance and Automated Repair
 toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
-redirect_from: /training/fault-tolerance-and-automated-repair.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQXJYTZky37sze5ZKd_xfSuK_bqMWDbMCNVIWM1h4s6rtoQqpNzM2drT4ZQGbBsUJefwwaY3cmEQe6A/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

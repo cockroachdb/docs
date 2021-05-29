@@ -4,7 +4,6 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/cluster-upgrade.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQFwUiv1205icOGxTN4OlMuMYSGjbx9Co3Ggx2mRsI9F9-pEUsvwkaJjOXb92ws1oOG-OY0j-C43G-j/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
