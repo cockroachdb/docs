@@ -22,7 +22,7 @@
     ~~~ sql
     > GRANT ALL ON DATABASE bank TO <username>;
     ~~~
-
+    
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
@@ -44,5 +44,13 @@
     ~~~ sql
     > CREATE DATABASE bank;
     ~~~
+    
+1. Exit the SQL shell:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > \q
+    ~~~
+        
 
 </section>
