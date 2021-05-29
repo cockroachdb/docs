@@ -1,6 +1,6 @@
 ## Querying partitions
 
-Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](topology-geo-partitioned-replicas.html), partitioning can limit a query scan to data in a specific region.
+Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](regional-tables.html), partitioning can limit a query scan to data in a specific region.
 
 ### Filtering on an indexed column
 

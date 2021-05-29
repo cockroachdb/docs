@@ -4,7 +4,7 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/under-replication-troubleshooting.html
+
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTSFeWLn6dr-ikvcXIXsdG7l4yWTfHiW4QA28LH9bS7MqSgm5MDNwBF2QZT_z6t4aSETvcEMpvMvqbv/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

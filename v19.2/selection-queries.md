@@ -2,7 +2,6 @@
 title: Selection Queries
 summary: Selection queries can read and process data in CockroachDB.
 toc: true
-redirect_from: selection-clauses.html
 key: selection-clauses.html
 ---
 
@@ -34,7 +33,7 @@ Parameter | Description
 `sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](query-order.html) for details.
 `limit_clause` | An optional `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for details.
 `offset_clause` | An optional `OFFSET` clause. See [Limiting Query Results](limit-offset.html) for details.
-`locking_clause` | <span class="version-tag">New in v19.2:</span> An optional `FOR UPDATE` locking clause. This clause is supported for database migration compatibility and is not required to ensure locking. See [Locking with `FOR UPDATE`](postgresql-compatibility.html#locking-and-for-update) for details. 
+`locking_clause` | <span class="version-tag">New in v19.2:</span> An optional `FOR UPDATE` locking clause. This clause is supported for database migration compatibility and is not required to ensure locking. See [Locking with `FOR UPDATE`](postgresql-compatibility.html#locking-and-for-update) for details.
 
 The optional `LIMIT` and `OFFSET` clauses can appear in any order, but must appear after `ORDER BY`, if also present.
 

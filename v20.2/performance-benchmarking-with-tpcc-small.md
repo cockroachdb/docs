@@ -11,7 +11,7 @@ redirect_from:
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale) on commodity AWS hardware. Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 <div class="filters filters-big clearfix">
-  <a href="performance-benchmarking-with-tpc-c-10-warehouses.html"><button class="filter-button">Local</button></a>
+  <a href="performance-benchmarking-with-tpcc-local.html"><button class="filter-button">Local</button></a>
   <button class="filter-button current"><strong>Small</strong></button>
   <a href="performance-benchmarking-with-tpcc-medium.html"><button class="filter-button">Medium</button></a>
   <a href="performance-benchmarking-with-tpcc-large.html"><button class="filter-button">Large</button></a>

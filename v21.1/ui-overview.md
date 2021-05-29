@@ -2,9 +2,6 @@
 title: DB Console Overview
 summary: Use the DB Console to monitor and optimize cluster performance.
 toc: true
-redirect_from:
-- admin-ui-access-and-navigate.html
-- admin-ui-overview.html
 key: explore-the-admin-ui.html
 ---
 
