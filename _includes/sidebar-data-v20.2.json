@@ -31,8 +31,7 @@
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
               "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html",
-              "/${VERSION}/install-cockroachdb-spatial.html"
+              "/${VERSION}/install-cockroachdb-windows.html"
             ]
           },
           {

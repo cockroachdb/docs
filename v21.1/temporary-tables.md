@@ -217,6 +217,6 @@ SQLSTATE: 42P01
 
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE TABLE AS`](create-table-as.html)
-- [`SHOW CREATE TABLE`](show-create-table.html)
+- [`SHOW CREATE TABLE`](show-create.html)
 - [Temporary views](views.html#temporary-views)
 - [Temporary sequences](create-sequence.html#temporary-sequences).

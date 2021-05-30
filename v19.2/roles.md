@@ -56,7 +56,7 @@ $ cockroach start \
     > CREATE USER maxroach;
     ~~~
 
-3. [Create a database](create-database.html) and [set it as the default](set-database.html):
+3. [Create a database](create-database.html) and [set it as the default](set-vars.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql

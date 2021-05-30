@@ -3,7 +3,6 @@ title: Orchestrate CockroachDB Across Multiple Kubernetes Clusters
 summary: Orchestrate the deployment, management, and monitoring of CockroachDB across multiple Kubernetes clusters in different regions.
 toc: true
 toc_not_nested: true
-redirect_from: orchestrate-cockroachdb-with-kubernetes-multi-region.html
 ---
 
 <div class="filters filters-big clearfix">
