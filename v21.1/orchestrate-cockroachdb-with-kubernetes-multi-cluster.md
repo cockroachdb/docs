@@ -715,7 +715,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you don't specify a memory request, no memory will be allocated to CockroachDB. If you don't specify a memory limit, the Kubernetes scheduler will allocate the maximum possible amount.
+    If you do not specify a memory request, no memory will be allocated to CockroachDB. If you do not specify a memory limit, the Kubernetes scheduler will allocate the maximum possible amount.
     {{site.data.alerts.end}}
 
 1. The StatefulSet configuration includes a [`cockroach start`](cockroach-start.html) command that creates the nodes on the Kubernetes pods.

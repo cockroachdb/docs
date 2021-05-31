@@ -8,7 +8,7 @@ This page answers the frequently asked questions about the paid version of Cockr
 
 ## Cluster basics
 
-### Why can't I use certain regions in AWS and  GCP?
+### Why are certain regions in AWS and GCP not available?
 
 We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.

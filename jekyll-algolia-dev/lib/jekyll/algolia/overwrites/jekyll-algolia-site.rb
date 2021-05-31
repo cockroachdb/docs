@@ -15,7 +15,7 @@ module Jekyll
       # Public: Overwriting the parent method
       #
       # This will prepare the website, gathering all files, excluding the one we
-      # don't need to index, then render them (converting to HTML), the finally
+      # do not need to index, then render them (converting to HTML), the finally
       # calling `push` to push to Algolia
       def process
         # Default Jekyll preflight
@@ -23,7 +23,7 @@ module Jekyll
         read
         generate
 
-        # Removing all files that won't be indexed, so we don't waste time
+        # Removing all files that will not be indexed, so we do not waste time
         # rendering them
         keep_only_indexable_files
 

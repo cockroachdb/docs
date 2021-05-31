@@ -31,7 +31,7 @@ For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 8. On the **Summary** page, enter your credit card details.
 
     {{site.data.alerts.callout_info}}
-    You won't be charged until after your free trial expires in 30 days.
+    You will not be charged until after your free trial expires in 30 days.
     {{site.data.alerts.end}}
 
 9. Click **Create cluster**.

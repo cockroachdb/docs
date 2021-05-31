@@ -40,13 +40,13 @@ CockroachDB splits your cluster's data into many ranges (64MiB by default), whic
 
 However, as you delete data from your cluster, a range might contain far less data. Over the lifetime of a cluster, this could lead to a number of small ranges.
 
-To reduce the number of small ranges, your cluster can have any range below a certain threshold (16MiB by default) try to merge with its "right-hand neighbor", i.e. the range that starts where this range ends. Using our example above, this might be the range for customers whose IDs are between `[2000, 3000)`.
+To reduce the number of small ranges, your cluster can have any range below a certain threshold (16MiB by default) try to merge with its "right-hand neighbor", i.e., the range that starts where this range ends. Using our example above, this might be the range for customers whose IDs are between `[2000, 3000)`.
 
 If the combined size of the small range and its neighbor is less than the maximum range size, the ranges merge into a single range. In our example, this would create a new range of keys `[1000, 3000)`.
 
 {{site.data.alerts.callout_info}}
 
-Ranges only attempt to merge with their right-hand neighbor. Ranges do not currently attempt to merge with their left-hand neighbor (i.e. the range that ends where this range begins).
+Ranges only attempt to merge with their right-hand neighbor. Ranges do not currently attempt to merge with their left-hand neighbor (i.e., the range that ends where this range begins).
 
 {{site.data.alerts.end}}
 

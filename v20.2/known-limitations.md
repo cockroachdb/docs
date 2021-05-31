@@ -514,7 +514,7 @@ In other cases, the rollback will fail in such a way that will never be cleaned 
 
 To reduce the chance that a column drop will roll back incorrectly:
 
-- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures won't cause the column drop to be rolled back.
+- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures will not cause the column drop to be rolled back.
 
 - Drop all [constraints](constraints.html) (including [unique indexes](unique.html)) on the column in a separate transaction, before dropping the column.
 

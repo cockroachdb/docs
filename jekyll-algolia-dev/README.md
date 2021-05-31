@@ -44,7 +44,7 @@ Once this is done, download all dependencies with `bundle install`.
 You need to provide certain Algolia credentials for this plugin to _index_ your
 site.
 
-_If you don't yet have an Algolia account, we suggest that you open a free
+_If you do not yet have an Algolia account, we suggest that you open a free
 [Community plan here][8]. You can find more information about the Algolia plans
 [in our FAQ][10]._
 

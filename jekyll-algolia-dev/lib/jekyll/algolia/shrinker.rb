@@ -26,7 +26,7 @@ module Jekyll
       def self.fit_to_size(raw_record, max_size)
         return raw_record if size(raw_record) <= max_size
 
-        # No excerpt, we can't shrink it
+        # No excerpt, we cannot shrink it
         if !raw_record.key?(:excerpt_html) || !raw_record.key?(:excerpt_text)
           return stop_with_error(raw_record)
         end

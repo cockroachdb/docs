@@ -42,7 +42,7 @@ You can disable the use of implicit credentials when accessing external cloud st
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure. <br><br>For encryption at rest, if your cloud provider offers transparent data encryption (e.g., [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)), you can use that to ensure that your backups are not stored on disk in cleartext. <br><br>CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure. <br><br>For encryption at rest, if your cloud provider offers transparent data encryption (e.g., [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)), you can use that to ensure that your backups are not stored on disk in plaintext. <br><br>CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>

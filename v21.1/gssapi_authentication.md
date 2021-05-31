@@ -54,7 +54,7 @@ $ ktpass -out postgres_2lb.keytab -in postgres.keytab -princ postgres/loadbalanc
 
 ### MIT KDC
 
-In MIT KDC, you can't map a service principal to an SPN with a different username, so you will need to create a service principal that includes the SPN for your client.
+In MIT KDC, you cannot map a service principal to an SPN with a different username, so you will need to create a service principal that includes the SPN for your client.
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -132,7 +132,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     ~~~
 
 6. [Enable an enterprise license](licensing-faqs.html#obtain-a-license).
-    {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you don't need to enable an enterprise license. {{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you do not need to enable an enterprise license. {{site.data.alerts.end}}
 
 7. Enable GSSAPI authentication:
 
@@ -143,7 +143,7 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
 
       Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) to this particular value makes it mandatory for all non-`root` users to authenticate using GSSAPI. The `root` user is always an exception and remains able to authenticate using a valid client cert or a user password.
 
-      The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as an allowlist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
+      The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We do not support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as an allowlist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
       The syntax is based on the `pg_hba.conf` standard for PostgreSQL which is documented [here](https://www.postgresql.org/docs/current/auth-pg-hba-conf.html). It can be used to exclude other users from Kerberos authentication.
 
