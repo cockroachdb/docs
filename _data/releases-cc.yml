@@ -1,8 +1,10 @@
 - title: CockroachCloud releases
   releases:
+    - name: June 2021
+      link: cockroachcloud-06072021
+      latest: true
     - name: May 2021
       link: cockroachcloud-05032021
-      latest: true
     - name: April 2021
       link: cockroachcloud-04052021
     - name: March 2021
