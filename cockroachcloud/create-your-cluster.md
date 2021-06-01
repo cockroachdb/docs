@@ -38,11 +38,7 @@ For optimal performance, select the cloud provider region in which you are runni
 
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions. In order to survive a single region failure, you must use at least three regions.
 
-{{site.data.alerts.callout_info}}
-Some regions in GCP and AWS might not be displayed in the **Regions** list. We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See list of [EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and list of [GKE regions](https://cloud.google.com/about/locations/) for details.
-{{site.data.alerts.end}}
-
-**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
+**Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
 
 - Mumbai (`asia-south1`)
 - Osaka (`asia-northeast2`)
@@ -52,19 +48,23 @@ Some regions in GCP and AWS might not be displayed in the **Regions** list. We r
 
 If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
 
+{{site.data.alerts.callout_info}}
+You cannot create a 2-region cluster because it would be unable to survive a single region failure.
+{{site.data.alerts.end}}
+
 ## Step 4. Select the number of nodes
 
-- For single-region application development and testing, you may create a one-node cluster.
-- For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
-- For multi-region deployments, we recommend a minimum of three nodes per region. For best performance and stability, you should use the same number of nodes in each region.
+- For single-region application development and testing, you may create a 1-node cluster.
+- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
+- For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
 {{site.data.alerts.callout_info}}
-You cannot create a two-node or two-region cluster because two-replica configurations are less reliable than a single replica.
+You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
 {{site.data.alerts.end}}
 
-Currently, you can add a maximum of 50 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## Step 5. Select the hardware per node
 
