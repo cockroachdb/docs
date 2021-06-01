@@ -389,7 +389,7 @@ The application sets a global Flask configuration variable (`DEBUG`), which it c
 
 Forms make up an important part of most web application frontends. We define these in [`web/forms.py`](https://github.com/cockroachlabs/movr-flask/blob/master/web/forms.py), using some data structures from the [`flask_wtf`](https://flask-wtf.readthedocs.io/en/stable/) and [`wtforms`](https://wtforms.readthedocs.io/en/stable/) libraries.
 
-We won't go into much detail about these forms. The important thing to know is that they help handle `POST` requests in the web UI.
+We will not go into much detail about these forms. The important thing to know is that they help handle `POST` requests in the web UI.
 
 The `CredentialForm` class, for example, defines the fields of the login form that users interface with to send a login request to the server:
 
@@ -590,7 +590,7 @@ In all cases, the session variables `city`, `region`, and `riding` are initializ
 
 ### User interface
 
-For the example application, we limit the web UI to some static HTML web pages, rendered using Flask's built-in [Jinja-2 engine](https://flask.palletsprojects.com/en/1.1.x/templating/). We won't spend much time covering the web UI. Just note that the forms take input from the user, and that input is usually passed to the backend where it is translated into and executed as a database transaction.
+For the example application, we limit the web UI to some static HTML web pages, rendered using Flask's built-in [Jinja-2 engine](https://flask.palletsprojects.com/en/1.1.x/templating/). We will not spend much time covering the web UI. Just note that the forms take input from the user, and that input is usually passed to the backend where it is translated into and executed as a database transaction.
 
 We've also added some Bootstrap syntax and Google Maps, for UX purposes. As you can see, the Google Maps API requires a key. For debugging, you can define this key in the `.env` file. If you decide to use an embedded service like Google Maps in production, you should restrict your Google Maps API key to a specific hostname or IP address from within the cloud provider's console, as the API key will be publicly visible in the HTML. In [Deploying a Multi-Region Web Application](multi-region-deployment.html), we use Kubernetes secrets to the store the API keys.
 

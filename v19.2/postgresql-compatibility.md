@@ -2,7 +2,6 @@
 title: PostgreSQL Compatibility
 summary: A summary of CockroachDB's compatibility with PostgreSQL
 toc: true
-redirect_from: porting-postgres.html
 ---
 CockroachDB supports the PostgreSQL wire protocol and the majority of its syntax. This means that your existing applications can often be migrated to CockroachDB without changing application code.
 

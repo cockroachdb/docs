@@ -73,11 +73,11 @@ In this tutorial, we use [kubemci](https://cloud.google.com/kubernetes-engine/do
 To serve a secure web application, you also need a public domain name!
 {{site.data.alerts.end}}
 
-1. If you don't have a gcloud account, create one at https://cloud.google.com/.
+1. If you do not have a gcloud account, create one at https://cloud.google.com/.
 
 1. Create a gcloud project on the [GCP console](https://console.cloud.google.com/).
 
-1. **Optional:** Enable the [Google Maps Embed API](https://console.cloud.google.com/apis/library), create an API key, restrict the API key to all subdomains of your domain name (e.g. `https://site.com/*`), and retrieve the API key.
+1. **Optional:** Enable the [Google Maps Embed API](https://console.cloud.google.com/apis/library), create an API key, restrict the API key to all subdomains of your domain name (e.g., `https://site.com/*`), and retrieve the API key.
 
     {{site.data.alerts.callout_info}}
     The example HTML templates include maps. Not providing an API key to the application will not break the application.

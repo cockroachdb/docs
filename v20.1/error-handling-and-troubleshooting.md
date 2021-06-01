@@ -26,7 +26,7 @@ If you aren't sure whether SQL query performance needs to be improved on your cl
 
 Messages with the Postgres error code `40001` indicate that a transaction failed because it [conflicted with another concurrent or recent transaction accessing the same data](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention). The transaction needs to be retried by the client.
 
-If your language's client driver or ORM implements transaction retry logic internally (e.g., if you are using Python and [SQLAlchemy with the CockroachDB dialect](build-a-python-app-with-cockroachdb-sqlalchemy.html)), then you don't need to handle this logic from your application.
+If your language's client driver or ORM implements transaction retry logic internally (e.g., if you are using Python and [SQLAlchemy with the CockroachDB dialect](build-a-python-app-with-cockroachdb-sqlalchemy.html)), then you do not need to handle this logic from your application.
 
 If your driver or ORM does not implement this logic, then you will need to implement a retry loop in your application.
 

@@ -5,6 +5,7 @@ layout: null
 {%- if site.baseurl == "/docs" %}
 / /docs/ 301!
 /docs/v2.2/* /docs/v19.1/:splat 301!
+/docs/managed/* /docs/cockroachcloud/:splat 301!
 /docs/releases/ /docs/releases/index.html 301!
 /docs/advisories/ /docs/advisories/index.html 301!
 /docs/advisories/advisories.html /docs/advisories/index.html 301
@@ -58,6 +59,14 @@ layout: null
 /docs/v20.2/architecture/index.html /docs/v20.2/architecture/overview.html 301
 /docs/v21.1/architecture/index.html /docs/v21.1/architecture/overview.html 301
 /docs/stable/architecture/index.html /docs/stable/architecture/overview.html 301
+/docs/v2.1/back-up-data.html /docs/v2.1/backup-and-restore.html 301
+/docs/v19.1/back-up-data.html /docs/v19.1/backup-and-restore.html 301
+/docs/v19.2/back-up-data.html /docs/v19.2/backup-and-restore.html 301
+/docs/v20.1/back-up-data.html /docs/v20.1/backup-and-restore.html 301
+/docs/v2.1/restore-data.html /docs/v2.1/backup-and-restore.html 301
+/docs/v19.1/restore-data.html /docs/v19.1/backup-and-restore.html 301
+/docs/v19.2/restore-data.html /docs/v19.2/backup-and-restore.html 301
+/docs/v20.1/restore-data.html /docs/v20.1/backup-and-restore.html 301
 /docs/v20.2/back-up-data.html /docs/v20.2/take-full-and-incremental-backups.html 301
 /docs/v20.2/restore-data.html /docs/v20.2/take-full-and-incremental-backups.html 301
 /docs/v20.2/backup-and-restore.html /docs/v20.2/take-full-and-incremental-backups.html 301
@@ -77,6 +86,8 @@ layout: null
 /docs/v20.2/import-data.html /docs/v20.2/migration-overview.html 301
 /docs/v21.1/import-data.html /docs/v21.1/migration-overview.html 301
 /docs/stable/import-data.html /docs/stable/migration-overview.html 301
+/docs/v19.2/performance-benchmarking-with-tpc-c.html /docs/v19.2/performance-benchmarking-with-tpc-c-1k-warehouses.html 301
+/docs/v20.1/performance-benchmarking-with-tpc-c.html /docs/v20.1/performance-benchmarking-with-tpc-c-1k-warehouses.html 301
 /docs/v20.2/performance-benchmarking-with-tpc-c-1k-warehouses.html /docs/v20.2/performance-benchmarking-with-tpcc-small.html 301
 /docs/v21.1/performance-benchmarking-with-tpc-c-1k-warehouses.html /docs/v21.1/performance-benchmarking-with-tpcc-small.html 301
 /docs/stable/performance-benchmarking-with-tpc-c-1k-warehouses.html /docs/stable/performance-benchmarking-with-tpcc-small.html 301
@@ -246,6 +257,78 @@ layout: null
 /docs/v20.2/admin-ui-overview.html /docs/v20.2/ui-overview.html 301
 /docs/v21.1/admin-ui-overview.html /docs/v21.1/ui-overview.html 301
 /docs/stable/admin-ui-overview.html /docs/stable/ui-overview.html 301
+/docs/v19.2/demo-automatic-rebalancing.html /docs/v19.2/demo-replication-and-rebalancing.html 301
+/docs/v20.2/demo-automatic-rebalancing.html /docs/v20.2/demo-replication-and-rebalancing.html 301
+/docs/v21.1/demo-automatic-rebalancing.html /docs/v21.1/demo-replication-and-rebalancing.html 301
+/docs/stable/demo-automatic-rebalancing.html /docs/stable/demo-replication-and-rebalancing.html 301
+/docs/v19.2/demo-data-replication.html /docs/v19.2/demo-replication-and-rebalancing.html 301
+/docs/v20.2/demo-data-replication.html /docs/v20.2/demo-replication-and-rebalancing.html 301
+/docs/v21.1/demo-data-replication.html /docs/v21.1/demo-replication-and-rebalancing.html 301
+/docs/stable/demo-data-replication.html /docs/stable/demo-replication-and-rebalancing.html 301
+/docs/v1.1/cloud-deployment.html /docs/v1.1/manual-deployment.html 301
+/docs/v2.0/cloud-deployment.html /docs/v2.0/manual-deployment.html 301
+/docs/v2.1/cloud-deployment.html /docs/v2.1/manual-deployment.html 301
+/docs/v19.1/cloud-deployment.html /docs/v19.1/manual-deployment.html 301
+/docs/v19.2/cloud-deployment.html /docs/v19.2/manual-deployment.html 301
+/docs/v20.1/cloud-deployment.html /docs/v20.1/manual-deployment.html 301
+/docs/v20.2/cloud-deployment.html /docs/v20.2/manual-deployment.html 301
+/docs/v21.1/cloud-deployment.html /docs/v21.1/manual-deployment.html 301
+/docs/stable/cloud-deployment.html /docs/stable/manual-deployment.html 301
+/docs/v19.2/porting-postgres.html /docs/v19.2/postgresql-compatibility.html 301
+/docs/v20.1/porting-postgres.html /docs/v20.1/postgresql-compatibility.html 301
+/docs/v20.2/porting-postgres.html /docs/v20.2/postgresql-compatibility.html 301
+/docs/v21.1/porting-postgres.html /docs/v21.1/postgresql-compatibility.html 301
+/docs/stable/porting-postgres.html /docs/stable/postgresql-compatibility.html 301
+/docs/v2.0/show-testing-ranges.html /docs/v2.0/show-experimental-ranges.html 301
+/docs/v2.1/show-testing-ranges.html /docs/v2.1/show-experimental-ranges.html 301
+/docs/v19.1/show-testing-ranges.html /docs/v19.1/show-experimental-ranges.html 301
+/docs/v19.2/show-experimental-ranges.html /docs/v19.2/show-ranges.html 301
+/docs/v20.1/show-experimental-ranges.html /docs/v20.1/show-ranges.html 301
+/docs/v20.2/show-experimental-ranges.html /docs/v20.2/show-ranges.html 301
+/docs/v21.1/show-experimental-ranges.html /docs/v21.1/show-ranges.html 301
+/docs/stable/show-experimental-ranges.html /docs/stable/show-ranges.html 301
+/docs/v19.2/start-a-local-cluster-in-docker.html /docs/v19.2/start-a-local-cluster-in-docker-mac.html 301
+/docs/v20.1/start-a-local-cluster-in-docker.html /docs/v20.1/start-a-local-cluster-in-docker-mac.html 301
+/docs/v20.2/start-a-local-cluster-in-docker.html /docs/v20.2/start-a-local-cluster-in-docker-mac.html 301
+/docs/v21.1/start-a-local-cluster-in-docker.html /docs/v21.1/start-a-local-cluster-in-docker-mac.html 301
+/docs/stable/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-mac.html 301
+/docs/*/general-troubleshooting.html /docs/*/common-errors.html 301
+/docs/v2.1/show-create-view.html /docs/v2.1/show-create.html 301
+/docs/v19.1/show-create-view.html /docs/v19.1/show-create.html 301
+/docs/v19.2/show-create-view.html /docs/v19.2/show-create.html 301
+/docs/v20.1/show-create-view.html /docs/v20.1/show-create.html 301
+/docs/v20.2/show-create-view.html /docs/v20.2/show-create.html 301
+/docs/v21.1/show-create-view.html /docs/v21.1/show-create.html 301
+/docs/stable/show-create-view.html /docs/stable/show-create.html 301
+/docs/v2.1/show-create-table.html /docs/v2.1/show-create.html 301
+/docs/v19.1/show-create-table.html /docs/v19.1/show-create.html 301
+/docs/v19.2/show-create-table.html /docs/v19.2/show-create.html 301
+/docs/v20.1/show-create-table.html /docs/v20.1/show-create.html 301
+/docs/v20.2/show-create-table.html /docs/v20.2/show-create.html 301
+/docs/v21.1/show-create-table.html /docs/v21.1/show-create.html 301
+/docs/stable/show-create-table.html /docs/stable/show-create.html 301
+/docs/v2.1/show-create-sequence.html /docs/v2.1/show-create.html 301
+/docs/v19.1/show-create-sequence.html /docs/v19.1/show-create.html 301
+/docs/v19.2/show-create-sequence.html /docs/v19.2/show-create.html 301
+/docs/v20.1/show-create-sequence.html /docs/v20.1/show-create.html 301
+/docs/v20.2/show-create-sequence.html /docs/v20.2/show-create.html 301
+/docs/v21.1/show-create-sequence.html /docs/v21.1/show-create.html 301
+/docs/stable/show-create-sequence.html /docs/stable/show-create.html 301
+/docs/*/sql-optimizer.html /docs/*/cost-based-optimizer.html 301
+/docs/*/show-all.html /docs/*/show-vars.html 301
+/docs/*/show-transaction.html /docs/*/show-vars.html 301
+/docs/*/show-time-zone.html /docs/*/show-vars.html 301
+/docs/*/set-application-name.html /docs/*/set-vars.html 301
+/docs/*/set-database.html /docs/*/set-vars.html 301
+/docs/*/set-time-zone.html /docs/*/set-vars.html 301
+/docs/v2.0/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.0/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v2.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v2.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v19.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v19.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v19.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v20.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v20.2/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/v21.1/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/v21.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
+/docs/stable/orchetrate-cockroachdb-with-kubernetes-multi-region.html /docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster.md 301
 
 # Removed pages
 /docs/*/contribute-to-cockroachdb.html https://wiki.crdb.io/wiki/spaces/CRDB/pages/73204033/Contributing+to+CockroachDB 301!
@@ -303,17 +386,20 @@ layout: null
 /docs/v20.2/open-source.html /docs/v20.2/frequently-asked-questions.html 301
 /docs/v21.1/open-source.html /docs/v21.1/frequently-asked-questions.html 301
 /docs/stable/open-source.html /docs/stable/frequently-asked-questions.html 301
+/docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
+/docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
+/docs/*/detailed-sql-support.html /docs/*/sql-feature-support.html 301
 
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
+
+# Redirects for DockerHub
+/docs/install-cockroachdb.html /docs/stable/install-cockroachdb.html 301
+/docs/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-linux.html 301
+/docs/orchestrate-cockroachdb-with-kubernetes.html /docs/stable/orchestrate-cockroachdb-with-kubernetes.html 301
+/docs/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html 301
 {% endif %}
 
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
-
-# Redirects for DockerHub
-/docs/install-cockroachdb.html /docs/stable/install-cockroachdb.html   301
-/docs/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-linux.html   301
-/docs/orchestrate-cockroachdb-with-kubernetes.html /docs/stable/orchestrate-cockroachdb-with-kubernetes.html   301
-/docs/orchestrate-cockroachdb-with-docker-swarm.html /docs/stable/orchestrate-cockroachdb-with-docker-swarm.html    301

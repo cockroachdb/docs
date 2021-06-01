@@ -26,7 +26,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		// Reddit limits to 30 requests per minute, so don't do any more than that.
+		// Reddit limits to 30 requests per minute, so do not do any more than that.
 		time.Sleep(2 * time.Second)
 	}
 }

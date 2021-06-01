@@ -392,7 +392,7 @@ Time: 1.31ms
 ~~~
 
 {{site.data.alerts.callout_success}}
-When writing your own queries of this type, use a known minimum value for the key's data type. If you don't know what the minimum value of the key is, you can use `SELECT min(key) FROM table`.
+When writing your own queries of this type, use a known minimum value for the key's data type. If you do not know what the minimum value of the key is, you can use `SELECT min(key) FROM table`.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

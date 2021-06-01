@@ -49,7 +49,7 @@ $(function() {
   }
 
   // Separate function to configure sidenav on window resize
-  // We don't want to animate, so collapseSideNav() won't work
+  // We do not want to animate, so collapseSideNav() will not work
   function sidenavOnResize(winWidth) {
     $('body').removeClass('sidenav-open');
 
@@ -340,7 +340,7 @@ $(function() {
   // });
 
   $sidebar.on('click', function(e) {
-    // we only want this firing when collapsed, otherwise search won't work
+    // we only want this firing when collapsed, otherwise search will not work
     if ($sidebar.hasClass('nav--collapsed')) toggleSideNav();
   });
 

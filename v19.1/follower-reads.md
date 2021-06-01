@@ -81,7 +81,7 @@ For a more detailed explanation, you can also read the [follower reads RFC](http
 
 Each CockroachDB node tracks a property called its "closed timestamp", which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward by some target interval behind the current time. If the replica receives a write at a timestamp less than its closed timestamp, it rejects the write.
 
-With follower reads enabled, any replica on a node can serve a read for a key as long as the time at which the operation is performed (i.e. the `AS OF SYSTEM TIME` value) is less or equal to the node's closed timestamp.
+With follower reads enabled, any replica on a node can serve a read for a key as long as the time at which the operation is performed (i.e., the `AS OF SYSTEM TIME` value) is less or equal to the node's closed timestamp.
 
 ### Determining which node to read from
 

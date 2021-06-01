@@ -2,7 +2,6 @@
 title: Transactions Page
 summary: The Transactions page helps you identify frequently retried or high latency transactions and view transaction details.
 toc: true
-redirect_from: admin-ui-transactions-page.html
 ---
 
 {{site.data.alerts.callout_info}}

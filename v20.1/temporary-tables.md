@@ -34,7 +34,7 @@ By default, every 30 minutes CockroachDB cleans up all temporary objects that ar
 Temp tables are not part of the `public` schema. Instead, when you create the first temp table for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temp tables, [temporary views](views.html#temporary-views), and [temporary sequences](create-sequence.html#temporary-sequences) in the current session for a database. In a session, you can reference the session's temporary schema as `pg_temp`.
 
 {{site.data.alerts.callout_info}}
-Because the [`SHOW TABLES`](show-tables.html) statement defaults to the `public` schema (which doesn't include temp tables), using `SHOW TABLES` without specifying a schema won't return any temp tables.
+Because the [`SHOW TABLES`](show-tables.html) statement defaults to the `public` schema (which doesn't include temp tables), using `SHOW TABLES` without specifying a schema will not return any temp tables.
 {{site.data.alerts.end}}
 
 ## Examples
@@ -215,6 +215,6 @@ SQLSTATE: 42P01
 
 - [`CREATE TABLE`](create-table.html)
 - [`CREATE TABLE AS`](create-table-as.html)
-- [`SHOW CREATE TABLE`](show-create-table.html)
+- [`SHOW CREATE TABLE`](show-create.html)
 - [Temporary views](views.html#temporary-views)
 - [Temporary sequences](create-sequence.html#temporary-sequences).

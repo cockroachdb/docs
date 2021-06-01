@@ -156,7 +156,6 @@ Field | Description | Default
 `asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
 `contribute` | Adds "Contribute" options at the top-right of the page. See [Contributing Options](#contributing-options) for more details. | `true`
-`redirect_from` | Specifies other internal URLs that should redirect to the page. See [Client-Side Redirects](#client-side-redirects) | Nothing
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 `block_search` | If `true`, adds meta tags to the header that excludes the page from search indexing/caching. | Nothing
@@ -240,22 +239,6 @@ We show "Yes/No" feedback buttons at the bottom of every page by default. To rem
 #### Contributing Options
 
 We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
-
-#### Client-Side Redirects
-
-We use the [JekyllRedirectFrom](https://github.com/jekyll/jekyll-redirect-from) plugin to ensure that multiple URLs resolve to a single page. This is most useful in cases where we change the filename or directory structure of a page.
-
-For example, if `v1.0.html` page were moved from the root level to `releases/v1.0.html`, you would add `redirect-from: /v1.0.html` to the page's front-matter to ensure that `https://cockroachlabs.com/docs/v1.0.html` gets redirected to `https:/cockroachlabs.com/docs/releases/v1.0.html`.
-
-If you rename or restructure a versioned page, use a relative link, not an absolute link. For example, if `show-transaction.md` and `show-time-zone.md` are merged into `show-vars.md` for v1.1, use the following `redirect_from` specification:
-
-```md
-redirect_from:
-- show-transaction.html
-- show-time-zone.html
-```
-
-This ensures that if `v1.1` is also the `stable` or `dev` version, the corresponding `stable` or `dev` redirects will be generated as well.
 
 ### Sidebar
 

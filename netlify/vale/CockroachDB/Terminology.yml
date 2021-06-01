@@ -4,12 +4,13 @@ ignorecase: false
 level: warning
 swap:
   cockroachdb: CockroachDB
+  cockroachcloud: CockroachCloud
   raft: Raft
   Raft Group: Raft group
-  admin UI: Admin UI
-  admin ui: Admin UI
-  web UI: Admin UI
-  web UI: Admin UI
+  Admin UI: DB Console
+  admin ui: DB Console
+  web UI: DB Console
+  web UI: DB Console
   ui: UI
   Distribution Layer: distribution layer
   Replication Layer: replication layer

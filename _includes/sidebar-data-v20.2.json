@@ -31,8 +31,7 @@
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
               "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html",
-              "/${VERSION}/install-cockroachdb-spatial.html"
+              "/${VERSION}/install-cockroachdb-windows.html"
             ]
           },
           {
@@ -110,7 +109,7 @@
               {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
-                  "/${VERSION}/orchestration-with-kubernetes.html"
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
                 ]
               },
               {

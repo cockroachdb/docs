@@ -43,7 +43,7 @@ module Jekyll
       self
     end
 
-    # Public: Monkey patch Jekyll and external plugins so they don't interfere
+    # Public: Monkey patch Jekyll and external plugins so they do not interfere
     # with our plugin
     #
     # Note: This is only loaded when running `jekyll algolia` so should not have

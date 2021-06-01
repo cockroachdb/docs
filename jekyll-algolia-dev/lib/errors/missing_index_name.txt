@@ -14,5 +14,5 @@ W:
 I:You can see all your indices from your Algolia dashboard here:
 I:  https://www.algolia.com/explorer
 I:
-I:Note that you don't have to create an index before pushing records.
+I:Note that you do not have to create an index before pushing records.
 I:It will be created automatically if it does not exist yet.

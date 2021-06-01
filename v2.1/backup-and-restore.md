@@ -2,9 +2,6 @@
 title: Back up and Restore Data
 summary: Learn how to back up and restore a CockroachDB database.
 toc: true
-redirect_from:
-- back-up-data.html
-- restore-data.html
 ---
 
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, we recommend taking regular backups of your data.

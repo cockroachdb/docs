@@ -197,7 +197,7 @@ With the new primary key on `region` and `id`, the table is ready to be [geo-par
 
 The table is now geo-partitioned on the `region` column.
 
-You now need to geo-partition any secondary indexes in the table. In order to geo-partition an index, the index must be prefixed by a column that can be used as a partitioning identifier (in this case, `region`). Currently, neither of the secondary indexes (i.e., `users_id_key` and `users_name_idx`) are prefixed by the `region` column, so they can't be meaningfully geo-partitioned. Any secondary indexes that you want to keep must be dropped, recreated, and then partitioned.
+You now need to geo-partition any secondary indexes in the table. In order to geo-partition an index, the index must be prefixed by a column that can be used as a partitioning identifier (in this case, `region`). Currently, neither of the secondary indexes (i.e., `users_id_key` and `users_name_idx`) are prefixed by the `region` column, so they cannot be meaningfully geo-partitioned. Any secondary indexes that you want to keep must be dropped, recreated, and then partitioned.
 
 Start by dropping both indexes:
 
@@ -207,7 +207,7 @@ Start by dropping both indexes:
   DROP INDEX users_name_idx CASCADE;
 ~~~
 
-You don't need to recreate the index on `id` with `region`. Both columns are already indexed by the new primary key.
+You do not need to recreate the index on `id` with `region`. Both columns are already indexed by the new primary key.
 
 Add `region` to the index on `name`:
 

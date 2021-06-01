@@ -643,7 +643,7 @@ node 10:
 
 ### Try your own scenario
 
-In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-database.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
+In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-vars.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
 
 ## See also
 

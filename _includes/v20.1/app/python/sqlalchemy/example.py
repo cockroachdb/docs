@@ -48,8 +48,8 @@ seen_account_ids = set()
 
 def create_random_accounts(sess, num):
     """Create N new accounts with random IDs and random account balances.
-    Note that since this is a demo, we don't do any work to ensure the
-    new IDs don't collide with existing IDs.
+    Note that since this is a demo, we do not do any work to ensure the
+    new IDs do not collide with existing IDs.
     """
     new_accounts = []
     while num > 0:

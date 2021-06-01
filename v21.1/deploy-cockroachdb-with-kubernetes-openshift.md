@@ -208,7 +208,7 @@ spec:
 
 {% include {{ page.version.version }}/orchestration/kubernetes-basic-sql.md %}
 
-**Note:** If you can't access the SQL client, this may be related to your `--certs-dir` or `--host` flags. 
+**Note:** If you cannot access the SQL client, this may be related to your `--certs-dir` or `--host` flags. 
 
 1. Shell into the client pod and check for the necessary certs in the `--certs-dir` directory:
 

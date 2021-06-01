@@ -175,7 +175,7 @@ For a complete example app that uses Maven for dependency management, see [Build
 
 You will also need to specify the CockroachDB dialect in your [Hibernate configuration file](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm). Versions of the Hibernate CockroachDB dialect correspond to the version of CockroachDB installed on your machine. For example, `org.hibernate.dialect.CockroachDB201Dialect` corresponds to CockroachDB v20.1, and `org.hibernate.dialect.CockroachDB192Dialect` corresponds to CockroachDB v19.2.
 
-All dialect versions are forward-compatible (e.g. CockroachDB v20.1 is compatible with `CockroachDB192Dialect`), as long as your application is not affected by any backward-incompatible changes listed in your CockroachDB version's [release notes](../releases/index.html). In the event of a CockroachDB version upgrade, using a previous version of the CockroachDB dialect will not break an application, but, to enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB.
+All dialect versions are forward-compatible (e.g., CockroachDB v20.1 is compatible with `CockroachDB192Dialect`), as long as your application is not affected by any backward-incompatible changes listed in your CockroachDB version's [release notes](../releases/index.html). In the event of a CockroachDB version upgrade, using a previous version of the CockroachDB dialect will not break an application, but, to enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB.
 
 ### jOOQ
 
