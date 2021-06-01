@@ -293,13 +293,6 @@ layout: null
 /docs/v21.1/start-a-local-cluster-in-docker.html /docs/v21.1/start-a-local-cluster-in-docker-mac.html 301
 /docs/stable/start-a-local-cluster-in-docker.html /docs/stable/start-a-local-cluster-in-docker-mac.html 301
 /docs/*/general-troubleshooting.html /docs/*/common-errors.html 301
-/docs/v2.0/collatedstring.html /docs/v2.0/collate.html 301
-/docs/v2.1/collatedstring.html /docs/v2.1/collate.html 301
-/docs/v19.1/collatedstring.html /docs/v19.1/collate.html 301
-/docs/v19.2/collatedstring.html /docs/v19.2/collate.html 301
-/docs/v20.1/collatedstring.html /docs/v20.1/collate.html 301
-/docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
-/docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
 /docs/v2.1/show-create-view.html /docs/v2.1/show-create.html 301
 /docs/v19.1/show-create-view.html /docs/v19.1/show-create.html 301
 /docs/v19.2/show-create-view.html /docs/v19.2/show-create.html 301
