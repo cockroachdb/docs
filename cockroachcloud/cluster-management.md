@@ -20,7 +20,8 @@ For each cluster, the following details display:
 - The cluster's current **State**
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
-    - [**Add/remove nodes**](#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
+    - [**Add/remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
+    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) (Paid clusters only)
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -31,9 +32,10 @@ Select the type of cluster you are viewing (and page content below will change a
   <button class="filter-button page-level" data-scope="dedicated">CockroachCloud</button>
 </div>
 
+<section class="filter-content" markdown="1" data-scope="free">
+
 ## View cluster overview
 
-<section class="filter-content" markdown="1" data-scope="free">
 The **Overview** page displays details about the selected CockroachCloud Free (beta) cluster:
 
 - The **Plan** that the cluster was created with
@@ -48,29 +50,33 @@ The **Overview** page displays details about the selected CockroachCloud Free (b
 </section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
-The **Overview** page displays a list of the selected cluster's nodes.
 
-For each node, the page displays the node's `Name`, nested under its region.
+## Planning your cluster
 
+Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for CockroachCloud cluster configuration.
+
+{% include cockroachcloud/planning-your-cluster.md %}
+
+## View cluster overview
+    
+The **Overview** page displays details about the selected CockroachCloud cluster:
+
+- The **Current Charges** and next billing date for the cluster
+- The cluster's **Cloud** provider
+- The cluster's **Hardware per node**
+- A list of the selected cluster's nodes.
+
+    For each node, the page displays the node's `Name` and `Status`, nested under its region.
+    
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
 ## Add or remove nodes from a cluster
 
-You can add or remove nodes from your cluster through the Console.
+You can add or remove nodes from your cluster through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
 At this time, you cannot use the Console to scale up a single-node cluster or scale down to a single-node cluster. For these changes, contact [Support](https://support.cockroachlabs.com).
 {{site.data.alerts.end}}
-
-### Considerations
-
-- Adding or removing nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. We recommend you add or remove nodes from a cluster when the cluster isn't experiencing heavy traffic.
-- If you have changed the [replication factor](../{{site.versions["stable"]}}/configure-zone.html) for a cluster, you might not be able to remove nodes from the cluster. For example, suppose you have a 5-node cluster and you had previously changed the replication factor from its default value of 3 to 5. Now if you want to scale down the cluster to 3 nodes, the decommissioning nodes operation to remove nodes from the cluster might fail. To successfully remove nodes from the cluster, you will have to change the replication factor back to 3.
-- Before removing nodes from a cluster, ensure that the reduced disk space will be sufficient for the existing and anticipated data.
-- Multi-region clusters require at least 3 nodes per region.
-- We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
-- GCP clusters use 3 Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a multiple of 3 nodes (e.g., 3, 6, or 9 nodes).
-- AWS clusters use 4 AZs. For balanced data distribution and best performance, we recommend using a multiple of 4 nodes (e.g., 4, 8, or 12 nodes).
 
 To add or remove nodes from your cluster:
 
@@ -88,17 +94,7 @@ To add or remove nodes from your cluster:
 
 ## Add or remove regions from a cluster
 
-You can add or remove regions from your cluster through the Console.
-
-### Considerations
-
-- You can add or remove up to 3 regions at a time.
-- You can have a maximum of 9 regions per cluster through the console. If you need to add more regions, [contact us](https://support.cockroachlabs.com).
-- We don't allow 2-region clusters because they are less stable and would be unable to survive a single region failure.
-- We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
-- Multi-region clusters require at least 3 nodes per region.
-- When a region is removed from a cluster, access to the database from that region will no longer be as fast.
-- Adding or removing regions incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. We recommend you add or remove regions from a cluster when the cluster isn't experiencing heavy traffic.
+You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
 
 ### Add a region to your cluster
 
@@ -118,7 +114,6 @@ You can add or remove regions from your cluster through the Console.
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
-
 
 ### Remove a region from your cluster
 
