@@ -24,16 +24,19 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a [computed column](computed-columns.html).
 
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v20.2:</span> CockroachDB no longer requires an index on foreign key columns.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+To improve query performance on tables with foreign keys, we recommend indexing all foreign key columns.
+{{site.data.alerts.end}}
+
 **Referenced Columns**
 
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
 - <span class="version-tag">New in v20.2:</span> By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
-
-
-{{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.2:</span> Foreign key columns, and columns referenced by a foreign key, do not need to be indexed.
-{{site.data.alerts.end}}
 
 ### Null values
 
@@ -109,11 +112,17 @@ Parameter | Description
 
 ### Performance
 
-Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute.
 
-{{site.data.alerts.callout_danger}}
-Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
-{{site.data.alerts.end}}
+To improve query performance, we recommend doing the following:
+
+- Create a secondary index on all referencing foreign key columns that are not already indexed.
+
+- For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+
+    {{site.data.alerts.callout_danger}}
+    Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+    {{site.data.alerts.end}}
 
 ## Syntax
 
@@ -145,7 +154,8 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
     customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
-    orderTotal DECIMAL(9,2)
+    orderTotal DECIMAL(9,2),
+    INDEX (customer)
   );
 ~~~
 {{site.data.alerts.callout_danger}}
@@ -202,7 +212,8 @@ Next, create the referencing table:
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
     customer INT NOT NULL REFERENCES customers (id),
-    orderTotal DECIMAL(9,2)
+    orderTotal DECIMAL(9,2),
+    INDEX (customer)
   );
 ~~~
 

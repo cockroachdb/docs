@@ -104,11 +104,17 @@ Parameter | Description
 
 ### Performance
 
-Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute.
 
-{{site.data.alerts.callout_danger}}
-Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
-{{site.data.alerts.end}}
+To improve query performance, we recommend doing the following:
+
+- Create a secondary index on all referencing foreign key columns that are not already indexed.
+
+- For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+
+    {{site.data.alerts.callout_danger}}
+    Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+    {{site.data.alerts.end}}
 
 ## Syntax
 
@@ -140,7 +146,8 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
     customer INT NOT NULL REFERENCES customers (id) ON DELETE CASCADE,
-    orderTotal DECIMAL(9,2)
+    orderTotal DECIMAL(9,2),
+    INDEX (customer)
   );
 ~~~
 {{site.data.alerts.callout_danger}}
@@ -197,7 +204,8 @@ Next, create the referencing table:
 > CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY,
     customer INT NOT NULL REFERENCES customers (id),
-    orderTotal DECIMAL(9,2)
+    orderTotal DECIMAL(9,2),
+    INDEX (customer)
   );
 ~~~
 
