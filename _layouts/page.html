@@ -32,9 +32,11 @@ layout: default
        page TOC to h2 headers only, set `toc_not_nested: true` in the page's
        front-matter.
    -->
+   {% comment %}
    {% if page.toc %}
       <div id="toc"></div>
    {% endif %}
+   {% endcomment %}
 
    {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1'  or page.url contains 'v19.2'%}
       {% include_cached unsupported-version.md %}
