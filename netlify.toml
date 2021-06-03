@@ -1,4 +1,4 @@
-[context."peter-add-netlify-toml"]
+[context.deploy-preview]
 
   [build.processing.html]
   pretty_urls = true
