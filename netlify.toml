@@ -1,0 +1,5 @@
+[context."peter-add-netlify-toml"]
+  base = "branch"
+
+  [build.processing.html]
+  pretty_urls = true
