@@ -1,2 +1,2 @@
-[context.deploy-preview.processing.html]
-pretty_urls = true
+[build.processing.html]
+  pretty_urls = true
