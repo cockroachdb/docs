@@ -29,7 +29,7 @@ Setting up a VPC peering connection between your CockroachCloud cluster and GCP 
 1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachcloud-cluster)
 
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is available only while creating a new CockroachCloud cluster. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. To set up VPC peering for existing clusters created after March 5, 2020, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Self-service VPC peering setup is available only while creating a new CockroachCloud cluster. If your cluster was deployed without VPC peering enabled, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster.
 {{site.data.alerts.end}}
 
 ### Configure the IP range and size while creating your CockroachCloud cluster
