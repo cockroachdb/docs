@@ -34,19 +34,19 @@ All log settings for a `cockroach` command are specified with a YAML payload in 
 
 - Block format, where each parameter is written on a separate line. For example, after creating a file `logs.yaml`, pass the YAML values with either `--log-config-file` or `--log`:
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
   ~~~ shell
   $ cockroach start-single-node --certs-dir=certs --log-config-file=logs.yaml
   ~~~
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ cockroach start-single-node --certs-dir=certs --log="$(cat logs.yaml)"
 	~~~
 
 - Inline format, where all parameters are specified on one line. For example, to generate an `ops` log file that collects the `OPS` and `HEALTH` channels (overriding the file groups defined for those channels in the [default configuration](#default-logging-configuration)):
 
-  {% include copy-clipboard.html %}
+  {% include_cached copy-clipboard.html %}
 	~~~ shell
 	$ cockroach start-single-node --certs-dir=certs --log="sinks: {file-groups: {ops: {channels: [OPS, HEALTH]}}}"
 	~~~
