@@ -1,4 +1,2 @@
-[context.deploy-preview]
-
-  [build.processing.html]
-  pretty_urls = true
+[context.deploy-preview.processing.html]
+skip_processing = true
