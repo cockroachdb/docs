@@ -1,6 +1,7 @@
 To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
 <section class="filter-content" markdown="1" data-scope="operator">
+{% include copy-clipboard.html %}
 ~~~ shell
 $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/client-secure-operator.yaml

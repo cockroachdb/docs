@@ -55,7 +55,7 @@ Cluster parameters are configured in a `CrdbCluster` custom resource object. Thi
 {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/example.yaml|# limitations under the License.\n| %}
 ~~~
 
-It's easiest to keep a local copy of the custom resource manifest. After you modify its parameters, run this command to apply the new values to the cluster:
+It's simplest to download and customize a local copy of the custom resource manifest. After you modify its parameters, run this command to apply the new values to the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -76,7 +76,7 @@ The Operator will trigger a rolling restart of the pods to effect the change, if
 
 Cluster parameters are configured in the StatefulSet manifest. We provide a [StatefulSet template](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml) for use in our [deployment tutorial](deploy-cockroachdb-with-kubernetes.html).
 
-It's easiest to keep a local copy of the manifest file. After you modify its parameters, run this command to apply the new values to the cluster:
+It's simplest to download and customize a local copy of the manifest file. After you modify its parameters, run this command to apply the new values to the cluster:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -93,6 +93,10 @@ crdbcluster.crdb.cockroachlabs.com/{cluster-name} configured
 ## Allocate resources
 
 On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. We recommend that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
+
+{{site.data.alerts.callout_success}}
+Run `kubectl describe nodes` to see the available resources on the instances that you have provisioned.
+{{site.data.alerts.end}}
 
 ### Memory and CPU
 
