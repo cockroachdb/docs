@@ -31,10 +31,10 @@ On a production cluster, you will need to modify the StatefulSet configuration w
     ~~~
     resources:
       requests:
-        cpu: "16"
+        cpu: "2"
         memory: "8Gi"
       limits:
-        cpu: "16"
+        cpu: "2"
         memory: "8Gi"
     ~~~
 

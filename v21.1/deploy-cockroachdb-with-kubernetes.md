@@ -68,8 +68,8 @@ Note that the Operator does not provision or apply an enterprise license key. To
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="operator">Use Operator</button>
-    <button class="filter-button" data-scope="helm">Use Helm</button>
     <button class="filter-button" data-scope="manual">Use Configs</button>
+    <button class="filter-button" data-scope="helm">Use Helm</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
