@@ -83,7 +83,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     $ kubectl apply -f example.yaml
     ~~~
 
-    The Operator will remove the node with the highest number in its address (in this case, the address including `cockroachdb-3`) from the cluster.
+    The Operator will remove the node with the highest number in its address (in this case, the address including `cockroachdb-3`) from the cluster. It will also remove the persistent volume that was mounted to the pod.
 
 1. Verify that the pod was successfully removed:
 
@@ -98,45 +98,6 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     cockroachdb-1               1/1       Running   0          47m
     cockroachdb-2               1/1       Running   0          3m
     ...
-    ~~~
-
-1. You should also remove the persistent volume that was mounted to the pod. Get the persistent volume claims for the volumes:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get pvc
-    ~~~
-
-    ~~~
-    NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
-    datadir-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
-    datadir-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
-    datadir-cockroachdb-3   Bound    pvc-75e561ba-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
-    ~~~
-
-1. Verify that the PVC with the highest number in its name is no longer mounted to a pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl describe pvc datadir-cockroachdb-3
-    ~~~
-
-    ~~~
-    Name:          datadir-cockroachdb-3
-    ...
-    Mounted By:    <none>
-    ~~~
-
-1. Remove the persistent volume by deleting the PVC:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl delete pvc datadir-cockroachdb-3
-    ~~~
-
-    ~~~
-    persistentvolumeclaim "datadir-cockroachdb-3" deleted
     ~~~
 </section>
 

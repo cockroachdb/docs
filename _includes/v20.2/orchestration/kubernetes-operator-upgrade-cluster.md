@@ -74,7 +74,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     ...
     ~~~
     
-1. This will continue until all of the pods have restarted and are running the new image. To check the image of each pod to determine whether they've all be upgraded, run:
+1. This will continue until all of the pods have restarted and are running the new image. The process takes time because the Operator works to ensure that CockroachDB does not lose quorum during the upgrade. To determine whether the pods have been upgraded, check the image of each pod:
 
     {% include copy-clipboard.html %}
     ~~~ shell
