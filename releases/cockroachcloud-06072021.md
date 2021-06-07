@@ -16,10 +16,10 @@ Get future release notes emailed to you:
   
 ### Console changes
 
+- All CockroachCloud Dedicated users now have access to the [**Statements**](../cockroachcloud/statements-page.html) and [**Sessions**](../cockroachcloud/sessions-page.html) pages in the Console.
 - Previously, users were getting stuck during the verification step of creating an [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoint. Now, users can enter the verification step of the **Add Endpoint Connection** dialog with an incomplete connection endpoint ID preset.
 - Added a **Cloud** column to the **Clusters** page so users can see which cloud provider any cluster is using without having to click through to the **Cluster Overview** page.
 - The maximum number of nodes in a cluster created through the Console was raised to 50 nodes per region and 150 nodes per cluster.
-- Updated the **Statements** and **Sessions** pages for 21.1 clusters that are supported by protobufs in v21.1.0.
 
 ### Bug fixes
 
