@@ -17,6 +17,10 @@
     By default, the Operator is configured to install in the `default` namespace. To use the Operator in a custom namespace, download the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/master/manifests/operator.yaml) and edit all instances of `namespace: default` to specify your custom namespace. Then apply this version of the manifest to the cluster with `kubectl apply -f {local-file-path}` instead of using the command below.
     {{site.data.alerts.end}}
 
+    {{site.data.alerts.callout_info}}
+    The Operator can only install CockroachDB into its own namespace.
+    {{site.data.alerts.end}}
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml

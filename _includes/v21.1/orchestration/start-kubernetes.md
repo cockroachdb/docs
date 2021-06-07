@@ -6,7 +6,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 - [Manual AWS](#manual-aws)
 
 {{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is currently supported for GKE only.
+The CockroachDB Kubernetes Operator is currently supported for GKE and [Red Hat OpenShift](https://www.openshift.com/) only. For details on using the Operator with the OpenShift platform, see [Deploy CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html).
 {{site.data.alerts.end}}
 
 ### Hosted GKE
