@@ -6,9 +6,9 @@
 
 ### Recommendations
 
-<!--
+{% comment %}
 - All CockroachCloud clusters use 3 Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (e.g., 3, 6, or 9 nodes per region).
--->
+{% endcomment %}
 
 - We recommend you use the same number of nodes in each region of your cluster for best performance and stability.
 - Adding or removing regions or nodes incurs a non-trivial amount of load on the cluster. Changing the cluster configuration during times of heavy traffic can result in degraded application performance or longer times for node modifications. We recommend you add or remove regions or nodes from a cluster when the cluster isn't experiencing heavy traffic.
