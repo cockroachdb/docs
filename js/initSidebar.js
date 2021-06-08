@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
   var $sidebar = $('#sidebar');
   var $sidebars = $('.js-sidebar');
 
