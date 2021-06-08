@@ -137,9 +137,9 @@ function renderSidebar(sidebar) {
   }
 
   const $sidebar = $('#sidebar');
-  const html = renderItems(sidebar.items, []).html();
+  const $html = renderItems(sidebar.items, []).html();
 
-  $sidebar.html(html)
+  $sidebar.html($html)
     .find("li.active")
     .parents('li')
     .toggleClass("active");
