@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through an example use case for multi-region application development and deployment. It is the first section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 ## Overview
 
 MovR is a fictional company that offers users a platform for sharing vehicles, like scooters, bicycles, and skateboards, in select cities across the United States and Europe. To serve users in two continents, they need an application that is globally available, [resilient to  system failures](multi-region-use-case.html#resiliency-and-distributed-deployments), and [optimized for latency](multi-region-use-case.html#latency-in-global-applications). To meet these requirements, the application is built on CockroachDB, and designed and deployed to consider resiliency and latency across different geographic locations.
