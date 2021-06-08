@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through creating a database schema for an example multi-region application. It is the second section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 ## Before you begin
 
 Before you begin this section, complete the previous section of the tutorial, [MovR: An Example Multi-Region Use-Case](multi-region-use-case.html).
@@ -22,9 +24,9 @@ These tables store information about the users and vehicles registered with MovR
 
 Here's a diagram of the database schema, generated with [DBeaver](dbeaver.html):
 
-<img src="{{ 'images/v19.2/movr_v2.png' | relative_url }}" alt="MovR database schema" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v20.2/movr_v2.png' | relative_url }}" alt="MovR database schema" style="border:1px solid #eee;max-width:100%" />
 
-Initialization statements for `movr` are defined in [`dbinit.sql`](https://github.com/cockroachlabs/movr-flask/blob/master/dbinit.sql), a SQL file that you use later in this tutorial to load the database to a running cluster.
+Initialization statements for `movr` are defined in [`dbinit.sql`](https://github.com/cockroachlabs/movr-flask/blob/v1-doc-includes/dbinit.sql), a SQL file that you use later in this tutorial to load the database to a running cluster.
 
 {{site.data.alerts.callout_info}}
 This database is a slightly simplified version of the [`movr` database](movr.html) that is built into the `cockroach` binary. Although the two databases are similar, they have different schemas.
@@ -71,21 +73,9 @@ See below for the [`CREATE TABLE`](create-table.html) statements for each table 
 
 Here is the `CREATE TABLE` statement for the `users` table:
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE users (
-    id UUID NOT NULL,
-    city STRING NOT NULL,
-    first_name STRING NULL,
-    last_name STRING NULL,
-    email STRING NULL,
-    username STRING NULL,
-    password_hash STRING NULL,
-    is_owner BOOL NULL,
-    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-    UNIQUE INDEX users_username_key (username ASC),
-    FAMILY "primary" (id, city, first_name, last_name, email, username, password_hash, is_owner),
-    CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
-);
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql |-- START users |-- END users %}
 ~~~
 
 Note the following:
@@ -97,27 +87,9 @@ Note the following:
 
 ## The `vehicles` table
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE vehicles (
-    id UUID NOT NULL,
-    city STRING NOT NULL,
-    type STRING NULL,
-    owner_id UUID NULL,
-    date_added DATE NULL,
-    status STRING NULL,
-    last_location STRING NULL,
-    color STRING NULL,
-    brand STRING NULL,
-    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-    CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
-    INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC, status ASC) PARTITION BY LIST (city) (
-        PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-        PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-        PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-    ),
-    FAMILY "primary" (id, city, type, owner_id, date_added, status, last_location, color, brand),
-    CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
-);
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql |-- START vehicles |-- END vehicles %}
 ~~~
 
 Note the following:
@@ -140,36 +112,10 @@ Note the following:
 
 ## The `rides` table
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> CREATE TABLE rides (
-    id UUID NOT NULL,
-    city STRING NOT NULL,
-    vehicle_id UUID NULL,
-    rider_id UUID NULL,
-    rider_city STRING NOT NULL,
-    start_location STRING NULL,
-    end_location STRING NULL,
-    start_time TIMESTAMPTZ NULL,
-    end_time TIMESTAMPTZ NULL,
-    length INTERVAL NULL,
-    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
-    CONSTRAINT fk_city_ref_users FOREIGN KEY (rider_city, rider_id) REFERENCES users(city, id),
-    CONSTRAINT fk_vehicle_city_ref_vehicles FOREIGN KEY (city, vehicle_id) REFERENCES vehicles(city, id),
-    INDEX rides_auto_index_fk_city_ref_users (rider_city ASC, rider_id ASC) PARTITION BY LIST (rider_city) (
-        PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-        PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-        PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-    ),
-    INDEX rides_auto_index_fk_vehicle_city_ref_vehicles (city ASC, vehicle_id ASC) PARTITION BY LIST (city) (
-        PARTITION us_west VALUES IN (('seattle'), ('san francisco'), ('los angeles')),
-        PARTITION us_east VALUES IN (('new york'), ('boston'), ('washington dc')),
-        PARTITION europe_west VALUES IN (('amsterdam'), ('paris'), ('rome'))
-    ),
-    FAMILY "primary" (id, city, rider_id, rider_city, vehicle_id, start_location, end_location, start_time, end_time, length),
-    CONSTRAINT check_city CHECK (city IN ('amsterdam':::STRING, 'boston':::STRING, 'los angeles':::STRING, 'new york':::STRING, 'paris':::STRING, 'rome':::STRING, 'san francisco':::STRING, 'seattle':::STRING, 'washington dc':::STRING))
-);
+> {% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/dbinit.sql |-- START rides |-- END rides %}
 ~~~
-
 
 Note the following:
 
