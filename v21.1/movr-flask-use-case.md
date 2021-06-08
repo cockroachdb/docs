@@ -29,8 +29,8 @@ Limiting latency improves the user experience, and it can also help you avoid pr
 
 For the purpose of this tutorial, we'll focus on two types of latency:
 
-- [*Database latency*](#database-latency), which we define as the time required to complete read/write operations on the database, issued by an application.
-- [*Application latency*](#application-latency), which we define as the time required to make requests to an application from a client.
+- [*Database latency*](#reducing-database-latency), which we define as the time required to complete read/write operations on the database, issued by an application.
+- [*Application latency*](#reducing-application-latency), which we define as the time required to make requests to an application from a client.
 
 ### Reducing database latency
 
@@ -61,4 +61,3 @@ You should now be ready to start [creating a multi-region database schema](movr-
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Define Table Partitions](partitioning.html)
 - [Topology Patterns](topology-patterns.html)
-- [Geo-Partitioned Replicas Topology](topology-geo-partitioned-replicas.html)
