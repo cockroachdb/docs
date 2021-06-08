@@ -54,8 +54,8 @@ function renderSidebar(sidebar) {
   // Otherwise, the sidebar for a `stable` page would
   // inappropriately link to the underlying `v1.0` page instead
   // of the `stable` alias.
-  var pageVersion = (function () {
-    var pathComponents = location.pathname
+  const pageVersion = (function () {
+    const pathComponents = location.pathname
       .replace(sidebar.baseUrl, '')
       .replace(/^\//, '')
       .split('/');
@@ -89,8 +89,8 @@ function renderSidebar(sidebar) {
     if (!items || items.length == 0)
         return $();
 
-    var lis = items.map(function (item) {
-      var urls = (item.urls || []).map(function (url) {
+    const lis = items.map(function (item) {
+      const urls = (item.urls || []).map(function (url) {
         var url = url.replace("${VERSION}", pageVersion);
         // This condition makes it possible to use external
         // urls in the sidebar.
@@ -101,23 +101,23 @@ function renderSidebar(sidebar) {
       });
 
       // this ensures page will be highlighted in sidebar even if URL is accessed without `.html` appended
-      var activePathname = location.pathname.slice(-5) === '.html' ? location.pathname : location.pathname + '.html';
+      const activePathname = location.pathname.slice(-5) === '.html' ? location.pathname : location.pathname + '.html';
 
-      var active = (urls.indexOf(activePathname) !== -1);
+      const active = (urls.indexOf(activePathname) !== -1);
       if (active) {
         // This mutation inside an otherwise pure function is
         // unfortunate, but doing it here avoids a separate
         // traversal of the sidebar data.
-        var breadcrumbs = $("<div>")
+        const breadcrumbs = $("<div>")
           .addClass("collapsed-header__pre")
           .html(paths.join("<div class=\"arrow-down arrow-down--pre\"></div>\n"));
 
-        var title = $("<div>").html(item.title);
+        const title = $("<div>").html(item.title);
         $(".collapsed-header").empty().append(breadcrumbs, title);
       }
 
-      var subitems = renderItems(item.items, paths.concat(item.title));
-      var a = $("<a>")
+      const subitems = renderItems(item.items, paths.concat(item.title));
+      const a = $("<a>")
         .attr("href", urls[0] || "#")
         .html(item.title);
 
