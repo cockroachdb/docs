@@ -24,7 +24,9 @@
           id="sidebarMenu"
           class="col-lg-2 d-lg-block sidebar collapse border-right pt-3 pr-md-0"
         >
+        {% comment %}
           {% include sidebar.html %}
+        {% endcomment %}
         </nav>
 
         {% if page.toc == true %}
@@ -69,7 +71,7 @@
         </script>
     {% endif %}
     <script src="{{ 'js/tocRightScrollHighlight.js' | relative_url }}"></script>
-    {% include_cached google_tag_manager.html %}
+    {% comment %} {% include_cached google_tag_manager.html %} {% endcomment %}
     {% include_cached google_remarketing.html %}
     {% if page.twitter == true %}
       {% include_cached twitter_analytics.html %}
