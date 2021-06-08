@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 {% include {{ page.version.version }}/misc/movr-live-demo.md %}
 
 ## Before you begin
