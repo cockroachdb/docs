@@ -24,6 +24,8 @@ Connection pooling can be a enabled as a feature of the driver, a separate libra
 
 ## Sizing connection pools
 
+Idle connections in CockrochDB do not consume many resources compared to PostgreSQL. Cockroach Labs estimates the memory overhead of idle connections in CockrochDB is 20 kB to 30 kB per connection.
+
 Creating the appropriate size pool of connections is critical to gaining maximum performance in an application. Too few connections in the pool will result in high latency as each operation waits for a connection to open up. But adding too many connections to the pool can also result in high latency as each connection thread is being run in parallel by the system. The time it takes for many threads to complete in parallel is typically higher than the time it takes a smaller number of threads to run sequentially.
 
 Each processor core can only execute one thread at a time. When there are more threads than processor cores, the system will use context switching to [time-slice](https://en.wikipedia.org/wiki/Preemption_(computing)#Time_slice) the thread execution. For example, if you have a system with a single core and two threads, processing threads 1 and 2 in parallel results in the system context switching to pause execution of thread 1 and begin executing thread 2, and then pause execution of thread 2 to resume executing thread 1. Executing thread 1 completely and then executing thread 2 will be faster because the system doesn't need to context switch, even though thread 2 had to wait until thread 1 fully completed to begin executing.
