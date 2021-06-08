@@ -128,7 +128,7 @@ CockroachDB requires TCP communication on two ports:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
 ## Step 3. Configure the cluster

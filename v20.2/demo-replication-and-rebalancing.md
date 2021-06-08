@@ -89,7 +89,8 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-4. In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+4. In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
+
 
     {% include copy-clipboard.html %}
     ~~~ shell
