@@ -31,6 +31,10 @@ $ cockroach init --help
 
 The `cockroach init` command supports the following [client connection](#client-connection) and [logging](#logging) flags.
 
+{{site.data.alerts.callout_info}}
+`cockroach init` must target one of the nodes that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster. Otherwise, the command will not initialize the cluster correctly.
+{{site.data.alerts.end}}
+
 ### Client connection
 
 {% include {{ page.version.version }}/sql/connection-parameters.md %}
@@ -57,7 +61,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 </section>
 
 <section class="filter-content" markdown="1" data-scope="secure">
-1. SSH to the machine where the node has been started.
+1. SSH to the machine where the node has been started. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster.
 
 2. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
 
@@ -72,7 +76,7 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 </section>
 
 <section class="filter-content" markdown="1" data-scope="insecure">
-1. SSH to the machine where the node has been started.
+1. SSH to the machine where the node has been started. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster.
 
 2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
 
@@ -96,11 +100,11 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 
 2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
 
-3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of any node:
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the node.  This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --certs-dir=certs --host=<address of any node>
+    $ cockroach init --certs-dir=certs --host=<address of any node on --join list>
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
@@ -109,11 +113,11 @@ Usage of `cockroach init` assumes that nodes have already been started with [`co
 <section class="filter-content" markdown="1" data-scope="insecure">
 1. [Install the `cockroach` binary](install-cockroachdb.html) on a machine separate from the node.
 
-2. Run the `cockroach init` command with the `--host` flag set to the address of any node:
+2. Run the `cockroach init` command with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](cockroach-start.html#networking) when starting the cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
     At this point, all the nodes complete startup and print helpful details to the [standard output](cockroach-start.html#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.

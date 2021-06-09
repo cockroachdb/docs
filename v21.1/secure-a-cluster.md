@@ -135,7 +135,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include copy-clipboard.html %}
     ~~~ shell
