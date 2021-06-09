@@ -26,9 +26,9 @@ URLs for the files you want to import must use the format shown below. For examp
 
 Location                                                    | Scheme      | Host                                             | Parameters                                                                 
 ------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
-Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` <br><br>For more information, see [Authentication - AWS](#aws).                               
-Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
-Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` <br><br>**Deprecation notice:** In v21.1, we suggest you do not use the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), as the default behavior will be changing in v21.2. For more information, see [Authentication - GCS](#gcs).
+Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` <br><br>For more information, see [Authentication - AWS](#amazon-s3).                               
+Azure                                                       | `azure`     | Storage container                                | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
+Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` <br><br>**Deprecation notice:** In v21.1, we suggest you do not use the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), as the default behavior will be changing in v21.2. For more information, see [Authentication - GCS](#google-cloud-storage).
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#http).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services)                                     | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#s3-compatible-services).   
@@ -39,10 +39,6 @@ The location parameters often contain special characters that need to be URI-enc
 
 {{site.data.alerts.callout_info}}
 You can disable the use of implicit credentials when accessing external cloud storage services for various bulk operations by using the [`--external-io-disable-implicit-credentials` flag](cockroach-start.html#security).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure. <br><br>For encryption at rest, if your cloud provider offers transparent data encryption (e.g., [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)), you can use that to ensure that your backups are not stored on disk in cleartext. <br><br>CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
 {{site.data.alerts.end}}
 
 <a name="considerations"></a>
@@ -62,7 +58,7 @@ Location     | Example
 Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
 Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
 Google Cloud | `gs://acme-co`                                                     
-NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
+NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`
 
 {{site.data.alerts.callout_info}}
 URLs for [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) should be prepended with `experimental-`.
@@ -80,33 +76,82 @@ Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCE
 Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
 Google Cloud | `gs://acme-co/employees.sql`                                                     
 HTTP         | `http://localhost:8080/employees.sql`                                            
-NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
+NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`
 
 {{site.data.alerts.callout_info}}
 HTTP storage can only be used for [`IMPORT`](import.html).
 {{site.data.alerts.end}}
 
+## Encryption
+
+[Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security) is used for encryption in transit when transmitting data to or from Amazon S3, Google Cloud Storage, and Azure.
+
+For encryption at rest, if your cloud provider offers transparent data encryption, you can use that to ensure that your backups are not stored on disk in cleartext.
+
+* [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html)
+* [Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-service-encryption#about-azure-storage-encryption)
+* [Google Cloud Storage](https://cloud.google.com/storage/docs/encryption)
+
+CockroachDB also provides client-side encryption of backup data, for more information, see [Take and Restore Encrypted Backups](take-and-restore-encrypted-backups.html).
+
 ## Authentication
 
 Authentication behavior differs by cloud provider:
 
-### AWS
+### Amazon S3
 
-- If the `AUTH` parameter is not provided, AWS connections default to `specified` and the access keys must be provided in the URI parameters.
-- If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/).
+  - If the `AUTH` parameter is not provided, AWS connections default to `specified` and the access keys must be provided in the URI parameters.
 
-### GCS
+    As an example:
+
+    ~~~sql
+    BACKUP DATABASE <database> INTO 's3://{bucket name}/{path in bucket}/?AWS_ACCESS_KEY_ID={access key ID}&AWS_SECRET_ACCESS_KEY={secret access key}';
+    ~~~
+
+  -  If the `AUTH` parameter is `implicit`, the access keys can be omitted and [the credentials will be loaded from the environment](https://docs.aws.amazon.com/sdk-for-go/api/aws/session/), i.e. the machines running the backup.
+
+    ~~~sql
+    BACKUP DATABASE <database> INTO 's3://{bucket name}/{path}?AUTH=implicit';
+    ~~~
+
+    You [can associate an EC2 instance with an IAM role](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) to provide implicit access to S3 storage within the IAM role's policy. In the following command, the `instance example` EC2 instance is [associated](https://docs.aws.amazon.com/cli/latest/reference/ec2/associate-iam-instance-profile.html) with the `example profile` instance profile, giving the EC2 instance implicit access to any `example profile` S3 buckets.
+
+    ~~~shell
+    aws ec2 associate-iam-instance-profile --iam-instance-profile Name={example profile} --region={us-east-2} --instance-id {instance example}
+    ~~~
+
+### Google Cloud Storage
 
 If the `AUTH` parameter is set to:
 
-- `default`: GCS connections only use the key provided in the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), and will error if not present.
-- `specified`: The JSON object for authentication is given by the `CREDENTIALS` parameter. The JSON key object should be base64-encoded (using the standard encoding in [RFC 4648](https://tools.ietf.org/html/rfc4648)).
-- `implicit`: Only use the [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application).
-- If `AUTH` is not provided, use the key provided in the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html). Otherwise, use environment data.
+  - `default`: GCS connections only use the key provided in the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html), and will error if not present.
+  - `specified`: Pass the JSON object for authentication to the `CREDENTIALS` parameter. The JSON key object needs to be base64-encoded (using the standard encoding in [RFC 4648](https://tools.ietf.org/html/rfc4648)).
+
+    To access the storage bucket with specified credentials, it's necessary to [create a service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts) and add the service account address to the permissions on the specific storage bucket. [The JSON object for authentication](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#iam-service-account-keys-create-console) can be downloaded, encoded, and then passed to the `CREDENTIALS` parameter.
+
+    ~~~sql
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}';
+    ~~~
+
+  - `implicit`: The instance can use [environment data](https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application) from the service account to access resources. This will provide implicit access to the storage bucket.
+
+    ~~~sql
+    BACKUP DATABASE <database> INTO 'gs://{bucket name}/{path}?AUTH=implicit';
+    ~~~
+
+  - If `AUTH` is not provided, use the key provided in the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html). Otherwise, use environment data.
 
     {{site.data.alerts.callout_info}}
     **Deprecation notice:** Currently, GCS connections default to the `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html). This default behavior will no longer be supported in v21.2. If you are relying on this default behavior, we recommend adjusting your queries and scripts to now specify the `AUTH` parameter you want to use. Similarly, if you are using the `cloudstorage.gs.default.key` cluster setting to authorize your GCS connection, we recommend switching to use `AUTH=specified` or `AUTH=implicit`. `AUTH=specified` will be the default behavior in v21.2 and beyond.
     {{site.data.alerts.end}}
+
+### Azure Storage
+
+To access Azure storage containers, it is sometimes necessary to url encode the account key since it is base64-encoded and may contain `+`, `/`, `=` characters. For example:
+
+~~~sql
+BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
 
 ### HTTP
 
