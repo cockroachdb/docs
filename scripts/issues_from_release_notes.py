@@ -35,28 +35,18 @@ release_notes = args.release_notes
 milestone = args.milestone
 
 # Map milestones to their internal IDs.
+if milestone == "22.2"
+    milestone = 26
+if milestone == "22.1"
+    milestone = 25
+if milestone == "21.2":
+    milestone = 24
 if milestone == "21.1":
     milestone = 23
-if milestone == "20.2.x":
-    milestone = 24
 if milestone == "20.2":
     milestone = 18
-if milestone == "20.1.x":
-    milestone = 22
 if milestone == "20.1":
     milestone = 17
-if milestone == "19.2.x":
-    milestone = 20
-if milestone == "19.2":
-    milestone = 14
-if milestone == "19.1":
-    milestone = 15
-if milestone == "19.1.x":
-    milestone = 16
-if milestone == "2.1.x":
-    milestone = 12
-if milestone == "2.1":
-    milestone = 8
 
 bullets_with_comments = 0
 issues_created = 0
@@ -85,7 +75,7 @@ with open("../releases/" + release_notes) as file:
             try:
                 issue = {"title": title,
                          "body": "PR: https://github.com/cockroachdb/cockroach/pull/" + str(pr_num) + "\n\n" + "From release notes:\n> " + line[line.find("-")+2:-1],
-                         "labels": ["C-release-note"],
+                         "labels": ["C-product-change"],
                          "milestone": milestone}
                 url = "https://api.github.com/repos/cockroachdb/docs/issues"
                 headers = {"Authorization": "token " + args.github_access_token}
