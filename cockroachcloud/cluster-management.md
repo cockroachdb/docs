@@ -10,7 +10,7 @@ This page describes the cluster management and cluster deletion workflows.
 
 ## View Clusters page
 
-On [logging in to the Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
+On [logging in to the CockroachCloud Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
 
 For each cluster, the following details display:
 

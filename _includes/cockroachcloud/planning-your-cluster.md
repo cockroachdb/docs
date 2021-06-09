@@ -2,7 +2,7 @@
 
 - Multi-region clusters require at least 3 nodes per region because 2-replica configurations are less reliable than a single replica.
 - We don't allow 2-region clusters because they are less stable and would be unable to survive a single region failure.
-- You can have a maximum of 9 regions per cluster through the console. If you need to add more regions, [contact us](https://support.cockroachlabs.com).
+- You can have a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact us](https://support.cockroachlabs.com).
 
 ### Recommendations
 
