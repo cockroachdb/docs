@@ -22,7 +22,7 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster. I
 
 1. In the top right corner of the CockroachCloud Console, click the **Connect** button.
 
-    The **Connection info** modal displays on the **Step 2. Connect > Command Line** subtab.
+    The **Connection to {cluster-name}** modal displays on the **Step 2. Connect > Command Line** subtab.
 
 1. _(Optional)_ To configure your connection information, click **Go Back**:
     - Select the **SQL User** you want to connect with.
@@ -44,75 +44,103 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster. I
 
 To connect to your cluster with the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html):
 
-1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
+1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
 
-    Alternatively, you can set [`sslmode=require`](authentication.html#ssl-mode-settings). This is less secure than using a CA certificate and should not be used with sensitive data.
-    
-1. Create a `certs` directory on your local machine:
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="mac">Mac</button>
+  <button class="filter-button page-level" data-scope="linux">Linux</button>
+  <button class="filter-button page-level" data-scope="windows">Windows</button>
+</div>
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
+1. If you have not done so already, run the first command in the dialog to install the CockroachDB binary and copy it into the `PATH`:
 
-1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
+  <section class="filter-content" markdown="1" data-scope="mac">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl https://binaries.cockroachdb.com/cockroach-v21.1.0.darwin-10.9- amd64.tgz | tar -xJ && cp -i cockroach-v21.1.0.darwin -10.9-amd64/cockroach /usr/local/bin/
+  ~~~
+  </section>
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mv /path/to/cc-ca.crt /path/to/certs
-    ~~~
+  <section class="filter-content" markdown="1" data-scope="linux">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl https://binaries.cockroachdb.com/cockroach-v21.1.0.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-v21.1.0.linux-amd64/cockroach /usr/local/bin/
+  ~~~
+  </section>
 
-    For example:
+  <section class="filter-content" markdown="1" data-scope="windows">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  mkdir -p %APPDATA%\Cockroach && copy https://binaries.cockroachdb.com/cockroach-v21.1.2.windows-6.2-amd64.zip %APPDATA%\Cockroach && [Environment]::SetEnvironmentVariable("PATH", "%APPDATA%\Cockroach", "User")
+  ~~~
+  </section>
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mv /Users/maxroach/Downloads/cc-ca.crt /Users/maxroach/certs
-    ~~~    
+1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
 
-1. If you have not done so already, [install the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html).
+  <section class="filter-content" markdown="1" data-scope="mac">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+  ~~~
+  </section>
+
+  <section class="filter-content" markdown="1" data-scope="linux">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+  ~~~
+  </section>
+
+  <section class="filter-content" markdown="1" data-scope="windows">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+  ~~~
+  </section>
+  
+
 1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
-
-    Be sure to replace the `<your_certs_ directory>` placeholder with the path to the `certs` directory you created earlier.
-
-1. Enter the [SQL user](user-authorization.html)'s password and hit enter.
-
-    {{site.data.alerts.callout_info}}
-    If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
-    {{site.data.alerts.end}}
 
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
 </section>
 
 <section class="filter-content" markdown="1" data-scope="connection-string">
-To connect to your cluster with your application, use the connection string provided in the Console::
+To connect to your cluster with your application, use the connection string provided in the Console:
 
-1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
-1. Create a `certs` directory on your local machine:
+1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="mac">Mac</button>
+  <button class="filter-button page-level" data-scope="linux">Linux</button>
+  <button class="filter-button page-level" data-scope="windows">Windows</button>
+</div>
 
-1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
+1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mv /path/to/cc-ca.crt /path/to/certs
-    ~~~
+  <section class="filter-content" markdown="1" data-scope="mac">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+  ~~~
+  </section>
 
-    For example:
+  <section class="filter-content" markdown="1" data-scope="linux">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+  ~~~
+  </section>
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mv /Users/maxroach/Downloads/cc-ca.crt /Users/maxroach/certs
-    ~~~    
+  <section class="filter-content" markdown="1" data-scope="windows">
+  {% include_cached copy-clipboard.html %}
+  ~~~ shell
+  curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+  ~~~
+  </section>
 
 1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachCloud Free (beta).
 1. Add your copied connection string to your application code.
-
-    Be sure to replace the `<your_certs_ directory>` placeholder with the path to the `certs` directory you created earlier.
 
     {{site.data.alerts.callout_info}}
     If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.

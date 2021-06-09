@@ -22,19 +22,19 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
-2. On the **Overview** page, click **Create Cluster**.
-3. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
-4. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
-5. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).
-6. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
-7. Click **Next**.
-8. On the **Summary** page, enter your credit card details.
+1. On the **Overview** page, click **Create Cluster**.
+1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
+1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.
+1. For **Hardware per node**, select `Option 1` (2vCPU, 60 GB disk).
+1. Name the cluster. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes).
+1. Click **Next**.
+1. On the **Summary** page, enter your credit card details.
 
     {{site.data.alerts.callout_info}}
     You will not be charged until after your free trial expires in 30 days.
     {{site.data.alerts.end}}
 
-9. Click **Create cluster**.
+1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 minutes. Watch this [Getting Started with CockroachCloud](https://youtu.be/3hxSBeE-1tM) video while you wait.
 
@@ -43,94 +43,142 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 ## Step 2. Create a SQL user
 
 1. In the left navigation bar, click **SQL Users**.
-2. Click **Add User**. The **Add User** dialog displays.
-3. Enter a **Username** and **Password**.
-4. Click **Save**.
+1. Click **Add User**. The **Add User** dialog displays.
+1. Enter a **Username** and **Password**.
+1. Click **Save**.
 
 ## Step 3. Authorize your network
 
 1. In the left navigation bar, click **Networking**.
-2. Click **Add Network**. The **Add Network** dialog displays.
-3. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
-4. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
-5. Click **Apply**.
+1. Click **Add Network**. The **Add Network** dialog displays.
+1. From the **Network** dropdown, select **Current Network** to auto-populate your local machine's IP address.
+1. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
+1. Click **Apply**.
 
 ## Step 4. Get the connection string
 
-1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog displays.
-2. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
-3. Verify that the `us-west2 GCP` region and `default_db` database are selected.
-4. Click **Continue**. The **Connect** tab is displayed.
-5. Click **Connection string** to get the connection string for your cluster.
-6. Create a `certs` directory on your local workstation.
-7. Click the name of the `ca.crt` file to download the CA certificate to your local machine.
-8. Move the downloaded `ca.crt` file to the `certs` directory.
+1. In the top-right corner of the Console, click the **Connect** button. The **Connect to {cluster-name}** dialog will display.
+1. From the **SQL user** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
+1. Verify that the `us-west2 GCP` region and `defaultdb` database are selected.
+1. Click **Next**. The **Connect** tab is displayed.
+1. Select your operating system from the dropdown menu.
+1. Click the **Connection string** tab to get the connection string for your cluster.
+1. In your terminal, run the first command in the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
+
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
+    </div>
+    
+    <section class="filter-content" markdown="1" data-scope="mac">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="linux">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="windows">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+    ~~~
+    </section>
 
 ## Step 5. Run your first query
 
 For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"]}}/movr.html) to run the first query. On your local machine:
 
-1. Download the CockroachDB binary:
+1. If you have not done so already, run the following command to install the CockroachDB binary and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
       <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xz
+    curl https://binaries.cockroachdb.com/cockroach-v21.1.0.darwin-10.9- amd64.tgz | tar -xJ && cp -i cockroach-v21.1.0.darwin -10.9-amd64/cockroach /usr/local/bin/
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
+    curl https://binaries.cockroachdb.com/cockroach-v21.1.0.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-v21.1.0.linux-amd64/cockroach /usr/local/bin/
     ~~~
     </section>
 
-2. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
-
-    <div class="filters clearfix">
-      <button class="filter-button page-level" data-scope="mac">Mac</button>
-      <button class="filter-button page-level" data-scope="linux">Linux</button>
-    </div>
-
-    <section class="filter-content" markdown="1" data-scope="mac">
+    <section class="filter-content" markdown="1" data-scope="windows">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
+    mkdir -p %APPDATA%\Cockroach && copy https://binaries.cockroachdb.com/cockroach-v21.1.2.windows-6.2-amd64.zip %APPDATA%\Cockroach && [Environment]::SetEnvironmentVariable("PATH", "%APPDATA%\Cockroach", "User")
     ~~~
     </section>
 
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
 
-3. Initialize the `movr` [workload](../{{site.versions["stable"]}}/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
+1. Initialize the `movr` [workload](../{{site.versions["stable"]}}/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
 
     In the [connection string](../{{site.versions["stable"]}}/connection-parameters.html), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
 
+    <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach workload init movr \
-    'postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
+    </section>
 
-4. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
+    <section class="filter-content" markdown="1" data-scope="linux">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr \
+    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ~~~
+    </section>
 
+    <section class="filter-content" markdown="1" data-scope="windows">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr \
+    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%APPDATA%/.postgresql/root.crt'
+    ~~~
+    </section>
+
+1. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
+    
+    <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257/movr?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
+    --url='postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="linux">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql \
+    --url='postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="windows">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach workload init movr \
+    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%appdata%/.postgresql/root.crt'
+    ~~~
+    </section>
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -149,7 +197,7 @@ For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"
     (6 rows)
     ~~~
 
-5. Run your first query:
+1. Run your first query:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
