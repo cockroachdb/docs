@@ -10,6 +10,6 @@ CockroachDB's support of the PostgreSQL wire protocol makes most PostgreSQL driv
 
 ## See also
 
-- [Build an App with CockroachDB](hello-world-example-apps.html)
+- [Sample Apps](hello-world-example-apps.html)
 - [Install a Postgres Client](install-client-drivers.html)
 - [Third-Party Tools Supported by the Community](community-tooling.html)
