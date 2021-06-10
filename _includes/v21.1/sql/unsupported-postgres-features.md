@@ -1,7 +1,7 @@
 - Stored procedures and functions
 - Triggers
 - Events
-- User-defined functions
+- User-defined functions (UDF)
 - FULLTEXT functions and indexes
 - Drop primary key
 - XML Functions
