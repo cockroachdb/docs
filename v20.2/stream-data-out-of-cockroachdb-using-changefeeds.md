@@ -710,12 +710,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 4. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<organization name>';
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
@@ -766,7 +766,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE employees (
-         dog_id INT REFERENCES office_dogs_avro (id),
+         dog_id INT REFERENCES office_dogs (id),
          employee_name STRING);
     ~~~
 
