@@ -72,7 +72,7 @@ From the **Overview** page, you can connect to your cluster. For more informatio
 
 ## Add or remove nodes from a cluster
 
-You can add or remove nodes from your cluster through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
+You can add or remove nodes from your cluster through the Console. See [Planning your cluster](#planning-your-cluster) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
 At this time, you cannot use the Console to scale up a single-node cluster or scale down to a single-node cluster. For these changes, contact [Support](https://support.cockroachlabs.com).

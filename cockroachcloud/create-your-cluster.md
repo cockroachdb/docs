@@ -61,7 +61,7 @@ You cannot create a 2-region cluster because it would be unable to survive a sin
 {% include cockroachcloud/nodes-limitation.md %}
 
 {{site.data.alerts.callout_info}}
-You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
+Multi-region clusters must contain at least 3 regions. With the default replication factor of 3, this ensures that data spread across regions can survive the loss of one region.
 {{site.data.alerts.end}}
 
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
