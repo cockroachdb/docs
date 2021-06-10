@@ -392,6 +392,17 @@ layout: null
 /docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
 /docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
 /docs/stable/collatedstring.html /docs/stable/collate.html 301
+/docs/v21.1/performance-tuning.html /docs/v21.1/make-queries-fast.html 301
+/docs/stable/performance-tuning.html /docs/stable/make-queries-fast.html 301
+/docs/cockroachcloud/stable/cockroachcloud-connect-to-your-cluster.html /docs/cockroachcloud/connect-to-your-cluster.html 301
+/docs/interleave-in-parent.html /docs/stable/interleave-in-parent.html 301
+/docs/cockroachdb-in-comparison.html /docs/stable/cockroachdb-in-comparison.html 301
+/docs/stable/orchestra /docs/stable/orchestrate-cockroachdb-with-kubernetes.html 301
+/docs/use-the-built-in-sql-client.html /docs/stable/cockroach-sql.html 301
+/docs/cockroachcloud/stable/cockroachcloud-create-your-cluster.html /docs/cockroachcloud/create-your-cluster.html 301
+/docs/configure-replication-zones.html /docs/stable/configure-replication-zones.html 301
+/docs/start-a-local-cluster.html /docs/stable/start-a-local-cluster.html 301
+/docs/column-families.html /docs/stable/column-families.html 301
 
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
