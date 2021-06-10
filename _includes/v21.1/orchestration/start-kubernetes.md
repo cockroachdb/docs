@@ -6,7 +6,7 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 - [Manual AWS](#manual-aws)
 
 {{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is currently supported for GKE and [Red Hat OpenShift](https://www.openshift.com/) only. For details on using the Operator with the OpenShift platform, see [Deploy CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html).
+The CockroachDB Kubernetes Operator is currently supported for GKE. You can also use the Operator on platforms such as [Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
 {{site.data.alerts.end}}
 
 ### Hosted GKE
@@ -25,7 +25,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE and [Red Hat 
 
 2. From your local workstation, start the Kubernetes cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud container clusters create cockroachdb --machine-type n2-standard-4
     ~~~
@@ -40,7 +40,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE and [Red Hat 
 
 3. Get the email address associated with your Google Cloud account:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -55,7 +55,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE and [Red Hat 
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding \
     --clusterrole=cluster-admin \
@@ -78,7 +78,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE and [Red Hat 
     To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
     {{site.data.alerts.end}}
     
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \

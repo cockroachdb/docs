@@ -24,7 +24,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. From your local workstation, edit the `cockroachdb` service to add the `prometheus: cockroachdb` label:
 
     <section class="filter-content" markdown="1" data-scope="operator">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
     ~~~
@@ -37,7 +37,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     </section>
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc cockroachdb prometheus=cockroachdb
     ~~~
@@ -50,7 +50,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label svc my-release-cockroachdb prometheus=cockroachdb
     ~~~
@@ -65,10 +65,10 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. Install [CoreOS's Prometheus Operator](https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/release-0.43/bundle.yaml):
     
     {{site.data.alerts.callout_info}}
-    We recommend checking for the latest Prometheus Operator [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) and specifying this in the below command.
+    We recommend checking for the latest Prometheus Operator [release version](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md) and specifying this version in the following command.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
     -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.47.1/bundle.yaml
@@ -92,7 +92,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 1. Confirm that the `prometheus-operator` has started:
 
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get deploy prometheus-operator
     ~~~
@@ -104,7 +104,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
 1. Download our Prometheus manifest:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/prometheus.yaml
     ~~~
@@ -113,7 +113,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
 1. Apply the Prometheus manifest. This creates the various objects necessary to run a Prometheus instance:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f prometheus.yaml
     ~~~
@@ -130,7 +130,7 @@ If you're on Hosted GKE, before starting, make sure the email address associated
 
     1. Port-forward from your local machine to the pod running Prometheus:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl port-forward prometheus-cockroachdb-0 9090
         ~~~
@@ -157,9 +157,9 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Download our <a href="https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml" download><code>alertmanager-config.yaml</code></a> configuration file:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -OOOOOOOOO \
+    $ curl -O \
     https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager-config.yaml
     ~~~
 
@@ -167,7 +167,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Add this configuration to the Kubernetes cluster as a secret, renaming it to `alertmanager.yaml` and labelling it to make it easier to find:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret generic alertmanager-cockroachdb \
     --from-file=alertmanager.yaml=alertmanager-config.yaml
@@ -177,7 +177,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
     secret/alertmanager-cockroachdb created
     ~~~
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl label secret alertmanager-cockroachdb app=cockroachdb
     ~~~
@@ -192,7 +192,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Use our [`alertmanager.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alertmanager.yaml) file to create the various objects necessary to run an Alertmanager instance, including a ClusterIP service so that Prometheus can forward alerts:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alertmanager.yaml
@@ -207,7 +207,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     1. Port-forward from your local machine to the pod running Alertmanager:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl port-forward alertmanager-cockroachdb-0 9093
         ~~~
@@ -222,7 +222,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
 1. Add CockroachDB's starter [alerting rules](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/prometheus/alert-rules.yaml):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply \
     -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/prometheus/alert-rules.yaml
@@ -244,7 +244,7 @@ Active monitoring helps you spot problems early, but it is also essential to sen
 
     1. Use the `kubectl edit` command to open the rules for editing:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl edit prometheusrules prometheus-cockroachdb-rules
         ~~~

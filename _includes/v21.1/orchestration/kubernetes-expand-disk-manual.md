@@ -7,7 +7,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 1. Get the persistent volume claims for the volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc
     ~~~
@@ -21,7 +21,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 1. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe storageclass standard
     ~~~
@@ -41,7 +41,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 	If necessary, edit the storage class:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch storageclass standard -p '{"allowVolumeExpansion": true}'
     ~~~
@@ -56,7 +56,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
     The requested `storage` value must be larger than the previous value. You cannot use this method to decrease the disk size.
 	{{site.data.alerts.end}}
 
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl patch pvc datadir-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
     ~~~
@@ -67,7 +67,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 1. Check the capacity of the persistent volume claim:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc datadir-cockroachdb-0
     ~~~	
@@ -85,7 +85,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 1. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
 
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe pvc datadir-cockroachdb-0
     ~~~
@@ -96,7 +96,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 1.  Delete the corresponding pod to restart it:
 
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pod cockroachdb-0
     ~~~
@@ -105,7 +105,7 @@ These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](
 
 1. View the updated persistent volume claim:
 
-	{% include copy-clipboard.html %}
+	{% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc datadir-cockroachdb-0
     ~~~

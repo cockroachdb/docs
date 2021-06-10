@@ -1,7 +1,7 @@
 To use the CockroachDB SQL client, first launch a secure pod running the `cockroach` binary.
 
 <section class="filter-content" markdown="1" data-scope="operator">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/client-secure-operator.yaml
@@ -9,7 +9,7 @@ $ kubectl create \
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -22,7 +22,7 @@ $ kubectl create \
     # All statements must be terminated by a semicolon.
     # To exit, type: \q.
     #
-    # Server version: CockroachDB CCL v20.2.8 (x86_64-unknown-linux-gnu, built 2021/04/23 13:54:57, go1.13.14) (same version as client)
+    # Server version: CockroachDB CCL v21.1.0 (x86_64-unknown-linux-gnu, built 2021/04/23 13:54:57, go1.13.14) (same version as client)
     # Cluster ID: a96791d9-998c-4683-a3d3-edbf425bbf11
     #
     # Enter \? for a brief introduction.
@@ -34,7 +34,7 @@ $ kubectl create \
 </section>
 
 <section class="filter-content" markdown="1" data-scope="manual">
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl create \
 -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/client.yaml
@@ -46,7 +46,7 @@ pod/cockroachdb-client-secure created
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \
@@ -83,7 +83,7 @@ pod/cockroachdb-client-secure created
 
     1. Download the file:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ curl -OOOOOOOOO \
         https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/client-secure.yaml
@@ -93,7 +93,7 @@ pod/cockroachdb-client-secure created
 
     1. Use the file to launch a pod and keep it running indefinitely:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl create -f client-secure.yaml
         ~~~
@@ -104,7 +104,7 @@ pod/cockroachdb-client-secure created
 
 1. Get a shell into the pod and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach sql \

@@ -14,7 +14,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     1. Start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-2 \
         -- ./cockroach sql \
@@ -23,14 +23,14 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     1. Set the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.1';
         ~~~
         
     1. Exit the SQL shell and pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > \q
         ~~~
@@ -39,7 +39,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     Open and edit `example.yaml`:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ vi example.yaml
     ~~~
@@ -51,7 +51,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
     Apply `example.yaml` with the new image:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
@@ -60,7 +60,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
 
 1. If you then check the status of your cluster's pods, you should see them being restarted:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -76,7 +76,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     
 1. This will continue until all of the pods have restarted and are running the new image. The process takes time because the Operator works to ensure that CockroachDB does not lose quorum during the upgrade. To determine whether the pods have been upgraded, check the image of each pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -104,7 +104,7 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
     
     1. Start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-2 \
         -- ./cockroach sql \
@@ -113,14 +113,14 @@ The corresponding process on Kubernetes is a [staged update](https://kubernetes.
         
     1. Re-enable auto-finalization:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
 
     1. Exit the SQL shell and pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > \q
         ~~~

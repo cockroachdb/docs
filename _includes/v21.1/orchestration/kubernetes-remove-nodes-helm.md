@@ -6,7 +6,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. Use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes. For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node status \
@@ -26,13 +26,13 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
     The pod uses the `root` client certificate created earlier to initialize the cluster, so there's no CSR approval required.
 
-1. Use the [`cockroach node decommission`](cockroach-node.html) command to decommission the node with the highest number in its address, specifying its ID (in this example, `4`):
+1. Use the [`cockroach node decommission`](cockroach-node.html) command to decommission the node with the highest number in its address, specifying its ID (in this example, node ID `4` because its address is `my-release-cockroachdb-3`):
 
     {{site.data.alerts.callout_info}}
-    It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
+    You must decommission the node with the highest number in its address. Kubernetes will remove the pod for the node with the highest number in its address when you reduce the replica count.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node decommission 4 \
@@ -62,7 +62,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. Once the node has been decommissioned, scale down your StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -73,7 +73,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. Verify that the pod was successfully removed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -89,7 +89,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. You should also remove the persistent volume that was mounted to the pod. Get the persistent volume claims for the volumes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pvc
     ~~~
@@ -104,7 +104,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. Verify that the PVC with the highest number in its name is no longer mounted to a pod:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl describe pvc datadir-my-release-cockroachdb-3
     ~~~
@@ -117,7 +117,7 @@ If you remove nodes without first telling CockroachDB to decommission them, you 
 
 1. Remove the persistent volume by deleting the PVC:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pvc datadir-my-release-cockroachdb-3
     ~~~

@@ -2,7 +2,7 @@
 
 1. Download and modify our StatefulSet configuration:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
@@ -11,6 +11,7 @@
 
     The secret names depend on your method for generating secrets. For example, if you follow the below [steps using `cockroach cert`](#create-certificates), use this secret name:
 
+    {% include_cached copy-clipboard.html %}
     ~~~ yaml
     secret:
       secretName: cockroachdb.node
@@ -32,7 +33,7 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
 1. Use the config file you downloaded to create the StatefulSet that automatically creates 3 pods, each running a CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create -f cockroachdb-statefulset.yaml
     ~~~
@@ -51,7 +52,7 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     1. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~
@@ -65,7 +66,7 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     1. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pv
         ~~~
@@ -79,7 +80,7 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     1. Run `cockroach init` on one of the pods to complete the node startup process and have them join together as a cluster:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-0 \
         -- /cockroach/cockroach init \
@@ -92,7 +93,7 @@ The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so 
 
     1. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl get pods
         ~~~

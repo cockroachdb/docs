@@ -41,6 +41,10 @@ You can configure, scale, and upgrade a CockroachDB deployment on Kubernetes by 
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
+{{site.data.alerts.callout_info}}
+The Operator is currently in **beta** and is not yet production-ready.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_success}}
 If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
 {{site.data.alerts.end}}
@@ -57,7 +61,7 @@ Cluster parameters are configured in a `CrdbCluster` custom resource object. Thi
 
 It's simplest to download and customize a local copy of the custom resource manifest. After you modify its parameters, run this command to apply the new values to the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl apply -f example.yaml
 ~~~
@@ -78,7 +82,7 @@ Cluster parameters are configured in the StatefulSet manifest. We provide a [Sta
 
 It's simplest to download and customize a local copy of the manifest file. After you modify its parameters, run this command to apply the new values to the cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ kubectl apply -f {manifest-filename}.yaml
 ~~~
@@ -279,7 +283,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Create two directories:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ mkdir certs my-safe-directory
     ~~~
@@ -291,7 +295,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Create the CA certificate and key pair:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-ca \
     --certs-dir=certs \
@@ -300,7 +304,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Create a client certificate and key pair for the root user:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach cert create-client \
     root \
@@ -310,7 +314,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Upload the client certificate and key to the Kubernetes cluster as a secret:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.client.root \
@@ -325,7 +329,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Create the certificate and key pair for your CockroachDB nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     cockroach cert create-node \
     localhost 127.0.0.1 \
@@ -341,14 +345,14 @@ Then [apply](#apply-settings) the new values. -->
 
 1. In the `certs` directory, rename `node.key` to `tls.key`.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mv certs/node.key certs/tls.key
     ~~~
 
     Rename `node.crt` to `tls.crt`.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     mv certs/node.crt certs/tls.crt
     ~~~
@@ -357,7 +361,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Upload the node certificate and key to the Kubernetes cluster as a secret:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create secret \
     generic cockroachdb.node \
@@ -372,7 +376,7 @@ Then [apply](#apply-settings) the new values. -->
 
 1. Check that the secrets were created on the cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get secrets
     ~~~
@@ -439,7 +443,7 @@ Before scaling CockroachDB, ensure that your Kubernetes cluster has enough worke
 
 If you want to scale from 3 CockroachDB nodes to 4, your Kubernetes cluster should therefore have at least 4 worker nodes. You can verify the size of your Kubernetes cluster by running `kubectl get nodes`. If you need to add worker nodes on GKE, for example, run this command and specify the desired number of nodes:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 gcloud container clusters resize {cluster-name} --num-nodes 4
 ~~~
@@ -520,9 +524,9 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
     - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
-    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to [identify and resolve the cause of range under-replication and/or unavailability](cluster-setup-troubleshooting.html#replication-issues) before beginning your upgrade.
     - In the **Node List**:
-        - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
+        - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#add-nodes) to your cluster before beginning your upgrade.
 
 1. Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
@@ -548,7 +552,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
 1. Verify that all pods have been upgraded by running:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods \
     -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
@@ -568,7 +572,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
     1. Start the CockroachDB [built-in SQL client](cockroach-sql.html). For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](deploy-cockroachdb-with-kubernetes.html#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ shell
         $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
         --certs-dir=/cockroach/cockroach-certs \
@@ -577,14 +581,14 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 
     1. Re-enable auto-finalization:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
         ~~~
 
     1. Exit the SQL shell and pod:
 
-        {% include copy-clipboard.html %}
+        {% include_cached copy-clipboard.html %}
         ~~~ sql
         > \q
         ~~~

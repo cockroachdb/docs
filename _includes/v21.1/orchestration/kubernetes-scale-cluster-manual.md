@@ -10,7 +10,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Edit your StatefulSet configuration to add another pod for the new CockroachDB node:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=4
     ~~~
@@ -21,7 +21,7 @@ For example, if you want to scale from 3 CockroachDB nodes to 4, your Kubernetes
 
 1. Verify that the new pod started successfully:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
