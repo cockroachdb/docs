@@ -9,7 +9,7 @@ toc_not_nested: true
 This article assumes you have already [deployed CockroachDB on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html).
 {{site.data.alerts.end}}
 
-Despite CockroachDB's various [built-in safeguards against failure](high-availability.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+Despite CockroachDB's various [built-in safeguards against failure](architecture/replication-layer.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
 ## Configure Prometheus
 
