@@ -389,6 +389,9 @@ layout: null
 /docs/v21.1/rename-sequence.html /docs/v21.1/alter-sequence.html 301
 /docs/stable/rename-sequence.html /docs/stable/alter-sequence.html 301
 /docs/*/detailed-sql-support.html /docs/*/sql-feature-support.html 301
+/docs/v20.2/collatedstring.html /docs/v20.2/collate.html 301
+/docs/v21.1/collatedstring.html /docs/v21.1/collate.html 301
+/docs/stable/collatedstring.html /docs/stable/collate.html 301
 
 # Redirects for Homebrew
 /docs/secure-a-cluster.html /docs/stable/secure-a-cluster.html 301
