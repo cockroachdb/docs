@@ -1,6 +1,6 @@
 ---
-title: Orchestrate a Local Cluster with Kubernetes
-summary: Orchestrate the deployment and management of a local cluster using Kubernetes.
+title: Deploy a Local Cluster with Kubernetes
+summary: Deploy a local 3-node CockroachDB cluster with Kubernetes.
 toc: true
 secure: true
 ---
@@ -53,18 +53,6 @@ Choose a way to deploy and maintain the CockroachDB cluster:
 ## Step 4. Access the DB Console
 
 {% include {{ page.version.version }}/orchestration/monitor-cluster.md %}
-
-## Step 5. Simulate node failure
-
-{% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
-
-## Step 6. Add nodes
-
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
-
-## Step 7. Remove nodes
-
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-secure.md %}
 
 ## Step 8. Stop the cluster
 

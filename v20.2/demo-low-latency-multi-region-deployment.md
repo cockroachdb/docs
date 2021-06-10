@@ -49,7 +49,7 @@ You'll deploy a 9-node CockroachDB cluster across 3 GCE regions, with each node 
 
 A few notes:
 
-- For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd) disk.
+- For each CockroachDB node, you'll use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd) disk.
 - You'll start each node with the [`--locality` flag](cockroach-start.html#locality) describing the node's region and availability zone. Initially, this locality information will lead CockroachDB to evenly distribute data across the 3 regions. Then, it will be used to apply data topologies for lower latency.
 - There will be an extra VM in each region for an instance of the MovR application and the open-source HAProxy load balancer. The application in each region will be pointed at the local load balancer, which will direct connections only to the CockroachDB nodes in the same region.
 
@@ -85,7 +85,7 @@ You need 9 VMs across 3 GCE regions, 3 per region with each VM in a distinct ava
 1. [Create 9 VMs](https://cloud.google.com/compute/docs/instances/create-start-instance) for CockroachDB nodes.
 
     When creating each VM:
-    - Use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) and the Ubuntu 16.04 OS image.
+    - Use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory) and the Ubuntu 16.04 OS image.
     - Select one of the following [region and availability zone](https://cloud.google.com/compute/docs/regions-zones/) configurations. Be sure to use each region/availability combination only once.
 
         VM | Region | Availability Zone

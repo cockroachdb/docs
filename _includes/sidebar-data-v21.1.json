@@ -770,8 +770,20 @@
               {
                 "title": "Kubernetes Single-Cluster Deployment",
                 "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "Operate CockroachDB on Kubernetes",
+                "urls": [
+                  "/${VERSION}/operate-cockroachdb-kubernetes.html"
+                ]
+              },
+              {
+                "title": "Monitor CockroachDB on Kubernetes",
+                "urls": [
+                  "/${VERSION}/monitor-cockroachdb-kubernetes.html"
                 ]
               },
               {
