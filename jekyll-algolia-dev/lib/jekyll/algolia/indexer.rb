@@ -315,6 +315,12 @@ module Jekyll
           synonyms: ['db console', 'admin ui', 'web ui']
         }, false)
 
+        index.save_synonym('technical advisory', {
+          objectID: 'technical advisory',
+          type: 'synonym',
+          synonyms: ['tech advisory', 'advisory']
+        }, false)
+
         return
       end
 
