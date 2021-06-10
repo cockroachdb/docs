@@ -29,7 +29,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+  <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
 
@@ -39,7 +39,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 {% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
-</section>
+  </section>
 
 ## Step 2. Create a database and a user
 
