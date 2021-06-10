@@ -171,6 +171,12 @@
               "urls": [
                 "/cockroachcloud/sessions-page.html"
               ]
+            },
+            {
+              "title": "Transactions Page",
+              "urls": [
+                "/cockroachcloud/transactions-page.html"
+              ]
             }
           ]
         },
