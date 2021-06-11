@@ -150,14 +150,19 @@ The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually mea
 
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
 
+The examples below provide connection strings to Amazon S3, Google Cloud Storage, and Azure Storage. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
   <button class="filter-button" data-scope="azure">Azure Storage</button>
   <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
 </div>
 
-
 <section class="filter-content" markdown="1" data-scope="s3">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
 
 ### Backup a cluster
 
@@ -166,7 +171,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) a c
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -177,7 +182,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) a s
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank \
-INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -186,7 +191,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP DATABASE bank, employees \
-INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -197,7 +202,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers \
-INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -206,7 +211,7 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP bank.customers, bank.accounts \
-INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+INTO 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -217,7 +222,7 @@ If you backup to a destination already containing a [full backup](take-full-and-
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO LATEST IN \
-'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
@@ -228,7 +233,7 @@ Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html
 {% include copy-clipboard.html %}
 ~~~ sql
 > BACKUP INTO \
-'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
+'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key id}&AWS_SECRET_ACCESS_KEY={access key}' \
 AS OF SYSTEM TIME '-10s'
 WITH DETACHED;
 ~~~
@@ -351,7 +356,9 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-The examples in this section use the `AUTH=specified` parameter. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read the [Use Cloud Storage for Bulk Operations page](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.callout_info}}
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
 
 ### Backup a cluster
 
