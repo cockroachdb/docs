@@ -62,8 +62,8 @@ To take an encrypted backup with AWS KMS, use the `kms` [option](backup.html#opt
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
-    WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
+> BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
 ~~~
 
 ~~~
@@ -79,7 +79,7 @@ To take a backup with [multi-region encryption](#multi-region), use the `kms` op
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO 's3://test/backups/test_explicit_kms_2?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
+> BACKUP INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH KMS=(
       'aws:///<cmk>?AUTH=implicit&REGION=us-east-1',
       'aws:///<cmk>?AUTH=implict&REGION=us-west-1'
@@ -101,8 +101,8 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 's3://test/backups/test_kms?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456'
-    WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID=123456&AWS_SECRET_ACCESS_KEY=123456&REGION=us-east-1';
+> RESTORE FROM 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    WITH kms = 'aws:///<cmk>?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION=us-east-1';
 ~~~
 
 ~~~
@@ -121,15 +121,23 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 - [Take an encrypted backup using a passphrase](#take-an-encrypted-backup-using-a-passphrase)
 - [Restore from an encrypted backup using a passphrase](#restore-from-an-encrypted-backup-using-a-passphrase)
 
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+The examples below provide connection strings to Amazon S3, Google Cloud Storage, and Azure Storage. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
 #### Take an encrypted backup using a passphrase
 
 To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP TO \
-'gs://acme-co-backup/test-cluster' \
-WITH encryption_passphrase = 'password123';
+> BACKUP TO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -148,9 +156,7 @@ For example, the encrypted backup created in the [previous example](#take-an-enc
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM \
-'gs://acme-co-backup/test-cluster' \
-WITH encryption_passphrase = 'password123';
+> RESTORE FROM 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH encryption_passphrase = 'password123';
 ~~~
 ~~~
         job_id       |  status   | fraction_completed | rows | index_entries | bytes
@@ -158,6 +164,85 @@ WITH encryption_passphrase = 'password123';
   543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
 (1 row)
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+#### Take an encrypted backup using a passphrase
+
+To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP TO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
+~~~
+
+To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
+
+#### Restore from an encrypted backup using a passphrase
+
+To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
+
+For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+#### Take an encrypted backup using a passphrase
+
+To take an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP TO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543214409874014209 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
+~~~
+
+To [restore](restore.html), use the same `encryption_passphrase`. See the [example](#restore-from-an-encrypted-backup-using-a-passphrase) below for more details.
+
+#### Restore from an encrypted backup using a passphrase
+
+To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
+
+For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' WITH encryption_passphrase = 'password123';
+~~~
+~~~
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  543217488273801217 | succeeded |                  1 | 2597 |          1028 | 467701
+(1 row)
+~~~
+
+</section>
+
 
 ## See also
 

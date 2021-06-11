@@ -23,10 +23,10 @@ You can configure garbage collection periods using the `ttlseconds` [replication
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> BACKUP INTO \
-'s3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
-AS OF SYSTEM TIME '-10s' WITH revision_history;
+> BACKUP INTO '{destination}' AS OF SYSTEM TIME '-10s' WITH revision_history;
 ~~~
+
+For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
 ## Point-in-time restore
 
@@ -38,8 +38,7 @@ If you do not specify a point-in-time, the data will be restored to the backup t
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}' \
-AS OF SYSTEM TIME '2017-02-26 10:00:00';
+> RESTORE FROM '{destination}' AS OF SYSTEM TIME '2017-02-26 10:00:00';
 ~~~
 
 To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](restore.html#view-the-backup-subdirectories).
