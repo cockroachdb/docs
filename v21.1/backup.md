@@ -150,6 +150,15 @@ The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually mea
 
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
 
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
 ### Backup a cluster
 
 To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
@@ -241,6 +250,202 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
 (1 row)
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+### Backup a cluster
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP INTO \
+'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Backup a database
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) a single database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE bank \
+INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE bank, employees \
+INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Backup a table or view
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP bank.customers \
+INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP bank.customers, bank.accounts \
+INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Create incremental backups
+
+If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP INTO LATEST IN \
+'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Run a backup asynchronously
+
+Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP INTO \
+'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+AS OF SYSTEM TIME '-10s'
+WITH DETACHED;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+The examples in this section use the `AUTH=specified` parameter. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read the [Use Cloud Storage for Bulk Operations page](use-cloud-storage-for-bulk-operations.html#authentication).
+
+### Backup a cluster
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP INTO \
+'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Backup a database
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) a single database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE bank \
+INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple databases:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP DATABASE bank, employees \
+INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Backup a table or view
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single table or view:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP bank.customers \
+INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of multiple tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP bank.customers, bank.accounts \
+INTO 'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Create incremental backups
+
+If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP INTO LATEST IN \
+'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+### Run a backup asynchronously
+
+Use the `DETACHED` [option](#options) to execute the backup [job](show-jobs.html) asynchronously:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP INTO \
+'gs://{bucket name}/{path}?AUTH=specified&CREDENTIALS={encoded key}' \
+AS OF SYSTEM TIME '-10s'
+WITH DETACHED;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+~~~
+
+</section>
 
 ### Advanced examples
 
