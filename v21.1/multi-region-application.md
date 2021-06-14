@@ -387,7 +387,7 @@ The application sets a global Flask configuration variable (`DEBUG`), which it c
 
 ### Web forms
 
-Forms make up an important part of most web application frontends. We define these in [`web/forms.py`](https://github.com/cockroachlabs/movr-flask/blob/master/web/forms.py), using some data structures from the [`flask_wtf`](https://flask-wtf.readthedocs.io/en/stable/) and [`wtforms`](https://wtforms.readthedocs.io/en/stable/) libraries.
+Forms make up an important part of most web application frontends. We define these in [`web/forms.py`](https://github.com/cockroachlabs/movr-flask/blob/master/web/forms.py), using some data structures from the [`flask_wtf`](https://flask-wtf.readthedocs.io/en/latest/) and [`wtforms`](https://wtforms.readthedocs.io/en/stable/) libraries.
 
 We will not go into much detail about these forms. The important thing to know is that they help handle `POST` requests in the web UI.
 
@@ -439,7 +439,7 @@ The first line imports standard Flask libraries for connecting, routing, and ren
 The next four lines import other web resources that we've defined separately in our project:
 
 - The [`MovR`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py#L10) class, which handles the connection and interaction with the running CockroachDB cluster.
-- Several [`FlaskForm`](https://flask-wtf.readthedocs.io/en/stable/api.html#flask_wtf.FlaskForm) superclasses, which define the structure of web forms.
+- Several [`FlaskForm`](https://flask-wtf.readthedocs.io/en/latest/api.html#flask_wtf.FlaskForm) superclasses, which define the structure of web forms.
 - The [`Config`](https://github.com/cockroachlabs/movr-flask/blob/master/web/config.py) class, which holds configuration information for the Flask application.
 - [`get_region()`](https://github.com/cockroachlabs/movr-flask/blob/master/web/geoutils.py), which matches a city to a cloud provider region, so the application knows which partition to query.
 

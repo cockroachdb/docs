@@ -22,7 +22,7 @@ How does this work?
 - Writes are serviced using the
   [Raft consensus algorithm](https://raft.github.io/), a popular
   alternative to
-  [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf).
+  [Paxos](https://www.microsoft.com/en-us/research/publication/paxos-made-simple/).
   A consensus algorithm guarantees that any majority of replicas
   together always agree on whether an update was committed
   successfully. Updates (writes) must reach a majority of replicas (2

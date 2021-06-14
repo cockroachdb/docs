@@ -75,7 +75,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
 
 ## Set up a virtual development environment
 
-For debugging, use [`pipenv`](https://docs.pipenv.org/en/latest/install/#installing-pipenv), a tool that manages dependencies with `pip` and creates virtual environments with `virtualenv`.
+For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dependencies with `pip` and creates virtual environments with `virtualenv`.
 
 1. Run the following command to initialize the project's virtual environment:
 

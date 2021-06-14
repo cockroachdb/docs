@@ -470,7 +470,7 @@ To see when a node last updated its liveness record:
 
 1. Go to the **Node Diagnostics** page of the [Admin UI][admin_ui], which lives at:
 
-    <https://yourcluster.yourdomain/#/reports/nodes>
+    `https://yourcluster.yourdomain/#/reports/nodes`
 
 2. On the Node Diagnostics page, you will see a table listing information about the nodes in your cluster.  To see when a node last updated its liveness record, check the **Updated at** field at the bottom of that node's column.
 
