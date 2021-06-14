@@ -49,7 +49,7 @@ Significant transactions on your database are likely to have a high execution co
 
 ### Time interval
 
-By default, the Transactions page displays all transactions executed within a one-hour time interval. The display is cleared at the end of each interval. You can change the interval with the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+By default, the Transactions page displays all transactions executed within a one-hour time interval. The display is cleared at the end of each interval. You can change the interval with the [`diagnostics.reporting.interval`](../{{site.versions["stable"]}}/cluster-settings.html#settings) cluster setting.
 
 ## Transaction Details page
 
