@@ -36,7 +36,11 @@ CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/d
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
-To create a multi-region cluster, click **Add regions** until you have the desired number of regions. In order to survive a single region failure, you must use at least three regions.
+To create a multi-region cluster, click **Add regions** until you have the desired number of regions. 
+
+{{site.data.alerts.callout_info}}
+Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
+{{site.data.alerts.end}}
 
 **Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
 
@@ -48,21 +52,14 @@ To create a multi-region cluster, click **Add regions** until you have the desir
 
 If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
 
-{{site.data.alerts.callout_info}}
-You cannot create a 2-region cluster because it would be unable to survive a single region failure.
-{{site.data.alerts.end}}
-
 ## Step 4. Select the number of nodes
 
 - For single-region application development and testing, you may create a 1-node cluster.
 - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
 - For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
+- See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
 
 {% include cockroachcloud/nodes-limitation.md %}
-
-{{site.data.alerts.callout_info}}
-Multi-region clusters must contain at least 3 regions. With the default replication factor of 3, this ensures that data spread across regions can survive the loss of one region.
-{{site.data.alerts.end}}
 
 Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
