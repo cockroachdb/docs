@@ -21,7 +21,7 @@ To switch between the organizations:
 
 SQL users created in the Console have admin privileges on the database by default, but not the Console. Therefore, anyone with the username and password of a default SQL user has privileges for all database objects across the cluster.
 
-Anyone with database admin privileges can [change a SQL user's databases privileges](../stable/authorization.html#assign-privileges).
+Anyone with database admin privileges can [change a SQL user's databases privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges).
 
 ## Roles
 
