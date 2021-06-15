@@ -1,7 +1,7 @@
 ### Requirements
 
-- Multi-region clusters must contain at least 3 regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](../stable/global-tables.html) table locality or the [`REGIONAL BY TABLE`](../stable/regional-tables.html#regional-tables) table locality and [`REGION` survival goal](../stable/multiregion-overview.html#surviving-region-failures). 
--  Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](../stable/regional-tables.html#regional-by-row-tables) table locality. 
+- Multi-region clusters must contain at least 3 regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the [`GLOBAL`](../{{site.versions["stable"]}}/global-tables.html) table locality or the [`REGIONAL BY TABLE`](../{{site.versions["stable"]}}/regional-tables.html#regional-tables) table locality and [`REGION` survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#surviving-region-failures). 
+-  Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the [`REGIONAL BY ROW`](../{{site.versions["stable"]}}/regional-tables.html#regional-by-row-tables) table locality. 
 - You can have a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact us](https://support.cockroachlabs.com).
 
 ### Recommendations
