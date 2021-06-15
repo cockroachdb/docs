@@ -24,10 +24,10 @@ pushd $GOPATH/src/github.com/cockroachdb/htmltest && ./build.sh && popd
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
-if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
+#if [[ "$INCOMING_HOOK_TITLE" = "nightly" ]]; then
 	$GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest
 	exit $?	
-fi;
+#fi;
 
 # Run Algolia if building master
 if [[ "$CONTEXT" = "production" ]]; then
