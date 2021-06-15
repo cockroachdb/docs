@@ -35,9 +35,9 @@ release_notes = args.release_notes
 milestone = args.milestone
 
 # Map milestones to their internal IDs.
-if milestone == "22.2"
+if milestone == "22.2":
     milestone = 26
-if milestone == "22.1"
+if milestone == "22.1":
     milestone = 25
 if milestone == "21.2":
     milestone = 24
