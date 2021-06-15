@@ -6,6 +6,6 @@ IgnoreDirs:
   - ^docs/v1.2
 IgnoreURLs:
   - http://localhost:4000
-  - https://github.com
+  - "https://github.com.*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: false 
