@@ -21,7 +21,9 @@ For each cluster, the following details display:
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
     - [**Add/remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
+    {% comment %}
     - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) (Paid clusters only)
+    {% endcomment %}
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
@@ -82,7 +84,8 @@ To add or remove nodes from your cluster:
 
 1. Navigate to the cluster's **Overview** page.
 1. Click the **Actions** button in the top right corner.
-1. Select **Edit regions and nodes**.
+1. Select **Add/remove nodes**.
+{% comment %} This button will change {% endcomment %}
 
     The **Edit <cluster name>** page displays.
 
@@ -92,6 +95,7 @@ To add or remove nodes from your cluster:
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
+{% comment %}
 ## Add or remove regions from a cluster
 
 You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
@@ -128,7 +132,7 @@ You can add or remove up to three regions at a time through the Console. See the
 1. Click **Continue to payment**.
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
-
+{% endcomment %}
 ## Restore data from a backup
 
 Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
