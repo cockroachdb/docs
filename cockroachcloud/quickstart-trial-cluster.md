@@ -71,26 +71,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
     
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-    ~~~
-    </section>
+    {% include cockroachcloud/download-the-cert.md %}
 
 ## Step 5. Run your first query
 
@@ -104,26 +85,7 @@ For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl https://binaries.cockroachdb.com/cockroach-v21.1.0.darwin-10.9- amd64.tgz | tar -xJ && cp -i cockroach-v21.1.0.darwin -10.9-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl https://binaries.cockroachdb.com/cockroach-v21.1.0.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-v21.1.0.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    mkdir -p %APPDATA%\Cockroach && copy https://binaries.cockroachdb.com/cockroach-v21.1.2.windows-6.2-amd64.zip %APPDATA%\Cockroach && [Environment]::SetEnvironmentVariable("PATH", "%APPDATA%\Cockroach", "User")
-    ~~~
-    </section>
+    {% include cockroachcloud/download-the-binary.md %}
 
 
 1. Initialize the `movr` [workload](../{{site.versions["stable"]}}/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
