@@ -50,7 +50,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | [Pgweb](http://sosedoff.github.io/pgweb/) | [0.9.12 or higher](https://github.com/sosedoff/pgweb/releases/latest) | Beta |
 | [Postico](https://eggerapps.at/postico/) | 1.5.8 or higher | Beta |
 | [TablePlus](https://tableplus.com/) | [Build 222 or higher](https://tableplus.com/download) | Beta |
-| [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html) | [1.3.9 or higher](https://www.vaultproject.io/docs/install) | Beta |
+| [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb) | [1.3.9 or higher](https://www.vaultproject.io/docs/install) | Beta |
 
 ## Integrated development environments (IDEs)
 
