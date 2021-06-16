@@ -56,14 +56,19 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 ### Step 3. Generate the CockroachDB client connection string
 
-1. In the top right corner of the Console, click the **Connect** button. The **Connect** dialog displays.
-3. From the **User** dropdown, select the user you created in [Step 2](#step-2-create-a-sql-user).
-4. Select a **Region** to connect to.
-5. From the **Database** dropdown, select `defaultdb`.
-6. Create a `certs` directory on your local workstation.
-7. Click the **Download ca.crt** button.
-8. Move the downloaded `ca.crt` file to the `certs` directory.
-9. On the **Connect from Shell** tab, click **Copy connection string**.
+1. In the top right corner of the Console, click the **Connect** button. The **Connection info** dialog displays.
+1. From the **User** dropdown, select the user you created in [Step 2](#step-2-create-a-sql-user).
+1. Select a **Region** to connect to.
+1. From the **Database** dropdown, select `defaultdb`.
+1. Run the following command to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+      <button style="width: 15%" class="filter-button" data-scope="windows">Windows</button>
+    </div>
+    {% include cockroachcloud/download-the-cert.md %}
+    
+1. On the **Command Line** tab, copy the connection string.
 
     Replace the `<certs_dir>` placeholders with the path to your `certs` directory. Copy the client connection string to an accessible location since you need it to use the built-in SQL client later.
 
@@ -71,45 +76,16 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 On your local workstation's terminal:
 
-1. [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html):
+1. If you haven't already, [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html) and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
       <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+      <button style="width: 15%" class="filter-button" data-scope="windows">Windows</button>
     </div>
     <p></p>
 
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xz
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-    </section>
-
-2. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
-
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
+    {% include cockroachcloud/download-the-binary.md %}
 
 3. Use the connection string generated in Step 3 to connect to CockroachDB's built-in SQL client:
 
