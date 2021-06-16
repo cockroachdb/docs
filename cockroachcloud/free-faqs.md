@@ -1,10 +1,15 @@
 ---
-title: CockroachCloud Free (beta) Frequently Asked Questions
+title: CockroachCloud Free (beta) FAQs
 summary: Get answers to frequently asked questions about CockroachCloud Free (beta)
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Free (beta). For answers to frequently asked questions about the paid version of CockroachCloud, see [CockroachCloud FAQs](frequently-asked-questions.html).
+This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+
+<div class="filters clearfix">
+    <a href="free-faqs.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level">CockroachCloud</button></a>
+</div>
 
 ## General
 
