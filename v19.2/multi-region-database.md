@@ -26,7 +26,7 @@ Here's a diagram of the database schema, generated with [DBeaver](dbeaver.html):
 
 <img src="{{ 'images/v20.2/movr_v2.png' | relative_url }}" alt="MovR database schema" style="border:1px solid #eee;max-width:100%" />
 
-Initialization statements for `movr` are defined in [`dbinit.sql`](https://github.com/cockroachlabs/movr-flask/blob/v1-doc-includes/dbinit.sql), a SQL file that you use later in this tutorial to load the database to a running cluster.
+Initialization statements for `movr` are defined in [`dbinit.sql`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/dbinit.sql), a SQL file that you use later in this tutorial to load the database to a running cluster.
 
 {{site.data.alerts.callout_info}}
 This database is a slightly simplified version of the [`movr` database](movr.html) that is built into the `cockroach` binary. Although the two databases are similar, they have different schemas.
