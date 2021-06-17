@@ -55,7 +55,7 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
 
 2. Note the internal IP address of each `n2-standard-4` instance. You'll need these addresses when starting the CockroachDB nodes.
 
-3. Create a separate instance for running a client application workload, also in the `us-east1-b` zone. This instance can be smaller, such as `n1-standard-1`.
+3. Create a separate instance for running a client application workload, also in the `us-east1-b` zone. This instance can be smaller, such as `n2-standard-2`.
 
 ### Step 3. Start a 3-node cluster
 
@@ -1033,7 +1033,7 @@ Given that Movr is active on both US coasts, you'll now scale the cluster into t
 
 2. Note the internal IP address of each `n2-standard-4` instance. You'll need these addresses when starting the CockroachDB nodes.
 
-3. Create an additional instance in the `us-west1-a` and `us-west2-a` zones. These can be smaller, such as `n1-standard-1`.
+3. Create an additional instance in the `us-west1-a` and `us-west2-a` zones. These can be smaller, such as `n2-standard-2`.
 
 ### Step 9. Scale the cluster
 

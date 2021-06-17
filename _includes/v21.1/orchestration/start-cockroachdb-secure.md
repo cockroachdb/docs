@@ -1,13 +1,13 @@
 ### Configure the cluster
 
-1. Download and modify our StatefulSet configuration:
+1. Download and modify our [StatefulSet configuration](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/bring-your-own-certs/cockroachdb-statefulset.yaml
     ~~~
 
-1. Update `secretName` with the name of the corresponding client secret.
+1. Update `secretName` with the name of the corresponding node secret.
 
     The secret names depend on your method for generating secrets. For example, if you follow the below [steps using `cockroach cert`](#create-certificates), use this secret name:
 

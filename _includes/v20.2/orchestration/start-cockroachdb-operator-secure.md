@@ -88,7 +88,7 @@ On a production cluster, you will need to modify the StatefulSet configuration w
 ### Initialize the cluster
 
 {{site.data.alerts.callout_info}}
-By default, the Operator uses the built-in Kubernetes CA to generate and approve 1 root and 1 node certificate for the cluster. This differs from how CockroachDB handles [node authentication](authentication.html#using-digital-certificates-with-cockroachdb), in which a separate node certificate is used for each CockroachDB node.
+By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Operate CockroachDB on Kubernetes](../{{site.versions["stable"]}}/operate-cockroachdb-on-kubernetes.html#use-a-custom-ca).
 {{site.data.alerts.end}}
 
 1. Apply `example.yaml`:
