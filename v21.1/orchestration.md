@@ -4,11 +4,14 @@ summary: Learn how to run CockroachDB with popular open-source orchestration sys
 toc: false
 ---
 
-Orchestration systems automate the deployment, scaling, and management of containerized applications. Combined with CockroachDB's [automated sharding](frequently-asked-questions.html#how-does-cockroachdb-scale) and [fault tolerance](frequently-asked-questions.html#how-does-cockroachdb-survive-failures), they have the potential to lower operator overhead to almost nothing.
+Orchestration systems automate the deployment, scaling, and management of containerized applications.
 
 Use the following guides to run CockroachDB with popular open-source orchestration systems:
 
-- [Kubernetes Single-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes.html)
+- [Kubernetes Single-Cluster Deployment](deploy-cockroachdb-with-kubernetes.html)
+- [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html)
+- [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
+- [OpenShift Single-Cluster Deployment](deploy-cockroachdb-with-kubernetes-openshift.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Optimization](kubernetes-performance.html)
 - [Docker Swarm Deployment](orchestrate-cockroachdb-with-docker-swarm.html)

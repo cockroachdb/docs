@@ -173,6 +173,7 @@ Flag | Description
 `--duration` | The duration to run, with a required time unit suffix. Valid [time units](https://en.wikipedia.org/wiki/Orders_of_magnitude_(time)) are `ns`, `us`, `ms`, `s`, `m`, and `h`.<br><br>**Applicable command:** `run`<br>**Default:** `0`, which means run forever.
 `--fks` | Add foreign keys.<br><br>**Applicable commands:** `init` or `run`<br>**Default:** `true`
 `--histograms` | The file to write per-op incremental and cumulative histogram data to.<br><br>**Applicable command:** `run`
+`--idle-conns` | Tests the TPCC workload with idle connections.
 `--init` | **Deprecated.** Use the `init` command instead.<br><br>**Applicable command:** `run`
 `--interleaved` | Use [interleaved tables](interleave-in-parent.html).<br><br>**Applicable commands:** `init` or `run`<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 `--max-ops` | The maximum number of operations to run.<br><br>**Applicable command:** `run`

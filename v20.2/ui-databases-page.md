@@ -2,7 +2,6 @@
 title: Database Page
 summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
-redirect_from: admin-ui-databases-page.html
 ---
 
 {{site.data.alerts.callout_info}}

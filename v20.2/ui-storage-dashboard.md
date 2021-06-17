@@ -2,7 +2,6 @@
 title: Storage Dashboard
 summary: The Storage dashboard lets you monitor the storage utilization of your cluster.
 toc: true
-redirect_from: admin-ui-storage-dashboard.html
 ---
 
 The **Storage** dashboard lets you monitor the storage utilization of your cluster.

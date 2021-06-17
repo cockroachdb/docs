@@ -69,7 +69,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
     ~~~
 
 6. [Enable an enterprise license](enterprise-licensing.html#obtain-a-license).
-    {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you don't need to enable an enterprise license. {{site.data.alerts.end}}
+    {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you do not need to enable an enterprise license. {{site.data.alerts.end}}
 
 7. Enable GSSAPI authentication:
 
@@ -80,7 +80,7 @@ To use Kerberos authentication with CockroachDB, configure a Kerberos service pr
 
       Setting the `server.host_based_authentication.configuration` [cluster setting](cluster-settings.html) makes it mandatory for all users (except `root`) to authenticate using GSSAPI. The `root` user is still required to authenticate using its client certificate.
 
-      The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We don't support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as an allowlist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
+      The `include_realm=0` option is required to tell CockroachDB to remove the `@DOMAIN.COM` realm information from the username. We do not support any advanced mapping of GSSAPI usernames to CockroachDB usernames right now. If you want to limit which realms' users can connect, you can also add one or more `krb_realm` parameters to the end of the line as an allowlist, as follows: `host all all all gss include_realm=0 krb_realm=domain.com krb_realm=corp.domain.com`
 
 8. Create CockroachDB users for every Kerberos user. Ensure the username does not have the `DOMAIN.COM` realm information. For example, if one of your Kerberos user has a username `carl@realm.com`, then you need to create a CockroachDB user with the username `carl`:
 

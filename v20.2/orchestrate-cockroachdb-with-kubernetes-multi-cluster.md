@@ -3,7 +3,6 @@ title: Orchestrate CockroachDB Across Multiple Kubernetes Clusters
 summary: Orchestrate the deployment, management, and monitoring of CockroachDB across multiple Kubernetes clusters in different regions.
 toc: true
 toc_not_nested: true
-redirect_from: orchestrate-cockroachdb-with-kubernetes-multi-region.html
 ---
 
 <div class="filters filters-big clearfix">
@@ -716,7 +715,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you don't specify a memory request, no memory will be allocated to CockroachDB. If you don't specify a memory limit, the Kubernetes scheduler will allocate the maximum possible amount.
+    If you do not specify a memory request, no memory will be allocated to CockroachDB. If you do not specify a memory limit, the Kubernetes scheduler will allocate the maximum possible amount.
     {{site.data.alerts.end}}
 
 1. The StatefulSet configuration includes a [`cockroach start`](cockroach-start.html) command that creates the nodes on the Kubernetes pods.
@@ -734,10 +733,6 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
     ~~~
 
 1. Save this StatefulSet configuration, giving it a filename like `cockroachdb-statefulset-secure-eks-1.yaml`.
-
-    {{site.data.alerts.callout_success}}
-    If you change the StatefulSet name from the default `cockroachdb`, be sure to start and end with an alphanumeric character and otherwise use lowercase alphanumeric characters, `-`, or `.` so as to comply with [CSR naming requirements](orchestrate-cockroachdb-with-kubernetes.html#csr-names).
-    {{site.data.alerts.end}}
 
 1. Create and save a StatefulSet configuration for each of the other 2 regions in the same way, being sure to use the correct namespaces for those regions in steps 2 and 4.
 

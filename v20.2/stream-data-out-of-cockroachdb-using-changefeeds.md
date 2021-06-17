@@ -2,8 +2,6 @@
 title: Stream Data Out of CockroachDB Using Changefeeds
 summary: Stream data out of CockroachDB with efficient, distributed, row-level change subscriptions (changefeeds).
 toc: true
-redirect_from:
-- change-data-capture.html
 ---
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing.
@@ -712,12 +710,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 4. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING cluster.organization = '<organization name>';
     ~~~
 
     {% include copy-clipboard.html %}
-    ~~~ shell
+    ~~~ sql
     > SET CLUSTER SETTING enterprise.license = '<secret>';
     ~~~
 
@@ -768,7 +766,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE TABLE employees (
-         dog_id INT REFERENCES office_dogs_avro (id),
+         dog_id INT REFERENCES office_dogs (id),
          employee_name STRING);
     ~~~
 
@@ -795,7 +793,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-11. Monitor your changefeed on the [DB Console](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](ui-cdc-dashboard.html).
+11. Monitor your changefeed on the <a href="http://localhost:8080/#/metrics/changefeeds/cluster" data-proofer-ignore>DB Console</a>. For more information, see [Changefeeds Dashboard](ui-cdc-dashboard.html).
 
 12. When you are done, exit the SQL shell (`\q`).
 

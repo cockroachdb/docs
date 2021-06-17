@@ -2,10 +2,6 @@
 title: SET (session settings)
 summary: The SET statement modifies the current settings for the client session.
 toc: true
-redirect_from:
-- set-application-name.html
-- set-database.html
-- set-time-zone.html
 ---
 
 The `SET` [statement](sql-statements.html) can modify one of the

@@ -156,7 +156,7 @@ namespace Cockroach
 
       foreach (X509ChainStatus status in caCertChain.ChainStatus)
       {
-        // Check if we got any errors other than UntrustedRoot (which we will always get if we don't install the CA cert to the system store)
+        // Check if we got any errors other than UntrustedRoot (which we will always get if we do not install the CA cert to the system store)
         if (status.Status != X509ChainStatusFlags.UntrustedRoot)
         {
           return false;

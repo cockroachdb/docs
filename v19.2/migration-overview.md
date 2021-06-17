@@ -1,7 +1,6 @@
 ---
 title: Migration Overview
 summary: Learn how to migrate data into a CockroachDB cluster.
-redirect_from: import-data.html
 toc: true
 ---
 

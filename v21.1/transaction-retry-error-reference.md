@@ -166,7 +166,7 @@ _Description_:
 The `RETRY_COMMIT_DEADLINE_EXCEEDED` error means that the transaction timed out due to being pushed by other concurrent transactions. This error is most likely to happen to long-running transactions. The conditions that trigger this error are very similar to the conditions that lead to a [`RETRY_SERIALIZABLE`](#retry_serializable) error, except that a transaction that hits this error got pushed for several minutes, but did not hit any of the conditions that trigger a `RETRY_SERIALIZABLE` error. In other words, the conditions that trigger this error are a subset of those that trigger `RETRY_SERIALIZABLE`, and that this transaction ran for too long (several minutes).
 
 {{site.data.alerts.callout_info}}
-Read-only transactions don't get pushed, so they don't run into this error.
+Read-only transactions do not get pushed, so they do not run into this error.
 {{site.data.alerts.end}}
 
 This error occurs in the cases described below.
@@ -267,7 +267,7 @@ TransactionRetryWithProtoRefreshError:TransactionAbortedError(ABORT_REASON_TIMES
 
 _Description_:
 
-The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge](range-merges.html) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
+The `ABORT_REASON_TIMESTAMP_CACHE_REJECTED` error occurs when the timestamp cache will not allow transaction _A_ to create a transaction record. This can happen due to a [range merge](architecture/distribution-layer.html#range-merges) happening in the background, or because the timestamp cache is an in-memory cache, and has outgrown its memory limit (about 64 MB).
 
 _Action_:
 

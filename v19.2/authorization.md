@@ -2,7 +2,6 @@
 title: Authorization
 summary: Learn about the authorization features for secure CockroachDB clusters.
 toc: true
-redirect_from: create-and-manage-users.html
 ---
 
 User authorization is the act of defining access policies for authenticated CockroachDB users. CockroachDB allows you to create, manage, and remove your cluster's [users](#sql-users) and assign SQL-level [privileges](#assign-privileges) to the users. Additionally, if you have an [enterprise license](get-started-with-enterprise-trial.html), you can use [role-based access management (RBAC)](#roles) for simplified user management.
@@ -259,7 +258,7 @@ Let's say we want to create the following access control setup for the `movr` da
 <section class="filter-content" markdown="1" data-scope="rbac">
 
 {{site.data.alerts.callout_info}}
-The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/). 
+The [`CREATE ROLE`](create-role.html) command used in this example is an enterprise-only feature. To request a 30-day trial license, see [Get CockroachDB](https://www.cockroachlabs.com/get-cockroachdb/).
 
 Note that [`GRANT <roles>`](grant-roles.html) does not require an enterprise license. All users can grant the [default roles](#default-roles).
 {{site.data.alerts.end}}
@@ -280,7 +279,7 @@ Let's say we want to create the following access control setup for the `movr` da
     ~~~
 
 {{site.data.alerts.callout_info}}
-Each `cockroach demo` instance runs with a temporary enterprise license that enables you to try out enterprise features such as [`CREATE ROLE`](create-role.html). The license expires after an hour. 
+Each `cockroach demo` instance runs with a temporary enterprise license that enables you to try out enterprise features such as [`CREATE ROLE`](create-role.html). The license expires after an hour.
 {{site.data.alerts.end}}
 
 2. Create the database admin role (named `db_admin_role`) whose members can perform all database operations for existing tables as well as for tables added in the future:

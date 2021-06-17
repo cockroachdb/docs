@@ -2,8 +2,6 @@
 title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-connect-to-your-cluster.html
 ---
 
 <div class="filters clearfix">

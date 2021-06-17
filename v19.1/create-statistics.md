@@ -13,7 +13,7 @@ Once you [create a table](create-table.html) and load data into it (e.g., [`INSE
 - Up to 100 non-indexed columns (unless you specify which columns to create statistics on, as shown in [this example](#create-statistics-on-a-specific-column)).
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v19.1</span>: [Automatic statistics is enabled by default](cost-based-optimizer.html#table-statistics); most users don't need to issue `CREATE STATISTICS` statements directly.
+<span class="version-tag">New in v19.1</span>: [Automatic statistics is enabled by default](cost-based-optimizer.html#table-statistics); most users do not need to issue `CREATE STATISTICS` statements directly.
 {{site.data.alerts.end}}
 
 ## Synopsis

@@ -200,7 +200,7 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
     <img src="{{ 'images/v19.2/admin_ui_cluster_overview_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-data-replication.html) of data via the Raft consensus protocol.
+    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.
 
     {{site.data.alerts.callout_info}}
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).
@@ -234,5 +234,5 @@ PS C:\Users\username> Remove-Item cockroach-data -recurse
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
-- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
+- [Build an app with CockroachDB](hello-world-example-apps.html)
 - Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [geo-partitioning](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)

@@ -1,5 +1,5 @@
 ---
-title: General Troubleshooting
+title: Common Errors
 summary: Learn how to troubleshoot issues with a single-node cluster
 toc: true
 ---

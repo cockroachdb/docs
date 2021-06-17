@@ -20,7 +20,7 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 
 ## Step 1. Review the scenario
 
-You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the [Common Loon](https://ebird.org/species/comloo), a bird that can be found near the lakes and ponds of the north woods.
+You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the <a href="https://ebird.org/species/comloo" data-proofer-ignore>Common Loon</a>, a bird that can be found near the lakes and ponds of the north woods.
 
 As a connoisseur of bookstores, you also want to make sure to visit as many of the local independent bookstores as possible on your trip, as long as they are nearby to Loon habitat.
 
@@ -120,7 +120,7 @@ As a first step, you'd like to know where exactly the Common Loon has been sight
 Because of the structure of [the `birds` database](#the-birds-database), you will wrap the results of a [subquery](subqueries.html) against the `birds` database in a [common table expression (CTE)](common-table-expressions.html) to provide a shorthand name for referring to this data. This step will be necessary every time you want to get information about bird sightings. Therefore, the general pattern for many of these queries will be something like:
 
 1. Get bird information (usually including location data) and store the results in a named CTE.
-2. Using the named CTE, perform additional processing against the results of the CTE combined with other data you have (e.g. bookstores, roads). Depending on the complexity of the questions asked, you may even need to create multiple CTEs.
+2. Using the named CTE, perform additional processing against the results of the CTE combined with other data you have (e.g., bookstores, roads). Depending on the complexity of the questions asked, you may even need to create multiple CTEs.
 
 In the query below, to answer the question "where are the loons?", take the following steps:
 
@@ -364,7 +364,7 @@ ORDER BY
 
 ### (7) How many different species of bird habitats contain the location of the Book Nook in Saranac Lake, NY?
 
-As a birdwatcher, you probably don't want to only see the Common Loon. As long as you are spending time outside, it would be nice to see what other species of bird are in the area. This may provide even more birdwatching fun.
+As a birdwatcher, you probably do not want to only see the Common Loon. As long as you are spending time outside, it would be nice to see what other species of bird are in the area. This may provide even more birdwatching fun.
 
 Since you know you will want to hit up [The Book Nook in Saranac Lake, NY](https://www.facebook.com/slbooknook/) at least once on your trip, you decide to see what bird species' habitats contain the store's location. That way you can get a sense of the diversity of bird species in the area.
 
@@ -485,7 +485,7 @@ LIMIT
 	25;
 ~~~
 
-Perhaps surprisingly, the [Red-eyed Vireo](https://ebird.org/species/reevir1/US-NY) is the "winner", followed by a number of other fairly common birds. If you want a birdwatching challenge, you can reverse the sort order of the above query to find the rarest birds.
+Perhaps surprisingly, the <a href="https://ebird.org/species/reevir1/US-NY" data-proofer-ignore>Red-eyed Vireo</a> is the "winner", followed by a number of other fairly common birds. If you want a birdwatching challenge, you can reverse the sort order of the above query to find the rarest birds.
 
 ~~~
                    name                  | sightings
@@ -520,7 +520,7 @@ Perhaps surprisingly, the [Red-eyed Vireo](https://ebird.org/species/reevir1/US-
 
 ### (9) What does the shape of all bookstore locations that lie within the Loon's habitat look like?
 
-You [already discovered which bookstores are located within loon habitat][q_06]. However, you can't really tell where these stores are located based on reading that query's output. You need to see them on the map. Therefore, for trip planning purposes, you decide you would like to look at the shape of the convex hull of the store locations.
+You [already discovered which bookstores are located within loon habitat][q_06]. However, you cannot really tell where these stores are located based on reading that query's output. You need to see them on the map. Therefore, for trip planning purposes, you decide you would like to look at the shape of the convex hull of the store locations.
 
 To answer this question:
 
@@ -1237,7 +1237,7 @@ The answer to your question is that there are about 1,700 miles of roads within 
 
 ### (17) Which bookstore in the Loon's region in NY has the fewest miles of roads within a 10 mile radius of the store?
 
-As you are driving around the Adirondacks, searching for loons as well as your next great read, the question occurs to you: Which bookstore is the most remotely located?  This is important since one of your goals for this vacation is to "get away from it all." You don't have population density data, but you do have road data. Therefore you decide to use "miles of roads near the store" as a rough proxy for which store location is the most remote: the fewer miles of roads near the store, the more remote you can assume it is.
+As you are driving around the Adirondacks, searching for loons as well as your next great read, the question occurs to you: Which bookstore is the most remotely located?  This is important since one of your goals for this vacation is to "get away from it all." You do not have population density data, but you do have road data. Therefore you decide to use "miles of roads near the store" as a rough proxy for which store location is the most remote: the fewer miles of roads near the store, the more remote you can assume it is.
 
 To answer this question:
 
@@ -1553,7 +1553,7 @@ ORDER BY
 	sightings DESC;
 ~~~
 
-Based on this data, it looks like the most commonly sighted hawk by far in the area over the years 2000-2019 is the [Broad-winged Hawk](https://ebird.org/species/brwhaw):
+Based on this data, it looks like the most commonly sighted hawk by far in the area over the years 2000-2019 is the <a href="https://ebird.org/species/brwhaw" data-proofer-ignore>Broad-winged Hawk</a>:
 
 ~~~
           name         | sightings

@@ -96,7 +96,7 @@ You can set your network IP by selecting "My IP" in the Source field.
  Port Range | **8080**
  Source | The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)
 
-To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console. 
+To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and find the VPC listed in the section called Your VPCs. You can also click on the VPC where it is listed in the EC2 console.
 
 ## Step 3. Synchronize clocks
 
@@ -156,7 +156,7 @@ Before adding a new node, [create a new instance](#step-1-create-instances) as y
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
-2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
+2. [Create users](authorization.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the AWS load balancer, not to a CockroachDB node.
 
 ## See also

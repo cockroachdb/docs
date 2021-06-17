@@ -2,8 +2,6 @@
 title: User Authorization
 summary: Learn about the user authorization features for CockroachCloud CockroachDB clusters.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-authorization.html
 ---
 
 CockroachCloud requires you to create SQL users to access the cluster.
@@ -221,7 +219,7 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
     > GRANT <privilege> ON DATABASE <database> TO <role>;
     ~~~
 
-- To add a user (or another role) to a role, use the [`GRANT <role>`](../{{site.versions["stable"]}}/grant-roles.html) statement:
+- To add a user (or another role) to a role, use the [`GRANT <role>`](../{{site.versions["stable"]}}/grant.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -235,7 +233,7 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
     > REVOKE INSERT ON TABLE <database>.<table> FROM <role>;
     ~~~
 
-- To remove a user (or another role) from a role, use the [`REVOKE <role>`](../{{site.versions["stable"]}}/revoke-roles.html) statement:
+- To remove a user (or another role) from a role, use the [`REVOKE <role>`](../{{site.versions["stable"]}}/revoke.html) statement:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

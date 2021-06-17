@@ -2,7 +2,6 @@
 title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
-redirect_from: sql-optimizer.html
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
@@ -43,7 +42,7 @@ The cost-based optimizer supports most SQL statements. Specifically, the followi
 - `FILTER` clauses on [aggregate functions](functions-and-operators.html#aggregate-functions)
 - [Sequences](create-sequence.html)
 - [Views](views.html)
-- All [`SELECT`](select.html) statements that do not include window functions
+- All [`SELECT`](select-clause.html) statements that do not include window functions
 - All `UNION` statements that do not include window functions
 - All `VALUES` statements that do not include window functions
 - Most correlated subqueries &mdash; for exceptions, see [Correlated subqueries](subqueries.html#correlated-subqueries).
@@ -121,7 +120,7 @@ The query plan cache is enabled by default. To disable it, execute the following
 
 Finally, note that only the following statements use the plan cache:
 
-- [`SELECT`](select.html)
+- [`SELECT`](select-clause.html)
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)

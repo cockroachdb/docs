@@ -44,7 +44,7 @@ ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
 
 Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations](import.html#import-file-location).
 
-For local testing, you can [start a local file server](create-a-file-server.html).  The following command will start a local file server listening on port 3000:
+For local testing, you can [start a local file server](use-a-local-file-server-for-bulk-operations.html).  The following command will start a local file server listening on port 3000:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -96,7 +96,7 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
 - [SQL Dump (Export)](cockroach-dump.html)
-- [Back Up and Restore Data](backup-and-restore.html)
+- [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 

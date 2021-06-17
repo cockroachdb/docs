@@ -17,7 +17,7 @@ module GitHubPages
   # We cancel those by disabling safe mode and forcing back plugins to be read
   # from ./_plugins.
   #
-  # This file will only be loaded when running `jekyll algolia`, so it won't
+  # This file will only be loaded when running `jekyll algolia`, so it will not
   # interfere with the regular usage of `jekyll build`
   class Configuration
     class << self

@@ -103,7 +103,7 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 ### Increase a column type's precision
 
-The [TPC-C](performance-benchmarking-with-tpc-c-1k-warehouses.html) database contains a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html). Suppose you want to increase the precision of the column's data type to `DECIMAL (12,2)`:
+The [TPC-C](performance-benchmarking-with-tpcc-small.html) database contains a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html). Suppose you want to increase the precision of the column's data type to `DECIMAL (12,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -2,9 +2,6 @@
 title: Back up and Restore Data
 summary: Learn how to back up and restore a CockroachDB cluster.
 toc: true
-redirect_from:
-- back-up-data.html
-- restore-data.html
 ---
 
 Because CockroachDB is designed with high fault tolerance, backups are primarily needed for disaster recovery (i.e., if your cluster loses a majority of its nodes). Isolated issues (such as small-scale node outages) do not require any intervention. However, as an operational best practice, **we recommend taking regular backups of your data**.
@@ -82,7 +79,7 @@ Then, create nightly incremental backups based off of the full backups you've al
 ~~~
 
 {{site.data.alerts.callout_info}}
-For an example on how to specify the destination of an incremental backup, see [Backup and Restore - Advanced Options](backup-and-restore-advanced-options.html#incremental-backups-with-explicitly-specified-destinations)
+For an example on how to specify the destination of an incremental backup, see [Backup and Restore - Advanced Options](backup-and-restore.html)
 {{site.data.alerts.end}}
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). [Restoring from incremental backups](restore.html#restore-from-incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the automatically appended incremental backups (that are stored as subdirectories, like in the example above):
@@ -215,11 +212,11 @@ If you created a backup from another database and want to import it into Cockroa
 
 ## See also
 
-- [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
+- [Back up and Restore Data - Advanced Options](backup-and-restore.html)
 - [`BACKUP`][backup]
 - [`RESTORE`][restore]
 - [`SQL DUMP`](cockroach-dump.html)
-- [`IMPORT`](import-data.html)
+- [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 

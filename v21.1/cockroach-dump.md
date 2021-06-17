@@ -2,7 +2,6 @@
 title: cockroach dump
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: true
-redirect_from: sql-dump.html
 key: sql-dump.html
 ---
 
@@ -449,7 +448,7 @@ As you can see, the results of the dump are identical to the earlier time-travel
 
 ## See also
 
-- [Import Data](import-data.html)
+- [Import Data](migration-overview.html)
 - [`IMPORT`](import.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)

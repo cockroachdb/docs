@@ -1,16 +1,19 @@
 ---
-title: Frequently Asked Questions
+title: CockroachCloud FAQs
 summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-frequently-asked-questions.html
 ---
 
-This page answers the frequently asked questions about the paid version of CockroachCloud. For answers to frequently asked questions about the CockroachCloud Free (beta), see [CockroachCloud Free (beta) FAQs](free-faqs.html).
+This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+
+<div class="filters clearfix">
+    <a href="free-faqs.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+</div>
 
 ## Cluster basics
 
-### Why can't I use certain regions in AWS and  GCP?
+### Why are certain regions in AWS and GCP not available?
 
 We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
@@ -105,9 +108,9 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 ## Product features
 
-### Are enterprise features like partitioning or change data capture available to me?
+### Are enterprise features available to me?
 
-Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all enterprise features are available to you. We encourage you to [contact Support](https://support.cockroachlabs.com/hc/en-us) to set up [partitioning](../{{site.versions["stable"]}}/partitioning.html), [change data capture](../{{site.versions["stable"]}}/change-data-capture.html), and other advanced features, as we have best practices and reference architectures we would be happy to share with you.
+Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all [enterprise features](../stable/enterprise-licensing.html) are available to you.
 
 ### Is there a public API for CockroachCloud?
 

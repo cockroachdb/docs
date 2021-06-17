@@ -116,7 +116,7 @@ Before adding a new node, [create a new instance](#step-1-create-instances) as y
 Now that your deployment is working, you can:
 
 1. [Implement your data model](sql-statements.html).
-2. [Create users](create-and-manage-users.html) and [grant them privileges](grant.html).
+2. [Create users](authorization.html) and [grant them privileges](grant.html).
 3. [Connect your application](install-client-drivers.html). Be sure to connect your application to the AWS load balancer, not to a CockroachDB node.
 
 ## See also

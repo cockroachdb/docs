@@ -3,15 +3,6 @@ title: Frequently Asked Questions
 summary: CockroachDB FAQ - What is CockroachDB? How does it work? What makes it different from other databases?
 tags: postgres, cassandra, google cloud spanner
 toc: true
-redirect_from:
-- simplified-deployment.html
-- strong-consistency.html
-- sql.html
-- distributed-transactions.html
-- automated-scaling-and-repair.html
-- high-availability.html
-- go-implementation.html
-- open-source.html
 ---
 
 ## What is CockroachDB?
@@ -52,7 +43,7 @@ CockroachDB is designed to survive software and hardware failures, from server r
 
 **Replication**
 
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/en-us/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different servers within a rack to tolerate server failures
 - Different servers on different racks within a datacenter to tolerate rack power/network failures
@@ -70,7 +61,7 @@ CockroachDB guarantees [serializable SQL transactions](demo-serializable.html), 
 
 - Stored data is versioned with MVCC, so [reads simply limit their scope to the data visible at the time the read transaction started](architecture/transaction-layer.html#time-and-hybrid-logical-clocks).
 
-- Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
+- Writes are serviced using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/en-us/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. A consensus algorithm guarantees that any majority of replicas together always agree on whether an update was committed successfully. Updates (writes) must reach a majority of replicas (2 out of 3 by default) before they are considered committed.
 
   To ensure that a write transaction does not interfere with read transactions that start after it, CockroachDB also uses a [timestamp cache](architecture/transaction-layer.html#timestamp-cache) which remembers when data was last read by ongoing transactions.
 

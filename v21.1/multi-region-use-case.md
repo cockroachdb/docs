@@ -31,10 +31,10 @@ Limiting latency improves the user experience, and it can also help avoid proble
 
 ### Database latency
 
-To reduce database latency in a distributed CockroachDB deployment, data can be [geo-partitioned](topology-geo-partitioned-replicas.html). Geo-partitioning enables you to control where specific rows of data are stored. Limiting database operations to specific partitions can reduce the distance requests need to travel between the client and the database.
+To reduce database latency in a distributed CockroachDB deployment, data can be [geo-partitioned](regional-tables.html). Geo-partitioning enables you to control where specific rows of data are stored. Limiting database operations to specific partitions can reduce the distance requests need to travel between the client and the database.
 
 {{site.data.alerts.callout_info}}
-Geo-partitioned replicas can dramatically improve latency in multi-region deployments, but at the [cost of resiliency](topology-geo-partitioned-replicas.html). Geo-partitioned replicas are resilient to availability zone failures, but not regional failures.
+Geo-partitioned replicas can dramatically improve latency in multi-region deployments, but at the [cost of resiliency](regional-tables.html). Geo-partitioned replicas are resilient to availability zone failures, but not regional failures.
 {{site.data.alerts.end}}
 
 If you are building an application, it's likely that the end user will not be making requests to the database directly. Instead, the user makes requests to the application, and the application makes requests to the database on behalf of the user. To limit the latency between the application and the database, you need to design and deploy your application such that:
@@ -59,4 +59,4 @@ You should now be ready to start [creating a multi-region database schema](multi
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Define Table Partitions](partitioning.html)
 - [Topology Patterns](topology-patterns.html)
-- [Geo-Partitioned Replicas Topology](topology-geo-partitioned-replicas.html)
+- [Geo-Partitioned Replicas Topology](regional-tables.html)

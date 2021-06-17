@@ -2,8 +2,6 @@
 title: Create a CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-create-your-cluster.html
 ---
 
 <div class="filters clearfix">
@@ -75,7 +73,7 @@ Replication | The default replication factor for a CockroachCloud cluster is 3.
 Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
 Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence an `Option 1` node (2vCPUs) can handle 2000 transactions per second and an `Option 2` node (4vCPUs) can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
- 
+
 To change the hardware configuration after the cluster is created, [contact Support](https://support.cockroachlabs.com).
 
 See [Example](#example) for further guidance.
@@ -89,6 +87,10 @@ Click **Next**. Optionally, you can enable VPC peering for your cluster.
 ## Step 7. Enable VPC Peering (optional)
 
 VPC peering is only available for GCP clusters. For AWS clusters, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster.
+
+{{site.data.alerts.callout_info}}
+If you have multiple clusters, you will have to create a new VPC Peering or AWS PrivateLink connection for each cluster.
+{{site.data.alerts.end}}
 
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the CockroachCloud cluster. To enable VPC peering:
 

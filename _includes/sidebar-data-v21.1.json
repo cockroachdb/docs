@@ -31,8 +31,7 @@
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
               "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html",
-              "/${VERSION}/install-cockroachdb-spatial.html"
+              "/${VERSION}/install-cockroachdb-windows.html"
             ]
           },
           {
@@ -116,7 +115,7 @@
               {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
-                  "/${VERSION}/orchestration-with-kubernetes.html"
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
                 ]
               },
               {
@@ -372,7 +371,7 @@
               {
                 "title": "Log Events",
                 "urls": [
-                  "/${VERSION}/debug-and-error-logs.html"
+                  "/${VERSION}/logging-overview.html"
                 ]
               },
               {
@@ -771,8 +770,20 @@
               {
                 "title": "Kubernetes Single-Cluster Deployment",
                 "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "Operate CockroachDB on Kubernetes",
+                "urls": [
+                  "/${VERSION}/operate-cockroachdb-kubernetes.html"
+                ]
+              },
+              {
+                "title": "Monitor CockroachDB on Kubernetes",
+                "urls": [
+                  "/${VERSION}/monitor-cockroachdb-kubernetes.html"
                 ]
               },
               {
@@ -1176,7 +1187,7 @@
           {
             "title": "Understand Debug Logs",
             "urls": [
-              "/${VERSION}/debug-and-error-logs.html"
+              "/${VERSION}/logging-overview.html"
             ]
           },
           {
@@ -2741,12 +2752,6 @@
                 "title": "Load-Based Splitting",
                 "urls": [
                   "/${VERSION}/load-based-splitting.html"
-                ]
-              },
-              {
-                "title": "Range Merges",
-                "urls": [
-                  "/${VERSION}/range-merges.html"
                 ]
               }
             ]

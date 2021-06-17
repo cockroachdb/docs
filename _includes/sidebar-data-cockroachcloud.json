@@ -171,6 +171,12 @@
               "urls": [
                 "/cockroachcloud/sessions-page.html"
               ]
+            },
+            {
+              "title": "Transactions Page",
+              "urls": [
+                "/cockroachcloud/transactions-page.html"
+              ]
             }
           ]
         },
@@ -248,19 +254,9 @@
     },
     {
       "title": "FAQs",
-      "items": [
-      	{
-      	  "title": "CockroachCloud FAQs",
-      	  "urls": [
-      	    "/cockroachcloud/frequently-asked-questions.html"
-      	  ]
-      	},
-      	{
-      	  "title": "CockroachCloud Free (beta) FAQs",
-      	  "urls": [
-      	    "/cockroachcloud/free-faqs.html"
-      	  ]
-      	}
+      "urls": [
+        "/cockroachcloud/free-faqs.html",
+        "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
     {
@@ -269,13 +265,14 @@
         {
           "title": "Latest Release Notes",
           "urls": [
-            "/releases/cockroachcloud-05032021.html"
+            "/releases/cockroachcloud-06072021.html"
           ]
         },
         {
           "title": "All Release Notes",
           "urls": [
             "/releases/index-cockroachcloud.html",
+            "/releases/cockroachcloud-05032021.html",
             "/releases/cockroachcloud-04052021.html",
             "/releases/cockroachcloud-03082021.html",
             "/releases/cockroachcloud-02092021.html",

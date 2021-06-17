@@ -2,7 +2,6 @@
 title: cockroach start
 summary: Start a new multi-node cluster or add nodes to an existing multi-node cluster.
 toc: true
-redirect_from: start-a-node.html
 key: start-a-node.html
 ---
 
@@ -131,7 +130,7 @@ The `--storage-engine` flag is used to choose the storage engine used by the nod
 <span class="version-tag">Changed in v21.1:</span> As of v21.1, CockroachDB always uses the [Pebble storage engine](https://github.com/cockroachdb/pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
 
 {{site.data.alerts.callout_danger}}
-If you specified `--storage-engine=rocksdb` when starting nodes with v20.2, be sure to change that to `--storage-enginee=pebble` or remove the flag entirely before [upgrading to v21.1](upgrade-cockroach-version.html). Pebble is intended to be bi-directionally compatible with the RocksDB on-disk format, so the switch will be seamless during the upgrade process.
+If you specified `--storage-engine=rocksdb` when starting nodes with v20.2, be sure to change that to `--storage-engine=pebble` or remove the flag entirely before [upgrading to v21.1](upgrade-cockroach-version.html). Pebble is intended to be bi-directionally compatible with the RocksDB on-disk format, so the switch will be seamless during the upgrade process.
 {{site.data.alerts.end}}
 
 #### Store

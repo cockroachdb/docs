@@ -954,9 +954,9 @@
 	    ]
 	  },
 	  {
-	    "title": "General Troubleshooting",
+	    "title": "Common Errors",
 	    "urls": [
-	      "/${VERSION}/general-troubleshooting.html"
+	      "/${VERSION}/common-errors.html"
 	    ]
 	  },
 	  {

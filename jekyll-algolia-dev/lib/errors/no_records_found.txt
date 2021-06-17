@@ -10,5 +10,5 @@ I:
 I:Also double check that your current value for `nodes_to_index` can actually match something in the pages. You are current indexing the following nodes:
 I:    {nodes_to_index}
 I:
-I:Note that all the markup that is defined in the layouts won't be available during extraction. Only the page content can be accessed. So if you defined a layout markup that is used only for one page, you should move it to the page instead.
+I:Note that all the markup that is defined in the layouts will not be available during extraction. Only the page content can be accessed. So if you defined a layout markup that is used only for one page, you should move it to the page instead.
 I:

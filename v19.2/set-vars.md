@@ -2,15 +2,11 @@
 title: SET (session variable)
 summary: The SET statement modifies the current configuration variables for the client session.
 toc: true
-redirect_from:
-- set-application-name.html
-- set-database.html
-- set-time-zone.html
 ---
 
 The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html).
 
-{{site.data.alerts.callout_danger}}In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with <code>SET</code> statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the <a href="build-an-app-with-cockroachdb.html">Build an App with CockroachDB</a> tutorials.{{site.data.alerts.end}}
+{{site.data.alerts.callout_danger}}In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with <code>SET</code> statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the <a href="hello-world-example-apps.html">Build an App with CockroachDB</a> tutorials.{{site.data.alerts.end}}
 
 
 ## Required privileges
@@ -176,7 +172,7 @@ The time zone value indicates the time zone for the current session.
 
 This value can be a string representation of a local system-defined
 time zone (e.g., `'EST'`, `'America/New_York'`) or a positive or
-negative numeric offset from UTC (e.g., `-7`, `+7`). 
+negative numeric offset from UTC (e.g., `-7`, `+7`).
 All timezone abbreviations are case-sensitive and must be uppercase, with the exception of `UTC`, for which `utc` is an alias.
 
 `DEFAULT`, `LOCAL`, or `0` sets the session time zone to `UTC`.

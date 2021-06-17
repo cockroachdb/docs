@@ -2,8 +2,6 @@
 title: Console Access Management
 summary: Manage your account roles and permissions.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-console-access-management.html
 ---
 
 The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
@@ -16,6 +14,14 @@ To switch between the organizations:
 
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
+
+## SQL users
+
+[Console Admins](#console-admin) can [create and manage SQL users](connect-to-your-cluster.html#step-2-create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
+
+SQL users created in the Console have admin privileges on the database by default. Therefore, anyone with the username and password of a default SQL user has privileges for all database objects across the cluster.
+
+Anyone with database admin privileges can [change a SQL user's databases privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges).
 
 ## Roles
 
@@ -71,7 +77,7 @@ If you are a member of multiple [organizations](console-access-management.html#o
 3. If the Team Member is a Developer, click **Change to Admin** to grant them Admin access. If the Team Member is an Admin, click **Change to Developer** to grant them only Developer access.
 
 {{site.data.alerts.callout_info}}
-As a Console Admin, you can change your own access to a Developer role; however, you won't be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you won't be allowed to change your role until you assign another Team Member to be the Console Admin.
+As a Console Admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you will not be allowed to change your role until you assign another Team Member to be the Console Admin.
 {{site.data.alerts.end}}
 
 #### Delete a Team Member
@@ -124,7 +130,7 @@ Your credit card will be charged after the trial ends. You can check the expirat
 ### Delete an Organization
 
 {{site.data.alerts.callout_danger}}
-Deleting an Organization will delete all clusters and user data within the Organization. This action cannot be reversed. To delete a single cluster instead, see [Cluster Management](cluster-management.html#delete-cluster). 
+Deleting an Organization will delete all clusters and user data within the Organization. This action cannot be reversed. To delete a single cluster instead, see [Cluster Management](cluster-management.html#delete-cluster).
 {{site.data.alerts.end}}
 
 If you are sure you want to delete the Organization, proceed with the following steps:
@@ -135,4 +141,3 @@ If you are sure you want to delete the Organization, proceed with the following 
 1. Click **Delete**.
 
     You will be automatically logged out of your account.
-

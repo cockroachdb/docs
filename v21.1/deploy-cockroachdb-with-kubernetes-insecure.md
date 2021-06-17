@@ -1,20 +1,25 @@
 ---
-title: Orchestrate CockroachDB in a Single Kubernetes Cluster (Insecure)
-summary: How to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster with Kubernetes.
+title: Deploy CockroachDB in a Single Kubernetes Cluster (Insecure)
+summary: Deploy an insecure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
+redirect_from: orchestrate-cockroachdb-with-kubernetes-insecure.html
 ---
 
 <div class="filters filters-big clearfix">
-  <a href="orchestrate-cockroachdb-with-kubernetes.html"><button class="filter-button">Secure</button></a>
+  <a href="deploy-cockroachdb-with-kubernetes.html"><button class="filter-button">Secure</button></a>
   <button class="filter-button current"><strong>Insecure</strong></button>
 </div>
 
-This page shows you how to orchestrate the deployment, management, and monitoring of an insecure 3-node CockroachDB cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using the [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) feature directly or via the [Helm](https://helm.sh/) Kubernetes package manager.
+This page shows you how to start and stop a 3-node CockroachDB insecure test cluster in a single [Kubernetes](http://kubernetes.io/) cluster, using one of the following:
+
+- Manual [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) configuration
+
+- [Helm](https://helm.sh/) package manager for Kubernetes
 
 {% include {{ page.version.version }}/prod-deployment/insecure-flag.md %}
 
-To deploy across multiple Kubernetes clusters in different geographic regions instead, see [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html). Also, for details about potential performance bottlenecks to be aware of when running CockroachDB in Kubernetes and guidance on how to optimize your deployment for better performance, see [CockroachDB Performance on Kubernetes](kubernetes-performance.html).
+The steps below demonstrate how to quickly deploy and interact with an insecure test cluster. To learn about authenticating, configuring, scaling, and upgrading a CockroachDB cluster on Kubernetes, [deploy a secure cluster](operate-cockroachdb-kubernetes.html) and then see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html).
 
 {% include cockroachcloud/use-cockroachcloud-instead.md %}
 
@@ -44,11 +49,11 @@ Feature | Description
 
 ## Step 2. Start CockroachDB
 
-To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
+Choose how you want to deploy and maintain the CockroachDB cluster.
 
 <div class="filters filters-big clearfix">
-    <button class="filter-button" data-scope="helm">Use Helm</button>
     <button class="filter-button" data-scope="manual">Use Configs</button>
+    <button class="filter-button" data-scope="helm">Use Helm</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="manual">
@@ -71,46 +76,16 @@ To start your CockroachDB cluster, you can either use our StatefulSet configurat
 
 {% include {{ page.version.version }}/orchestration/kubernetes-simulate-failure.md %}
 
-## Step 6. Monitor the cluster
+## Step 6. Stop the cluster
 
-{% include {{ page.version.version }}/orchestration/kubernetes-prometheus-alertmanager.md %}
-
-## Step 7. Maintain the cluster
-
-- [Add nodes](#add-nodes)
-- [Remove nodes](#remove-nodes)
-- [Expand disk size](#expand-disk-size)
-- [Upgrade the cluster](#upgrade-the-cluster)
-- [Stop the cluster](#stop-the-cluster)
-
-### Add nodes
-
-{% include {{ page.version.version }}/orchestration/kubernetes-scale-cluster.md %}
-
-### Remove nodes
-
-{% include {{ page.version.version }}/orchestration/kubernetes-remove-nodes-insecure.md %}
-
-### Expand disk size
-
-{% include {{ page.version.version }}/orchestration/kubernetes-expand-disk-size.md %}
-
-### Upgrade the cluster
-
-{% include {{ page.version.version }}/orchestration/kubernetes-upgrade-cluster.md %}
-
-### Stop the cluster
-
-To shut down the CockroachDB cluster:
-
-1. Delete the resources you created, including the logs:
+To shut down the CockroachDB cluster, delete the resources you created, including the logs:
 
     {{site.data.alerts.callout_danger}}
     This does not include deleting the persistent volumes that were attached to the pods. If you want to delete the persistent volumes and free up the storage used by CockroachDB, be sure you have a backup copy of your data. Data **cannot** be recovered once the persistent volumes are deleted. For more information, see the [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/delete-stateful-set/#persistent-volumes).
     {{site.data.alerts.end}}
 
     <section class="filter-content" markdown="1" data-scope="manual">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl delete pods,statefulsets,services,poddisruptionbudget,jobs,rolebinding,clusterrolebinding,role,clusterrole,serviceaccount,alertmanager,prometheus,prometheusrule,serviceMonitor -l app=cockroachdb
     ~~~
@@ -136,7 +111,7 @@ To shut down the CockroachDB cluster:
     </section>
 
     <section class="filter-content" markdown="1" data-scope="helm">
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm uninstall my-release
     ~~~
@@ -146,34 +121,39 @@ To shut down the CockroachDB cluster:
     ~~~
     </section>
 
-2. Stop Kubernetes:
-    - Hosted GKE:
+### Stop Kubernetes:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ gcloud container clusters delete cockroachdb
-        ~~~
-    - Hosted EKS:
+To delete the Kubernetes cluster:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ eksctl delete cluster --name cockroachdb
-        ~~~    
-    - Manual GCE:
+- Hosted GKE:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cluster/kube-down.sh
-        ~~~
-    - Manual AWS:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud container clusters delete cockroachdb
+    ~~~
+- Hosted EKS:
 
-        {% include copy-clipboard.html %}
-        ~~~ shell
-        $ cluster/kube-down.sh
-        ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ eksctl delete cluster --name cockroachdb
+    ~~~    
+- Manual GCE:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cluster/kube-down.sh
+    ~~~
+- Manual AWS:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cluster/kube-down.sh
+    ~~~
 
 ## See also
 
+- [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html)
+- [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)
-{% include {{ page.version.version }}/prod-deployment/prod-see-also.md %}
+- [Production Checklist](recommended-production-settings.html)
