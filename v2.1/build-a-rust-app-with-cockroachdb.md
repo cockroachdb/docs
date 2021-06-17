@@ -150,6 +150,6 @@ $ cockroach sql --insecure -e 'SELECT id, balance FROM accounts' --database=bank
 
 ## What's next?
 
-Read more about using the [Rust Postgres driver](https://crates.io/crates/postgres/).
+Read more about using the <a href="https://crates.io/crates/postgres/" data-proofer-ignore>Rust Postgres driver</a>.
 
 {% include {{ page.version.version }}/app/see-also-links.md %}

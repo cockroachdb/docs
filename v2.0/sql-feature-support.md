@@ -71,7 +71,7 @@ table tr td:nth-child(2) {
 
 | Component | Supported | Type | Details |
 |-----------|-----------|------|---------|
-| Indexes | ✓ | Common Extension | [Indexes documentation](https://www.cockroachlabs.com/docs/indexes.html) |
+| Indexes | ✓ | Common Extension | [Indexes documentation](indexes.html) |
 | Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include |
 | Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns) |
 | <span class="version-tag">New in v2.0:</span> Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html) |

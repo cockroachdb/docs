@@ -772,7 +772,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     This will start up the changefeed in the background and return the `job_id`. The changefeed writes to AWS.
 
-11. Monitor your changefeed on the [Admin UI](http://localhost:8080/#/metrics/changefeeds/cluster). For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
+11. Monitor your changefeed on the <a href="http://localhost:8080/#/metrics/changefeeds/cluster" data-proofer-ignore>Admin UI</a>. For more information, see [Changefeeds Dashboard](admin-ui-cdc-dashboard.html).
 
 12. When you are done, exit the SQL shell (`\q`).
 
