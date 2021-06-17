@@ -142,18 +142,6 @@ To delete the Kubernetes cluster:
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
     ~~~   
-- Manual GCE:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cluster/kube-down.sh
-    ~~~
-- Manual AWS:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cluster/kube-down.sh
-    ~~~
 
 {{site.data.alerts.callout_danger}}
 If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.
