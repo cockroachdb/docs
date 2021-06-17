@@ -17,7 +17,7 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
-## Step 1. Create a free cluster
+## Step 1. Create a free trial cluster
 
 For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 
@@ -36,7 +36,7 @@ For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 
 1. Click **Create cluster**.
 
-Your cluster will be created in approximately 20-30 minutes. Watch this [Getting Started with CockroachCloud](https://youtu.be/3hxSBeE-1tM) video while you wait.
+Your cluster will be created in approximately 20-30 minutes. Watch [this video](https://www.youtube.com/watch?v=XJZD1rorEQE) while you wait to get a preview of how you'll connect to your cluster.
 
 Once your cluster is created, you will be redirected to the **Cluster Overview** page.
 
@@ -57,7 +57,7 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 
 ## Step 4. Get the connection string
 
-1. In the top-right corner of the Console, click the **Connect** button. The **Connect to {cluster-name}** dialog will display.
+1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog will display.
 1. From the **SQL user** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 1. Verify that the `us-west2 GCP` region and `defaultdb` database are selected.
 1. Click **Next**. The **Connect** tab is displayed.

@@ -21,7 +21,7 @@ This page guides you through the quickest way to get started with CockroachDB by
 1. On the **Create your cluster** page, select **CockroachCloud Free**.
 1. Click **Create your free cluster**.
 
-    Your cluster will be created in approximately 20-30 seconds and the **Connect to {cluster-name}** dialog will display.
+    Your cluster will be created in approximately 20-30 seconds and the **Connect** dialog will display.
 
 ## Step 2. Choose your OS
 

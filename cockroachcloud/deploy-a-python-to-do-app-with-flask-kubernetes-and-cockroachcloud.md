@@ -19,6 +19,8 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
+1. If you haven't already, [create a CockroachCloud cluster](create-your-cluster.html).
+
 ## Prepare your cluster
 
 - [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
@@ -70,7 +72,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
     
 1. On the **Command Line** tab, copy the connection string.
 
-    Replace the `<certs_dir>` placeholders with the path to your `certs` directory. Copy the client connection string to an accessible location since you need it to use the built-in SQL client later.
+    Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
 
 ### Step 4. Create the CockroachCloud database
 
@@ -87,30 +89,25 @@ On your local workstation's terminal:
 
     {% include cockroachcloud/download-the-binary.md %}
 
-3. Use the connection string generated in Step 3 to connect to CockroachDB's built-in SQL client:
+1. Use the connection string generated in Step 3 to connect to CockroachDB's built-in SQL client:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --url 'postgres://<username>@<host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
-    ~~~
+    {% include cockroachcloud/sql-connection-string.md %}
 
-4. Enter the password you created for the SQL user in [Step 2](#step-2-create-a-sql-user).
-
-5. Create a database `todos`:
+1. Create a database `todos`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE todos;
     ~~~
 
-6. Use database `todos`:
+1. Use database `todos`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > USE todos;
     ~~~
 
-7. Create a table `todos`:
+1. Create a table `todos`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -134,7 +131,7 @@ On your local workstation's terminal:
   2. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
   3. Select a **Region** to connect to.
   4. From the **Database** dropdown, select `todos`.
-  5. On the **Connect Your App** tab, click **Copy connection string**.
+  5. On the **Connection String** tab, click **Copy connection string**.
 
       Copy the application connection string to an accessible location. You will update the password and certificate path in the next step.
 

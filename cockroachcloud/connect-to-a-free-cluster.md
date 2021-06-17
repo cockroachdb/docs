@@ -22,7 +22,7 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster. I
 
 1. In the top right corner of the CockroachCloud Console, click the **Connect** button.
 
-    The **Connection to {cluster-name}** modal displays on the **Step 2. Connect > Command Line** subtab.
+    The **Connect** modal displays on the **Step 2. Connect > Command Line** subtab.
 
 1. _(Optional)_ To configure your connection information, click **Go Back**:
     - Select the **SQL User** you want to connect with.
@@ -60,8 +60,21 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
+1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
+    
+    {% include cockroachcloud/sql-connection-string-free.md %}
+    
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
+
+    A welcome message displays:
+
+    ~~~
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ~~~
 
     You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html).
   </section>
@@ -82,18 +95,21 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachCloud Free (beta).
+1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to CockroachCloud Free (beta).
 1. Add your copied connection string to your application code.
 
     {{site.data.alerts.callout_info}}
     If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}
 
-For examples, see the following:
+For connection examples and code snippets in your language, see the following:
 
 - [Build a Python App with CockroachDB](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb.html)
 - [Build a Go App with CockroachDB](../{{site.versions["stable"]}}/build-a-go-app-with-cockroachdb.html)
 - [Build a Java App with CockroachDB](../{{site.versions["stable"]}}/build-a-java-app-with-cockroachdb.html)
+- [Build a Ruby App with CockroachDB](../{{site.versions["stable"]}}/build-a-ruby-app-with-cockroachdb.html)
+- [Build a Javascript App with CockroachDB](../{{site.versions["stable"]}}/build-a-nodejs-app-with-cockroachdb.html)
+- [Build a C++ App with CockroachDB](../{{site.versions["stable"]}}/build-a-c++-app-with-cockroachdb.html)
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
