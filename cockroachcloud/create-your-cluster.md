@@ -151,6 +151,21 @@ Region | us-east1
 Number of nodes | 9
 Size | `Option 2`
 
+## What's next
+
+To start using your CockroachCloud cluster, see the following pages:
+
+- [Connect to your cluster](connect-to-your-cluster.html)
+- [Authorize users](user-authorization.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+
+If you created a multi-region cluster, it is important to carefully choose:
+
+- The right [survival goal](../stable/multiregion-overview.html#survival-goals) for each database.
+- The right [table locality](../stable/multiregion-overview.html#table-locality) for each of your tables.
+
+Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
+
 <!--
 ### [WIP] Select hardware configuration based on performance requirements
 
