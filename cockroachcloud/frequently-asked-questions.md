@@ -108,7 +108,7 @@ If you are backing up the data to AWS or GCP, use the `specified` option for the
 
 ## Product features
 
-### Are enterprise features like partitioning or change data capture available to me?
+### Are enterprise features available to me?
 
 Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all [enterprise features](../stable/enterprise-licensing.html) are available to you.
 
