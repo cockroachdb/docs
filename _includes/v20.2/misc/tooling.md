@@ -21,7 +21,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | PHP | [php-pgsql](build-a-php-app-with-cockroachdb.html) | [PHP 7.4.6](https://www.php.net/downloads) | Beta |
 | Python | [psycopg2](build-a-python-app-with-cockroachdb.html) | [2.8.6](https://www.psycopg.org/docs/install.html) | Full |
 | Ruby | [pg](build-a-ruby-app-with-cockroachdb.html) | [1.2.3](https://rubygems.org/gems/pg) | Full |
-| Rust | <a href="https://crates.io/crates/postgres/" data-proofer-ignore>postgres</a> {% comment %} This link is in HTML instead of Markdown because HTML proofer dies bc of https://github.com/rust-lang/crates.io/issues/163 {% endcomment %} | [0.17.3](https://crates.io/crates/postgres/) | Beta |
+| Rust | <a href="https://crates.io/crates/postgres/" data-proofer-ignore>postgres</a> {% comment %} This link is in HTML instead of Markdown because HTML proofer dies bc of https://github.com/rust-lang/crates.io/issues/163 {% endcomment %} | <a href="https://crates.io/crates/postgres/" data-proofer-ignore>0.17.3</a> | Beta |
 
 ## Data access frameworks (e.g., ORMs)
 
@@ -50,7 +50,7 @@ If you encounter problems, please [open an issue](https://github.com/cockroachdb
 | [Pgweb](http://sosedoff.github.io/pgweb/) | [0.9.12 or higher](https://github.com/sosedoff/pgweb/releases/latest) | Beta |
 | [Postico](https://eggerapps.at/postico/) | 1.5.8 or higher | Beta |
 | [TablePlus](https://tableplus.com/) | [Build 222 or higher](https://tableplus.com/download) | Beta |
-| [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html) | [1.3.9 or higher](https://www.vaultproject.io/docs/install) | Beta |
+| [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb) | [1.3.9 or higher](<a href="https://www.vaultproject.io/docs/install" data-proofer-ignore>1.3.9 or higher</a>) | Beta |
 
 ## Integrated development environments (IDEs)
 

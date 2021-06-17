@@ -318,7 +318,13 @@ module Jekyll
         index.save_synonym('technical advisory', {
           objectID: 'technical advisory',
           type: 'synonym',
-          synonyms: ['tech advisory', 'advisory']
+          synonyms: ['technical advisory', 'tech advisory', 'advisory']
+        }, false)
+
+        index.save_synonym('postgresql', {
+          objectID: 'postgresql',
+          type: 'synonym',
+          synonyms: ['postgresql', 'postgres']
         }, false)
 
         return
