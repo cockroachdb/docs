@@ -15,6 +15,6 @@
     <section class="filter-content" markdown="1" data-scope="windows">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+    mkdir -p %APPDATA%/CockroachCloud/certs/<cluster-name>-ca.crt; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile %APPDATA%/.postgresql/root.crt
     ~~~
     </section>

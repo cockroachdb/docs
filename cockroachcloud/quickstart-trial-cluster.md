@@ -118,29 +118,7 @@ For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"
 
 1. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
     
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --url='postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --url='postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach workload init movr \
-    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%appdata%/.postgresql/root.crt'
-    ~~~
-    </section>
+    {% include cockroachcloud/sql-connection-string.md %}
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

@@ -40,21 +40,21 @@ If you have not done so already, run the first command in the dialog to install 
 <section class="filter-content" markdown="1" data-scope="mac">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-v21.1.0.darwin-10.9- amd64.tgz | tar -xJ && cp -i cockroach-v21.1.0.darwin -10.9-amd64/cockroach /usr/local/bin/
+curl https://binaries.cockroachdb.com/cockroach-v21.1.0.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
 ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="linux">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-v21.1.0.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-v21.1.0.linux-amd64/cockroach /usr/local/bin/
+curl https://binaries.cockroachdb.com/cockroach-v21.1.0.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
 ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-mkdir -p %APPDATA%\Cockroach && copy https://binaries.cockroachdb.com/cockroach-v21.1.2.windows-6.2-amd64.zip %APPDATA%\Cockroach && [Environment]::SetEnvironmentVariable("PATH", "%APPDATA%\Cockroach", "User")
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; mkdir -p $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip -OutFile cockroach.zip; Expand-Archive -Path cockroach.zip; Copy-Item "cockroach/cockroach-{{ page.release_info.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:appdata/cockroach; $Env:PATH += ";$env:appdata/cockroach"
 ~~~
 </section>
     
@@ -79,7 +79,7 @@ curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clus
 <section class="filter-content" markdown="1" data-scope="windows">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+mkdir -p %APPDATA%/CockroachCloud/certs/<cluster-name>-ca.crt; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile %APPDATA%/.postgresql/root.crt
 ~~~
 </section>
 
@@ -91,26 +91,7 @@ curl --create-dirs -o %APPDATA%/.postgresql/root.crt -O https://cockroachlabs.cl
     This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
     {{site.data.alerts.end}}
 
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    postgresql://user:ENTER-PASSWORD@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%3D<cluster-name>-<tenant-id>
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    postgresql://user:ENTER-PASSWORD@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%3D<cluster-name>-<tenant-id>
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    postgresql://user:ENTER-PASSWORD@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%APPDATA%/.postgresql/root.crt&options=--cluster%3D<cluster-name>-<tenant-id>
-    ~~~
-    </section>
+    {% include cockroachcloud/sql-connection-string-free.md %}
 
     A welcome message displays:
 
