@@ -18,6 +18,6 @@ The following sections make up the tutorial:
 
 Throughout the tutorial, we reference the source code for an example web application for the fictional vehicle-sharing company [MovR](movr.html). The source code for this application is open source and available on GitHub, in the [movr-flask repo](https://github.com/cockroachlabs/movr-flask/tree/v1.0). The code is well-commented, with docstrings defined at the beginning of each class and function definition.
 
-The repo's [README](https://github.com/cockroachlabs/movr-flask/blob/v1-doc-includes/README.md) also includes instructions on debugging and deploying the application using Google Cloud services. Those instructions are reproduced in [Setting Up a Virtual Environment for Developing Multi-Region Applications](multi-region-setup.html) and [Deploying a Multi-Region Web Application](multi-region-deployment.html).
+The repo's [README](https://github.com/cockroachlabs/movr-flask/blob/v1.0/README.md) also includes instructions on debugging and deploying the application using Google Cloud services. Those instructions are reproduced in [Setting Up a Virtual Environment for Developing Multi-Region Applications](multi-region-setup.html) and [Deploying a Multi-Region Web Application](multi-region-deployment.html).
 
 {% include {{ page.version.version }}/misc/movr-live-demo.md %}
