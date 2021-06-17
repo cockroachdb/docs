@@ -11,7 +11,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 ## Drivers
 
-| Language | Driver | Recommended version | Support level | Tutorial |
+| Language | Driver | Latest tested version | Support level | Tutorial |
 |----------+--------+---------------------+---------------+------------|
 | C | [libpq](http://www.postgresql.org/docs/13/static/libpq.html) | [PostgreSQL 13](http://www.postgresql.org/docs/13/static/libpq.html) | Beta | N/A |
 | C# (.NET) | [Npgsql](https://www.nuget.org/packages/Npgsql/) | 4.1.3.1 or later | Beta | [Build a C# App with CockroachDB (Npgsql)](build-a-csharp-app-with-cockroachdb.html) |
@@ -23,7 +23,7 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 ## Data access frameworks (e.g., ORMs)
 
-| Language | Framework | Recommended version | Support level | Tutorial |
+| Language | Framework | Latest tested version | Support level | Tutorial |
 |----------+-----+---------------------+---------------------+------------|
 | Go | [GORM](https://github.com/jinzhu/gorm/releases)<hr>[upper/db](https://github.com/upper/db) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/gorm.go |var gormSupportedTag = "|"\n\n %} or later <hr>v4 | Full<hr>Full | [Build a Go App with CockroachDB (GORM)](build-a-go-app-with-cockroachdb-gorm.html)<hr>[Build a Go App with CockroachDB (upper/db)](build-a-go-app-with-cockroachdb-upperdb.html) |
 | Java | [Hibernate](https://hibernate.org/orm/)<br>(including [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial))<hr>[jOOQ](https://www.jooq.org/)<hr>[MyBatis](https://mybatis.org/mybatis-3/) | {% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/pkg/cmd/roachtest/hibernate.go |var supportedHibernateTag = "|"\n\n %} or later (must be 5.4.19 or higher)<br><br><hr>3.13.2 (must be 3.13.0 or higher)<hr>3.5.5 or higher | Full<br><br><hr>Full<hr>Full | [Build a Java App with CockroachDB (Hibernate)](build-a-java-app-with-cockroachdb-hibernate.html)<br><br><hr>[Build a Java App with CockroachDB (jOOQ)](build-a-java-app-with-cockroachdb-jooq.html)<hr>[Build a Spring App with CockroachDB (MyBatis)](build-a-spring-app-with-cockroachdb-mybatis.html) |
@@ -33,32 +33,32 @@ For a list of tools supported by the CockroachDB community, see [Third-Party Too
 
 ## Application frameworks
 
-| Framework | Data access | Recommended version | Support level | Tutorial |
+| Framework | Data access | Latest tested version | Support level | Tutorial |
 |-----------+-------------+---------------------+---------------+----------|
 | Spring | [JDBC](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[JPA (Hibernate)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>[MyBatis](build-a-spring-app-with-cockroachdb-mybatis.html) | See individual Java ORM or [driver](#drivers) for data access version support. | See individual Java ORM or [driver](#drivers) for data access support level. | [Build a Spring App with CockroachDB (JDBC)](build-a-spring-app-with-cockroachdb-jdbc.html)<hr>[Build a Spring App with CockroachDB (JPA)](build-a-spring-app-with-cockroachdb-jpa.html)<hr>[Build a Spring App with CockroachDB (MyBatis)](build-a-spring-app-with-cockroachdb-mybatis.html)
 
 ## Graphical user interfaces (GUIs)
 
-| GUI | Recommended version | Support level | Tutorial |
+| GUI | Latest tested version | Support level | Tutorial |
 |-----+---------------------+---------------+----------|
 | [DBeaver](https://dbeaver.com/) | 5.2.3 or higher | Full | [Visualize CockroachDB Schemas with DBeaver](dbeaver.html)
 
 ## Integrated development environments (IDEs)
 
-| IDE | Recommended version | Support level | Tutorial |
+| IDE | Latest tested version | Support level | Tutorial |
 |-----+---------------------+---------------+----------|
 | [DataGrip](https://www.jetbrains.com/datagrip/) | 2021.1 or higher | Full | N/A
 | [IntelliJ IDEA](https://www.jetbrains.com/idea/) | 2021.1 or higher | Full | [Use IntelliJ IDEA with CockroachDB](intellij-idea.html)
 
 ## Schema migration tools
 
-| Tool | Recommended version | Support level | Tutorial |
+| Tool | Latest tested version | Support level | Tutorial |
 |-----+---------------------+----------------+----------|
 | [Flyway](https://flywaydb.org/documentation/commandline/#download-and-installation) | 7.1.0 or higher | Full | [Migrate CockroachDB Schemas with Flyway](flyway.html)
 | [Liquibase](https://www.liquibase.org/download) | 4.2.0 or higher | Full | [Migrate CockroachDB Schemas with Liquibase](liquibase.html)
 
 ## Other tools
 
-| Tool | Recommended version | Support level | Tutorial |
+| Tool | Latest tested version | Support level | Tutorial |
 |-----+---------------------+----------------+----------|
 | [Flowable](https://github.com/flowable/flowable-engine) | 6.4.2 or higher | Full | [Getting Started with Flowable and CockroachDB (external)](https://blog.flowable.org/2019/07/11/getting-started-with-flowable-and-cockroachdb/)
