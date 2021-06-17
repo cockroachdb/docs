@@ -28,7 +28,39 @@ The monolithic sorted map is comprised of two fundamental elements:
 
 #### Meta ranges
 
-The locations of all ranges in your cluster are stored in a two-level index at the beginning of your key-space, known as meta ranges, where the first level (`meta1`) addresses the second, and the second (`meta2`) addresses data in the cluster. Importantly, every node has information on where to locate the `meta1` range (known as its range descriptor, detailed below), and the range is never split.
+The locations of all ranges in your cluster are stored in a two-level index at the beginning of your key-space, known as meta ranges, where the first level (`meta1`) addresses the second, and the second (`meta2`) addresses data in the cluster.
+
+This two-level index plus user data can be visualized as a tree, with the root at `meta1`, the second level at `meta2`, and the leaves of the tree made up of the ranges that hold user data.
+
+~~~
+                  ┌──────────────────────────┐
+                  │                          │
+                  │                          │
+                  │   [/meta1/,/meta1/max)   │
+                  │                          │
+                  │                          │
+                  └──────────────────────────┘
+                                │
+                                │
+             ┌──────────────────┴────────────────────┐
+             │                                       │
+             ▼                                       ▼
+ ┌──────────────────────┐                ┌──────────────────────┐
+ │  [/meta2/,/meta2/m)  │                │[/meta2/m,/meta2/max) │
+ └──────────────────────┘                └──────────────────────┘
+             ▲                                       │
+             │                                       │
+             │                                       │
+    ┌────────┴────┐                        ┌─────────┴──────┐
+    │             │                        │                │
+    │             │                        │                │
+    ▼             │                        ▼                ▼
+┌──────┐      ┌──────┐                 ┌──────┐        ┌────────┐
+│[a,g) │      │[g,m) │                 │[m,s) │        │[s,max) │
+└──────┘      └──────┘                 └──────┘        └────────┘
+~~~
+
+Importantly, every node has information on where to locate the `meta1` range (known as its range descriptor, detailed below), and the range is never split.
 
 This meta range structure lets us address up to 4EiB of user data by default: we can address 2^(18 + 18) = 2^36 ranges; each range addresses 2^26 B, and altogether we address 2^(36+26) B = 2^62 B = 4EiB. However, with larger range sizes, it's possible to expand this capacity even further.
 
@@ -48,11 +80,24 @@ These table ranges are replicated (in the aptly named replication layer), and ha
 
 ### Using the monolithic sorted map
 
-When a node receives a request, it looks at the meta ranges to find out which node it needs to route the request to by comparing the keys in the request to the keys in its `meta2` range.
+As described in the [meta ranges section](#meta-ranges), the locations of all the ranges in a cluster are stored in a two-level index:
 
-These meta ranges are heavily cached, so this is normally handled without having to send an RPC to the node actually containing the `meta2` ranges.
+- The first level (`meta1`) addresses the second level, and
+- The second level (`meta2`) addresses user data.
 
-The node then sends those KV operations to the leaseholder identified in the `meta2` range. However, it's possible that the data moved, in which case the node that no longer has the information replies to the requesting node where it's now located. In this case we go back to the `meta2` range to get more up-to-date information and try again.
+This can also be visualized as a tree, with the root at `meta1`, the second level at `meta2`, and the leaves of the tree made up of the ranges that hold user data.
+
+When a node receives a request, it looks up the location of the range(s) that include the keys in the request in a "bottom up" fashion, starting at the leaves of this tree.  This process works as follows:
+
+1. For each key, the node looks up the specified key in the second level of range metadata (`meta2`).  That information is cached for performance; if the range's location is found in the cache, it is returned immediately.
+
+2. If the location is not found in the cache, the node looks up the location of the range where the actual value of `meta2` resides.  This information is also cached; if the location of the `meta2` range is found in the cache, the node sends an RPC to the `meta2` range to get the location of the keys the request wants to operate on, and returns that information.
+
+3. Finally, if the location of the `meta2` range is not found in the cache, the node looks up the location of the range where the actual value of the first level of range metadata (`meta1`) resides.  This lookup always succeeds because the location of `meta1` is distributed among all the nodes in the cluster using a gossip protocol.  The node then uses the information from `meta1` to look up the location of `meta2`, and from `meta2` it looks up the locations of the ranges that include the keys in the request.
+
+Note that the process described above is recursive; every time a lookup is performed, it either (1) gets a location from the cache, or (2) performs another lookup on the value in the next level "up" in the tree. Because the range metadata is cached, a lookup can usually be performed without having to send an RPC to another node.
+
+Now that the node has the location of the range where the key from the request resides, it sends the KV operations from the request along to the range (using the [`DistSender`](#distsender) machinery) in a [`BatchRequest`](#batchrequest).
 
 ### Interactions with other layers
 
@@ -79,9 +124,9 @@ This `BatchRequest` is also what's used to send requests between nodes using gRP
 
 ### DistSender
 
-The gateway/coordinating node's `DistSender` receives `BatchRequest`s from its own `TxnCoordSender`. `DistSender` is then responsible for breaking up `BatchRequests` and routing a new set of `BatchRequests` to the nodes it identifies contain the data using its `meta2` ranges. It will use the cache to send the request to the leaseholder, but it's also prepared to try the other replicas, in order of "proximity." The replica that the cache says is the leaseholder is simply moved to the front of the list of replicas to be tried and then an RPC is sent to all of them, in order.
+The gateway/coordinating node's `DistSender` receives `BatchRequest`s from its own `TxnCoordSender`. `DistSender` is then responsible for breaking up `BatchRequests` and routing a new set of `BatchRequests` to the nodes it identifies contain the data using the system [meta ranges](#meta-ranges). For a description of the process by which this lookup from a key to the node holding the key's range is performed, see [Using the monolithic sorted map](#using-the-monolithic-sorted-map).
 
-Requests received by a non-leaseholder fail with an error pointing at the replica's last known leaseholder. These requests are retried transparently with the updated lease by the gateway node and never reach the client.
+It sends the `BatchRequest`s to the replicas of a range, ordered in expectation of request latency. The leaseholder is tried first, if the request needs it. Requests received by a non-leaseholder may fail with an error pointing at the replica's last known leaseholder. These requests are retried transparently with the updated lease by the gateway node and never reach the client.
 
 As nodes begin replying to these commands, `DistSender` also aggregates the results in preparation for returning them to the client.
 
@@ -90,14 +135,13 @@ As nodes begin replying to these commands, `DistSender` also aggregates the resu
 Like all other data in your cluster, meta ranges are structured as KV pairs. Both meta ranges have a similar structure:
 
 ~~~
-metaX/successorKey -> LeaseholderAddress, [list of other nodes containing data]
+metaX/successorKey -> [list of nodes containing data]
 ~~~
 
 Element | Description
 --------|------------------------
 `metaX` | The level of meta range. Here we use a simplified `meta1` or `meta2`, but these are actually represented in `cockroach` as `\x02` and `\x03` respectively.
 `successorKey` | The first key *greater* than the key you're scanning for. This makes CockroachDB's scans efficient; it simply scans the keys until it finds a value greater than the key it's looking for, and that is where it finds the relevant data.<br/><br/>The `successorKey` for the end of a keyspace is identified as `maxKey`.
-`LeaseholderAddress` | The replica primarily responsible for reads and writes, known as the leaseholder. The replication layer contains more information about [leases](replication-layer.html#leases).
 
 Here's an example:
 
@@ -121,7 +165,7 @@ Let's imagine we have an alphabetically sorted column, which we use for lookups.
     meta1/maxKey -> node4:26257, node5:26257, node6:26257
     ~~~
 
-2. `meta2` contains addresses for the nodes containing the replicas of each range in the cluster, the first of which is the [leaseholder](replication-layer.html#leases).
+2. `meta2` contains addresses for the nodes containing the replicas of each range in the cluster:
 
     ~~~
     # Contains [A-G)
@@ -153,14 +197,13 @@ Each range in CockroachDB contains metadata, known as a range descriptor. A rang
 
 - A sequential RangeID
 - The keyspace (i.e., the set of keys) the range contains; for example, the first and last `<indexed column values>` in the table data KV structure above. This determines the `meta2` range's keys.
-- The addresses of nodes containing replicas of the range, with its leaseholder (which is responsible for its reads and writes) in the first position. This determines the `meta2` range's key's values.
+- The addresses of nodes containing replicas of the range. This determines the `meta2` range's key's values.
 
 Because range descriptors comprise the key-value data of the `meta2` range, each node's `meta2` cache also stores range descriptors.
 
 Range descriptors are updated whenever there are:
 
 - Membership changes to a range's Raft group (discussed in more detail in the [Replication Layer](replication-layer.html#membership-changes-rebalance-repair))
-- Leaseholder changes
 - Range splits
 
 All of these updates to the range descriptor occur locally on the range, and then propagate to the `meta2` range.
