@@ -1,9 +1,13 @@
-Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE)  service, the hosted Amazon Elastic Kubernetes Service (EKS), or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
+Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service, the hosted Amazon Elastic Kubernetes Service (EKS), or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
 
 - [Hosted GKE](#hosted-gke)
 - [Hosted EKS](#hosted-eks)
 - [Manual GCE](#manual-gce)
 - [Manual AWS](#manual-aws)
+
+{{site.data.alerts.callout_info}}
+The CockroachDB Kubernetes Operator is currently supported for GKE. You can also use the Operator on platforms such as [Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
+{{site.data.alerts.end}}
 
 ### Hosted GKE
 
@@ -11,26 +15,32 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
     This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
-    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.{{site.data.alerts.end}}
+    {{site.data.alerts.callout_success}}
+    Be sure to set a [default compute region and zone](https://cloud.google.com/kubernetes-engine/docs/quickstart#defaults) to use with `gcloud`. If no defaults are set, you will need to specify them with the `--region` and `--zone` flags when creating and deleting clusters.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_success}}
+    The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.
+    {{site.data.alerts.end}}
 
 2. From your local workstation, start the Kubernetes cluster:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ gcloud container clusters create cockroachdb --machine-type n1-standard-4
+    $ gcloud container clusters create cockroachdb --machine-type n2-standard-4
     ~~~
 
     ~~~
     Creating cluster cockroachdb...done.
     ~~~
 
-    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--machine-type` flag tells the node pool to use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
+    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--machine-type` flag tells the node pool to use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
 
     The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
 3. Get the email address associated with your Google Cloud account:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud info | grep Account
     ~~~
@@ -45,11 +55,11 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 4. [Create the RBAC roles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#prerequisites_for_using_role-based_access_control) CockroachDB needs for running on GKE, using the address from the previous step:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl create clusterrolebinding $USER-cluster-admin-binding \
     --clusterrole=cluster-admin \
-    --user=<your.google.cloud.email@example.org>
+    --user={your.google.cloud.email@example.org}
     ~~~
 
     ~~~
@@ -67,8 +77,8 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
     {{site.data.alerts.callout_success}}
     To ensure that all 3 nodes can be placed into a different availability zone, you may want to first [confirm that at least 3 zones are available in the region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#availability-zones-describe) for your account.
     {{site.data.alerts.end}}
-    
-    {% include copy-clipboard.html %}
+
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ eksctl create cluster \
     --name cockroachdb \
@@ -88,15 +98,22 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 
 ### Manual GCE
 
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](https://kubernetes.io/docs/setup/turnkey/gce/) documentation.
+From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](https://v1-18.docs.kubernetes.io/docs/setup/production-environment/turnkey/gce/) documentation.
 
 The process includes:
 
-- Creating a Google Cloud Platform account, installing `gcloud`, and other prerequisites.
+- Creating a Google Cloud Platform account, installing `gcloud` and other prerequisites.
+
+    {{site.data.alerts.callout_success}}
+    Be sure to set a [default compute zone and/or region](https://cloud.google.com/kubernetes-engine/docs/quickstart#defaults) to use with `gcloud`. If no defaults are set, you will need to specify them with the `--zone` and `--region` flags when creating and deleting clusters.
+    {{site.data.alerts.end}}
+
 - Downloading and installing the latest Kubernetes release.
+
 - Creating GCE instances and joining them into a single Kubernetes cluster.
+
 - Installing `kubectl`, the command-line tool used to manage Kubernetes from your workstation.
 
 ### Manual AWS
 
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](https://kubernetes.io/docs/setup/turnkey/aws/) documentation.
+From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](https://v1-18.docs.kubernetes.io/docs/setup/production-environment/turnkey/aws/) documentation.

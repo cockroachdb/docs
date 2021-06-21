@@ -6,7 +6,7 @@ toc: false
 
 If you run into issues with CockroachDB, we have the following pages to help you resolve the issue:
 
-- [General Troubleshooting](general-troubleshooting.html) helps with issues common to many scenarios.
+- [Common Errors](common-errors.html) helps with issues common to many scenarios.
 - [Cluster & Node Setup](cluster-setup-troubleshooting.html) helps start your cluster and scale it by adding nodes.
 - [Query Behavior](cluster-setup-troubleshooting.html) helps with unexpected query results.
 

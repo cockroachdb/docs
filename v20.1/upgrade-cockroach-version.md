@@ -49,7 +49,7 @@ Make sure there are no [bulk imports](import.html) or [schema changes](online-sc
 To check for ongoing imports or schema changes, use [`SHOW JOBS`](show-jobs.html#show-schema-changes) or check the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI.
 
 {{site.data.alerts.callout_info}}
-Once all nodes are running v20.1, but before the upgrade has been finalized, any schema changes still running will stop making progress, but [`SHOW JOBS`](show-jobs.html) and the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](pause-job.html)/[`RESUME JOB`](resume-job.html)/[`CANCEL JOB`](cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
+Once all nodes are running v20.1, but before the upgrade has been finalized, any schema changes still running will stop making progress, but [`SHOW JOBS`](show-jobs.html) and the [**Jobs** page](admin-ui-jobs-page.html) in the Admin UI will show them as running until the upgrade has been finalized. During this time, it will not be possible to manipulate these schema changes via [`PAUSE JOB`](pause-job.html)/[`RESUME JOB`](resume-job.html)/[`CANCEL JOB`](cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
 
 Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not apply to other upgrades.
 {{site.data.alerts.end}}
@@ -145,24 +145,24 @@ We recommend creating scripts to perform these steps instead of performing them 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ tar -xzf cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ tar xfz cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ tar -xzf cockroach-{{page.release_info.version}}.linux-amd64.tgz
     ~~~
     </div>
 

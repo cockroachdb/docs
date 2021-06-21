@@ -54,55 +54,12 @@ For more information, see the following:
 
 You can control the [`EXPORT`](export.html) process's behavior using any of the following key-value pairs as a `kv_option`.
 
-#### `delimiter`
-
-If not using comma as your column delimiter, you can specify another ASCII character as the delimiter.
-
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>delimiter</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The ASCII character that delimits columns in your rows</td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td>To use tab-delimited values: <code>WITH delimiter = e'\t'</code></td>
-		</tr>
-	</tbody>
-</table>
-
-#### `nullas`
-
-Convert SQL *NULL* values so they match the specified string.
-
-<table>
-	<tbody>
-		<tr>
-			<td><strong>Required?</strong></td>
-			<td>No</td>
-		</tr>
-		<tr>
-			<td><strong>Key</strong></td>
-			<td><code>nullas</code></td>
-		</tr>
-		<tr>
-			<td><strong>Value</strong></td>
-			<td>The string that should be used to represent <em>NULL</em> values. To avoid collisions, it is important to pick <code>nullas</code> values that does not appear in the exported data.</td>
-		</tr>
-		<tr>
-			<td><strong>Example</strong></td>
-			<td>To use empty columns as <em>NULL</em>: <code>WITH nullas = ''</code></td>
-		</tr>
-	</tbody>
-</table>
+Key                 | <div style="width:130px">Context</div> | Value                                                                                                                             |
+--------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+`delimiter`         |    `CSV DATA`   |  The ASCII character that delimits columns in your rows. If not using comma as your column delimiter, you can specify another ASCII character as the delimiter. **Default:** `,`. <br><br>To use tab-delimited values: `WITH delimiter = e'\t'`
+`nullas`            |    `CSV DATA`, `DELIMITED DATA`          |  The string that should be used to represent _NULL_ values. To avoid collisions, it is important to pick `nullas` values that do not appear in the exported data. <br><br>To use empty columns as _NULL_: `WITH nullas = ''`
+`compression`       |    `CSV DATA`   |  This instructs export to write `gzip` compressed CSV files to the specified destination. <br><br>See the [example](#export-gzip-compressed-csv-files) below.
+`chunk_rows`        |    `CSV DATA`   |  The number of rows to be converted to CSV and written to a single CSV file. **Default:** `100000`. <br><br>For example, `WITH chunk_rows = '5000'` for a table with 10,000 rows would produce two CSV files.
 
 ## Success responses
 
@@ -139,6 +96,22 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+### Export gzip compressed CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  WITH compression = 'gzip' FROM TABLE bank.customers;
+~~~
+
+~~~
+filename                                           | rows | bytes
+---------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
+(1 row)
 ~~~
 
 ### View a running export

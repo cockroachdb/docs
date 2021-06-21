@@ -38,7 +38,7 @@ prefix by renaming the program executable.)
 The files are named so that a lexicographical sort of the
 directory contents presents the file in creation order.
 
-A symlink (e.g. `cockroach-health.log`) for each group points to the latest generated log file.
+A symlink (e.g., `cockroach-health.log`) for each group points to the latest generated log file.
 
 Every new file group sink configured automatically inherits
 the configurations set in the `file-defaults` section.

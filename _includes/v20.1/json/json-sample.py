@@ -37,7 +37,7 @@ for n in range(41):
     cur.execute("""INSERT INTO jsonb_test.programming (posts)
             SELECT json_array_elements(%s->'data'->'children')""", (data,))
 
-    # Reddit limits to 30 requests per minute, so don't do any more than that.
+    # Reddit limits to 30 requests per minute, so do not do any more than that.
     time.sleep(2)
 
 cur.close()

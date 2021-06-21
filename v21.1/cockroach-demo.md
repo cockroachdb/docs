@@ -9,6 +9,7 @@ The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-m
 - All [SQL shell](#sql-shell) commands, client-side options, help, and shortcuts supported by the [`cockroach sql`](cockroach-sql.html) command are also supported by `cockroach demo`.
 - The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 - Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
+- <span class="version-tag">New in v21.1:</span> `cockroach demo` opens the SQL shell with a new [SQL user](authorization.html#sql-users) named `demo`. The `demo` user is assigned a random password and granted the [`admin` role](authorization.html#admin-role).
 
 {{site.data.alerts.callout_danger}}
 `cockroach demo` is designed for testing purposes only. It is not suitable for production deployments. To see a list of recommendations for production deployments, see the [Production Checklist](recommended-production-settings.html).
@@ -40,7 +41,7 @@ Run the `movr` workload against a demo cluster:
 $ cockroach demo --with-load <other flags>
 ~~~
 
-Execute SQL from the command line against a demo cluster
+Execute SQL from the command line against a demo cluster:
 
 ~~~ shell
 $ cockroach demo --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <other flags>
@@ -52,13 +53,13 @@ Start a multi-node demo cluster:
 $ cockroach demo --nodes=<number of nodes> <other flags>
 ~~~
 
-Start a multi-region demo cluster with automatic [geo-partitioning](#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning)
+Start a multi-region demo cluster with default region and zone localities:
 
 ~~~ shell
-$ cockroach demo --geo-partitioned-replicas <other flags>
+$ cockroach demo --global --nodes=<number of nodes>
 ~~~
 
-Start a multi-region demo cluster with manually defined localities
+Start a multi-region demo cluster with manually defined localities:
 
 ~~~ shell
 $ cockroach demo --nodes=<number of nodes> --demo-locality=<key:value pair per node> <other flags>
@@ -115,13 +116,15 @@ Flag | Description
 `--empty` | Start the demo cluster without a pre-loaded dataset.
 `--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
-`--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](#start-a-multi-region-demo-cluster-with-automatic-geo-partitioning) applied to the [`movr`](movr.html) database.
+`--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
 `--global` | <a name="global-flag"></a> This experimental flag is used to simulate a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
+`--http-port` | <span class="version-tag">New in v21.1:</span> Specifies a custom HTTP port to the [DB Console](ui-overview.html) for the first node of the demo cluster.<br><br>In multi-node clusters, the HTTP ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has an HTTP port of `5000`, the second node will have the HTTP port `5001`.
 `--insecure` |  Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` gives you an easy way test out CockroachDB [authorization features](authorization.html) and also creates a password (`admin`) for the `root` user for logging into the DB Console.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--max-sql-memory` | For each demo node, the maximum in-memory storage capacity for temporary SQL data, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** `128MiB`
 `--nodes` | Specify the number of in-memory nodes to create for the demo.<br><br>**Default:** 1
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](cockroach-sql.html#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
 `--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
+`--sql-port` | <span class="version-tag">New in v21.1:</span> Specifies a custom SQL port for the first node of the demo cluster.<br><br>In multi-node clusters, the SQL ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has the SQL port `3000`, the second node will the SQL port `3001`.
 `--with-load` |  Run a demo [`movr`](movr.html) workload against the preloaded `movr` database.<br><br> When running a multi-node demo cluster, load is balanced across all nodes.
 
 ### Logging
@@ -140,7 +143,7 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # Welcome to the CockroachDB demo database!
 #
-# You are connected to a temporary, in-memory CockroachDB cluster of 3 nodes.
+# You are connected to a temporary, in-memory CockroachDB cluster of 1 node.
 #
 # This demo session will attempt to enable enterprise features
 # by acquiring a temporary license from Cockroach Labs in the background.
@@ -155,16 +158,15 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
-#   (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
-#   (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo36965&username=demo
+#   (sql)     postgres://demo:demo36965@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo885159696&port=26257
+#   (sql/tcp) postgres://demo:demo36965@127.0.0.1:26257?sslmode=require
 #
-# To display connection parameters for other nodes, use \demo ls.
 #
-# The user "demo" with password "demo53628" has been created. Use it to access the Web UI!
+# The user "demo" with password "demo36965" has been created. Use it to access the Web UI!
 #
-# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, built 2021/03/31 10:29:32, go1.15.6) (same version as client)
-# Cluster ID: fe842d74-430d-4868-b21a-d41065e6e395
+# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, built 2021/05/17 13:52:51, go1.15.11) (same version as client)
+# Cluster ID: 5448bb81-6d2f-4545-a36c-4236df7e3d7d
 # Organization: Cockroach Demo
 #
 # Enter \? for a brief introduction.
@@ -177,19 +179,19 @@ The SQL shell welcome text includes connection parameters for accessing the DB C
 
 ~~~
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
-#   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
-#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
+#   (console) http://127.0.0.1:8080/demologin?password=demo36965&username=demo
+#   (sql)     postgres://demo:demo36965@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo885159696&port=26257
+#   (sql/tcp) postgres://demo:demo36965@127.0.0.1:26257?sslmode=require
 ~~~
 
 Parameter | Description
 ----------|------------
 `console` | Use this link to access a local [DB Console](ui-overview.html) to the demo cluster.
 `sql` | Use this connection URL to establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
-`sql/tcp` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).
+`sql/tcp` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).<br>The default SQL port for the first node of a demo cluster is `26257`.
 
 {{site.data.alerts.callout_info}}
-You do not need to create or specify node and client certificates in `sql` or `sql/tcp` connection URLs.
+You do not need to create or specify node and client certificates in `sql` or `sql/tcp` connection URLs. Instead, you can securely connect to the demo cluster with the random password generated for the `demo` user.
 {{site.data.alerts.end}}
 
 When running a multi-node demo cluster, use the `\demo ls` [shell command](#commands) to list the connection parameters for all nodes:
@@ -232,8 +234,9 @@ node 3:
 Command | Usage
 --------|------
 `\demo ls` | List the demo nodes and their connection URLs.
-`\demo shutdown <node number>` | Shuts down a node in a multi-node demo cluster.<br><br>This command simulates stopping a node that can be restarted. [See an example](#shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
-`\demo restart <node number>` | Restarts a node in a multi-node demo cluster. [See an example](#shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
+`\demo add region=<region>,zone=<zone>` | <span class="version-tag">New in v21.1:</span> Add a node to a single-region or multi-region demo cluster. [See an example](#add-shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
+`\demo shutdown <node number>` | Shuts down a node in a multi-node demo cluster.<br><br>This command simulates stopping a node that can be restarted. [See an example](#add-shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
+`\demo restart <node number>` | Restarts a node in a multi-node demo cluster. [See an example](#add-shut-down-and-restart-nodes-in-a-multi-node-demo-cluster).
 `\demo decommission <node number>` | Decommissions a node in a multi-node demo cluster.<br><br>This command simulates [decommissioning a node](remove-nodes.html).
 `\demo recommission <node number>` | Recommissions a decommissioned node in a multi-node demo cluster.
 
@@ -272,14 +275,14 @@ By default, `cockroach demo` loads the `movr` dataset in to the demo cluster:
 ~~~
 
 ~~~
-  schema_name |         table_name         | type  | estimated_row_count
---------------+----------------------------+-------+----------------------
-  public      | promo_codes                | table |                1000
-  public      | rides                      | table |                 500
-  public      | user_promo_codes           | table |                   0
-  public      | users                      | table |                  50
-  public      | vehicle_location_histories | table |                1000
-  public      | vehicles                   | table |                  15
+  schema_name |         table_name         | type  | owner | estimated_row_count | locality
+--------------+----------------------------+-------+-------+---------------------+-----------
+  public      | promo_codes                | table | demo  |                1000 | NULL
+  public      | rides                      | table | demo  |                 500 | NULL
+  public      | user_promo_codes           | table | demo  |                   0 | NULL
+  public      | users                      | table | demo  |                  50 | NULL
+  public      | vehicle_location_histories | table | demo  |                1000 | NULL
+  public      | vehicles                   | table | demo  |                  15 | NULL
 (6 rows)
 ~~~
 
@@ -311,12 +314,11 @@ You can also create and query new tables:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE drivers (
-    id UUID DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     city STRING NOT NULL,
     name STRING,
     dl STRING UNIQUE,
-    address STRING,
-    CONSTRAINT primary_key PRIMARY KEY (city ASC, id ASC)
+    address STRING
 );
 ~~~
 
@@ -332,8 +334,8 @@ You can also create and query new tables:
 
 ~~~
                    id                  |   city   |       name       |  dl  | address
-+--------------------------------------+----------+------------------+------+---------+
-  df3dc272-b572-4ca4-88c8-e9974dbd381a | new york | Catherine Nelson | NULL | NULL
+---------------------------------------+----------+------------------+------+----------
+  4d363104-2c48-43b5-aa1e-955b81415c7d | new york | Catherine Nelson | NULL | NULL
 (1 row)
 ~~~
 
@@ -342,6 +344,28 @@ You can also create and query new tables:
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach demo --nodes=3
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo ls
+~~~
+
+~~~
+node 1:
+  (console) http://127.0.0.1:8080/demologin?password=demo37407&username=demo
+  (sql)     postgres://demo:demo37407@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo252870906&port=26257
+  (sql/tcp) postgres://demo:demo37407@127.0.0.1:26257?sslmode=require
+
+node 2:
+  (console) http://127.0.0.1:8081/demologin?password=demo37407&username=demo
+  (sql)     postgres://demo:demo37407@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo252870906&port=26258
+  (sql/tcp) postgres://demo:demo37407@127.0.0.1:26258?sslmode=require
+
+node 3:
+  (console) http://127.0.0.1:8082/demologin?password=demo37407&username=demo
+  (sql)     postgres://demo:demo37407@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo252870906&port=26259
+  (sql/tcp) postgres://demo:demo37407@127.0.0.1:26259?sslmode=require
 ~~~
 
 ### Load a sample dataset into a demo cluster
@@ -359,9 +383,9 @@ $ cockroach demo ycsb
 ~~~
 
 ~~~
-  schema_name | table_name | type  | owner | estimated_row_count
---------------+------------+-------+-------+----------------------
-  public      | usertable  | table | demo  |                   0
+  schema_name | table_name | type  | owner | estimated_row_count | locality
+--------------+------------+-------+-------+---------------------+-----------
+  public      | usertable  | table | demo  |                   0 | NULL
 (1 row)
 ~~~
 
@@ -397,8 +421,8 @@ $ cockroach demo \
 CREATE TABLE
 INSERT 1
                    id                  |   city   |       name       |  dl  | address
-+--------------------------------------+----------+------------------+------+---------+
-  df3dc272-b572-4ca4-88c8-e9974dbd381a | new york | Catherine Nelson | NULL | NULL
+---------------------------------------+----------+------------------+------+----------
+  dd6afc4c-bf31-455e-bb6d-bfb8f18ad6cc | new york | Catherine Nelson | NULL | NULL
 (1 row)
 ~~~
 
@@ -437,31 +461,97 @@ Then open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the 
 $ cockroach sql --url='postgres://demo:demo53628@127.0.0.1:26259?sslmode=require'
 ~~~
 
-You can also use this URL to connect an application to the demo cluster.  
+You can also use this URL to connect an application to the demo cluster as the `demo` user.
 
-### Start a multi-region demo cluster with automatic geo-partitioning
+### Start a multi-region demo cluster
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo --geo-partitioned-replicas
+$ cockroach demo --global --nodes 9
 ~~~
 
-This command starts a 9-node demo cluster with the `movr` database preloaded, and [partitions](partitioning.html) and [zone constraints](configure-replication-zones.html) applied to the primary and secondary indexes.
+This command starts a 9-node demo cluster with the `movr` database preloaded and region and zone localities set at the cluster level.
 
-{% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
+For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-region capabilities, see [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
 
-### Shut down and restart nodes in a multi-node demo cluster
+### Add, shut down, and restart nodes in a multi-node demo cluster
 
-In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to shut down, restart, decommission, and recommission individual nodes.
+In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to add, shut down, restart, decommission, and recommission individual nodes.
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo --nodes=3
+$ cockroach demo --nodes=9
 ~~~
 
-You can shutdown the 3rd node and then restart it:
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW REGIONS FROM CLUSTER;
+~~~
+
+~~~
+     region    |  zones
+---------------+----------
+  europe-west1 | {b,c,d}
+  us-east1     | {b,c,d}
+  us-west1     | {a,b,c}
+(3 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo ls
+~~~
+
+~~~
+node 1:
+  (console) http://127.0.0.1:8080/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26257
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26257?sslmode=require
+
+node 2:
+  (console) http://127.0.0.1:8081/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26258
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26258?sslmode=require
+
+node 3:
+  (console) http://127.0.0.1:8082/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26259
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26259?sslmode=require
+
+node 4:
+  (console) http://127.0.0.1:8083/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26260
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26260?sslmode=require
+
+node 5:
+  (console) http://127.0.0.1:8084/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26261
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26261?sslmode=require
+
+node 6:
+  (console) http://127.0.0.1:8085/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26262
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26262?sslmode=require
+
+node 7:
+  (console) http://127.0.0.1:8086/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26263
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26263?sslmode=require
+
+node 8:
+  (console) http://127.0.0.1:8087/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26264
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26264?sslmode=require
+
+node 9:
+  (console) http://127.0.0.1:8088/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26265
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26265?sslmode=require
+~~~
+
+You can shut down and restart any node by node id. For example, to shut down the 3rd node and then restart it:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -501,9 +591,59 @@ node 3 has been decommissioned
 node 3 has been recommissioned
 ~~~
 
+To add a new node to the cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo add region=us-central1,zone=a
+~~~
+
+~~~
+node 10 has been added with locality "region=us-central1,zone=a"
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW REGIONS FROM CLUSTER;
+~~~
+
+~~~
+     region    |  zones
+---------------+----------
+  europe-west1 | {b,c,d}
+  us-central1  | {a}
+  us-east1     | {b,c,d}
+  us-west1     | {a,b,c}
+(4 rows)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> \demo ls
+~~~
+
+~~~
+node 1:
+  (console) http://127.0.0.1:8080/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26257
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26257?sslmode=require
+
+node 2:
+  (console) http://127.0.0.1:8081/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26258
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26258?sslmode=require
+
+...
+
+node 10:
+  (console) http://127.0.0.1:8089/demologin?password=demo37632&username=demo
+  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26266
+  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26266?sslmode=require
+~~~
+
 ### Try your own scenario
 
-In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-database.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
+In addition to using one of the [pre-loaded dataset](#datasets), you can create your own database (e.g., [`CREATE DATABASE <yourdb>;`](create-database.html)), or use the empty `defaultdb` database (e.g., [`SET DATABASE defaultdb;`](set-vars.html)) to test our your own scenario involving any CockroachDB SQL features you are interested in.
 
 ## See also
 

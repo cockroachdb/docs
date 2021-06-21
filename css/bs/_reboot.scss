@@ -370,7 +370,7 @@ button,
   }
 }
 
-// Remove inner border and padding from Firefox, but don't restore the outline like Normalize.
+// Remove inner border and padding from Firefox, but do not restore the outline like Normalize.
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
@@ -388,18 +388,18 @@ input[type="checkbox"] {
 
 textarea {
   overflow: auto; // Remove the default vertical scrollbar in IE.
-  // Textareas should really only resize vertically so they don't break their (horizontal) containers.
+  // Textareas should really only resize vertically so they do not break their (horizontal) containers.
   resize: vertical;
 }
 
 fieldset {
   // Browsers set a default `min-width: min-content;` on fieldsets,
-  // unlike e.g. `<div>`s, which have `min-width: 0;` by default.
+  // unlike e.g., `<div>`s, which have `min-width: 0;` by default.
   // So we reset that to ensure fieldsets behave more like a standard block element.
   // See https://github.com/twbs/bootstrap/issues/12359
   // and https://html.spec.whatwg.org/multipage/#the-fieldset-and-legend-elements
   min-width: 0;
-  // Reset the default outline behavior of fieldsets so they don't affect page layout.
+  // Reset the default outline behavior of fieldsets so they do not affect page layout.
   padding: 0;
   margin: 0;
   border: 0;

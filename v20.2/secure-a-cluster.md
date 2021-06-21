@@ -135,7 +135,7 @@ You can use either [`cockroach cert`](cockroach-cert.html) commands or [`openssl
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -324,7 +324,7 @@ The CockroachDB [DB Console](ui-overview.html) gives you insight into the overal
 
     <img src="{{ 'images/v20.2/ui_cluster_overview_3_nodes.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-data-replication.html) of data via the Raft consensus protocol.    
+    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.    
 
     {{site.data.alerts.callout_info}}
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-db-console).

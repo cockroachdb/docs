@@ -7,13 +7,13 @@
         {
           "title": "Latest v21.1",
           "urls": [
-            "/releases/v21.1.0.html"
+            "/releases/v21.1.2.html"
           ]
         },
         {
           "title": "Latest v20.2",
           "urls": [
-            "/releases/v20.2.10.html"
+            "/releases/v20.2.11.html"
           ]
         },
         {
@@ -26,6 +26,10 @@
           "title": "All Production Releases",
           "urls": [
             "/releases/index.html#production-releases",
+            "/releases/v21.1.2.html",
+            "/releases/v21.1.0.html",
+            "/releases/v20.2.11.html",
+            "/releases/v20.2.10.html",
             "/releases/v20.2.9.html",
             "/releases/v20.2.8.html",
             "/releases/v20.2.7.html",

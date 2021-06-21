@@ -63,7 +63,7 @@ function AnchorJS(options) {
 
     _addBaselineStyles();
 
-    // We produce a list of existing IDs so we don't generate a duplicate.
+    // We produce a list of existing IDs so we do not generate a duplicate.
     elsWithIds = document.querySelectorAll('[id]');
     idList = [].map.call(elsWithIds, function assign(el) {
       return el.id;
@@ -195,7 +195,7 @@ function AnchorJS(options) {
    * Adds baseline styles to the page, used by all AnchorJS links irregardless of configuration.
    */
   function _addBaselineStyles() {
-    // We don't want to add global baseline styles if they've been added before.
+    // We do not want to add global baseline styles if they've been added before.
     if (document.head.querySelector('style.anchorjs') !== null) {
       return;
     }

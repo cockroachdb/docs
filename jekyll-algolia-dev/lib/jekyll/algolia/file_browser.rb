@@ -63,7 +63,7 @@ module Jekyll
       #
       # file - The Jekyll file
       #
-      # We don't index static assets (js, css, images)
+      # We do not index static assets (js, css, images)
       def self.static_file?(file)
         file.is_a?(Jekyll::StaticFile)
       end
@@ -73,7 +73,7 @@ module Jekyll
       # file - The Jekyll file
       #
       # 404 pages are not Jekyll defaults but a convention adopted by GitHub
-      # pages. We don't want to index those.
+      # pages. We do not want to index those.
       # Source: https://help.github.com/articles/creating-a-custom-404-page-for-your-github-pages-site/
       #
       def self.is_404?(file)
@@ -319,7 +319,7 @@ module Jekyll
       #
       # file - The Jekyll file
       #
-      # Only collections (including posts) have an excerpt. Pages don't.
+      # Only collections (including posts) have an excerpt. Pages do not.
       def self.excerpt_text(file)
         html = excerpt_html(file)
         Utils.html_to_text(html)
@@ -343,7 +343,7 @@ module Jekyll
       #
       # file - The Jekyll file
       #
-      # Only collection documents can have a collection name. Pages don't. Posts
+      # Only collection documents can have a collection name. Pages do not. Posts
       # are purposefully excluded from it as well even if they are technically
       # part of a collection
       def self.collection(file)

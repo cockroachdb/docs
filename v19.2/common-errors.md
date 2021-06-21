@@ -2,7 +2,6 @@
 title: Common Errors
 summary: Understand and resolve common error messages written to stderr or logs.
 toc: false
-redirect_from: general-troubleshooting.html
 ---
 
 This page helps you understand and resolve error messages written to `stderr` or your [logs](debug-and-error-logs.html).
@@ -92,7 +91,7 @@ Uncertainty errors are a form of transaction conflict. For more information abou
 
 Errors which were previously reported to the client as opaque `TransactionStatusError`s are now transaction retry errors with the error message "transaction deadline exceeded" and error code `40001`.
 
-This error can occur for long-running transactions (with execution time on the order of minutes) that also experience conflicts with other transactions and thus attempt to commit at a timestamp different than their original timestamp. If the timestamp at which the transaction attempts to commit is above a "deadline" imposed by the various schema elements that the transaction has used (i.e. table structures), then this error might get returned to the client.
+This error can occur for long-running transactions (with execution time on the order of minutes) that also experience conflicts with other transactions and thus attempt to commit at a timestamp different than their original timestamp. If the timestamp at which the transaction attempts to commit is above a "deadline" imposed by the various schema elements that the transaction has used (i.e., table structures), then this error might get returned to the client.
 
 When this error occurs, the application must retry the transaction. For more information about how to retry transactions, see [Transaction retries](transactions.html#transaction-retries).
 

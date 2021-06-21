@@ -316,9 +316,15 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
+### Slow (or hung) backups and queries due to write intent buildup
+
+{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
+
 ### Change data capture
 
-Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing.
+Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
 
@@ -590,7 +596,7 @@ In other cases, the rollback will fail in such a way that will never be cleaned 
 
 To reduce the chance that a column drop will roll back incorrectly:
 
-- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures won't cause the column drop to be rolled back.
+- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures will not cause the column drop to be rolled back.
 
 - Drop all [constraints](constraints.html) (including [unique indexes](unique.html)) on the column in a separate transaction, before dropping the column.
 

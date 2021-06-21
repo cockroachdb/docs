@@ -160,7 +160,7 @@ module Jekyll
       #
       # _context - Not used
       #
-      # Application ID and API key submitted don't match any credentials known
+      # Application ID and API key submitted do not match any credentials known
       def self.invalid_credentials?(error, _context = {})
         details = error_hash(error.message)
         return false if details == false

@@ -125,7 +125,7 @@ public class Sample {
     }
 
     // Run SQL code in a way that automatically handles the
-    // transaction retry logic so we don't have to duplicate it in
+    // transaction retry logic so we do not have to duplicate it in
     // various places.
     private static long runTransaction(Session session, Function<Session, Long> fn) {
         long rv = 0;

@@ -8,9 +8,9 @@ set -euo pipefail
 
 what=""                                           # Leave empty for cluster backup, or add "DATABASE database_name" to backup a database.
 base="<storage_URL>/backups"                      # The URL where you want to store the backup.
-extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g. AWS key params.
+extra="<storage_parameters>"                      # Any additional parameters that need to be appended to the BACKUP URI e.g., AWS key params.
 recent=recent_backups.txt                         # File in which recent backups are tracked.
-backup_parameters=<additional backup parameters>  # e.g. "WITH revision_history"
+backup_parameters=<additional backup parameters>  # e.g., "WITH revision_history"
 
 # Customize the `cockroach sql` command with `--host`, `--certs-dir` or `--insecure`, `--port`, and additional flags as needed to connect to the SQL client.
 runsql() { cockroach sql --insecure -e "$1"; }

@@ -4,7 +4,7 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/software-panic-troubleshooting.html
+
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRLVEmTRHybBudw4VySy16RQ8Udm8uE2bDzEdO5x2g2wY66TMxkGQYDEptIQR-L3FcsaGqgxVCSu9ut/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

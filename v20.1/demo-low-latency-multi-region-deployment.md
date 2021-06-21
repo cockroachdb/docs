@@ -3,7 +3,6 @@ title: Low Latency Reads and Writes in a Multi-Region Cluster
 summary: Use data topologies to get low-latency reads and writes in a multi-region CockroachDB cluster.
 toc: true
 toc_not_nested: true
-redirect_from: demo-geo-partitioning.html
 key: demo-geo-partitioning.html
 ---
 
@@ -50,7 +49,7 @@ You'll deploy a 9-node CockroachDB cluster across 3 GCE regions, with each node 
 
 A few notes:
 
-- For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd) disk.
+- For each CockroachDB node, you'll use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd) disk.
 - You'll start each node with the [`--locality` flag](cockroach-start.html#locality) describing the node's region and availability zone. Initially, this locality information will lead CockroachDB to evenly distribute data across the 3 regions. Then, it will be used to apply data topologies for lower latency.
 - There will be an extra VM in each region for an instance of the MovR application and the open-source HAProxy load balancer. The application in each region will be pointed at the local load balancer, which will direct connections only to the CockroachDB nodes in the same region.
 
@@ -86,7 +85,7 @@ You need 9 VMs across 3 GCE regions, 3 per region with each VM in a distinct ava
 1. [Create 9 VMs](https://cloud.google.com/compute/docs/instances/create-start-instance) for CockroachDB nodes.
 
     When creating each VM:
-    - Use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) and the Ubuntu 16.04 OS image.
+    - Use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory) and the Ubuntu 16.04 OS image.
     - Select one of the following [region and availability zone](https://cloud.google.com/compute/docs/regions-zones/) configurations. Be sure to use each region/availability combination only once.
 
         VM | Region | Availability Zone
@@ -124,8 +123,8 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -159,8 +158,8 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -194,8 +193,8 @@ Now that you have VMs in place, start your CockroachDB cluster across the three 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -275,8 +274,8 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -903,7 +902,7 @@ As mentioned earlier, all of the tables except `promo_codes` are geographically 
 
 ### Duplicate the reference table
 
-In contrast to the other tables, the `promo_codes` table is not tied to geography, and its data is read frequently but rarely updated. This type of table is often referred to as a "reference table" or "lookup table". For this table, you'll keep read latency low by applying the [Duplicate Indexes](topology-duplicate-indexes.html) data topology. In practice, you will put the leaseholder for the table itself (also called the primary index) in one region, create two secondary indexes on the table, and tell CockroachDB to put the leaseholder for each secondary index in one of the other regions. CockroachDB's [cost-based optimizer](cost-based-optimizer.html) will then make sure that reads from `promo_codes` access the local leaseholder (either for the table itself or for one of the secondary indexes). Writes, however, will still leave the region to get consensus for the table and its secondary indexes, but writes are so rare that this won't impact overall performance.
+In contrast to the other tables, the `promo_codes` table is not tied to geography, and its data is read frequently but rarely updated. This type of table is often referred to as a "reference table" or "lookup table". For this table, you'll keep read latency low by applying the [Duplicate Indexes](topology-duplicate-indexes.html) data topology. In practice, you will put the leaseholder for the table itself (also called the primary index) in one region, create two secondary indexes on the table, and tell CockroachDB to put the leaseholder for each secondary index in one of the other regions. CockroachDB's [cost-based optimizer](cost-based-optimizer.html) will then make sure that reads from `promo_codes` access the local leaseholder (either for the table itself or for one of the secondary indexes). Writes, however, will still leave the region to get consensus for the table and its secondary indexes, but writes are so rare that this will not impact overall performance.
 
 1. Create two indexes on the `promo_codes` table, and make them complete copies of the primary index:
 

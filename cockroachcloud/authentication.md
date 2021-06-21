@@ -2,8 +2,6 @@
 title: Authentication
 summary: Learn about the authentication features for CockroachCloud clusters.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-authentication.html
 ---
 
 CockroachCloud uses TLS 1.2 for inter-node and client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.

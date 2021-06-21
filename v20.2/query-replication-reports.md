@@ -86,7 +86,7 @@ The `system.replication_critical_localities` report contains which of your local
 
 That said, a locality being critical is not necessarily a bad thing as long as you are aware of it. What matters is that [you configure the topology of your cluster to get the resiliency you expect](topology-patterns.html).
 
-As described in [Configure Replication Zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes), localities are key-value pairs defined at [node startup time](cockroach-start.html#locality), and are ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g. region before datacenter as in `region=eu,dc=paris`).
+As described in [Configure Replication Zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes), localities are key-value pairs defined at [node startup time](cockroach-start.html#locality), and are ordered into _locality tiers_ that range from most inclusive to least inclusive (e.g., region before datacenter as in `region=eu,dc=paris`).
 
 For an example using this table, see [Find out which databases and tables have ranges in critical localities](#find-out-which-databases-and-tables-have-ranges-in-critical-localities).
 
@@ -505,7 +505,7 @@ SELECT DISTINCT * FROM report;
 (24 rows)
 ~~~
 
-To give another example, let's say your cluster were similar to the one shown above, but configured with [tiered localities](cockroach-start.html#locality) such that you had split `us-east1` into `{region=us-east1,dc=dc1, region=us-east1,dc=dc2, region=us-east1,dc=dc3}`. In that case, you wouldn't expect any DC to be critical, because the cluster would "diversify" each range's location as much as possible across data centers. In such a situation, if you were to see a DC identified as a critical locality, you'd be surprised and you'd take some action. For example, perhaps the diversification process is failing because some localities are filled to capacity. If there is no disk space free in a locality, your cluster can't move replicas there.
+To give another example, let's say your cluster were similar to the one shown above, but configured with [tiered localities](cockroach-start.html#locality) such that you had split `us-east1` into `{region=us-east1,dc=dc1, region=us-east1,dc=dc2, region=us-east1,dc=dc3}`. In that case, you wouldn't expect any DC to be critical, because the cluster would "diversify" each range's location as much as possible across data centers. In such a situation, if you were to see a DC identified as a critical locality, you'd be surprised and you'd take some action. For example, perhaps the diversification process is failing because some localities are filled to capacity. If there is no disk space free in a locality, your cluster cannot move replicas there.
 
 ## See also
 

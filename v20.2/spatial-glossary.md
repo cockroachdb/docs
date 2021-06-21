@@ -152,7 +152,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="proj"></a>
 
-- _PROJ_: A [cartographic projection](#cartographic-projection) library. Used by CockroachDB and other projects. For more information, see <https://www.proj4.org/>.
+- _PROJ_: A [cartographic projection](#cartographic-projection) library. Used by CockroachDB and other projects. For more information, see <https://www.proj.org/>.
 
 <a name="geobuf"></a>
 

@@ -48,7 +48,7 @@ To backup interleaved data in v21.1, a `BACKUP` statement must include the [`INC
 ## Required privileges
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have [read access](authorization.html#assign-privileges) (`SELECT` or `USAGE`) on all objects being backed up.
+- For all other backups, the user must have [read access](authorization.html#assign-privileges) on all objects being backed up. Database and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges
@@ -246,9 +246,15 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
-## Known limitation
+## Known limitations
+
+### Using interleaved tables in backups
 
 {% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
+
+### Slow (or hung) backups and queries due to write intent buildup
+
+{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
 
 ## See also
 

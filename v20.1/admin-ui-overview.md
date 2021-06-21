@@ -2,9 +2,6 @@
 title: Admin UI Overview
 summary: Use the Admin UI to monitor and optimize cluster performance.
 toc: true
-redirect_from: 
-- explore-the-admin-ui.html
-- admin-ui-access-and-navigate.html
 key: explore-the-admin-ui.html
 ---
 
@@ -48,14 +45,14 @@ On insecure clusters, all areas of the Admin UI are accessible to all users.
 On secure clusters, for each user who should have access to the Admin UI, you must [create a user with a password](create-user.html#create-a-user-with-a-password) and optionally [grant the user membership to the `admin` role](grant-roles.html).
 
 {{site.data.alerts.callout_info}}
-The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant-roles.html): 
+The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant-roles.html):
 
 <code style="white-space:pre-wrap">GRANT admin TO \<sql_user\>;</code>
 {{site.data.alerts.end}}
 
 For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables, jobs, and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
 
-The following areas of the Admin UI can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege. 
+The following areas of the Admin UI can only be accessed by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege.
 
 Secure area | Privileged information
 -----|-----

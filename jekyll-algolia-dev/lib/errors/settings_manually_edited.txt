@@ -5,7 +5,7 @@ I:
 I:This can happen if you manually edited them from the Algolia dashboard, for example. Don't worry, they will still be honored (for now).
 I:
 I:Still, we strongly encourage you to save any custom config inside the algolia.settings key of your _config.yml instead. Any value set there will always take precedence over anything you manually set in your dashboard.
-I:This is the best way to be sure your settings won't be lost in the future.
+I:This is the best way to be sure your settings will not be lost in the future.
 I:
 W:To keep your current custom config, here is what you should add to your _config.yml file:
 W:

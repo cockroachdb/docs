@@ -194,6 +194,12 @@ Before increasing this value, however, verify that you will not end up saturatin
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/37906)
 
+### Slow (or hung) backups and queries due to write intent buildup
+
+{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
+
 ### Location-based time zone names
 
 Certain features of CockroachDB require time zone data, for example, to support using location-based names as time zone identifiers. When starting a CockroachDB node on a machine missing time zone data, the node will not start.
@@ -508,7 +514,7 @@ In other cases, the rollback will fail in such a way that will never be cleaned 
 
 To reduce the chance that a column drop will roll back incorrectly:
 
-- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures won't cause the column drop to be rolled back.
+- Perform column drops in transactions separate from other schema changes. This ensures that other schema change failures will not cause the column drop to be rolled back.
 
 - Drop all [constraints](constraints.html) (including [unique indexes](unique.html)) on the column in a separate transaction, before dropping the column.
 

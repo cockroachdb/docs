@@ -570,7 +570,7 @@ Now suppose you want to update a couple rows in the table, based on their conten
 
 The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the update. This makes sense, as you are performing an update based on the `name` column.
 
-Although `users_name_city_idx` is likely the most efficient index for the table scan, you may want to assess the performance difference between scanning on `users_name_city_idx` and scanning on the primary index. You can provide an index hint (i.e. force the index selection) to use the primary key of the `users` table:
+Although `users_name_city_idx` is likely the most efficient index for the table scan, you may want to assess the performance difference between scanning on `users_name_city_idx` and scanning on the primary index. You can provide an index hint (i.e., force the index selection) to use the primary key of the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql

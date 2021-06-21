@@ -17,7 +17,7 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 ## Requirements
 
-You must have [SSH access](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys) to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+You must have SSH access to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
 
 ## Recommendations
 
@@ -118,7 +118,7 @@ Microsoft Azure offers fully-managed load balancing to distribute traffic betwee
 	$ wget https://s3.amazonaws.com/binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.
@@ -149,10 +149,10 @@ At this point, your cluster is live and operational but contains only a single n
 
 	~~~ shell
 	# Get the latest CockroachDB tarball.
-	$ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+	$ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
 
 	# Extract the binary.
-	$ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+	$ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
 	--strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
 
 	# Move the binary.

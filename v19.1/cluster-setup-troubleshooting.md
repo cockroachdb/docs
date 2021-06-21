@@ -227,7 +227,7 @@ Again, firewalls or hostname issues can cause any of these steps to fail.
 
 If the Admin UI lists live nodes in the **Dead Nodes** table, then you might have a network partition.
 
-**Explanation:** A network partition indicates that the nodes can't communicate with each other in one or both directions because of a configuration problem with the network itself. A symmetric partition is one where the communication is broken in both directions. An asymmetric partition means the connection works in one direction but not the other. An example of a scenario that can cause a network partition is when specific IP addresses or hostnames are allowed by the firewall, and then those addresses or names change after tearing down and rebuilding a node.
+**Explanation:** A network partition indicates that the nodes cannot communicate with each other in one or both directions because of a configuration problem with the network itself. A symmetric partition is one where the communication is broken in both directions. An asymmetric partition means the connection works in one direction but not the other. An example of a scenario that can cause a network partition is when specific IP addresses or hostnames are allowed by the firewall, and then those addresses or names change after tearing down and rebuilding a node.
 
 The effect of a network partition depends on which nodes are partitioned and where the ranges are located. It depends to a large extent on whether localities have been defined.
 

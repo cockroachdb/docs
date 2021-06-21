@@ -29,7 +29,7 @@ Setting up a VPC peering connection between your CockroachCloud cluster and GCP 
 1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachcloud-cluster)
 
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is available only while creating a new CockroachCloud cluster. To set up VPC peering for existing clusters, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Self-service VPC peering setup is not supported for CockroachCloud clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachCloud's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
 {{site.data.alerts.end}}
 
 ### Configure the IP range and size while creating your CockroachCloud cluster
@@ -41,13 +41,17 @@ While creating your CockroachCloud cluster, [enable VPC peering](create-your-clu
 
 Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
+{{site.data.alerts.callout_info}}
+GKE users should note that [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips) are enabled by default in order to create a VPC-native cluster.
+{{site.data.alerts.end}}
+
 ### Establish a VPC Peering connection after creating your CockroachCloud cluster
 
-After creating your CockroachCloud cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-3-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-4-connect-to-your-cluster).
+After creating your CockroachCloud cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-3-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-4-connect-to-your-cluster).
 
 ## AWS PrivateLink
 
-If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachCloud cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency.
+If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachCloud cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 
 There are four steps to setting up an AWS PrivateLink connection between your CockroachCloud cluster and AWS application:
 

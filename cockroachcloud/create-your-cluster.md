@@ -2,8 +2,6 @@
 title: Create a CockroachCloud Cluster
 summary: Learn how to create your CockroachCloud cluster.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-create-your-cluster.html
 ---
 
 <div class="filters clearfix">
@@ -92,6 +90,10 @@ Click **Next**. Optionally, you can enable VPC peering for your cluster.
 ## Step 7. Enable VPC Peering (optional)
 
 VPC peering is only available for GCP clusters. For AWS clusters, you can [set up AWS PrivateLink](network-authorization.html#aws-privatelink) after creating your cluster.
+
+{{site.data.alerts.callout_info}}
+If you have multiple clusters, you will have to create a new VPC Peering or AWS PrivateLink connection for each cluster.
+{{site.data.alerts.end}}
 
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the CockroachCloud cluster. To enable VPC peering:
 

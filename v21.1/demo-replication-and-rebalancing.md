@@ -2,9 +2,6 @@
 title: Replication and Rebalancing
 summary: Use a local cluster to explore how CockroachDB replicates and rebalances data.
 toc: true
-redirect_from:
-- demo-automatic-rebalancing.html
-- demo-data-replication.html
 ---
 
 This page walks you through a simple demonstration of how CockroachDB replicates, distributes, and rebalances data. Starting with a 3-node local cluster, you'll write some data and verify that it replicates in triplicate by default. You'll then add 2 more nodes and watch how CockroachDB automatically rebalances replicas to efficiently use all available capacity.
@@ -92,7 +89,7 @@ Make sure you have already [installed CockroachDB](install-cockroachdb.html).
     --join=localhost:26257,localhost:26258,localhost:26259
     ~~~
 
-4. In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+4. In a new terminal, use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -2,8 +2,6 @@
 title: Restore Data from a Backup
 summary: Restore a table or database from a backup in CockroachCloud.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-backups-page.html
 ---
 
 This page describes the **Backups** page and how to restore your data.
@@ -171,7 +169,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 ### Back up and restore data manually
 
-Additionally, you can [back up and restore](../{{site.versions["stable"]}}/backup-and-restore.html) your Cockroach Cloud data manually:
+Additionally, you can [back up and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) your Cockroach Cloud data manually:
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 

@@ -184,7 +184,7 @@
 	      {
 		"title": "Orchestration with Kubernetes",
 		"urls": [
-		  "/${VERSION}/orchestration-with-kubernetes.html"
+		  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
 		]
 	      },
 	      {
