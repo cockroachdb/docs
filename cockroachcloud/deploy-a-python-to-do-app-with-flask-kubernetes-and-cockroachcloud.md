@@ -162,7 +162,7 @@ In a new terminal:
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
+    SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -226,7 +226,7 @@ Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ kubectl create secret generic <username>-secret --from-file <absolute path to the CA certificate>
+$ kubectl create secret generic <username>-secret --from-file $Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt
 ~~~
 
 Verify the Kubernetes secret was created:
@@ -244,11 +244,11 @@ default-token-875zk   kubernetes.io/service-account-token   3      75s
 
 ### Step 3. Change certificate directory path in configuration file
 
-In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the `certs` dir to `/data/certs` and save the file.
+In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the default location to `/data/certs` and save the file.
 
 {% include_cached copy-clipboard.html %}
 ~~~
-SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
 ~~~
 
 {{site.data.alerts.callout_info}}
