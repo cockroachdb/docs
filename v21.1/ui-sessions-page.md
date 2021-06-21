@@ -2,7 +2,6 @@
 title: Sessions Page
 summary: The Sessions page provides details of all open sessions in the cluster.
 toc: true
-redirect_from: admin-ui-sessions-page.html
 ---
 
 {{site.data.alerts.callout_info}}

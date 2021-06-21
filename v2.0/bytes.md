@@ -70,7 +70,7 @@ will fail if the hexadecimal digits are not valid, or if there is an
 odd number of them. Two conversion modes are supported:
 
 - If the string starts with the two special characters `\` and `x`
-  (e.g. `\xAABB`), the rest of the string is interpreted as a sequence
+  (e.g., `\xAABB`), the rest of the string is interpreted as a sequence
   of hexadecimal digits. The string is then converted to a byte array
   where each pair of hexadecimal digits is converted to one byte.
 

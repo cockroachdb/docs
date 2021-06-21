@@ -167,7 +167,7 @@ WITH encryption_passphrase = 'password123';
 - [Take and Restore Locality-aware Backups](take-and-restore-locality-aware-backups.html)
 - [Take Backups with Revision History and Restore from a Point-in-time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html)
 - [`SQL DUMP`](cockroach-dump.html)
-- [`IMPORT`](import-data.html)
+- [`IMPORT`](migration-overview.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 

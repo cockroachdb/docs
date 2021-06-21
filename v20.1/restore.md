@@ -36,7 +36,7 @@ Only members of the `admin` role can run `RESTORE`. By default, the `root` user 
  `database_name` | The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.
  `full_backup_location` | The URL where the full backup is stored. <br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls).
  `incremental_backup_location` | The URL where an incremental backup is stored.  <br/><br/>Lists of incremental backups must be sorted from oldest to newest. The newest incremental backup's timestamp must be within the table's garbage collection period.<br/><br/>For information about this URL structure, see [Backup File URLs](#backup-file-urls). <br/><br/>For more information about garbage collection, see [Configure Replication Zones](configure-replication-zones.html#replication-zone-variables).
- `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup-and-restore-advanced-options.html#backup-with-revision-history-and-point-in-time-restore).
+ `AS OF SYSTEM TIME timestamp` | Restore data as it existed as of [`timestamp`](as-of-system-time.html). You can restore point-in-time data only if you had taken full or incremental backup [with revision history](backup-and-restore.html).
  `kv_option_list` | Control your backup's behavior with [these options](#options).
 
 {{site.data.alerts.callout_info}}
@@ -53,7 +53,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 <a name="skip_missing_foreign_keys"></a>`skip_missing_foreign_keys` | N/A                                         | Use to remove the [foreign key](foreign-key.html) constraints before restoring.<br><br>Example: `WITH skip_missing_foreign_keys`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
-`encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) | <span class="version-tag">New in v20.1:</span> The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](backup-and-restore-advanced-options.html#encrypted-backup-and-restore) statement.
+`encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](backup-and-restore.html) | <span class="version-tag">New in v20.1:</span> The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](backup-and-restore.html) statement.
 
 ### Backup file URLs
 
@@ -130,7 +130,7 @@ Table with a [sequence](create-sequence.html) | The sequence.
 
 To restore your users and privilege [grants](grant.html), you can do a cluster backup and restore the cluster to a fresh cluster with no user data.
 
-If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](backup-and-restore-advanced-options.html#restoring-users-from-system-users-backup), and then [grant](grant.html) the table-level privileges.
+If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. To do this, backup the `system.users` table, [restore users and their passwords](backup-and-restore.html), and then [grant](grant.html) the table-level privileges.
 
 ### Restore types
 
@@ -226,7 +226,7 @@ If you are restoring from HTTP storage, provide the previous full and incrementa
 
 - [`BACKUP`][backup]
 - [Backup and Restore Data](backup-and-restore.html)
-- [Back up and Restore Data - Advanced Options](backup-and-restore-advanced-options.html)
+- [Back up and Restore Data - Advanced Options](backup-and-restore.html)
 - [Configure Replication Zones](configure-replication-zones.html)
 
 <!-- Reference links -->

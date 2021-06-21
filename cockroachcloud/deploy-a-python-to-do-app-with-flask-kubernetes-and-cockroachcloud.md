@@ -3,10 +3,6 @@ title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud
 summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachCloud
 toc: true
 toc_not_nested: true
-redirect_from:
-- managed-build-a-python-app-with-kubernetes.html
-- cockroachcloud-build-a-python-app-with-kubernetes.html
-- ../v20.2/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html
 ---
 
 This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachCloud as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
@@ -15,7 +11,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_python_flask" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
-1. Install the following tools, if you don't already have them:
+1. Install the following tools, if you do not already have them:
 
     Tool | Purpose
     -----|--------
@@ -87,15 +83,15 @@ On your local workstation's terminal:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xJ
+    | tar -xz
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
     </section>
 
@@ -220,7 +216,7 @@ In a new terminal:
     $ python hello.py
     ~~~
 
-    The application should run at [http://localhost:5000](http://localhost:5000)
+    The application should run at `http://localhost:5000`.
 
 3. Enter a new to-do item.
 

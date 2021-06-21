@@ -49,8 +49,8 @@ Feature | Description
 
 From your local workstation, install prerequisites and start a Kubernetes cluster as described in the Kubernetes documentation:
 
-- For GCE-specific instructions, see [Running Kubernetes on Google Compute Engine](https://kubernetes.io/docs/setup/turnkey/gce/).
-- For AWS-specific instructions, see [Running Kubernetes on AWS EC2](https://kubernetes.io/docs/setup/turnkey/aws/)
+- For GCE-specific instructions, see [Running Kubernetes on Google Compute Engine](https://v1-18.docs.kubernetes.io/docs/setup/production-environment/turnkey/gce/).
+- For AWS-specific instructions, see [Running Kubernetes on AWS EC2](https://v1-18.docs.kubernetes.io/docs/setup/production-environment/turnkey/aws/)
 
 The heart of this step is running a Kubernetes script that creates 4 GCE or AWS instances and joins them into a single Kubernetes cluster, all from your local workstation. You'll run subsequent steps from your local workstation as well.
 

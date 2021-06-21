@@ -2,8 +2,6 @@
 title: SQL Audit Logging
 summary: Learn about the SQL Audit Logging feature for CockroachCloud clusters.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-sql-audit-logging.html
 ---
 
 SQL audit logging gives you detailed information about queries being executed against your system. This feature is especially useful when you want to log all queries that are run against a table containing personally identifiable information (PII).

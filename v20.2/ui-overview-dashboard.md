@@ -2,7 +2,6 @@
 title: Overview Dashboard
 summary: The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics.
 toc: true
-redirect_from: admin-ui-overview-dashboard.html
 ---
 
 The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
@@ -53,7 +52,7 @@ The timeseries data used to power the graphs in the DB Console is stored within 
 
 <img src="{{ 'images/v20.2/ui_capacity.png' | relative_url }}" alt="DB Console Capacity graph" style="border:1px solid #eee;max-width:100%" />
 
-You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)). 
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](cockroach-start.html)).
 
 Metric | Description
 --------|--------

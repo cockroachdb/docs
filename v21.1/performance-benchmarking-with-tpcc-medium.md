@@ -4,14 +4,12 @@ summary: Benchmark CockroachDB against TPC-C with 15 nodes on `c5d.4xlarge` mach
 toc: true
 toc_not_nested: true
 key: performance-benchmarking-with-tpc-c-10k-warehouses.html
-redirect_from:
-- performance-benchmarking-with-tpc-c-10k-warehouses.html
 ---
 
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale) on commodity AWS hardware. Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 <div class="filters filters-big clearfix">
-  <a href="performance-benchmarking-with-tpc-c-10-warehouses.html"><button class="filter-button">Local</button></a>
+  <a href="performance-benchmarking-with-tpcc-local.html"><button class="filter-button">Local</button></a>
   <a href="performance-benchmarking-with-tpcc-small.html"><button class="filter-button">Small</button></a>
   <button class="filter-button current"><strong>Medium</strong></button>
   <a href="performance-benchmarking-with-tpcc-large.html"><button class="filter-button">Large</button></a>
@@ -96,8 +94,8 @@ CockroachDB requires TCP communication on two ports:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -130,7 +128,7 @@ CockroachDB requires TCP communication on two ports:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
 ## Step 3. Configure the cluster
@@ -187,8 +185,8 @@ CockroachDB comes with a number of [built-in workloads](cockroach-workload.html)
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}

@@ -92,6 +92,6 @@ Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-
 
 - [Other Cockroach Commands](cockroach-commands.html)
 - [Troubleshooting Overview](troubleshooting-overview.html)
-- [Import Data](import-data.html)
+- [Import Data](migration-overview.html)
 - [`IMPORT`](import.html)
 - [`IMPORT INTO`](import-into.html)

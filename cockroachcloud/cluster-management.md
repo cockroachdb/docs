@@ -2,8 +2,6 @@
 title: Cluster Management
 summary: Manage your cluster's schema, data, and more.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-cluster-management.html
 ---
 
 This page describes the cluster management and cluster deletion workflows.
@@ -143,7 +141,7 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
-Additionally, you can [backup and restore](../{{site.versions["stable"]}}/backup-and-restore.html) data on your own.
+Additionally, you can [backup and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) data on your own.
 </section>
 
 ## Delete cluster

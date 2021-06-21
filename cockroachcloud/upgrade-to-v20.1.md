@@ -2,8 +2,6 @@
 title: Upgrade to CockroachDB v20.1
 summary: Learn how to upgrade your CockroachDB cluster to v20.1.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-upgrade-to-v20.1.html
 ---
 
 Now that [CockroachDB v20.1](https://www.cockroachlabs.com/docs/releases/v20.1.0.html) is available, your [Console Admin](console-access-management.html#console-admin) can upgrade your cluster directly from the CockroachCloud Console. This page walks through the process.
@@ -56,7 +54,7 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 - Casting intervals to integers and floats is now Postgres-compatible and values a year at 365.25 days in seconds instead of 365 days.
 
-- The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/change-data-capture.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
+- The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
 
 - The `cockroach user` CLI command has been removed. It was previously deprecated in CockroachDB v19.2. Note that a v19.2 client (supporting `cockroach user`) can still operate user accounts in a v20.1 server.
 
@@ -69,7 +67,7 @@ Make sure there are no [bulk imports](../{{site.versions["stable"]}}/import.html
 To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../{{site.versions["stable"]}}/ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_info}}
-Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../{{site.versions["stable"]}}/show-jobs.html) and the [**Jobs** page](../{{site.versions["stable"]}}/ui-jobs-page.html) in the DB Console will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../{{site.versions["stable"]}}/pause-job.html)/[`RESUME JOB`](../{{site.versions["stable"]}}/resume-job.html)/[`CANCEL JOB`](../{{site.versions["stable"]}}/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
+Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../{{site.versions["stable"]}}/show-jobs.html) and the [**Jobs** page](../{{site.versions["stable"]}}/ui-jobs-page.html) in the DB Console will show them as running until the upgrade has been finalized. During this time, it will not be possible to manipulate these schema changes via [`PAUSE JOB`](../{{site.versions["stable"]}}/pause-job.html)/[`RESUME JOB`](../{{site.versions["stable"]}}/resume-job.html)/[`CANCEL JOB`](../{{site.versions["stable"]}}/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
 
 Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not apply to other upgrades.
 {{site.data.alerts.end}}

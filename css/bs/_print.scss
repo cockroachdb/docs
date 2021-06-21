@@ -84,8 +84,8 @@
     // Bootstrap specific changes start
 
     // Specify a size and min-width to make printing closer across browsers.
-    // We don't set margin here because it breaks `size` in Chrome. We also
-    // don't use `!important` on `size` as it breaks in Chrome.
+    // We do not set margin here because it breaks `size` in Chrome. We also
+    // do not use `!important` on `size` as it breaks in Chrome.
     @page {
       size: $print-page-size;
     }

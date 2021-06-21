@@ -2,8 +2,6 @@
 title: Stream a Changefeed to Snowflake
 summary: Use a CockroachCloud cluster to stream changefeed messages to a Snowflake cluster.
 toc: true
-redirect_from:
-- ../v20.2/stream-changefeed-to-snowflake-aws.html
 ---
 
 While CockroachDB is an excellent system of record, it also needs to coexist with other systems. For example, you might want to keep your data mirrored in full-text indexes, analytics engines, or big data pipelines.

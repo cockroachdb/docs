@@ -41,8 +41,8 @@ This configuration is intended for performance benchmarking only. For production
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -177,8 +177,8 @@ This configuration is intended for performance benchmarking only. For production
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -354,7 +354,7 @@ Use roachprod to create cluster: `roachprod create lauren-tpcc --gce-machine-typ
 
 Download latest version of CockroachDB:
 
-- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz'`
+- `roachprod run lauren-tpcc 'curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz'`
 
 - `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz | tar -xvz; mv cockroach-v2.0.4.linux-amd64/cockroach cockroach"`
 
@@ -390,7 +390,7 @@ Note: Since partitioning will take ~12hrs, you should extend your test cluster's
 
 Download latest version of CockroachDB:
 
-- `roachprod run lauren-tpcc 'wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz'`
+- `roachprod run lauren-tpcc 'curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz'`
 
 - `roachprod run lauren-tpcc "curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz | tar -xvz; mv cockroach-v2.0.4.linux-amd64/cockroach cockroach"`
 

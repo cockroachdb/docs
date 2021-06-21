@@ -210,7 +210,7 @@ LIMIT
                                 | spans       | ALL
 ~~~
 
-The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans | ALL`). This tells us that we don't have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans | ALL`). This tells us that we do not have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
 
 Therefore, we need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
 

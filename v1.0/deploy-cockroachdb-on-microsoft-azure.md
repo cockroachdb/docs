@@ -19,7 +19,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 - Locally, you must have [CockroachDB installed](install-cockroachdb.html), which you'll use to generate and manage your deployment's certificates.
 
-- In Azure, you must have [SSH access](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys) to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+- In Azure, you must have SSH access to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
 
 ## Recommendations
 
@@ -246,7 +246,7 @@ Locally, you'll need to [create the following certificates and keys](create-secu
     {% include copy-clipboard.html %}
     ~~~ shell
     # Extract the binary.
-    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 
@@ -282,13 +282,13 @@ At this point, your cluster is live and operational but contains only a single n
     {% include copy-clipboard.html %}
     ~~~ shell
     # Get the latest CockroachDB tarball.
-    $ wget https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
     # Extract the binary.
-    $ tar -xf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
+    $ tar -xzf cockroach-{{ page.release_info.version }}.linux-amd64.tgz  \
     --strip=1 cockroach-{{ page.release_info.version }}.linux-amd64/cockroach
     ~~~
 

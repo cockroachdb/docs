@@ -2,7 +2,7 @@
 title: Why CockroachDB?
 toc: false
 sidebar_data: sidebar-data-training.json
-redirect_from: /training/why-cockroachdb.html
+
 ---
 
 Kick off your training by watching Alex Robinson, a CockroachDB Engineer, explain the history of databases and why CockroachDB was built. You can also read through a related set of slides.

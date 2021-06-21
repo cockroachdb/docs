@@ -94,7 +94,7 @@
             "description": "Bad request, if required parameters absent."
           },
           "401": {
-            "description": "Unauthorized, if credentials don't match."
+            "description": "Unauthorized, if credentials do not match."
           }
         }
       }
@@ -430,7 +430,7 @@
         "x-go-package": "github.com/cockroachdb/cockroach/pkg/config/zonepb"
       },
       "ConstraintsConjunction": {
-        "description": "A set of constraints that need to be satisfied\ntogether by a replica (i.e. by the replica's store).",
+        "description": "A set of constraints that need to be satisfied\ntogether by a replica (i.e., by the replica's store).",
         "type": "object",
         "properties": {
           "constraints": {
@@ -442,7 +442,7 @@
             "x-go-name": "Constraints"
           },
           "num_replicas": {
-            "description": "The number of replicas that should abide by the constraints below. If left\nunspecified (i.e. set to 0), the constraints will apply to all replicas of\nthe range.\nAs of v2.0, only REQUIRED constraints are allowed when num_replicas is\nset to a non-zero value.",
+            "description": "The number of replicas that should abide by the constraints below. If left\nunspecified (i.e., set to 0), the constraints will apply to all replicas of\nthe range.\nAs of v2.0, only REQUIRED constraints are allowed when num_replicas is\nset to a non-zero value.",
             "type": "integer",
             "format": "int32",
             "x-go-name": "NumReplicas"
@@ -790,7 +790,7 @@
           "x-go-name": "Logical"
         },
         "synthetic": {
-          "description": "Indicates that the Timestamp did not come from an HLC clock somewhere\nin the system and, therefore, does not have the ability to update a\npeer's HLC clock. If set to true, the \"synthetic timestamp\" may be\narbitrarily disconnected from real time.\n\nThe flag serves as the dynamically typed version of a ClockTimestamp\n(but inverted). Only Timestamps with this flag set to false can be\ndowncast to a ClockTimestamp successfully (see TryToClockTimestamp).\n\nSynthetic timestamps with this flag set to true are central to\nnon-blocking transactions, which write \"into the future\". Setting the\nflag to true is also used to disconnect some committed MVCC versions\nfrom observed timestamps by indicating that those versions were moved\nfrom the timestamp at which they were originally written. Committed\nMVCC versions with synthetic timestamps require observing the full\nuncertainty interval, whereas readings off the leaseholders's clock\ncan tighten the uncertainty interval that is applied to MVCC versions\nwith clock timestamp.\n\nThis flag does not affect the sort order of Timestamps. However, it\nis considered when performing structural equality checks (e.g. using\nthe == operator). Consider use of the EqOrdering method when testing\nfor equality.",
+          "description": "Indicates that the Timestamp did not come from an HLC clock somewhere\nin the system and, therefore, does not have the ability to update a\npeer's HLC clock. If set to true, the \"synthetic timestamp\" may be\narbitrarily disconnected from real time.\n\nThe flag serves as the dynamically typed version of a ClockTimestamp\n(but inverted). Only Timestamps with this flag set to false can be\ndowncast to a ClockTimestamp successfully (see TryToClockTimestamp).\n\nSynthetic timestamps with this flag set to true are central to\nnon-blocking transactions, which write \"into the future\". Setting the\nflag to true is also used to disconnect some committed MVCC versions\nfrom observed timestamps by indicating that those versions were moved\nfrom the timestamp at which they were originally written. Committed\nMVCC versions with synthetic timestamps require observing the full\nuncertainty interval, whereas readings off the leaseholders's clock\ncan tighten the uncertainty interval that is applied to MVCC versions\nwith clock timestamp.\n\nThis flag does not affect the sort order of Timestamps. However, it\nis considered when performing structural equality checks (e.g., using\nthe == operator). Consider use of the EqOrdering method when testing\nfor equality.",
           "type": "boolean",
           "x-go-name": "Synthetic"
         },
@@ -896,7 +896,7 @@
           "x-go-name": "AddressField"
         },
         "network_field": {
-          "description": "Type of network (e.g. TCP, TCP4, TCP6).",
+          "description": "Type of network (e.g., TCP, TCP4, TCP6).",
           "type": "string",
           "x-go-name": "NetworkField"
         }
@@ -907,7 +907,7 @@
       "type": "object",
       "properties": {
         "internal": {
-          "description": "The internal version is used to introduce migrations during the development\ncycle. They are subversions that are never the end versions of a release,\ni.e. users of stable, public release will only use binaries with the\ninternal version set to 0.",
+          "description": "The internal version is used to introduce migrations during the development\ncycle. They are subversions that are never the end versions of a release,\ni.e., users of stable, public release will only use binaries with the\ninternal version set to 0.",
           "type": "integer",
           "format": "int32",
           "x-go-name": "Internal"

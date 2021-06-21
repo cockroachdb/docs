@@ -128,7 +128,7 @@ class BasicExampleDAO {
 
     /**
      * Run SQL code in a way that automatically handles the
-     * transaction retry logic so we don't have to duplicate it in
+     * transaction retry logic so we do not have to duplicate it in
      * various places.
      *
      * @param sqlCode a String containing the SQL code you want to
@@ -331,7 +331,7 @@ class BasicExampleDAO {
      * We skip using the retry logic in 'runSQL()' here for the
      * following reasons:
      *
-     * 1. Since this is a single read ("SELECT"), we don't expect any
+     * 1. Since this is a single read ("SELECT"), we do not expect any
      *    transaction conflicts to handle
      *
      * 2. We need to return the balance as an integer

@@ -76,8 +76,18 @@ All possible `OPS` event types are detailed in the [reference documentation](eve
 
 The [`HEALTH`](logging.html#health) channel logs operational events initiated by CockroachDB or reported by automatic processes. These can include resource usage details, connection errors, [gossip](https://en.wikipedia.org/wiki/Gossip_protocol) status, [replication](architecture/replication-layer.html) events, and runtime statistics.
 
+#### Example: Runtime stats
+
+A [`runtime_stats`](eventlog.html#runtime_stats) event is recorded every 10 seconds to reflect server health:
+
+~~~
+I210517 17:38:20.403619 586 2@util/log/event_log.go:32 ⋮ [n1] 168 ={"Timestamp":1621273100403617000,"EventType":"runtime_stats","MemRSSBytes":119361536,"GoroutineCount":262,"MemStackSysBytes":4063232,"GoAllocBytes":40047584,"GoTotalBytes":68232200,"GoStatsStaleness":0.008556,"HeapFragmentBytes":6114336,"HeapReservedBytes":6324224,"HeapReleasedBytes":10559488,"CGoAllocBytes":8006304,"CGoTotalBytes":11997184,"CGoCallRate":0.6999931,"CPUUserPercent":5.4999456,"CPUSysPercent":6.2399383,"GCRunCount":12,"NetHostRecvBytes":16315,"NetHostSendBytes":21347}
+~~~
+
+- Preceding the `=` character is the `crdb-v2` event metadata. See the [reference documentation](log-formats.html#format-crdb-v2) for details on the fields.
+
 {{site.data.alerts.callout_info}}
-At this time, events logged in `HEALTH` are unstructured. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented. Structured `HEALTH` events will be added in the future.
+`runtime_stats` events are typically used for troubleshooting. To monitor your cluster's health, see [Monitoring and Alerting](monitoring-and-alerting.html).
 {{site.data.alerts.end}}
 
 ### SQL_SCHEMA

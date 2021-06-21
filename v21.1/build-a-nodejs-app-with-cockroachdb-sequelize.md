@@ -14,7 +14,7 @@ referral_id: docs_hello_world_nodejs_sequelize
 
 This tutorial shows you how build a simple Node.js application with CockroachDB and the Sequelize ORM.
 
-We have tested the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+We have tested the [Sequelize ORM](https://sequelize.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
 {{site.data.alerts.callout_success}}
 For a more realistic use of Sequelize with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms)repository.
@@ -70,7 +70,7 @@ Open `app.js`, and edit the connection configuration parameters:
 
 ## Step 6. Run the code
 
-The following code uses the [Sequelize](https://sequelize.readthedocs.io/en/v3/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
+The following code uses the [Sequelize](https://sequelize.org/) ORM to map Node.js-specific objects to SQL operations. Specifically, `Account.sync({force: true})` creates an `accounts` table based on the Account model (or drops and recreates the table if it already exists), `Account.bulkCreate([...])` inserts rows into the table, and `Account.findAll()` selects from the table so that balances can be printed.
 
 {% include_cached copy-clipboard.html %}
 ~~~ js
@@ -93,6 +93,6 @@ The output should be:
 
 ## What's next?
 
-Read more about using the [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+Read more about using the [Sequelize ORM](https://sequelize.org/), or check out a more realistic implementation of Sequelize with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
 
 {% include {{ page.version.version }}/app/see-also-links.md %}

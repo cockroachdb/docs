@@ -401,7 +401,7 @@ As you can see, the results of the dump are identical to the earlier time-travel
 
 ## See also
 
-- [Import Data](import-data.html)
+- [Import Data](migration-overview.html)
 - [`IMPORT`](import.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)

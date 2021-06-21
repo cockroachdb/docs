@@ -125,7 +125,7 @@ To drop the type, use [`DROP TYPE`](drop-type.html):
 
 `ENUM` data type values can be [cast](data-types.html#data-type-conversions-and-casts) to [`STRING`s](string.html).
 
-Values can be cast explicitly or implicitly. For example, the following [`SELECT`](select.html) statements are equivalent:
+Values can be cast explicitly or implicitly. For example, the following [`SELECT`](select-clause.html) statements are equivalent:
 
 {% include copy-clipboard.html %}
 ~~~ sql

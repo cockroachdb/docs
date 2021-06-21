@@ -6,9 +6,9 @@ toc: true
 
  CockroachDB supports efficiently storing and querying [spatial data](spatial-data.html).
 
-This page has instructions for migrating data from the [GeoPackage](https://geopackage.org) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
+This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
 
-In the example below we will import a data set with [the locations of natural springs in the state of Minnesota (USA)](https://gisdata.mn.gov/dataset/env-mn-springs-inventory) that is made available via [gisdata.mn.gov](https://gisdata.mn.gov).
+In the example below we will import a data set with <a href="https://gisdata.mn.gov/dataset/env-mn-springs-inventory" data-proofer-ignore>the locations of natural springs in the state of Minnesota (USA)<a/> that is made available via <a href="https://gisdata.mn.gov" data-proofer-ignore>gisdata.mn.gov</a>.
 
 ## Before You Begin
 
@@ -57,7 +57,7 @@ Warning 1: Non-conformant content for record 1 in column field_ch_1, 2017/05/04,
 
 Each node in the CockroachDB cluster needs to have access to the files being imported.  There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations](import.html#import-file-location).
 
-For local testing, you can [start a local file server](create-a-file-server.html).  The following command will start a local file server listening on port 3000:
+For local testing, you can [start a local file server](use-a-local-file-server-for-bulk-operations.html).  The following command will start a local file server listening on port 3000:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -108,7 +108,7 @@ IMPORT PGDUMP ('http://localhost:3000/springs.sql');
 - [Migrate from MySQL][mysql]
 - [Migrate from Postgres][postgres]
 - [SQL Dump (Export)](cockroach-dump.html)
-- [Back Up and Restore Data](backup-and-restore.html)
+- [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 

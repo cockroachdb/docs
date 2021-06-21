@@ -2,7 +2,6 @@
 title: cockroach debug merge-logs
 summary: Learn the command for merging the collected debug logs from all nodes in your cluster.
 toc: true
-redirect_from: debug-merge-logs.html
 key: debug-merge-logs.html
 ---
 

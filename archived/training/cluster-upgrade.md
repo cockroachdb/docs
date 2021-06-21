@@ -4,7 +4,6 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/cluster-upgrade.html
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQFwUiv1205icOGxTN4OlMuMYSGjbx9Co3Ggx2mRsI9F9-pEUsvwkaJjOXb92ws1oOG-OY0j-C43G-j/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
@@ -33,15 +32,15 @@ In this lab, you'll start with a fresh cluster, so make sure you've stopped and 
     {% include copy-clipboard.html %}
     ~~~ shell
     $ curl https://binaries.cockroachdb.com/cockroach-v19.1.1.darwin-10.9-amd64.tgz \
-    | tar -xJ
+    | tar -xz
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-v19.1.1.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-v19.1.1.linux-amd64.tgz \
+    | tar -xz
     ~~~
     </div>
 

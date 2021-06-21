@@ -2,10 +2,6 @@
 title: SHOW CREATE
 summary: The SHOW CREATE statement shows the CREATE statement for an existing table, view, or sequence.
 toc: true
-redirect_from:
-- show-create-table.html
-- show-create-view.html
-- show-create-sequence.html
 ---
 
 The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).

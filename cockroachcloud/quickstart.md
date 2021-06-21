@@ -2,9 +2,6 @@
 title: Quickstart with CockroachCloud Free (beta)
 summary: Learn how to create and use your free CockroachCloud cluster.
 toc: true
-redirect_from:
-- ../v20.2/cockroachcloud-quickstart.html
-- create-your-account.html
 ---
 
 <div class="filters clearfix">
@@ -25,7 +22,7 @@ This page guides you through the quickest way to get started with CockroachDB by
 1. Click **Create your free cluster**.
 
     Your cluster will be created in approximately 20-30 seconds and the **Connection info** dialog will display.
-    
+
 1. Skip Step 1 (downloading the CA certificate) since we are going to connect with the less secure option `sslmode=required` instead.
 
 ## Step 2. Install CockroachDB
@@ -44,40 +41,41 @@ If you have not done so already, install the CockroachDB binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    brew install cockroachdb/tap/cockroach
+    $ brew install cockroachdb/tap/cockroach
     ~~~
-    
+
 </section>
-    
+
 <section class="filter-content" markdown="1" data-scope="linux">
 
-1. In your terminal, run the following command to download and extract the CockroachDB {{ page.release_info.version }} archive for Linux:
+1. In your terminal, download the CockroachDB binary:
 
-    {% include_cached copy-clipboard.html %}
+    {% include copy-clipboard.html %}
     ~~~ shell
-    wget -qO- https://binaries.cockroachdb.com/{{ page.release_info.version }}.linux-amd64.tgz | tar xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
-    
-1. Run the following command to copy the binary into your `PATH`:
 
-    {% include_cached copy-clipboard.html %}
+1. Copy the binary into the `PATH`:
+
+    {% include copy-clipboard.html %}
     ~~~ shell
-    cp -i cockroach-v20.2.9.linux-amd64/cockroach /usr/local/bin/
+    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
     ~~~
-    
+
 </section>
-    
+
 <section class="filter-content" markdown="1" data-scope="windows">
 
 1. Download and extract the [CockroachDB {{ page.release_info.version }} archive for Windows](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip).
-  
+
 1. Open PowerShell, navigate to the directory containing the executable, and make sure it works:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     PS C:\cockroach-{{ page.release_info.version }}.windows-6.2-amd64> .\cockroach.exe version
     ~~~
-    
+
 </section>
 
 ## Step 3. Edit your connection string
@@ -92,11 +90,11 @@ If you have not done so already, install the CockroachDB binary:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
+    $ cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
     ~~~
-    
+
     Your username, password, and cluster name are pre-populated for you.
-    
+
 ## Step 4. Use the built-in SQL client
 
 You can now connect to your cluster using CockroachDB's built-in SQL client:
@@ -107,9 +105,9 @@ You can now connect to your cluster using CockroachDB's built-in SQL client:
     ~~~ shell
     $ cockroach sql --url 'postgres://<username>:<password>@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=require&options=--cluster=<cluster-name>'
     ~~~
-    
+
     A welcome message displays:
-    
+
     ~~~
     #
     # Welcome to the CockroachDB SQL shell.
@@ -162,7 +160,7 @@ This page outlines the quickest way to get started with CockroachDB. For informa
 - To connect to a free cluster with other options (e.g., a CA certificate or different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
 - For information about how to connect securely to your cluster (recommended), see [Authentication](authentication.html).
 - To watch a video walkthrough of connecting to a cluster, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
-    
+
 Next steps:
 
 - Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).

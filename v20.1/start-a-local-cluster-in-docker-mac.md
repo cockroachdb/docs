@@ -3,7 +3,6 @@ title: Start a Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: true
 asciicast: true
-redirect_from: start-a-local-cluster-in-docker.html
 ---
 
 <div id="os-tabs" class="clearfix">
@@ -34,5 +33,5 @@ Also, feel free to watch this process in action before going through the steps y
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - [Install the client driver](install-client-drivers.html) for your preferred language
-- [Build an app with CockroachDB](build-an-app-with-cockroachdb.html)
+- [Build an app with CockroachDB](hello-world-example-apps.html)
 - Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [geo-partitioning](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html)

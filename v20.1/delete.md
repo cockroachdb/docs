@@ -429,7 +429,7 @@ Now suppose that instead you want to perform a delete, but using the `id` column
 
 The optimizer still scans the newly-created `users_name_city_idx` index when performing the delete. Although scanning the table on this index could still be the most efficient, you may want to assess the performance difference between using `users_name_city_idx` and an index on the `id` column, as you are performing a delete with a filter on the `id` column.
 
-If you provide an index hint (i.e. force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
+If you provide an index hint (i.e., force the index selection) to use the primary index on the column instead, the CockroachDB will scan the users table using the primary index, on `city`, and `id`.
 
 {% include copy-clipboard.html %}
 ~~~ sql

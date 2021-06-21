@@ -8,7 +8,7 @@ toc_not_nested: true
 
 ## How do I bulk insert data into CockroachDB?
 
-Currently, you can bulk insert data with batches of [`INSERT`](insert.html) statements not exceeding a few MB. The size of your rows determines how many you can use, but 1,000 - 10,000 rows typically works best. For more details, see [Import Data](import-data.html).
+Currently, you can bulk insert data with batches of [`INSERT`](insert.html) statements not exceeding a few MB. The size of your rows determines how many you can use, but 1,000 - 10,000 rows typically works best. For more details, see [Import Data](migration-overview.html).
 
 ## How do I auto-generate unique row IDs in CockroachDB?
 

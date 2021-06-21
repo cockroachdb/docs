@@ -2,7 +2,6 @@
 title: Technical Advisories
 summary: Advisories about important security and stability aspects of CockroachDB.
 toc: true
-redirect_from: /advisories.html
 ---
 
 Technical advisories report major issues with CockroachDB that may

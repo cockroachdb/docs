@@ -1,13 +1,13 @@
 #### Start the nodes
 
-1. SSH to the first `n1-standard-4` instance.
+1. SSH to the first `n2-standard-4` instance.
 
 2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
     {% include copy-clipboard.html %}
@@ -29,7 +29,7 @@
     --background
     ~~~
 
-4. Repeat steps 1 - 3 for the other two `n1-standard-4` instances. Be sure to adjust the `--advertise-addr` flag each time.
+4. Repeat steps 1 - 3 for the other two `n2-standard-4` instances. Be sure to adjust the `--advertise-addr` flag each time.
 
 #### Initialize the cluster
 
@@ -39,8 +39,8 @@
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ wget -qO- https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar  xvz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
+    | tar -xz
     ~~~
 
 3. Copy the binary into the `PATH`:

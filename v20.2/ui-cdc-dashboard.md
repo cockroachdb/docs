@@ -2,7 +2,6 @@
 title: Changefeeds Dashboard
 summary: The Changefeeds dashboard lets you monitor the changefeeds created across your cluster.
 toc: true
-redirect_from: admin-ui-cdc-dashboard.html
 ---
 
 The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) created across your cluster. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **Changefeeds**.
