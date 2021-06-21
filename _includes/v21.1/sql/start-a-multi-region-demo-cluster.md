@@ -2,7 +2,7 @@ Use the [`cockroach demo`](cockroach-demo.html) command shown below to start the
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach demo --global --nodes 9 --empty --insecure
+$ cockroach demo --global --nodes 9 --no-example-database --insecure
 ~~~
 
 When the cluster starts, you'll see a message like the one shown below, followed by a SQL prompt. Note the URLs for:
@@ -11,6 +11,7 @@ When the cluster starts, you'll see a message like the one shown below, followed
 - Connecting to the database from a [SQL shell](cockroach-sql.html) or a [programming language](connect-to-the-database.html): `postgres://root@127.0.0.1:26257?sslmode=disable`.
 
 ~~~
+#
 # Welcome to the CockroachDB demo database!
 #
 # You are connected to a temporary, in-memory CockroachDB cluster of 9 nodes.
@@ -23,11 +24,18 @@ When the cluster starts, you'll see a message like the one shown below, followed
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
 # Connection parameters:
-#   (console) http://127.0.0.1:8080
-#   (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo956443538&port=26257
-#   (sql/tcp) postgres://root@127.0.0.1:26257?sslmode=disable
-# 
+#   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+#   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+#   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+#
 # To display connection parameters for other nodes, use \demo ls.
-# Server version: CockroachDB CCL v21.1.0-alpha.3-1368-g0ee391c3b9 (x86_64-apple-darwin19.6.0, built 2021/03/18 14:54:44, go1.16) (same version as client)
-# Cluster ID: 063fa964-1f43-4b7f-b1e6-f70afd9ad921
+#
+# The user "demo" with password "demo76950" has been created. Use it to access the Web UI!
+#
+# Server version: CockroachDB CCL v21.1.2 (x86_64-apple-darwin19, built 2021/06/07 18:13:04, go1.15.11) (same version as client)
+# Cluster ID: bfd9fc91-69bd-4417-a2f7-66e556bf2cfd
+# Organization: Cockroach Demo
+#
+# Enter \? for a brief introduction.
+#
 ~~~

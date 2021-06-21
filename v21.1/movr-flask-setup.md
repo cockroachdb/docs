@@ -40,7 +40,7 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure --url='postgresql://root@127.0.0.1:26257/defaultdb' < dbinit.sql
+    $ cockroach sql --insecure --url='postgresql://root@127.0.0.1:26257/defaultdb' -f dbinit.sql
     ~~~
 
 

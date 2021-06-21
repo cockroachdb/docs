@@ -82,7 +82,7 @@ $ python3 example.py \
 Before running the command, update the connection string as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 
