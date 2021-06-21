@@ -8,7 +8,7 @@ toc: true
 
 This page has instructions for migrating data from the [GeoPackage](https://www.geopackage.org/) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr.html) and [`IMPORT`][import].
 
-In the example below we will import a data set with <a href="https://gisdata.mn.gov/dataset/env-mn-springs-inventory" data-proofer-ignore>the locations of natural springs in the state of Minnesota (USA)<a/> that is made available via [gisdata.mn.gov](https://gisdata.mn.gov).
+In the example below we will import a data set with <a href="https://gisdata.mn.gov/dataset/env-mn-springs-inventory" data-proofer-ignore>the locations of natural springs in the state of Minnesota (USA)<a/> that is made available via <a href="https://gisdata.mn.gov" data-proofer-ignore>gisdata.mn.gov</a>.
 
 ## Before You Begin
 

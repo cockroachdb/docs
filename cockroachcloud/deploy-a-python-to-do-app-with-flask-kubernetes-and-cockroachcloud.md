@@ -216,7 +216,7 @@ In a new terminal:
     $ python hello.py
     ~~~
 
-    The application should run at [http://localhost:5000](http://localhost:5000)
+    The application should run at `http://localhost:5000`.
 
 3. Enter a new to-do item.
 
