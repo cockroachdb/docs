@@ -91,7 +91,7 @@ In the `create_engine()` function, update the connection string as follows:
 <section class="filter-content" markdown="1" data-scope="local">
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 
