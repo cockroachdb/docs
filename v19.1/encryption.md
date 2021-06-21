@@ -162,7 +162,7 @@ Once specified for a given store, the `--enterprise-encryption` flag must always
 
 #### Checking encryption status
 
-Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at <https://localhost:8888/#/reports/stores/local>.
+Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at `https://localhost:8888/#/reports/stores/local`.
 
 The report shows encryption status for all stores on the selected node, including:
 
