@@ -11,6 +11,11 @@ toc: true
 
 This page shows you how to connect to your CockroachCloud cluster.
 
+## Before you start
+
+- [Create a cluster](create-your-cluster.html).
+- [Create a SQL user](user-authorization.html#create-a-sql-user).
+
 ## Step 1. Authorize your network
 
 CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
@@ -93,11 +98,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 
 </section>
 
-## Step 2. Create a SQL user
-
-{% include cockroachcloud/create-a-sql-user.md %}
-
-## Step 3. Select a connection method
+## Step 2. Select a connection method
 
 1. In the top right corner of the Console, click the **Connect** button.
 
@@ -129,7 +130,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
         <button class="filter-button page-level" data-scope="connection-parameters">Connection parameters</button>
     </div>
 
-## Step 4. Connect to your cluster
+## Step 3. Connect to your cluster
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 
