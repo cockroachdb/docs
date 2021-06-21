@@ -55,105 +55,82 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
 1. To allow the network to access the cluster's DB Console and to use the CockroachDB client to access the databases, select the **DB Console to monitor the cluster** and **CockroachDB Client to access the databases** checkboxes.
 1. Click **Apply**.
 
-## Step 4. Get the connection string
+## Step 4. Connect to your cluster
 
 1. In the top-right corner of the Console, click the **Connect** button. The **Connect** dialog will display.
 1. From the **SQL user** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
 1. Verify that the `us-west2 GCP` region and `defaultdb` database are selected.
 1. Click **Next**. The **Connect** tab is displayed.
-1. Select your operating system from the dropdown menu.
-1. Click the **Connection string** tab to get the connection string for your cluster.
-1. In your terminal, run the first command in the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
+1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
 
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
       <button class="filter-button page-level" data-scope="linux">Linux</button>
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
-    
-    {% include cockroachcloud/download-the-cert.md %}
 
-## Step 5. Run your first query
-
-For this tutorial, we will use the [`movr` workload](../{{site.versions["stable"]}}/movr.html) to run the first query. On your local machine:
-
-1. If you have not done so already, run the following command to install the CockroachDB binary and copy it into the `PATH`:
-
-    <div class="filters clearfix">
-      <button class="filter-button page-level" data-scope="mac">Mac</button>
-      <button class="filter-button page-level" data-scope="linux">Linux</button>
-      <button class="filter-button page-level" data-scope="windows">Windows</button>
-    </div>
+1. If you have not done so already, run the first command in the dialog to install the CockroachDB binary and copy it into the `PATH`:
 
     {% include cockroachcloud/download-the-binary.md %}
 
-
-1. Initialize the `movr` [workload](../{{site.versions["stable"]}}/cockroach-workload.html) using the `cockroach workload` command and the [connection string](#step-4-get-the-connection-string).
-
-    In the [connection string](../{{site.versions["stable"]}}/connection-parameters.html), the SQL user's username is prepopulated. Replace `<password>` with the SQL user's password that you entered in [Step 2](#step-2-create-a-sql-user). Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created in [Step 4](#step-4-get-the-connection-string).
-
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach workload init movr \
-    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach workload init movr \
-    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach workload init movr \
-    'postgresql://user:ENTER-PASSWORD@<cluster-name>-<shortid>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%APPDATA%/.postgresql/root.crt'
-    ~~~
-    </section>
-
-1. Use the [built-in SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to view the database:
+1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
     
-    {% include cockroachcloud/sql-connection-string.md %}
+    {% include cockroachcloud/download-the-cert.md %}
+
+## Step 5. Use the built-in SQL client
+
+1. In your terminal, run the connection string provided in the third step of the dialog to connect to CockroachDB's built-in SQL client. Your username, password, and cluster name are pre-populated for you in the dialog.
+
+    {{site.data.alerts.callout_danger}}
+    This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    {{site.data.alerts.end}}
+
+    {% include cockroachcloud/sql-connection-string-free.md %}
+
+    A welcome message displays:
+
+    ~~~
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ~~~
+
+1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SHOW TABLES FROM movr;
+    > CREATE DATABASE bank;
     ~~~
-
-    ~~~
-                  table_name
-    ------------------------------
-      promo_codes
-      rides
-      user_promo_codes
-      users
-      vehicle_location_histories
-      vehicles
-    (6 rows)
-    ~~~
-
-1. Run your first query:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM movr.users WHERE city='new york';
+    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > INSERT INTO bank.accounts VALUES (1, 1000.50);
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM bank.accounts;
     ~~~
 
     ~~~
-                           id                  |   city   |       name       |           address           | credit_card
-    ---------------------------------------+----------+------------------+-----------------------------+--------------
-      00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
-      051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
-      0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
-      0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
-      147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
-      19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
-    (6 rows)
+      id | balance
+    -----+----------
+       1 | 1000.50
+    (1 row)
+    ~~~
+
+1. To exit the SQL shell:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > \q
     ~~~
 
 ## What's next?
