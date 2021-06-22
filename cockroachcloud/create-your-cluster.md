@@ -30,15 +30,17 @@ CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/d
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
-## Step 3. Select the region
+## Step 3. Select the region(s)
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
+To create a multi-region cluster, click **Add regions** until you have the desired number of regions. 
+
 {{site.data.alerts.callout_info}}
-Some regions in GCP and AWS might not be displayed in the **Regions** list. We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See list of [EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and list of [GKE regions](https://cloud.google.com/about/locations/) for details.
+Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
 {{site.data.alerts.end}}
 
-**Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
+**Known issue:** We had to temporarily disable the following GCP regions due to GCP's quota restrictions:
 
 - Mumbai (`asia-south1`)
 - Osaka (`asia-northeast2`)
@@ -50,17 +52,14 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 
 ## Step 4. Select the number of nodes
 
-- For single-region application development and testing, you may create a one-node cluster.
-- For single-region production deployments, we recommend a minimum of three nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
-- For multi-region deployments, [contact us](mailto:sales@cockroachlabs.com).
+- For single-region application development and testing, you may create a 1-node cluster.
+- For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
+- For multi-region deployments, we require a minimum of 3 nodes per region. For best performance and stability, you should use the same number of nodes in each region.
+- See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
-{{site.data.alerts.callout_info}}
-You cannot create a 2-node cluster because 2-replica configurations are less reliable than a single replica.
-{{site.data.alerts.end}}
-
-As of now, you can add a maximum of 24 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+Currently, you can add a maximum of 150 nodes to your cluster. For larger configurations, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## Step 5. Select the hardware per node
 
@@ -73,6 +72,10 @@ Replication | The default replication factor for a CockroachCloud cluster is 3.
 Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
 Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence an `Option 1` node (2vCPUs) can handle 2000 transactions per second and an `Option 2` node (4vCPUs) can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+
+{{site.data.alerts.callout_success}}
+When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend at least 4 to 8 vCPUs per node.
+{{site.data.alerts.end}}
 
 To change the hardware configuration after the cluster is created, [contact Support](https://support.cockroachlabs.com).
 
@@ -102,12 +105,16 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
+        
+        {{site.data.alerts.callout_info}}
+        Custom IP ranges are temporarily unavailable for multi-region clusters.
+        {{site.data.alerts.end}}
 
 1. Click **Next**.
 
 ## Step 8. Enter billing details
 
-1. On the **Summary** page, verify your selections for the cloud provider, region, number of nodes, and the hardware configuration per node.
+1. On the **Summary** page, verify your selections for the cloud provider, region(s), number of nodes, and the hardware configuration per node.
 1. Verify the hourly estimated cost for the cluster.
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
@@ -145,6 +152,21 @@ Cloud provider | GCP
 Region | us-east1
 Number of nodes | 9
 Size | `Option 2`
+
+## What's next
+
+To start using your CockroachCloud cluster, see the following pages:
+
+- [Connect to your cluster](connect-to-your-cluster.html)
+- [Authorize users](user-authorization.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+
+If you created a multi-region cluster, it is important to carefully choose:
+
+- The right [survival goal](../{{site.versions["stable"]}}/multiregion-overview.html#survival-goals) for each database.
+- The right [table locality](../{{site.versions["stable"]}}/multiregion-overview.html#table-locality) for each of your tables.
+
+Not doing so can result in unexpected latency and resiliency.  For more information, see the [Multi-Region Capabilities Overview](../stable/multiregion-overview.html).
 
 <!--
 ### [WIP] Select hardware configuration based on performance requirements
