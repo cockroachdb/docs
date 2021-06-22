@@ -2425,6 +2425,12 @@
                     ]
                   },
                   {
+                    "title": "Using GeoServer with CockroachDB",
+                    "urls": [
+                      "/${VERSION}/geoserver.html"
+                    ]
+                  },
+                  {
                     "title": "POINT",
                     "urls": [
                       "/${VERSION}/point.html"

@@ -66,3 +66,4 @@ In addition to the [generated reference documentation for spatial functions](fun
 ## See also
 
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Using GeoServer with CockroachDB](geoserver.html)
