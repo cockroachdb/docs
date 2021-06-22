@@ -12,17 +12,17 @@ Before reading this page, we recommend reviewing [CockroachDB's multi-region cap
 
 To scale to multiple regions:
 
-[1.](#scale-deployments) Scale both the deployment of your database and the deployment of your application to multiple regions.
+[1.](#scale-database-deployments) Scale the deployment of your database to multiple regions.
 
-[2.](#transform-a-single-region-schema-into-a-multi-region-schema) Migrate the database schema from a single-region schema to a multi-region schema, using a schema migration tool.
+[2.](#scale-application-deployments) Scale the deployment of your application to multiple regions.
 
-[3.](#upgrade-read-write-operations) If necessary, upgrade the read/write operations in the application to work with your new database schema.
+[3.](#transform-a-single-region-schema-into-a-multi-region-schema) Migrate the database schema from a single-region schema to a multi-region schema.
 
-## Scale deployments
+[4.](#upgrade-read-write-operations) If necessary, upgrade the read/write operations in the application to work with your new database schema.
 
-### Scale database deployments
+## Scale database deployments
 
-In order to use CockroachDB's [multi-region capabilities](multiregion-overview.html), your CockroachDB cluster must have nodes deployed in multiple regions, with different [regional localities](multiregion-overview.html#cluster-regions).
+In order to use CockroachDB's [multi-region capabilities](multiregion-overview.html), your CockroachDB cluster must have nodes deployed in multiple regions, with different [regional node localities](multiregion-overview.html#cluster-regions).
 
 For instructions on adding nodes to an existing cluster, see one of the following pages:
 
@@ -30,7 +30,7 @@ For instructions on adding nodes to an existing cluster, see one of the followin
 - For orchestrated deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html).
 - For manual deployments, see [`cockroach start`](cockroach-start.html) and [Manual Deployment](manual-deployment.html).
 
-### Scale application deployments
+## Scale application deployments
 
 To take full advantage of the latency and resiliency improvements of a multi-region database deployment, you need to scale the application deployments to multiple regions as well. To limit the latency between the application and the database, each deployment of the application must communicate with the closest database deployment.
 
