@@ -96,6 +96,28 @@ To connect to your cluster with your application, use the connection string prov
     {% include cockroachcloud/download-the-cert-free.md %}
 
 1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to CockroachCloud Free (beta).
+
+    <section class="filter-content" markdown="1" data-scope="mac">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    "postgresql://<user>:<password>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>"
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="linux">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    "postgresql://<user>:<password>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>"
+    ~~~
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="windows">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    "postgresql://<user>:<password>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%APPDATA%/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>"
+    ~~~
+    </section>
+
 1. Add your copied connection string to your application code.
 
     {{site.data.alerts.callout_info}}
@@ -115,6 +137,10 @@ For connection examples and code snippets in your language, see the following:
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
   
 To connect to your cluster with a [CockroachDB-compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html), use the connection parameters provided in the Console.
+
+{{site.data.alerts.callout_info}}
+For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>`.
+{{site.data.alerts.end}}
 
   </section>
 
