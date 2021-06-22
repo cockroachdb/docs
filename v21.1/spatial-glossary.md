@@ -235,3 +235,4 @@ This section has information about the representation of geometric and geographi
 - [Well known binary](well-known-binary.html)
 - [GeoJSON](geojson.html)
 - [SRID 4326 - longitude and latitude](srid-4326.html)
+- [GeoServer Support](geoserver.html)

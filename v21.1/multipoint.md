@@ -76,3 +76,4 @@ SELECT ST_GeomFromText('MULTIPOINT (-87.738258999999999 42.010930999999999, -87.
 - [MULTILINESTRING](multilinestring.html)
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [GeoServer Support](geoserver.html)

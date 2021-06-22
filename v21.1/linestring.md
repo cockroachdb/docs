@@ -38,3 +38,4 @@ You can also make a LineString using the [aggregate function form](functions-and
 - [MULTILINESTRING](multilinestring.html)
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [GeoServer Support](geoserver.html)

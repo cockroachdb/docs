@@ -105,3 +105,4 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [import]: import.html
+- [GeoServer Support](geoserver.html)

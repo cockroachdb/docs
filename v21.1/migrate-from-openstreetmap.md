@@ -142,3 +142,4 @@ Osm2pgsql took 2879s overall
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [import]: import.html
+- [GeoServer Support](geoserver.html)

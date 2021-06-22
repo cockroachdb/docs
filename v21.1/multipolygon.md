@@ -34,3 +34,4 @@ SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.99277
 - [MULTIPOINT](multipoint.html)
 - [MULTILINESTRING](multilinestring.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [GeoServer Support](geoserver.html)

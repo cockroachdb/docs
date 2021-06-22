@@ -54,3 +54,4 @@ SELECT ST_GeomFromText('POINT(0 0)');
 - [MULTILINESTRING](multilinestring.html)
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [GeoServer Support](geoserver.html)

@@ -2425,6 +2425,12 @@
                     ]
                   },
                   {
+                    "title": "GeoServer Support",
+                    "urls": [
+                      "/${VERSION}/geoserver.html"
+                    ]
+                  },
+                  {
                     "title": "POINT",
                     "urls": [
                       "/${VERSION}/point.html"

@@ -92,3 +92,4 @@ SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [GeoServer Support](geoserver.html)
