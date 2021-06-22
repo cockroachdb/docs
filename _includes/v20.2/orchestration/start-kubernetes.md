@@ -5,8 +5,8 @@ Choose whether you want to orchestrate CockroachDB with Kubernetes using the hos
 - [Manual GCE](#manual-gce)
 - [Manual AWS](#manual-aws)
 
-{{site.data.alerts.callout_success}}
-You can also orchestrate CockroachDB on platforms such as [Red Hat OpenShift](https://marketplace.redhat.com/en-us/products/cockroachdb-operator) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
+{{site.data.alerts.callout_info}}
+The CockroachDB Kubernetes Operator is currently supported for GKE. You can also use the Operator on platforms such as [Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
 {{site.data.alerts.end}}
 
 ### Hosted GKE
@@ -16,23 +16,27 @@ You can also orchestrate CockroachDB on platforms such as [Red Hat OpenShift](ht
     This includes installing `gcloud`, which is used to create and delete Kubernetes Engine clusters, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
     {{site.data.alerts.callout_success}}
-    Be sure to set a [default compute zone and/or region](https://cloud.google.com/kubernetes-engine/docs/quickstart#defaults) to use with `gcloud`. If no defaults are set, you will need to specify them with the `--zone` and `--region` flags when creating and deleting clusters.
+    The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.
     {{site.data.alerts.end}}
 
-    {{site.data.alerts.callout_success}}The documentation offers the choice of using Google's Cloud Shell product or using a local shell on your machine. Choose to use a local shell if you want to be able to view the DB Console using the steps in this guide.{{site.data.alerts.end}}
+2. From your local workstation, start the Kubernetes cluster, specifying one of the available [regions](https://cloud.google.com/compute/docs/regions-zones#available) (e.g., `us-east1`):
 
-2. From your local workstation, start the Kubernetes cluster:
+    {{site.data.alerts.callout_success}}
+    Since this region can differ from your default `gcloud` region, be sure to include the `--region` flag to run `gcloud` commands against this cluster.
+    {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ gcloud container clusters create cockroachdb --machine-type n2-standard-4
+    $ gcloud container clusters create cockroachdb --machine-type n2-standard-4 --region {region-name} --num-nodes 1
     ~~~
 
     ~~~
     Creating cluster cockroachdb...done.
     ~~~
 
-    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--machine-type` flag tells the node pool to use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
+    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--region` and `--num-nodes` flags specify a [regional three-zone cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster) with one node in each zone.
+
+    The `--machine-type` flag tells the node pool to use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
 
     The process can take a few minutes, so do not move on to the next step until you see a `Creating cluster cockroachdb...done` message and details about your cluster.
 
