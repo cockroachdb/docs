@@ -44,7 +44,7 @@ wget -O- https://github.com/errata-ai/vale/releases/download/v1.2.7/vale_1.2.7_L
 # Run htmltest, but skip checking external links to speed things up
 $GOPATH/src/github.com/cockroachdb/htmltest/bin/htmltest --skip-external
 
-if [[ $? == 1 ]]; then
+if [[ $? != 0 ]]; then
   exit 1
 fi;
 

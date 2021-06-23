@@ -8,7 +8,7 @@ Helm 3.0 or higher is required when using our instructions to [deploy via Helm](
 
 #### Resources
 
-When [starting Kubernetes](#start-kubernetes), select machines with at least **4 vCPUs** and **16 GiB** of memory. When [starting CockroachDB](#start-cockroachdb), provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload.
+When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory. When [starting CockroachDB](#start-cockroachdb), provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload.
 
 #### Storage
 
