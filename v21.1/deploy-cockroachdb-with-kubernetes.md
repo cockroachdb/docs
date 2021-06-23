@@ -107,7 +107,7 @@ To delete the Kubernetes cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ gcloud container clusters delete cockroachdb
+    $ gcloud container clusters delete cockroachdb --region {region-name}
     ~~~
 - Hosted EKS:
 

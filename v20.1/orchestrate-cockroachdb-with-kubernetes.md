@@ -234,7 +234,7 @@ This does not delete the secrets you created. For more information on managing s
 
         {% include_cached copy-clipboard.html %}
         ~~~ shell
-        $ gcloud container clusters delete cockroachdb
+        $ gcloud container clusters delete cockroachdb --region {region-name}
         ~~~
     - Hosted EKS:
 
