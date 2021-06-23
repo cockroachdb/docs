@@ -34,7 +34,7 @@ The CockroachDB Kubernetes Operator is currently supported for GKE. You can also
     Creating cluster cockroachdb...done.
     ~~~
 
-    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--region` and `--num-nodes` flags specify a [regional three-zone cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster) with one node in each zone.
+    This creates GKE instances and joins them into a single Kubernetes cluster named `cockroachdb`. The `--region` flag specifies a [regional three-zone cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-a-regional-cluster), and `--num-nodes` specifies one node in each zone.
 
     The `--machine-type` flag tells the node pool to use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory), which meets our [recommended CPU and memory configuration](recommended-production-settings.html#basic-hardware-recommendations).
 
