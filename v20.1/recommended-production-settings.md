@@ -128,7 +128,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/).
 
-    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for [performance benchmarking](performance-benchmarking-with-tpcc-small.html). Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
+    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for [performance benchmarking](performance-benchmarking-with-tpc-c-1k-warehouses.html). Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on CPU resources.

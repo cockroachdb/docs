@@ -53,7 +53,7 @@
 ### Initialize the cluster
 
 {{site.data.alerts.callout_info}}
-By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-on-kubernetes.html#use-a-custom-ca).
+By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html#use-a-custom-ca).
 {{site.data.alerts.end}}
 
 1. Download `example.yaml`, a custom resource that tells the Operator how to configure the Kubernetes cluster.
