@@ -6,6 +6,10 @@ Kubernetes 1.15 or higher is required in order to use our current configuration 
 
 Helm 3.0 or higher is required when using our instructions to deploy via Helm.
 
+#### Resources
+
+When [starting Kubernetes](#start-kubernetes), select machines with at least **4 vCPUs** and **16 GiB** of memory. When [starting CockroachDB](#start-cockroachdb), provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html#allocate-resources).
+
 #### Storage
 
 At this time, orchestrations of CockroachDB with Kubernetes use external persistent volumes that are often replicated by the provider. Because CockroachDB already replicates data automatically, this additional layer of replication is unnecessary and can negatively impact performance. High-performance use cases on a private Kubernetes cluster may want to consider using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local).

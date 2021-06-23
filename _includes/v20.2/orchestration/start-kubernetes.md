@@ -1,9 +1,11 @@
-Choose whether you want to orchestrate CockroachDB with Kubernetes using the hosted Google Kubernetes Engine (GKE) service, the hosted Amazon Elastic Kubernetes Service (EKS), or manually on Google Compute Engine (GCE) or AWS. The instructions below will change slightly depending on your choice.
+You can use the hosted [Google Kubernetes Engine (GKE)](#hosted-gke) service or the hosted [Amazon Elastic Kubernetes Service (EKS)](#hosted-eks) to quickly start Kubernetes.
 
 - [Hosted GKE](#hosted-gke)
 - [Hosted EKS](#hosted-eks)
-- [Manual GCE](#manual-gce)
-- [Manual AWS](#manual-aws)
+
+{{site.data.alerts.callout_info}}
+GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AWS cluster with the [minimum recommended Kubernetes version](#kubernetes-version) and at least 3 pods, each presenting [sufficient resources](#resources) to start a CockroachDB node, can also be used.
+{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
 You can also orchestrate CockroachDB on platforms such as [Red Hat OpenShift](https://marketplace.redhat.com/en-us/products/cockroachdb-operator) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
@@ -93,25 +95,3 @@ You can also orchestrate CockroachDB on platforms such as [Red Hat OpenShift](ht
     Cluster provisioning usually takes between 10 and 15 minutes. Do not move on to the next step until you see a message like `[✔]  EKS cluster "cockroachdb" in "us-east-1" region is ready` and details about your cluster.
 
 3. Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) to verify that the stacks `eksctl-cockroachdb-cluster` and `eksctl-cockroachdb-nodegroup-standard-workers` were successfully created. Be sure that your region is selected in the console.
-
-### Manual GCE
-
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on Google Compute Engine](https://v1-18.docs.kubernetes.io/docs/setup/production-environment/turnkey/gce/) documentation.
-
-The process includes:
-
-- Creating a Google Cloud Platform account, installing `gcloud` and other prerequisites.
-
-    {{site.data.alerts.callout_success}}
-    Be sure to set a [default compute zone and/or region](https://cloud.google.com/kubernetes-engine/docs/quickstart#defaults) to use with `gcloud`. If no defaults are set, you will need to specify them with the `--zone` and `--region` flags when creating and deleting clusters.
-    {{site.data.alerts.end}}
-
-- Downloading and installing the latest Kubernetes release.
-
-- Creating GCE instances and joining them into a single Kubernetes cluster.
-
-- Installing `kubectl`, the command-line tool used to manage Kubernetes from your workstation.
-
-### Manual AWS
-
-From your local workstation, install prerequisites and start a Kubernetes cluster as described in the [Running Kubernetes on AWS EC2](https://v1-18.docs.kubernetes.io/docs/setup/production-environment/turnkey/aws/) documentation.
