@@ -114,7 +114,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
     - [Enabled VPC peering while creating your cluster](create-your-cluster.html#step-7-enable-vpc-peering-optional)
     - [Established a VPC Peering connection](#establish-vpc-peering-or-aws-privatelink)
 
-1. From the **User** dropdown, select the SQL user you created in [Step 2. Create a SQL user](#step-2-create-a-sql-user).
+1. From the **User** dropdown, select the SQL user you created.
 1. From the **Region** dropdown, select the region closest to where your client or application is running.
 1. From the **Database** dropdown, select the database you want to connect to.
 

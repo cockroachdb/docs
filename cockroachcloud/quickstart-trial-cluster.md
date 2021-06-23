@@ -144,5 +144,5 @@ Learn more:
 Before you move into production:
 
 - [Authorize the network](connect-to-your-cluster.html#step-1-authorize-your-network) from which your app will access the cluster.
-- Download the `ca.crt` file to every machine from which you want to [connect to the cluster](connect-to-your-cluster.html#step-3-select-a-connection-method).
+- Download the `ca.crt` file to every machine from which you want to [connect to the cluster](connect-to-your-cluster.html#step-2-select-a-connection-method).
 - Review the [production checklist](production-checklist.html).
