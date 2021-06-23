@@ -162,35 +162,27 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 
 ## Examples
 
+The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
 ### Import into an existing table from a CSV file
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
-      's3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]'
-    );
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT INTO customers (id, name)
-    CSV DATA (
-      'azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-    );
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT INTO customers (id, name)
-    CSV DATA (
-      'gs://acme-co/customers.csv'
+      's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     );
 ~~~
 
@@ -200,46 +192,16 @@ The column order in your statement must match the column order in the CSV being 
 
 ### Import into an existing table from multiple CSV files
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
-      's3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
-      's3://acme-co/customers2.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder',
-      's3://acme-co/customers3.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
-      's3://acme-co/customers4.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
+      's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+      's3://{BUCKET NAME}/{customers2.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+      's3://{BUCKET NAME}/{customers3.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+      's3://{BUCKET NAME}/{customers4.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
     );
 ~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT INTO customers (id, name)
-    CSV DATA (
-      'azure://acme-co/customer-import-data1.1.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-      'azure://acme-co/customer-import-data1.2.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-      'azure://acme-co/customer-import-data1.3.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-      'azure://acme-co/customer-import-data1.4.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-      'azure://acme-co/customer-import-data1.5.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',    
-    );
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT INTO customers (id, name)
-    CSV DATA (
-      'gs://acme-co/customers.csv',
-      'gs://acme-co/customers2.csv',
-      'gs://acme-co/customers3.csv',
-      'gs://acme-co/customers4.csv',
-    );
-~~~
-
 
 ### Import into an existing table from an Avro file
 
@@ -247,33 +209,11 @@ Google Cloud:
 
 To specify the table schema in-line:
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     AVRO DATA (
-      's3://acme-co/customers.avro?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]'
-    );
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT INTO customers
-    AVRO DATA (
-      'azure://acme-co/customers.avro?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-    );
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT INTO customers
-    AVRO DATA (
-      'gs://acme-co/customers.avro'
+      's3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     );
 ~~~
 
@@ -281,13 +221,11 @@ For more detailed information about importing data from Avro and examples, see [
 
 ### Import into an existing table from a delimited data file
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (
-      's3://your-external-storage/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
+      's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     )
     WITH
       fields_terminated_by='|',
@@ -295,13 +233,61 @@ Amazon S3:
       fields_escaped_by='\';
 ~~~
 
-Azure:
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+### Import into an existing table from a CSV file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers (id, name)
+    CSV DATA (
+      'azure://{CONTAINER NAME}/{customers.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+    );
+~~~
+
+{{site.data.alerts.callout_info}}
+The column order in your statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
+{{site.data.alerts.end}}
+
+### Import into an existing table from multiple CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers (id, name)
+    CSV DATA (
+      'azure://{CONTAINER NAME}/{customers.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+      'azure://{CONTAINER NAME}/{customers2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+      'azure://{CONTAINER NAME}/{customers3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+      'azure://{CONTAINER NAME}/{customers4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+      'azure://{CONTAINER NAME}/{customers5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
+    );
+~~~
+
+### Import into an existing table from an Avro file
+
+ [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers
+    AVRO DATA (
+      'azure://{CONTAINER NAME}/{customers.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+    );
+~~~
+
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+### Import into an existing table from a delimited data file
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (
-      'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+      'azure://{CONTAINER NAME}/{customers.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
     )
     WITH
       fields_terminated_by='|',
@@ -309,19 +295,72 @@ Azure:
       fields_escaped_by='\';
 ~~~
 
-Google Cloud:
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
+### Import into an existing table from a CSV file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers (id, name)
+    CSV DATA (
+      'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    );
+~~~
+
+{{site.data.alerts.callout_info}}
+The column order in your statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
+{{site.data.alerts.end}}
+
+### Import into an existing table from multiple CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers (id, name)
+    CSV DATA (
+      'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+      'gs://{BUCKET NAME}/{customers2.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+      'gs://{BUCKET NAME}/{customers3.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+      'gs://{BUCKET NAME}/{customers4.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+    );
+~~~
+
+### Import into an existing table from an Avro file
+
+ [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT INTO customers
+    AVRO DATA (
+      'gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    );
+~~~
+
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+### Import into an existing table from a delimited data file
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT INTO customers
     DELIMITED DATA (
-      'gs://acme-co/employees.csv'
+      'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     )
     WITH
       fields_terminated_by='|',
       fields_enclosed_by='"',
       fields_escaped_by='\';
 ~~~
+
+</section>
 
 ## Known limitations
 

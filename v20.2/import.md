@@ -181,12 +181,24 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 ## Examples
 
+The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
 ### Import a table from a CSV file
 
 To specify the table schema in-line:
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -194,65 +206,17 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.csv')
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 ;
 ~~~
 
 To use a file to specify the table schema:
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
-CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'gs://acme-co/customers-create-table.sql'
-CSV DATA ('gs://acme-co/customers.csv')
+CREATE USING 's3://{BUCKET NAME}/{customers-create-table.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 ;
 ~~~
 
@@ -262,8 +226,6 @@ CSV DATA ('gs://acme-co/customers.csv')
 
 #### Using a comma-separated list
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -272,45 +234,10 @@ Amazon S3:
 		INDEX name_idx (name)
 )
 CSV DATA (
-    's3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
-    's3://acme-co/customers2.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder',
-    's3://acme-co/customers3.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
-    's3://acme-co/customers4.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]',
-);
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA (
-    'azure://acme-co/customer-import-data1.1.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-    'azure://acme-co/customer-import-data1.2.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-    'azure://acme-co/customer-import-data1.3.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-    'azure://acme-co/customer-import-data1.4.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',
-    'azure://acme-co/customer-import-data1.5.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co',    
-);
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA (
-    'gs://acme-co/customers.csv',
-    'gs://acme-co/customers2.csv',
-    'gs://acme-co/customers3.csv',
-    'gs://acme-co/customers4.csv',
+    's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+    's3://{BUCKET NAME}/{customers2.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+    's3://{BUCKET NAME}/{customers3.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+    's3://{BUCKET NAME}/{customers4.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
 );
 ~~~
 
@@ -325,8 +252,6 @@ You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#M
 
 These only match files directly under the specified path and do not descend into additional directories recursively.
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -335,42 +260,12 @@ Amazon S3:
 		INDEX name_idx (name)
 )
 CSV DATA (
-    's3://acme-co/*?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
-);
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA (
-    'azure://acme-co/customer-import-data*?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'  
-);
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA (
-    'gs://acme-co/*'
+    's3://{BUCKET NAME}/*?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
 );
 ~~~
 
 ### Import a table from a TSV file
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -378,37 +273,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.tsv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-WITH
-	delimiter = e'\t'
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.tsv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	delimiter = e'\t'
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.tsv')
+CSV DATA ('s3://{BUCKET NAME}/{customers.tsv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 WITH
 	delimiter = e'\t'
 ;
@@ -418,8 +283,6 @@ WITH
 
 The `comment` option determines which Unicode character marks the rows in the data to be skipped.
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -427,37 +290,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-WITH
-	comment = '#'
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	comment = '#'
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.csv')
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 WITH
 	comment = '#'
 ;
@@ -467,8 +300,6 @@ WITH
 
 The `skip` option determines the number of header rows to skip when importing a file.
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -476,37 +307,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/customers.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-WITH
-	skip = '2'
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	skip = '2'
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.csv')
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 WITH
 	skip = '2'
 ;
@@ -516,8 +317,6 @@ WITH
 
 The `nullif` option defines which string should be converted to `NULL`.
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -525,37 +324,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-WITH
-	nullif = ''
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	nullif = ''
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.csv')
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 WITH
 	nullif = ''
 ;
@@ -565,8 +334,6 @@ WITH
 
 CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -574,40 +341,12 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.csv.gz')
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv.gz}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 ;
 ~~~
 
 Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -615,37 +354,7 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-CSV DATA ('s3://acme-co/employees.csv.gz?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
-WITH
-	decompress = 'gzip'
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://acme-co/customer-import-data.csv.gz.latest?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-WITH
-	decompress = 'gzip'
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('gs://acme-co/customers.csv.gz')
+CSV DATA ('s3://{BUCKET NAME}/{customers.csv.gz}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 WITH
 	decompress = 'gzip'
 ;
@@ -653,163 +362,60 @@ WITH
 
 ### Import a Postgres database dump
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> IMPORT PGDUMP 's3://{BUCKET NAME}/{employees.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'gs://acme-co/employees.sql';
-~~~
-
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres][postgres].
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a table from a Postgres database dump
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM PGDUMP 's3://{BUCKET NAME}/{employees.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH skip_foreign_keys;
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
 Cockroach dump files can be imported using the `IMPORT PGDUMP`.
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT PGDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
-~~~
-
-Azure:
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'gs://acme-co/employees.sql';
+> IMPORT PGDUMP 's3://{BUCKET NAME}/{employees.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+> IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co';
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT MYSQLDUMP 'gs://acme-co/employees.sql';
-~~~
-
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a table from a MySQL database dump
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 's3://your-external-storage/employees-full.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH skip_foreign_keys;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 'azure://acme-co/employees.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co' WITH skip_foreign_keys;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 'gs://acme-co/employees.sql' WITH skip_foreign_keys;
+> IMPORT TABLE employees FROM MYSQLDUMP 's3://{BUCKET NAME}/{employees.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH skip_foreign_keys;
 ~~~
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a delimited data file
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
-> IMPORT DELIMITED DATA 's3://your-external-storage/employees-full.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
-  WITH
-    fields_terminated_by='|',
-    fields_enclosed_by='"',
-    fields_escaped_by='"';
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-  WITH
-    fields_terminated_by='|',
-    fields_enclosed_by='"',
-    fields_escaped_by='"';
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT DELIMITED DATA 'gs://acme-co/employees.csv'
+> IMPORT DELIMITED DATA 's3://{BUCKET NAME}/{employees.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH
     fields_terminated_by='|',
     fields_enclosed_by='"',
@@ -822,32 +428,10 @@ If you want to escape special symbols, use `fields_escaped_by`.
 
 ### Import a table from a delimited data file
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE employees
-    FROM DELIMITED DATA 's3://your-external-storage/employees.csv?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
-    WITH
-      skip_foreign_keys;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees
-    FROM DELIMITED DATA 'azure://acme-co/employees.csv?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-    WITH
-      skip_foreign_keys;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees
-    FROM DELIMITED DATA 'gs://acme-co/employees.csv'
+    FROM DELIMITED DATA 's3://{BUCKET NAME}/{employees.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH
       skip_foreign_keys;
 ~~~
@@ -858,10 +442,11 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
 
+~~~ shell
+cd node2 && ls
 ~~~
-$ cd node2
-$ ls
 
+~~~
 000355.log		      	cockroach-temp700212211
 000357.log		      	cockroach.advertise-addr
 000359.sst		      	cockroach.advertise-sql-addr
@@ -874,17 +459,18 @@ OPTIONS-000005		  	temp-dirs-record.txt
 auxiliary
 ~~~
 
+~~~ shell
+cd extern && ls
 ~~~
-$ cd extern
-$ ls
 
+~~~
 customers.csv
 ~~~
 
 Then, specify which node to access by including the `nodeID` in the `IMPORT` statement:
 
 {% include copy-clipboard.html %}
-~~~
+~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
 		name STRING,
@@ -902,8 +488,6 @@ CSV DATA ('nodelocal://2/customers.csv')
 
 To specify the table schema in-line:
 
-Amazon S3:
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
@@ -911,69 +495,669 @@ Amazon S3:
 		name TEXT,
 		INDEX name_idx (name)
 )
-AVRO DATA ('s3://acme-co/customers.avro?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]&AWS_SESSION_TOKEN=[placeholder]')
-;
-~~~
-
-Azure:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-AVRO DATA ('azure://acme-co/customer-import-data.avro?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
-;
-~~~
-
-Google Cloud:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-AVRO DATA ('gs://acme-co/customers.avro')
+AVRO DATA ('s3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
 ;
 ~~~
 
 To use a file to specify the table schema:
 
-Amazon S3:
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 's3://{BUCKET NAME}/{customers-create-table.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+AVRO DATA ('s3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
+;
+~~~
+
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+### Import a table from a CSV file
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+To use a file to specify the table schema:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
-CREATE USING 's3://acme-co/customers-create-table.sql?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]'
-AVRO DATA ('s3://acme-co/customers.avro?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]')
+CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
 ;
 ~~~
 
-Azure:
+{% include {{ page.version.version }}/misc/csv-import-callout.md %}
+
+### Import a table from multiple CSV files
+
+#### Using a comma-separated list
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
+);
+~~~
+
+#### Using a wildcard
+
+You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#Match) instead of explicitly listing every file. Paths are matched Use the `*` wildcard character to include matching files directly under the specified path. A wildcard can be used to include:
+
+- All files in a given directory (e.g.,`azure://container-name/path/to/data/*`)
+- All files in a given directory that end with a given string (e.g., `azure://container-name/files/*.csv`)
+- All files in a given directory that start with a given string (e.g., `azure://container-name/files/data*`)
+- All files in a given directory that start and end with a given string (e.g., `azure://container-name/files/data*.csv`)
+
+These only match files directly under the specified path and do not descend into additional directories recursively.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'  
+);
+~~~
+
+### Import a table from a TSV file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.tsv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	delimiter = e'\t'
+;
+~~~
+
+### Skip commented lines
+
+The `comment` option determines which Unicode character marks the rows in the data to be skipped.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	comment = '#'
+;
+~~~
+
+### Skip first *n* lines
+
+The `skip` option determines the number of header rows to skip when importing a file.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	skip = '2'
+;
+~~~
+
+### Use blank characters as `NULL`
+
+The `nullif` option defines which string should be converted to `NULL`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	nullif = ''
+;
+~~~
+
+### Import a compressed CSV file
+
+CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	decompress = 'gzip'
+;
+~~~
+
+### Import a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
+~~~
+
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+
+### Import a table from a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
+
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+
+### Import a CockroachDB dump file
+
+Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
+~~~
+
+For more information, see [SQL Dump (Export)](cockroach-dump.html).
+
+### Import a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
+~~~
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+
+### Import a table from a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+
+### Import a delimited data file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  WITH
+    fields_terminated_by='|',
+    fields_enclosed_by='"',
+    fields_escaped_by='"';
+~~~
+
+{{site.data.alerts.callout_info}}
+If you want to escape special symbols, use `fields_escaped_by`.
+{{site.data.alerts.end}}
+
+### Import a table from a delimited data file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees
+    FROM DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+    WITH
+      skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
+
+### Import a table from a local file
+
+If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
+
+~~~ shell
+cd node2 && ls
+~~~
+
+~~~
+000355.log		      	cockroach-temp700212211
+000357.log		      	cockroach.advertise-addr
+000359.sst		      	cockroach.advertise-sql-addr
+COCKROACHDB_VERSION		cockroach.http-addr
+CURRENT			        	cockroach.listen-addr
+IDENTITY		        	cockroach.sql-addr
+LOCK		          		extern
+MANIFEST-000010		    logs
+OPTIONS-000005		  	temp-dirs-record.txt
+auxiliary
+~~~
+
+~~~ shell
+cd extern && ls
+~~~
+
+~~~
+customers.csv
+~~~
+
+Then, specify which node to access by including the `nodeID` in the `IMPORT` statement:
+
+{% include copy-clipboard.html %}
+
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name STRING,
+		INDEX name_idx (name)
+)
+CSV DATA ('nodelocal://2/customers.csv')
+;
+~~~
+
+ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command to upload a file to the external IO directory on a node's (the gateway node, by default) local file system.
+
+### Import a table from an Avro file
+
+ [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+AVRO DATA ('azure://{CONTAINER NAME}/{customers.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+To use a file to specify the table schema:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
-CREATE USING 'azure://acme-co/customer-create-table.sql?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
-AVRO DATA ('azure://acme-co/customer-import-data.avro?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co')
+CREATE USING 'azure://{CONTAINER NAME}/{customers-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+AVRO DATA ('azure://{CONTAINER NAME}/{customers.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
 ;
 ~~~
 
-Google Cloud:
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
+### Import a table from a CSV file
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+;
+~~~
+
+To use a file to specify the table schema:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers
-CREATE USING 'gs://acme-co/customers-create-table.sql'
-AVRO DATA ('gs://acme-co/customers.avro')
+CREATE USING 'gs://{BUCKET NAME}/{customers-create-table.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+{% include {{ page.version.version }}/misc/csv-import-callout.md %}
+
+### Import a table from multiple CSV files
+
+#### Using a comma-separated list
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+    'gs://{BUCKET NAME}/{customers2.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+    'gs://{BUCKET NAME}/{customers3.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+    'gs://{BUCKET NAME}/{customers4.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}',
+);
+~~~
+
+#### Using a wildcard
+
+You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#Match) instead of explicitly listing every file. Paths are matched Use the `*` wildcard character to include matching files directly under the specified path. A wildcard can be used to include:
+
+- All files in a given directory (e.g.,`gs://bucket-name/path/to/data/*`)
+- All files in a given directory that end with a given string (e.g., `gs://bucket-name/files/*.csv`)
+- All files in a given directory that start with a given string (e.g., `gs://bucket-name/files/data*`)
+- All files in a given directory that start and end with a given string (e.g., `gs://bucket-name/files/data*.csv`)
+
+These only match files directly under the specified path and do not descend into additional directories recursively.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'gs://{BUCKET NAME}/*?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+);
+~~~
+
+### Import a table from a TSV file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.tsv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+WITH
+	delimiter = e'\t'
+;
+~~~
+
+### Skip commented lines
+
+The `comment` option determines which Unicode character marks the rows in the data to be skipped.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+WITH
+	comment = '#'
+;
+~~~
+
+### Skip first *n* lines
+
+The `skip` option determines the number of header rows to skip when importing a file.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+WITH
+	skip = '2'
+;
+~~~
+
+### Use blank characters as `NULL`
+
+The `nullif` option defines which string should be converted to `NULL`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+WITH
+	nullif = ''
+;
+~~~
+
+### Import a compressed CSV file
+
+CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv.gz}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+;
+~~~
+
+Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('gs://{BUCKET NAME}/{customers.csv.gz}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+WITH
+	decompress = 'gzip'
+;
+~~~
+
+### Import a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
+~~~
+
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+
+### Import a table from a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
+
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+
+### Import a CockroachDB dump file
+
+Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
+~~~
+
+For more information, see [SQL Dump (Export)](cockroach-dump.html).
+
+### Import a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
+~~~
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+
+### Import a table from a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM MYSQLDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+
+### Import a delimited data file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT DELIMITED DATA 'gs://{BUCKET NAME}/{employees.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  WITH
+    fields_terminated_by='|',
+    fields_enclosed_by='"',
+    fields_escaped_by='"';
+~~~
+
+{{site.data.alerts.callout_info}}
+If you want to escape special symbols, use `fields_escaped_by`.
+{{site.data.alerts.end}}
+
+### Import a table from a delimited data file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees
+    FROM DELIMITED DATA 'gs://{BUCKET NAME}/{employees.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    WITH
+      skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
+
+### Import a table from a local file
+
+If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
+
+~~~ shell
+cd node2 && ls
+~~~
+
+~~~
+000355.log		      	cockroach-temp700212211
+000357.log		      	cockroach.advertise-addr
+000359.sst		      	cockroach.advertise-sql-addr
+COCKROACHDB_VERSION		cockroach.http-addr
+CURRENT			        	cockroach.listen-addr
+IDENTITY		        	cockroach.sql-addr
+LOCK		          		extern
+MANIFEST-000010		    logs
+OPTIONS-000005		  	temp-dirs-record.txt
+auxiliary
+~~~
+
+~~~ shell
+$ cd extern && ls
+~~~
+
+~~~
+customers.csv
+~~~
+
+Then, specify which node to access by including the `nodeID` in the `IMPORT` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name STRING,
+		INDEX name_idx (name)
+)
+CSV DATA ('nodelocal://2/customers.csv')
+;
+~~~
+
+ You can also use the [`cockroach nodelocal upload`](cockroach-nodelocal-upload.html) command to upload a file to the external IO directory on a node's (the gateway node, by default) local file system.
+
+### Import a table from an Avro file
+
+ [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+AVRO DATA ('gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+;
+~~~
+
+To use a file to specify the table schema:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'gs://{BUCKET NAME}/{customers-create-table.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+AVRO DATA ('gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
+;
+~~~
+
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+</section>
 
 ## Known limitation
 

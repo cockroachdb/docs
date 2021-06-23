@@ -75,12 +75,28 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 
 ## Examples
 
+The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
 ### Export a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
@@ -89,7 +105,7 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
@@ -105,7 +121,7 @@ $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > 
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH compression = 'gzip' FROM TABLE bank.customers;
 ~~~
 
@@ -115,6 +131,106 @@ filename                                           | rows | bytes
 export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 (1 row)
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
+### Export a table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+### Export using a `SELECT` statement
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  FROM SELECT * FROM bank.customers WHERE id >= 100;
+~~~
+
+### Non-distributed export using the SQL shell
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+### Export gzip compressed CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  WITH compression = 'gzip' FROM TABLE bank.customers;
+~~~
+
+~~~
+filename                                           | rows | bytes
+---------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
+(1 row)
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
+### Export a table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+### Export using a `SELECT` statement
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  FROM SELECT * FROM bank.customers WHERE id >= 100;
+~~~
+
+### Non-distributed export using the SQL shell
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+### Export gzip compressed CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  WITH compression = 'gzip' FROM TABLE bank.customers;
+~~~
+
+~~~
+filename                                           | rows | bytes
+---------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
+(1 row)
+~~~
+
+</section>
 
 ### View a running export
 

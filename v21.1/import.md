@@ -398,7 +398,7 @@ WITH
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a table from a Postgres database dump
 
@@ -409,7 +409,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -429,7 +429,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 > IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a table from a MySQL database dump
 
@@ -440,7 +440,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a delimited data file
 
@@ -496,7 +496,7 @@ AVRO DATA ('s3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={ACCESS KEY}&A
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Run an import within a transaction
 
@@ -742,7 +742,7 @@ WITH
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a table from a Postgres database dump
 
@@ -753,7 +753,7 @@ For the commands above to succeed, you need to have created the dump file with s
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -773,7 +773,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 > IMPORT MYSQLDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a table from a MySQL database dump
 
@@ -784,7 +784,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a delimited data file
 
@@ -840,7 +840,7 @@ AVRO DATA ('gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCO
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Run an import within a transaction
 
@@ -1113,7 +1113,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 > IMPORT MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a table from a MySQL database dump
 
@@ -1124,7 +1124,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a delimited data file
 
@@ -1181,7 +1181,7 @@ AVRO DATA ('azure://{CONTAINER NAME}/{customer-import-data.avro}?AZURE_ACCOUNT_N
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Run an import within a transaction
 
