@@ -21,13 +21,15 @@ Failed running "sql"
 
 ### Invalid cluster name in a third-party tool
 
-The following error is displayed if you try to connect to a [third-party tool](../stable/third-party-database-tools.html) with the wrong cluster or database name. The actual error may vary depending on your tool:
+The following error is displayed if you try to connect to a [third-party tool](../stable/third-party-database-tools.html) with the wrong cluster or database name. The actual error message may vary depending on your tool:
 
 ~~~ shell
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
 **Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for CockroachCloud Free (beta) clusters, or `<cluster-name>.<database>` for paid CockroachCloud clusters.
+
+For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 
 ### I/O timeout
 
