@@ -503,6 +503,8 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
 
     {{site.data.alerts.callout_success}}
     If you used a different CA to sign the new certificates, trigger a full restart of the cluster instead: `kubectl annotate {cluster-name} cockroachdb crdb.io/restarttype='fullcluster'`.
+
+    **Note:** A full restart will cause a temporary database outage.
     {{site.data.alerts.end}}
 
     ~~~
