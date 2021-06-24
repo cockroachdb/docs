@@ -10,9 +10,6 @@ angelese
 anonymized
 arity
 artoul
-asciicast
-asciicasts
-asciinema
 australiaeast
 australiasoutheast
 autocommit
