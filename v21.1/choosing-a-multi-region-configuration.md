@@ -23,7 +23,8 @@ The options for configuring your multi-region cluster include:
 
 - _Change only [table locality](multiregion-overview.html#table-locality)_: This is useful for multi-region apps that require different read/write latency guarantees for different tables in the database, and are not concerned with surviving a region failure. In this configuration, you get:
   - Zone survival (the default).
-  - Low-latency reads and writes from all regions.
+  - For [global tables](multiregion-overview.html#global-tables), low-latency reads from all regions.
+  - For [regional by row tables](multiregion-overview.html#regional-by-row-tables), low-latency reads and writes from each row's [home region](set-locality.html#crdb_region), and low-latency [follower reads](follower-reads.html) from all other regions.
 
 - _Change both [survival goals](multiregion-overview.html#survival-goals) and [table locality](multiregion-overview.html#table-locality)_: This is useful for multi-region apps that want a high level of survival. In this configuration, you move from zone survival and get:
   - Region survival.
