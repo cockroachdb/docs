@@ -2,7 +2,6 @@
 title: Start a Local Cluster (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
-asciicast: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -19,12 +18,6 @@ Running multiple nodes on a single host is useful for testing out CockroachDB, b
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
-
-<!-- TODO: update the asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:52" title="Secure a Cluster"></asciinema-player>
--->
 
 ## Step 1. Create security certificates
 
