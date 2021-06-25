@@ -46,6 +46,10 @@ can be restored by running:
 
 Note that the first URI in the list has to be the URI specified as the `default` URI when the backup was created. If you have moved your backups to a different location since the backup was originally taken, the first URI must be the new location of the files originally written to the `default` location.
 
+{{site.data.alerts.callout_info}}
+For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+{{site.data.alerts.end}}
+
 ## Restore from a locality-aware backup
 
 Given a list of URIs that together contain the locations of all of the files for a single [locality-aware backup](#create-a-locality-aware-backup), [`RESTORE`](restore.html) can read in that backup. Note that the list of URIs passed to [`RESTORE`](restore.html) may be different from the URIs originally passed to [`BACKUP`](backup.html). This is because it's possible to move the contents of one of the parts of a locality-aware backup (i.e., the files written to that destination) to a different location, or even to consolidate all the files for a locality-aware backup into a single location.
