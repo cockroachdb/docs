@@ -118,16 +118,13 @@ For example, the encrypted backup created in the [first example](#take-an-encryp
 
 ### Examples
 
-- [Take an encrypted backup using a passphrase](#take-an-encrypted-backup-using-a-passphrase)
-- [Restore from an encrypted backup using a passphrase](#restore-from-an-encrypted-backup-using-a-passphrase)
-
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
   <button class="filter-button" data-scope="azure">Azure Storage</button>
   <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
 </div>
 
-The examples below provide connection strings to Amazon S3, Google Cloud Storage, and Azure Storage. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
@@ -150,9 +147,9 @@ To [restore](restore.html), use the same `encryption_passphrase`. See the [examp
 
 #### Restore from an encrypted backup using a passphrase
 
-To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
+To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
 
-For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
+For example, the encrypted backup created in the previous example can be restored with:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -188,9 +185,9 @@ To [restore](restore.html), use the same `encryption_passphrase`. See the [examp
 
 #### Restore from an encrypted backup using a passphrase
 
-To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
+To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
 
-For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
+For example, the encrypted backup created in the previous example can be restored with:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -226,9 +223,9 @@ To [restore](restore.html), use the same `encryption_passphrase`. See the [examp
 
 #### Restore from an encrypted backup using a passphrase
 
-To decrypt an [encrypted backup](#take-an-encrypted-backup-using-a-passphrase), use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
+To decrypt an encrypted backup, use the [`encryption_passphrase` option](backup.html#with-encryption-passphrase) option and the same passphrase that was used to create the backup.
 
-For example, the encrypted backup created in the [previous example](#take-an-encrypted-backup-using-a-passphrase) can be restored with:
+For example, the encrypted backup created in the previous example can be restored with:
 
 {% include copy-clipboard.html %}
 ~~~ sql

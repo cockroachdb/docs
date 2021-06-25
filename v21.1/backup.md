@@ -150,7 +150,7 @@ The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually mea
 
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
 
-The examples below provide connection strings to Amazon S3, Google Cloud Storage, and Azure Storage. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
@@ -166,7 +166,7 @@ The examples in this section use the **default** `AUTH=specified` parameter. For
 
 ### Backup a cluster
 
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -177,7 +177,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a database
 
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) a single database:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -262,7 +262,7 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 ### Backup a cluster
 
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -273,7 +273,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a database
 
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) a single database:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -362,7 +362,7 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 
 ### Backup a cluster
 
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) a cluster:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -373,7 +373,7 @@ AS OF SYSTEM TIME '-10s';
 
 ### Backup a database
 
-To take a [full backup](take-full-and-incremental-backups.html#full-backups) a single database:
+To take a [full backup](take-full-and-incremental-backups.html#full-backups) of a single database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
