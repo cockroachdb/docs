@@ -1,16 +1,15 @@
 ---
-title: Set Up a Virtual Environment for Developing Multi-Region Applications
+title: Set up a Virtual Environment for Developing Global Applications
 summary: This page walks you through setting up a demo multi-region CockroachDB cluster, and a virtual development environment.
 toc: true
+redirect_from: multi-region-setup.html
 ---
 
-This page walks you through setting up a virtual environment for developing and debugging an example multi-region application. It is the third section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial. In this section, you will set up a demo CockroachDB cluster, initialize the database, and set up a virtual development environment.
-
-{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+This page walks you through setting up a virtual environment for developing and debugging a global application. It is the third section of the [Develop and Deploy a Global Application](movr-flask-overview.html) tutorial. In this section, you will set up a demo CockroachDB cluster, initialize the database, and set up a virtual development environment.
 
 ## Before you begin
 
-1. Complete the previous section of the tutorial, [Create a Multi-Region Database Schema](multi-region-database.html).
+1. Complete the previous section of the tutorial, [Create a Multi-Region Database Schema](movr-flask-database.html).
 
 1. Make sure that you have the following installed on your local machine:
       - [CockroachDB](install-cockroachdb-mac.html)
@@ -31,26 +30,17 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
     --nodes=9 \
     --demo-locality=region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-east1:\
     region=gcp-us-west1:region=gcp-us-west1:region=gcp-us-west1:\
-    region=gcp-europe-west1:region=gcp-europe-west1:region=gcp-europe-west1
+    region=gcp-europe-west1:region=gcp-europe-west1:region=gcp-europe-west1 \
+    --empty
     ~~~
-
-    ~~~
-    root@127.0.0.1:62268/movr>
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    Your port number will likely be different than the one shown here.
-    {{site.data.alerts.end}}
 
     Keep this terminal window open. Closing it will shut down the demo cluster.
 
-1. Copy the connection string at the prompt (e.g., `root@127.0.0.1:62268/movr`).
-
-1. Open another terminal window. In the new window, run the following command to load `dbinit.sql` to the demo database. This file contains the `movr` database definition, and SQL instructions to geo-partition the database.
+1. Open another terminal window. In the new window, run the following command to load `dbinit.sql` to the demo database. This file contains the `movr` database schema that we covered in [Create a Multi-Region Database Schema](movr-flask-database.html).
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure --url='postgresql://root@127.0.0.1:62268/movr' < dbinit.sql
+    $ cockroach sql --insecure --url='postgresql://root@127.0.0.1:26257/defaultdb' < dbinit.sql
     ~~~
 
 
@@ -60,6 +50,7 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
     ~~~ sql
     > SHOW TABLES;
     ~~~
+
     ~~~
       table_name
     +------------+
@@ -70,7 +61,7 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
     ~~~
 
 {{site.data.alerts.callout_info}}
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. For instructions on deploying a multi-region CockroachDB cluster for this application, using [CockroachCloud](https://www.cockroachlabs.com/product/cockroachcloud/), see [Deploy a Multi-Region Web Application](multi-region-deployment.html).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. For instructions on deploying a multi-region CockroachDB cluster for this application, using [CockroachCloud](https://www.cockroachlabs.com/product/cockroachcloud/), see [Deploy a Global, Serverless Application](movr-flask-deployment.html).
 {{site.data.alerts.end}}
 
 
@@ -94,16 +85,6 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
     $ pipenv install
     ~~~
 
-1. To connect to a SQL database (like CockroachDB) from a client, you need a [SQL connection string](connection-parameters.html). Rather than hard-coding the connection string into the source code, the application reads it from an environment variable. Pipenv automatically sets any variables defined in a `.env` file as environment variables in a Pipenv virtual environment.
-
-    Open `.env` and edit the `DB_URI` environment variable so that it matches the connection string for the demo cluster that you started earlier (you may need to change the `<port>`). Note that SQLAlchemy requires the connection string protocol to be specific to the CockroachDB dialect, as shown below:
-
-    ~~~
-    DB_URI = 'cockroachdb://root@127.0.0.1:62268/movr'
-    ~~~
-
-    `.env` also specifies a few other variables, like API keys and secret keys, that are used by the application. For debugging purposes, you should leave these variables as they are.
-
 1. Activate the virtual environment:
 
     {% include copy-clipboard.html %}
@@ -123,12 +104,12 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dep
 1. Navigate to the URL provided to test out the application. By default, this should be http://127.0.0.1:5000/.
 
 {{site.data.alerts.callout_info}}
-In production, you want to [containerize](https://www.docker.com/resources/what-container) your application and deploy it with a deployment orchestration tool, like [Kubernetes](https://kubernetes.io/). For instructions on deploying this application in multiple regions, see [Deploy a Multi-Region Web Application](multi-region-deployment.html).
+In production, you want to [containerize](https://www.docker.com/resources/what-container) your application and deploy it with a deployment orchestration tool, like [Kubernetes](https://kubernetes.io/), or with a serverless deployment service, like [Google Cloud Run](https://cloud.google.com/run). We cover deploying the application with Google Cloud Run in [Deploy a Global Application](movr-flask-deployment.html).
 {{site.data.alerts.end}}
 
 ## Next steps
 
-Now that you've set up a development environment, you can start [developing and debugging the application](multi-region-application.html).
+Now that you've set up a development environment, you can start [developing and debugging the application](movr-flask-application.html).
 
 ## See also
 
