@@ -416,14 +416,25 @@
             "title": "Sample Apps",
             "items": [
               {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/example-apps.html"
+                ]
+              },
+              {
                 "title": "Hello World",
                 "items": [
                   {
-                    "title": "Overview",
+                    "title": "Python",
                     "urls": [
-                      "/${VERSION}/hello-world-example-apps.html"
+                      "/${VERSION}/hello-world-python-sqlalchemy.html"
                     ]
-                  },
+                  }
+                ]
+              },
+              {
+                "title": "Simple CRUD",
+                "items": [
                   {
                     "title": "Go",
                     "urls": [
