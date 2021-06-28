@@ -10,13 +10,13 @@ This page walks you through setting up a virtual environment for developing and 
 
 1. Complete the previous section of the tutorial, [Create a Multi-Region Database Schema](multi-region-database.html).
 
-1. Make sure that you have the following installed on your local machine:
+2. Make sure that you have the following installed on your local machine:
 
-    - [CockroachDB](install-cockroachdb-mac.html)
-    - [Python 3](https://www.python.org/downloads/)
-    - [Pipenv](https://pipenv.readthedocs.io/en/latest/)
+- [CockroachDB](install-cockroachdb-mac.html)
+- [Python 3](https://www.python.org/downloads/)
+- [Pipenv](https://pipenv.readthedocs.io/en/latest/)
 
-1. Clone the [movr-flask](https://github.com/cockroachlabs/movr-flask) repo. We'll reference the source code in this repo throughout the tutorial.
+3. Clone the [movr-flask](https://github.com/cockroachlabs/movr-flask) repo. We'll reference the source code in this repo throughout the tutorial.
 
 ## Set up a demo multi-region CockroachDB cluster
 
