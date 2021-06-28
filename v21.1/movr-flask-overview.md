@@ -15,7 +15,7 @@ The following sections make up the tutorial:
 1. [Develop a Global Application](movr-flask-application.html)
 1. [Deploy a Global Application](movr-flask-deployment.html)
 
-Throughout the tutorial, we reference the source code for an example web application for the fictional vehicle-sharing company [MovR](movr.html). The source code for this application is open source and available on GitHub, in the [movr-flask repo](https://github.com/cockroachlabs/movr-flask). The code is well-commented, with docstrings defined at the beginning of each class and function definition.
+Throughout the tutorial, we reference the source code for an example web application for the fictional vehicle-sharing company [MovR](movr.html). The source code for this application is open source and available on GitHub, in the [`movr-flask` repository ](https://github.com/cockroachlabs/movr-flask). The code is well-commented, with docstrings defined at the beginning of each class and function definition.
 
 The repo's [README](https://github.com/cockroachlabs/movr-flask/blob/master/README.md) also includes instructions on debugging and deploying the application using Google Cloud services. Those instructions are reproduced in [Set Up a Virtual Environment for Developing Global Applications](movr-flask-setup.html) and [Deploy a Global Application](movr-flask-deployment.html).
 

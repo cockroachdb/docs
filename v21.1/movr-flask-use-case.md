@@ -23,7 +23,7 @@ In the [example deployment](movr-flask-deployment.html), the application and the
 
 ## Latency in global applications
 
-If the MovR application and database are deployed in a single region, latency can become a serious problem when users are located in cities outside the deployment region. And deploying the application and database in multiple regions is not guaranteed to improve latency if client requests are sent to any regional deployment, without consideration for the client's location.
+If the MovR application and database are deployed in a single region, latency can become a serious problem when users are located in cities outside the deployment region. Deploying the application and database in multiple regions is not guaranteed to improve latency if client requests are sent to any regional deployment, without consideration for the client's location.
 
 Limiting latency improves the user experience, and it can also help you avoid problems with data integrity, like [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
@@ -46,7 +46,7 @@ To limit the latency between the application and the database:
 
 ### Reducing application latency
 
-To limit the latency between client and application server requests, you need to deploy your application such that requests are routed to the application deployment closest to the client. This requires a global load balancer that can redirect traffic to application deployments, based on client location.
+To limit the latency between client and application server requests, you need to deploy your application such that requests are routed to the application deployment closest to the client. This requires a global load balancer that can redirect traffic to application deployments based on client location.
 
 We cover setting up an external load balancer in [Deploy a Global, Serverless Application](movr-flask-deployment.html).
 
@@ -56,7 +56,7 @@ You should now be ready to start [creating a multi-region database schema](movr-
 
 ## See also
 
-- [movr-flask on GitHub](https://github.com/cockroachlabs/movr-flask)
+- [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/overview.html#terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [Define Table Partitions](partitioning.html)
