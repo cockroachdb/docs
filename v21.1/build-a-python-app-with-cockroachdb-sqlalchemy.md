@@ -1,5 +1,5 @@
 ---
-title: Build a Python App with CockroachDB and SQLAlchemy
+title: Build a Simple CRUD Python App with CockroachDB and SQLAlchemy
 summary: Learn how to use CockroachDB from a simple Python application with SQLAlchemy.
 toc: true
 twitter: false
@@ -16,15 +16,7 @@ referral_id: docs_hello_world_python_sqlalchemy
 
 {% include cockroach_u_pydev.md %}
 
-This tutorial shows you how build a simple Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM. For the CockroachDB back-end, you'll use a temporary local cluster.
-
-{{site.data.alerts.callout_info}}
-The example code on this page uses Python 3.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_danger}}
-SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to generate [`JOIN` expressions](joins.html) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
-{{site.data.alerts.end}}
+This tutorial shows you how build a simple CRUD Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
 
 ## Step 1. Install SQLAlchemy
 
@@ -45,121 +37,143 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 
 {% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 3. Create a database
+## Step 3. Get the code
 
-{% include {{page.version.version}}/app/create-a-database.md %}
-
-## Step 4. Run the Python code
-
-The code below uses [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) to map Python objects and methods to SQL operations.
-
-You can run this script as many times as you want; on each run, the script will create some new accounts and shuffle money around between randomly selected accounts.
-
-Specifically, the script:
-
-1. Reads in existing account IDs (if any) from the `bank` database.
-2. Creates additional accounts with randomly generated IDs. Then, it adds a bit of money to each new account.
-3. Chooses two accounts at random and takes half of the money from the first and deposits it into the second.
-
-It does all of the above using the practices we recommend for using SQLAlchemy with CockroachDB, which are listed in the [Best practices](#best-practices) section below.
-
-{{site.data.alerts.callout_info}}
-You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
-{{site.data.alerts.end}}
-
-### Get the code
-
-Copy the code below or
-<a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/sqlalchemy/example.py">download it directly</a>.
-
-If you prefer, you can also clone a version of the code:
+Clone the code's GitHub repo:
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/simple-crud-python-sqlalchemy/
 ~~~
 
-{% include copy-clipboard.html %}
-~~~ python
-{% include {{page.version.version}}/app/python/sqlalchemy/example.py %}
+The project has the following directory structure:
+
+~~~
+├── README.md
+├── dbinit.sql
+├── main.py
+└── models.py
 ~~~
 
-### Update the connection parameters
+The `dbinit.sql` file initializes the database schema that the application uses:
 
-In the `create_engine()` function, update the connection string as follows:
+{% include_cached copy-clipboard.html %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/simple-crud-python-sqlalchemy/master/dbinit.sql %}
+~~~
+
+The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/simple-crud-python-sqlalchemy/master/models.py %}
+~~~
+
+The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/simple-crud-python-sqlalchemy/master/main.py %}
+~~~
+
+`main.py` also executes the `main` method of the program.
+
+## Step 4. Run the code
+
+To run the app:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ python3 main.py
+~~~
+
+The terminal will prompt you for a connection string.
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-- Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql)` connection string from SQL shell welcome text.
+Copy and paste the connection string provided in the `(sql)` connection string from SQL shell welcome text.
+
+For example:
+
+~~~
+Enter your node's connection string:
+postgres://demo:demo4276@127.0.0.1:26257?sslmode=require
+~~~
+
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-- Comment out the connection string for `cockroach demo`, and uncomment the connection string for CockroachCloud.
-- Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
-- Replace `<globalhost>` with the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- Replace `<cluster_name>` with the name of your cluster.
-- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
+Copy and paste the connection string from the CockroachCloud console, and make sure that the right username, password, and certificate are specified.
+
+For example:
+
+~~~
+Enter your node's connection string:
+postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt
+~~~
+
+Where:
+
+- `<username>` and `<password>` are a SQL username and password.
+- `<globalhost>` is the name of the CockroachCloud Free host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `<cluster-name>` is the name of your cluster.
+- `<your_certs_directory>/cc-ca.crt` is the path to the CA certificate that you downloaded from the CockroachCloud Console.
 
 </section>
 
-### Run the code
+The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements.
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ python3 example.py
-~~~
+After you enter the connection string, the application will initialize the database with a .sql file containing some DDL SQL statements. It then performs some simple row inserts, updates, and deletes.
 
 The output should look something like the following:
 
 ~~~
-2020-10-11 16:49:48,048 INFO sqlalchemy.engine.base.Engine select current_schema()
-2020-10-11 16:49:48,048 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,076 INFO sqlalchemy.engine.base.Engine SELECT CAST('test plain returns' AS VARCHAR(60)) AS anon_1
-2020-10-11 16:49:48,076 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,077 INFO sqlalchemy.engine.base.Engine SELECT CAST('test unicode returns' AS VARCHAR(60)) AS anon_1
-2020-10-11 16:49:48,077 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,078 INFO sqlalchemy.engine.base.Engine select version()
-2020-10-11 16:49:48,078 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,079 INFO sqlalchemy.engine.base.Engine SELECT table_name FROM information_schema.tables WHERE table_schema=%s
-2020-10-11 16:49:48,079 INFO sqlalchemy.engine.base.Engine ('public',)
-2020-10-11 16:49:48,096 INFO sqlalchemy.engine.base.Engine
-CREATE TABLE accounts (
-	id SERIAL NOT NULL,
-	balance INTEGER,
-	PRIMARY KEY (id)
-)
+Initializing the bank database...
+SET
 
+Time: 0ms
 
-2020-10-11 16:49:48,096 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,135 INFO sqlalchemy.engine.base.Engine COMMIT
-2020-10-11 16:49:48,137 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
-2020-10-11 16:49:48,138 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
-2020-10-11 16:49:48,138 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,145 INFO sqlalchemy.engine.base.Engine INSERT INTO accounts (id, balance) VALUES (%(id)s, %(balance)s)
-2020-10-11 16:49:48,145 INFO sqlalchemy.engine.base.Engine ({'id': 114550846, 'balance': 521920}, {'id': 959765825, 'balance': 107843}, {'id': 992234225, 'balance': 743056}, {'id': 524035239, 'balance': 883288}, {'id': 338833325, 'balance': 390589}, {'id': 298479318, 'balance': 878646}, {'id': 173609938, 'balance': 262413}, {'id': 678216195, 'balance': 791789}  ... displaying 10 of 100 total bound parameter sets ...  {'id': 531287362, 'balance': 589865}, {'id': 521940595, 'balance': 103451})
-2020-10-11 16:49:48,266 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
-2020-10-11 16:49:48,266 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,268 INFO sqlalchemy.engine.base.Engine COMMIT
-2020-10-11 16:49:48,269 INFO sqlalchemy.engine.base.Engine BEGIN (implicit)
-2020-10-11 16:49:48,269 INFO sqlalchemy.engine.base.Engine SAVEPOINT cockroach_restart
-2020-10-11 16:49:48,269 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,271 INFO sqlalchemy.engine.base.Engine SELECT accounts.id AS accounts_id, accounts.balance AS accounts_balance
-FROM accounts
-WHERE accounts.id = %(id_1)s
-2020-10-11 16:49:48,271 INFO sqlalchemy.engine.base.Engine {'id_1': 721940623}
-2020-10-11 16:49:48,273 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=%(balance)s WHERE accounts.id = %(accounts_id)s
-2020-10-11 16:49:48,273 INFO sqlalchemy.engine.base.Engine {'balance': 50080, 'accounts_id': 721940623}
-2020-10-11 16:49:48,275 INFO sqlalchemy.engine.base.Engine UPDATE accounts SET balance=(accounts.balance + %(balance_1)s) WHERE accounts.id = %(id_1)s
-2020-10-11 16:49:48,275 INFO sqlalchemy.engine.base.Engine {'balance_1': 50080, 'id_1': 984244739}
-2020-10-11 16:49:48,294 INFO sqlalchemy.engine.base.Engine RELEASE SAVEPOINT cockroach_restart
-2020-10-11 16:49:48,294 INFO sqlalchemy.engine.base.Engine {}
-2020-10-11 16:49:48,295 INFO sqlalchemy.engine.base.Engine COMMIT
+DROP DATABASE
+
+Time: 29ms
+
+CREATE DATABASE
+
+Time: 7ms
+
+SET
+
+Time: 7ms
+
+CREATE TABLE
+
+Time: 3ms
+
+Database initialized.
+Creating new accounts...
+Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
+Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
+...
+Created new account with id 7b41386c-11d3-465e-a2a0-56e0dcd2e7db and balance 984387.
+Random account balances:
+Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 800795
+Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 149861
+Transferring 400397 from account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9 to account 4040aeba-7194-4f29-b8e5-a27ed4c7a297...
+Transfer complete.
+New balances:
+Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 400398
+Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 550258
+Deleting existing accounts...
+Deleted account 41247e24-6210-4032-b622-c10b3c7222de.
+Deleted account 502450e4-6daa-4ced-869c-4dff62dc52de.
+Deleted account 6ff06ef0-423a-4b08-8b87-48af2221bc18.
+Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
+Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
 ~~~
 
-Back in the terminal where the SQL shell is running, verify that the table and rows were created successfully:
+In the terminal where the SQL shell is running, you can verify that the rows were inserted, updated, and deleted successfully:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -167,9 +181,9 @@ Back in the terminal where the SQL shell is running, verify that the table and r
 ~~~
 
 ~~~
- count
--------
-   100
+  count
+---------
+     95
 (1 row)
 ~~~
 
@@ -226,6 +240,10 @@ In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Eng
 
 - It's easier to debug your SQL queries and make sure they are working as expected.
 - You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices](performance-best-practices-overview.html).
+
+### Joins without foreign keys
+
+SQLAlchemy relies on the existence of [foreign keys](foreign-key.html) to generate [`JOIN` expressions](joins.html) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
 
 ## See also
 
