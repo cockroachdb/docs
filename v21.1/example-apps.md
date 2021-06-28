@@ -21,7 +21,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 | Driver/ORM Framework                                            | Support level  | Sample apps                                            |
 |-----------------------------------------------------------------+----------------+--------------------------------------------------------|
 | [psycopg2](https://www.psycopg.org/docs/install.html)           | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb.html)
-| [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Hello World](hello-world-sqlalchemy.html)<br>[Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[MovR-Flask (Global Web App)](movr-flask-overview.html)
+| [SQLAlchemy](https://www.sqlalchemy.org/)                       | Full           | [Hello World](hello-world-python-sqlalchemy.html)<br>[Simple CRUD](build-a-python-app-with-cockroachdb-sqlalchemy.html)<br>[MovR-Flask (Global Web App)](movr-flask-overview.html)
 | [Django](https://pypi.org/project/Django/)                      | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-django.html)
 | [PonyORM](https://ponyorm.org/)                                 | Full           | [Simple CRUD](build-a-python-app-with-cockroachdb-pony.html)
 
@@ -73,7 +73,7 @@ Applications may encounter incompatibilities when using advanced or obscure feat
 
 | Driver/ORM Framework                                      | Support level  | Sample apps                                            |
 |-----------------------------------------------------------+----------------+--------------------------------------------------------|
-| [php-pgsql](https://www.php.net/manual/en/book.pgsql.php) | Beta           | [Simple CRUD](uild-a-php-app-with-cockroachdb.html)
+| [php-pgsql](https://www.php.net/manual/en/book.pgsql.php) | Beta           | [Simple CRUD](build-a-php-app-with-cockroachdb.html)
 
 ## Clojure
 
