@@ -62,7 +62,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
     ~~~
 
 {{site.data.alerts.callout_info}}
-You can also deploy CRDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
+You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
 ## Multi-region application deployment (GKE)

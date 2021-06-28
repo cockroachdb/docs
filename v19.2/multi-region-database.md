@@ -130,7 +130,7 @@ Now that you are familiar with the `movr` schema, [set up a development environm
 
 ## See also
 
-- [movr-flask on GitHub](https://github.com/cockroachlabs/movr-flask)
+- [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/overview.html#terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](configure-zone.html)

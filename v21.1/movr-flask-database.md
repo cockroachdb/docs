@@ -31,7 +31,7 @@ The database schema used in this application is a slightly simplified version of
 
 ## Multi-region in CockroachDB
 
-A distributed CockroachDB deployment consists of multiple, regional instances of CockroachDB that communicate as a single, logical entity. In [CockroachDB terminology](architecture/overview.html#terms), each instance is referred to as a *node*. The entity comprised by the nodes is referred to as a *cluster*.
+A distributed CockroachDB deployment consists of multiple, regional instances of CockroachDB that communicate as a single, logical entity. In [CockroachDB terminology](architecture/overview.html#terms), each instance is called a *node*. Together, the nodes form a *cluster*.
 
 To keep track of geographic information about nodes in a cluster, CockroachDB uses [*cluster regions*](multiregion-overview.html#cluster-regions), [*database regions*](multiregion-overview.html#database-regions), and [*table localities*](multiregion-overview.html#table-locality).
 
@@ -45,7 +45,7 @@ Each unique regional locality is stored in CockroachDB as a [cluster region](mul
 Only cluster regions specified at node startup can be used as [database regions](multiregion-overview.html#database-regions). You can view regions available to databases in the cluster with [`SHOW REGIONS FROM CLUSTER`](show-regions.html).
 {{site.data.alerts.end}}
 
-Here is the `CREATE DATABASE` statement for the `movr` database:
+Here is the [`CREATE DATABASE`](create-database.html) statement for the `movr` database:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -62,12 +62,12 @@ Note that `movr` has the following [database regions](multiregion-overview.html#
 
 After you have added regions to a database, you can control where the data in each table in the database is stored, using [table localities](multiregion-overview.html#table-locality).
 
-By default, CockroachDB uses a [`LOCALITY REGIONAL BY TABLE IN PRIMARY REGION` locality](multiregion-overview.html#regional-tables) for all new tables added to a multi-region database. The `LOCALITY REGIONAL BY TABLE` locality optimizes read and write access to the data in a table from a single region (in this case, the primary region `gcp-us-east1`).
+By default, CockroachDB uses the table locality setting [`REGIONAL BY TABLE IN PRIMARY REGION`](multiregion-overview.html#regional-tables) for all new tables added to a multi-region database. The `REGIONAL BY TABLE` table locality optimizes read and write access to the data in a table from a single region (in this case, the primary region `gcp-us-east1`).
 
-The `movr` database contains tables with rows of data that need to be accessed by users in more than one region. As a result, none of the tables benefit from using a `LOCALITY REGIONAL BY TABLE` locality. Instead, all three tables in the `movr` database schema should use a [`REGIONAL BY ROW` locality](multiregion-overview.html#regional-by-row-tables). For `REGIONAL BY ROW` tables, CockroachDB automatically assigns each row to a region based on the locality of the node from which the row is inserted. It then optimizes subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
+The `movr` database contains tables with rows of data that need to be accessed by users in more than one region. As a result, none of the tables benefit from using a `REGIONAL BY TABLE` locality. Instead, all three tables in the `movr` database schema should use a [`REGIONAL BY ROW` locality](multiregion-overview.html#regional-by-row-tables). For `REGIONAL BY ROW` tables, CockroachDB automatically assigns each row to a region based on the locality of the node from which the row is inserted. It then optimizes subsequent read and write queries executed from nodes located in the region assigned to the rows being queried.
 
 {{site.data.alerts.callout_info}}
-As shown in the `CREATE TABLE` statements below, the `REGIONAL BY ROW` clauses do not identify a column to track the region for each row. To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](set-locality.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. The values of `crdb_region` are populated using the locality of the node from which the query is executed.
+As shown in the `CREATE TABLE` statements below, the `REGIONAL BY ROW` clauses do not identify a column to track the region for each row. To assign rows to regions, CockroachDB creates and manages a hidden [`crdb_region` column](set-locality.html#crdb_region), of [`ENUM`](enum.html) type `crdb_internal_region`. The values of `crdb_region` are populated using the regional locality of the node from which the query creating the row originates.
 {{site.data.alerts.end}}
 
 ## The `users` table
@@ -103,7 +103,7 @@ Now that you are familiar with the `movr` schema, you can [set up a development 
 
 ## See also
 
-- [movr-flask on GitHub](https://github.com/cockroachlabs/movr-flask)
+- [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [CockroachDB terminology](architecture/overview.html#terms)
 - [Configure Replication Zones](configure-replication-zones.html)
 - [`CONFIGURE ZONE`](configure-zone.html)
