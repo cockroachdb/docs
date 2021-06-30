@@ -87,7 +87,7 @@ ctrl-d
 ## Datasets
 
 {{site.data.alerts.callout_success}}
-By default, the `movr` dataset is pre-loaded into a demo cluster. To load a different dataset, use [`cockroach demo <dataset>`](#load-a-sample-dataset-into-a-demo-cluster). To start a demo cluster without a pre-loaded dataset, pass the `--empty` flag.
+By default, the `movr` dataset is pre-loaded into a demo cluster. To load a different dataset, use [`cockroach demo <dataset>`](#load-a-sample-dataset-into-a-demo-cluster). To start a demo cluster without a pre-loaded dataset, pass the `--no-example-database` flag.
 {{site.data.alerts.end}}
 
 Workload | Description
@@ -113,8 +113,8 @@ Flag | Description
 `--disable-demo-license` |  Start the demo cluster without loading a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour.<br><br>Setting the `COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING` environment variable will also prevent the loading of a temporary license, along with preventing the sharing of anonymized [diagnostic details](diagnostics-reporting.html) with Cockroach Labs.
 `--echo-sql` | Reveal the SQL statements sent implicitly by the command-line utility. This can also be enabled within the interactive SQL shell via the `\set echo` [shell command](#commands).
 `--embedded` | <span class="version-tag">New in v21.1:</span> Minimizes the SQL shell [welcome text](#welcome-text) to be appropriate for embedding in playground-type environments. Specifically, this flag removes details that users in an embedded environment have no control over (e.g., networking information).
-`--empty` | Start the demo cluster without a pre-loaded dataset.
-`--execute`<br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
+`--no-example-database` | <span class="version-tag">New in v21.1:</span> Start the demo cluster without a pre-loaded dataset.<br>To obtain this behavior automatically in every new `cockroach demo` session, set the `COCKROACH_NO_EXAMPLE_DATABASE` environment variable to `true`.
+`--execute`<br><br>`-e` | Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons.<br><br>If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see `--format` for formatting options).
 `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](cockroach-sql.html#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options) for use in interactive sessions.
 `--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
 `--global` | <a name="global-flag"></a> This experimental flag is used to simulate a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
@@ -158,15 +158,15 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo36965&username=demo
-#   (sql)     postgres://demo:demo36965@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo885159696&port=26257
-#   (sql/tcp) postgres://demo:demo36965@127.0.0.1:26257?sslmode=require
+#   (webui)    http://127.0.0.1:8080/demologin?password=demo76915&username=demo
+#   (sql)      postgres://demo:demo76915@127.0.0.1:26257?sslmode=require
+#   (sql/unix) postgres://demo:demo76915@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo038435782&port=26257
 #
 #
-# The user "demo" with password "demo36965" has been created. Use it to access the Web UI!
+# The user "demo" with password "demo76915" has been created. Use it to access the Web UI!
 #
-# Server version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19, built 2021/05/17 13:52:51, go1.15.11) (same version as client)
-# Cluster ID: 5448bb81-6d2f-4545-a36c-4236df7e3d7d
+# Server version: CockroachDB CCL v21.1.2 (x86_64-apple-darwin19, built 2021/06/07 18:13:04, go1.15.11) (same version as client)
+# Cluster ID: 9dd61f86-add2-47c0-88a3-eb00525b1a22
 # Organization: Cockroach Demo
 #
 # Enter \? for a brief introduction.
@@ -179,19 +179,19 @@ The SQL shell welcome text includes connection parameters for accessing the DB C
 
 ~~~
 # Connection parameters:
-#   (console) http://127.0.0.1:8080/demologin?password=demo36965&username=demo
-#   (sql)     postgres://demo:demo36965@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo885159696&port=26257
-#   (sql/tcp) postgres://demo:demo36965@127.0.0.1:26257?sslmode=require
+#   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+#   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+#   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 ~~~
 
 Parameter | Description
 ----------|------------
-`console` | Use this link to access a local [DB Console](ui-overview.html) to the demo cluster.
-`sql` | Use this connection URL to establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
-`sql/tcp` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).<br>The default SQL port for the first node of a demo cluster is `26257`.
+`webui` | Use this link to access a local [DB Console](ui-overview.html) to the demo cluster.
+`sql` | Use this connection URL for standard sql/tcp connections from other SQL clients such as [`cockroach sql`](cockroach-sql.html).<br>The default SQL port for the first node of a demo cluster is `26257`.
+`sql/unix` | Use this connection URL to establish a [Unix domain socket connection](cockroach-sql.html#connect-to-a-cluster-listening-for-unix-domain-socket-connections) with a client that is installed on the same machine.
 
 {{site.data.alerts.callout_info}}
-You do not need to create or specify node and client certificates in `sql` or `sql/tcp` connection URLs. Instead, you can securely connect to the demo cluster with the random password generated for the `demo` user.
+You do not need to create or specify node and client certificates in `sql` or `sql/unix` connection URLs. Instead, you can securely connect to the demo cluster with the random password generated for the `demo` user.
 {{site.data.alerts.end}}
 
 When running a multi-node demo cluster, use the `\demo ls` [shell command](#commands) to list the connection parameters for all nodes:
@@ -203,19 +203,19 @@ When running a multi-node demo cluster, use the `\demo ls` [shell command](#comm
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
-  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
-  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
+  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
 node 2:
-  (console) http://127.0.0.1:8081/demologin?password=demo53628&username=demo
-  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26258
-  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26258?sslmode=require
+  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
 
 node 3:
-  (console) http://127.0.0.1:8082/demologin?password=demo53628&username=demo
-  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26259
-  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26259?sslmode=require
+  (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
 ~~~
 
 ### Commands
@@ -353,19 +353,19 @@ $ cockroach demo --nodes=3
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:8080/demologin?password=demo37407&username=demo
-  (sql)     postgres://demo:demo37407@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo252870906&port=26257
-  (sql/tcp) postgres://demo:demo37407@127.0.0.1:26257?sslmode=require
+  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
 node 2:
-  (console) http://127.0.0.1:8081/demologin?password=demo37407&username=demo
-  (sql)     postgres://demo:demo37407@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo252870906&port=26258
-  (sql/tcp) postgres://demo:demo37407@127.0.0.1:26258?sslmode=require
+  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
 
 node 3:
-  (console) http://127.0.0.1:8082/demologin?password=demo37407&username=demo
-  (sql)     postgres://demo:demo37407@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo252870906&port=26259
-  (sql/tcp) postgres://demo:demo37407@127.0.0.1:26259?sslmode=require
+  (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
 ~~~
 
 ### Load a sample dataset into a demo cluster
@@ -439,22 +439,22 @@ First, use `\demo ls` to list the connection parameters for each node in the dem
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:8080/demologin?password=demo53628&username=demo
-  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26257
-  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26257?sslmode=require
+  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
 node 2:
-  (console) http://127.0.0.1:8081/demologin?password=demo53628&username=demo
-  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26258
-  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26258?sslmode=require
+  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
 
 node 3:
-  (console) http://127.0.0.1:8082/demologin?password=demo53628&username=demo
-  (sql)     postgres://demo:demo53628@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo179679939&port=26259
-  (sql/tcp) postgres://demo:demo53628@127.0.0.1:26259?sslmode=require
+  (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
 ~~~
 
-Then open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the `--url` flag set to the `sql/tcp` connection URL of the node to which you want to connect:
+Then open a new terminal and run [`cockroach sql`](cockroach-sql.html) with the `--url` flag set to the `sql` connection URL of the node to which you want to connect:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -472,6 +472,10 @@ $ cockroach demo --global --nodes 9
 
 This command starts a 9-node demo cluster with the `movr` database preloaded and region and zone localities set at the cluster level.
 
+{{site.data.alerts.callout_info}}
+The `--global` flag is an experimental feature of `cockroach demo`. The interface and output are subject to change.
+{{site.data.alerts.end}}
+
 For a tutorial that uses a demo cluster to demonstrate CockroachDB's multi-region capabilities, see [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
 
 ### Add, shut down, and restart nodes in a multi-node demo cluster
@@ -484,6 +488,10 @@ In a multi-node demo cluster, you can use `\demo` [shell commands](#commands) to
 ~~~ shell
 $ cockroach demo --nodes=9
 ~~~
+
+{{site.data.alerts.callout_info}}
+`cockroach demo` does not support the `\demo add` and `\demo shutdown` commands in demo clusters started with the `--global` flag.
+{{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -506,49 +514,49 @@ $ cockroach demo --nodes=9
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:8080/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26257
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26257?sslmode=require
+  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
 node 2:
-  (console) http://127.0.0.1:8081/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26258
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26258?sslmode=require
+  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
 
 node 3:
-  (console) http://127.0.0.1:8082/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26259
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26259?sslmode=require
+  (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
 
 node 4:
-  (console) http://127.0.0.1:8083/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26260
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26260?sslmode=require
+  (webui)    http://127.0.0.1:8083/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26260?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26260
 
 node 5:
-  (console) http://127.0.0.1:8084/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26261
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26261?sslmode=require
+  (webui)    http://127.0.0.1:8084/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26261?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26261
 
 node 6:
-  (console) http://127.0.0.1:8085/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26262
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26262?sslmode=require
+  (webui)    http://127.0.0.1:8085/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26262?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26262
 
 node 7:
-  (console) http://127.0.0.1:8086/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26263
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26263?sslmode=require
+  (webui)    http://127.0.0.1:8086/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26263?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26263
 
 node 8:
-  (console) http://127.0.0.1:8087/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26264
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26264?sslmode=require
+  (webui)    http://127.0.0.1:8087/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26264?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26264
 
 node 9:
-  (console) http://127.0.0.1:8088/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26265
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26265?sslmode=require
+  (webui)    http://127.0.0.1:8088/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26265?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26265
 ~~~
 
 You can shut down and restart any node by node id. For example, to shut down the 3rd node and then restart it:
@@ -624,21 +632,21 @@ node 10 has been added with locality "region=us-central1,zone=a"
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:8080/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26257
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26257?sslmode=require
+  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
 node 2:
-  (console) http://127.0.0.1:8081/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26258
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26258?sslmode=require
+  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
 
 ...
 
 node 10:
-  (console) http://127.0.0.1:8089/demologin?password=demo37632&username=demo
-  (sql)     postgres://demo:demo37632@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo742364495&port=26266
-  (sql/tcp) postgres://demo:demo37632@127.0.0.1:26266?sslmode=require
+  (webui)    http://127.0.0.1:8089/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26266?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26266
 ~~~
 
 ### Try your own scenario

@@ -54,7 +54,7 @@ Here are the contents of `main.go`:
 Edit the `addr` constant so that:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{hostname}` and `{port}` specify the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- `{hostname}` and `{port}` specify the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 
