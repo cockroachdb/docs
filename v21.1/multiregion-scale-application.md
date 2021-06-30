@@ -1,75 +1,77 @@
 ---
-title: Scale a Single-region Database Schema to Multiple Regions
-summary: Learn how to migrate a single-region application to a multi-region application.
+title: Scale to Multiple Regions
+summary: Learn how to scale a single-region application to a multi-region application.
 toc: true
 ---
 
-This page provides guidance for scaling an application built on a single-region database schema to multiple regions.
+This page provides guidance for scaling a single-region application to a multi-region application.
 
 Before reading this page, we recommend reviewing [CockroachDB's multi-region capabilities](multiregion-overview.html).
 
 ## Overview
 
-To scale to multiple regions:
+Scaling an application from a single region to multiple regions consists of:
 
-[1.](#scale-database-deployments) Scale the deployment of your database to multiple regions.
+- [Scaling the database](#scale-the-database), which includes transforming the database schema into a multi-region schema and adding new nodes to a CockroachDB cluster.
 
-[2.](#scale-application-deployments) Scale the deployment of your application to multiple regions.
+- [Scaling the application](#scale-the-application), which includes deploying the application in new regions and, if necessary, updating the application code to work with the multi-region database schema.
 
-[3.](#transform-a-single-region-schema-into-a-multi-region-schema) Migrate the database schema from a single-region schema to a multi-region schema.
+## Scale the database
 
-[4.](#upgrade-read-write-operations) If necessary, upgrade the read/write operations in the application to work with your new database schema.
+To scale a database from a single region to multiple regions:
 
-## Scale database deployments
+1. Use an [`ALTER DATABASE ... SET PRIMARY REGION`](set-primary-region.html) statement to set the database's [primary region](multiregion-overview.html#database-regions) to the single region in which the cluster is deployed. This region must have been specified as a [regional locality](cockroach-start.html#locality) at cluster startup.
 
-In order to use CockroachDB's [multi-region capabilities](multiregion-overview.html), your CockroachDB cluster must have nodes deployed in multiple regions, with different [regional node localities](multiregion-overview.html#cluster-regions).
+    Setting the primary database region before adding new regional nodes to the cluster prevents CockroachDB from [rebalancing row replications](architecture/replication-layer.html#leaseholder-rebalancing) across all regions each time a node is added in a new region.
 
-For instructions on adding nodes to an existing cluster, see one of the following pages:
+    {{site.data.alerts.callout_info}}
+    Executing `ALTER` statements performs a [schema migration](online-schema-changes.html) on the cluster. If you are using a schema migration tool, you will need to execute these statements as raw SQL, as the [multi-region SQL syntax](multiregion-overview.html) is specific to CockroachDB.
 
-- For managed CockroachCloud deployments, see [Cluster Management](../cockroachcloud/cluster-management.html).
-- For orchestrated deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html).
-- For manual deployments, see [`cockroach start`](cockroach-start.html) and [Manual Deployment](manual-deployment.html).
+    Here are some simple tutorials on executing schema migrations against CockroachDB clusters:
+    - [Migrate CockroachDB Schemas with Liquibase](liquibase.html).
+    - [Migrate CockroachDB Schemas with Flyway](flyway.html).
+    - [Execute SQL statements from a file](cockroach-sql.html#execute-sql-statements-from-a-file) and [Change and Remove Objects in a Database Schema](schema-design-update.html).
+    {{site.data.alerts.end}}
 
-## Scale application deployments
+1. Add nodes to the cluster in new regions.
 
-To take full advantage of the latency and resiliency improvements of a multi-region database deployment, you need to scale the application deployments to multiple regions as well. To limit the latency between the application and the database, each deployment of the application must communicate with the closest database deployment.
+    For instructions on adding nodes to an existing cluster, see one of the following pages:
+    - For managed CockroachCloud deployments, see [Cluster Management](../cockroachcloud/cluster-management.html).
+    - For orchestrated deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html).
+    - For manual deployments, see [`cockroach start`](cockroach-start.html) and [Manual Deployment](manual-deployment.html).
+
+    {{site.data.alerts.callout_info}}
+    You must specify a [regional locality](cockroach-start.html#locality) for each node at startup. These regional localities are represented as [cluster regions](multiregion-overview.html#cluster-regions) in the cluster.
+    {{site.data.alerts.end}}
+
+1. Use an [`ALTER DATABASE ... ADD REGIONS`](add-region.html) statement to add the new regions to your database. Only cluster regions (i.e., regional localities specified at cluster startup) can be added as [database regions](multiregion-overview.html#database-regions).
+
+1. Use [`ALTER DATABASE ... SURVIVE ... FAILURE`](survive-failure.html) statements to set your database's [survival goals](multiregion-overview.html#survival-goals).
+
+1. Use [`ALTER TABLE ... SET LOCALITY`](set-locality.html) statements to set [table localities](multiregion-overview.html#table-locality) for each table.
+
+## Scale the application
+
+Scaling application deployments in multiple regions can greatly improve latency for the end-user of the application.
 
 For guidance on connecting to CockroachDB from an application deployment, see one of the following pages:
 
 - For connecting to managed, CockroachCloud deployments, see [Connect to Your CockroachCloud Cluster](../cockroachcloud/connect-to-your-cluster.html) and [Connect to the Database (CockroachCloud)](connect-to-the-database-cockroachcloud.html).
 - For connecting to a standard CockroachDB deployment, see [`cockroach sql`](cockroach-sql.html) and [Connect to the Database](connect-to-the-database.html).
 
-For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Multi-region Application Deployment](multi-region-deployment.html).
+To limit the latency between the application and the database, each deployment of the application should communicate with the closest database deployment. For details on configuring database connections for individual application deployments, consult your cloud provider's documentation. For an example using Google Cloud services, see [Multi-region Application Deployment](multi-region-deployment.html).
 
-## Transform a single-region schema into a multi-region schema
+{{site.data.alerts.callout_info}}
+A multi-region application deployment does not require a multi-region database deployment. Deploying a global application in multiple regions can yield significant latency benefits for the end user, even if you have not yet scaled your database in multiple regions. For an example, see [Reducing Multi-Region Latency with Follower Reads](https://www.cockroachlabs.com/blog/follower-reads/#:~:text=Deployment%202%3A%20Global%20Application%20Deployment%2C%20No%20Follower%20reads).
 
-To transform a single-region database schema into a multi-region database schema:
+If you do scale the application first, make sure that you reconfigure each application deployment to communicate with the closest database deployment after deploying the database in multiple regions.
+{{site.data.alerts.end}}
 
-- [Choose a multi-region configuration](choosing-a-multi-region-configuration.html).
-- Use `ALTER DATABASE` and `ALTER TABLE` statements to set the [database regions](multiregion-overview.html#database-regions), [survival goals](multiregion-overview.html#survival-goals), and [table localities](multiregion-overview.html#table-locality), accordingly to your selected multi-region configuration.
+### Update the application code for multi-region
 
-For SQL syntax reference documentation for the multi-region `ALTER DATABASE` statements, see the following pages:
+For most table localities, including the default locality `LOCALITY REGIONAL BY TABLE IN PRIMARY REGION`, *you do not need to update your application code after migrating your database schema for multi-region*. CockroachDB automatically optimizes queries against multi-region databases, based on the regional locality of the node executing the query, and on the multi-region configuration of the database. For more details, see [Regional Tables](regional-tables.html#regional-by-row-tables). For an extended example, see [Develop and Deploy a Global Application: Create a Multi-region Database Schema](movr-flask-database.html).
 
-- [`SET PRIMARY REGION`](set-primary-region.html)
-- [`ADD REGION`](add-region.html)
-- [`SET LOCALITY`](set-locality.html)
-- [`SURVIVE ... FAILURE`](survive-failure.html)
-
-Executing `ALTER` statements performs a [schema migration](online-schema-changes.html) on the cluster. As a best practice, we recommend performing all schema migrations (including multi-region transformations) with a schema migration tool.
-
-Note that, because the `ALTER` statements listed above are specific to CockroachDB syntax, you will have to execute these statements as raw SQL in schema migration tools.
-
-Here are some simple tutorials on executing schema migrations against CockroachDB clusters:
-
-- [Migrate CockroachDB Schemas with Liquibase](liquibase.html).
-- [Migrate CockroachDB Schemas with Flyway](flyway.html).
-- [Execute SQL statements from a file](cockroach-sql.html#execute-sql-statements-from-a-file) and [Change and Remove Objects in a Database Schema](schema-design-update.html).
-
-## Upgrade read/write operations
-
-For most multi-region configurations, including the default configuration (`LOCALITY REGIONAL BY TABLE IN PRIMARY REGION` and `SURVIVE ZONE FAILURE`), you do not need to update any client-side read/write operations after migrating your database schema for multi-region features. CockroachDB automatically optimizes queries against multi-region databases, based on the locality of the node executing the query, and on the multi-region configuration of the database.
-
-However, there are some scenarios in which you might need to update the read/write operations in your application's persistence layer. For example:
+However, there are some scenarios in which you might need to update the SQL operations in your application. For example:
 
 - If a table has a `REGIONAL BY ROW AS <custom_region_column>` table locality, and you want to explicitly insert regional values into a table, as shown in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html#configure-regional-by-row-tables).
 - If a table has a `REGIONAL BY ROW` locality, and you want to update the hidden `crdb_region` column of existing rows in the table based on some other column value, as shown in [Set the table locality to `REGIONAL BY ROW`](set-locality.html#set-the-table-locality-to-regional-by-row).
@@ -77,9 +79,9 @@ However, there are some scenarios in which you might need to update the read/wri
 
 In all of these scenarios, statements reference the column that tracks the region for each row in a `REGIONAL BY ROW` locality. This column can be a custom column of the built-in `ENUM` type `crdb_internal_region`, or it can be the default, hidden [`crdb_region` column](set-locality.html#crdb_region).
 
-### Representing `crdb_region` in ORMs
+#### Representing `crdb_region` in ORMs
 
-If your application's ORM framework supports enumerated data types, and you need to explicitly reference the `crdb_region` column (or a custom region column) in a read/write operation, you should do the following:
+If your application's ORM framework supports enumerated data types, and you need to explicitly reference the `crdb_region` column (or a custom region column) in a SQL operation in your application code, you should do the following:
 
 - Using the ORM framework's type library, create an enumerated type, with the type name `crdb_internal_region` and enumerated values for each of the existing regions.
 - Add a new region column to the relevant table mappings, with the new enumerated data type and the column name `crdb_region` (or the name of the custom region column of the table). Note that this column does not persist to the database; it is simply a mapping for the application.
