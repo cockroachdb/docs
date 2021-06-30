@@ -57,7 +57,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
     e.g.,
 
     ~~~ shell
-    $ cockroach sql --url \ 'postgresql://user:password@region.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs-dir/movr-app-ca.crt' < dbinit.sql
+    $ cockroach sql --url \ 'postgresql://user:password@region.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs-dir/movr-app-ca.crt' -f dbinit.sql
     ~~~
 
 {{site.data.alerts.callout_info}}
