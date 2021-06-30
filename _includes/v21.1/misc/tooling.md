@@ -5,7 +5,7 @@ Cockroach Labs has partnered with open-source projects, vendors, and individuals
 - **Full support** indicates that Cockroach Labs is committed to maintaining compatibility with the vast majority of the tool's features. CockroachDB is regularly tested against the latest version documented in the table below.
 - **Beta support** indicates that Cockroach Labs is working towards full support for the tool. The primary features of the tool are compatible with CockroachDB (e.g., connecting and basic database operations), but full integration may require additional steps, lack support for all features, or exhibit unexpected behavior.
 
-We recommend that you use the latest version of tools with CockroachDB, even if that version is higher than the latest tested version listed below. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
+If you encounter problems using CockroachDB with any of the tools listed on this page, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward better support.
 
 For a list of tools supported by the CockroachDB community, see [Third-Party Tools Supported by the Community](community-tooling.html).
 
