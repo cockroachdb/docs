@@ -138,8 +138,6 @@ This opens the **New Vector Data Source** page, where you need to enter the foll
 
 1. Delete the contents of the **passwd** field, if any
 
-1. Uncheck the **Support on the fly geometry simplification** checkbox. This is necessary because it requires use of the `ST_HasArc` builtin function, which is not yet implemented in CockroachDB.
-
 Click **Save**, and you will be redirected to the **New Layer** page, with the following unpublished layers:
 
 - bookstore_routes
