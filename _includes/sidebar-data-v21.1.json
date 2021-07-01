@@ -2660,6 +2660,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach debug list-files</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-list-files.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach debug merge-logs</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-merge-logs.html"
