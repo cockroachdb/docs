@@ -46,7 +46,6 @@ Location     | Example
 Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
 Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
 Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`                                                     
-HTTP         | `http://localhost:8080/employees`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
@@ -66,6 +65,10 @@ Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=a
 Google Cloud | `gs://acme-co/employees.sql`                                                     
 HTTP         | `http://localhost:8080/employees.sql`                                            
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
+
+{{site.data.alerts.callout_info}}
+HTTP storage can only be used for [`IMPORT`](import.html).
+{{site.data.alerts.end}}
 
 ## Encryption
 
