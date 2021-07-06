@@ -17,7 +17,7 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-select-a-connection-method).
+**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-2-select-a-connection-method).
 
 ### Network not authorized
 
@@ -50,7 +50,7 @@ Error: open test-cluster-ca.crt: no such file or directory
 Failed running "sql"
 ~~~
 
-**Solution**: Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-select-a-connection-method).
+**Solution**: Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-2-select-a-connection-method).
 
 ### Issue with CockroachDB workloads
 
