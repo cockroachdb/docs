@@ -12,7 +12,7 @@ Get future release notes emailed to you:
 
 ### General changes
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.3](v21.1.3.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.5](v21.1.3.html).
 - Starting this month, paid CockroachCloud clusters will be billed monthly instead of every two weeks.
 
 ### Console changes
@@ -22,11 +22,12 @@ Get future release notes emailed to you:
 - All CockroachCloud users now have access to the [**Transactions** page](../cockroachcloud/transactions-page.html) in the Console.
 - Navigation on the **Clusters** page is now a vertical sidebar instead of horizontal tabs.
 - Added a tooltip to the **Upgrade** option in the **Action** Menu, which gives users more version-specific context.
-- Users can now **Reset SQL Stats** from the [**Statements** page](../cockroachcloud/statements-page.html) for clusters running [v21.1.3](v21.1.3.html) or later.
+- Users can now **Clear SQL Stats** from the [**Statements** page](../cockroachcloud/statements-page.html) for clusters running [v21.1.3](v21.1.3.html) or later.
 
 ### Bug fixes
 
 - Fixed a bug where clicking on the [**Alerts** page](../cockroachcloud/alerts-page.html) broke the Organization header for users with multiple Organizations.
+- Fixed a bug where nodes were cycling in clusters running v21.1.4.
 - Fixed several broken links to documentation throughout the Console.
 - Users will no longer see alerts for clusters that are not in a **ready** state.
 - Fixed a bug that was causing users to receive false positive CPU alerts.
