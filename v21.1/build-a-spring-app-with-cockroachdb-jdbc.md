@@ -96,12 +96,10 @@ The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach sql \
-    --url='postgres://{username}:{password}@{global host}:26257/{cluster_name}.defaultdb?sslmode=verify-full&sslrootcert={certs_dir}/cc-ca.crt'
+    --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
 
-    In the connection string copied from the CockroachCloud Console, your username, password and cluster name are pre-populated. Replace the `{certs_dir}` placeholder with the path to the `certs` directory that you created [earlier](#set-up-your-cluster-connection).
-
-    {% include cockroachcloud/cc-no-user-certs.md %}
+1. Enter your SQL user password.
 
 1. In the SQL shell, create the `roach_data` database that your application will use:
 
