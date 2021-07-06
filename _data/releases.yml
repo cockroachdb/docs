@@ -1,8 +1,12 @@
 - title: Production releases
   releases:
+    - date: Jul 2, 2021
+      version: v21.1.5
+      latest: true
+    - date: Jun 29, 2021
+      version: v21.1.4
     - date: Jun 21, 2021
       version: v21.1.3
-      latest: true
     - date: Jun 7, 2021
       version: v21.1.2
     - date: May 24, 2021
