@@ -79,8 +79,9 @@ curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clus
 <section class="filter-content" markdown="1" data-scope="windows">
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-mkdir -p %APPDATA%/CockroachCloud/certs/<cluster-name>-ca.crt; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile %APPDATA%/.postgresql/root.crt
+mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile $env:appdata\.postgresql\root.crt
 ~~~
+
 </section>
 
 ## Step 4. Use the built-in SQL client
@@ -94,8 +95,6 @@ mkdir -p %APPDATA%/CockroachCloud/certs/<cluster-name>-ca.crt; Invoke-WebRequest
     {% include cockroachcloud/sql-connection-string-free.md %}
     
 1. Enter the SQL user's password and hit enter.
-
-    {% include cockroachcloud/password-special-characters.md %}
 
     A welcome message displays:
 

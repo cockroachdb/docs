@@ -68,8 +68,6 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
 1. Enter the SQL user's password and hit enter.
 
-    {% include cockroachcloud/password-special-characters.md %}
-
     A welcome message displays:
 
     ~~~
@@ -104,21 +102,21 @@ To connect to your cluster with your application, use the connection string prov
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    "postgresql://<user>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>"
+    'postgresql://<user>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert='$HOME'/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>'
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="linux">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    "postgresql://<user>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>"
+    'postgresql://<user>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert='$HOME'/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>'
     ~~~
     </section>
 
     <section class="filter-content" markdown="1" data-scope="windows">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    "postgresql://<user>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%APPDATA%/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>"
+    'postgresql://<user>@<free-tier-host>.<region>.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert='$env:appdata'/.postgresql/root.crt&options=--cluster=<cluster-name>-<tenant-id>'
     ~~~
     </section>
 

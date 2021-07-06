@@ -85,11 +85,9 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
     This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
     {{site.data.alerts.end}}
 
-    {% include cockroachcloud/sql-connection-string-free.md %}
+    {% include cockroachcloud/sql-connection-string.md %}
     
 1. Enter the SQL user's password and hit enter.
-
-    {% include cockroachcloud/password-special-characters.md %}
 
     A welcome message displays:
 
