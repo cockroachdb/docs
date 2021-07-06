@@ -35,7 +35,51 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 
 ## Step 2. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Create a free cluster
+
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
+
+### Set up your cluster connection
+
+1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
+
+1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
+
+1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
+1. Run the [`cockroach demo`](cockroach-demo.html) command:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach demo \
+    --no-example-database
+    ~~~
+
+    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
+1. Take note of the `(sql)` connection string in the SQL shell welcome text:
+
+    ~~~
+    # Connection parameters:
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ~~~
+
+    You'll use this connection string to connect to the database later in this tutorial.
+
+</section>
 
 ## Step 3. Get the code
 
@@ -80,52 +124,28 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 ## Step 4. Run the code
 
-To run the app:
+To run the app, pass the connection string for your cluster to `main.py`:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ python3 main.py
+$ python3 main.py '<connection_string>'
 ~~~
-
-The terminal will prompt you for a connection string.
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Copy and paste the connection string provided in the `(sql)` connection string from SQL shell welcome text.
-
-For example:
-
-~~~
-Enter your node's connection string:
-postgres://demo:demo4276@127.0.0.1:26257?sslmode=require
-~~~
-
+Where `<connection_string>` is the `(sql)` connection URL provided in the demo cluster's SQL shell welcome text.
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Copy and paste the connection string from the CockroachCloud console, and make sure that the right username, password, and certificate are specified.
+Where `<connection_string>` is the connection string provided in the **Connection info** window of the CockroachCloud Console.
 
-For example:
-
-~~~
-Enter your node's connection string:
-postgres://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmode=verify-full&sslrootcert=<certs_directory>/cc-ca.crt
-~~~
-
-Where:
-
-- `<username>` and `<password>` are a SQL username and password.
-- `<globalhost>` is the name of the CockroachCloud Free host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- `<cluster-name>` is the name of your cluster.
-- `<your_certs_directory>/cc-ca.crt` is the path to the CA certificate that you downloaded from the CockroachCloud Console.
+Note that you need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
 
 </section>
 
-The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements.
-
-After you enter the connection string, the application will initialize the database with a .sql file containing some DDL SQL statements. It then performs some simple row inserts, updates, and deletes.
+The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements. It will then initialize the database with the DDL SQL statements in the `dbinit.sql`. After the table is initialized, the app performs some simple row inserts, updates, and deletes.
 
 The output should look something like the following:
 
@@ -173,7 +193,7 @@ Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
 Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
 ~~~
 
-In the terminal where the SQL shell is running, you can verify that the rows were inserted, updated, and deleted successfully:
+In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
 
 {% include copy-clipboard.html %}
 ~~~ sql
