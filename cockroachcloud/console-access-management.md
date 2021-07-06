@@ -17,7 +17,7 @@ To switch between the organizations:
 
 ## SQL users
 
-[Console Admins](#console-admin) can [create and manage SQL users](user-authorization#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
+[Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
 
 SQL users created in the Console have admin privileges on the database by default. Therefore, anyone with the username and password of a default SQL user has privileges for all database objects across the cluster.
 
