@@ -154,11 +154,14 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
-    ~~~
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
+    </div>
+
+    {% include cockroachcloud/sql-connection-string.md %}
+
 
 1. [Restore](../{{site.versions["stable"]}}/restore.html) to your CockroachCloud cluster:
 

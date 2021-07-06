@@ -15,6 +15,6 @@
     <section class="filter-content" markdown="1" data-scope="windows">
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert='$env:appdata'\CockroachCloud\certs\$<cluster-name>-ca.crt'
+    cockroach sql --url "postgresql://<user>@<cluster-name>-<short-id>.<region>.<host>:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
     ~~~
     </section>
