@@ -173,11 +173,13 @@ Additionally, you can [back up and restore](../{{site.versions["stable"]}}/take-
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql \
-    --url='postgres://<username>:<password>@<global host>:26257/<database>?sslmode=verify-full&sslrootcert=<path to the CA certificate>'
-    ~~~
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
+    </div>
+    
+    {% include cockroachcloud/sql-connection-string.md %}
 
 1. [Back up](../{{site.versions["stable"]}}/backup.html) your databases and/or tables to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls):
 
