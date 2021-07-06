@@ -20,16 +20,12 @@ Location                                                    | Scheme      | Host
 |-------------------------------------------------------------+-------------+--------------------------------------------------+----------------------------------------------------------------------------
 Amazon                                                      | `s3`        | Bucket name                                      | `AUTH` (optional; can be `implicit` or `specified`), `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` <br><br>For more information, see [Authentication - AWS](#amazon-s3).                                
 Azure                                                       | `azure`     | N/A (see [Example file URLs](#example-file-urls)) | `AZURE_ACCOUNT_KEY`, `AZURE_ACCOUNT_NAME`
-Google Cloud           | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` For more information, see [Authentication - GCS](#google-cloud-storage).
+Google Cloud           | `gs`        | Bucket name                                      | `AUTH` (optional; can be `default`, `implicit`, or `specified`), `CREDENTIALS` <br><br>For more information, see [Authentication - GCS](#google-cloud-storage).
 HTTP&nbsp;[<sup>1</sup>](#considerations)                   | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#http).      
 NFS/Local&nbsp;[<sup>2</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` (see [Example file URLs](#example-file-urls)) | N/A
 S3-compatible services | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT` <br><br>For more information, see [Authentication - S3-compatible services](#s3-compatible-services).
 
 {{site.data.alerts.callout_success}}
-The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
 {{site.data.alerts.end}}
 
@@ -43,15 +39,15 @@ The location parameters often contain special characters that need to be URI-enc
 
 ## Example file URLs
 
-Example URLs for [`BACKUP`](backup.html), [`EXPORT`](export.html), or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html):
+Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`EXPORT`](export.html), or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
 Amazon S3    | `s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`     
-Azure        | `azure://employees?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
-Google Cloud | `gs://acme-co`                                                     
+Azure        | `azure://acme-co/employees?AZURE_ACCOUNT_NAME=acme-co&AZURE_ACCOUNT_KEY=url-encoded-123`         
+Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`                                                     
 HTTP         | `http://localhost:8080/employees`
-NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
+NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
 URLs for [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) should be prepended with `experimental-`.
@@ -61,7 +57,7 @@ URLs for [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) sh
 Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-Example URLs for [`RESTORE`](restore.html) or [`IMPORT`](import.html):
+Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -69,7 +65,7 @@ Amazon S3    | `s3://acme-co/employees.sql?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCE
 Azure        | `azure://employees.sql?AZURE_ACCOUNT_KEY=123&AZURE_ACCOUNT_NAME=acme-co`         
 Google Cloud | `gs://acme-co/employees.sql`                                                     
 HTTP         | `http://localhost:8080/employees.sql`                                            
-NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>5</sup>](#considerations)
+NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 ## Encryption
 
@@ -144,7 +140,7 @@ BACKUP DATABASE <database> INTO 'azure://{container name}/{path}?AZURE_ACCOUNT_N
 
 ### HTTP
 
-If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` environment variables when starting CockroachDB. You can create your own HTTP server with [Caddy or nginx](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
+If your environment requires an HTTP or HTTPS proxy server for outgoing connections, you can set the standard `HTTP_PROXY` and `HTTPS_PROXY` environment variables when starting CockroachDB. You can create your own HTTP server with [NGINX](use-a-local-file-server-for-bulk-operations.html). A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from HTTPS URLs.
 
 If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#security).
 
