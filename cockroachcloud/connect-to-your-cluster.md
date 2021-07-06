@@ -19,6 +19,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 - In a production environment, you need to authorize your application server’s network.
 - If you have a GCP cluster, you can set up and authorize [a VPC peered network](create-your-cluster.html#step-7-enable-vpc-peering-optional).
 - If you have an AWS cluster, you can set up an [AWS PrivateLink](network-authorization.html#aws-privatelink) connection.
+- You should use PrivateLink or VPC peering if you need to allowlist more than 24 IP addresses, if your servers’ IP addresses are not static, or if you want to limit your cluster's exposure to the public internet.
 
 ### Add IP addresses to the allowlist
 
@@ -52,6 +53,7 @@ CockroachCloud requires you to authorize the networks that can access the cluste
 1. Click **Apply**.
 
 ### Establish VPC Peering or AWS PrivateLink
+
 VPC peering is only available for GCP clusters, and AWS PrivateLink is only available for AWS clusters.
 
 <div class="filters clearfix">
