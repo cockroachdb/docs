@@ -12,7 +12,7 @@ Get future release notes emailed to you:
 
 ### General changes
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.5](v21.1.3.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.5](v21.1.5.html).
 - Starting this month, paid CockroachCloud clusters will be billed monthly instead of every two weeks.
 
 ### Console changes
