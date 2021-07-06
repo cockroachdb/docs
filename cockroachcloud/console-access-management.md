@@ -15,6 +15,14 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
+## SQL users
+
+[Console Admins](#console-admin) can [create and manage SQL users](user-authorization#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
+
+SQL users created in the Console have admin privileges on the database by default. Therefore, anyone with the username and password of a default SQL user has privileges for all database objects across the cluster.
+
+Anyone with database admin privileges can [change a SQL user's databases privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges).
+
 ## Roles
 
 Every CockroachCloud user is either a Developer or a Console Admin for the Organization.

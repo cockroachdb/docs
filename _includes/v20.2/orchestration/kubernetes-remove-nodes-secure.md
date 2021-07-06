@@ -11,7 +11,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 <section class="filter-content" markdown="1" data-scope="operator">
 1. Get a shell into one of the pods and use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-2 \
     -- ./cockroach node status \
@@ -34,7 +34,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-3 \
     -- ./cockroach node decommission \
@@ -65,7 +65,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 1. Once the node has been decommissioned, open and edit `example.yaml`.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ vi example.yaml
     ~~~
@@ -78,16 +78,16 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 1. Apply `example.yaml` with the new configuration:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl apply -f example.yaml
     ~~~
 
-    The Operator will remove the node with the highest number in its address (in this case, the address including `cockroachdb-3`) from the cluster.
+    The Operator will remove the node with the highest number in its address (in this case, the address including `cockroachdb-3`) from the cluster. It will also remove the persistent volume that was mounted to the pod.
 
 1. Verify that the pod was successfully removed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -104,7 +104,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 <section class="filter-content" markdown="1" data-scope="manual">
 1. Get a shell into the `cockroachdb-client-secure` pod you created earlier and use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node status \
@@ -130,7 +130,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node decommission <node ID> \
@@ -160,7 +160,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 1. Once the node has been decommissioned, scale down your StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl scale statefulset cockroachdb --replicas=3
     ~~~
@@ -171,7 +171,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 1. Verify that the pod was successfully removed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -189,7 +189,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 <section class="filter-content" markdown="1" data-scope="helm">
 1. Get a shell into the `cockroachdb-client-secure` pod you created earlier and use the [`cockroach node status`](cockroach-node.html) command to get the internal IDs of nodes:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node status \
@@ -215,7 +215,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl exec -it cockroachdb-client-secure \
     -- ./cockroach node decommission <node ID> \
@@ -245,7 +245,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 1. Once the node has been decommissioned, scale down your StatefulSet:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ helm upgrade \
     my-release \
@@ -256,7 +256,7 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
 
 1. Verify that the pod was successfully removed:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ kubectl get pods
     ~~~
@@ -268,5 +268,44 @@ Do **not** scale down to fewer than 3 nodes. This is considered an anti-pattern 
     my-release-cockroachdb-2    1/1       Running   0          3m
     cockroachdb-client-secure   1/1       Running   0          15m
     ...
+    ~~~
+
+1. You should also remove the persistent volume that was mounted to the pod. Get the persistent volume claims for the volumes:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl get pvc
+    ~~~
+
+    ~~~
+    NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-3   Bound    pvc-75e561ba-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    ~~~
+
+1. Verify that the PVC with the highest number in its name is no longer mounted to a pod:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl describe pvc datadir-my-release-cockroachdb-3
+    ~~~
+
+    ~~~
+    Name:          datadir-my-release-cockroachdb-3
+    ...
+    Mounted By:    <none>
+    ~~~
+
+1. Remove the persistent volume by deleting the PVC:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl delete pvc datadir-my-release-cockroachdb-3
+    ~~~
+
+    ~~~
+    persistentvolumeclaim "datadir-my-release-cockroachdb-3" deleted
     ~~~
 </section>

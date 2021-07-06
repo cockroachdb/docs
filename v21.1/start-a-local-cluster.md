@@ -3,7 +3,6 @@ title: Start a Local Cluster (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: true
 toc_not_nested: true
-asciicast: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -20,12 +19,6 @@ Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to ru
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
 - Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster, see [Manual Deployment](manual-deployment.html) or [Orchestrated Deployment](orchestration.html), and review the [Production Checklist](recommended-production-settings.html).
-
-<!-- TODO: Update the asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:22" title="Start a Local Cluster"></asciinema-player>
--->
 
 ## Step 1. Start the cluster
 
@@ -98,7 +91,7 @@ Also, feel free to watch this process in action before going through the steps y
 
     These commands are the same as before but with unique `--store`, `--listen-addr`, and `--http-addr` flags.
 
-4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node:
+4. Use the [`cockroach init`](cockroach-init.html) command to perform a one-time initialization of the cluster, sending the request to any node on the `--join` list:
 
     {% include copy-clipboard.html %}
     ~~~ shell

@@ -16,7 +16,7 @@ In this tutorial, you will plan a vacation from New York City to the [Adirondack
 
 ## Step 1. Review the scenario
 
-You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the [Common Loon](https://ebird.org/species/comloo), a bird that can be found near the lakes and ponds of the north woods.
+You live in New York City and are an avid birdwatcher and reader of books. You are going on a vacation up to the [Adirondack Mountains](https://visitadirondacks.com/about) in northern New York State. Although you are interested in many bird species, you are most interested in seeing (and [hearing](https://macaulaylibrary.org/asset/107964)) the <a href="https://ebird.org/species/comloo" data-proofer-ignore>Common Loon</a>, a bird that can be found near the lakes and ponds of the north woods.
 
 As a connoisseur of bookstores, you also want to make sure to visit as many of the local independent bookstores as possible on your trip, as long as they are nearby to Loon habitat.
 
@@ -481,7 +481,7 @@ LIMIT
 	25;
 ~~~
 
-Perhaps surprisingly, the [Red-eyed Vireo](https://ebird.org/species/reevir1/US-NY) is the "winner", followed by a number of other fairly common birds. If you want a birdwatching challenge, you can reverse the sort order of the above query to find the rarest birds.
+Perhaps surprisingly, the <a href="https://ebird.org/species/reevir1/US-NY" data-proofer-ignore>Red-eyed Vireo</a> is the "winner", followed by a number of other fairly common birds. If you want a birdwatching challenge, you can reverse the sort order of the above query to find the rarest birds.
 
 ~~~
                    name                  | sightings
@@ -1549,7 +1549,7 @@ ORDER BY
 	sightings DESC;
 ~~~
 
-Based on this data, it looks like the most commonly sighted hawk by far in the area over the years 2000-2019 is the [Broad-winged Hawk](https://ebird.org/species/brwhaw):
+Based on this data, it looks like the most commonly sighted hawk by far in the area over the years 2000-2019 is the <a href="https://ebird.org/species/brwhaw" data-proofer-ignore>Broad-winged Hawk</a>:
 
 ~~~
           name         | sightings

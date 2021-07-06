@@ -32,18 +32,11 @@ Feature | Description
 [pod](http://kubernetes.io/docs/user-guide/pods/) | A pod is a group of one of more Docker containers. In this tutorial, each pod will run on a separate Kubernetes node and include one Docker container running a single CockroachDB node. You'll start with 3 pods and grow to 4.
 [StatefulSet](http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/) | A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart. StatefulSets are considered stable as of Kubernetes version 1.9 after reaching beta in version 1.5.
 [persistent volume](http://kubernetes.io/docs/user-guide/persistent-volumes/) | A persistent volume is a piece of networked storage (Persistent Disk on GCE, Elastic Block Store on AWS) mounted into a pod. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br><br>This tutorial assumes that dynamic volume provisioning is available. When that is not the case, [persistent volume claims](http://kubernetes.io/docs/user-guide/persistent-volumes/#persistentvolumeclaims) need to be created manually.
-[CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) | A CSR, or certificate signing request, is a request to have a TLS certificate signed by the Kubernetes cluster's built-in CA. As each pod is created, it issues a CSR for the CockroachDB node running in the pod, which must be manually checked and approved. The same is true for clients as they connect to the cluster. Note that Kubernetes environments that do not support CSRs, such as Amazon EKS, can use a different certificate authority than the one Kubernetes uses.
-[RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod` or `CSR`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
+[RBAC](https://kubernetes.io/docs/reference/access-authn-authz/rbac/) | RBAC, or Role-Based Access Control, is the system Kubernetes uses to manage permissions within the cluster. In order to take an action (e.g., `get` or `create`) on an API resource (e.g., a `pod`), the client must have a `Role` that allows it to do so. This tutorial creates the RBAC resources necessary for CockroachDB to create and access certificates.
 
 ### Limitations
 
 {% include {{ page.version.version }}/orchestration/kubernetes-limitations.md %}
-
-#### CSR names
-
-When Kubernetes issues a [CSR](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/) (Certificate Signing Request) to have a node or client certificate signed by the Kubernetes CA, Kubernetes requires the CSR name to start and end with an alphanumeric character and otherwise consist of lowercase alphanumeric characters, `-`, or `.`
-
-CSR names contain the StatefulSet or Helm chart `name`, so if you customize that value, be sure to conform to these naming requirements. For client certificates, CSR names also contain the username of the SQL user for which the certificate is being generated, so be sure SQL usernames also conform to these naming requirements. For example, avoid using the underscore character (`_`) in these names.
 
 ## Step 1. Start Kubernetes
 
@@ -141,7 +134,7 @@ To delete the Kubernetes cluster:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ gcloud container clusters delete cockroachdb
+    $ gcloud container clusters delete cockroachdb --region {region-name}
     ~~~
 - Hosted EKS:
 
@@ -149,18 +142,6 @@ To delete the Kubernetes cluster:
     ~~~ shell
     $ eksctl delete cluster --name cockroachdb
     ~~~   
-- Manual GCE:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cluster/kube-down.sh
-    ~~~
-- Manual AWS:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cluster/kube-down.sh
-    ~~~
 
 {{site.data.alerts.callout_danger}}
 If you stop Kubernetes without first deleting the persistent volumes, they will still exist in your cloud project.

@@ -48,7 +48,7 @@ To [handle transaction retry errors](error-handling-and-troubleshooting.html#tra
 
 ### Get the code
 
-Download the <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/psycopg2/example.py" download><code>example.py</code></a> file, or create the file yourself and copy the code into it.
+Download the <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-python-psycopg2/master/example.py" download><code>example.py</code></a> file, or create the file yourself and copy the code into it.
 
 If you prefer, you can also clone a version of the code:
 

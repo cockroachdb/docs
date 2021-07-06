@@ -109,7 +109,7 @@ To execute the statements in the `dbinit.sql` file as the `root` user, run the f
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=root \
-< dbinit.sql
+-f dbinit.sql
 ~~~
 
 Before the new users can connect to the cluster and start creating objects, they each need a [user certificate](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:

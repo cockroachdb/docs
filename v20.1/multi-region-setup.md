@@ -6,17 +6,18 @@ toc: true
 
 This page walks you through setting up a virtual environment for developing and debugging an example multi-region application. It is the third section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial. In this section, you will set up a demo CockroachDB cluster, initialize the database, and set up a virtual development environment.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 ## Before you begin
 
 1. Complete the previous section of the tutorial, [Create a Multi-Region Database Schema](multi-region-database.html).
 
 1. Make sure that you have the following installed on your local machine:
+      - [CockroachDB](install-cockroachdb-mac.html)
+      - [Python 3](https://www.python.org/downloads/)
+      - [Pipenv](https://pipenv.readthedocs.io/en/latest/)
 
-    - [CockroachDB](install-cockroachdb-mac.html)
-    - [Python 3](https://www.python.org/downloads/)
-    - [Pipenv](https://pipenv.readthedocs.io/en/latest/)
-
-1. Clone the [movr-flask](https://github.com/cockroachlabs/movr-flask) repo. We'll reference the source code in this repo throughout the tutorial.
+1. Clone the [`movr-flask`](https://github.com/cockroachlabs/movr-flask) repository. We'll reference the source code in this repository throughout the tutorial.
 
 ## Set up a demo multi-region CockroachDB cluster
 
@@ -75,7 +76,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
 
 ## Set up a virtual development environment
 
-For debugging, use [`pipenv`](https://docs.pipenv.org/en/latest/install/#installing-pipenv), a tool that manages dependencies with `pip` and creates virtual environments with `virtualenv`.
+For debugging, use [`pipenv`](https://docs.pipenv.org/), a tool that manages dependencies with `pip` and creates virtual environments with `virtualenv`.
 
 1. Run the following command to initialize the project's virtual environment:
 
@@ -84,34 +85,7 @@ For debugging, use [`pipenv`](https://docs.pipenv.org/en/latest/install/#install
     $ pipenv --three
     ~~~
 
-    `pipenv` creates a `Pipfile` in the current directory. Open this `Pipfile`, and confirm its contents match the following:
-
-
-    ~~~ toml
-    [[source]]
-    name = "pypi"
-    url = "https://pypi.org/simple"
-    verify_ssl = true
-
-    [dev-packages]
-
-    [packages]
-    sqlalchemy-cockroachdb = "*"
-    psycopg2-binary = "*"
-    SQLAlchemy = "*"
-    SQLAlchemy-Utils = "*"
-    Flask = "*"
-    Flask-SQLAlchemy = "*"
-    Flask-WTF = "*"
-    Flask-Bootstrap = "*"
-    Flask-Login = "*"
-    WTForms = "*"
-    gunicorn = "*"
-    geopy = "*"
-
-    [requires]
-    python_version = "3.7"
-    ~~~
+    `pipenv` creates a `Pipfile` in the current directory, with the requirements needed for the app.
 
 1. Run the following command to install the packages listed in the `Pipfile`:
 
@@ -158,6 +132,6 @@ Now that you've set up a development environment, you can start [developing and 
 
 ## See also
 
-- [movr-flask on GitHub](https://github.com/cockroachlabs/movr-flask)
+- [`movr-flask` on GitHub](https://github.com/cockroachlabs/movr-flask)
 - [`cockroach demo`](cockroach-demo.html)
 - [Pipenv](https://pipenv.readthedocs.io/en/latest/)

@@ -315,6 +315,18 @@ module Jekyll
           synonyms: ['db console', 'admin ui', 'web ui']
         }, false)
 
+        index.save_synonym('technical advisory', {
+          objectID: 'technical advisory',
+          type: 'synonym',
+          synonyms: ['technical advisory', 'tech advisory', 'advisory']
+        }, false)
+
+        index.save_synonym('postgresql', {
+          objectID: 'postgresql',
+          type: 'synonym',
+          synonyms: ['postgresql', 'postgres']
+        }, false)
+
         return
       end
 

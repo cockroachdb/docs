@@ -76,7 +76,7 @@ If you prefer, you can also clone a version of the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/
+$ git clone https://github.com/cockroachlabs/simple-crud-python-sqlalchemy/
 ~~~
 
 {% include copy-clipboard.html %}
@@ -91,7 +91,7 @@ In the `create_engine()` function, update the connection string as follows:
 <section class="filter-content" markdown="1" data-scope="local">
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 
@@ -177,7 +177,7 @@ Back in the terminal where the SQL shell is running, verify that the table and r
 
 ### Use the `run_transaction` function
 
-We strongly recommend using the [`cockroachdb.sqlalchemy.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/cockroachdb/sqlalchemy/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](transactions.html#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
 
 In addition to the above, using `run_transaction` has the following benefits:
 

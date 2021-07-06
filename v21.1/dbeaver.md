@@ -1,5 +1,5 @@
 ---
-title: DBeaver
+title: Visualize CockroachDB Schemas with DBeaver
 summary: The DBeaver database tool completely integrates with CockroachDB to provide a GUI for managing your database.
 toc: true
 ---

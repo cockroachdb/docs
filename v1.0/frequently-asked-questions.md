@@ -49,7 +49,7 @@ CockroachDB is designed to survive software and hardware failures, from server r
 
 **Replication**
 
-CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to [Paxos](http://research.microsoft.com/en-us/um/people/lamport/pubs/paxos-simple.pdf). You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
+CockroachDB replicates your data for availability and guarantees consistency between replicas using the [Raft consensus algorithm](https://raft.github.io/), a popular alternative to <a href="https://www.microsoft.com/en-us/research/publication/paxos-made-simple/" data-proofer-ignore>Paxos</a>. You can [define the location of replicas](configure-replication-zones.html) in various ways, depending on the types of failures you want to secure against and your network topology. You can locate replicas on:
 
 - Different servers within a rack to tolerate server failures
 - Different servers on different racks within a datacenter to tolerate rack power/network failures

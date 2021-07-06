@@ -2,7 +2,6 @@
 title: COLLATE
 summary: The COLLATE feature lets you sort strings according to language- and country-specific rules.
 toc: true
-redirect_from: collatedstring.html
 ---
 
 The `COLLATE` feature lets you sort [`STRING`](string.html) values according to language- and country-specific rules, known as collations.
@@ -59,7 +58,7 @@ CockroachDB also supports the following Unicode locale extensions:
 
 To use a locale extension, append `-u-` to the base locale name, followed by the extension. For example, `en-US-u-ks-level2` is case-insensitive US English. The `ks` modifier changes the "strength" of the collation, causing it to treat certain classes of characters as equivalent (PostgreSQL calls these "non-deterministic collations"). Setting the `ks` to `level2` makes the collation case-insensitive (for languages that have this concept).
 
-For more details on locale extensions, see the [Unicode Collation Algorithm](https://unicode.org/reports/tr10/).
+For more details on locale extensions, see the [Unicode Collation Algorithm](https://en.wikipedia.org/wiki/Unicode_collation_algorithm).
 
 ## Collation versioning
 

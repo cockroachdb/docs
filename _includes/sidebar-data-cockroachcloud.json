@@ -171,6 +171,12 @@
               "urls": [
                 "/cockroachcloud/sessions-page.html"
               ]
+            },
+            {
+              "title": "Transactions Page",
+              "urls": [
+                "/cockroachcloud/transactions-page.html"
+              ]
             }
           ]
         },
@@ -248,19 +254,9 @@
     },
     {
       "title": "FAQs",
-      "items": [
-      	{
-      	  "title": "CockroachCloud FAQs",
-      	  "urls": [
-      	    "/cockroachcloud/frequently-asked-questions.html"
-      	  ]
-      	},
-      	{
-      	  "title": "CockroachCloud Free (beta) FAQs",
-      	  "urls": [
-      	    "/cockroachcloud/free-faqs.html"
-      	  ]
-      	}
+      "urls": [
+        "/cockroachcloud/free-faqs.html",
+        "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
     {

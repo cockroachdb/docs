@@ -99,6 +99,7 @@ IMPORT PGDUMP ('http://localhost:3000/tanks.sql');
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
+- [Using GeoServer with CockroachDB](geoserver.html)
 
 <!-- Reference Links -->
 

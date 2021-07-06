@@ -92,3 +92,4 @@ SELECT st_overlaps(st_geomfromtext('SRID=4326;POLYGON((-79.995888 40.440624,-74.
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Using GeoServer with CockroachDB](geoserver.html)

@@ -184,9 +184,23 @@ If initiated correctly, the statement returns when the restore is finished or if
 
 ## Examples
 
+{% include {{ page.version.version }}/backups/bulk-auth-options.md %}
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
 ### View the backup subdirectories
 
-<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`]:
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -216,6 +230,8 @@ To restore a full cluster:
 To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
 
 ### Restore a database
+
+To restore a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -260,13 +276,13 @@ To explicitly point to where your incremental backups are, provide the previous 
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE bank.customers \
-FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://acme-co-backup/database-bank-2017-03-28-nightly', 'gs://acme-co-backup/database-bank-2017-03-29-nightly';
+FROM 's3://{bucket_name}/database-bank-2017-03-27-weekly?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}', \
+'s3://{bucket_name}/database-bank-2017-03-28-nightly?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}', \
+'s3://{bucket_name}/database-bank-2017-03-29-nightly?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version, but restored from a newer version.
-
-Incremental backups created by v20.2.2 and prior v20.2.x releases or v20.1.4 and prior v20.1.x releases may include incomplete data for indexes that were in the process of being created. Therefore, when incremental backups taken by these versions are restored by v21.1.0+, any indexes created during those incremental backups will be re-validated by `RESTORE`.
+<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
 {{site.data.alerts.end}}
 
 ### Restore a backup asynchronously
@@ -313,7 +329,7 @@ WITH into_db = 'newdb';
 
 #### Remove the foreign key before restore
 
-By default, tables with [Foreign Key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the Foreign Key constraint from the table and then restore it.
+By default, tables with [foreign key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -328,6 +344,8 @@ The `system.users` table stores your cluster's usernames and their hashed passwo
 
 After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
 
+First, create the new database that you'll restore the `system.users` table into:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE newdb;
@@ -340,6 +358,8 @@ FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id
 WITH into_db = 'newdb';
 ~~~
 
+After the restore completes, add the `users` to the existing `system.users` table:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO system.users SELECT * FROM newdb.users;
@@ -349,6 +369,364 @@ WITH into_db = 'newdb';
 ~~~ sql
 > DROP TABLE newdb.users;
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+### View the backup subdirectories
+
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUPS IN 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+~~~
+        path
+------------------------
+2021/03/23-213101.37
+2021/03/24-172553.85
+2021/03/24-210532.53
+(3 rows)
+~~~
+
+When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23-213101.37`) to the storage URL.
+
+### Restore a cluster
+
+To restore a full cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+### Restore a database
+
+To restore a database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE bank FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+{{site.data.alerts.callout_info}}
+`RESTORE DATABASE` can only be used if the entire database was backed up.
+{{site.data.alerts.end}}
+
+### Restore a table
+
+To restore a single table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE TABLE bank.customers FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+To restore multiple tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE TABLE bank.customers, bank.accounts FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+### Restore from incremental backups
+
+Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+To explicitly point to where your incremental backups are, provide the previous full and incremental backup locations in a comma-separated list. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.customers \
+FROM 'azure://{container name}/database-bank-2017-03-27-weekly?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}', \
+'azure://{container name}/database-bank-2017-03-28-nightly?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}', \
+'azure://{container name}/database-bank-2017-03-29-nightly?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+~~~
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
+{{site.data.alerts.end}}
+
+### Restore a backup asynchronously
+
+Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM \
+'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+WITH DETACHED;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+~~~
+
+### Other restore usages
+
+#### Restore tables into a different database
+
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.customers \
+FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+WITH into_db = 'newdb';
+~~~
+
+#### Remove the foreign key before restore
+
+By default, tables with [foreign key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.accounts \
+FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+WITH skip_missing_foreign_keys;
+~~~
+
+#### Restoring users from `system.users` backup
+
+The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
+
+After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
+
+First, create the new database that you'll restore the `system.users` table into:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE system.users \
+FROM 'azure://{container name}/{path/to/backup/subdirectory}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' \
+WITH into_db = 'newdb';
+~~~
+
+After the restore completes, add the `users` to the existing `system.users` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO system.users SELECT * FROM newdb.users;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP TABLE newdb.users;
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+{{site.data.alerts.callout_info}}
+The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+{{site.data.alerts.end}}
+
+### View the backup subdirectories
+
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+~~~
+        path
+------------------------
+2021/03/23-213101.37
+2021/03/24-172553.85
+2021/03/24-210532.53
+(3 rows)
+~~~
+
+When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23-213101.37`) to the storage URL.
+
+### Restore a cluster
+
+To restore a full cluster:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+### Restore a database
+
+To restore a database:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE DATABASE bank FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+{{site.data.alerts.callout_info}}
+`RESTORE DATABASE` can only be used if the entire database was backed up.
+{{site.data.alerts.end}}
+
+### Restore a table
+
+To restore a single table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE TABLE bank.customers FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+To restore multiple tables:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE TABLE bank.customers, bank.accounts FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+### Restore from incremental backups
+
+Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+To explicitly point to where your incremental backups are, provide the previous full and incremental backup locations in a comma-separated list. In this example, `-weekly` is the full backup and the two `-nightly` are incremental backups.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.customers \
+FROM 'gs://{bucket name}/database-bank-2017-03-27-weekly?AUTH=specified&CREDENTIALS={encoded key}', \
+'gs://{bucket name}/database-bank-2017-03-28-nightly?AUTH=specified&CREDENTIALS={encoded key}', \
+'gs://{bucket name}/database-bank-2017-03-29-nightly?AUTH=specified&CREDENTIALS={encoded key}';
+~~~
+
+{{site.data.alerts.callout_info}}
+<span class="version-tag">New in v21.1:</span> `RESTORE` will re-validate [indexes](indexes.html) when [incremental backups](take-full-and-incremental-backups.html) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
+{{site.data.alerts.end}}
+
+### Restore a backup asynchronously
+
+Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.html) asynchronously:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE FROM \
+'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}' \
+WITH DETACHED;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+~~~
+
+### Other restore usages
+
+#### Restore tables into a different database
+
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the target database.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.customers \
+FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}' \
+WITH into_db = 'newdb';
+~~~
+
+#### Remove the foreign key before restore
+
+By default, tables with [foreign key](foreign-key.html) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](restore.html#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE bank.accounts \
+FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}' \
+WITH skip_missing_foreign_keys;
+~~~
+
+#### Restoring users from `system.users` backup
+
+The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
+
+After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
+
+First, create the new database that you'll restore the `system.users` table into:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE newdb;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> RESTORE system.users \
+FROM 'gs://{bucket name}/{path/to/backup/subdirectory}?AUTH=specified&CREDENTIALS={encoded key}' \
+WITH into_db = 'newdb';
+~~~
+
+After the restore completes, add the `users` to the existing `system.users` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO system.users SELECT * FROM newdb.users;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> DROP TABLE newdb.users;
+~~~
+
+</section>
 
 ## See also
 

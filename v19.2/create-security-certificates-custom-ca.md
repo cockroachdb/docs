@@ -48,7 +48,7 @@ A node must have the following files with file names as specified in the table:
 
 File name | File usage
 -------------|------------
-`ca.crt`     | CA certificate created using the `cockroach cert` command.
+`ca.crt`     | CA certificate issued by the public CA or your organizational CA.
 `node.crt`   | Server certificate created using the `cockroach cert` command. <br><br> `node.crt` must have `CN=node` and the list of IP addresses and DNS names listed in `Subject Alternative Name` field. <br><br>Must be signed by `ca.crt`.
 `node.key`   | Server key created using the `cockroach cert` command.
 `ui.crt` | UI certificate signed by the public CA. `ui.crt` must have the IP addresses and DNS names used to reach the Admin UI listed in `Subject Alternative Name`.
@@ -60,7 +60,7 @@ A client must have the following files with file names as specified in the table
 
 File name | File usage
 -------------|------------
-`ca.crt`     | CA certificate created using the `cockroach cert` command.
+`ca.crt`     | CA certificate issued by the public CA or your organizational CA.
 `client.<user>.crt` | Client certificate for `<user>` (e.g., `client.root.crt` for user `root`). <br><br>Each `client.<user>.crt` must have `CN=<user>`  (for example, `CN=marc` for `client.marc.crt`) <br><br> Must be signed by `ca.crt`.
 `client.<user>.key` | Client key created using the `cockroach cert` command.
 

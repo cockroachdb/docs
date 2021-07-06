@@ -128,7 +128,7 @@ CockroachDB requires TCP communication on two ports:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
 ## Step 3. Configure the cluster
@@ -488,4 +488,4 @@ $(cat addrs)
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multi-region-overview.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multiregion-overview.html).

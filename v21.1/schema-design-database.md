@@ -63,7 +63,7 @@ To execute the statement in the `dbinit.sql` file as the `root` user, run the fo
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=root \
-< dbinit.sql
+-f dbinit.sql
 ~~~
 
 To view the database in the cluster, execute a [`SHOW DATABASES`](show-databases.html) statement from the command line:
