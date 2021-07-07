@@ -12,8 +12,14 @@ While CockroachDB is an excellent system of record, it also needs to coexist wit
 
 The main feature of CDC is the changefeed, which targets an allowlist of tables, called the "watched rows". There are two implementations of changefeeds:
 
-- [Core changefeeds](#create-a-core-changefeed), which stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
-- [Enterprise changefeeds](#configure-a-changefeed-enterprise), where every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+[Core changefeeds](#create-a-core-changefeed)                                                          | [Enterprise changefeeds](#configure-a-changefeed-enterprise)
+-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------
+Useful for prototyping or quick testing.                                                               | Recommended for production use.
+Available in CockroachDB and CockroachCloud Dedicated.                                                 | Available in CockroachCloud Dedicated or with an [enterprise license](enterprise-licensing.html).
+Streams indefinitely until underlying SQL connection is closed.                                        | Maintains connection to configured sink.
+Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).                                      | Create with [`CREATE CHANGEFEED`](create-changefeed.html).
+Watches one or multiple tables in a comma-separated list.                                              | Emits every change to a "watched" row as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
+[`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection.                 | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed).      
 
 ## Enable rangefeeds
 
