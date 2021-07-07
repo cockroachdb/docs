@@ -27,7 +27,7 @@ Get future release notes emailed to you:
 ### Bug fixes
 
 - Fixed a bug where clicking on the [**Alerts** page](../cockroachcloud/alerts-page.html) broke the Organization header for users with multiple Organizations.
-- Fixed a bug where nodes were cycling in clusters running v21.1.4.
+- Fixed a bug where nodes were cycling in clusters running [v21.1.4](v21.1.4.html).
 - Fixed several broken links to documentation throughout the Console.
 - Users will no longer see alerts for clusters that are not in a **ready** state.
 - Fixed a bug that was causing users to receive false positive CPU alerts.
