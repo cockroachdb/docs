@@ -15,7 +15,7 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 [Core changefeeds](#create-a-core-changefeed)                                                          | [Enterprise changefeeds](#configure-a-changefeed-enterprise)
 -------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------
 Useful for prototyping or quick testing.                                                               | Recommended for production use.
-Available in CockroachDB and CockroachCloud Dedicated.                                                 | Available in CockroachCloud Dedicated or with an [enterprise license](enterprise-licensing.html).
+Available in CockroachDB and CockroachCloud.                                                           | Available in CockroachCloud or with an [enterprise license](enterprise-licensing.html).
 Streams indefinitely until underlying SQL connection is closed.                                        | Maintains connection to configured sink.
 Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).                                      | Create with [`CREATE CHANGEFEED`](create-changefeed.html).
 Watches one or multiple tables in a comma-separated list.                                              | Emits every change to a "watched" row as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
