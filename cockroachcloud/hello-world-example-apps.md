@@ -38,7 +38,7 @@ Reference information:
 
 Specific tasks:
 
-- [Connect to Your Cluster](connect-to-a-free-cluster.html)
+- [Connect to Your Cluster](connect-to-a-serverless-cluster.html)
 - [Insert Data](../{{site.versions["stable"]}}/insert-data.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 - [Make Queries Fast](../{{site.versions["stable"]}}/make-queries-fast.html)

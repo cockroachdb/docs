@@ -1,21 +1,21 @@
 ---
-title: Create a CockroachCloud Free (beta) Cluster
-summary: Learn how to create a cluster using CockroachCloud Free (beta).
+title: Create a CockroachCloud Serverless Cluster
+summary: Learn how to create a cluster using CockroachCloud Serverless.
 toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
+    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level current">CockroachCloud Serverless</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud Dedicated</button></a>
 </div>
 
-This page walks you through the process of creating a cluster using CockroachCloud Free (beta). Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a cluster using CockroachCloud Serverless. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {% include cockroachcloud/free-limitations.md %}
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_free_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_serverless_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
 ## Step 1. Start the cluster creation process
 
@@ -23,7 +23,14 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 3. On the **Overview** page, click **Create Cluster**.
 
-## Step 2. Select Free Plan
+## Step 2. Select the plan
+
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="free">Free</button>
+  <button class="filter-button page-level" data-scope="paid">Pay as you go</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="free">
 
 1. On the **Create your cluster** page, select the **Free Plan**.
 
@@ -39,9 +46,17 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 Your cluster will be created in approximately 20-30 seconds.
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="paid">
+
+placeholder
+
+</section>
+
 ## What's next
 
-- [Connect to your free cluster](connect-to-a-free-cluster.html)
+- [Connect to your serverless cluster](connect-to-a-serverless-cluster.html)
 - [Authorize users](user-authorization.html)
 
 ## Usage examples

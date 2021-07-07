@@ -1,18 +1,18 @@
 ---
-title: Create a CockroachCloud Cluster
-summary: Learn how to create your CockroachCloud cluster.
+title: Create a CockroachCloud Dedicated Cluster
+summary: Learn how to create your CockroachCloud Dedicated cluster.
 toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level">CockroachCloud Serverless</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 
-This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a CockroachCloud Dedicated cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {{site.data.alerts.callout_success}}
-To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart](quickstart.html).
+To create and connect to a 30-day free CockroachCloud Dedicated cluster and run your first query, see the [Quickstart](quickstart.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Start the cluster creation process
@@ -21,10 +21,11 @@ To create and connect to a 30-day free CockroachCloud cluster and run your first
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
+1. Selected the **Dedicated** plan.
 
 ## Step 2. Select the cloud provider
 
-On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
+In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
 CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [C5 instance types](https://aws.amazon.com/ec2/instance-types/c5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
 
@@ -32,7 +33,7 @@ CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/d
 
 ## Step 3. Select the region(s)
 
-For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
+In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions. 
 
@@ -51,6 +52,8 @@ Multi-region clusters must contain at least 3 regions to ensure that data spread
 If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
+
+In the **Regions & nodes** section, select the number of nodes. 
 
 - For single-region application development and testing, you may create a 1-node cluster.
 - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.

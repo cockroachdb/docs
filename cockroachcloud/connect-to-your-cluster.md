@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level">CockroachCloud Serverless</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 
 This page shows you how to connect to your CockroachCloud cluster.
