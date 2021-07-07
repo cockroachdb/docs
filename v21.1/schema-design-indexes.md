@@ -164,7 +164,7 @@ If you executed this file when following the [Create a Table](schema-design-tabl
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=root \
-< dbinit.sql
+-f dbinit.sql
 ~~~
 
 Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
@@ -174,8 +174,8 @@ Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=max \
---database=movr
-< max_init.sql
+--database=movr \
+-f max_init.sql
 ~~~
 
 {% include copy-clipboard.html %}
@@ -183,8 +183,8 @@ $ cockroach sql \
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=abbey \
---database=movr
-< abbey_init.sql
+--database=movr \
+-f abbey_init.sql
 ~~~
 
 After the statements have been executed, you can see the new index in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).

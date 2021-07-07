@@ -567,41 +567,52 @@
             "title": "Third-Party Database Tools",
             "items": [
               {
-                "title": "Overview",
+                "title": "Supported by Cockroach Labs",
                 "urls": [
                   "/${VERSION}/third-party-database-tools.html"
                 ]
               },
               {
-                "title": "Schema Migration Tools",
-                "items": [
-                  {
-                    "title": "Flyway",
-                    "urls": [
-                      "/${VERSION}/flyway.html"
-                    ]
-                  },
-                  {
-                    "title": "Liquibase",
-                    "urls": [
-                      "/${VERSION}/liquibase.html"
-                    ]
-                  }
+                "title": "Supported by the Community",
+                "urls": [
+                  "/${VERSION}/community-tooling.html"
                 ]
               },
               {
-                "title": "GUIs & IDEs",
+                "title": "Tutorials",
                 "items": [
                   {
-                    "title": "DBeaver GUI",
-                    "urls": [
-                      "/${VERSION}/dbeaver.html"
+                    "title": "Schema Migration Tools",
+                    "items": [
+                      {
+                        "title": "Flyway",
+                        "urls": [
+                          "/${VERSION}/flyway.html"
+                        ]
+                      },
+                      {
+                        "title": "Liquibase",
+                        "urls": [
+                          "/${VERSION}/liquibase.html"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "title": "IntelliJ IDEA",
-                    "urls": [
-                      "/${VERSION}/intellij-idea.html"
+                    "title": "GUIs & IDEs",
+                    "items": [
+                      {
+                        "title": "DBeaver GUI",
+                        "urls": [
+                          "/${VERSION}/dbeaver.html"
+                        ]
+                      },
+                      {
+                        "title": "IntelliJ IDEA",
+                        "urls": [
+                          "/${VERSION}/intellij-idea.html"
+                        ]
+                      }
                     ]
                   }
                 ]

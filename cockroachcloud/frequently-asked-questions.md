@@ -80,7 +80,7 @@ You can add nodes by accessing the **Clusters** page on the [CockroachCloud Cons
 
 ### Do you auto-scale?
 
-Today, we do not automatically scale nodes based on your capacity usage. To add nodes, please contact [Support](https://support.cockroachlabs.com/hc/en-us). There are plans to allow auto-scaling in the future.
+Today, we do not automatically scale nodes based on your capacity usage. To add or remove nodes, see [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster). There are plans to allow auto-scaling in the future.
 
 ### Who is responsible for backup?
 

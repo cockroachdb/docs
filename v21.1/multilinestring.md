@@ -74,3 +74,4 @@ DROP TABLE tmp_linestrings;
 - [MULTIPOINT](multipoint.html)
 - [MULTIPOLYGON](multipolygon.html)
 - [GEOMETRYCOLLECTION](geometrycollection.html)
+- [Using GeoServer with CockroachDB](geoserver.html)

@@ -34,7 +34,7 @@ CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/d
 
 For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
 
-To create a multi-region cluster, click **Add regions** until you have the desired number of regions. 
+To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
 {{site.data.alerts.callout_info}}
 Multi-region clusters must contain at least 3 regions to ensure that data spread across regions can survive the loss of one region. See [Planning your cluster](cluster-management.html?filters=dedicated#planning-your-cluster) for more information about our requirements and recommendations for cluster configuration.
@@ -105,7 +105,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
-        
+
         {{site.data.alerts.callout_info}}
         Custom IP ranges are temporarily unavailable for multi-region clusters.
         {{site.data.alerts.end}}
@@ -119,7 +119,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
-    You will be billed on the 1st and 15th of every month.
+    You will be billed monthly.
 1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
 1. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}

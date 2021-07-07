@@ -178,3 +178,4 @@ cockroach sql --insecure --host=localhost --port=26257
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
 - [Troubleshooting overview](troubleshooting-overview.html)
 - [Support resources](support-resources.html)
+- [Using GeoServer with CockroachDB](geoserver.html)

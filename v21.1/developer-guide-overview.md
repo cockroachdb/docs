@@ -63,6 +63,6 @@ You might also be interested in the following pages:
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [Hello World Example Apps](hello-world-example-apps.html)
 - [Build a Spring App with CockroachDB](build-a-spring-app-with-cockroachdb-jdbc.html)
-- [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html)
+- [Develop and Deploy a Global Application](movr-flask-overview.html)
 
 {% include cockroach_u_pydev.md %}

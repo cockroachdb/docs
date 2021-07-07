@@ -111,7 +111,7 @@ Where:
 
 - `<user>` is the username that you created earlier.
 - `<password>` is the password that you created for the `<user>`.
-- `<port>` is the port listed in the `(sql/tcp)` connection string in the SQL shell welcome text. For example, for the connection string `postgres://demo:demo11762@127.0.0.1:26257?sslmode=require`, the port is `26257`.
+- `<port>` is the port listed in the `(sql)` connection string in the SQL shell welcome text. For example, for the connection string `postgres://demo:demo11762@127.0.0.1:26257?sslmode=require`, the port is `26257`.
 
 </section>
 
