@@ -197,8 +197,8 @@ The following provide connection examples to cloud storage providers. For more i
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
-  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
   <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="s3">
@@ -398,7 +398,7 @@ WITH
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{customers.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a table from a Postgres database dump
 
@@ -409,7 +409,7 @@ For the command above to succeed, you need to have created the dump file with sp
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -429,7 +429,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 > IMPORT MYSQLDUMP 's3://{BUCKET NAME}/{employees-full.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a table from a MySQL database dump
 
@@ -440,7 +440,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a delimited data file
 
@@ -496,7 +496,7 @@ AVRO DATA ('s3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={ACCESS KEY}&A
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Run an import within a transaction
 
@@ -518,6 +518,348 @@ IMPORT TABLE customers (
 		INDEX name_idx (name)
 )
 CSV DATA ('s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
+WITH DETACHED;
+
+COMMIT;
+~~~
+
+The job ID is returned immediately without waiting for the job to finish:
+
+~~~
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+~~~
+
+**Without** the `DETACHED` option, `IMPORT` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+### Import a table from a CSV file
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+To use a file to specify the table schema:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+{% include {{ page.version.version }}/misc/csv-import-callout.md %}
+
+### Import a table from multiple CSV files
+
+#### Using a comma-separated list
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
+    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
+);
+~~~
+
+#### Using a wildcard
+
+You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#Match) instead of explicitly listing every file. Paths are matched using the `*` wildcard character to include matching files directly under the specified path. A wildcard can be used to include:
+
+- All files in a given directory (e.g.,`azure://container-name/path/to/data/*`)
+- All files in a given directory that end with a given string (e.g., `azure://container-name/files/*.csv`)
+- All files in a given directory that start with a given string (e.g., `azure://container-name/files/data*`)
+- All files in a given directory that start and end with a given string (e.g., `azure://container-name/files/data*.csv`)
+
+These only match files directly under the specified path and do not descend into additional directories recursively.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA (
+    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'  
+);
+~~~
+
+### Import a table from a TSV file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.tsv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	delimiter = e'\t'
+;
+~~~
+
+### Skip commented lines
+
+The `comment` option determines which Unicode character marks the rows in the data to be skipped.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	comment = '#'
+;
+~~~
+
+### Skip first *n* lines
+
+The `skip` option determines the number of header rows to skip when importing a file.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	skip = '2'
+;
+~~~
+
+### Import a limited number of rows
+
+<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
+
+The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
+
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	row_limit = '10'
+;
+~~~
+
+### Use blank characters as `NULL`
+
+The `nullif` option defines which string should be converted to `NULL`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	nullif = ''
+;
+~~~
+
+### Import a compressed CSV file
+
+CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+WITH
+	decompress = 'gzip'
+;
+~~~
+
+### Import a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH ignore_unsupported_statements;
+~~~
+
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+
+### Import a table from a Postgres database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys WITH ignore_unsupported_statements;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
+
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
+
+### Import a CockroachDB dump file
+
+Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
+~~~
+
+For more information, see [SQL Dump (Export)](cockroach-dump.html).
+
+### Import a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
+~~~
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+
+### Import a table from a MySQL database dump
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees FROM MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
+
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
+
+### Import a delimited data file
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  WITH
+    fields_terminated_by='|',
+    fields_enclosed_by='"',
+    fields_escaped_by='"';
+~~~
+
+{{site.data.alerts.callout_info}}
+If you want to escape special symbols, use `fields_escaped_by`.
+{{site.data.alerts.end}}
+
+### Import a table from a delimited data file
+
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE employees
+    FROM DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+    WITH
+      skip_foreign_keys;
+~~~
+
+If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
+
+### Import a table from an Avro file
+
+ [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
+
+To specify the table schema in-line:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+AVRO DATA ('azure://{CONTAINER NAME}/{customer-import-date.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+To use a file to specify the table schema:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> IMPORT TABLE customers
+CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+AVRO DATA ('azure://{CONTAINER NAME}/{customer-import-data.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
+;
+~~~
+
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+
+### Run an import within a transaction
+
+<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
+
+The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
+
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BEGIN;
+
+CREATE DATABASE newdb;
+
+SET DATABASE = newdb;
+
+IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
 WITH DETACHED;
 
 COMMIT;
@@ -742,7 +1084,7 @@ WITH
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}' WITH ignore_unsupported_statements;
 ~~~
 
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
+For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a table from a Postgres database dump
 
@@ -753,7 +1095,7 @@ For the commands above to succeed, you need to have created the dump file with s
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
 
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
+For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres](migrate-from-postgres.html).
 
 ### Import a CockroachDB dump file
 
@@ -773,7 +1115,7 @@ For more information, see [SQL Dump (Export)](cockroach-dump.html).
 > IMPORT MYSQLDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
 ~~~
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a table from a MySQL database dump
 
@@ -784,7 +1126,7 @@ For more detailed information about importing data from MySQL, see [Migrate from
 
 If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
 
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
+For more detailed information about importing data from MySQL, see [Migrate from MySQL](migrate-from-mysql.html).
 
 ### Import a delimited data file
 
@@ -840,7 +1182,7 @@ AVRO DATA ('gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCO
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
+For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Run an import within a transaction
 
@@ -862,348 +1204,6 @@ IMPORT TABLE customers (
 		INDEX name_idx (name)
 )
 CSV DATA ('gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}')
-WITH DETACHED;
-
-COMMIT;
-~~~
-
-The job ID is returned immediately without waiting for the job to finish:
-
-~~~
-        job_id
-----------------------
-  592786066399264769
-(1 row)
-~~~
-
-**Without** the `DETACHED` option, `IMPORT` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
-
-~~~
-job_id             |  status   | fraction_completed | rows | index_entries | bytes
----------------------+-----------+--------------------+------+---------------+--------
-652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
-(1 row)
-~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="azure">
-
-### Import a table from a CSV file
-
-To specify the table schema in-line:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-;
-~~~
-
-To use a file to specify the table schema:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-;
-~~~
-
-{% include {{ page.version.version }}/misc/csv-import-callout.md %}
-
-### Import a table from multiple CSV files
-
-#### Using a comma-separated list
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA (
-    'azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-    'azure://{CONTAINER NAME}/{customer-import-data2.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-    'azure://{CONTAINER NAME}/{customer-import-data3.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-    'azure://{CONTAINER NAME}/{customer-import-data4.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',
-    'azure://{CONTAINER NAME}/{customer-import-data5.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}',    
-);
-~~~
-
-#### Using a wildcard
-
-You can specify [file patterns to match](https://golang.org/pkg/path/filepath/#Match) instead of explicitly listing every file. Paths are matched using the `*` wildcard character to include matching files directly under the specified path. A wildcard can be used to include:
-
-- All files in a given directory (e.g.,`azure://container-name/path/to/data/*`)
-- All files in a given directory that end with a given string (e.g., `azure://container-name/files/*.csv`)
-- All files in a given directory that start with a given string (e.g., `azure://container-name/files/data*`)
-- All files in a given directory that start and end with a given string (e.g., `azure://container-name/files/data*.csv`)
-
-These only match files directly under the specified path and do not descend into additional directories recursively.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA (
-    'azure://{CONTAINER NAME}/{customer-import-data*}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'  
-);
-~~~
-
-### Import a table from a TSV file
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.tsv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-WITH
-	delimiter = e'\t'
-;
-~~~
-
-### Skip commented lines
-
-The `comment` option determines which Unicode character marks the rows in the data to be skipped.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-WITH
-	comment = '#'
-;
-~~~
-
-### Skip first *n* lines
-
-The `skip` option determines the number of header rows to skip when importing a file.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-WITH
-	skip = '2'
-;
-~~~
-
-### Import a limited number of rows
-
-<span class="version-tag">New in v21.1:</span> The `row_limit` option determines the number of rows to import. For non-bundled formats, setting `row_limit = 'n'` will import the first *n* rows of a table. For bundled formats, this option will import the first *n* rows from each table in the dump file. It is useful for finding errors quickly before executing a more time- and resource-consuming import. Imported tables can be inspected for their schema and data, but must be [dropped](drop-table.html) before running the actual import.
-
-The examples below use CSV data, but `row_limit` is also an option for [Avro files](migrate-from-avro.html#step-3-import-the-avro), [delimited data files](#import-a-delimited-data-file), [Postgres dump files](migrate-from-postgres.html#row-limit), and [MySQL dump files](migrate-from-mysql.html#row-limit).
-
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-WITH
-	row_limit = '10'
-;
-~~~
-
-### Use blank characters as `NULL`
-
-The `nullif` option defines which string should be converted to `NULL`.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-WITH
-	nullif = ''
-;
-~~~
-
-### Import a compressed CSV file
-
-CockroachDB chooses the decompression codec based on the filename (the common extensions `.gz` or `.bz2` and `.bz`) and uses the codec to decompress the file during import.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-;
-~~~
-
-Optionally, you can use the `decompress` option to specify the codec to be used for decompressing the file during import:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv.gz}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-WITH
-	decompress = 'gzip'
-;
-~~~
-
-### Import a Postgres database dump
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH ignore_unsupported_statements;
-~~~
-
-For the commands above to succeed, you need to have created the dump file with specific flags to `pg_dump`, and starting in v21.1 use the `WITH ignore_unsupported_statements` clause. For more information, see [Migrate from Postgres][postgres].
-
-### Import a table from a Postgres database dump
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys WITH ignore_unsupported_statements;
-~~~
-
-If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
-
-For the command above to succeed, you need to have created the dump file with specific flags to `pg_dump`.  For more information, see [Migrate from Postgres][postgres].
-
-### Import a CockroachDB dump file
-
-Cockroach dump files can be imported using the `IMPORT PGDUMP`.
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
-~~~
-
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
-
-### Import a MySQL database dump
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
-~~~
-
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
-
-### Import a table from a MySQL database dump
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees FROM MYSQLDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}' WITH skip_foreign_keys;
-~~~
-
-If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed.  For more information, see the list of [import options](#import-options).
-
-For more detailed information about importing data from MySQL, see [Migrate from MySQL][mysql].
-
-### Import a delimited data file
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-  WITH
-    fields_terminated_by='|',
-    fields_enclosed_by='"',
-    fields_escaped_by='"';
-~~~
-
-{{site.data.alerts.callout_info}}
-If you want to escape special symbols, use `fields_escaped_by`.
-{{site.data.alerts.end}}
-
-### Import a table from a delimited data file
-
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE employees
-    FROM DELIMITED DATA 'azure://{CONTAINER NAME}/{employees.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-    WITH
-      skip_foreign_keys;
-~~~
-
-If the table schema specifies foreign keys into tables that do not exist yet, the `WITH skip_foreign_keys` shown may be needed. For more information, see the list of [import options](#import-options).
-
-### Import a table from an Avro file
-
- [Avro OCF data](migrate-from-avro.html#import-an-object-container-file), [JSON records, or binary records](migrate-from-avro.html#import-binary-or-json-records) can be imported. The following are examples of importing Avro OCF data.
-
-To specify the table schema in-line:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-AVRO DATA ('azure://{CONTAINER NAME}/{customer-import-date.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-;
-~~~
-
-To use a file to specify the table schema:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers
-CREATE USING 'azure://{CONTAINER NAME}/{customer-create-table.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
-AVRO DATA ('azure://{CONTAINER NAME}/{customer-import-data.avro}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
-;
-~~~
-
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro][avro].
-
-### Run an import within a transaction
-
-<span class="version-tag">New in v21.1:</span> The `DETACHED` option allows an import to be run asynchronously, returning the job ID immediately once initiated. You can run imports within transactions by specifying the `DETACHED` option.
-
-The following transactions use CSV data as an example. To use the `DETACHED` option with `IMPORT` in a transaction:
-
-
-{% include copy-clipboard.html %}
-~~~ sql
-> BEGIN;
-
-CREATE DATABASE newdb;
-
-SET DATABASE = newdb;
-
-IMPORT TABLE customers (
-		id UUID PRIMARY KEY,
-		name TEXT,
-		INDEX name_idx (name)
-)
-CSV DATA ('azure://{CONTAINER NAME}/{customer-import-data.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}')
 WITH DETACHED;
 
 COMMIT;
