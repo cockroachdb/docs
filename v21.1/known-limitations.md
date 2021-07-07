@@ -204,10 +204,6 @@ To work around this limitation, you will need to take the following steps:
     ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
     ~~~
 
-In addition to the limitation above, note that CockroachDB cannot yet make the `crdb_region` column hidden in the destination table.
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/62892)
-
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.

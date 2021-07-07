@@ -358,7 +358,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --database=startrek --user=maxroach < backup.sql
+$ cockroach sql --insecure --database=startrek --user=maxroach -f backup.sql
 ~~~
 
 ~~~
