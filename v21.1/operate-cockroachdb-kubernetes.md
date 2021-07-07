@@ -458,13 +458,13 @@ Currently, only the pods are updated with new ports. To connect to the cluster, 
         kubectl describe pvc datadir-cockroachdb-3
         ~~~
 
-        The output will have the following line:
+        The output will include the following line:
 
         ~~~
         Mounted By:    <none>
         ~~~
 
-        A PVC that is bound to a pod, in contrast, will specify the pod name.
+        If the PVC were bound to a pod, it would specify the pod name.
 
   1. Remove the orphaned persistent volume by deleting the PVC:
 
