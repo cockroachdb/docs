@@ -2,7 +2,6 @@
 title: Build a Python App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Python application with the psycopg2 driver.
 toc: true
-asciicast: true
 twitter: false
 ---
 
@@ -17,12 +16,6 @@ This tutorial shows you how build a simple Python application with CockroachDB u
 ## Before You Begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
-
-<!-- TODO: update asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/build-a-python-app-with-driver.json" cols="107" speed="2" theme="monokai" poster="npt:0:24" title="Build a Python App - Client Driver"></asciinema-player>
--->
 
 ## Step 1. Install the psycopg2 driver
 

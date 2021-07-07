@@ -2,7 +2,6 @@
 title: Start a Cluster in Docker (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster across multiple Docker containers on a single host.
 toc: true
-asciicast: true
 ---
 
 <div id="os-tabs" class="clearfix">
@@ -22,12 +21,6 @@ Once you've [installed the official CockroachDB Docker image](install-cockroachd
 - Make sure you have already [installed the official CockroachDB Docker image](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
 - Note that running multiple nodes on a single host is useful for testing CockroachDB, but it's not suitable for production. To run a physically distributed cluster in containers, use an orchestration tool like Kubernetes or Docker Swarm. See [Orchestration](orchestration.html) for more details, and review the [Production Checklist](recommended-production-settings.html).
-
-<!-- TODO: update the asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster-docker.json" cols="107" speed="2" theme="monokai" poster="npt:0:43" title="Start a Local Cluster in Docker"></asciinema-player>
--->
 
 {% include {{ page.version.version }}/start-in-docker/mac-linux-steps.md %}
 

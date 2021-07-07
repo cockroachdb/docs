@@ -136,9 +136,11 @@ Osm2pgsql took 2879s overall
 - [Back Up and Restore Data](take-full-and-incremental-backups.html)
 - [Use the Built-in SQL Client](cockroach-sql.html)
 - [Other Cockroach Commands](cockroach-commands.html)
+- [Using GeoServer with CockroachDB](geoserver.html)
 
 <!-- Reference Links -->
 
 [postgres]: migrate-from-postgres.html
 [mysql]: migrate-from-mysql.html
 [import]: import.html
+

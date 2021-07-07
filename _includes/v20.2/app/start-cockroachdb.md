@@ -5,7 +5,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+  <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
 
@@ -15,7 +15,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
 {% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
-</section>
+  </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 

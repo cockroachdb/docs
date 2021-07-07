@@ -19,7 +19,7 @@ To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-s
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE SCHEDULE schedule_label
-  FOR BACKUP INTO 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=123'
+  FOR BACKUP INTO 's3://test/backups/test_schedule_1?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     WITH revision_history
     RECURRING '@daily'
     WITH SCHEDULE OPTIONS first_run = 'now';
@@ -28,6 +28,10 @@ To create a new backup schedule, use the [`CREATE SCHEDULE FOR BACKUP`](create-s
 In this example, a schedule labeled `schedule_label` is created to take daily (incremental) backups with revision history in AWS S3, with the first backup being taken now. A second [schedule for weekly full backups](create-schedule-for-backup.html#full-backup-clause) is also created by default. Both schedules have the same `label` (i.e., `schedule_label`).
 
 For more information about the different options available when creating a backup schedule, see [`CREATE SCHEDULE FOR BACKUP`](create-schedule-for-backup.html).
+
+{{site.data.alerts.callout_info}}
+Further guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options is outlined in [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+{{site.data.alerts.end}}
 
 ## Set up monitoring for the backup schedule
 
@@ -253,7 +257,7 @@ To restore from a scheduled backup, use the [`RESTORE`](restore.html) statement:
 {% include copy-clipboard.html %}
 ~~~ sql
 > RESTORE
-    FROM 's3://test/backups/test_schedule_1/2020/08/19-035600.00?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=x'
+    FROM 's3://test/backups/test_schedule_1/2020/08/19-035600.00?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     AS OF SYSTEM TIME '2020-08-19 03:50:00+00:00';
 ~~~
 

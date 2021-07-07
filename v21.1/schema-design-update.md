@@ -141,8 +141,8 @@ To execute the statements in the `update_users_table.sql` file as `max`, run the
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=max \
---database=movr
-< update_users_table.sql
+--database=movr \
+-f update_users_table.sql
 ~~~
 
 To execute the statements in the `update_users_owner.sql` file as `root`, run the following command:
@@ -152,8 +152,8 @@ To execute the statements in the `update_users_owner.sql` file as `root`, run th
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=root \
---database=movr
-< update_users_owner.sql
+--database=movr \
+-f update_users_owner.sql
 ~~~
 
 The `users` table should now have a new column, a different primary key, a different schema, and a different owner.
@@ -306,8 +306,8 @@ To drop the index, execute the file:
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=abbey \
---database=movr
-< drop_unique_users_idx.sql
+--database=movr \
+-f drop_unique_users_idx.sql
 ~~~
 
 {% include copy-clipboard.html %}

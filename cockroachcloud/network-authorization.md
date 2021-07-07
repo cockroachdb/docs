@@ -47,7 +47,7 @@ GKE users should note that [alias IP addresses](https://cloud.google.com/kuberne
 
 ### Establish a VPC Peering connection after creating your CockroachCloud cluster
 
-After creating your CockroachCloud cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-3-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-4-connect-to-your-cluster).
+After creating your CockroachCloud cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
 
 ## AWS PrivateLink
 
