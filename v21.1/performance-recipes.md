@@ -30,3 +30,29 @@ These errors indicate that your workload is experiencing [contention](performanc
 ### Fixing the error
 
 {% include {{ page.version.version }}/performance/statement_contention.md %}
+
+## Problem: The SQL Statement Contention chart is showing spikes
+
+The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
+
+{%comment%} Add screenshot of high-contention graph {%endcomment%}
+
+### Possible cause of the error
+
+These errors indicate that your workload is experiencing [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+### Fixing the error
+
+{% include {{ page.version.version }}/performance/statement_contention.md %}
+
+## The SQL Statement Errors chart is showing spikes in retries
+
+The [SQL Statement Errors graph](ui-sql-dashboard.html#sql-statement-errors) graph is showing spikes in retries over time.
+
+### Possible cause of the error
+
+These errors indicate that your workload is experiencing [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+
+### Fixing the error
+
+{% include {{ page.version.version }}/performance/statement_contention.md %}
