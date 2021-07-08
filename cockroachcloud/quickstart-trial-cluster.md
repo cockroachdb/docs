@@ -5,11 +5,11 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="quickstart.html"><button class="filter-button page-level">CockroachCloud Serverless</button></a>
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 
-This page shows you how to deploy a CockroachDB cluster on CockroachCloud (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
+This page shows you how to deploy a CockroachDB cluster on CockroachCloud Dedicated (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
 
 To run CockroachDB on your local machine instead, see [Start a Local Cluster](../{{site.versions["stable"]}}/secure-a-cluster.html).
 

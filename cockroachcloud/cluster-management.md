@@ -144,6 +144,10 @@ To restore your data, [contact us](https://support.cockroachlabs.com).
 Additionally, you can [backup and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) data on your own.
 </section>
 
+## Pausing and resuming a clusters
+
+- How to pause/resume an inactive free serverless cluster
+
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}

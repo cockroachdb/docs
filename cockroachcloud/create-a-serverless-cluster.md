@@ -50,7 +50,9 @@ Your cluster will be created in approximately 20-30 seconds.
 
 <section class="filter-content" markdown="1" data-scope="paid">
 
-placeholder
+- Document how to determine and set resource limits 
+- Serverless clusters scale based on load
+- Usage based billing
 
 </section>
 
