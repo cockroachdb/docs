@@ -9,13 +9,16 @@ This page describes some common logging use cases, their relevant [logging chann
 - [Operational monitoring](#operational-monitoring) (for operators)
 - [Security and audit monitoring](#security-and-audit-monitoring) (for security engineers)
 - [Performance tuning](#performance-tuning) (for application developers)
+- [Network logging](#network-logging) (for operators)
 
 We provide an example [file sink configuration](configure-logs.html#output-to-files) for each use case. These configurations are entirely optional and are intended to highlight the contents of each logging channel. A sink can include any combination of logging channels. Moreover, a single logging channel can be used in more than one sink in your logging configuration. 
 
 Your deployment may use an external service (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)) to collect and programmatically read logging data.
 
 {{site.data.alerts.callout_info}}
-All log examples on this page use the default `crdb-v2` format. Most of the log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html). Logging channels may also contain events that are *unstructured*. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented.
+All log examples on this page use the default `crdb-v2` format, except for the [network logging](#network-logging) configuration, which uses the default `json-fluent-compact` format for network output. Most log entries for non-`DEV` channels record *structured* events, which use a standardized format that can be reliably parsed by an external collector. All structured event types and their fields are detailed in the [Notable events reference](eventlog.html). 
+
+Logging channels may also contain events that are *unstructured*. Unstructured events can routinely change between CockroachDB versions, including minor patch revisions, so they are not officially documented.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -394,6 +397,51 @@ I210323 20:02:12.095253 59168 10@util/log/event_log.go:32 ⋮ [n1,client=‹[::1
 {{site.data.alerts.callout_info}}
 All possible `SQL_PERF` event types are detailed in the [reference documentation](eventlog.html#sql-slow-query-log).
 {{site.data.alerts.end}}
+
+## Network logging
+
+A database operator can send logs over the network to a [Fluentd](https://www.fluentd.org/) server.
+
+In this example configuration, [operational](#operational-monitoring) and [security](#security-and-audit-monitoring) logs are grouped into separate `ops` and `security` network sinks. The logs from both sinks are sent to a Fluentd server, which can then route them to a compatible log collector (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)).
+
+{{site.data.alerts.callout_info}}
+A network sink can be listed more than once with different `address` values. This routes the same logs to different Fluentd servers.
+{{site.data.alerts.end}}
+
+~~~ yaml
+sinks:
+  fluent-servers:             
+    ops:
+      channels: [OPS, HEALTH, SQL_SCHEMA]
+      address: 127.0.0.1:5170 
+      net: tcp                
+      redact: true
+    security:                
+      channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
+      address: 127.0.0.1:5170 
+      net: tcp
+      redact: false
+      auditable: true
+~~~
+
+In this case, defining separate `ops` and `security` network sinks allows us to [enable redaction](configure-logs.html#redact-logs) on the `ops` logs. Otherwise, it is generally more flexible to [configure Fluentd to route logs](https://docs.fluentd.org/configuration/routing-examples) to different destinations.
+
+By default, `fluent-servers` log messages use the [`json-fluent-compact`](log-formats.html#format-json-fluent-compact) format for ease of processing over a stream.
+
+For example, this JSON message found in the `OPS` logging channel contains a [`node_restart`](eventlog.html#node_restart) event. The event shows that a node has rejoined the cluster after being offline (e.g., by being [restarted](cockroach-start.html) after being fully decommissioned):
+
+~~~ json
+{"tag":"cockroach.ops","c":1,"t":"1625766470.804899000","s":1,"sev":"I","g":7,"f":"util/log/event_log.go","l":32,"n":17,"r":1,"tags":{"n":"1"},"event":{"Timestamp":1625766470804896000,"EventType":"node_restart","NodeID":1,"StartedAt":1625766470561283000,"LastUp":1617319541533204000}}
+~~~
+
+- `tag` is a field required by the [Fluentd protocol](https://docs.fluentd.org/configuration/config-file).
+- `sev` shows that the message has the `INFO` [severity level](logging.html#logging-levels-severities).
+- `event` contains the fields for the structured [`node_restart`](eventlog.html#node_restart) event.
+  - `NodeID` shows that the restarted node is `1`.
+  - `StartedAt` shows the timestamp when the node was most recently restarted.
+  - `LastUp` shows the timestamp when the node was up before being restarted.
+
+See the [reference documentation](log-formats.html#format-json-fluent-compact) for details on the remaining JSON fields.
 
 ## See also
 
