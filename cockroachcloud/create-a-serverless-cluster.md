@@ -36,7 +36,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 **Pay-as-you-go** clusters include additional resources, features, and the ability to scale your cluster in the future. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 
 {{site.data.alerts.callout_info}}
-For more information on determining your resource usage, see [placeholder]().
+For more information on determining your resource usage, see [Planning your cluster](cluster-management.html#planning-your-cluster).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
