@@ -31,7 +31,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
 
 ## Step 2. Configure your cluster
 
-1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string](connect-to-your-cluster.html#step-3-select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
+1. Connect to the built-in SQL shell as a user with Admin privileges, replacing the placeholders in the [client connection string](connect-to-your-cluster.html#step-2-select-a-connection-method) with the correct username, password, and path to the `ca.cert`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
