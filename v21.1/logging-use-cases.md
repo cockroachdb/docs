@@ -420,11 +420,15 @@ sinks:
       channels: [SESSIONS, USER_ADMIN, PRIVILEGES, SENSITIVE_ACCESS]
       address: 127.0.0.1:5170 
       net: tcp
-      redact: false
       auditable: true
 ~~~
 
-In this case, defining separate `ops` and `security` network sinks allows us to [enable redaction](configure-logs.html#redact-logs) on the `ops` logs. Otherwise, it is generally more flexible to [configure Fluentd to route logs](https://docs.fluentd.org/configuration/routing-examples) to different destinations.
+In this case, defining separate `ops` and `security` network sinks allows us to:
+
+ - [Enable redaction](configure-logs.html#redact-logs) on the `ops` logs.
+ - Configure the `security` logs as [`auditable`](#security-and-audit-monitoring).
+
+Otherwise, it is generally more flexible to [configure Fluentd to route logs](https://docs.fluentd.org/configuration/routing-examples) to different destinations.
 
 By default, `fluent-servers` log messages use the [`json-fluent-compact`](log-formats.html#format-json-fluent-compact) format for ease of processing over a stream.
 
