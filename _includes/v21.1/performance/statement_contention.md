@@ -10,3 +10,5 @@ You can also query the `crdb_internal.cluster_contention_events` table for your 
 SELECT * FROM movr.crdb_internal.cluster_contention_events ORDER BY num_contention_events DESC;
 SELECT * FROM movr.crdb_internal.cluster_contention_events ORDER BY cumulative_contention_time DESC;
 ~~~
+
+After identifying the transactions or statements that are causing contention, follow the steps [outlined in our best practices recommendations to avoid contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
