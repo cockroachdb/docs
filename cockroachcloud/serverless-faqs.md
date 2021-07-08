@@ -17,6 +17,10 @@ This page answers the frequently asked questions about CockroachCloud Free (beta
 
 CockroachCloud Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic.
 
+### How do I start using CockroachCloud Free (beta)?
+
+To get started with CockroachCloud Free (beta), <a href="https://cockroachlabs.cloud/signup?referralId=docs_free_faq" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
+
 ### What are the usage limits of Cockroach Cloud Free (beta)?
 
 There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster. If you hit the storage limit, you will receive an email asking you to delete enough data to stay under the 5GB limit. If you do not respond within the next 30 days, you will be blocked from accessing your cluster.
