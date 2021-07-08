@@ -97,7 +97,7 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to CockroachCloud Free (beta).
+1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to CockroachCloud.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}

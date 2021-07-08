@@ -4,7 +4,7 @@ summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+This page answers the frequently asked questions about CockroachCloud Serverless and CockroachCloud Dedicated.
 
 <div class="filters clearfix">
     <a href="serverless-faqs.html"><button class="filter-button page-level">CockroachCloud Serverless</button></a>

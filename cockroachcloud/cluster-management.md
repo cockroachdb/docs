@@ -13,7 +13,7 @@ On [logging in to the CockroachCloud Console](https://cockroachlabs.cloud/), the
 For each cluster, the following details display:
 
 - The cluster's **Name**
-- The cluster's **Plan Type**, either Free or Paid
+- The cluster's **Plan Type**, either Serverless or Dedicated
 - The date and time the cluster was **Created**
 - The cluster's current **State**
 - The **Version** of CockroachDB the cluster is running
@@ -28,25 +28,45 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 Select the type of cluster you are viewing (and page content below will change accordingly):
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="free">CockroachCloud Free (beta)</button>
-  <button class="filter-button page-level" data-scope="dedicated">CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="serverless">CockroachCloud Serverless</button>
+  <button class="filter-button page-level" data-scope="dedicated">CockroachCloud Dedicated</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="free">
+<section class="filter-content" markdown="1" data-scope="serverless">
+
+## Planning your cluster
+
+- How to determine and set resource limits
+- Request Unit explanation 
+- Serverless clusters scale based on load
+- Free tier clusters are throttled, paid have usage-based billing
+
 
 ## View cluster overview
 
-The **Overview** page displays details about the selected CockroachCloud Free (beta) cluster:
+The **Overview** page displays details about the selected CockroachCloud Serverless cluster:
 
 - The **Plan** that the cluster was created with
 - The cluster's **Cloud** provider
-- The amount of **Storage** the cluster is using
+- The **Monthly Budget** for the clusters
+- The **Resource summary** of the cluster's budget allocation
 
-    There is an upper limit of 5GB storage per CockroachCloud Free (beta) cluster.
+     Free CockroachCloud Serverless clusters have a limit of 5GB storage and 500M Request Units per month.
 
-- The cluster's **Throughput**
+- The cluster's **Resource usage**
 
-    Throughput is measured in queries per second.
+    placeholder
+
+- The cluster's **Query performance**
+
+  placeholder
+
+## Edit your spend limit  
+  
+## Pausing and resuming a clusters
+
+- How to pause/resume an inactive free serverless cluster
+  
 </section>
 
 <section class="filter-content" markdown="1" data-scope="dedicated">
@@ -144,10 +164,6 @@ To restore your data, [contact us](https://support.cockroachlabs.com).
 Additionally, you can [backup and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) data on your own.
 </section>
 
-## Pausing and resuming a clusters
-
-- How to pause/resume an inactive free serverless cluster
-
 ## Delete cluster
 
 {{site.data.alerts.callout_danger}}
@@ -155,7 +171,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CockroachCloud Free (beta) clusters are subject to deletion after 6 months of no activity.
+Free CockroachCloud clusters are subject to deletion after 6 months of no activity.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

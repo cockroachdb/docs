@@ -1,10 +1,14 @@
 ---
-title: CockroachCloud Free (beta) FAQs
-summary: Get answers to frequently asked questions about CockroachCloud Free (beta)
+title: CockroachCloud Serverless FAQs
+summary: Get answers to frequently asked questions about CockroachCloud Serverless
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+{% comment %}
+This whole page needs to be updated for Serverless.
+{% endcomment %}
+
+This page answers the frequently asked questions about CockroachCloud Serverless and CockroachCloud Dedicated.
 
 <div class="filters clearfix">
     <a href="serverless-faqs.html"><button class="filter-button page-level current">CockroachCloud Serverless</button></a>

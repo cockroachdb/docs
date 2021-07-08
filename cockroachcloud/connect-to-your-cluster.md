@@ -9,7 +9,7 @@ toc: true
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud cluster.
+This page shows you how to connect to your CockroachCloud Dedicated cluster.
 
 ## Before you start
 

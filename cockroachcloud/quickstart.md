@@ -9,7 +9,7 @@ toc: true
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">CockroachCloud Dedicated</button></a>
 </div>
 
-This page guides you through the quickest way to get started with CockroachDB by setting up a free CockroachCloud Serverless cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see the [Learn more](#learn-more) section.
+This page guides you through the quickest way to get started with CockroachDB by setting up a free CockroachCloud Serverless cluster with the default options. For information on how to create a CockroachCloud cluster with other options, see the [Learn more](#learn-more) section.
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -21,6 +21,9 @@ This page guides you through the quickest way to get started with CockroachDB by
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
 1. On the **Clusters** page, click **Create Cluster**.
 1. On the **Create your cluster** page, select **CockroachCloud Serverless**.
+    
+    Unless you change your monthly budget, this cluster will be free forever.
+    
 1. Click **Create cluster**.
 
     Your cluster will be created in approximately 20-30 seconds and the **Connect** dialog will display.
@@ -146,11 +149,10 @@ mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs
 
 ## Learn more
 
-This page outlines the quickest way to get started with CockroachDB. For information on other options that are available when creating a CockroachCloud Free (beta) cluster, see the following:
+This page outlines the quickest way to get started with CockroachDB. For information on other options that are available when creating a CockroachCloud Serverless cluster, see the following:
 
-- To create a free cluster with other configurations (e.g., a different cloud provider or region), see [Create a CockroachCloud Serverless Cluster](create-a-serverless-cluster.html).
-- To connect to a free cluster with other options (e.g., a CA certificate or different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a CockroachCloud Serverless Cluster](connect-to-a-serverless-cluster.html).
-- For information about how to connect securely to your cluster (recommended), see [Authentication](authentication.html).
+- To create a free cluster with other configurations (e.g., a different cloud provider, region, or monthly budget), see [Create a CockroachCloud Serverless Cluster](create-a-serverless-cluster.html).
+- To connect to a free cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a CockroachCloud Serverless Cluster](connect-to-a-serverless-cluster.html).
 - To watch a video walkthrough of connecting to a cluster, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
 Next steps:
@@ -158,4 +160,4 @@ Next steps:
 - Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
 - [Create and manage SQL users](user-authorization.html).
 - Build a ["Hello World" app with the Django framework](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["stable"]}}/install-client-drivers.html) for your favorite language.
-- Explore our [sample apps](../{{site.versions["stable"]}}/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud Free (beta).
+- Explore our [sample apps](../{{site.versions["stable"]}}/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using CockroachCloud.
