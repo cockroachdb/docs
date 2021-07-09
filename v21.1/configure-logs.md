@@ -62,7 +62,7 @@ sinks:
    file-groups: ...      # file sink definitions
    fluent-servers: ...   # network sink definitions
    stderr: ...           # stderr sink definitions
-stray-error-capture: ... # parameters for the stray error capture system
+capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
 
 {{site.data.alerts.callout_info}}
