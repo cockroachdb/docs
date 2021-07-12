@@ -31,7 +31,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 3. Select the plan
 
-**Free forever** clusters include 500M Request Units and 5GB of storage per month. They have a guaranteed baseline performance of 2.5K QPS. At this time, you cannot upgrade a free cluster after it is created.
+**Free forever** clusters include 500M Request Units and 5GB of storage per month. They have a guaranteed baseline performance of 2.5K QPS. At this time, you cannot upgrade a free cluster after it is created. Free clusters have heavily throttled resources and limited features. If you want a cluster with higher performance and full capabilities, choose a **Pay-as-you-go** cluster.
 
 **Pay-as-you-go** clusters include additional resources, features, and the ability to scale your cluster in the future. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 
