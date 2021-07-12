@@ -1,15 +1,15 @@
 ---
-title: Connect to a CockroachCloud Serverless Cluster
+title: Connect to a CockroachCloud Serverless (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level current">CockroachCloud Serverless</button></a>
+    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level current">CockroachCloud Serverless (beta)</button></a>
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level">CockroachCloud Dedicated</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud Serverless cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
+This page shows you how to connect to your CockroachCloud Serverless (beta) cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
 {% include cockroachcloud/free-limitations.md %}
 

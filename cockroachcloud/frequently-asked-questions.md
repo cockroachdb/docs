@@ -4,10 +4,10 @@ summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Serverless and CockroachCloud Dedicated.
+This page answers the frequently asked questions about CockroachCloud Serverless (beta) and CockroachCloud Dedicated.
 
 <div class="filters clearfix">
-    <a href="serverless-faqs.html"><button class="filter-button page-level">CockroachCloud Serverless</button></a>
+    <a href="serverless-faqs.html"><button class="filter-button page-level">CockroachCloud Serverless (beta)</button></a>
     <a href="frequently-asked-questions.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 

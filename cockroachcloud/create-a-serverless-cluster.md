@@ -1,15 +1,15 @@
 ---
-title: Create a CockroachCloud Serverless Cluster
-summary: Learn how to create a cluster using CockroachCloud Serverless.
+title: Create a CockroachCloud Serverless (beta) Cluster
+summary: Learn how to create a cluster using CockroachCloud Serverless (beta).
 toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level current">CockroachCloud Serverless</button></a>
+    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level current">CockroachCloud Serverless (beta)</button></a>
     <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud Dedicated</button></a>
 </div>
 
-This page walks you through the process of creating a cluster using CockroachCloud Serverless. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a cluster using CockroachCloud Serverless (beta). Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -80,7 +80,7 @@ Your cluster will be created in approximately 20-30 seconds.
 
 ## Usage examples
 
-Free CockroachCloud Serverless clsuters can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
+Free CockroachCloud Serverless (beta) clusters can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
 
 For examples of applications that use free CockroachCloud clusters, check out the following [Hack the North](https://hackthenorth.com/) projects:
 

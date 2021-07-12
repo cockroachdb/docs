@@ -5,7 +5,7 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level">CockroachCloud Serverless</button></a>
+    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level">CockroachCloud Serverless (beta)</button></a>
     <a href="create-your-cluster.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 
