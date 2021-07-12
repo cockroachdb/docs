@@ -11,6 +11,12 @@ This article assumes you have already [deployed CockroachDB on a single Kubernet
 
 Despite CockroachDB's various [built-in safeguards against failure](architecture/replication-layer.html), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
 
+<div class="filters filters-big clearfix">
+    <button class="filter-button" data-scope="operator">Use Operator</button>
+    <button class="filter-button" data-scope="manual">Use Configs</button>
+    <button class="filter-button" data-scope="helm">Use Helm</button>
+</div>
+
 ## Configure Prometheus
 
 Every node of a CockroachDB cluster exports granular timeseries metrics formatted for easy integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying timeseries data. This section shows you how to orchestrate Prometheus as part of your Kubernetes cluster and pull these metrics into Prometheus for external monitoring.

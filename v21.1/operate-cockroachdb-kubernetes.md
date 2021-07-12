@@ -43,10 +43,6 @@ You can configure, scale, and upgrade a CockroachDB deployment on Kubernetes by 
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
-{{site.data.alerts.callout_info}}
-The Operator is currently in **beta** and is not yet production-ready.
-{{site.data.alerts.end}}
-
 {{site.data.alerts.callout_success}}
 If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
 {{site.data.alerts.end}}
