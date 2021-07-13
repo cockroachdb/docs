@@ -32,5 +32,6 @@ For more information about how to choose an overall multi-region configuration, 
 - [Multi-region Overview](multiregion-overview.html)
 - [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
 - [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
+- [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
