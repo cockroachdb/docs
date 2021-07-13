@@ -4,7 +4,18 @@ summary: Manage your cluster's schema, data, and more.
 toc: true
 ---
 
+<div class="filters clearfix">
+    <a href="serverless-cluster-management.html"><button class="filter-button page-level">CockroachCloud Serverless (beta)</button></a>
+    <a href="cluster-management.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
+</div>
+
 This page describes the cluster management and cluster deletion workflows.
+
+## Planning your cluster
+
+Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for CockroachCloud cluster configuration.
+
+{% include cockroachcloud/planning-your-cluster.md %}
 
 ## View Clusters page
 
@@ -25,57 +36,6 @@ For each cluster, the following details display:
     - [**Delete cluster**](#delete-cluster)
 
 To view and manage a specific cluster, click the name of the cluster. The [**Overview**](#view-cluster-overview) page will display.
-
-Select the type of cluster you are viewing (and page content below will change accordingly):
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="serverless">CockroachCloud Serverless</button>
-  <button class="filter-button page-level" data-scope="dedicated">CockroachCloud Dedicated</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="serverless">
-
-## Planning your cluster
-
-- How to determine and set resource limits
-- Request Unit explanation 
-- Serverless clusters scale based on load
-- Free tier clusters are throttled, paid have usage-based billing
-
-
-## View cluster overview
-
-The **Overview** page displays details about the selected CockroachCloud Serverless cluster:
-
-- The **Plan** that the cluster was created with
-- The cluster's **Cloud** provider
-- The **Monthly Budget** for the clusters
-- The **Resource summary** of the cluster's budget allocation
-
-     Free CockroachCloud Serverless clusters have a limit of 5GB storage and 500M Request Units per month.
-
-- The cluster's **Resource usage**
-
-    placeholder
-
-- The cluster's **Query performance**
-
-  placeholder
-
-## Edit your spend limit  
-  
-## Pausing and resuming a clusters
-
-- How to pause/resume an inactive free serverless cluster
-  
-</section>
-
-<section class="filter-content" markdown="1" data-scope="dedicated">
-
-## Planning your cluster
-
-Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for CockroachCloud cluster configuration.
-
-{% include cockroachcloud/planning-your-cluster.md %}
 
 ## View cluster overview
     
@@ -162,7 +122,18 @@ All databases are not backed up at the same time. Each database is backed up eve
 To restore your data, [contact us](https://support.cockroachlabs.com).
 
 Additionally, you can [backup and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) data on your own.
-</section>
+
+## Restore data from a backup
+
+Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+
+{{site.data.alerts.callout_info}}
+All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
+{{site.data.alerts.end}}
+
+To restore your data, [contact us](https://support.cockroachlabs.com).
+
+Additionally, you can [backup and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) data on your own.
 
 ## Delete cluster
 

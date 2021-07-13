@@ -48,10 +48,6 @@ For more information on determining your resource usage, see [Planning your clus
 
 1. In the **Cost & Performance** section, select the **Free forever** plan.
 
-    {{site.data.alerts.callout_info}}
-    This cluster will be free forever.
-    {{site.data.alerts.end}}
-
 1. Click **Create your free cluster**.
 
 Your cluster will be created in approximately 20-30 seconds.
