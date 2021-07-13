@@ -41,14 +41,11 @@ The **Overview** page displays details about the selected CockroachCloud Serverl
 - The **Plan** that the cluster was created with
 - The cluster's **Cloud** provider
 - The cluster's **Region**
-- The **Monthly Budget** for the clusters
+- The cluster's **Monthly Budget**
 - The **Resource summary** of the cluster's budget allocation
-
-     Free CockroachCloud Serverless (beta) clusters have a limit of 5GB storage and 500M Request Units per month.
-
-- The cluster's **Resource usage**
-
-- The cluster's **Query performance**
+- The cluster's **Storage usage**
+- The cluster's **Request units used**
+- The cluster's **SQL statements**
 
 ## Edit your spend limit  
 
