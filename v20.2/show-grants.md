@@ -22,7 +22,7 @@ SHOW GRANTS [ON [DATABASE | SCHEMA | TABLE | TYPE] <targets...>] [FOR <users...>
 
 ### Show role grants
 
-Use the following syntax to the show the role grants for users in a cluster.
+Use the following syntax to show the role grants for users in a cluster.
 
 ~~~
 SHOW GRANTS ON ROLE [<roles...>] [FOR <users...>]
