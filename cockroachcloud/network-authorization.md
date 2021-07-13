@@ -17,7 +17,7 @@ Authorize your application server’s network and your local machine’s network
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network.
 {{site.data.alerts.end}}
 
-If your application servers’ IP addresses are not static or you want to limit your cluster's exposure to the public network, you can connect to your CockroachCloud clusters using VPC Peering or AWS PrivateLink instead.
+You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your CockroachCloud clusters using VPC Peering or AWS PrivateLink instead.
 
 ## VPC peering
 
