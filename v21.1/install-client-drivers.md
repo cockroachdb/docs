@@ -295,7 +295,7 @@ To install the [Node.js pg driver](https://www.npmjs.com/package/pg):
 $ npm install pg
 ~~~
 
-Some apps might also requires [`async`](https://www.npmjs.com/package/async):
+Some apps might also require [`async`](https://www.npmjs.com/package/async):
 
 {% include copy-clipboard.html %}
 ~~~ shell
