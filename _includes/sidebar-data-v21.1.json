@@ -591,6 +591,12 @@
                     "title": "Schema Migration Tools",
                     "items": [
                       {
+                        "title": "Alembic",
+                        "urls": [
+                          "/${VERSION}/alembic.html"
+                        ]
+                      },
+                      {
                         "title": "Flyway",
                         "urls": [
                           "/${VERSION}/flyway.html"
