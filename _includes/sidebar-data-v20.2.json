@@ -965,6 +965,12 @@
                 "urls": [
                   "/${VERSION}/disaster-recovery.html"
                 ]
+              },
+              {
+                "title": "Run Differential Queries for Data Recovery",
+                "urls": [
+                  "/${VERSION}/run-differential-queries-data-recovery.html"
+                ]
               }
             ]
           },
