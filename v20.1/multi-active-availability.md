@@ -57,7 +57,7 @@ For this example, we have 3 CockroachDB nodes (**A**, **B**, **C**) in a multi-a
 4. **C** then receives an update for key `xyz` to the values `'456'`. It communicates this write to node **B**, who confirms that its received the write, as well. After receiving the confirmation, the change is committed.
 5. **A** is restarted and rejoins the cluster. It receives an update that the key `xyz` had its value changed to `'456'`.
 
-{{site.data.alerts.callout_info}}In this example, if nodes <strong>B</strong> or <strong>C</strong> failed at any time, the cluster would have stopped responding. In terms of the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>, this is an CP system; it favored being consistent instead of available when partitions occur.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}In this example, if nodes <strong>B</strong> or <strong>C</strong> failed at any time, the cluster would have stopped responding. In terms of the <a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP theorem</a>, this is a CP system; it favored being consistent instead of available when partitions occur.{{site.data.alerts.end}}
 
 ## What's next?
 
