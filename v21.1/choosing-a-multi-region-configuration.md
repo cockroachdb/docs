@@ -56,3 +56,4 @@ Different databases and tables within the same cluster can each use different co
 - [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
+- [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
