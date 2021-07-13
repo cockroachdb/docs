@@ -255,6 +255,12 @@
                     "urls": [
                       "/${VERSION}/spatial-indexes.html"
                     ]
+                  },
+                  {
+                    "title": "Scale to Multi-region",
+                    "urls": [
+                      "/${VERSION}/multiregion-scale-application.html"
+                    ]
                   }
                 ]
               }
