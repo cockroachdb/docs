@@ -18,7 +18,7 @@ Get future release notes emailed to you:
 ### Console changes
 
 - [Multi-region](../cockroachcloud/create-your-cluster.html#step-3-select-the-region-s) clusters can now be created through the Console. To learn more about creating a multi-region cluster, see [Planning your cluster](../cockroachcloud/cluster-management.html?filters=dedicated#planning-your-cluster).
-- The **Connect** modal now has updated commands to make [connecting to your cluster](../cockroachcloud/connect-to-a-free-cluster.html) a smoother experience on Mac, Linux, and Windows.
+- The **Connect** modal now has updated commands to make [connecting to your cluster](../cockroachcloud/connect-to-a-serverless-cluster.html) a smoother experience on Mac, Linux, and Windows.
 - All CockroachCloud users now have access to the [**Transactions** page](../cockroachcloud/transactions-page.html) in the Console.
 - Navigation on the **Clusters** page is now a vertical sidebar instead of horizontal tabs.
 - Added a tooltip to the **Upgrade** option in the **Action** Menu, which gives users more version-specific context.

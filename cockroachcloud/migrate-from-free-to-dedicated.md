@@ -1,10 +1,13 @@
 ---
-title: Migrate from a CockroachCloud Free (beta) to CockroachCloud Cluster
-summary: Learn how to migrate data from a CockroachCloud Free (beta) cluster into a paid CockroachCloud cluster.
+title: Migrate from a CockroachCloud Serverless to CockroachCloud Dedicated Cluster
+summary: Learn how to migrate data from a CockroachCloud Free Serverless cluster into a CockroachCloud Dedicated cluster.
 toc: true
 ---
+{% comment %}
+This whole page needs to be updated for migration from free to pay as you go and dedicated.
+{% endcomment %}
 
-This page has instructions for migrating data from a CockroachCloud Free (beta) cluster to a paid CockroachCloud cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
+This page has instructions for migrating data from a CockroachCloud Serverless cluster to a CockroachCloud Dedicated cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
 
 - You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per CockroachCloud Free (beta) cluster.
 - You want to use any of the capabilities that are not yet available in CockroachCloud Free (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.

@@ -4,11 +4,11 @@ summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+This page answers the frequently asked questions about CockroachCloud Serverless (beta) and CockroachCloud Dedicated.
 
 <div class="filters clearfix">
-    <a href="free-faqs.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
-    <a href="frequently-asked-questions.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="serverless-faqs.html"><button class="filter-button page-level">CockroachCloud Serverless (beta)</button></a>
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
 </div>
 
 ## Cluster basics

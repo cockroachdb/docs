@@ -17,14 +17,14 @@
       	{
       	  "title": "Create a CockroachCloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-a-free-cluster.html",
+      	    "/cockroachcloud/create-a-serverless-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-a-free-cluster.html",
+      	    "/cockroachcloud/connect-to-a-serverless-cluster.html",
             "/cockroachcloud/connect-to-your-cluster.html"
       	  ]
       	},
@@ -236,6 +236,12 @@
       ]
     },
     {
+      "title": "Architecture",
+      "urls": [
+         "/cockroachcloud/architecture.html"
+      ]
+    },
+    {
       "title": "Tutorials",
       "items": [
       	{
@@ -255,7 +261,7 @@
     {
       "title": "FAQs",
       "urls": [
-        "/cockroachcloud/free-faqs.html",
+        "/cockroachcloud/serverless-faqs.html",
         "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
