@@ -61,10 +61,6 @@ You can edit your spend limit from the **Overview** page. The change in your spe
     Your **Performance estimate** in the **Summary** sidebar will update accordingly.
     
 1. Click **Update**.
-  
-## Pausing and resuming a clusters
-
-- How to pause/resume an inactive free serverless cluster
 
 ## Restore data from a backup
 
