@@ -8,7 +8,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 
 ## Considerations
 
-- `IMPORT INTO` only works for existing tables. To import data into new tables, use [`IMPORT`](import.html).
+- `IMPORT INTO` works for existing tables. To import data into new tables, read the following [example](#import-into-a-new-table-from-a-csv-file).
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
@@ -172,9 +172,38 @@ The following provide connection examples to cloud storage providers. For more i
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{{site.data.alerts.callout_info}}
 The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+
+### Import into a new table from a CSV file
+
+To import into a new table, use [`CREATE TABLE`](create-table.html) followed by `IMPORT INTO`.
+
+{{site.data.alerts.callout_info}}
+Note that as of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefore, we recommend using the following example to import data into a new table.
 {{site.data.alerts.end}}
+
+First, create the new table with the necessary columns and data types:
+
+{% include copy-clipboard.html %}
+~~~sql
+CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING
+      );
+~~~
+
+Next, use `IMPORT INTO` to import the data into the new table:
+
+{% include copy-clipboard.html %}
+~~~sql
+IMPORT INTO users (id, city, name, address, credit_card)
+     CSV DATA (
+       's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+     );
+~~~
 
 ### Import into an existing table from a CSV file
 
@@ -236,6 +265,37 @@ For more detailed information about importing data from Avro and examples, see [
 </section>
 
 <section class="filter-content" markdown="1" data-scope="azure">
+
+### Import into a new table from a CSV file
+
+To import into a new table, use [`CREATE TABLE`](create-table.html) followed by `IMPORT INTO`.
+
+{{site.data.alerts.callout_info}}
+Note that as of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefore, we recommend using the following example to import data into a new table.
+{{site.data.alerts.end}}
+
+First, create the new table with the necessary columns and data types:
+
+{% include copy-clipboard.html %}
+~~~sql
+CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING
+      );
+~~~
+
+Next, use `IMPORT INTO` to import the data into the new table:
+
+{% include copy-clipboard.html %}
+~~~sql
+IMPORT INTO users (id, city, name, address, credit_card)
+     CSV DATA (
+       'azure://{CONTAINER NAME}/{customers.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+     );
+~~~
 
 ### Import into an existing table from a CSV file
 
@@ -299,9 +359,38 @@ For more detailed information about importing data from Avro and examples, see [
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-{{site.data.alerts.callout_info}}
 The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
+
+### Import into a new table from a CSV file
+
+To import into a new table, use [`CREATE TABLE`](create-table.html) followed by `IMPORT INTO`.
+
+{{site.data.alerts.callout_info}}
+Note that as of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefore, we recommend using the following example to import data into a new table.
 {{site.data.alerts.end}}
+
+First, create the new table with the necessary columns and data types:
+
+{% include copy-clipboard.html %}
+~~~sql
+CREATE TABLE users (
+        id UUID PRIMARY KEY,
+        city STRING,
+        name STRING,
+        address STRING,
+        credit_card STRING
+      );
+~~~
+
+Next, use `IMPORT INTO` to import the data into the new table:
+
+{% include copy-clipboard.html %}
+~~~sql
+IMPORT INTO users (id, city, name, address, credit_card)
+     CSV DATA (
+       'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+     );
+~~~
 
 ### Import into an existing table from a CSV file
 
