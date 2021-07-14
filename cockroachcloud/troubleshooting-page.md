@@ -17,7 +17,7 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-4-connect-to-your-cluster). You can find your cluster name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
+**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
 
 ### Invalid cluster name in a third-party tool
 
@@ -95,7 +95,7 @@ Error: open test-cluster-ca.crt: no such file or directory
 Failed running "sql"
 ~~~
 
-**Solution**: Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-4-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
+**Solution**: Check the directory path for the [CA certificate in the connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
 
 ### Issue with CockroachDB workloads
 
