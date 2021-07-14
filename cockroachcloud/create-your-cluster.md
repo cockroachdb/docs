@@ -26,7 +26,7 @@ To create and connect to a 30-day free CockroachCloud cluster and run your first
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [C5 instance types](https://aws.amazon.com/ec2/instance-types/c5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
+CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
