@@ -58,7 +58,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 ~~~
 
 {{site.data.alerts.callout_info}}
-A geo-partitioned table does not require a secondary index. However, if the table does have one or more secondary indexes, each index must be partitioned as well. This means that the indexes must start with the column identifying geography, like the table itself, which impacts the queries they'll be useful for. If you can't partition all secondary indexes on a table you want to geo-partition, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern instead.
+A geo-partitioned table does not require a secondary index. However, if the table does have one or more secondary indexes, each index must be partitioned as well. This means that the indexes must start with the column identifying geography, like the table itself, which impacts the queries they'll be useful for. If you cannot partition all secondary indexes on a table you want to geo-partition, consider the [Geo-Partitioned Leaseholders](topology-geo-partitioned-leaseholders.html) pattern instead.
 {{site.data.alerts.end}}
 
 1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
@@ -123,7 +123,7 @@ As you scale and add more cities, you can repeat steps 2 and 3 with the new comp
 
 #### Reads
 
-Because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), reads that specify the local region key access the relevant leaseholder locally. This makes read latency very low, with the exception of reads that do not specify a region key or that refer to a partition in another region; such reads will be transactionally consistent but won't have local latencies.
+Because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), reads that specify the local region key access the relevant leaseholder locally. This makes read latency very low, with the exception of reads that do not specify a region key or that refer to a partition in another region; such reads will be transactionally consistent but will not have local latencies.
 
 For example, in the animation below:
 
@@ -137,7 +137,7 @@ For example, in the animation below:
 
 #### Writes
 
-Just like for reads, because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), writes that specify the local region key access the relevant replicas without leaving the region. This makes write latency very low, with the exception of writes that do not specify a region key or that refer to a partition in another region; such writes will be transactionally consistent but won't have local latencies.
+Just like for reads, because each partition is constrained to the relevant region (e.g., the `la` and `la_idx` partitions are located in the `us-west` region), writes that specify the local region key access the relevant replicas without leaving the region. This makes write latency very low, with the exception of writes that do not specify a region key or that refer to a partition in another region; such writes will be transactionally consistent but will not have local latencies.
 
 For example, in the animation below:
 

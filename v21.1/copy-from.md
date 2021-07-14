@@ -58,12 +58,12 @@ Run [`cockroach demo`](cockroach-demo.html) to start a temporary, in-memory clus
 $ cockroach demo
 ~~~
 
-Take note of the `(sql/tcp)` connection string listed under `Connection parameters` in the welcome message of the demo cluster's SQL shell:
+Take note of the `(sql)` connection string listed under `Connection parameters` in the welcome message of the demo cluster's SQL shell:
 
 ~~~
 # Connection parameters:
 ...
-#   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
+#   (sql) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
 ~~~
 
 Open a new terminal window, and connect to your demo cluster with `psql`, using the connection string provided for the demo cluster, with the `movr` database specified:

@@ -19,7 +19,7 @@ If you are only testing CockroachDB, or you are not concerned with protecting ne
 
 - Locally, you must have [CockroachDB installed](install-cockroachdb.html), which you'll use to generate and manage your deployment's certificates.
 
-- In Azure, you must have [SSH access](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys) to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+- In Azure, you must have SSH access to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
 
 ## Recommendations
 

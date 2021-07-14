@@ -9,5 +9,11 @@
     - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes and [increase the `default` replication factor for user data](configure-replication-zones.html#edit-the-default-replication-zone) to 5. The replication factor for [important internal data](configure-replication-zones.html#create-a-replication-zone-for-a-system-range) is 5 by default, so no adjustments are needed for internal data. In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
 
 - When deploying across multiple availability zones:
+
     - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region and set `--locality` on each node to spread data evenly across regions and AZs. In this case, if 1 AZ goes offline, the 2 remaining AZs retain a majority of replicas.
+
+    - To ensure that ranges are split evenly across nodes, use the same number of nodes in each AZ. This is to avoid overloading any nodes with excessive resource consumption.
+
+- When deploying across multiple regions:
+
     - To be able to tolerate the failure of 1 entire region, use at least 3 regions.

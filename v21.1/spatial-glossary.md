@@ -159,7 +159,7 @@ This page is provided for reference purposes only. The inclusion of a term in th
 
 <a name="proj"></a>
 
-- _PROJ_: A [cartographic projection](#cartographic-projection) library. Used by CockroachDB and other projects. For more information, see <https://www.proj4.org/>.
+- _PROJ_: A [cartographic projection](#cartographic-projection) library. Used by CockroachDB and other projects. For more information, see <https://www.proj.org/>.
 
 <a name="geobuf"></a>
 
@@ -235,3 +235,4 @@ This section has information about the representation of geometric and geographi
 - [Well known binary](well-known-binary.html)
 - [GeoJSON](geojson.html)
 - [SRID 4326 - longitude and latitude](srid-4326.html)
+- [Using GeoServer with CockroachDB](geoserver.html)

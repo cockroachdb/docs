@@ -2,10 +2,10 @@ Within the SQL shell, you can get interactive help about statements and function
 
 Command | Usage
 --------|------
-`\h`<br>`??` | List all available SQL statements, by category.
+`\h`<br><br>`??` | List all available SQL statements, by category.
 `\hf` | List all available SQL functions, in alphabetical order.
-`\h <statement>`<br>or `<statement> ?` | View help for a specific SQL statement.
-`\hf <function>`<br>or `<function> ?` | View help for a specific SQL function.
+`\h <statement>`<br><br>`<statement> ?` | View help for a specific SQL statement.
+`\hf <function>`<br><br>`<function> ?` | View help for a specific SQL function.
 
 #### Examples
 

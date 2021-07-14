@@ -649,7 +649,7 @@ The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-dat
 {% include {{page.version.version}}/app/spring-data-jpa/AccountModel.java %}
 ~~~
 
-We don't go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
+We do not go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
 
 ### Spring repositories
 

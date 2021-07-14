@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Primary;
  * This class configures MyBatis and sets up mappers for injection.
  * 
  * When using the Spring Boot Starter, using a class like this is completely optional unless you need to
- * have some mappers use the BATCH executor (as we do in this demo). If you don't have that requirement,
+ * have some mappers use the BATCH executor (as we do in this demo). If you do not have that requirement,
  * then you can remove this class. By Default, the MyBatis Spring Boot Starter will find all mappers
  * annotated with @Mapper and will automatically wire your Datasource to the underlying MyBatis
  * infrastructure.

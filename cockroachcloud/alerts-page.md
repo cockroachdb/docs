@@ -36,7 +36,7 @@ To enable alerts:
 - Under **Configure CockroachCloud Alerts**, toggle the **Alerts are on** switch.
 - Under **Add Email Recipients**, add at least one email address and click **Add**.
 
-Note that alerts are enabled for all clusters in your Organization. To filter alerts on specific clusters, you can use an email alias to send alerts to a monitoring tool such as [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) or [PagerDuty](https://www.pagerduty.com/).
+Note that alerts are enabled for all clusters in your Organization. To filter alerts on specific clusters, you can use an email alias to send alerts to a monitoring tool such as [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) or <a href="https://www.pagerduty.com/" data-proofer-ignore>PagerDuty</a>.
 
 To send a test alert:
 

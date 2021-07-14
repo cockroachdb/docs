@@ -76,9 +76,9 @@ CockroachDB stores spatial indexes as a special type of [inverted index](inverte
 The information in this section is for advanced users doing performance optimization. Most users should not need to change the default settings. Without careful testing, you can get worse performance by changing the default settings.
 {{site.data.alerts.end}}
 
-When an object is indexed, a "covering" shape (e.g. a bounding box) is constructed that completely encompasses the indexed object. Index queries work by looking for containment or intersection between the covering shape for the query object and the indexed covering shapes. This retrieves false positives but no false negatives.
+When an object is indexed, a "covering" shape (e.g., a bounding box) is constructed that completely encompasses the indexed object. Index queries work by looking for containment or intersection between the covering shape for the query object and the indexed covering shapes. This retrieves false positives but no false negatives.
 
-This leads to a tradeoff when creating spatial indexes. The number of cells used to represent an object in the index is tunable: fewer cells use less space, but create a looser covering. A looser covering retrieves more false positives from the index, which is expensive because the exact answer computation that's run after the index query can be expensive. However, at some point the benefits of retrieving fewer false positives is outweighed by how long it takes to scan a large index.
+This leads to a tradeoff when creating spatial indexes. The number of cells used to represent an object in the index is tunable: fewer cells use less space, but create a looser covering. A looser covering retrieves a larger amount of positives from the index, which is expensive because the exact answer computation that's run after the index query can be expensive. However, at some point the benefits of retrieving fewer false positives is outweighed by how long it takes to scan a large index.
 
 Another consideration is that the larger index created for a tighter covering is more expensive to scan and to update, especially for write-heavy workloads.
 
@@ -211,10 +211,10 @@ This example shows how to set all of the [spatial index tuning parameters](#inde
 
 {% include copy-clipboard.html %}
 ~~~ sql
-CREATE INDEX geom_idx 
+CREATE INDEX geom_idx
   ON some_spatial_table USING GIST(geom)
   WITH (s2_max_cells = 20, s2_max_level = 12, s2_level_mod = 3,
-        geometry_min_x = -180, geometry_max_x = 180, 
+        geometry_min_x = -180, geometry_max_x = 180,
         geometry_min_y = -180, geometry_max_y = 180);
 ~~~
 
@@ -254,3 +254,4 @@ CREATE INDEX
 - [Migrate from GeoPackage](migrate-from-geopackage.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Introducing Distributed Spatial Data in Free, Open Source CockroachDB](https://www.cockroachlabs.com/blog/spatial-data/) (blog post)
+- [Using GeoServer with CockroachDB](geoserver.html)

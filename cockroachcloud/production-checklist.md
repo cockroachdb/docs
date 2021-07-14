@@ -16,8 +16,14 @@ Creating the appropriate size pool of connections is critical to gaining maximum
 
 For guidance on sizing, validating, and using connection pools with CockroachDB, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
 
+## Keeping connections current
+
+After an application establishes a connection to CockroachCloud, those connections can occasionally become invalid. This could be due to changes in the cluster topography, rolling [upgrades](upgrade-policy.html) and restarts, network disruptions, or cloud infrastructure unavailability.
+
+Make sure connection validation and retry logic is used by your application. Validating and retrying connections is typically handled by the driver, framework, or the connection pool used by an application. For guidance on connection pool sizing and connection validation, see [Use Connection Pools](../{{site.versions["stable"]}}/connection-pooling.html).
+
 ## Authorize the right network
 
 CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks. During the application development phase, you might have authorized only your local machine’s network. To move into production, you need to authorize your application server’s network.
 
-To verify that you have authorized the application server's network, navigate to the [**Networking** page](connect-to-your-cluster.html#step-1-authorize-your-network) on the CockroachCloud Console and check if you see the application server network in the list of authorized networks. If you don't see the application server network in the list, [authorize the network](connect-to-your-cluster.html#step-1-authorize-your-network).
+To verify that you have authorized the application server's network, navigate to the [**Networking** page](connect-to-your-cluster.html#step-1-authorize-your-network) on the CockroachCloud Console and check if you see the application server network in the list of authorized networks. If you do not see the application server network in the list, [authorize the network](connect-to-your-cluster.html#step-1-authorize-your-network).

@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 {% include {{ page.version.version }}/misc/movr-live-demo.md %}
 
 ## Before you begin
@@ -60,7 +62,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
     ~~~
 
 {{site.data.alerts.callout_info}}
-You can also deploy CRDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
+You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
 ## Multi-region application deployment (GKE)
@@ -73,11 +75,11 @@ In this tutorial, we use [kubemci](https://cloud.google.com/kubernetes-engine/do
 To serve a secure web application, you also need a public domain name!
 {{site.data.alerts.end}}
 
-1. If you don't have a gcloud account, create one at https://cloud.google.com/.
+1. If you do not have a gcloud account, create one at https://cloud.google.com/.
 
 1. Create a gcloud project on the [GCP console](https://console.cloud.google.com/).
 
-1. **Optional:** Enable the [Google Maps Embed API](https://console.cloud.google.com/apis/library), create an API key, restrict the API key to all subdomains of your domain name (e.g. `https://site.com/*`), and retrieve the API key.
+1. **Optional:** Enable the [Google Maps Embed API](https://console.cloud.google.com/apis/library), create an API key, restrict the API key to all subdomains of your domain name (e.g., `https://site.com/*`), and retrieve the API key.
 
     {{site.data.alerts.callout_info}}
     The example HTML templates include maps. Not providing an API key to the application will not break the application.
@@ -196,6 +198,7 @@ To serve a secure web application, you also need a public domain name!
     ~~~ shell
     $ gcloud compute addresses list
     ~~~
+
 
 1. Download [`kubemci`](https://github.com/GoogleCloudPlatform/k8s-multicluster-ingress), and then make it executable:
 

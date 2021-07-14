@@ -73,49 +73,49 @@ Here is the output of `\demo ls` from the SQL shell.
 
 ~~~
 node 1:
-  (console) http://127.0.0.1:8080
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26257
-  (sql/tcp) postgres://root@127.0.0.1:26257?sslmode=disable
-
-node 8:
-  (console) http://127.0.0.1:8081
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26264
-  (sql/tcp) postgres://root@127.0.0.1:26258?sslmode=disable
-
-node 3:
-  (console) http://127.0.0.1:8082
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26259
-  (sql/tcp) postgres://root@127.0.0.1:26259?sslmode=disable
-
-node 6:
-  (console) http://127.0.0.1:8083
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26262
-  (sql/tcp) postgres://root@127.0.0.1:26260?sslmode=disable
-
-node 9:
-  (console) http://127.0.0.1:8084
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26265
-  (sql/tcp) postgres://root@127.0.0.1:26261?sslmode=disable
-
-node 4:
-  (console) http://127.0.0.1:8085
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26260
-  (sql/tcp) postgres://root@127.0.0.1:26262?sslmode=disable
+  (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
 
 node 2:
-  (console) http://127.0.0.1:8086
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26258
-  (sql/tcp) postgres://root@127.0.0.1:26263?sslmode=disable
+  (webui)    http://127.0.0.1:8081/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26258?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26258
+
+node 3:
+  (webui)    http://127.0.0.1:8082/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26259?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26259
+
+node 4:
+  (webui)    http://127.0.0.1:8083/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26260?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26260
 
 node 5:
-  (console) http://127.0.0.1:8087
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26261
-  (sql/tcp) postgres://root@127.0.0.1:26264?sslmode=disable
+  (webui)    http://127.0.0.1:8084/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26261?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26261
+
+node 6:
+  (webui)    http://127.0.0.1:8085/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26262?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26262
 
 node 7:
-  (console) http://127.0.0.1:8088
-  (sql)     postgres://root:unused@?host=%2Fvar%2Ffolders%2Fbh%2F_32m6zhj67z534slcg79nm_w0000gp%2FT%2Fdemo731561476&port=26263
-  (sql/tcp) postgres://root@127.0.0.1:26265?sslmode=disable
+  (webui)    http://127.0.0.1:8086/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26263?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26263
+
+node 8:
+  (webui)    http://127.0.0.1:8087/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26264?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26264
+
+node 9:
+  (webui)    http://127.0.0.1:8088/demologin?password=demo76950&username=demo
+  (sql)      postgres://demo:demo76950@127.0.0.1:26265?sslmode=require
+  (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26265
 ~~~
 
 And here is the view on the **Network Latency Page**, which shows which nodes are in which cluster regions:
@@ -248,7 +248,7 @@ Follow the steps below to start 3 instances of MovR. Each instance is pointed at
 
 Now that you have load hitting the cluster from different regions, check how the service latencies look before you do any multi-region configuration from SQL. This is the "before" case in the "before and after".
 
-In the [DB Console](admin-ui-overview.html) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**](ui-overview-dashboard.html) on the left and hover over the [**Service Latency: SQL, 99th percentile**](ui-overview-dashboard.html#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
+In the [DB Console](ui-overview.html) at <a data-proofer-ignore href="http://127.0.0.1:8080">http://127.0.0.1:8080</a>, click [**Metrics**](ui-overview-dashboard.html) on the left and hover over the [**Service Latency: SQL, 99th percentile**](ui-overview-dashboard.html#service-latency-sql-99th-percentile) timeseries graph. You should see the effects of network latency on this workload.
 
 <img src="{{ 'images/v21.1/geo-partitioning-sql-latency-before.png' | relative_url }}" alt="Geo-partitioning SQL latency" style="max-width:100%" />
 

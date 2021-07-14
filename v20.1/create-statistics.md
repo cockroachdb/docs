@@ -8,7 +8,7 @@ Use the `CREATE STATISTICS` [statement](sql-statements.html) to generate table s
 Once you [create a table](create-table.html) and load data into it (e.g., [`INSERT`](insert.html), [`IMPORT`](import.html)), table statistics can be generated. Table statistics help the cost-based optimizer determine the cardinality of the rows used in each query, which helps to predict more accurate costs.
 
 {{site.data.alerts.callout_info}}
-[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns. As a result, most users don't need to issue `CREATE STATISTICS` statements directly.
+[By default, CockroachDB automatically generates statistics](cost-based-optimizer.html#table-statistics) on all indexed columns, and up to 100 non-indexed columns. As a result, most users do not need to issue `CREATE STATISTICS` statements directly.
 {{site.data.alerts.end}}
 
 ## Synopsis

@@ -4,7 +4,7 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/planned-maintenance.html
+
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTrGKGxMrzuXTAYGI376H5WfBYaJ9htl8EuPWL30dvfK6S-konovWV1QG2G9t-Xdsel3BdvMzmF29pb/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

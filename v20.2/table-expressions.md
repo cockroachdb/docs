@@ -338,7 +338,7 @@ A [statement](sql-grammar.html#row_source_extension_stmt) between square bracket
 - [`DELETE`](delete.html)
 - [`EXPLAIN`](explain.html)
 - [`INSERT`](insert.html)
-- [`SELECT`](select.html)
+- [`SELECT`](select-clause.html)
 - [`SHOW`](sql-statements.html#data-definition-statements)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)

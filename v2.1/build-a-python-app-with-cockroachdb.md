@@ -2,7 +2,6 @@
 title: Build a Python App with CockroachDB
 summary: Learn how to use CockroachDB from a simple Python application with the psycopg2 driver.
 toc: true
-asciicast: true
 twitter: false
 ---
 
@@ -100,7 +99,7 @@ $ python txn-sample.py
 
 The output should be:
 
-~~~ 
+~~~
 Balances after transfer:
 ['1', '900']
 ['2', '350']
@@ -193,7 +192,7 @@ $ python txn-sample.py
 
 The output should be:
 
-~~~ 
+~~~
 Balances after transfer:
 ['1', '900']
 ['2', '350']

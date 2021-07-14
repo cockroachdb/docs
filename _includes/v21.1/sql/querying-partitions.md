@@ -1,6 +1,6 @@
 ## Querying partitions
 
-Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](topology-geo-partitioned-replicas.html), partitioning can limit a query scan to data in a specific region.
+Similar to [indexes](indexes.html), partitions can improve query performance by limiting the numbers of rows that a query must scan. In the case of [geo-partitioned data](regional-tables.html), partitioning can limit a query scan to data in a specific region.
 
 ### Filtering on an indexed column
 
@@ -139,7 +139,7 @@ The query returns the same result, but because `name` is not an indexed column, 
 
 ### Filtering on an partitioned column
 
-If you know which partition contains the data that you are querying, using a filter (e.g. a [`WHERE` clause](select-clause.html#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
+If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause](select-clause.html#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
 
 Now suppose that you know the user's name and location. You can query the table with a filter on the user's name and city:
 

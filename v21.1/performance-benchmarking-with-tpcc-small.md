@@ -4,14 +4,12 @@ summary: Learn how to benchmark CockroachDB against TPC-C with 3 nodes on `c5d.4
 toc: true
 toc_not_nested: true
 key: performance-benchmarking-with-tpc-c-1k-warehouses.html
-redirect_from:
-- performance-benchmarking-with-tpc-c-1k-warehouses.html
 ---
 
 This page shows you how to reproduce [CockroachDB's TPC-C performance benchmarking results](performance.html#scale) on commodity AWS hardware. Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
 
 <div class="filters filters-big clearfix">
-  <a href="performance-benchmarking-with-tpc-c-10-warehouses.html"><button class="filter-button">Local</button></a>
+  <a href="performance-benchmarking-with-tpcc-local.html"><button class="filter-button">Local</button></a>
   <button class="filter-button current"><strong>Small</strong></button>
   <a href="performance-benchmarking-with-tpcc-medium.html"><button class="filter-button">Medium</button></a>
   <a href="performance-benchmarking-with-tpcc-large.html"><button class="filter-button">Large</button></a>
@@ -114,7 +112,7 @@ CockroachDB requires TCP communication on two ports:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach init --insecure --host=<address of any node>
+    $ cockroach init --insecure --host=<address of any node on --join list>
     ~~~
 
 ## Step 3. Import the TPC-C dataset
@@ -191,4 +189,4 @@ _elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
 
 - Performance Tuning
 
-    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multi-region-overview.html).
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](performance-best-practices-overview.html), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Overview](multiregion-overview.html).

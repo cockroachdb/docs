@@ -130,7 +130,7 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 - Use `m` (general purpose) or `c` (compute-optimized) [instances](https://aws.amazon.com/ec2/instance-types/).
 
-    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for internal testing. Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
+    For example, Cockroach Labs has used `c5d.4xlarge` (16 vCPUs and 32 GiB of RAM per instance, EBS) for [performance benchmarking](performance-benchmarking-with-tpcc-small.html). Note that the instance type depends on whether EBS is used or not. If you're using EBS, use a `c5` instance.
 
     {{site.data.alerts.callout_danger}}
     Do not use ["burstable" `t` instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html), which limit the load on CPU resources.
@@ -159,9 +159,9 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 
 #### GCP
 
-- Use `n1-standard` or `n1-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
+- Use `n2-standard` or `n2-highcpu` [predefined VMs](https://cloud.google.com/compute/pricing#predefined_machine_types), or [custom VMs](https://cloud.google.com/compute/pricing#custommachinetypepricing).
 
-    For example, Cockroach Labs has used `n1-standard-16` (16 vCPUs and 60 GiB of RAM per VM, local SSD) for [performance benchmarking](performance-benchmarking-with-tpcc-small.html). We have also found benefits in using the [Skylake platform](https://cloud.google.com/compute/docs/cpu-platforms).
+    For example, Cockroach Labs has used `n2-standard-16` (16 vCPUs and 64 GiB of RAM per VM, local SSD) for performance benchmarking.
 
     {{site.data.alerts.callout_danger}}
     Do not use `f1` or `g1` [shared-core machines](https://cloud.google.com/compute/docs/machine-types#sharedcore), which limit the load on CPU resources.
@@ -292,7 +292,7 @@ Library | Description
 -----------|------------
 [`glibc`](https://www.gnu.org/software/libc/libc.html) | The standard C library.<br><br>If you build CockroachDB from source, rather than use the official CockroachDB binary for Linux, you can use any C standard library, including MUSL, the C standard library used on Alpine.
 `libncurses` | Required by the [built-in SQL shell](cockroach-sql.html).
-[`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br><span class="version-tag">New in v21.1:</span> The CockroachDB binary now includes Go's copy of the `tzdata` library. If CockroachDB can't find the `tzdata` library externally, it will use this built-in copy.
+[`tzdata`](https://www.iana.org/time-zones) | Required by certain features of CockroachDB that use time zone data, for example, to support using location-based names as time zone identifiers. This library is sometimes called `tz` or `zoneinfo`.<br><br><span class="version-tag">New in v21.1:</span> The CockroachDB binary now includes Go's copy of the `tzdata` library. If CockroachDB cannot find the `tzdata` library externally, it will use this built-in copy.
 
 These libraries are found by default on nearly all Linux distributions, with Alpine as the notable exception, but it's nevertheless important to confirm that they are installed and kept up-to-date. For the time zone data in particular, it's important for all nodes to have the same version; when updating the library, do so as quickly as possible across all nodes.
 

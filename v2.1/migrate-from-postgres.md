@@ -203,8 +203,8 @@ Example usage:
 - [Migrate from MySQL][mysql]
 - [Can a Postgres or MySQL application be migrated to CockroachDB?](frequently-asked-questions.html#can-a-postgresql-or-mysql-application-be-migrated-to-cockroachdb)
 - [SQL Dump (Export)](sql-dump.html)
-- [Back up Data](back-up-data.html)
-- [Restore Data](restore-data.html)
+- [Back up Data](backup-and-restore.html)
+- [Restore Data](backup-and-restore.html)
 - [Use the Built-in SQL Client](use-the-built-in-sql-client.html)
 - [Other Cockroach Commands](cockroach-commands.html)
 

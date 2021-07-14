@@ -2,7 +2,6 @@
 title: Cost-Based Optimizer
 summary: The cost-based optimizer seeks the lowest cost for a query, usually related to time.
 toc: true
-redirect_from: sql-optimizer.html
 ---
 
 The cost-based optimizer seeks the lowest cost for a query, usually related to time.
@@ -114,7 +113,7 @@ The query plan cache is enabled by default. To disable it, execute the following
 
 Finally, note that only the following statements use the plan cache:
 
-- [`SELECT`](select.html)
+- [`SELECT`](select-clause.html)
 - [`INSERT`](insert.html)
 - [`UPDATE`](update.html)
 - [`UPSERT`](upsert.html)

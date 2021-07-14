@@ -2,10 +2,9 @@
 title: Logging
 summary: Overview of the logging system and logging channels.
 toc: true
-redirect_from: debug-and-error-logs.html
 ---
 
-If you need to monitor your cluster, tune performance, or [troubleshoot](troubleshooting-overview.html) issues, you can check the CockroachDB logs, which include details about notable cluster, node, and range-level events. 
+If you need to monitor your cluster, tune performance, or [troubleshoot](troubleshooting-overview.html) issues, you can check the CockroachDB logs, which include details about notable cluster, node, and range-level events.
 
 {{site.data.alerts.callout_info}}
 This logging system has been introduced in v21.1 and is backward-compatible. For a summary of what has changed, see [Changes to logging system](#changes-to-logging-system).
@@ -49,7 +48,7 @@ Logging channels are analogous to [logging facilities in Syslog](https://en.wiki
 
 ## Changes to logging system
 
-Prior to v21.1, logs were separated into a general CockroachDB log and secondary SQL and storage logs. These were output to correspondingly named log files. 
+Prior to v21.1, logs were separated into a general CockroachDB log and secondary SQL and storage logs. These were output to correspondingly named log files.
 
 The events collected by those logs are now directed into the following [logging channels](#logging-channels):
 
@@ -74,7 +73,7 @@ Notable events that were previously collected in the general CockroachDB log are
 - `USER_ADMIN`
 - `PRIVILEGES`
 
-<span class="version-tag">New in v21.1:</span> Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html). 
+<span class="version-tag">New in v21.1:</span> Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
 
 ## See also
 

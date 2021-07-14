@@ -2,12 +2,6 @@
 
 If you have not already installed the official CockroachDB Docker image, go to [Install CockroachDB](install-cockroachdb.html) and follow the instructions under **Use Docker**.
 
-<!-- TODO: update the asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster-docker.json" cols="107" speed="2" theme="monokai" poster="npt:0:43" title="Start a Local Cluster in Docker"></asciinema-player>
--->
-
 ## Step 1. Create a bridge network
 
 Since you'll be running multiple Docker containers on a single host, with one CockroachDB node per container, you need to create what Docker refers to as a [bridge network](https://docs.docker.com/engine/userguide/networking/#/a-bridge-network). The bridge network will enable the containers to communicate as a single cluster while keeping them isolated from external networks.

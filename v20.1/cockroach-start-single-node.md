@@ -429,7 +429,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 - Running a local multi-node cluster:
     - [From Binary](start-a-local-cluster.html)  
     - [In Kubernetes](orchestrate-a-local-cluster-with-kubernetes.html)
-    - [In Docker](start-a-local-cluster-in-docker.html)
+    - [In Docker](start-a-local-cluster-in-docker-mac.html)
 - Running a distributed multi-node cluster:
     - [From Binary](manual-deployment.html)
     - [In Kubernetes](orchestrate-cockroachdb-with-kubernetes.html)

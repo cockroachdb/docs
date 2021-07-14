@@ -142,7 +142,7 @@ module Jekyll
       def self.remote_object_ids
         Logger.log('I:Getting list of existing records')
 
-        # Main index empty, the list is empty no matter what (we don't use the
+        # Main index empty, the list is empty no matter what (we do not use the
         # dedicated index in that case)
         return [] if record_count(index).zero?
 
@@ -315,6 +315,18 @@ module Jekyll
           synonyms: ['db console', 'admin ui', 'web ui']
         }, false)
 
+        index.save_synonym('technical advisory', {
+          objectID: 'technical advisory',
+          type: 'synonym',
+          synonyms: ['technical advisory', 'tech advisory', 'advisory']
+        }, false)
+
+        index.save_synonym('postgresql', {
+          objectID: 'postgresql',
+          type: 'synonym',
+          synonyms: ['postgresql', 'postgres']
+        }, false)
+
         return
       end
 
@@ -322,7 +334,7 @@ module Jekyll
       #
       # This will first compare the settings about to be pushed with the
       # settings already pushed. It will compare userData.settingID for that.
-      # If the settingID is the same, we don't push as this won't change
+      # If the settingID is the same, we do not push as this will not change
       # anything. We will still check if the remote config seem to have been
       # manually altered though, and warn the user that this is not the
       # preferred way of doing so.
@@ -341,7 +353,7 @@ module Jekyll
         are_settings_forced = Configurator.force_settings?
 
         # The config we're about to push is the same we pushed previously. We
-        # won't push again.
+        # will not push again.
         if setting_id == remote_setting_id && !are_settings_forced
           Logger.log('I:Settings are already up to date.')
           # Check if remote config has been changed outside of the plugin, so we
@@ -383,7 +395,7 @@ module Jekyll
       # their dashboard
       #
       # When users change some settings in their dashboard, those settings might
-      # get overwritten by the plugin. We can't prevent that, but we can warn
+      # get overwritten by the plugin. We cannot prevent that, but we can warn
       # them when we detect they changed something.
       def self.warn_of_manual_dashboard_editing(changed_keys)
         # Transform the hash into readable YAML

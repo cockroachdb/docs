@@ -174,7 +174,7 @@ Because this table has several columns in common with the `users` table, you can
 (1 row)
 ~~~
 
-Now you can split the table based on the compound primary key. Note that you don't have to specify the entire value for the primary key, just the prefix.
+Now you can split the table based on the compound primary key. Note that you do not have to specify the entire value for the primary key, just the prefix.
 
 {% include copy-clipboard.html %}
 ~~~ sql

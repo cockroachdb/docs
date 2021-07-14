@@ -49,7 +49,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 1. On the **Summary** page, enter your credit card details.
 
     {{site.data.alerts.callout_info}}
-    You won't be charged until after your free trial expires in 30 days.
+    You will not be charged until after your free trial expires in 30 days.
     {{site.data.alerts.end}}
 
 1. In the **Trial Code** field, enter `CRDB30`. Click **Apply**.

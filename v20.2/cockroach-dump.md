@@ -2,7 +2,6 @@
 title: cockroach dump
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: true
-redirect_from: sql-dump.html
 key: sql-dump.html
 ---
 
