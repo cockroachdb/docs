@@ -57,9 +57,12 @@ If you do have internet access, check if you have [authorized the right network]
 
 If neither of the above steps succeed, investigate your application's timeout value and environment:
 
-- Increase the timeout value (e.g., from 5 seconds to 30 seconds) for your application and see if connection succeeds.
+- Increase the timeout value (e.g., from 5 seconds to 30 seconds) for your application's driver or framework and see if connection succeeds.
 
 - If you can connect and run the same query in the SQL CLI, investigate your application environment.
+{% comment %}
+Update this in future if we have more troubleshooting guidance.
+{% endcomment %}
 
 - Investigate your network infrastructure to see if there is a network related performance problem, or [contact support](https://support.cockroachlabs.com/) with these details.
 
