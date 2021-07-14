@@ -69,7 +69,7 @@ To achieve this, each lease renewal or transfer also attempts to collocate them.
 
 #### Epoch-based leases (table data)
 
-To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to immediately lose all of its leases.
+To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node) a few seconds later when the liveness record expires.
 
 Because leases do not expire until a node disconnects from a cluster, leaseholders do not have to individually renew their own leases. Tying lease lifetimes to node liveness in this way lets us eliminate a substantial amount of traffic and Raft processing we would otherwise incur, while still tracking leases for every range.
 
@@ -78,6 +78,23 @@ Because leases do not expire until a node disconnects from a cluster, leaseholde
 A table's meta and system ranges (detailed in the [distribution layer](distribution-layer.html#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
 
 However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+
+#### How leases are transferred from a dead node
+
+When a node disconnects, the process by which each of its leases is transferred to a healthy node is as follows:
+
+1. The dead node's liveness record, which is stored in a system range, has an expiration time of 9 seconds, and is heartbeated every 4.5 seconds. When the node dies, the amount of time the cluster has to wait for the record to expire varies, but on average is 6.75 seconds.
+2. A healthy node attempts to acquire the lease. This is rejected because lease acquisition can only happen on the Raft leader, which the healthy node is not (yet).  Therefore, an election must be held.
+3. The rejected attempt at lease acquisition [unquiesces](../ui-replication-dashboard.html#replica-quiescence) ("wakes up") the range associated with the lease.
+4. What happens next depends on whether the lease is on [table data](#epoch-based-leases-table-data) or [meta ranges or system ranges](#expiration-based-leases-meta-and-system-ranges):
+    - If the lease is on [meta or system ranges](#expiration-based-leases-meta-and-system-ranges), the node that unquiesced the range waits out the Raft election timeout (3 seconds) before kicking off a campaign to try and win Raft leadership so it can become the leaseholder.
+    - If the lease is on [table data](#epoch-based-leases-table-data), the "is the leader alive?" check described above is skipped and an election is called immediately. The check is skipped since it would introduce a circular dependency on the liveness record used for table data, which is itself stored in a system range.
+5. The Raft election is held and a new leader is chosen from among the healthy nodes.
+6. The lease acquisition can now be processed by the newly elected Raft leader.
+
+This process should take no more than 9 seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition. An additional 3 seconds' wait will occur if the lease is on a meta or system range.
+
+Finally, note that the process described above is lazily initiated: it only occurs when a new request comes in for the range associated with the lease.
 
 #### Leaseholder rebalancing
 
