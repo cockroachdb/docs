@@ -31,5 +31,6 @@ For more information about how to choose a multi-region configuration, see [Choo
 + [Multi-region overview](multiregion-overview.html)
 + [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
 + [When to use `REGIONAL` vs `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
+- [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)

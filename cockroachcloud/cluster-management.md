@@ -30,6 +30,7 @@ For each cluster, the following details display:
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
     - [**Add/remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
+    - [**Upgrade major version**](upgrade-to-v21.1.html)
     {% comment %}
     - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) (Paid clusters only)
     {% endcomment %}

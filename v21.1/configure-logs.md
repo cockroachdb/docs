@@ -34,24 +34,24 @@ All log settings for a `cockroach` command are specified with a YAML payload in 
 
 - Block format, where each parameter is written on a separate line. For example, after creating a file `logs.yaml`, pass the YAML values with either `--log-config-file` or `--log`:
 
-  {% include_cached copy-clipboard.html %}
-  ~~~ shell
-  $ cockroach start-single-node --certs-dir=certs --log-config-file=logs.yaml
-  ~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start-single-node --certs-dir=certs --log-config-file=logs.yaml
+    ~~~
 
-  {% include_cached copy-clipboard.html %}
-	~~~ shell
-	$ cockroach start-single-node --certs-dir=certs --log="$(cat logs.yaml)"
-	~~~
+    {% include_cached copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach start-single-node --certs-dir=certs --log="$(cat logs.yaml)"
+  	~~~
 
 - Inline format, where all parameters are specified on one line. For example, to generate an `ops` log file that collects the `OPS` and `HEALTH` channels (overriding the file groups defined for those channels in the [default configuration](#default-logging-configuration)):
 
-  {% include_cached copy-clipboard.html %}
-	~~~ shell
-	$ cockroach start-single-node --certs-dir=certs --log="sinks: {file-groups: {ops: {channels: [OPS, HEALTH]}}}"
-	~~~
+    {% include_cached copy-clipboard.html %}
+  	~~~ shell
+  	$ cockroach start-single-node --certs-dir=certs --log="sinks: {file-groups: {ops: {channels: [OPS, HEALTH]}}}"
+  	~~~
 
-	Note that the inline spaces must be preserved.
+  	Note that the inline spaces must be preserved.
 
 For clarity, this article uses the block format to describe the YAML payload, which has the overall structure:
 
@@ -62,7 +62,7 @@ sinks:
    file-groups: ...      # file sink definitions
    fluent-servers: ...   # network sink definitions
    stderr: ...           # stderr sink definitions
-stray-error-capture: ... # parameters for the stray error capture system
+capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -179,6 +179,10 @@ sinks:
     ...
 ~~~
 
+{{site.data.alerts.callout_info}}
+A network sink can be listed more than once with different `address` values. This routes the same logs to different Fluentd servers.
+{{site.data.alerts.end}}
+
 Fluentd servers accept the following parameters along with the [common sink parameters](#common-sink-parameters).
 
 | Parameter | Description                                                                                                        |
@@ -188,6 +192,8 @@ Fluentd servers accept the following parameters along with the [common sink para
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
 
 Further details about the network implementation are in [log sinks](log-sinks.html#output-to-fluentd-compatible-log-collectors).
+
+For an example network logging configuration, see [Logging use cases](logging-use-cases.html#network-logging).
 
 ### Output to `stderr`
 
