@@ -1,19 +1,19 @@
 ---
 title: Monitor CockroachDB with Datadog
-summary: The CockroachDB integration with Datadog enables collection and alerting on CockroachDB metrics.
+summary: The CockroachDB integration with Datadog enables data visualization and alerting on CockroachDB metrics.
 toc: true
 ---
 
-[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB integration with Datadog enables collection and alerting on many [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
+[Datadog](https://www.datadoghq.com/) is a monitoring and security platform for cloud applications. The CockroachDB integration with Datadog enables data collection and alerting on [CockroachDB metrics](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#data-collected) using the Datadog platform.
 
-In this tutorial, you will enable the CockroachDB integration in Datadog, configure logging and alerting, and test the visualization dashboards.
+In this tutorial, you will enable the CockroachDB integration in Datadog, configure logging and alerting, and visualize data.
 
 For more information about the integration, see the [Datadog blog post](https://www.datadoghq.com/blog/monitor-cockroachdb-performance-metrics-with-datadog/).
 
 {{site.data.alerts.callout_success}}
 For more information about using Datadog, see the [Datadog documentation](https://docs.datadoghq.com/).
 
-If you run into problems with this integration, please contact the [Datadog support team](https://docs.datadoghq.com/help/).
+If you run into problems with this integration, please file an issue on the [Datadog Agent issue tracker](https://github.com/DataDog/datadog-agent).
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -21,7 +21,7 @@ If you run into problems with this integration, please contact the [Datadog supp
 - [Datadog Agent](https://app.datadoghq.com/account/settings#agent)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [CockroachCloud](../cockroachcloud/index.html) does not currently expose endpoints for use with Datadog.
+This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [CockroachCloud](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB check
@@ -48,9 +48,9 @@ Uncomment the following line in `cockroachdb.d/conf.yaml`:
 
 This enables metrics collection via our [Prometheus endpoint](monitoring-and-alerting.html#prometheus-endpoint).
 
-### Specify certificates
+### Configure security certificates
 
-Uncomment the lines that begin with `tls_private_key` and `tls_ca_cert`. These should specify the full file path to your CA key and certificate, respectively.
+Uncomment the lines that begin with `tls_private_key` and `tls_ca_cert`. These should specify the full file paths to your CA key and certificate, respectively.
 
 For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster#step-1-generate-certificates), the paths would look something like:
 
@@ -82,7 +82,7 @@ logs:
 The above `path` value specifies the [default](configure-logs.html#default-logging-configuration) CockroachDB log file and location. 
 
 {{site.data.alerts.callout_info}}
-You can configure both the [logging directory](configure-logs.html#set-file-defaults) and [log file](configure-logs.html#output-to-files).
+You can configure both the CockroachDB [logging directory](configure-logs.html#set-file-defaults) and [log files](configure-logs.html#output-to-files).
 {{site.data.alerts.end}}
 
 Log collection is disabled by default in the Datadog Agent. Follow the steps in the [Datadog documentation](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#activate-log-collection) to activate log collection.
