@@ -42,7 +42,7 @@ After making the following changes, restart the Datadog Agent to apply them.
 
 Uncomment the following line in `cockroachdb.d/conf.yaml`:
 
-~~~
+~~~ yaml
 - prometheus_url: http://localhost:8080/_status/vars
 ~~~
 
@@ -54,8 +54,11 @@ Uncomment the lines that begin with `tls_private_key` and `tls_ca_cert`. These s
 
 For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster#step-1-generate-certificates), the paths would look something like:
 
-~~~
+~~~ yaml
 tls_private_key: /custom/dir/path/client.root.key
+~~~
+
+~~~ yaml
 tls_ca_cert: /custom/dir/path/ca.crt
 ~~~
 
@@ -63,7 +66,8 @@ tls_ca_cert: /custom/dir/path/ca.crt
 
 Optionally enable Datadog to collect [CockroachDB logs](logging-overview.html) by adding the following block to `cockroachdb.d/conf.yaml`:
 
-~~~
+{% include_cached copy-clipboard.html %}
+~~~ yaml
 logs:
  - type: file
    path: /cockroach-data/logs/cockroach.log
@@ -89,7 +93,7 @@ Run the Datadog [`status` subcommand](https://docs.datadoghq.com/agent/guide/age
 
 Your output should contain a block like this:
 
-~~~
+~~~ shell
 cockroachdb (1.6.0)
 -------------------
   Instance ID: cockroachdb:42170ecfbfb171c5 [OK]
@@ -130,12 +134,14 @@ To test the dashboard functionality, use [`cockroach workload`](cockroach-worklo
 
 Initialize the workload for MovR, a fictional vehicle-sharing company:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~
 
 Run the MovR workload for 5 minutes:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 cockroach workload run movr --duration=5m 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
 ~~~
