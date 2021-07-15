@@ -40,7 +40,7 @@ Open `modules.d/cockroachdb.yml` in your Metricbeat installation directory.
 
 Follow the steps in the [Elastic documentation](https://www.elastic.co/guide/en/beats/metricbeat/current/configuration-ssl.html) to enable SSL on the CockroachDB module.
 
-For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster#step-1-generate-certificates), the YAML should look like:
+For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster.html#step-1-generate-certificates), the YAML should look like:
 
 ~~~ yaml
 - module: cockroachdb

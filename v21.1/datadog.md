@@ -52,7 +52,7 @@ This enables metrics collection via our [Prometheus endpoint](monitoring-and-ale
 
 Uncomment the lines that begin with `tls_private_key` and `tls_ca_cert`. These should specify the full file paths to your CA key and certificate, respectively.
 
-For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster#step-1-generate-certificates), the paths would look something like:
+For example, if you used [`cockroach cert`](cockroach-cert.html) to [secure your cluster](secure-a-cluster.html#step-1-generate-certificates), the paths would look something like:
 
 ~~~ yaml
 tls_private_key: /custom/dir/path/client.root.key
