@@ -83,9 +83,7 @@ The following provide connection examples to cloud storage providers. For more i
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/aws-auth-note.md %}
 
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 
@@ -107,12 +105,16 @@ Each of these examples use the `bank` database and the `customers` table; `custo
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
-### Non-distributed export using the SQL shell
+For more information, see [selection queries](selection-queries.html).
+
+### Non-distributed export using the SQL client
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
+
+For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
 
 ### Export gzip compressed CSV files
 
@@ -154,12 +156,16 @@ Each of these examples use the `bank` database and the `customers` table; `custo
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
-### Non-distributed export using the SQL shell
+For more information, see [selection queries](selection-queries.html).
+
+### Non-distributed export using the SQL client
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
+
+For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
 
 ### Export gzip compressed CSV files
 
@@ -181,9 +187,7 @@ export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
 
 Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
 
@@ -205,12 +209,16 @@ Each of these examples use the `bank` database and the `customers` table; `custo
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
-### Non-distributed export using the SQL shell
+For more information, see [selection queries](selection-queries.html).
+
+### Non-distributed export using the SQL client
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
+
+For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
 
 ### Export gzip compressed CSV files
 

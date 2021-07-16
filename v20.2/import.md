@@ -191,9 +191,7 @@ The following provide connection examples to cloud storage providers. For more i
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/aws-auth-note.md %}
 
 ### Import a table from a CSV file
 
@@ -382,14 +380,14 @@ For the command above to succeed, you need to have created the dump file with sp
 
 ### Import a CockroachDB dump file
 
-Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 's3://{BUCKET NAME}/{employees.sql}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
+`cockroach dump` is no longer recommended and has been deprecated in v20.2. For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
@@ -440,10 +438,16 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 ### Import a table from a local file
 
+You can import a file to `nodelocal`, which is the external IO directory on a node's local file system. To import to `nodelocal`,  a `nodeID` is required and the data files will be in the `extern` directory of the specified node.
+
+{{site.data.alerts.callout_info}}
+The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled. Use `self` if you do not want to specify a `nodeID`, and the individual data files will be in the `extern` directories of arbitrary nodes; however, to work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
+{{site.data.alerts.end}}
+
 If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
 
 ~~~ shell
-cd node2 && ls
+cd /tmp/node2 && ls
 ~~~
 
 ~~~
@@ -460,7 +464,7 @@ auxiliary
 ~~~
 
 ~~~ shell
-cd extern && ls
+cd /tmp/node2/extern && ls
 ~~~
 
 ~~~
@@ -509,7 +513,7 @@ AVRO DATA ('s3://{BUCKET NAME}/{customers.avro}?AWS_ACCESS_KEY_ID={ACCESS KEY}&A
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+For more information about importing data from Avro, including examples, see [Migrate from Avro](migrate-from-avro.html).
 
 </section>
 
@@ -703,14 +707,14 @@ For the command above to succeed, you need to have created the dump file with sp
 
 ### Import a CockroachDB dump file
 
-Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'azure://{CONTAINER NAME}/{employees.sql}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}';
 ~~~
 
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
+`cockroach dump` is no longer recommended and has been deprecated in v20.2. For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
@@ -761,10 +765,16 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 ### Import a table from a local file
 
+You can import a file to `nodelocal`, which is the external IO directory on a node's local file system. To import to `nodelocal`,  a `nodeID` is required and the data files will be in the `extern` directory of the specified node.
+
+{{site.data.alerts.callout_info}}
+The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled. Use `self` if you do not want to specify a `nodeID`, and the individual data files will be in the `extern` directories of arbitrary nodes; however, to work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
+{{site.data.alerts.end}}
+
 If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
 
 ~~~ shell
-cd node2 && ls
+cd /tmp/node2 && ls
 ~~~
 
 ~~~
@@ -781,7 +791,7 @@ auxiliary
 ~~~
 
 ~~~ shell
-cd extern && ls
+cd /tmp/node2/extern && ls
 ~~~
 
 ~~~
@@ -791,7 +801,6 @@ customers.csv
 Then, specify which node to access by including the `nodeID` in the `IMPORT` statement:
 
 {% include copy-clipboard.html %}
-
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
@@ -831,15 +840,13 @@ AVRO DATA ('azure://{CONTAINER NAME}/{customers.avro}?AZURE_ACCOUNT_NAME={ACCOUN
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+For more information about importing data from Avro, including examples, see [Migrate from Avro](migrate-from-avro.html).
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
 
 ### Import a table from a CSV file
 
@@ -1028,14 +1035,14 @@ For the command above to succeed, you need to have created the dump file with sp
 
 ### Import a CockroachDB dump file
 
-Cockroach dump files can be imported using the `IMPORT PGDUMP`.
+Cockroach dump files can be imported using the `IMPORT PGDUMP` statement.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > IMPORT PGDUMP 'gs://{BUCKET NAME}/{employees.sql}?AUTH=specified&CREDENTIALS={ENCODED KEY}';
 ~~~
 
-For more information, see [SQL Dump (Export)](cockroach-dump.html).
+`cockroach dump` is no longer recommended and has been deprecated in v20.2. For more information, see [SQL Dump (Export)](cockroach-dump.html).
 
 ### Import a MySQL database dump
 
@@ -1086,10 +1093,16 @@ If the table schema specifies foreign keys into tables that do not exist yet, th
 
 ### Import a table from a local file
 
+You can import a file from `nodelocal`, which is the external IO directory on a node's local file system. To import from `nodelocal`,  a `nodeID` is required and the data files will be in the `extern` directory of the specified node.
+
+{{site.data.alerts.callout_info}}
+The file system backup location on the NFS drive is relative to the path specified by the `--external-io-dir` flag set while [starting the node](cockroach-start.html). If the flag is set to `disabled`, then imports from local directories and NFS drives are disabled. Use `self` if you do not want to specify a `nodeID`, and the individual data files will be in the `extern` directories of arbitrary nodes; however, to work correctly, each node must have the [`--external-io-dir` flag](cockroach-start.html#general) point to the same NFS mount or other network-backed, shared storage.
+{{site.data.alerts.end}}
+
 If a `nodeID` is provided, the data files to import will be in the `extern` directory of the specified node:
 
 ~~~ shell
-cd node2 && ls
+cd /tmp/node2 && ls
 ~~~
 
 ~~~
@@ -1106,7 +1119,7 @@ auxiliary
 ~~~
 
 ~~~ shell
-$ cd extern && ls
+cd /tmp/node2/extern && ls
 ~~~
 
 ~~~
@@ -1155,7 +1168,7 @@ AVRO DATA ('gs://{BUCKET NAME}/{customers.avro}?AUTH=specified&CREDENTIALS={ENCO
 ;
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+For more information about importing data from Avro, including examples, see [Migrate from Avro](migrate-from-avro.html).
 
 </section>
 

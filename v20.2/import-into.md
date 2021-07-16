@@ -170,9 +170,7 @@ The following provide connection examples to cloud storage providers. For more i
 
 <section class="filter-content" markdown="1" data-scope="s3">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the **default** `AUTH=specified` parameter. For more detail on how to use `implicit` authentication with Amazon S3 buckets, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/aws-auth-note.md %}
 
 ### Import into an existing table from a CSV file
 
@@ -185,7 +183,7 @@ The examples in this section use the **default** `AUTH=specified` parameter. For
 ~~~
 
 {{site.data.alerts.callout_info}}
-The column order in your statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
+The column order in your `IMPORT` statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
 {{site.data.alerts.end}}
 
 ### Import into an existing table from multiple CSV files
@@ -215,7 +213,7 @@ To specify the table schema in-line:
     );
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+For more information about importing data from Avro, including examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Import into an existing table from a delimited data file
 
@@ -246,7 +244,7 @@ For more detailed information about importing data from Avro and examples, see [
 ~~~
 
 {{site.data.alerts.callout_info}}
-The column order in your statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
+The column order in your `IMPORT` statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
 {{site.data.alerts.end}}
 
 ### Import into an existing table from multiple CSV files
@@ -277,7 +275,7 @@ To specify the table schema in-line:
     );
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+For more information about importing data from Avro, including examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Import into an existing table from a delimited data file
 
@@ -297,9 +295,7 @@ For more detailed information about importing data from Avro and examples, see [
 
 <section class="filter-content" markdown="1" data-scope="gcs">
 
-{{site.data.alerts.callout_info}}
-The examples in this section use the `AUTH=specified` parameter, which will be the default behavior in v21.2 and beyond for connecting to Google Cloud Storage. For more detail on how to pass your Google Cloud Storage credentials with this parameter, or, how to use `implicit` authentication, read [Use Cloud Storage for Bulk Operations — Authentication](use-cloud-storage-for-bulk-operations.html#authentication).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
 
 ### Import into an existing table from a CSV file
 
@@ -312,7 +308,7 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 ~~~
 
 {{site.data.alerts.callout_info}}
-The column order in your statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
+The column order in your `IMPORT` statement must match the column order in the CSV being imported, regardless of the order in the existing table's schema.
 {{site.data.alerts.end}}
 
 ### Import into an existing table from multiple CSV files
@@ -342,7 +338,7 @@ To specify the table schema in-line:
     );
 ~~~
 
-For more detailed information about importing data from Avro and examples, see [Migrate from Avro](migrate-from-avro.html).
+For more information about importing data from Avro, including examples, see [Migrate from Avro](migrate-from-avro.html).
 
 ### Import into an existing table from a delimited data file
 
