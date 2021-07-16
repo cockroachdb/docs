@@ -87,32 +87,11 @@ For more information, see [`cockroach import`](cockroach-import.html).
 
 ## Import from `userfile`
 
-{% include copy-clipboard.html %}
-~~~ sql
-> IMPORT TABLE customers (
-		id INT,
-		dob DATE,
-		first_name STRING,
-    last_name STRING,
-    joined DATE
-)
-CSV DATA (
-    'userfile:///test-data.csv'
-);
-~~~
+{% include {{ page.version.version }}/userfile-examples/import-into-userfile.md %}
 
-{{site.data.alerts.callout_info}}
-`userfile:///` references the default path (`userfile://defaultdb.public.userfiles_$user/`).
-{{site.data.alerts.end}}
+## Backup and restore with `userfile`
 
-~~~
-        job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes
----------------------+-----------+--------------------+--------+---------------+-----------
-  599865027685613569 | succeeded |                  1 | 300024 |             0 | 13389972
-(1 row)
-~~~
-
-For more import options, see [`IMPORT`](import.html) or [`IMPORT INTO`](import-into.html).
+{% include {{ page.version.version }}/userfile-examples/backup-userfile.md %}
 
 ## See also
 
