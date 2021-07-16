@@ -13,6 +13,10 @@ This page describes the cluster management and cluster deletion workflows.
 
 ## Planning your cluster
 
+### Request Units 
+
+Request Units (RUs) represent the compute and I/O resources used by a read or a write query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost 100 RUs.
+
 - How to determine and set resource limits
 - Request Unit explanation 
 - Serverless clusters scale based on load
