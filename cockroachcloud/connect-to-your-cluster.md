@@ -154,6 +154,9 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
     {% include cockroachcloud/download-the-cert.md %}
 
 1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
+
+    {% include cockroachcloud/sql-connection-string.md %}
+    
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
