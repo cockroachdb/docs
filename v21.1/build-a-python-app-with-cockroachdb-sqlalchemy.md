@@ -76,7 +76,7 @@ If you prefer, you can also clone a version of the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/hello-world-python-sqlalchemy/
+$ git clone https://github.com/cockroachlabs/simple-crud-python-sqlalchemy/
 ~~~
 
 {% include copy-clipboard.html %}
@@ -91,7 +91,7 @@ In the `create_engine()` function, update the connection string as follows:
 <section class="filter-content" markdown="1" data-scope="local">
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- Replace `<hostname>` and `<port>` with the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 

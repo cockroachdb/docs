@@ -525,42 +525,42 @@
                     ]
                   },
                   {
-                    "title": "Multi-Region",
+                    "title": "Global Application",
                     "items": [
                       {
                         "title": "Overview",
                         "urls": [
-                          "/${VERSION}/multi-region-overview.html"
+                          "/${VERSION}/movr-flask-overview.html"
                         ]
                       },
                       {
-                        "title": "Use-Case",
+                        "title": "Global Application Use-case",
                         "urls": [
-                          "/${VERSION}/multi-region-use-case.html"
+                          "/${VERSION}/movr-flask-use-case.html"
                         ]
                       },
                       {
-                        "title": "Database Schema",
+                        "title": "Multi-region Database Schema",
                         "urls": [
-                          "/${VERSION}/multi-region-database.html"
+                          "/${VERSION}/movr-flask-database.html"
                         ]
                       },
                       {
-                        "title": "Setup",
+                        "title": "Set up a Development Environment",
                         "urls": [
-                          "/${VERSION}/multi-region-setup.html"
+                          "/${VERSION}/movr-flask-setup.html"
                         ]
                       },
                       {
-                        "title": "Application",
+                        "title": "Develop a Global Application",
                         "urls": [
-                          "/${VERSION}/multi-region-application.html"
+                          "/${VERSION}/movr-flask-application.html"
                         ]
                       },
                       {
-                        "title": "Deployment",
+                        "title": "Deploy a Global Application",
                         "urls": [
-                          "/${VERSION}/multi-region-deployment.html"
+                          "/${VERSION}/movr-flask-deployment.html"
                         ]
                       }
                     ]
@@ -2425,6 +2425,12 @@
                     ]
                   },
                   {
+                    "title": "Using GeoServer with CockroachDB",
+                    "urls": [
+                      "/${VERSION}/geoserver.html"
+                    ]
+                  },
+                  {
                     "title": "POINT",
                     "urls": [
                       "/${VERSION}/point.html"
@@ -2657,6 +2663,12 @@
                 "title": "<code>cockroach debug encryption-active-key</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-encryption-active-key.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug list-files</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-list-files.html"
                 ]
               },
               {

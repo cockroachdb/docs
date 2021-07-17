@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through deploying an application and database in multiple regions. It is the fifth and final section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 {% include {{ page.version.version }}/misc/movr-live-demo.md %}
 
 ## Before you begin
@@ -60,7 +62,7 @@ In production, you want to start a secure CockroachDB cluster, with nodes on mac
     ~~~
 
 {{site.data.alerts.callout_info}}
-You can also deploy CRDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
+You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
 ## Multi-region application deployment (GKE)
@@ -196,6 +198,7 @@ To serve a secure web application, you also need a public domain name!
     ~~~ shell
     $ gcloud compute addresses list
     ~~~
+
 
 1. Download [`kubemci`](https://github.com/GoogleCloudPlatform/k8s-multicluster-ingress), and then make it executable:
 

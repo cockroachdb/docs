@@ -106,7 +106,7 @@ For this example, let's use a [demo cluster](cockroach-demo.html), with the [`--
 
 {% include copy-clipboard.html %}
 ~~~ shell
-cockroach211 demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --empty
+cockroach211 demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --no-example-database
 ~~~
 
 {% include copy-clipboard.html %}

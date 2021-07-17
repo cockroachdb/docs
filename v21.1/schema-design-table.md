@@ -460,8 +460,8 @@ To execute the statements in the `max_init.sql` file, run the following command:
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=max \
---database=movr
-< max_init.sql
+--database=movr \
+-f max_init.sql
 ~~~
 
 The SQL client will execute any statements in `max_init.sql`, with `movr` as the database and `max` as the user. `max` is now the owner of all objects created by the statements in the `max_init.sql` file.
@@ -535,8 +535,8 @@ To execute the statement in the `abbey_init.sql` file, run the following command
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=abbey \
---database=movr
-< abbey_init.sql
+--database=movr \
+-f abbey_init.sql
 ~~~
 
 After the statements have been executed, you can see the table in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).

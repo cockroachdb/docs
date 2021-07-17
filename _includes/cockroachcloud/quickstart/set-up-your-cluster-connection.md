@@ -1,26 +1,14 @@
-Once your cluster is created, the **Connection info** dialog displays. Use the information provided in the dialog to set up your cluster connection for the SQL user that was created by default:
+Once your cluster is created, the **Connect to cluster-name** dialog displays. Use the information provided in the dialog to set up your cluster connection for the SQL user that was created by default:
 
-1. Click the name of the `cc-ca.crt` to download the CA certificate to your local machine.
-1. Create a `certs` directory on your local machine:
+1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
+    </div>
 
-1. Move the downloaded `cc-ca.crt` file to the `certs` directory:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mv <path>/<to>/cc-ca.crt <path>/<to>/certs
-    ~~~
-
-    For example:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ mv Users/maxroach/Downloads/cc-ca.crt Users/maxroach/certs
-    ~~~    
+    {% include cockroachcloud/download-the-cert-free.md %}
 
 1. Copy the connection string provided, which will be used in the next steps (and to connect to your cluster in the future).
 
