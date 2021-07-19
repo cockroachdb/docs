@@ -87,7 +87,7 @@ Clone the code's GitHub repo:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/simple-crud-python-sqlalchemy/
+$ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
 ~~~
 
 The project has the following directory structure:
@@ -103,21 +103,21 @@ The `dbinit.sql` file initializes the database schema that the application uses:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/simple-crud-python-sqlalchemy/master/dbinit.sql %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/dbinit.sql %}
 ~~~
 
 The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/simple-crud-python-sqlalchemy/master/models.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/models.py %}
 ~~~
 
 The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/simple-crud-python-sqlalchemy/master/main.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/main.py %}
 ~~~
 
 `main.py` also executes the `main` method of the program.
