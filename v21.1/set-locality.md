@@ -88,7 +88,7 @@ To update an existing row's home region, use an [`UPDATE`](update.html) statemen
 
 {% include copy-clipboard.html %}
 ~~~ sql
-UPDATE {table} SET crdb_region = "eu-west" WHERE id IN (...)
+UPDATE {table} SET crdb_region = 'eu-west' WHERE id IN (...)
 ~~~
 
 To add a new row to a regional by row table, you must choose one of the following options.
