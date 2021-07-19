@@ -13,8 +13,8 @@ BACKUP TO 'userfile://defaultdb.public.userfiles_$user/cluster-backup' AS OF SYS
 This has made a back up of the cluster to the default `userfile` space.
 
 ~~~
-job_id       |  status   | fraction_completed | rows | index_entries |  bytes
----------------------+-----------+--------------------+------+---------------+-----------
+job_id             |  status   | fraction_completed | rows | index_entries |  bytes
+-------------------+-----------+--------------------+------+---------------+-----------
 677076679499032337 | succeeded |                  1 | 2927 |          1350 | 15982956
 (1 row)
 ~~~
@@ -25,7 +25,7 @@ Next, use the following `cockroach userfile get` to command to fetch the files s
 cockroach userfile get 'userfile://defaultdb.public.userfiles_$user/cluster-backup' --url {CONNECTION STRING}
 ~~~
 
-Your output will show your files downloading to your current directory. For example, this the `cluster-backup` directory has downloaded to the development machine's home directory (`~/cluster-backup`):
+Your output will show your files downloading to your current directory. For example, the `cluster-backup` directory has downloaded to the development machine's home directory (`~/cluster-backup`):
 
 ~~~
 cockroach userfile get 'userfile://defaultdb.public.userfiles_$user/cluster-backup' --url "postgresql://kathryn:kathlovesdoingtests@free-tier5.gcp-europe-west1.cockroachlabs.cloud:26257?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt&options=--cluster%3Dmoist-rat-46"
@@ -42,15 +42,19 @@ downloaded cluster-backup/data/677076685374007057.sst to cluster-backup/data/677
 
 At this point, the original cluster you have backed up to `userfile` storage and you have a copy of that backup on your local machine. In the case that you need to use that cluster's data for recovery or testing purposes, you can now upload these files to a new cluster with `userfile upload` and `RESTORE`.
 
-With the connection string to your **second** cluster, upload your backup to this cluster's `userfile` space:
+With the connection string to your **second** cluster, upload your backup to this cluster's `userfile` space, by running this command for each file:
 
 ~~~shell
-cockroach userfile upload --recursive ~/cluster-backup 'userfile://defaultdb.public.userfiles_$user/cluster-backup' --url {CONNECTION STRING}
+cockroach userfile upload ~/cluster-backup/{BACKUP_MAINFEST} 'userfile://defaultdb.public.userfiles_$user/cluster-backup/BACKUP_MANIFEST' --url {CONNECTION STRING}
 ~~~
 
-The `--recursive` flag allows for all the backup files within the `cluster-backup` directory to upload to the default user file storage space within the specified directory.
+{{site.data.alerts.callout_info}}
+Currently, `cockroach userfile upload` will not recursively upload files from a directory. See [known limitation](../{{site.versions["stable"]}}/cockroach-userfile-upload.html#known-limitation). It is programmatically upload your files using a script. For example, the below Bash script will upload each of the files to a cluster-backup directory in the `userfile` space from the `~/cluster-backup` directory on the local machine.
 
-Now, `RESTORE` the backup files to the **second** cluster:
+`for x in cluster-backup/* cluster-backup/*/*; do cockroach userfile upload $x $x --url="YOUR_CONNECTION STRING"; done`
+{{site.data.alerts.end}}
+
+Now, with the backup files present in the `userfile` storage, you can `RESTORE` the backup to the **second** cluster:
 
 ~~~sql
 RESTORE FROM userfile:///cluster-backup;
@@ -58,9 +62,9 @@ RESTORE FROM userfile:///cluster-backup;
 
 Note that userfile:/// refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
 
-
-
 #### Database and table
+
+When working on the same cluster, `userfile` storage allows for database and table-level backups.
 
 First, run the following statement to backup a database to a directory in the default `userfile` space:
 
@@ -78,13 +82,6 @@ RESTORE DATABASE bank FROM 'userfile://defaultdb.public.userfiles_$user/bank-bac
 
 It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
 
-
-
-<!--TODO EDIT THIS NOTE -->
-{{site.data.alerts.callout_info}}
-We only recommend database and/or table-level backups when using `userfile` as storage. Cluster-level backups will take backups of the `userfile` data as well, since this is also stored as table data.
-{{site.data.alerts.end}}
-
 Once the backup data is no longer needed, delete from the `userfile` storage with the following command:
 
 ~~~shell
@@ -93,4 +90,10 @@ cockroach userfile delete bank-backup --certs-dir=certs
 
 {{site.data.alerts.callout_info}}
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](configure-replication-zones.html#gc-ttlseconds) to be removed from disk.
+{{site.data.alerts.end}}
+
+
+<!--TODO EDIT THIS NOTE mentioned in the issue.... need to figure out if to include. -->
+{{site.data.alerts.callout_info}}
+We only recommend database and/or table-level backups when using `userfile` as storage. Cluster-level backups will take backups of the `userfile` data as well, since this is also stored as table data.
 {{site.data.alerts.end}}

@@ -14,6 +14,8 @@ Your CockroachCloud cluster can perform the following bulk operations:
 
 The CockroachCloud tiers offer different support for these bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples. For more detailed information on performing these operations, read the individual pages.
 
+<!--TODO Add sentence here on the backups that CockroachCloud cluster have automatically -->
+
 ## Examples
 
 <div class="filters clearfix">
@@ -37,8 +39,6 @@ For information on `userfile` commands, visit the following pages:
 - [`cockroach userfile delete`](../{{site.versions["stable"]}}/cockroach-userfile-delete.html)
 
 ### Backup and restore with `userfile`
-
-
 
 {% include v21.1/userfile-examples/backup-userfile.md %}
 
