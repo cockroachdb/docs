@@ -1,22 +1,10 @@
-In this example, you'll set up a core changefeed for a single-node cluster.
-
-1. In a terminal window, start `cockroach`:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach start-single-node \
-    --insecure \
-    --listen-addr=localhost \
-    --background
-    ~~~
+In this example, you'll set up a core changefeed on your CockroachCloud Free Tier cluster.
 
 2. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql \
-    --url="postgresql://root@127.0.0.1:26257?sslmode=disable" \
-    --format=csv
+    cockroach sql --url {CONNECTION STRING} --format=csv
     ~~~
 
     {% include cockroachcloud/cdc/core-url.md %}
@@ -59,7 +47,7 @@ In this example, you'll set up a core changefeed for a single-node cluster.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure -e "INSERT INTO foo VALUES (1)"
+    cockroach sql --url {CONNECTION STRING} -e "INSERT INTO foo VALUES (1)"
     ~~~
 
 8. Back in the terminal where the core changefeed is streaming, the following output has appeared:
@@ -71,10 +59,3 @@ In this example, you'll set up a core changefeed for a single-node cluster.
     Note that records may take a couple of seconds to display in the core changefeed.
 
 9. To stop streaming the changefeed, enter **CTRL+C** into the terminal where the changefeed is running.
-
-10. To stop `cockroach`, run:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach quit --insecure
-    ~~~
