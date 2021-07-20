@@ -35,6 +35,10 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 - [SchemaHero](https://schemahero.io/databases/cockroachdb/connecting/)
 
+## Connection pooling tools
+
+- [PGBouncer](https://dzone.com/articles/using-pgbouncer-with-cockroachdb)
+
 ## See also
 
 - [Build an App with CockroachDB](hello-world-example-apps.html)
