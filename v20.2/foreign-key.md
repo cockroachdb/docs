@@ -11,8 +11,12 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`, or be `NULL`.
 - Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
 
-{{site.data.alerts.callout_info}}
- A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
+To learn more about the basics of foreign keys, watch the video below:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+{{site.data.alerts.callout_success}}
+To read more about how foreign keys work, see our [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/) blog post.
 {{site.data.alerts.end}}
 
 ## Details
@@ -23,6 +27,7 @@ For example, given an `orders` table and a `customers` table, if you create a co
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a [computed column](computed-columns.html).
+- A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.2:</span> CockroachDB no longer requires an index on foreign key columns.
@@ -919,3 +924,4 @@ Inserting values into the table using the `MATCH FULL` algorithm (described [abo
 - [`PRIMARY KEY` constraint](primary-key.html)
 - [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
+- [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/)
