@@ -12,14 +12,14 @@ While CockroachDB is an excellent system of record, it also needs to coexist wit
 
 The main feature of CDC is the changefeed, which targets an allowlist of tables, called the "watched rows". There are two implementations of changefeeds:
 
-[Core changefeeds](#create-a-core-changefeed)                                                          | [Enterprise changefeeds](#configure-a-changefeed-enterprise)
--------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------
-Useful for prototyping or quick testing.                                                               | Recommended for production use.
-Available in CockroachDB and CockroachCloud.                                                           | Available in CockroachCloud or with an [enterprise license](enterprise-licensing.html).
-Streams indefinitely until underlying SQL connection is closed.                                        | Maintains connection to configured sink.
-Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).                                      | Create with [`CREATE CHANGEFEED`](create-changefeed.html).
-Watches one or multiple tables in a comma-separated list.                                              | Emits every change to a "watched" row as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/)).
-[`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection.                 | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed).  
+| [Core changefeeds](#create-a-core-changefeed)   | [Enterprise changefeeds](#configure-a-changefeed-enterprise) |
+--------------------------------------------------|-----------------------------------------------------------------|
+| Useful for prototyping or quick testing. | Recommended for production use. |
+| Available in CockroachDB and CockroachCloud Free Tier. | Available in CockroachCloud or with an [enterprise license](enterprise-licensing.html) in CockroachDB. |
+| Streams indefinitely until underlying SQL connection is closed. | Maintains connection to configured sink. |
+| Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html). | Create with [`CREATE CHANGEFEED`](create-changefeed.html). |
+| Watches one or multiple tables in a comma-separated list. | Emits every change to a "watched" row as a record in a configurable format <br> (`JSON` or Avro) to a configurable sink  ([Kafka](https://kafka.apache.org/)). |
+| [`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), <br> and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed). |
 
 ## Enable rangefeeds
 
