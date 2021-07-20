@@ -15,44 +15,9 @@ For guidance on deployment and data location techniques to minimize network late
 If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
-## Problem: Your application is encountering serialization errors
 
-Your application is experiencing degraded performance with serialization errors like:
-
-  - `SQLSTATE: 40001`
-  - `RETRY_WRITE_TOO_OLD`
-  - `RETRY_SERIALIZABLE`
-
-### Possible cause of the error
-
-These errors indicate that your workload is experiencing [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-
-### Fixing the error
-
-{% include {{ page.version.version }}/performance/statement_contention.md %}
-
-## Problem: The SQL Statement Contention chart is showing spikes
-
-The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
-
-{%comment%} Add screenshot of high-contention graph {%endcomment%}
-
-### Possible cause of the error
-
-These errors indicate that your workload is experiencing [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-
-### Fixing the error
-
-{% include {{ page.version.version }}/performance/statement_contention.md %}
-
-## The SQL Statement Errors chart is showing spikes in retries
-
-The [SQL Statement Errors graph](ui-sql-dashboard.html#sql-statement-errors) graph is showing spikes in retries over time.
-
-### Possible cause of the error
-
-These errors indicate that your workload is experiencing [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
-
-### Fixing the error
-
-{% include {{ page.version.version }}/performance/statement_contention.md %}
+Problem  | Possible solution
+---------|--------------------
+Your application is experiencing degraded performance with the following serialization errors:<br>`SQLSTATE: 40001`<br>`RETRY_WRITE_TOO_OLD`<br>`RETRY_SERIALIZABLE`<br><br>The [SQL Statement Contention dashboard](ui-sql-dashboard.html#sql-statement-contention) in the DB Console is showing spikes over time.<br><br>The [SQL Statement Errors graph](ui-sql-dashboard.html#sql-statement-errors) in the DB Console is showing spikes in retries over time. | [Your workload is experiencing contention](performance-recipes-solutions.html?filters=contention)
+The statement plan produced by `EXPLAIN` or `EXPLAIN ANALYZE` indicates that the statement uses a full table scan.<br><br>Querying the `CRDB_INTERNAL.node_statement_statistics` table indicates that you have full table scans in some statement's plans.<br><br>Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-details-page) of the DB Console indicates that the plan contains full table scans.<br><br>Running the `SHOW FULL TABLE SCANS` statement returns results.  | [Poor quality statement plans retrieve more rows than are required, leading to longer execution times](performance-recipes-solutions.html?filters=fullscans)
+The [Hardware metrics dashboard](ui-hardware-dashboard.html) in the DB Console shows high resource usage.<br><br>The Problem Ranges report on the [Advanced Debug page](ui-debug-page.html) of the DB Console indicates a high number of queries per second. | [Your tables may be using a suboptimal primary key, causing resource contention](performance-recipes-solutions.html?filters=primarykey)
