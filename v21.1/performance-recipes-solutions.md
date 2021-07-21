@@ -1,6 +1,6 @@
 ---
 title: Performance tuning recipe solutions
-summary: Fixes for common performance problems
+summary: Possible fixes for common performance problems
 toc: true
 toc_not_nested: true
 ---
