@@ -76,7 +76,7 @@ If you prefer, you can also clone a version of the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/simple-crud-python-sqlalchemy/
+$ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
 ~~~
 
 {% include copy-clipboard.html %}
