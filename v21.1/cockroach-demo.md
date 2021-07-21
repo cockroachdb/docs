@@ -8,6 +8,7 @@ The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-m
 
 - All [SQL shell](#sql-shell) commands, client-side options, help, and shortcuts supported by the [`cockroach sql`](cockroach-sql.html) command are also supported by `cockroach demo`.
 - The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
+- By default, `cockroach demo` starts in secure mode using TLS certificates to encrypt network communication.
 - Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
 - <span class="version-tag">New in v21.1:</span> `cockroach demo` opens the SQL shell with a new [SQL user](authorization.html#sql-users) named `demo`. The `demo` user is assigned a random password and granted the [`admin` role](authorization.html#admin-role).
 
@@ -119,7 +120,7 @@ Flag | Description
 `--geo-partitioned-replicas` | Start a 9-node demo cluster with [geo-partitioning](partitioning.html) applied to the [`movr`](movr.html) database.
 `--global` | <a name="global-flag"></a> This experimental flag is used to simulate a [multi-region cluster](simulate-a-multi-region-cluster-on-localhost.html) which sets the [`--locality` flag on node startup](cockroach-start.html#locality) to three different regions. It also simulates the network latency that would occur between them given the specified localities. In order for this to operate as expected, with 3 nodes in each of 3 regions, you must also pass the `--nodes 9` argument.
 `--http-port` | <span class="version-tag">New in v21.1:</span> Specifies a custom HTTP port to the [DB Console](ui-overview.html) for the first node of the demo cluster.<br><br>In multi-node clusters, the HTTP ports for additional clusters increase from the port of the first node, in increments of 1. For example, if the first node has an HTTP port of `5000`, the second node will have the HTTP port `5001`.
-`--insecure` |  Set this to `false` to start the demo cluster in secure mode using TLS certificates to encrypt network communication. `--insecure=false` gives you an easy way test out CockroachDB [authorization features](authorization.html) and also creates a password (`admin`) for the `root` user for logging into the DB Console.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
+`--insecure` |  Include this to start the demo cluster in insecure mode.<br><br>**Env Variable:** `COCKROACH_INSECURE`
 `--max-sql-memory` | For each demo node, the maximum in-memory storage capacity for temporary SQL data, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with `%`) or any bytes-based unit, for example:<br><br>`--max-sql-memory=.25`<br>`--max-sql-memory=25%`<br>`--max-sql-memory=10000000000 ----> 1000000000 bytes`<br>`--max-sql-memory=1GB ----> 1000000000 bytes`<br>`--max-sql-memory=1GiB ----> 1073741824 bytes`<br><br>**Default:** `128MiB`
 `--nodes` | Specify the number of in-memory nodes to create for the demo.<br><br>**Default:** 1
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](cockroach-sql.html#session-and-output-types); `false` otherwise<br><br>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
@@ -143,7 +144,7 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # Welcome to the CockroachDB demo database!
 #
-# You are connected to a temporary, in-memory CockroachDB cluster of 1 node.
+# You are connected to a temporary, in-memory CockroachDB cluster of 9 nodes.
 #
 # This demo session will attempt to enable enterprise features
 # by acquiring a temporary license from Cockroach Labs in the background.
@@ -152,21 +153,30 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 #
 # Beginning initialization of the movr dataset, please wait...
 #
+# Waiting for license acquisition to complete...
+#
+# Partitioning the demo database, please wait...
+#
 # The cluster has been preloaded with the "movr" dataset
 # (MovR is a fictional vehicle sharing company).
 #
 # Reminder: your changes to data stored in the demo session will not be saved!
 #
-# Connection parameters:
-#   (webui)    http://127.0.0.1:8080/demologin?password=demo76915&username=demo
-#   (sql)      postgres://demo:demo76915@127.0.0.1:26257?sslmode=require
-#   (sql/unix) postgres://demo:demo76915@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo038435782&port=26257
+# If you wish to access this demo cluster using another tool, you will need
+# the following details:
 #
+#   - Connection parameters:
+#     (webui)    http://127.0.0.1:8080/demologin?password=demo55826&username=demo
+#     (sql)      postgresql://demo:demo55826@127.0.0.1:26257/movr?sslmode=require
+#     (sql/jdbc) jdbc:postgresql://127.0.0.1:26257/movr?password=demo55826&sslmode=require&user=demo
+#     (sql/unix) postgresql://demo:demo55826@/movr?host=%2Fvar%2Ffolders%2F8c%2F915dtgrx5_57bvc5tq4kpvqr0000gn%2FT%2Fdemo699845497&port=26257
 #
-# The user "demo" with password "demo76915" has been created. Use it to access the Web UI!
+#   To display connection parameters for other nodes, use \demo ls.
+#   - Username: "demo", password: "demo55826"
+#   - Directory with certificate files (for certain SQL drivers/tools): /var/folders/8c/915dtgrx5_57bvc5tq4kpvqr0000gn/T/demo699845497
 #
-# Server version: CockroachDB CCL v21.1.2 (x86_64-apple-darwin19, built 2021/06/07 18:13:04, go1.15.11) (same version as client)
-# Cluster ID: 9dd61f86-add2-47c0-88a3-eb00525b1a22
+# Server version: CockroachDB CCL v21.2.0-alpha.00000000-1724-gc5c74249f7 (x86_64-apple-darwin20.5.0, built 2021/06/23 21:26:17, go1.16) (same version as client)
+# Cluster ID: f78b7feb-b6cf-4396-9d7f-494982d7d81e
 # Organization: Cockroach Demo
 #
 # Enter \? for a brief introduction.
@@ -178,10 +188,11 @@ When the SQL shell connects to the demo cluster at startup, it prints a welcome 
 The SQL shell welcome text includes connection parameters for accessing the DB Console and for connecting other SQL clients to the demo cluster:
 
 ~~~
-# Connection parameters:
-#   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
-#   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
-#   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+#   - Connection parameters:
+#     (webui)    http://127.0.0.1:8080/demologin?password=demo55826&username=demo
+#     (sql)      postgresql://demo:demo55826@127.0.0.1:26257/movr?sslmode=require
+#     (sql/jdbc) jdbc:postgresql://127.0.0.1:26257/movr?password=demo55826&sslmode=require&user=demo
+#     (sql/unix) postgresql://demo:demo55826@/movr?host=%2Fvar%2Ffolders%2F8c%2F915dtgrx5_57bvc5tq4kpvqr0000gn%2FT%2Fdemo699845497&port=26257
 ~~~
 
 Parameter | Description

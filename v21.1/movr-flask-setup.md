@@ -28,6 +28,7 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
     ~~~ shell
     $ cockroach demo \
     --nodes=9 \
+    --insecure \
     --demo-locality=region=gcp-us-east1:region=gcp-us-east1:region=gcp-us-east1:\
     region=gcp-us-west1:region=gcp-us-west1:region=gcp-us-west1:\
     region=gcp-europe-west1:region=gcp-europe-west1:region=gcp-europe-west1 \
