@@ -119,4 +119,8 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 	cockroachdb-2                         1/1     Running   0          46s
 	~~~
 
-Each pod should have `READY` status soon after being created.
+    Each pod should have `READY` status soon after being created.
+
+    {{site.data.alerts.callout_info}}
+    Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/575), in rare cases the Operator can crash while installing CockroachDB. This causes the CockroachDB pods to fail to start, while the version checker [job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) continues to run. If this happens, run `kubectl get jobs` to find the names of any running `cockroachdb-vcheck` jobs, and delete these jobs with `kubectl delete job {cockroachdb-vcheck-job}`. Then reapply the custom resource (e.g., `kubectl apply -f example.yaml`).
+    {{site.data.alerts.end}}
