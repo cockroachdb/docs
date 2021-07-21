@@ -63,10 +63,10 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ pip install sqlalchemy-cockroachdb psycopg2 alembic
+    $ pip install sqlalchemy-cockroachdb psycopg2-binary alembic
     ~~~
 
-    The `sqlalchemy-cockroachdb` and `psycopg2` modules are required to use the CockroachDB adapter that the app uses to run transactions against a CockroachDB cluster.
+    The `sqlalchemy-cockroachdb` and `psycopg2-binary` modules are required to use the CockroachDB adapter that the app uses to run transactions against a CockroachDB cluster.
 
     `alembic` includes the `sqlalchemy` module, which is a primary dependency of the `simple-crud-python-sqlalchemy` sample app. The `alembic` install also includes the `alembic` command line tool, which we use throughout the tutorial to manage migrations.
 
@@ -108,7 +108,7 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
     ~~~
 
     {{site.data.alerts.callout_info}}
-    You must use the `cockroachdb://` prefix in the connection string for SQLAlchemy to make sure the CockroachDB dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
+    You must use the `cockroachdb://` prefix in the connection string for SQLAlchemy to make sure the CockroachDB dialect is used. Using the `postgresql://` URL prefix to connect to your CockroachDB cluster will not work.
     {{site.data.alerts.end}}
 
 ## Step 4. Create and run a migration script
