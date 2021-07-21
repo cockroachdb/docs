@@ -20,7 +20,7 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cockroach demo --no-example-database
+    $ cockroach demo --empty
     ~~~
 
     This command creates a virtual cluster and opens a SQL shell to that cluster.
@@ -104,7 +104,7 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
     For example:
 
     ~~~
-    sqlalchemy.url = cockroachdb://demo:demo72529@127.0.0.1:26257/bank?sslmode=require
+    sqlalchemy.url = cockroachdb://root:admin@127.0.0.1:50040?sslmode=require
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -214,7 +214,7 @@ Before you begin the tutorial, [install CockroachDB](install-cockroachdb.html).
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ python main.py 'cockroachdb://demo:demo72529@127.0.0.1:26257/bank?sslmode=require' --no-init
+    $ python main.py 'cockroachdb://root:admin@127.0.0.1:50040?sslmode=require' --no-init
     ~~~
 
     ~~~
