@@ -1,6 +1,6 @@
 In this example, you'll set up a core changefeed on your CockroachCloud Free Tier cluster.
 
-2. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
+2. As the `root` user, open the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html):
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -11,7 +11,7 @@ In this example, you'll set up a core changefeed on your CockroachCloud Free Tie
 
     {% include cockroachcloud/cdc/core-csv.md %}
 
-3. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+3. Enable the `kv.rangefeed.enabled` [cluster setting](../{{site.versions["stable"]}}/cluster-settings.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql

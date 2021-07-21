@@ -1,6 +1,6 @@
 #### View the backup subdirectories
 
-<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -27,7 +27,7 @@ To restore a full cluster:
 > RESTORE FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
 
 #### Restore a database
 
@@ -38,7 +38,7 @@ To restore a database:
 > RESTORE DATABASE bank FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
 
 {{site.data.alerts.callout_info}}
 `RESTORE DATABASE` can only be used if the entire database was backed up.
@@ -60,4 +60,4 @@ To restore multiple tables:
 > RESTORE TABLE bank.customers, bank.accounts FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
-To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).

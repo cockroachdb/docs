@@ -9,10 +9,10 @@ Your CockroachCloud cluster can perform the following bulk operations:
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
 - [`IMPORT`](../{{site.versions["stable"]}}/import.html) / [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html)
-- [`EXPORT`](../{{site.versions["stable"]}}/export.html) (CockroachCloud only)
+- [`EXPORT`](../{{site.versions["stable"]}}/export.html) (CockroachCloud Dedicated only)
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html) (Core and enterprise)
 
-The CockroachCloud tiers offer different support for these bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples.
+The CockroachCloud tiers offer different support for bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples.
 
 ## Examples
 
@@ -27,7 +27,7 @@ The CockroachCloud tiers offer different support for these bulk operations. This
 `userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free Tier **after upgrading to v21.1.**
 {{site.data.alerts.end}}
 
-In CockroachCloud Free Tier clusters, `BACKUP`, `RESTORE`, and `IMPORT INTO` can be used with [`userfile`](../{{site.versions["stable"]}}/use-userfile-storage-for-bulk-operations.html) storage, a per-user bulk file storage.
+In CockroachCloud Free Tier clusters, `BACKUP`, `RESTORE`, and `IMPORT INTO` can be used with [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage, a per-user bulk file storage.
 
 For information on `userfile` commands, visit the following pages:
 
@@ -38,11 +38,11 @@ For information on `userfile` commands, visit the following pages:
 
 ### Backup and restore with `userfile`
 
-{% include v21.1/userfile-examples/backup-userfile.md %}
+{% include cockroachcloud/userfile-examples/backup-userfile.md %}
 
 ### Import data into your CockroachCloud cluster
 
-{% include v21.1/userfile-examples/import-into-userfile.md %}
+{% include cockroachcloud/userfile-examples/import-into-userfile.md %}
 
 ### Stream data out of CockroachCloud
 
@@ -54,7 +54,7 @@ To create a core changefeed in CockroachCloud Free Tier, use the following examp
 Only core changefeeds are available on CockroachCloud Free Tier. An [enterprise license](../{{site.versions["stable"]}}/enterprise-licensing.html) is required to create a changefeed into a configurable cloud storage sink, Kafka, etc.
 {{site.data.alerts.end}}
 
-For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb.html).
+For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html).
 
 {% include cockroachcloud/cdc/create-core-changefeed.md %}
 
@@ -68,13 +68,11 @@ For further information on changefeeds, read [Stream Data Out of CockroachDB](..
 
 <section class="filter-content" markdown="1" data-scope="cc-ded">
 
-The examples below use Amazon S3 for demonstrations purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html#example-file-urls).
+The examples below use Amazon S3 for demonstrations purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
 ### Backup and restore your CockroachCloud data
 
 Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
-
-{% include v21.1/backups/bulk-auth-options.md %}
 
 {% include cockroachcloud/backup-examples.md %}
 
@@ -117,10 +115,10 @@ IMPORT INTO customers (id, dob, first_name, last_name, joined)
 (1 row)
 ~~~
 
-For more import options and examples, see [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html), [`IMPORT`](../{{site.versions["stable"]}}/import.html), and [Import Performance Best Practices](import-performance-best-practices.html).
+For more import options and examples, see [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html), [`IMPORT`](../{{site.versions["stable"]}}/import.html), and [Import Performance Best Practices](../{{site.versions["stable"]}}/import-performance-best-practices.html).
 
 {{site.data.alerts.callout_info}}
-As of v21.2 `IMPORT TABLE` will be deprecated. We recommend using `IMPORT INTO` followed by `CREATE TABLE` like this example.
+As of v21.2 `IMPORT TABLE` will be deprecated. We recommend using `IMPORT INTO` followed by `CREATE TABLE` as per this example.
 {{site.data.alerts.end}}
 
 ### Export data out of CockroachCloud

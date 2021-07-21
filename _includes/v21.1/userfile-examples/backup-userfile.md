@@ -1,4 +1,4 @@
-We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Read our guidance in the [Performance](../{{site.versions["stable"]}}/backup.html#performance) section on the [`BACKUP`](../{{site.versions["stable"]}}/backup.html) page.
+We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](../{{site.versions["stable"]}}/as-of-system-time.html). Read our guidance in the [Performance](../{{site.versions["stable"]}}/backup.html#performance) section on the [`BACKUP`](../{{site.versions["stable"]}}/backup.html) page.
 
 {{site.data.alerts.callout_info}}
 Only database and table-level backups are possible when using `userfile` as storage. Cluster-level backups will include `userfile` data as well, since this is also stored as table data in `defaultdb`.
