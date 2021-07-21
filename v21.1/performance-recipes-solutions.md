@@ -79,6 +79,6 @@ The Problem Ranges report on the [Advanced Debug page](ui-debug-pages.html) of t
 
 Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key](schema-design-table.html#primary-key-best-practices).
 
-If your workload with a small dataset (for example, few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](split-at.html#split-a-table.html) to reduce resource contention.
+If your workload with a small dataset (for example, few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](split-at.html#split-a-table) to reduce resource contention.
 
 </section>
