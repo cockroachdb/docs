@@ -902,6 +902,12 @@
                 ]
               },
               {
+                "title": "Performance tuning recipes",
+                "urls": [
+                  "/${VERSION}/performance-recipes.html"
+                ]
+              },
+              {
                 "title": "Improving statement performance",
                 "urls": [
                   "/${VERSION}/make-queries-fast.html"
