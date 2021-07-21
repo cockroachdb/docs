@@ -6,7 +6,7 @@ All resource usage in CockroachCloud Serverless (beta) is measured in Request Un
 
 CockroachCloud Serverless (beta) clusters scale based on your workload.
 
-**Free forever** clusters include 500M RUs and 5GB of storage per month. They have a guaranteed baseline performance of 2.5K QPS. At this time, you cannot upgrade a free cluster after it is created. Free clusters have heavily throttled resources and don't include the ability to take backups or import data. If you want a cluster with higher performance and full capabilities, choose a paid cluster.
+**Free forever** clusters include 100M RUs and 5GB of storage per month. They have a guaranteed baseline performance of 2.5K QPS. At this time, you cannot upgrade a free cluster after it is created. Free clusters are throttled to 100 RUs/second don't include the ability to take backups or import data. If you want a cluster with higher performance and full capabilities, choose a paid cluster.
 
 **Pay-as-you-go** clusters include additional resources with no throttling and allow you to perform upgrades, backups, and imports. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 

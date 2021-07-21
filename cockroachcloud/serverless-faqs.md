@@ -23,7 +23,11 @@ To get started with CockroachCloud Serverless (beta), <a href="https://cockroach
 
 ### What are the usage limits of Cockroach Cloud Serverless (beta)?
 
-Free clusters have a limit of 500M Request Units and 5GB of storage, but the performance is heavily throttled. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
+Free clusters have a limit of 100M Request Units per month and 5GB of storage, but the performance is throttled to a maximum of 100 RUs/second. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
+
+### What is a Request Unit?
+
+All resource usage in CockroachCloud Serverless (beta) is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a read or a write query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost 100 RUs.
 
 ### Do I have to pay for CockroachCloud Serverless (beta)?
 
@@ -39,11 +43,7 @@ For examples of applications that use free clusters, check out the following [Ha
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-Paid Serverless clusters have higher performance, additional features, and the ability to scale according to your needs. They can be used for larger applications and projects.
-
-### What are the limitations of CockroachCloud Serverless (beta)?
-
-CockroachCloud Serverless is currently in beta and there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
+Paid Serverless clusters have higher performance, additional features, and the ability to scale according to your needs. They can be used for all kinds of production applications.
 
 ### How do I connect to my cluster?
 
@@ -53,7 +53,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### Why is CockroachCloud Serverless in beta?
 
-CockroachCloud Serverless is in beta while we work on adding core features like [import](../{{site.versions["stable"]}}/import.html) and [backups](backups-page.html).
+CockroachCloud Serverless is in beta while we work on adding capabilities such no-downtime upgrades from free to paid clusters.
 
 ### Where can I submit feedback or bugs on the beta?
 
@@ -80,39 +80,22 @@ CockroachCloud Serverless (beta) is a multi-tenant offering and resources are sh
 
 ## Cluster maintenance
 
-### How do I add nodes?
-
-You can add nodes to paid CockroachCloud Serverless (beta) clusters, but not to free clusters. If you have a paid cluster, you can add nodes by accessing the **Clusters** page on the [CockroachCloud Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
-
-{% include cockroachcloud/nodes-limitation.md %}
-
 ### Can I upgrade my free CockroachCloud Serverless (beta) cluster to a paid CockroachCloud Serverless (beta) cluster?
 
 At this time, a free CockroachCloud Serverless cluster cannot be upgraded. In the future, you will have the ability to move from a free CockroachCloud Serverless to a pay-as-you-go Serverless cluster.
 
-### Can I upgrade my cluster from CockroachCloud Serverless (beta) to CockroachCloud Dedicated?
-
-At this time, a CockroachCloud Serverless cluster cannot be upgraded. In the future, you will have the ability to move from CockroachCloud Serverless to CockroachCloud Dedicated.
+If you would like export your data from a free cluster to a paid cluster, see [Migrate from a CockroachCloud Serverless (beta) free cluster to a pay-as-you-go cluster](migrate-from-free-to-paid.html).
 
 ## Product features
 
 ### Are partitioning or change data capture available to me?
 
-No, change data capture and partitioning are not available on CockroachCloud Serverless (beta) clusters, but will be in the future.
+Yes, clusters that are running version 21.1 or later have access to Core Changefeeds.
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for CockroachCloud Serverless (beta) clusters.
+Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, some [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages are not currently available for CockroachCloud Serverless (beta) clusters.
 
 ### Can I backup my CockroachCloud Serverless (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CockroachCloud Serverless (beta) cluster yourself. We expect to support user-initiated backup and restore of free clusters in the future.
-
-In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select-clause.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
-$ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
-~~~
-
-For an example on how to use this output to migrate to a paid CockroachCloud cluster, see [Migrate from a CockroachCloud Serverless (beta) to CockroachCloud Cluster](migrate-from-free-to-dedicated.html).
+Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. Free CockroachCloud Serverless (beta) clusters do not have public internet access, but can be backed up locally with `userfile`. Paid CockroachCloud Serverless (beta) clusters can be backed up to cloud storage or `userfile`.

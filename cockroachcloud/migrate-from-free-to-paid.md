@@ -1,15 +1,13 @@
 ---
-title: Migrate from a CockroachCloud Serverless to CockroachCloud Dedicated Cluster
-summary: Learn how to migrate data from a CockroachCloud Free Serverless cluster into a CockroachCloud Dedicated cluster.
+title: Migrate from a CockroachCloud Serverless (beta) free cluster to a pay-as-you-go cluster
+summary: Learn how to migrate data from a CockroachCloud Serverless (beta) free cluster into a pay-as-you-go cluster
 toc: true
 ---
-{% comment %}
-This whole page needs to be updated for migration from free to pay as you go and dedicated.
-{% endcomment %}
 
-This page has instructions for migrating data from a CockroachCloud Serverless cluster to a CockroachCloud Dedicated cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
+This page has instructions for migrating data from a CockroachCloud Serverless (beta) free cluster to a pay-as-you-go cluster by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud Serverless (beta) if:
 
-- You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per CockroachCloud Free (beta) cluster.
+- You reach (or get close to reaching) the upper limit of usage of up to 500M RUs and 5GB storage per free CockroachCloud Serverless (beta) cluster.
+- You don't want your cluster performance to be throttled.
 - You want to use any of the capabilities that are not yet available in CockroachCloud Free (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
 
 The steps below use sample data from the [`tpcc` workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads).
@@ -18,16 +16,16 @@ The steps below use sample data from the [`tpcc` workload](../{{site.versions["s
 
 These instructions assume you already have the following:
 
-- A [CockroachCloud Free (beta) cluster](quickstart.html) from which you want to migrate data
-- A [paid CockroachCloud cluster](quickstart-trial-cluster.html)
+- A [free CockroachCloud Serverless (beta) cluster](quickstart.html) from which you want to migrate data
+- A [paid CockroachCloud Serverless (beta) cluster](create-a-serverless-cluster.html?filters=paid)
 
-    Your first paid CockroachCloud cluster is free for a 30-day trial.
+    You can set a spend limit as low as $1/month.
 
 - [Cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html)
 
 ## Step 1. Export data to a local CSV file
 
-In CockroachCloud Free (beta) clusters, all external service integrations are disabled. This means that if you want to export data, you need to use [`cockroach sql --execute`](../{{site.versions["stable"]}}/cockroach-sql.html#general) to query the data you want to export, and then pipe the data to a local file. For example:
+In free CockroachCloud Serverless (beta) clusters, `EXPORT` is not supported. This means that if you want to export data, you need to use [`cockroach sql --execute`](../{{site.versions["stable"]}}/cockroach-sql.html#general) to query the data you want to export, and then pipe the data to a local file. For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -70,7 +68,7 @@ d_id,d_w_id,d_name,d_street_1,d_street_2,d_city,d_state,d_zip,d_tax,d_ytd,d_next
 
 ## Step 2. Host the files where the CockroachCloud cluster can access them
 
-After you've exported your Cockroach Free (beta) cluster data to your local machine, you now need to upload the files to a storage location where the paid CockroachCloud cluster can access them. **We recommend using [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) or [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html).**
+After you've exported your free CockroachCloud Serverless (beta) cluster data to your local machine, you now need to upload the files to a storage location where the paid CockroachCloud Serverless (beta) cluster can access them. **We recommend using [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) or [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html).**
 
 In this example, we'll use Amazon S3 to host the two files (`warehouse.csv` and `district.csv`) created in [Step 1](#step-1-export-data-to-a-local-csv-file).
 
@@ -90,7 +88,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 1. Write an [`IMPORT`](../{{site.versions["stable"]}}/import.html) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
-    You can use the [`SHOW CREATE TABLE`](../{{site.versions["stable"]}}/show-create.html#show-the-create-table-statement-for-a-table) statement in the CockroachCloud Free (beta) cluster to view the `CREATE` statement for the table you're migrating.
+    You can use the [`SHOW CREATE TABLE`](../{{site.versions["stable"]}}/show-create.html#show-the-create-table-statement-for-a-table) statement in the free CockroachCloud Serverless (beta) cluster to view the `CREATE` statement for the table you're migrating.
     {{site.data.alerts.end}}
 
     {% include v20.2/misc/csv-import-callout.md %}
@@ -176,7 +174,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 4. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the CockroachCloud cluster, add the [foreign key](../{{site.versions["stable"]}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
+Once all of the tables you want to migrate have been imported into the paid CockroachCloud Serverless (beta) cluster, add the [foreign key](../{{site.versions["stable"]}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
