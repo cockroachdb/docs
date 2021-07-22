@@ -23,17 +23,17 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 3. On the **Overview** page, click **Create Cluster**.
 
-## Step 2. Select Cloud Provider & Region 
+## Step 2. Select a cloud provider & region
 
 1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud Provider & Region** section.
 
 1. _(Optional)_ Select a region in the **Cloud Provider & Region** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
-## Step 3. Select the plan
+## Step 3. Enter a spend limit
 
-**Free forever** clusters include 100M RUs and 5GB of storage per month. They have a guaranteed baseline performance of 2.5K QPS. At this time, you cannot upgrade a free cluster after it is created. Free clusters are throttled to 100 RUs/second don't include the ability to take backups or import data. If you want a cluster with higher performance and full capabilities, choose a **Pay-as-you-go** cluster.
+Free clusters include 100M RUs and 5GB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or 2.5K QPS. 
 
-**Pay-as-you-go** clusters include additional resources with no throttling and allow you to perform upgrades, backups, and imports. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
+Paid clusters include additional resources with no throttling. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 
 {{site.data.alerts.callout_info}}
 For more information on determining your resource usage, see [Planning your cluster](serverless-cluster-management.html#planning-your-cluster).
@@ -41,14 +41,12 @@ For more information on determining your resource usage, see [Planning your clus
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="free">Free</button>
-  <button class="filter-button page-level" data-scope="paid">Pay as you go</button>
+  <button class="filter-button page-level" data-scope="paid">Paid</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="free">
 
-1. In the **Cost & Performance** section, select the **Free forever** plan.
-
-1. Click **Create your free cluster**.
+1. Click **Create cluster**.
 
 Your cluster will be created in approximately 20-30 seconds.
 
@@ -56,22 +54,29 @@ Your cluster will be created in approximately 20-30 seconds.
 
 <section class="filter-content" markdown="1" data-scope="paid">
 
-
-1. In the **Cost & Performance** section, select **Set a spend limit as low as $1/month**.
-
 1. Enter your **Spend limit**.
 
     This is the maximum amount you could be charged per month. You will be charged only for what you use.
 
 1. Click **Continue to payment details**.
 
-Your cluster will be created in approximately 20-30 seconds.
+1. Verify the hourly estimated cost for the cluster.
+    {{site.data.alerts.callout_info}}
+    The cost displayed does not include taxes.
+    {{site.data.alerts.end}}
+    You will be billed monthly.
+    
+1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
+
+1. Click **Create cluster**.
+
+Your cluster will be created in approximately 20-30 minutes.
 
 </section>
 
 ## What's next
 
-- [Connect to your serverless cluster](connect-to-a-serverless-cluster.html)
+- [Connect to your CockroachCloud Serverless (beta) cluster](connect-to-a-serverless-cluster.html)
 - [Authorize users](user-authorization.html)
 
 ## Usage examples

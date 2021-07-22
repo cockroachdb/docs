@@ -15,7 +15,7 @@ This page shows you how to connect to your CockroachCloud Serverless (beta) clus
 
 ## Before you start
 
-- [Create a serverless cluster](create-a-serverless-cluster.html).
+- [Create a Serverless (beta) cluster](create-a-serverless-cluster.html).
 - _(Optional)_ [Create a new SQL user](user-authorization.html#create-a-sql-user).
 
 ## Step 1. Select a connection method

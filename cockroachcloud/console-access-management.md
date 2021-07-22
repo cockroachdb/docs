@@ -15,6 +15,16 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
+### Organization verification
+
+CockroachCloud Organizations have two levels of verification, **Basic** and **Core**. New CockroachCloud Serverless (beta) Organizations are at the Basic level once an email address is verified, and all CockroachCloud Dedicated Organizations are at the Core level. Console Admins can upgrade your Organization to Core verification by [adding credit card information](#manage-billing-for-the-organization).
+
+Basic                             | Core
+----------------------------------|----------------------------------
+Import and Backup with `userfile`   | Import and Backup with cloud storage or `userfile`
+Up to 5 Serverless clusters       | Up to 50 Serverless clusters
+placeholder      | placeholder
+
 ## SQL users
 
 [Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.

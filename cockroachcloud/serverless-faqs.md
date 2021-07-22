@@ -53,7 +53,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### Why is CockroachCloud Serverless in beta?
 
-CockroachCloud Serverless is in beta while we work on adding capabilities such no-downtime upgrades from free to paid clusters.
+CockroachCloud Serverless is in beta while we work on additional capabilities and features such as multi-region clusters.
 
 ### Where can I submit feedback or bugs on the beta?
 
@@ -80,11 +80,9 @@ CockroachCloud Serverless (beta) is a multi-tenant offering and resources are sh
 
 ## Cluster maintenance
 
-### Can I upgrade my free CockroachCloud Serverless (beta) cluster to a paid CockroachCloud Serverless (beta) cluster?
+### Can I upgrade my free CockroachCloud Serverless (beta) cluster?
 
-At this time, a free CockroachCloud Serverless cluster cannot be upgraded. In the future, you will have the ability to move from a free CockroachCloud Serverless to a pay-as-you-go Serverless cluster.
-
-If you would like export your data from a free cluster to a paid cluster, see [Migrate from a CockroachCloud Serverless (beta) free cluster to a pay-as-you-go cluster](migrate-from-free-to-paid.html).
+Yes, you can upgrade your cluster through the Console by [increasing your spend limit](serverless-cluster-management.html#edit-your-spend-limit) and entering [billing information](console-access-management.html#manage-billing-for-the-organization) if you haven't already.
 
 ## Product features
 
@@ -98,4 +96,4 @@ Yes, you can view and your clusters in the [CockroachCloud Console](https://cock
 
 ### Can I backup my CockroachCloud Serverless (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. Free CockroachCloud Serverless (beta) clusters do not have public internet access, but can be backed up locally with `userfile`. Paid CockroachCloud Serverless (beta) clusters can be backed up to cloud storage or `userfile`.
+Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. If your Organization is [verified](console-access-management.html#organization-verification) at the Basic level, you can take backups locally to `userfile`. If you are at the Core level of verification, you can backup to cloud storage or `userfile`. See [Organization verification](console-access-management.html#organization-verification) for more information.

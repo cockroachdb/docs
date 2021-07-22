@@ -13,8 +13,6 @@ This page guides you through the quickest way to get started with CockroachDB by
 
 {% include cockroachcloud/free-limitations.md %}
 
-{% include cockroachcloud/free-throttle.md %}
-
 ## Step 1. Create a free cluster
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
