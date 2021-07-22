@@ -138,7 +138,7 @@ Where:
 
 - `<user>` is the username that you created earlier.
 - `<password>` is the password that you created for the `<user>`.
-- `<globalhost>` is the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `<globalhost>` is the name of the CockroachCloud Serverless (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - `<cluster_name>` is the name of your cluster.
 - `<certs_dir>` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 

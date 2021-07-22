@@ -99,7 +99,7 @@ In the `create_engine()` function, update the connection string as follows:
 
 - Comment out the connection string for `cockroach demo`, and uncomment the connection string for CockroachCloud.
 - Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
-- Replace `<globalhost>` with the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- Replace `<globalhost>` with the name of the CockroachCloud Serverless (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - Replace `<cluster_name>` with the name of your cluster.
 - Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
 

@@ -8,7 +8,7 @@ This page has instructions for migrating data from a CockroachCloud Serverless (
 
 - You reach (or get close to reaching) the upper limit of usage of up to 500M RUs and 5GB storage per free CockroachCloud Serverless (beta) cluster.
 - You don't want your cluster performance to be throttled.
-- You want to use any of the capabilities that are not yet available in CockroachCloud Free (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
+- You want to use any of the capabilities that are not yet available in free CockroachCloud Serverless (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
 
 The steps below use sample data from the [`tpcc` workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads).
 

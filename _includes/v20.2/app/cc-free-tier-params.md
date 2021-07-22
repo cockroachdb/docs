@@ -1,7 +1,7 @@
 Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{globalhost}` is the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `{globalhost}` is the name of the CockroachCloud Serverless (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - `{path to the CA certificate}` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 - `{cluster_name}` is the name of your cluster.
 

@@ -23,7 +23,7 @@ This page lists general considerations to be aware of as you plan your migration
 
 In addition to the information listed below, see the following pages for specific instructions and considerations that apply to the database (or data format) you're migrating from:
 
-- [Migrate from a CockroachCloud Free (beta) to CockroachCloud Cluster](../cockroachcloud/migrate-from-free-to-dedicated.html)
+- [Migrate from a CockroachCloud Serverless (beta) free cluster to a pay-as-you-go cluster](../cockroachcloud/migrate-from-free-to-paid.html)
 - [Migrate from Oracle][oracle]
 - [Migrate from Postgres][postgres]
 - [Migrate from MySQL][mysql]

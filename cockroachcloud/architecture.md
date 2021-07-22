@@ -16,11 +16,15 @@ CockroachCloud Serverless (beta) is a fully-managed, multi-tenant deployment of 
 
 Serverless clusters scale based on the application load they are serving. Paid clusters can scale up to the amount of resources being paid for, and free clusters can scale up to 100M Request Units and 5GB of storage.
 
+All resource usage in CockroachCloud Serverless (beta) is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a read or a write query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost 100 RUs.
+RU = SQL CPU + ReadRequests + ReadBytes + WriteRequests + WriteBytes
+Burst capacity is the ability of the Serverless cluster to scale above baseline performance. Supporting application traffic that “burst” i.e., can fluctuate above baseline traffic is a key feature of Serverless clusters. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
+
 Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for Request Units, and vice versa. If you hit your budget, your cluster will be throttled down to free-tier performance levels. In this case, you can increase your budget or adjust your workload to stay within budget.
 
 CockroachCloud Serverless (beta) clusters have the ability to scale to zero and consume no resources when there are no active queries. When there are no active queries, you will pay for storage your app is using, but not for Request Units. To avoid wasted resources, CockroachCloud automatically pauses free clusters that are inactive, which is defined by having no connection to the cluster for 2 consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling  clusters is a fully-managed process and will not disrupt or affect the user experience.
 
-All data in CockroachCloud Serverless (beta) is automatically replicated three times and distributed across Availability Zones to survive outages. Currently, you can pick the region your cluster is deployed in. In the future, CockroachCloud Serverless (beta) will have multi-region capabilities.
+All data in CockroachCloud Serverless (beta) is automatically replicated three times and distributed across Availability Zones to survive outages. The storage a user sees in the UI in the Cluster Overview page is the amount of replicated data storage. 
 
 ## CockroachCloud Dedicated
 
