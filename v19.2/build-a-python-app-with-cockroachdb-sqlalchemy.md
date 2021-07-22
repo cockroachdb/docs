@@ -78,12 +78,6 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 Copy the code below or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/sqlalchemy-basic-sample.py">download it directly</a>.
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
-
-`git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/`
-{{site.data.alerts.end}}
-
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
@@ -182,19 +176,12 @@ It does all of the above using the practices we recommend for using SQLAlchemy w
 You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.create_engine`](https://docs.sqlalchemy.org/en/latest/core/engines.html?highlight=create_engine#sqlalchemy.create_engine) to make sure the [`cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroachdb) dialect is used. Using the `postgres://` URL prefix to connect to your CockroachDB cluster will not work.
 {{site.data.alerts.end}}
 
-To get the code below, clone the `example-app-python-sqlalchemy` repo to your machine:
-
-{% include copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
-~~~
-
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/sqlalchemy-basic-sample.py %}
 ~~~
 
-Change to the directory where you cloned the repo and run the code:
+Run the code:
 
 {% include copy-clipboard.html %}
 ~~~ shell
