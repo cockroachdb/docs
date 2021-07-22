@@ -50,7 +50,7 @@ This tutorial shows you how build a simple CRUD Go application with CockroachDB 
     ~~~
 
     This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql)` connection string in the SQL shell welcome text:
+1. Take note of the `(sql/unix)` connection string in the SQL shell welcome text:
 
     ~~~
     # Connection parameters:
@@ -122,7 +122,7 @@ Enter a connection string:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Enter the `(sql)` connection URL provided in the demo cluster's SQL shell welcome text.
+Enter the `(sql/unix)` connection URL provided in the demo cluster's SQL shell welcome text.
 
 </section>
 
