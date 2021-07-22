@@ -71,13 +71,6 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 Copy the code below or
 <a href="https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/python/sqlalchemy/example.py">download it directly</a>.
 
-If you prefer, you can also clone a version of the code:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
-~~~
-
 {% include copy-clipboard.html %}
 ~~~ python
 {% include {{page.version.version}}/app/python/sqlalchemy/example.py %}
