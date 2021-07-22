@@ -19,9 +19,7 @@ IMPORT INTO customers (id, dob, first_name, last_name, joined)
    CSV DATA ('userfile:///test-data.csv');
 ~~~
 
-{{site.data.alerts.callout_info}}
 `userfile:///` references the default path (`userfile://defaultdb.public.userfiles_$user/`).
-{{site.data.alerts.end}}
 
 ~~~
         job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes

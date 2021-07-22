@@ -1,4 +1,6 @@
-An enterprise changefeed targets and allowlist of tables, called "watched rows". Each change to a watched row is emitted as a record to a configurable sink, like [Kafka](../{{site.versions["stable"]}}/create-changefeed.html#create-a-changefeed-connected-to-kafka) or a [cloud storage sink](../{{site.versions["stable"]}}/create-changefeed.html#create-a-changefeed-connected-to-a-cloud-storage-sink). You can manage your enterprise changefeeds with [create](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#create), [pause](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#pause), [resume](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#resume), or [cancel](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#cancel).
+Change data capture (CDC) provides efficient, distributed, row-level changefeeds into a configurable sink for downstream processing such as reporting, caching, or full-text indexing.
+
+A changefeed targets an allowlist of tables, called "watched rows". Each change to a watched row is emitted as a record to a configurable sink, like [Kafka](../{{site.versions["stable"]}}/create-changefeed.html#create-a-changefeed-connected-to-kafka) or a [cloud storage sink](../{{site.versions["stable"]}}/create-changefeed.html#create-a-changefeed-connected-to-a-cloud-storage-sink). You can manage your changefeeds with [create](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#create), [pause](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#pause), [resume](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#resume), or [cancel](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#cancel) in this version of CockroachCloud.
 
 #### Create a changefeed connected to Kafka
 
@@ -21,7 +23,7 @@ An enterprise changefeed targets and allowlist of tables, called "watched rows".
 Currently, [changefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1.
 {{site.data.alerts.end}}
 
-For more information on how to create a changefeed connected to Kafka, see [Stream Data Out of CockroachDB Using Changefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-changefeed-connected-to-kafka).
+For more information on how to create a changefeed connected to Kafka, see [Stream Data Out of CockroachDB Using Changefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-changefeed-connected-to-kafka) and [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html).
 
 #### Create a changefeed connected to a cloud storage sink
 
@@ -32,7 +34,7 @@ For more information on how to create a changefeed connected to Kafka, see [Stre
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'experimental-scheme://host?parameters'
+  INTO 'experimental-s3://host?parameters'
   WITH updated, resolved;
 ~~~
 ~~~
@@ -44,4 +46,4 @@ For more information on how to create a changefeed connected to Kafka, see [Stre
 (1 row)
 ~~~
 
-For more information on how to create a changefeed connected to a cloud storage sink, see [Stream Data Out of CockroachDB Using Changefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-changefeed-connected-to-a-cloud-storage-sink).
+For more information on how to create a changefeed connected to a cloud storage sink, see [Stream Data Out of CockroachDB Using Changefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-changefeed-connected-to-a-cloud-storage-sink) and [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html).

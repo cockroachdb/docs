@@ -4,7 +4,7 @@
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+> SHOW BACKUPS IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 ~~~
@@ -24,7 +24,7 @@ To restore a full cluster:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+> RESTORE FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
@@ -35,7 +35,7 @@ To restore a database:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE DATABASE bank FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+> RESTORE DATABASE bank FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).
@@ -50,14 +50,14 @@ To restore a single table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+> RESTORE TABLE bank.customers FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 To restore multiple tables:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> RESTORE TABLE bank.customers, bank.accounts FROM 's3://{bucket_name}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+> RESTORE TABLE bank.customers, bank.accounts FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories).

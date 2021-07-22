@@ -1,27 +1,16 @@
-To import from `userfile`, first create the table that you would like to import into:
+To import a table from `userfile`, use the following command:
 
 {% include copy-clipboard.html %}
 ~~~sql
-CREATE TABLE customers (
-  id INT,
-  dob DATE,
-  first_name STRING,
-  last_name STRING,
-  joined DATE
-);
-~~~
-
-Then, use `IMPORT INTO` to import data into the table:
-
-{% include copy-clipboard.html %}
-~~~sql
-IMPORT INTO customers (id, dob, first_name, last_name, joined)
+IMPORT TABLE customers (
+        id UUID PRIMARY KEY,
+        name TEXT,
+        INDEX name_idx (name)
+)
    CSV DATA ('userfile:///test-data.csv');
 ~~~
 
-{{site.data.alerts.callout_info}}
 `userfile:///` references the default path (`userfile://defaultdb.public.userfiles_$user/`).
-{{site.data.alerts.end}}
 
 ~~~
         job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes
@@ -30,4 +19,4 @@ IMPORT INTO customers (id, dob, first_name, last_name, joined)
 (1 row)
 ~~~
 
-For more import options, see [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html).
+For more import options, see [`IMPORT`](../{{site.versions["stable"]}}/import-into.html).

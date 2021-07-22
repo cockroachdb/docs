@@ -4,15 +4,13 @@ summary: Run backups, restores, and imports from your CockroachCloud cluster.
 toc: true
 ---
 
-Your CockroachCloud cluster can perform the following bulk operations:
+The CockroachCloud tiers offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
-- [`IMPORT`](../{{site.versions["stable"]}}/import.html) / [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html)
-- [`EXPORT`](../{{site.versions["stable"]}}/export.html) (CockroachCloud Dedicated only)
-- [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html) (Core and enterprise)
-
-The CockroachCloud tiers offer different support for bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples.
+- [`IMPORT`](../{{site.versions["stable"]}}/import.html)
+- [`EXPORT`](../{{site.versions["stable"]}}/export.html)
+- [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
 
 ## Examples
 
@@ -24,10 +22,10 @@ The CockroachCloud tiers offer different support for bulk operations. This page 
 <section class="filter-content" markdown="1" data-scope="cc-free">
 
 {{site.data.alerts.callout_info}}
-`userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free Tier **after upgrading to v21.1.**
+`userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free (beta) **after upgrading to v21.1.**
 {{site.data.alerts.end}}
 
-In CockroachCloud Free Tier clusters, `BACKUP`, `RESTORE`, and `IMPORT INTO` can be used with [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage, a per-user bulk file storage.
+In CockroachCloud Free (beta) clusters, `BACKUP`, `RESTORE`, and `IMPORT` can be used with [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage, a per-user bulk file storage.
 
 For information on `userfile` commands, visit the following pages:
 
@@ -48,10 +46,10 @@ For information on `userfile` commands, visit the following pages:
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
-To create a core changefeed in CockroachCloud Free Tier, use the following example.
+To create a core changefeed in CockroachCloud Free (beta), use the following example.
 
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on CockroachCloud Free Tier. An [enterprise license](../{{site.versions["stable"]}}/enterprise-licensing.html) is required to create a changefeed into a configurable cloud storage sink, Kafka, etc.
+Only core changefeeds are available on CockroachCloud Free (beta). To create a changefeed into a configurable sink, like cloud storage sink or Kafka, use CockroachCloud, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
 For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html).
@@ -68,11 +66,13 @@ For further information on changefeeds, read [Stream Data Out of CockroachDB](..
 
 <section class="filter-content" markdown="1" data-scope="cc-ded">
 
-The examples below use Amazon S3 for demonstrations purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
+The examples below use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
 ### Backup and restore your CockroachCloud data
 
 Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
+
+The following examples show how to run manual backups and restores:
 
 {% include cockroachcloud/backup-examples.md %}
 
@@ -87,39 +87,20 @@ For more information on taking backups and restoring to your cluster, read the f
 
 ### Import data into your CockroachCloud cluster
 
-To import a table, first create the table that you would like to import into:
+To import a table into your cluster:
 
 {% include copy-clipboard.html %}
-~~~sql
-CREATE TABLE customers (
-  id INT,
-  dob DATE,
-  first_name STRING,
-  last_name STRING,
-  joined DATE
-);
+~~~ sql
+> IMPORT TABLE customers (
+		id UUID PRIMARY KEY,
+		name TEXT,
+		INDEX name_idx (name)
+)
+CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}')
+;
 ~~~
 
-Then, use `IMPORT INTO` to import data into the table:
-
-{% include copy-clipboard.html %}
-~~~sql
-IMPORT INTO customers (id, dob, first_name, last_name, joined)
-   CSV DATA ('s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}');
-~~~
-
-~~~
-        job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes
----------------------+-----------+--------------------+--------+---------------+-----------
-  599865027685613569 | succeeded |                  1 | 300024 |             0 | 13389972
-(1 row)
-~~~
-
-For more import options and examples, see [`IMPORT INTO`](../{{site.versions["stable"]}}/import-into.html), [`IMPORT`](../{{site.versions["stable"]}}/import.html), and [Import Performance Best Practices](../{{site.versions["stable"]}}/import-performance-best-practices.html).
-
-{{site.data.alerts.callout_info}}
-As of v21.2 `IMPORT TABLE` will be deprecated. We recommend using `IMPORT INTO` followed by `CREATE TABLE` as per this example.
-{{site.data.alerts.end}}
+Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) for more examples and guidance using `IMPORT`.
 
 ### Export data out of CockroachCloud
 
@@ -131,13 +112,11 @@ EXPORT INTO CSV
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
-Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) for more examples and guidance using `EXPORT`.
-
+Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) page for more examples and guidance.
 
 ### Stream data out of CockroachCloud
 
 {% include cockroachcloud/cdc/cdc-bulk-examples.md %}
-
 
 ## See also
 
