@@ -22,7 +22,7 @@ This tutorial shows you how build a simple CRUD Python application with Cockroac
 
 To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
 ~~~
@@ -61,7 +61,7 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
 1. Run the [`cockroach demo`](cockroach-demo.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo \
     --no-example-database
@@ -85,7 +85,7 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 
 Clone the code's GitHub repo:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
 ~~~
@@ -126,7 +126,7 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 To run the app, pass the connection string for your cluster to `main.py`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ python3 main.py '<connection_string>'
 ~~~
@@ -195,7 +195,7 @@ Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
 
 In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT COUNT(*) FROM bank.accounts;
 ~~~
