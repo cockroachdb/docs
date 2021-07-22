@@ -36,7 +36,7 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 
 ### Get the code
 
-Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pgx).
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-go-pgx).
 
 <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
@@ -55,7 +55,7 @@ Here are the contents of `main.go`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/master/main.go %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/main.go %}
 ~~~
 
 </div>
@@ -64,7 +64,7 @@ Here are the contents of `main.go`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/cockroachcloud/main.go %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/cockroachcloud/main.go %}
 ~~~
 
 </div>
