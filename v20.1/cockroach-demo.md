@@ -8,7 +8,9 @@ The `cockroach demo` [command](cockroach-commands.html) starts a temporary, in-m
 
 The in-memory cluster persists only as long as the SQL shell is open. As soon as the shell is exited, the cluster and all its data are permanently destroyed. This command is therefore recommended only as an easy way to experiment with the CockroachDB SQL dialect.
 
-By default, `cockroach demo` starts in secure mode using TLS certificates to encrypt network communication. Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
+By default, `cockroach demo` starts in secure mode using TLS certificates to encrypt network communication. It also serves a local [Admin UI](#admin-ui) that does not use TLS encryption. 
+
+Each instance of `cockroach demo` loads a temporary [enterprise license](https://www.cockroachlabs.com/get-cockroachdb) that expires after an hour. To prevent the loading of a temporary license, set the `--disable-demo-license` flag.
 
 ## Synopsis
 
