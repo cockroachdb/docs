@@ -72,6 +72,8 @@ In your terminal, run the second command from the dialog to create a new `certs`
 ~~~ shell
 curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
 ~~~
+
+Your `cert` file will be downloaded to `~/.postgres/root.crt`.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="linux">    
@@ -79,6 +81,8 @@ curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clus
 ~~~ shell
 curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
 ~~~
+
+Your `cert` file will be downloaded to `~/.postgres/root.crt`.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="windows">
@@ -87,6 +91,7 @@ curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clus
 mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile $env:appdata\.postgresql\root.crt
 ~~~
 
+Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
 </section>
 
 ## Step 4. Use the built-in SQL client

@@ -413,17 +413,28 @@
             ]
           },
           {
-            "title": "Sample Apps",
+            "title": "Example Apps",
             "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/example-apps.html"
+                ]
+              },
               {
                 "title": "Hello World",
                 "items": [
                   {
-                    "title": "Overview",
+                    "title": "Python",
                     "urls": [
-                      "/${VERSION}/hello-world-example-apps.html"
+                      "/${VERSION}/hello-world-python-sqlalchemy.html"
                     ]
-                  },
+                  }
+                ]
+              },
+              {
+                "title": "Simple CRUD",
+                "items": [
                   {
                     "title": "Go",
                     "urls": [
@@ -431,22 +442,6 @@
                       "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Python",
-                    "urls": [
-                      "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
-                    ]
-                  },
-                  {
-                    "title": "Ruby",
-                    "urls": [
-                      "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
                     ]
                   },
                   {
@@ -464,6 +459,22 @@
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+                    ]
+                  },
+                  {
+                    "title": "Python",
+                    "urls": [
+                      "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
+                    ]
+                  },
+                  {
+                    "title": "Ruby",
+                    "urls": [
+                      "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+                      "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
                     ]
                   },
                   {
@@ -590,6 +601,12 @@
                   {
                     "title": "Schema Migration Tools",
                     "items": [
+                      {
+                        "title": "Alembic",
+                        "urls": [
+                          "/${VERSION}/alembic.html"
+                        ]
+                      },
                       {
                         "title": "Flyway",
                         "urls": [

@@ -31,6 +31,10 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 - [TablePlus](https://tableplus.com/blog/2018/06/best-cockroachdb-gui-client-tableplus.html)
 - [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html)
 
+## Connection pooling tools
+
+- [PGBouncer](https://dzone.com/articles/using-pgbouncer-with-cockroachdb)
+
 ## See also
 
 - [Build an App with CockroachDB](hello-world-example-apps.html)
