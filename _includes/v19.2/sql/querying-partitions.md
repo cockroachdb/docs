@@ -139,7 +139,7 @@ The query returns the same result, but because `name` is not an indexed column, 
 
 ### Filtering on an partitioned column
 
-If you know which partition contains the data that you are querying, using a filter (e.g. a [`WHERE` clause](select-clause.html#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
+If you know which partition contains the data that you are querying, using a filter (e.g., a [`WHERE` clause](select-clause.html#filter-rows)) on the column that is used for the partition can further improve performance by limiting the scan to the specific partition(s) that contain the data that you are querying.
 
 Now suppose that you know the user's name and location. You can query the table with a filter on the user's name and city:
 

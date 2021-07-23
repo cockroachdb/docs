@@ -31,8 +31,7 @@
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
               "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html",
-              "/${VERSION}/install-cockroachdb-spatial.html"
+              "/${VERSION}/install-cockroachdb-windows.html"
             ]
           },
           {
@@ -116,7 +115,7 @@
               {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
-                  "/${VERSION}/orchestration-with-kubernetes.html"
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
                 ]
               },
               {
@@ -372,7 +371,7 @@
               {
                 "title": "Log Events",
                 "urls": [
-                  "/${VERSION}/debug-and-error-logs.html"
+                  "/${VERSION}/logging-overview.html"
                 ]
               },
               {
@@ -414,17 +413,28 @@
             ]
           },
           {
-            "title": "Sample Apps",
+            "title": "Example Apps",
             "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/example-apps.html"
+                ]
+              },
               {
                 "title": "Hello World",
                 "items": [
                   {
-                    "title": "Overview",
+                    "title": "Python",
                     "urls": [
-                      "/${VERSION}/hello-world-example-apps.html"
+                      "/${VERSION}/hello-world-python-sqlalchemy.html"
                     ]
-                  },
+                  }
+                ]
+              },
+              {
+                "title": "Simple CRUD",
+                "items": [
                   {
                     "title": "Go",
                     "urls": [
@@ -432,22 +442,6 @@
                       "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Python",
-                    "urls": [
-                      "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
-                    ]
-                  },
-                  {
-                    "title": "Ruby",
-                    "urls": [
-                      "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
                     ]
                   },
                   {
@@ -465,6 +459,22 @@
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+                    ]
+                  },
+                  {
+                    "title": "Python",
+                    "urls": [
+                      "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
+                    ]
+                  },
+                  {
+                    "title": "Ruby",
+                    "urls": [
+                      "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+                      "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
                     ]
                   },
                   {
@@ -526,42 +536,42 @@
                     ]
                   },
                   {
-                    "title": "Multi-Region",
+                    "title": "Global Application",
                     "items": [
                       {
                         "title": "Overview",
                         "urls": [
-                          "/${VERSION}/multi-region-overview.html"
+                          "/${VERSION}/movr-flask-overview.html"
                         ]
                       },
                       {
-                        "title": "Use-Case",
+                        "title": "Global Application Use-case",
                         "urls": [
-                          "/${VERSION}/multi-region-use-case.html"
+                          "/${VERSION}/movr-flask-use-case.html"
                         ]
                       },
                       {
-                        "title": "Database Schema",
+                        "title": "Multi-region Database Schema",
                         "urls": [
-                          "/${VERSION}/multi-region-database.html"
+                          "/${VERSION}/movr-flask-database.html"
                         ]
                       },
                       {
-                        "title": "Setup",
+                        "title": "Set up a Development Environment",
                         "urls": [
-                          "/${VERSION}/multi-region-setup.html"
+                          "/${VERSION}/movr-flask-setup.html"
                         ]
                       },
                       {
-                        "title": "Application",
+                        "title": "Develop a Global Application",
                         "urls": [
-                          "/${VERSION}/multi-region-application.html"
+                          "/${VERSION}/movr-flask-application.html"
                         ]
                       },
                       {
-                        "title": "Deployment",
+                        "title": "Deploy a Global Application",
                         "urls": [
-                          "/${VERSION}/multi-region-deployment.html"
+                          "/${VERSION}/movr-flask-deployment.html"
                         ]
                       }
                     ]
@@ -591,6 +601,12 @@
                   {
                     "title": "Schema Migration Tools",
                     "items": [
+                      {
+                        "title": "Alembic",
+                        "urls": [
+                          "/${VERSION}/alembic.html"
+                        ]
+                      },
                       {
                         "title": "Flyway",
                         "urls": [
@@ -771,8 +787,20 @@
               {
                 "title": "Kubernetes Single-Cluster Deployment",
                 "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes.html",
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "Operate CockroachDB on Kubernetes",
+                "urls": [
+                  "/${VERSION}/operate-cockroachdb-kubernetes.html"
+                ]
+              },
+              {
+                "title": "Monitor CockroachDB on Kubernetes",
+                "urls": [
+                  "/${VERSION}/monitor-cockroachdb-kubernetes.html"
                 ]
               },
               {
@@ -1176,7 +1204,7 @@
           {
             "title": "Understand Debug Logs",
             "urls": [
-              "/${VERSION}/debug-and-error-logs.html"
+              "/${VERSION}/logging-overview.html"
             ]
           },
           {
@@ -2414,6 +2442,12 @@
                     ]
                   },
                   {
+                    "title": "Using GeoServer with CockroachDB",
+                    "urls": [
+                      "/${VERSION}/geoserver.html"
+                    ]
+                  },
+                  {
                     "title": "POINT",
                     "urls": [
                       "/${VERSION}/point.html"
@@ -2649,6 +2683,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach debug list-files</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-list-files.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach debug merge-logs</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-merge-logs.html"
@@ -2741,12 +2781,6 @@
                 "title": "Load-Based Splitting",
                 "urls": [
                   "/${VERSION}/load-based-splitting.html"
-                ]
-              },
-              {
-                "title": "Range Merges",
-                "urls": [
-                  "/${VERSION}/range-merges.html"
                 ]
               }
             ]

@@ -75,7 +75,7 @@ CREATE SCHEMA abbey_schema AUTHORIZATION abbey;
 
 The first set of statement clears the database of any existing schema named `max_schema`, and then creates a schema named `max_schema` with the owner `max`. The next set of statements does the same, but for `abbey_schema`, with `abbey` as the owner.
 
-It might also be a good idea to [grant the `USAGE` privilege](grant.html#supported-privileges) on each schema to the other user in the database. This will allow the other user to access objects in the schema, but it won't let them delete the schema, or create objects inside of it.
+It might also be a good idea to [grant the `USAGE` privilege](grant.html#supported-privileges) on each schema to the other user in the database. This will allow the other user to access objects in the schema, but it will not let them delete the schema, or create objects inside of it.
 
 Under the `CREATE SCHEMA` statements for each user-defined schema, add a `GRANT` statement granting `USAGE` privileges on the schema to the other user.
 
@@ -109,7 +109,7 @@ To execute the statements in the `dbinit.sql` file as the `root` user, run the f
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=root \
-< dbinit.sql
+-f dbinit.sql
 ~~~
 
 Before the new users can connect to the cluster and start creating objects, they each need a [user certificate](authentication.html#client-authentication). To create a user certificate for `max`, open a new terminal, and run the following [`cockroach cert`](cockroach-cert.html) command:

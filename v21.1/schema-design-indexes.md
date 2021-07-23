@@ -113,7 +113,7 @@ CREATE INDEX type_available_idx ON movr.vehicles (type, available));
 
 This statement creates a secondary index named `type_available_idx`, on the `vehicles` table.
 
-The MovR app might also need to display the vehicle's location and ID, but the app won't be filtering or sorting on those values. If any of the columns referenced in or returned by a query are not in a primary or secondary index key, CockroachDB will need to perform [a full scan of the table](sql-tuning-with-explain.html#issue-full-table-scans) to find the value. Full table scans can be costly, and should be avoided whenever possible.
+The MovR app might also need to display the vehicle's location and ID, but the app will not be filtering or sorting on those values. If any of the columns referenced in or returned by a query are not in a primary or secondary index key, CockroachDB will need to perform [a full scan of the table](sql-tuning-with-explain.html#issue-full-table-scans) to find the value. Full table scans can be costly, and should be avoided whenever possible.
 
 To help avoid unnecessary full table scans, add a `STORING` clause to the index:
 
@@ -122,7 +122,7 @@ To help avoid unnecessary full table scans, add a `STORING` clause to the index:
 CREATE INDEX type_available_idx ON movr.vehicles (type, available) STORING (last_location);
 ~~~
 
-The index will now store the values in `last_location`, which will improve the performance of reads from the `vehicles` table that return `type`, `available`, `id`, and `last_location` values and don't filter or sort on the `last_location` column.
+The index will now store the values in `last_location`, which will improve the performance of reads from the `vehicles` table that return `type`, `available`, `id`, and `last_location` values and do not filter or sort on the `last_location` column.
 
 The `max_init.sql` file should now look similar to the following:
 
@@ -164,7 +164,7 @@ If you executed this file when following the [Create a Table](schema-design-tabl
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=root \
-< dbinit.sql
+-f dbinit.sql
 ~~~
 
 Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
@@ -174,8 +174,8 @@ Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=max \
---database=movr
-< max_init.sql
+--database=movr \
+-f max_init.sql
 ~~~
 
 {% include copy-clipboard.html %}
@@ -183,8 +183,8 @@ $ cockroach sql \
 $ cockroach sql \
 --certs-dir={certs-directory} \
 --user=abbey \
---database=movr
-< abbey_init.sql
+--database=movr \
+-f abbey_init.sql
 ~~~
 
 After the statements have been executed, you can see the new index in the [CockroachDB SQL shell](cockroach-sql.html#sql-shell).

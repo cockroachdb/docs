@@ -11,8 +11,12 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Each value inserted or updated in `orders.customer_id` must exactly match a value in `customers.id`, or be `NULL`.
 - Values in `customers.id` that are referenced by `orders.customer_id` cannot be deleted or updated, unless you have [cascading actions](#use-a-foreign-key-constraint-with-cascade). However, values of `customers.id` that are _not_ present in `orders.customer_id` can be deleted or updated.
 
-{{site.data.alerts.callout_info}}
- A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
+To learn more about the basics of foreign keys, watch the video below:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5kiMg7GXAsY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+{{site.data.alerts.callout_success}}
+To read more about how foreign keys work, see our [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/) blog post.
 {{site.data.alerts.end}}
 
 ## Details
@@ -23,9 +27,14 @@ For example, given an `orders` table and a `customers` table, if you create a co
 
 - Foreign key columns must use their referenced column's [type](data-types.html).
 - A foreign key column cannot be a [computed column](computed-columns.html).
+- A single column can have multiple foreign key constraints. For an example, see [Add multiple foreign key constraints to a single column](#add-multiple-foreign-key-constraints-to-a-single-column).
 
 {{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.2:</span> Foreign key columns do not need to be indexed. In versions < v20.2, an index on referencing foreign key columns is required.
+<span class="version-tag">New in v20.2:</span> CockroachDB no longer requires an index on foreign key columns.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_success}}
+To improve query performance on tables with foreign keys, we recommend indexing all foreign key columns.
 {{site.data.alerts.end}}
 
 **Referenced Columns**
@@ -33,19 +42,6 @@ For example, given an `orders` table and a `customers` table, if you create a co
 - Referenced columns must contain only unique sets of values. This means the `REFERENCES` clause must use exactly the same columns as a [`UNIQUE`](unique.html) or [`PRIMARY KEY`](primary-key.html) constraint on the referenced table. For example, the clause `REFERENCES tbl (C, D)` requires `tbl` to have either the constraint `UNIQUE (C, D)` or `PRIMARY KEY (C, D)`.
 - In the `REFERENCES` clause, if you specify a table but no columns, CockroachDB references the table's primary key. In these cases, the `FOREIGN KEY` constraint and the referenced table's primary key must contain the same number of columns.
 - <span class="version-tag">New in v20.2:</span> By default, referenced columns must be in the same database as the referencing foreign key column. To enable cross-database foreign key references, set the `sql.cross_db_fks.enabled` [cluster setting](cluster-settings.html) to `true`.
-- Referenced columns must be [indexed](indexes.html). There are a number of ways to meet this requirement:
-
-    - You can create indexes explicitly using the [`INDEX`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) clause of `CREATE TABLE`.
-    - You can rely on indexes created by the [`PRIMARY KEY`](primary-key.html) or [`UNIQUE`](unique.html) constraints.
-    - If an index on the referenced column does not already exist, CockroachDB automatically creates one. It's important to note that if you later remove the `FOREIGN KEY` constraint, this automatically created index _is not_ removed.
-
-    {{site.data.alerts.callout_success}}
-    Using the referenced columns as the prefix of an index's columns also satisfies the requirement for an index. For example, if you create foreign key that references the columns `(A, B)`, an index of columns `(A, B, C)` satisfies the requirement for an index.
-    {{site.data.alerts.end}}
-
-    {{site.data.alerts.callout_info}}
-     You can drop the index on the referenced columns if another index exists on the same columns and fulfills the indexing requirement described above.
-    {{site.data.alerts.end}}
 
 ### Null values
 
@@ -121,11 +117,17 @@ Parameter | Description
 
 ### Performance
 
-Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute. You're most likely to notice this with operations like bulk inserts into the table with the foreign keys. For bulk inserts into new tables, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+Because the foreign key constraint requires per-row checks on two tables, statements involving foreign key or referenced columns can take longer to execute.
 
-{{site.data.alerts.callout_danger}}
-Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
-{{site.data.alerts.end}}
+To improve query performance, we recommend doing the following:
+
+- Create a secondary index on all referencing foreign key columns that are not already indexed.
+
+- For bulk inserts into new tables with foreign key or referenced columns, use the [`IMPORT`](import.html) statement instead of [`INSERT`](insert.html).
+
+    {{site.data.alerts.callout_danger}}
+    Using [`IMPORT INTO`](import-into.html) will invalidate foreign keys without a [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
+    {{site.data.alerts.end}}
 
 ## Syntax
 
@@ -922,3 +924,4 @@ Inserting values into the table using the `MATCH FULL` algorithm (described [abo
 - [`PRIMARY KEY` constraint](primary-key.html)
 - [`UNIQUE` constraint](unique.html)
 - [`SHOW CONSTRAINTS`](show-constraints.html)
+- [What is a Foreign Key? (With SQL Examples)](https://www.cockroachlabs.com/blog/what-is-a-foreign-key/)

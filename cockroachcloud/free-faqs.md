@@ -1,16 +1,25 @@
 ---
-title: CockroachCloud Free (beta) Frequently Asked Questions
+title: CockroachCloud Free (beta) FAQs
 summary: Get answers to frequently asked questions about CockroachCloud Free (beta)
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Free (beta). For answers to frequently asked questions about the paid version of CockroachCloud, see [CockroachCloud FAQs](frequently-asked-questions.html).
+This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+
+<div class="filters clearfix">
+    <a href="free-faqs.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level">CockroachCloud</button></a>
+</div>
 
 ## General
 
 ### What is CockroachCloud Free (beta)?
 
 CockroachCloud Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic.
+
+### How do I start using CockroachCloud Free (beta)?
+
+To get started with CockroachCloud Free (beta), <a href="https://cockroachlabs.cloud/signup?referralId=docs_free_faq" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
 
 ### What are the usage limits of Cockroach Cloud Free (beta)?
 
@@ -91,7 +100,7 @@ Yes, you can view and your clusters in the [CockroachCloud Console](https://cock
 
 Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CockroachCloud Free (beta) cluster yourself. We expect to support user-initiated backup and restore of free clusters in the future.
 
-In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
+In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select-clause.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~

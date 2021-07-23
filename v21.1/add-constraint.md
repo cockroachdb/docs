@@ -311,7 +311,7 @@ In the latter case, the index alone cannot enforce uniqueness on columns that ar
 
 Whether or not to explicitly include `crdb_region` in the index definition depends on the context:
 
-- If you only need to enforce uniqueness at the region level, then including `crdb_region` in the `UNIQUE` index definition will enforce these semantics and allow you to get better performance on [`INSERT`](insert.html)s, [`UPDATE`](update.html)s, and [`UPSERT`](upsert.html)s, since there won't be any added latency from uniqueness checks.
+- If you only need to enforce uniqueness at the region level, then including `crdb_region` in the `UNIQUE` index definition will enforce these semantics and allow you to get better performance on [`INSERT`](insert.html)s, [`UPDATE`](update.html)s, and [`UPSERT`](upsert.html)s, since there will not be any added latency from uniqueness checks.
 - If you need to enforce global uniqueness, you should not include `crdb_region` in the `UNIQUE` (or [`PRIMARY KEY`](primary-key.html)) index definition, and the database will automatically ensure that the constraint is enforced.
 
 To illustrate the different behavior of explicitly vs. implicitly partitioned indexes, we will perform the following tasks:

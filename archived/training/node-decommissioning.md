@@ -4,7 +4,7 @@ toc: true
 toc_not_nested: true
 sidebar_data: sidebar-data-training.json
 block_search: false
-redirect_from: /training/node-decommissioning.html
+
 ---
 
 <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR0C9G-W0sNE1-SwziVHU7jJikwx50K-cDwy0kdFkADqSeu1po_nq8OM-IHyqngaeKtRiUNjKcZXZJL/embed?start=false&loop=false" frameborder="0" width="756" height="454" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>

@@ -42,7 +42,7 @@ Approximately 72 hours after the node has been restarted, the upgrade will be au
 
 ### Prepare for brief unavailability
 
-Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](connect-to-your-cluster.html#step-2-create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the CockroachCloud Console will be disabled.
+Because your cluster will be unavailable while its single node is stopped and restarted with v20.1, prepare your application for this brief downtime, typically a few minutes. Also during this time, the [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring**](monitoring-page.html) tabs in the CockroachCloud Console will be disabled.
 
 </section>
 
@@ -54,7 +54,7 @@ Review the following list of backward-incompatible changes in v20.1, and if any 
 
 - Casting intervals to integers and floats is now Postgres-compatible and values a year at 365.25 days in seconds instead of 365 days.
 
-- The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/change-data-capture.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
+- The combination of the [`CHANGEFEED`](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) options `format=experimental_avro`, `envelope=key_only`, and `updated` is now rejected. This is because the use of `key_only` prevents any rows with updated fields from being emitted, which renders the `updated` option meaningless.
 
 - The `cockroach user` CLI command has been removed. It was previously deprecated in CockroachDB v19.2. Note that a v19.2 client (supporting `cockroach user`) can still operate user accounts in a v20.1 server.
 
@@ -67,7 +67,7 @@ Make sure there are no [bulk imports](../{{site.versions["stable"]}}/import.html
 To check for ongoing bulk operations, use [`SHOW JOBS`](https://www.cockroachlabs.com/docs/v20.1/show-jobs.html#show-schema-changes) or check the [**Jobs** page](../{{site.versions["stable"]}}/ui-jobs-page.html) in the DB Console.
 
 {{site.data.alerts.callout_info}}
-Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../{{site.versions["stable"]}}/show-jobs.html) and the [**Jobs** page](../{{site.versions["stable"]}}/ui-jobs-page.html) in the DB Console will show them as running until the upgrade has been finalized. During this time, it won't be possible to manipulate these schema changes via [`PAUSE JOB`](../{{site.versions["stable"]}}/pause-job.html)/[`RESUME JOB`](../{{site.versions["stable"]}}/resume-job.html)/[`CANCEL JOB`](../{{site.versions["stable"]}}/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
+Once your cluster is running v20.1, but before the upgrade has been finalized, any ongoing schema changes will stop making progress, but [`SHOW JOBS`](../{{site.versions["stable"]}}/show-jobs.html) and the [**Jobs** page](../{{site.versions["stable"]}}/ui-jobs-page.html) in the DB Console will show them as running until the upgrade has been finalized. During this time, it will not be possible to manipulate these schema changes via [`PAUSE JOB`](../{{site.versions["stable"]}}/pause-job.html)/[`RESUME JOB`](../{{site.versions["stable"]}}/resume-job.html)/[`CANCEL JOB`](../{{site.versions["stable"]}}/cancel-job.html) statements. Once the upgrade has been finalized, these schema changes will run to completion.
 
 Note that this behavior is specific to upgrades from v19.2 to v20.1; it does not apply to other upgrades.
 {{site.data.alerts.end}}
@@ -80,7 +80,7 @@ Once your cluster is running v20.1, but before the upgrade has been finalized:
 
 - [`GRANT`](../{{site.versions["stable"]}}/grant.html) and [`REVOKE`](../{{site.versions["stable"]}}/revoke.html) statements will be blocked and return an error. This is because privileges are stored with table metadata and, therefore, privilege changes are considered schema changes, from an internal perspective. Update your application or tooling to prevent privilege changes during this period. Once the upgrade has been finalized, changes to user privileges can resume.
 
-   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](connect-to-your-cluster.html#step-2-create-a-sql-user) tab of the CockroachCloud Console until the upgrade has been finalized. Attempting to do so will result in an error.   
+   - This limitation also means that you will not be able to add or delete SQL users, or change existing users' passwords, on the [**SQL Users**](user-authorization.html#create-a-sql-user) tab of the CockroachCloud Console until the upgrade has been finalized. Attempting to do so will result in an error.   
 
 {{site.data.alerts.callout_info}}
 Note that these limitations are specific to upgrades from v19.2 to v20.1; they do not apply to other upgrades.

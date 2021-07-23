@@ -57,5 +57,5 @@ To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FOR
 ~~~
 
 {{site.data.alerts.callout_success}}
-You can also use the [`SHOW CREATE TABLE`](show-create-table.html) statement or [`SHOW PARTITIONS`](show-partitions.html) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
+You can also use the [`SHOW CREATE TABLE`](show-create.html) statement or [`SHOW PARTITIONS`](show-partitions.html) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
 {{site.data.alerts.end}}

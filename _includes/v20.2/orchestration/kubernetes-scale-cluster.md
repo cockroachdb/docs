@@ -62,69 +62,6 @@ Your Kubernetes cluster includes 3 worker nodes, or instances, that can run pods
     statefulset.apps/cockroachdb scaled
     ~~~
 
-    {{site.data.alerts.callout_success}}
-    If you aren't using the Kubernetes CA to sign certificates, you can now skip to step 6.
-    {{site.data.alerts.end}}
-
-1. Get the name of the `Pending` CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl get csr
-    ~~~
-
-    ~~~
-    NAME                                                   AGE       REQUESTOR                               CONDITION
-    default.client.root                                    1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-0                             1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-1                             1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-2                             1h        system:serviceaccount:default:default   Approved,Issued
-    default.node.cockroachdb-3                             2m        system:serviceaccount:default:default   Pending
-    node-csr-0Xmb4UTVAWMEnUeGbW4KX1oL4XV_LADpkwjrPtQjlZ4   1h        kubelet                                 Approved,Issued
-    node-csr-NiN8oDsLhxn0uwLTWa0RWpMUgJYnwcFxB984mwjjYsY   1h        kubelet                                 Approved,Issued
-    node-csr-aU78SxyU69pDK57aj6txnevr7X-8M3XgX9mTK0Hso6o   1h        kubelet                                 Approved,Issued
-    ...
-    ~~~
-
-1. Examine the CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl describe csr default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    Name:               default.node.cockroachdb-3
-    Labels:             <none>
-    Annotations:        <none>
-    CreationTimestamp:  Wed, 30 Oct 2019 13:46:52 -0400
-    Requesting User:    system:serviceaccount:default:cockroachdb
-    Status:             Pending
-    Subject:
-      Common Name:    node
-      Serial Number:
-      Organization:   Cockroach
-    Subject Alternative Names:
-             DNS Names:     localhost
-                            cockroachdb-1.cockroachdb.default.svc.cluster.local
-                            cockroachdb-1.cockroachdb
-                            cockroachdb-public
-                            cockroachdb-public.default.svc.cluster.local
-             IP Addresses:  127.0.0.1
-    Events:  <none>
-    ~~~    
-
-1. If everything looks correct, approve the CSR for the new pod:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ kubectl certificate approve default.node.cockroachdb-3
-    ~~~
-
-    ~~~
-    certificatesigningrequest.certificates.k8s.io/default.node.cockroachdb-3 approved
-    ~~~
-
 1. Verify that the new pod started successfully:
 
     {% include copy-clipboard.html %}

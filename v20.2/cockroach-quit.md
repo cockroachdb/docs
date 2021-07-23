@@ -2,7 +2,6 @@
 title: cockroach quit
 summary: This page shows you how to use the cockroach quit command to temporarily stop a node that you plan to restart.
 toc: true
-redirect_from: stop-a-node.html
 key: stop-a-node.html
 ---
 

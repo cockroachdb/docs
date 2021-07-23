@@ -166,7 +166,7 @@ _Description_:
 The `RETRY_COMMIT_DEADLINE_EXCEEDED` error means that the transaction timed out due to being pushed by other concurrent transactions. This error is most likely to happen to long-running transactions. The conditions that trigger this error are very similar to the conditions that lead to a [`RETRY_SERIALIZABLE`](#retry_serializable) error, except that a transaction that hits this error got pushed for several minutes, but did not hit any of the conditions that trigger a `RETRY_SERIALIZABLE` error. In other words, the conditions that trigger this error are a subset of those that trigger `RETRY_SERIALIZABLE`, and that this transaction ran for too long (several minutes).
 
 {{site.data.alerts.callout_info}}
-Read-only transactions don't get pushed, so they don't run into this error.
+Read-only transactions do not get pushed, so they do not run into this error.
 {{site.data.alerts.end}}
 
 This error occurs in the cases described below.

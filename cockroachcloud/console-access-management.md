@@ -15,6 +15,14 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
+## SQL users
+
+[Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
+
+SQL users created in the Console have admin privileges on the database by default. Therefore, anyone with the username and password of a default SQL user has privileges for all database objects across the cluster.
+
+Anyone with database admin privileges can [change a SQL user's databases privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges).
+
 ## Roles
 
 Every CockroachCloud user is either a Developer or a Console Admin for the Organization.
@@ -32,7 +40,7 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Create a cluster](create-your-cluster.html)
 - [Invite Team Members to CockroachCloud](#invite-team-members-to-cockroachcloud)
 - [Manage Team Members](#manage-team-members)
-- [Create and manage SQL users](connect-to-your-cluster.html#step-2-create-a-sql-user)
+- [Create and manage SQL users](user-authorization.html#create-a-sql-user)
 - [Manage billing for the Organization](#manage-billing-for-the-organization)
 - [Restore databases and tables from a CockroachCloud backup](backups-page.html#ways-to-restore-data)
 - [Delete an Organization](#delete-an-organization)
@@ -69,7 +77,7 @@ If you are a member of multiple [organizations](console-access-management.html#o
 3. If the Team Member is a Developer, click **Change to Admin** to grant them Admin access. If the Team Member is an Admin, click **Change to Developer** to grant them only Developer access.
 
 {{site.data.alerts.callout_info}}
-As a Console Admin, you can change your own access to a Developer role; however, you won't be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you won't be allowed to change your role until you assign another Team Member to be the Console Admin.
+As a Console Admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you will not be allowed to change your role until you assign another Team Member to be the Console Admin.
 {{site.data.alerts.end}}
 
 #### Delete a Team Member

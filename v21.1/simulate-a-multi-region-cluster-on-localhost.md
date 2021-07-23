@@ -7,7 +7,7 @@ toc: true
 <span class="version-tag">New in v21.1:</span> Once you've [installed CockroachDB](install-cockroachdb.html), it's simple to simulate multi-region cluster on your local machine using [`cockroach demo`](cockroach-demo.html). This is a useful way to start playing with the [improved multi-region abstractions](multiregion-overview.html) provided by CockroachDB.
 
 {{site.data.alerts.callout_info}}
-[`cockroach demo`](cockroach-demo.html) is not suitable for production deployments.  Additionally, simulating multiple geographically distributed nodes on a single host is not representative of the [performance you should expect](frequently-asked-questions.html#single-row-perf) of a production deployment. For instructions showing how to do production multi-region deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html) and [Deploy a Multi-Region Web Application](multi-region-deployment.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
+[`cockroach demo`](cockroach-demo.html) is not suitable for production deployments.  Additionally, simulating multiple geographically distributed nodes on a single host is not representative of the [performance you should expect](frequently-asked-questions.html#single-row-perf) of a production deployment. For instructions showing how to do production multi-region deployments, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html) and [Deploy a Global, Serverless Application](movr-flask-deployment.html). Also be sure to review the [Production Checklist](recommended-production-settings.html).
 {{site.data.alerts.end}}
 
 ## Before you begin
@@ -94,4 +94,8 @@ When you're done with your demo cluster, you can wipe the cluster by typing the 
 - [Install the client driver](install-client-drivers.html) for your preferred language
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
 - [Build an app with CockroachDB](hello-world-example-apps.html)
-- Further explore CockroachDB capabilities like [fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html), [multi-region SQL performance](demo-low-latency-multi-region-deployment.html), [serializable transactions](demo-serializable.html), and [JSON support](demo-json-support.html).
+- Further explore CockroachDB capabilities like:
+  - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
+  - [Fault tolerance and automated repair](demo-fault-tolerance-and-recovery.html)
+  - [Serializable transactions](demo-serializable.html)
+  - [JSON support](demo-json-support.html)

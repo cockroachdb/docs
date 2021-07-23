@@ -1,5 +1,5 @@
 ---
-title: Liquibase
+title: Migrate CockroachDB Schemas with Liquibase
 summary: Learn how to use Liquibase with a CockroachDB cluster.
 toc: true
 ---

@@ -2,7 +2,6 @@
 title: SQL Feature Support in CockroachDB v19.1
 summary: Summary of CockroachDB's conformance to the SQL standard and which common extensions it supports.
 toc: true
-redirect_from: detailed-sql-support.html
 ---
 
 Making CockroachDB easy to use is a top priority for us, so we chose to implement SQL. However, even though SQL has a standard, no database implements all of it, nor do any of them have standard implementations of all features.
@@ -72,7 +71,7 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Indexes | ✓ | Common Extension | [Indexes documentation](https://www.cockroachlabs.com/docs/indexes.html)
+ Indexes | ✓ | Common Extension | [Indexes documentation](indexes.html)
  Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
  Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)

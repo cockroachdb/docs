@@ -18,8 +18,8 @@ Network latencies will increase with geographic distance between nodes. You can 
 
 To reproduce the performance demonstrated in this tutorial:
 
-- For each CockroachDB node, you'll use the [`n1-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 15 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/#localssds) disk.
-- For running the client application workload, you'll use smaller instances, such as `n1-standard-1`.
+- For each CockroachDB node, you'll use the [`n2-standard-4`](https://cloud.google.com/compute/docs/machine-types#standard_machine_types) machine type (4 vCPUs, 16 GB memory) with the Ubuntu 16.04 OS image and a [local SSD](https://cloud.google.com/compute/docs/disks/#localssds) disk.
+- For running the client application workload, you'll use smaller instances, such as `n2-standard-2`.
 
 ### Schema
 

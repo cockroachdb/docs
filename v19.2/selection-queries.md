@@ -2,7 +2,6 @@
 title: Selection Queries
 summary: Selection queries can read and process data in CockroachDB.
 toc: true
-redirect_from: selection-clauses.html
 key: selection-clauses.html
 ---
 
@@ -34,7 +33,7 @@ Parameter | Description
 `sort_clause` | An optional `ORDER BY` clause. See [Ordering Query Results](query-order.html) for details.
 `limit_clause` | An optional `LIMIT` clause. See [Limiting Query Results](limit-offset.html) for details.
 `offset_clause` | An optional `OFFSET` clause. See [Limiting Query Results](limit-offset.html) for details.
-`locking_clause` | <span class="version-tag">New in v19.2:</span> An optional `FOR UPDATE` locking clause. This clause is supported for database migration compatibility and is not required to ensure locking. See [Locking with `FOR UPDATE`](postgresql-compatibility.html#locking-and-for-update) for details. 
+`locking_clause` | <span class="version-tag">New in v19.2:</span> An optional `FOR UPDATE` locking clause. This clause is supported for database migration compatibility and is not required to ensure locking. See [Locking with `FOR UPDATE`](postgresql-compatibility.html#locking-and-for-update) for details.
 
 The optional `LIMIT` and `OFFSET` clauses can appear in any order, but must appear after `ORDER BY`, if also present.
 
@@ -389,7 +388,7 @@ Time: 1.31ms
 ~~~
 
 {{site.data.alerts.callout_success}}
-If you don't know what the minimum value of the key is, either `SELECT min(key) FROM table` or use a known minimum value for the key's data type.
+If you do not know what the minimum value of the key is, either `SELECT min(key) FROM table` or use a known minimum value for the key's data type.
 {{site.data.alerts.end}}
 
 To get the second page of results, run:
@@ -497,7 +496,7 @@ Using a sequential (i.e., non-[UUID](uuid.html)) primary key creates hot spots i
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not implement cursors. For a scale-out system like CockroachDB, using a cursor would not be recommended for the same reason that paginating with `LIMIT`/`OFFSET` is not recommended: it forces the server to keep track of state, which means the pagination queries don't scale well.
+CockroachDB does not implement cursors. For a scale-out system like CockroachDB, using a cursor would not be recommended for the same reason that paginating with `LIMIT`/`OFFSET` is not recommended: it forces the server to keep track of state, which means the pagination queries do not scale well.
 {{site.data.alerts.end}}
 
 ## Composability

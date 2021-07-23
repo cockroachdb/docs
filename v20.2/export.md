@@ -6,7 +6,7 @@ toc: true
 
 The `EXPORT` [statement](sql-statements.html) exports tabular data or the results of arbitrary `SELECT` statements to CSV files.
 
-Using the [CockroachDB distributed execution engine](architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
+Using the [CockroachDB distributed execution engine](architecture/sql-layer.html#distsql), `EXPORT` parallelizes CSV creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems. If you do not need distributed exports, you can use the [non-enterprise feature to export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.2:</span>
@@ -75,12 +75,26 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 
 ## Examples
 
+The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="s3">Amazon S3</button>
+  <button class="filter-button" data-scope="azure">Azure Storage</button>
+  <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="s3">
+
+{% include {{ page.version.version }}/backups/aws-auth-note.md %}
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
 ### Export a table
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH delimiter = '|' FROM TABLE bank.customers;
 ~~~
 
@@ -89,23 +103,27 @@ Successful `EXPORT` returns a table of (perhaps multiple) files to which the dat
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   FROM SELECT * FROM bank.customers WHERE id >= 100;
 ~~~
 
-### Non-distributed export using the SQL shell
+For more information, see [selection queries](selection-queries.html).
+
+### Non-distributed export using the SQL client
 
 {% include copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
 ~~~
 
+For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+
 ### Export gzip compressed CSV files
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > EXPORT INTO CSV
-  'azure://acme-co/customer-export-data?AZURE_ACCOUNT_KEY=hash&AZURE_ACCOUNT_NAME=acme-co'
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
   WITH compression = 'gzip' FROM TABLE bank.customers;
 ~~~
 
@@ -115,6 +133,112 @@ filename                                           | rows | bytes
 export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
 (1 row)
 ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="azure">
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
+### Export a table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+### Export using a `SELECT` statement
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  FROM SELECT * FROM bank.customers WHERE id >= 100;
+~~~
+
+For more information, see [selection queries](selection-queries.html).
+
+### Non-distributed export using the SQL client
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+
+### Export gzip compressed CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'azure://{CONTAINER NAME}/{customer-export-data}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
+  WITH compression = 'gzip' FROM TABLE bank.customers;
+~~~
+
+~~~
+filename                                           | rows | bytes
+---------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
+(1 row)
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="gcs">
+
+{% include {{ page.version.version }}/backups/gcs-auth-note.md %}
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
+### Export a table
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+~~~
+
+### Export using a `SELECT` statement
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  FROM SELECT * FROM bank.customers WHERE id >= 100;
+~~~
+
+For more information, see [selection queries](selection-queries.html).
+
+### Non-distributed export using the SQL client
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+~~~
+
+For more information, about the SQL client, see [`cockroach sql`](cockroach-sql.html).
+
+### Export gzip compressed CSV files
+
+{% include copy-clipboard.html %}
+~~~ sql
+> EXPORT INTO CSV
+  'gs://{BUCKET NAME}/{customer-export-data}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+  WITH compression = 'gzip' FROM TABLE bank.customers;
+~~~
+
+~~~
+filename                                           | rows | bytes
+---------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
+(1 row)
+~~~
+
+</section>
 
 ### View a running export
 
@@ -136,7 +260,7 @@ Use [`SHOW QUERIES`](show-queries.html) to get a running export's `query_id`, wh
 
 ## Known limitation
 
-`EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, [export tabular data in CSV format](#non-distributed-export-using-the-sql-shell).
+`EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, [export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
 
 ## See also
 

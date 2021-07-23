@@ -6,6 +6,8 @@ toc: true
 
 This page walks you through developing a multi-region application. It is the fourth section of the [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html) tutorial.
 
+{% include {{ page.version.version }}/misc/movr-flask-211.md %}
+
 {% include {{ page.version.version }}/misc/movr-live-demo.md %}
 
 ## Before you begin
@@ -84,18 +86,10 @@ In our example, we use SQLAlchemy's [Declarative](https://docs.sqlalchemy.org/en
 
 After completing the [Create a Multi-Region Database Schema](multi-region-database.html) section, you should be familiar with the `movr` database and each of the tables in the database (`users`, `vehicles`, and `rides`).
 
-Open [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/models.py), and look at the first 10 lines of the file:
+Open [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/models.py), and look at the first 10 lines of the file:
 
 ~~~ python
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime, Boolean, Interval, ForeignKey, PrimaryKeyConstraint
-from sqlalchemy.types import DATE
-from sqlalchemy.dialects.postgresql import UUID
-import datetime
-from werkzeug.security import generate_password_hash
-from flask_login import UserMixin
-
-Base = declarative_base()
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/models.py |# START front |# END front %}
 ~~~
 
 The first data structure that the file imports is `declarative_base`, a constructor for the [declarative base class](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/api.html#sqlalchemy.ext.declarative.declarative_base), built on SQLAlchemy's Declarative extension. All mapped objects inherit from this object. We assign a declarative base object to the `Base` variable right below the imports.
@@ -111,24 +105,7 @@ Recall that each instance of a table class represents a row in the table, so we 
 Take a look at the `User` class definition:
 
 ~~~ python
-class User(Base, UserMixin):
-    __tablename__ = 'users'
-    id = Column(UUID)
-    city = Column(String)
-    first_name = Column(String)
-    last_name = Column(String)
-    email = Column(String)
-    username = Column(String, unique=True)
-    password_hash = Column(String)
-    is_owner = Column(Boolean)
-    PrimaryKeyConstraint(city, id)
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def __repr__(self):
-        return "<User(city='{0}', id='{1}', name='{2}')>".format(
-            self.city, self.id, self.first_name + ' ' + self.last_name)
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/models.py |# START User |# END User %}
 ~~~
 
 The `User` class has the following attributes:
@@ -143,22 +120,7 @@ The `User` class has the following attributes:
 Next, look at the `Vehicle` class definition:
 
 ~~~ python
-class Vehicle(Base):
-    __tablename__ = 'vehicles'
-    id = Column(UUID)
-    city = Column(String)
-    type = Column(String)
-    owner_id = Column(UUID, ForeignKey('users.id'))
-    date_added = Column(DATE, default=datetime.date.today)
-    status = Column(String)
-    last_location = Column(String)
-    color = Column(String)
-    brand = Column(String)
-    PrimaryKeyConstraint(city, id)
-
-    def __repr__(self):
-        return "<Vehicle(city='{0}', id='{1}', type='{2}', status='{3}')>".format(
-            self.city, self.id, self.type, self.status)
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/models.py |# START Vehicle |# END Vehicle %}
 ~~~
 
 Recall that the `vehicles` table contains more columns and data types than the `users` table. It also contains a [foreign key constraint](foreign-key.html) (on the `users` table), and a default value. These differences are reflected in the `Vehicle` class.
@@ -168,23 +130,7 @@ Recall that the `vehicles` table contains more columns and data types than the `
 Lastly, there's the `Ride` class:
 
 ~~~ python
-class Ride(Base):
-    __tablename__ = 'rides'
-    id = Column(UUID)
-    city = Column(String, ForeignKey('vehicles.city'))
-    rider_id = Column(UUID, ForeignKey('users.id'))
-    rider_city = Column(String, ForeignKey('users.city'))
-    vehicle_id = Column(UUID, ForeignKey('vehicles.id'))
-    start_location = Column(String)
-    end_location = Column(String)
-    start_time = Column(DateTime)
-    end_time = Column(DateTime)
-    length = Column(Interval)
-    PrimaryKeyConstraint(city, id)
-
-    def __repr__(self):
-        return "<Ride(city='{0}', id='{1}', rider_id='{2}', vehicle_id='{3}')>".format(
-            self.city, self.id, self.rider_id, self.vehicle_id)
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/models.py |# START Ride |# END Ride %}
 ~~~
 
 The `rides` table has four foreign key constraints, two on the `users` table and two on the `vehicles` table.
@@ -218,22 +164,20 @@ The [`sqlalchemy-cockroachdb`](https://github.com/cockroachdb/sqlalchemy-cockroa
  - [`sqlalchemy.orm.Session.rollback()`](https://docs.sqlalchemy.org/en/latest/orm/session_api.html?highlight=rollback#sqlalchemy.orm.session.Session.rollback) (or other variants of `rollback()`): This is not necessary because `run_transaction()` handles the commit/rollback logic for you.
  - `Session.flush()`: This will not work as expected with CockroachDB because [CockroachDB does not support nested transactions](savepoint.html), which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to rollback. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following: `sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3)`.
 
- In the example application provided, all calls to `run_transaction()` are found within the methods of the `MovR` class (defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py)), which represents the connection to the running database. Requests to the web application frontend (defined in [`server.py`](https://github.com/cockroachlabs/movr-flask/blob/master/server.py)), are routed to the `MovR` class methods.
+ In the example application provided, all calls to `run_transaction()` are found within the methods of the `MovR` class (defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/movr.py)), which represents the connection to the running database. Requests to the web application frontend (defined in [`server.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/server.py)), are routed to the `MovR` class methods.
 
 #### Transaction callback functions
 
- To separate concerns, we define all callback functions passed to `run_transaction()` calls in a separate file, [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). These callback functions wrap `Session` method calls, like [`session.query()`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.query) and [`session.add()`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.add), to perform database operations within a transaction.
+ To separate concerns, we define all callback functions passed to `run_transaction()` calls in a separate file, [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/transactions.py). These callback functions wrap `Session` method calls, like [`session.query()`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.query) and [`session.add()`](https://docs.sqlalchemy.org/en/13/orm/session_api.html#sqlalchemy.orm.session.Session.add), to perform database operations within a transaction.
 
 {{site.data.alerts.callout_success}}
 We recommend that you use a `sessionmaker` object, bound to an existing `Engine`, as the `transactor` that you pass to `run_transaction()`. This protects you from accidentally reusing objects via any sessions created outside the transaction. Every time `run_transaction()` is called, it uses the `sessionmaker` object to create a new [`Session`](https://docs.sqlalchemy.org/en/13/orm/session.html) object for the callback. If the `sessionmaker` is bound to an existing `Engine`, the same database connection can be reused.
 {{site.data.alerts.end}}
 
-`transactions.py` imports all of the table classes that we defined in [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/models.py), in addition to some standard Python data structures needed to generate correctly-typed row values that the ORM can write to the database.
+`transactions.py` imports all of the table classes that we defined in [`movr/models.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/models.py), in addition to some standard Python data structures needed to generate correctly-typed row values that the ORM can write to the database.
 
 ~~~ python
-from movr.models import Vehicle, Ride, User
-import datetime
-import uuid
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/transactions.py |# START front |# END front %}
 ~~~
 
 ##### Reading
@@ -241,17 +185,7 @@ import uuid
 A common query that a client might want to run is a read of the `rides` table. The transaction callback function for this query is defined here as `get_rides_txn()`:
 
 ~~~ python
-def get_rides_txn(session, rider_id):
-    rides = session.query(Ride).filter(
-        Ride.rider_id == rider_id).order_by(Ride.start_time).all()
-    return list(map(lambda ride: {'city': ride.city,
-                                  'id': ride.id,
-                                  'vehicle_id': ride.vehicle_id,
-                                  'start_time': ride.start_time,
-                                  'end_time': ride.end_time,
-                                  'rider_id': ride.rider_id,
-                                  'length': ride.length},
-                    rides))
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/transactions.py |# START get_rides_txn |# END get_rides_txn %}
 ~~~
 
 The `get_rides_txn()` function takes a `Session` object and a `rider_id` string as its inputs, and it outputs a list of dictionaries containing the columns-value pairs of a row in the `rides` table. To retrieve the data from the database bound to a particular `Session` object, we use `Session.query()`, a method of the `Session` class. This method returns a `Query` object, with methods for filtering and ordering query results.
@@ -261,22 +195,7 @@ Note that `get_rides_txn()` gets all rides for a specific rider across multiple 
 Another common query would be to read the registered vehicles in a particular city, to see which vehicles are available for riding. Unlike `get_rides_txn()`, the `get_vehicles_txn()` function takes the `city` string as an input.
 
 ~~~ python
-def get_vehicles_txn(session, city):
-    vehicles = session.query(Vehicle).filter(
-        Vehicle.city == city, Vehicle.status != 'removed').all()
-    return list(
-        map(
-            lambda vehicle: {
-                'city': vehicle.city,
-                'id': vehicle.id,
-                'owner_id': vehicle.owner_id,
-                'type': vehicle.type,
-                'last_location': vehicle.last_location + ', ' + vehicle.city,
-                'status': vehicle.status,
-                'date_added': vehicle.date_added,
-                'color': vehicle.color,
-                'brand': vehicle.brand},
-            vehicles))
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/transactions.py |# START get_vehicles_txn |# END get_vehicles_txn %}
 ~~~
 
 This function filters the query on the `city` column. Because the data in the vehicles table is partitioned by `city`, the function only queries a specific partition of data, constrained to a particular region. This limits latency, as the query only needs to travel to database deployments in a single region.
@@ -288,52 +207,26 @@ There are two basic types of write operations: creating new rows and updating ex
 For example, `start_ride_txn()`, which is called when a user starts a ride, adds a new row to the `rides` table, and then updates a row in the `vehicles` table.
 
 ~~~ python
-def start_ride_txn(session, city, rider_id, rider_city, vehicle_id):
-    v = session.query(Vehicle).filter(Vehicle.city == city,
-                                      Vehicle.id == vehicle_id).first()
-    r = Ride(
-        city=city,
-        id=str(
-            uuid.uuid4()),
-        rider_id=rider_id,
-        rider_city=rider_city,
-        vehicle_id=vehicle_id,
-        start_location=v.last_location,
-        start_time=datetime.datetime.now(
-            datetime.timezone.utc))
-    session.add(r)
-    v.status = "unavailable"
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/transactions.py |# START start_ride_txn |# END start_ride_txn %}
 ~~~
 
 The function takes the `city` string, `rider_id` UUID, `rider_city` string, and `vehicle_id` UUID as inputs. It queries the `vehicles` table for all vehicles of a specific ID, and in a specific city. It also creates a `Ride` object, representing a row of the `rides` table. To add the ride to the table in the database bound to the `Session`, the function calls `Session.add()`. To update a row in the `vehicles` table, it modifies the object attribute. `start_ride_txn()` is called by `run_transaction()`, which commits the transaction to the database.
 
-Be sure to review the other callback functions in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py) before moving on to the next section.
+Be sure to review the other callback functions in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/transactions.py) before moving on to the next section.
 
 Now that we've covered the table classes and some transaction functions, we can look at the interface that connects web requests to a running CockroachDB cluster.
 
 ### Database connection
 
-The `MovR` class, defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py), handles connections to CockroachDB using SQLAlchemy's [`Engine`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) class.
+The `MovR` class, defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/movr.py), handles connections to CockroachDB using SQLAlchemy's [`Engine`](https://docs.sqlalchemy.org/en/13/core/connections.html#sqlalchemy.engine.Engine) class.
 
 Let's start with the beginning of the file:
 
 ~~~ python
-from movr.transactions import start_ride_txn, end_ride_txn, add_user_txn, add_vehicle_txn, get_users_txn, get_user_txn, get_vehicles_txn, get_rides_txn, remove_user_txn, remove_vehicle_txn
-from cockroachdb.sqlalchemy import run_transaction
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.dialects import registry
-registry.register(
-    "cockroachdb", "cockroachdb.sqlalchemy.dialect", "CockroachDBDialect")
-
-
-class MovR:
-
-    def __init__(self, conn_string):
-        self.engine = create_engine(conn_string, convert_unicode=True)
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/movr.py |# START front |# END front %}
 ~~~
 
-`movr.py` first imports the transaction callback functions that we defined in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). It then imports the `run_transaction()` function. The `MovR` class methods call `run_transaction()` to execute the transaction callback functions as transactions.
+`movr.py` first imports the transaction callback functions that we defined in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/transactions.py). It then imports the `run_transaction()` function. The `MovR` class methods call `run_transaction()` to execute the transaction callback functions as transactions.
 
 The file also imports some `sqlalchemy` libraries to create instances of the `Engine` and `Session` classes, and to [register the CockroachDB as a dialect](https://docs.sqlalchemy.org/en/13/core/connections.html#registering-new-dialects).
 
@@ -343,21 +236,17 @@ When called, the `MovR` class constructor creates an instance of the `Engine` cl
 
 The `MovR` class methods function as the "backend API" for the application. [Frontend requests](multi-region-application.html#routing) get routed to the these methods.
 
-We've already defined the transaction logic in the transaction callback functions, in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/transactions.py). We can now wrap calls to the `run_transaction()` function in the `MovR` class methods.
+We've already defined the transaction logic in the transaction callback functions, in [`movr/transactions.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/transactions.py). We can now wrap calls to the `run_transaction()` function in the `MovR` class methods.
 
 For example, look at the `start_ride()` method, the method to which frontend requests to start a ride are routed:
 
 ~~~ python
-def start_ride(self, city, rider_id, rider_city, vehicle_id):
-    return run_transaction(
-        sessionmaker(
-            bind=self.engine), lambda session: start_ride_txn(
-            session, city, rider_id, rider_city, vehicle_id))
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/movr/movr.py |# START start_ride |# END start_ride %}
 ~~~
 
 This method takes some keyword arguments, and then returns a `run_transaction()` call. It passes `sessionmaker(bind=self.engine)` as the first argument to `run_transaction()`, which creates a new `Session` object that binds to the `Engine` instance initialized by the `MovR` constructor. It also passes `city`, `rider_id`, `rider_city`, and `vehicle_id`, values passed from the frontend request, as inputs. These are the same keyword arguments, and should be of the same types, as the inputs for the [transaction callback function](multi-region-application.html#writing) `start_ride_txn()`.
 
-Be sure to review the other functions in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py) before moving on to the next section.
+Be sure to review the other functions in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/movr.py) before moving on to the next section.
 
 ## Web application
 
@@ -367,18 +256,10 @@ Most of the web application components are found in the `web` and `templates` fo
 
 ### Configuration
 
-We store the Flask configuration settings in [a `Config` class](https://flask.palletsprojects.com/en/1.1.x/config/#development-production), defined in [`web/config.py`](https://github.com/cockroachlabs/movr-flask/blob/master/web/config.py):
+We store the Flask configuration settings in [a `Config` class](https://flask.palletsprojects.com/en/1.1.x/config/#development-production), defined in [`web/config.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/web/config.py):
 
 ~~~ python
-import os
-
-
-class Config:
-    DEBUG = os.environ['DEBUG']
-    SECRET_KEY = os.environ['SECRET_KEY']
-    API_KEY = os.environ['API_KEY']
-    DB_URI = os.environ['DB_URI']
-    PREFERRED_URL_SCHEME = ('https', 'http')[DEBUG == 'True']
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/web/config.py %}
 ~~~
 
 This file imports the `os` library, which is used to read from environment variables. When debugging a local deployment, these environment variables are set by the `.env` file that `Pipenv` reads. In a multi-region deployment, the environment variables are set by the `Dockerfile`, and by some commands issued during [the Kubernetes deployment](multi-region-deployment.html#multi-region-application-deployment-gke).
@@ -387,85 +268,61 @@ The application sets a global Flask configuration variable (`DEBUG`), which it c
 
 ### Web forms
 
-Forms make up an important part of most web application frontends. We define these in [`web/forms.py`](https://github.com/cockroachlabs/movr-flask/blob/master/web/forms.py), using some data structures from the [`flask_wtf`](https://flask-wtf.readthedocs.io/en/stable/) and [`wtforms`](https://wtforms.readthedocs.io/en/stable/) libraries.
+Forms make up an important part of most web application frontends. We define these in [`web/forms.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/web/forms.py), using some data structures from the [`flask_wtf`](https://flask-wtf.readthedocs.io/en/latest/) and [`wtforms`](https://wtforms.readthedocs.io/en/stable/) libraries.
 
-We won't go into much detail about these forms. The important thing to know is that they help handle `POST` requests in the web UI.
+We will not go into much detail about these forms. The important thing to know is that they help handle `POST` requests in the web UI.
 
 The `CredentialForm` class, for example, defines the fields of the login form that users interface with to send a login request to the server:
 
 ~~~ python
-class CredentialForm(FlaskForm):
-    username = StringField('Username: ', validators=[data_required()])
-    password = PasswordField('Password: ', validators=[data_required()])
-    submit = SubmitField('Sign In')
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/web/forms.py |# START CredentialForm |# END CredentialForm %}
 ~~~
 
 Most of the forms defined on this page take the inputs for database reads and writes.
 
-`VehicleForm`, for example, defines the fields of the vehicle registration form. Users enter information about a vehicle they would like to register, and the data is routed to the `add_vehicle()` method defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py):
+`VehicleForm`, for example, defines the fields of the vehicle registration form. Users enter information about a vehicle they would like to register, and the data is routed to the `add_vehicle()` method defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/movr.py):
 
 ~~~ python
-class VehicleForm(FlaskForm):
-    type = SelectField(
-        label='Type', choices=[
-            ('bike', 'Bike'), ('scooter', 'Scooter'), ('skateboard', 'Skateboard')])
-    color = StringField(label='Color', validators=[data_required()])
-    brand = StringField(label='Brand')
-    location = StringField(label='Current location: ',
-                           validators=[data_required()])
-    submit = SubmitField('Add vehicle')
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/web/forms.py |# START VehicleForm |# END VehicleForm %}
 ~~~
 
 ### Initialization
 
-[`server.py`](https://github.com/cockroachlabs/movr-flask/blob/master/server.py) defines the main process of the application: the web server. After initializing the database, we run `python server.py` to start up the web server.
+[`server.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/server.py) defines the main process of the application: the web server. After initializing the database, we run `python server.py` to start up the web server.
 
 Let's look at the first ten lines of `server.py`:
 
 ~~~ python
-from flask import Flask, render_template, session, redirect, flash, url_for, Markup, request
-from flask_bootstrap import Bootstrap
-from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from werkzeug.security import check_password_hash
-from movr.movr import MovR
-from web.forms import CredentialForm, RegisterForm, VehicleForm, StartRideForm, EndRideForm, RemoveUserForm, RemoveVehicleForm
-from web.config import Config
-from web.geoutils import get_region
-from sqlalchemy.exc import DBAPIError
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START front |# END front %}
 ~~~
 
 The first line imports standard Flask libraries for connecting, routing, and rendering web pages. The next three lines import some libraries from the Flask ecosystem, for [bootstrapping](https://pythonhosted.org/Flask-Bootstrap/), [authentication](https://flask-login.readthedocs.io/en/latest/), and [security](https://github.com/pallets/werkzeug/blob/master/src/werkzeug/security.py).
 
 The next four lines import other web resources that we've defined separately in our project:
 
-- The [`MovR`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py#L10) class, which handles the connection and interaction with the running CockroachDB cluster.
-- Several [`FlaskForm`](https://flask-wtf.readthedocs.io/en/stable/api.html#flask_wtf.FlaskForm) superclasses, which define the structure of web forms.
-- The [`Config`](https://github.com/cockroachlabs/movr-flask/blob/master/web/config.py) class, which holds configuration information for the Flask application.
-- [`get_region()`](https://github.com/cockroachlabs/movr-flask/blob/master/web/geoutils.py), which matches a city to a cloud provider region, so the application knows which partition to query.
+- The [`MovR`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/movr.py#L10) class, which handles the connection and interaction with the running CockroachDB cluster.
+- Several [`FlaskForm`](https://flask-wtf.readthedocs.io/en/latest/api.html#flask_wtf.FlaskForm) superclasses, which define the structure of web forms.
+- The [`Config`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/web/config.py) class, which holds configuration information for the Flask application.
+- [`get_region()`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/web/geoutils.py), which matches a city to a cloud provider region, so the application knows which partition to query.
 
 Finally, we import the `DBAPIError` type from `sqlalchemy`, for error handling.
 
 The next five or so lines initialize the application:
 
 ~~~ python
-app = Flask(__name__)
-app.config.from_object(Config)
-Bootstrap(app)
-login = LoginManager(app)
-protocol = ('https', 'http')[app.config.get('DEBUG') == 'True']
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START init |# END init %}
 ~~~
 
 Calling the `Flask()` constructor initializes our Flask web server. By assigning this to a variable (`app`), we can then configure the application, store variables in its attributes, and call it with functions from other libraries, to add features and functionality to the application.
 
-For example, we can bootstrap the application for enhanced HTML and form generation with [`Bootstrap(app)`](https://pythonhosted.org/Flask-Bootstrap/basic-usage.html#basic-usage). We can also add authentication with [`LoginManager(app)`](https://flask-login.readthedocs.io/en/latest/#configuring-your-application).
+For example, we can bootstrap the application for enhanced HTML and form generation with [`Bootstrap(app)`](https://pythonhosted.org/Flask-Bootstrap/basic-usage.html#basic-usage). We can also add authentication with [`LoginManager(app)`](https://flask-login.readthedocs.io/en/latest/#configuring-your-application), and then control the default routes, based on authentication, with the `DEFAULT_ROUTE_AUTHENTICATED` and `DEFAULT_ROUTE_AUTHENTICATED` constants.
 
 Note that we also define a  `protocol` variable that the application later uses to determine its protocol scheme. You should always use HTTPS for secure connections when building an application that accepts user login information.
 
 After initializing the application, we can connect to the database:
 
 ~~~ python
-conn_string = app.config.get('DB_URI')
-movr = MovR(conn_string)
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START connect |# END connect %}
 ~~~
 
 These two lines connect the application to the database. First the application retrieves the connection string that is stored as a configuration variable of the `app`. Then it calls the `MovR()` constructor to establish a connection to the database at the location we provided to the `Config` object.
@@ -478,10 +335,7 @@ User authentication is handled with the [`Flask-Login`](https://flask-login.read
 To control whether certain routes are accessible to a client session, we define a [`user_loader()` function](https://flask-login.readthedocs.io/en/latest/#flask_login.LoginManager.user_loader):
 
 ~~~ python
-# Define user_loader function for LoginManager
-@login.user_loader
-def load_user(user_id):
-    return movr.get_user(user_id=user_id)
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START user_loader |# END user_loader %}
 ~~~
 
 To restrict access to a certain page to users that are logged in with the [`LoginManager`](https://flask-login.readthedocs.io/en/latest/#flask_login.LoginManager), we add the `@login_required` decorator function to the route. We'll go over some examples in the [Routing](multi-region-application.html#routing) section below.
@@ -493,56 +347,17 @@ We define all Flask routing functions directly in `server.py`.
 Flask applications use [`@app.route()` decorators](https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/) to handle client requests to specific URLs. When a request is sent to a URL served by the Flask app instance, the server calls the function defined within the decorator (the routing function).
 
 Flask provides a few useful callbacks to use within a routing function definition:
+
 - [`redirect()`](https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect), which redirects a request to a different URL.
 - [`render_template()`](https://flask.palletsprojects.com/en/1.1.x/api/#flask.render_template), which renders an HTML page, with Jinja2 templating, into a static webpage.
 - [`flash()`](https://flask.palletsprojects.com/en/1.1.x/api/#flask.flash), which sends messages from the application output to the webpage.
 
-In addition to calling these functions, and some other standard Flask and Python libraries, the application's routing functions need to call some of the methods that we defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/master/movr/movr.py) (the "backend API").
+In addition to calling these functions, and some other standard Flask and Python libraries, the application's routing functions need to call some of the methods that we defined in [`movr/movr.py`](https://github.com/cockroachlabs/movr-flask/blob/v1.0/movr/movr.py) (the "backend API").
 
 For example, look at the `login()` route:
 
 ~~~ python
-# Login page
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home_page', _external=True, _scheme=protocol))
-    else:
-        form = CredentialForm()
-        if form.validate_on_submit():
-            try:
-                user = movr.get_user(username=form.username.data)
-                if user is None or not check_password_hash(
-                        user.password_hash, form.password.data):
-                    flash(
-                        Markup('Invalid user credentials.<br>If you aren\'t registered with MovR, go <a href="{0}">Sign Up</a>!').format(
-                            url_for(
-                                'register',
-                                _external=True,
-                                _scheme=protocol)))
-                    return redirect(
-                        url_for(
-                            'login',
-                            _external=True,
-                            _scheme=protocol))
-                login_user(user)
-                return redirect(
-                    url_for(
-                        'home_page',
-                        _external=True,
-                        _scheme=protocol))
-            except Exception as error:
-                flash('{0}'.format(error))
-                return redirect(
-                    url_for(
-                        'login',
-                        _external=True,
-                        _scheme=protocol))
-        return render_template(
-            'login.html',
-            title='Log In',
-            form=form,
-            available=session['region'])
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START login_page |# END login_page %}
 ~~~
 
 ### Client Location
@@ -560,26 +375,7 @@ We discuss the details of configuring custom request header fields in our [examp
 Suppose that a user is coming to the website for the first time. They type in the address of the website, let's say `https://movr.cloud`, into their browser, and hit enter. The following example routing function gathers the client's location, stores it in a persistent Flask `session` variable, and then renders the home page:
 
 ~~~ python
-@app.route('/', methods=['GET'])
-@app.route('/home', methods=['GET'])
-def home_page():
-    if app.config.get('DEBUG') == 'True':
-        session['city'] = 'new york'
-    else:
-        try:
-            session['city'] = request.headers.get("X-City").lower()
-        except Exception as error:
-            session['city'] = 'new york'
-            flash(
-                '{0} {1}'.format(
-                    error,
-                    '\nUnable to retrieve client city information.\n Application is now assuming you are in New York.'))
-    session['region'] = get_region(session['city'])
-    session['riding'] = None
-    return render_template(
-        'home.html',
-        available=session['region'],
-        city=session['city'])
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/movr-flask/v1-doc-includes/server.py |# START index |# END index %}
 ~~~
 
 The function's control flow sequence evaluates the `DEBUG` configuration variable first. If the application is in `DEBUG` mode, it simplifies the work that the application needs to do with the request information by setting the city to `new york`. This variable should be set to `True` if you are running the application against [a demo CockroachDB cluster](multi-region-setup.html#set-up-a-demo-multi-region-cockroachdb-cluster).
@@ -590,7 +386,7 @@ In all cases, the session variables `city`, `region`, and `riding` are initializ
 
 ### User interface
 
-For the example application, we limit the web UI to some static HTML web pages, rendered using Flask's built-in [Jinja-2 engine](https://flask.palletsprojects.com/en/1.1.x/templating/). We won't spend much time covering the web UI. Just note that the forms take input from the user, and that input is usually passed to the backend where it is translated into and executed as a database transaction.
+For the example application, we limit the web UI to some static HTML web pages, rendered using Flask's built-in [Jinja-2 engine](https://flask.palletsprojects.com/en/1.1.x/templating/). We will not spend much time covering the web UI. Just note that the forms take input from the user, and that input is usually passed to the backend where it is translated into and executed as a database transaction.
 
 We've also added some Bootstrap syntax and Google Maps, for UX purposes. As you can see, the Google Maps API requires a key. For debugging, you can define this key in the `.env` file. If you decide to use an embedded service like Google Maps in production, you should restrict your Google Maps API key to a specific hostname or IP address from within the cloud provider's console, as the API key will be publicly visible in the HTML. In [Deploying a Multi-Region Web Application](multi-region-deployment.html), we use Kubernetes secrets to the store the API keys.
 

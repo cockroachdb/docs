@@ -5,7 +5,7 @@ layout: null
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   {%- for page in site.pages -%}
     {%- if page.url contains site.versions["stable"] or page.url contains 'cockroachcloud/' or page.url contains 'releases/' or page.url contains 'advisories/' -%}
-      {%- unless page.url contains '404' %}
+      {%- unless page.url contains '404' or page.sitemap == false %}
   <url>
     <loc>{{ page.canonical | absolute_url }}</loc>
   </url>

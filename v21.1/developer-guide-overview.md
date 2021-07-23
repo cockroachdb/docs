@@ -35,7 +35,7 @@ Managing transactions is an important part of CockroachDB application developmen
 
 #### Serializability and transaction contention
 
-CockroachDB guarantees [`SERIALIZABLE`](https://en.wikipedia.org/wiki/Serializability) transaction [isolation](https://en.wikipedia.org/wiki/Isolation_(database_systems) (the "I" of ACID semantics). If transactions are executed concurrently, the final state of the database will appear as if the transactions were executed serially. `SERIALIZABLE` isolation, the strictest level of isolation, provides the highest level of data consistency and protects against concurrency-based attacks and bugs.
+CockroachDB guarantees [`SERIALIZABLE`](https://en.wikipedia.org/wiki/Serializability) transaction [isolation](https://en.wikipedia.org/wiki/Isolation_(database_systems)) (the "I" of ACID semantics). If transactions are executed concurrently, the final state of the database will appear as if the transactions were executed serially. `SERIALIZABLE` isolation, the strictest level of isolation, provides the highest level of data consistency and protects against concurrency-based attacks and bugs.
 
 To guarantee `SERIALIZABLE` isolation, CockroachDB locks the data targeted by an open transaction. If a separate transaction attempts to modify data that are locked by an open transaction, the newest transaction will not succeed, as committing it could result in a violation of the `SERIALIZABLE` isolation level. This scenario is called *transaction contention*, and should be avoided when possible. For a more detailed explanation of transaction contention, and tips on how to avoid it, see [Understand and Avoid Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
@@ -63,6 +63,6 @@ You might also be interested in the following pages:
 - [PostgreSQL Compatibility](postgresql-compatibility.html)
 - [Hello World Example Apps](hello-world-example-apps.html)
 - [Build a Spring App with CockroachDB](build-a-spring-app-with-cockroachdb-jdbc.html)
-- [Develop and Deploy a Multi-Region Web Application](multi-region-overview.html)
+- [Develop and Deploy a Global Application](movr-flask-overview.html)
 
 {% include cockroach_u_pydev.md %}

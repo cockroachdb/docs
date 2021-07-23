@@ -18,7 +18,7 @@ Databases | [`schemata`](#schemata)| [`SHOW DATABASE`](show-vars.html)
 Indexes | [`statistics`](#statistics)| [`SHOW INDEX`](show-index.html)
 Privileges | [`schema_privileges`](#schema_privileges), [`table_privileges`](#table_privileges)| [`SHOW GRANTS`](show-grants.html)
 Roles | [`role_table_grants`](#role_table_grants) | [`SHOW ROLES`](show-roles.html)
-Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create-sequence.html)
+Sequences | [`sequences`](#sequences) | [`SHOW CREATE SEQUENCE`](show-create.html)
 Tables | [`tables`](#tables)| [`SHOW TABLES`](show-tables.html)
 Views | [`tables`](#tables), [`views`](#views)| [`SHOW CREATE`](show-create.html)
 

@@ -29,7 +29,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+  <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
 
@@ -39,7 +39,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 {% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
-</section>
+  </section>
 
 ## Step 2. Create a database and a user
 
@@ -621,7 +621,7 @@ The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-dat
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jpa/src/main/java/io/roach/data/jpa/AccountModel.java %}
 ~~~
 
-We don't go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
+We do not go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
 
 ### Spring repositories
 

@@ -61,7 +61,7 @@ shp2pgsql 1950-2018-torn-initpoint.shp > tornado-points.sql &
 
 Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT`][import] can pull from, see [import file locations](import.html#import-file-location).
 
-For local testing, you can [start a local file server](create-a-file-server.html). The following command will start a local file server listening on port 3000:
+For local testing, you can [start a local file server](use-a-local-file-server-for-bulk-operations.html). The following command will start a local file server listening on port 3000:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -106,6 +106,7 @@ IMPORT PGDUMP ('http://localhost:3000/tornado-points.sql') WITH ignore_unsupport
 - [Working with Spatial Data](spatial-data.html)
 - [Spatial tutorial](spatial-tutorial.html)
 - [Spatial indexes](spatial-indexes.html)
+- [Using GeoServer with CockroachDB](geoserver.html)
 - [Migrate from OpenStreetMap](migrate-from-openstreetmap.html)
 - [Migrate from GeoJSON](migrate-from-geojson.html)
 - [Migrate from GeoPackage](migrate-from-geopackage.html)

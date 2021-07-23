@@ -17,7 +17,7 @@ This page shows you how to manually deploy an insecure multi-node CockroachDB cl
 
 ## Requirements
 
-You must have [SSH access](https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys) to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
+You must have SSH access to each machine with root or sudo privileges. This is necessary for distributing binaries and starting CockroachDB.
 
 ## Recommendations
 

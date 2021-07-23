@@ -3,7 +3,6 @@ title: Start a Local Cluster (Insecure)
 summary: Run an insecure multi-node CockroachDB cluster locally with each node listening on a different port.
 toc: true
 toc_not_nested: true
-asciicast: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -21,12 +20,6 @@ Running multiple nodes on a single host is useful for testing out CockroachDB, b
 ## Before you begin
 
 Make sure you have already [installed CockroachDB](install-cockroachdb.html).
-
-<!-- TODO: Update the asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:22" title="Start a Local Cluster"></asciinema-player>
--->
 
 ## Step 1. Start the first node
 

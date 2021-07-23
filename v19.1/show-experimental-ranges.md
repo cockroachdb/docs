@@ -2,7 +2,6 @@
 title: SHOW EXPERIMENTAL_RANGES
 summary: The SHOW EXPERIMENTAL_RANGES shows information about the ranges that make up a specific table's data.
 toc: true
-redirect_from: show-testing-ranges.html
 ---
 
 The `SHOW EXPERIMENTAL_RANGES` [statement](sql-statements.html) shows information about the [ranges](architecture/overview.html#glossary) that make up a specific table's data, including:

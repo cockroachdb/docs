@@ -119,7 +119,7 @@ Importantly, this feature is entirely built for transactional optimization (know
 
 ### Writing the transaction record
 
-The very first range that a transaction interacts with also receives a write for a key known as its transaction record. This includes a UUID to uniquely identify the transaction, as well as the canonical record of its state&mdash;e.g. `PENDING`, `ABORTED`, or `COMMITTED`. This record is used by all operations to determine the state of the transaction. For example, when a write is blocked by another write, it periodically checks its own transaction record to ensure that it hasn't been aborted.
+The very first range that a transaction interacts with also receives a write for a key known as its transaction record. This includes a UUID to uniquely identify the transaction, as well as the canonical record of its state&mdash;e.g., `PENDING`, `ABORTED`, or `COMMITTED`. This record is used by all operations to determine the state of the transaction. For example, when a write is blocked by another write, it periodically checks its own transaction record to ensure that it hasn't been aborted.
 
 As soon as the write for the transaction record completes (i.e., achieves consensus through Raft), it begins communicating with the gateway node's `TxnCoordSender`, which regularly heartbeats the transaction to keep it alive (i.e., in a `PENDING` state). If the heartbeating from the `TxnCoordSender` stops, the `TxnRecord` moves itself into `ABORTED` status.
 

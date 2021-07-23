@@ -85,7 +85,7 @@ CockroachDB attempts to disable core files at startup when encryption is request
 Key management is the most dangerous aspect of encryption. The following rules should be kept in mind:
 
 * Make sure that only the UNIX user running the `cockroach` process has access to the keys.
-* Do not store the keys on the same partition/drive as the CockroachDB data. It is best to load keys at run time from a separate system (e.g., [Keywhiz](https://square.github.io/keywhiz/), [Vault](https://www.hashicorp.com/products/vault)).
+* Do not store the keys on the same partition/drive as the CockroachDB data. It is best to load keys at run time from a separate system (e.g., [Keywhiz](https://square.github.io/keywhiz/), <a href="https://www.hashicorp.com/product/vault" data-proofer-ignore>Vault</a>).
 * Rotate store keys frequently (every few weeks to months).
 * Keep the data key rotation period low (default is one week).
 
@@ -162,7 +162,7 @@ Once specified for a given store, the `--enterprise-encryption` flag must always
 
 #### Checking encryption status
 
-Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at <https://localhost:8080/#/reports/stores/local>.
+Encryption status can be seen on the node's stores report, reachable through: `http(s)://nodeaddress:8080/#/reports/stores/local` (or replace `local` with the node ID). For example, if you are running a [local cluster](secure-a-cluster.html), you can see the node's stores report at `https://localhost:8080/#/reports/stores/local`.
 
 The report shows encryption status for all stores on the selected node, including:
 

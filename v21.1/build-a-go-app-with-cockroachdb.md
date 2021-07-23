@@ -36,14 +36,38 @@ You can now run the code sample (`main.go`) provided in this tutorial to do the 
 
 ### Get the code
 
-You can copy the code below, <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/master/main.go">download the code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-pgx).
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-go-pgx).
+
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+After cloning the repo, check out the `cockroachcloud` branch:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+git checkout cockroachcloud
+~~~
+
+</div>
 
 Here are the contents of `main.go`:
 
+<div class="filter-content" markdown="1" data-scope="local">
+
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/master/main.go %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/main.go %}
 ~~~
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include_cached copy-clipboard.html %}
+~~~ go
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/cockroachcloud/main.go %}
+~~~
+
+</div>
 
 ### Update the connection parameters
 
@@ -52,7 +76,7 @@ Here are the contents of `main.go`:
 Edit the connection string passed to `pgx.ParseConfig()` so that:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{hostname}` and `{port}` specify the hostname and port in the `(sql/tcp)` connection string from SQL shell welcome text.
+- `{hostname}` and `{port}` specify the hostname and port in the `(sql)` connection string from SQL shell welcome text.
 
 </section>
 
@@ -64,16 +88,10 @@ The function call should look similar to the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-config, err := pgx.ParseConfig("postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}")
+config, err := pgx.ParseConfig(os.ExpandEnv("postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}"))
 ~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
-
-Then, remove the following line of code:
-
-~~~ go
-config.TLSConfig.ServerName = "localhost"
-~~~
 
 </section>
 
@@ -87,7 +105,7 @@ Initialize the module:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ go mod init basic-sample
+$ go mod init basic-sample && go mod tidy
 ~~~
 
 Then run the code:

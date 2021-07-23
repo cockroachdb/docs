@@ -9,7 +9,7 @@ The following tools have been tested or developed by the CockroachDB community, 
 If you encounter problems with using these tools, please contact the maintainer of the tool with details.
 
 {{site.data.alerts.callout_success}}
-If you have a tested or developed a third-party tool with CockroachDB, and would like it listed on this page, please [open a pull request to our docs GitHub repository](https://github.com/cockroachdb/docs/edit/master/${VERSION}/community-tooling.md).
+If you have a tested or developed a third-party tool with CockroachDB, and would like it listed on this page, please [open a pull request to our docs GitHub repository](https://github.com/cockroachdb/docs/edit/master/v21.1/community-tooling.md).
 {{site.data.alerts.end}}
 
 ## Drivers
@@ -29,7 +29,15 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 - [Pgweb](http://sosedoff.github.io/pgweb/)
 - [Postico](https://eggerapps.at/postico/)
 - [TablePlus](https://tableplus.com/blog/2018/06/best-cockroachdb-gui-client-tableplus.html)
-- [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html)
+- [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb)
+
+## Schema migration tools
+
+- [SchemaHero](https://schemahero.io/databases/cockroachdb/connecting/)
+
+## Connection pooling tools
+
+- [PGBouncer](https://dzone.com/articles/using-pgbouncer-with-cockroachdb)
 
 ## See also
 

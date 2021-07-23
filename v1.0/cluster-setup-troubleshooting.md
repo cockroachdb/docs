@@ -70,7 +70,7 @@ Proceed through the following steps until you locate the source of the issue wit
     ~~~
 
     Errors at this stage potentially include:
-    - `getsockopt: connection refused`, which indicates you have not included some flag that you used to start the node (e.g., `--port` or `--host`). We have additional troubleshooting steps for this error [here](general-troubleshooting.html#getsockopt-connection-refused-error).
+    - `getsockopt: connection refused`, which indicates you have not included some flag that you used to start the node (e.g., `--port` or `--host`). We have additional troubleshooting steps for this error [here](common-errors.html#getsockopt-connection-refused-error).
     - The node crashed. You can identify if this is the case by looking for the `cockroach` process through `ps`. If you cannot locate the `cockroach` process (i.e., it crashed), [file an issue](file-an-issue.html).
 
 **Next step**: If you successfully completed these steps, try starting a multi-node cluster.

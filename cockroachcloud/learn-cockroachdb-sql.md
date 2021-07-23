@@ -8,7 +8,7 @@ This tutorial walks you through some of the most essential CockroachDB SQL state
 
 ## Before you begin
 
-Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#step-4-connect-to-your-cluster) to your cluster. Alternatively, you can [use a local demo cluster](../{{site.versions["stable"]}}/learn-cockroachdb-sql.html) or click below to run through the tutorial entirely in your browser.
+Make sure you have already [connected the CockroachDB SQL client](connect-to-your-cluster.html#step-3-connect-to-your-cluster) to your cluster. Alternatively, you can [use a local demo cluster](../{{site.versions["stable"]}}/learn-cockroachdb-sql.html) or click below to run through the tutorial entirely in your browser.
 
 <div class=" clearfix">
   <a class="btn btn-outline-primary" href="../tutorials/learn-cockroachdb-sql-interactive.html" target="_blank">Run this in your browser &rarr;</a>
@@ -60,7 +60,7 @@ To see all databases, use the [`SHOW DATABASES`](../{{site.versions["stable"]}}/
 
 ## Set the default database
 
-It's best to set the default database directly in your [connection string](connect-to-your-cluster.html#step-3-select-a-connection-method).
+It's best to set the default database directly in your [connection string](connect-to-your-cluster.html#step-2-select-a-connection-method).
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -327,7 +327,7 @@ As CockroachDB does not allow serializable anomalies, [transactions](begin-trans
 
 Cockroach is ANSI SQL compliant with a Postgres dialect, which allows you to use [native drivers](install-client-drivers.html) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL Layer](architecture/sql-layer.html#sql-api) supports full relational schema and SQL (similar to Oracle).
 
-You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://en.wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar](sql-grammar.html) and a [SQL comparison](detailed-sql-support.html), see below:
+You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://en.wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar](sql-grammar.html) and a [SQL comparison](sql-feature-support.html), see below:
 
 - [SQL best practices](performance-best-practices-overview.html)
 - [Common table expressions (CTE)](common-table-expressions.html)

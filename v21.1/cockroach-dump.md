@@ -2,7 +2,6 @@
 title: cockroach dump
 summary: Learn how to dump schemas and data from a CockroachDB cluster.
 toc: true
-redirect_from: sql-dump.html
 key: sql-dump.html
 ---
 
@@ -359,7 +358,7 @@ INSERT INTO quotes (quote, characters, stardate, episode) VALUES
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach sql --insecure --database=startrek --user=maxroach < backup.sql
+$ cockroach sql --insecure --database=startrek --user=maxroach -f backup.sql
 ~~~
 
 ~~~

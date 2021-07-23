@@ -5,7 +5,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+  <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
 
@@ -15,7 +15,7 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
 
 {% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
-</section>
+  </section>
 
 <section class="filter-content" markdown="1" data-scope="local">
 
@@ -25,17 +25,22 @@ Choose whether to run a temporary local cluster or a free CockroachDB cluster on
     {% include copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo \
-    --empty
+    --no-example-database
     ~~~
 
     This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql/tcp)` connection string in the SQL shell welcome text:
+    
+    {{site.data.alerts.callout_info}}
+    If `cockroach demo` fails due to SSL authentication, make sure you have cleared any previously downloaded CA certificates from the directory `~/.postgresql`.
+    {{site.data.alerts.end}}
+    
+1. Take note of the `(sql)` connection string in the SQL shell welcome text:
 
     ~~~
     # Connection parameters:
-    #   (console) http://127.0.0.1:8080/demologin?password=demo11762&username=demo
-    #   (sql)     postgres://demo:demo11762@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo382139081&port=26257
-    #   (sql/tcp) postgres://demo:demo11762@127.0.0.1:26257?sslmode=require
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
     ~~~
 
 </section>

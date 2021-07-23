@@ -31,8 +31,7 @@
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
               "/${VERSION}/install-cockroachdb-linux.html",
-              "/${VERSION}/install-cockroachdb-windows.html",
-              "/${VERSION}/install-cockroachdb-spatial.html"
+              "/${VERSION}/install-cockroachdb-windows.html"
             ]
           },
           {
@@ -110,7 +109,7 @@
               {
                 "title": "Orchestration with Kubernetes",
                 "urls": [
-                  "/${VERSION}/orchestration-with-kubernetes.html"
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
                 ]
               },
               {
@@ -408,17 +407,28 @@
             ]
           },
           {
-            "title": "Sample Apps",
+            "title": "Example Apps",
             "items": [
+              {
+                "title": "Overview",
+                "urls": [
+                  "/${VERSION}/example-apps.html"
+                ]
+              },
               {
                 "title": "Hello World",
                 "items": [
                   {
-                    "title": "Overview",
+                    "title": "Python",
                     "urls": [
-                      "/${VERSION}/hello-world-example-apps.html"
+                      "/${VERSION}/hello-world-python-sqlalchemy.html"
                     ]
-                  },
+                  }
+                ]
+              },
+              {
+                "title": "Simple CRUD",
+                "items": [
                   {
                     "title": "Go",
                     "urls": [
@@ -426,22 +436,6 @@
                       "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
                       "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
-                    ]
-                  },
-                  {
-                    "title": "Python",
-                    "urls": [
-                      "/${VERSION}/build-a-python-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
-                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
-                    ]
-                  },
-                  {
-                    "title": "Ruby",
-                    "urls": [
-                      "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
-                      "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
                     ]
                   },
                   {
@@ -459,6 +453,22 @@
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+                    ]
+                  },
+                  {
+                    "title": "Python",
+                    "urls": [
+                      "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+                      "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
+                    ]
+                  },
+                  {
+                    "title": "Ruby",
+                    "urls": [
+                      "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+                      "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
                     ]
                   },
                   {
@@ -568,41 +578,58 @@
             "title": "Third-Party Database Tools",
             "items": [
               {
-                "title": "Overview",
+                "title": "Supported by Cockroach Labs",
                 "urls": [
                   "/${VERSION}/third-party-database-tools.html"
                 ]
               },
               {
-                "title": "Schema Migration Tools",
-                "items": [
-                  {
-                    "title": "Flyway",
-                    "urls": [
-                      "/${VERSION}/flyway.html"
-                    ]
-                  },
-                  {
-                    "title": "Liquibase",
-                    "urls": [
-                      "/${VERSION}/liquibase.html"
-                    ]
-                  }
+                "title": "Supported by the Community",
+                "urls": [
+                  "/${VERSION}/community-tooling.html"
                 ]
               },
               {
-                "title": "GUIs & IDEs",
+                "title": "Tutorials",
                 "items": [
                   {
-                    "title": "DBeaver GUI",
-                    "urls": [
-                      "/${VERSION}/dbeaver.html"
+                    "title": "Schema Migration Tools",
+                    "items": [
+                      {
+                        "title": "Alembic",
+                        "urls": [
+                          "/${VERSION}/alembic.html"
+                        ]
+                      },
+                      {
+                        "title": "Flyway",
+                        "urls": [
+                          "/${VERSION}/flyway.html"
+                        ]
+                      },
+                      {
+                        "title": "Liquibase",
+                        "urls": [
+                          "/${VERSION}/liquibase.html"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "title": "IntelliJ IDEA",
-                    "urls": [
-                      "/${VERSION}/intellij-idea.html"
+                    "title": "GUIs & IDEs",
+                    "items": [
+                      {
+                        "title": "DBeaver GUI",
+                        "urls": [
+                          "/${VERSION}/dbeaver.html"
+                        ]
+                      },
+                      {
+                        "title": "IntelliJ IDEA",
+                        "urls": [
+                          "/${VERSION}/intellij-idea.html"
+                        ]
+                      }
                     ]
                   }
                 ]

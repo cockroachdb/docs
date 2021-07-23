@@ -11,13 +11,15 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_python_flask" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
 
-1. Install the following tools, if you don't already have them:
+1. Install the following tools, if you do not already have them:
 
     Tool | Purpose
     -----|--------
     [pip](https://pip.pypa.io/en/stable/installing/) | You'll need pip to install SQLAlchemy and a CockroachDB Python package that accounts for some differences between CockroachDB and PostgreSQL.
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
+
+1. If you haven't already, [create a CockroachCloud cluster](create-your-cluster.html).
 
 ## Prepare your cluster
 
@@ -56,85 +58,56 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
 ### Step 3. Generate the CockroachDB client connection string
 
-1. In the top right corner of the Console, click the **Connect** button. The **Connect** dialog displays.
-3. From the **User** dropdown, select the user you created in [Step 2](#step-2-create-a-sql-user).
-4. Select a **Region** to connect to.
-5. From the **Database** dropdown, select `defaultdb`.
-6. Create a `certs` directory on your local workstation.
-7. Click the **Download ca.crt** button.
-8. Move the downloaded `ca.crt` file to the `certs` directory.
-9. On the **Connect from Shell** tab, click **Copy connection string**.
+1. In the top right corner of the Console, click the **Connect** button. The **Connection info** dialog displays.
+1. From the **User** dropdown, select the user you created in [Step 2](#step-2-create-a-sql-user).
+1. Select a **Region** to connect to.
+1. From the **Database** dropdown, select `defaultdb`.
+1. Run the following command to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+    <div class="filters clearfix">
+      <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
+      <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+      <button style="width: 15%" class="filter-button" data-scope="windows">Windows</button>
+    </div>
+    {% include cockroachcloud/download-the-cert.md %}
+    
+1. On the **Command Line** tab, copy the connection string.
 
-    Replace the `<certs_dir>` placeholders with the path to your `certs` directory. Copy the client connection string to an accessible location since you need it to use the built-in SQL client later.
+    Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
 
 ### Step 4. Create the CockroachCloud database
 
 On your local workstation's terminal:
 
-1. [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html):
+1. If you haven't already, [Download the CockroachDB binary](../{{site.versions["stable"]}}/install-cockroachdb.html) and copy it into the `PATH`:
 
     <div class="filters clearfix">
       <button style="width: 15%" class="filter-button" data-scope="mac">Mac</button>
       <button style="width: 15%" class="filter-button" data-scope="linux">Linux</button>
+      <button style="width: 15%" class="filter-button" data-scope="windows">Windows</button>
     </div>
     <p></p>
 
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz \
-    | tar -xz
-    ~~~
-    </section>
+    {% include cockroachcloud/download-the-binary.md %}
 
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz \
-    | tar -xz
-    ~~~
-    </section>
+1. Use the connection string generated in Step 3 to connect to CockroachDB's built-in SQL client:
 
-2. Copy the binary into the `PATH` so it's easy to run the SQL client from any location:
+    {% include cockroachcloud/sql-connection-string.md %}
 
-    <section class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
-
-    <section class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-    </section>
-
-3. Use the connection string generated in Step 3 to connect to CockroachDB's built-in SQL client:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach sql --url 'postgres://<username>@<host>:26257/defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
-    ~~~
-
-4. Enter the password you created for the SQL user in [Step 2](#step-2-create-a-sql-user).
-
-5. Create a database `todos`:
+1. Create a database `todos`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > CREATE DATABASE todos;
     ~~~
 
-6. Use database `todos`:
+1. Use database `todos`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
     > USE todos;
     ~~~
 
-7. Create a table `todos`:
+1. Create a table `todos`:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
@@ -158,7 +131,7 @@ On your local workstation's terminal:
   2. From the **User** dropdown, select the SQL user you created in [Step 2](#step-2-create-a-sql-user).
   3. Select a **Region** to connect to.
   4. From the **Database** dropdown, select `todos`.
-  5. On the **Connect Your App** tab, click **Copy connection string**.
+  5. On the **Connection String** tab, click **Copy connection string**.
 
       Copy the application connection string to an accessible location. You will update the password and certificate path in the next step.
 
@@ -189,7 +162,7 @@ In a new terminal:
 
     {% include_cached copy-clipboard.html %}
     ~~~
-    SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=<absolute path to CA certificate>'
+    SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
     ~~~
 
     {{site.data.alerts.callout_info}}
@@ -216,7 +189,7 @@ In a new terminal:
     $ python hello.py
     ~~~
 
-    The application should run at [http://localhost:5000](http://localhost:5000)
+    The application should run at `http://localhost:5000`.
 
 3. Enter a new to-do item.
 
@@ -253,7 +226,7 @@ Create a Kubernetes secret to store the CA certificate you downloaded earlier:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ kubectl create secret generic <username>-secret --from-file <absolute path to the CA certificate>
+$ kubectl create secret generic <username>-secret --from-file $Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt
 ~~~
 
 Verify the Kubernetes secret was created:
@@ -271,11 +244,11 @@ default-token-875zk   kubernetes.io/service-account-token   3      75s
 
 ### Step 3. Change certificate directory path in configuration file
 
-In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the `certs` dir to `/data/certs` and save the file.
+In the `hello.cfg` file in the `flask-alchemy` folder, replace the certificate directory path from the default location to `/data/certs` and save the file.
 
 {% include_cached copy-clipboard.html %}
 ~~~
-SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>:<password>@<host>:26257/todos?sslmode=verify-full&sslrootcert=/data/certs/<ca-cert file>'
+SQLALCHEMY_DATABASE_URI = 'cockroachdb://<username>@<host>:26257/todos?sslmode=verify-full&sslrootcert=$Home/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
 ~~~
 
 {{site.data.alerts.callout_info}}

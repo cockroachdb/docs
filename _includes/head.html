@@ -14,8 +14,7 @@
 <link rel="shortcut icon" href="{{ 'images/favicon.png' | relative_url }}" type="image/png">
 
 {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
-  <link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
-{% if page.asciicast == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/asciinema-player.css' | relative_url }}">{% endif %}
+<link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
 
 <script>
 var pageConfig = {
@@ -28,9 +27,6 @@ var pageConfig = {
 {% if page.comparison == true %}
   <script src="{{ 'js/comparison-chart.js' | relative_url }}"></script>
   <script src="{{ 'js/select2.min.js' | relative_url }}"></script>
-{% endif %}
-{% if page.asciicast == true %}
-  <script src="{{ 'js/asciinema-player.js' | relative_url }}"></script>
 {% endif %}
 {% if page.license == true %}
   <script src="{{ 'js/license-on-page.js' | relative_url }}"></script>
@@ -47,7 +43,7 @@ var pageConfig = {
 <link rel="preload" href="{{ "/fonts/Poppins-SemiBold.ttf" | relative_url }}" as="font" crossorigin="anonymous" />
 
 <link rel="preconnect dns-prefetch" href="https://app.convertflow.co/" >
-<link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" >
+<link rel="preconnect dns-prefetch" href="https://js.convertflow.co/" data-proofer-ignore>
 
 <link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-3-1.png?auto=format,compress&w=1200&q=40" />
 <link rel="preload" as="image" href="https://cockroach-labs-docs.imgix.net/bg-early-3-1.png?auto=format,compress&w=1200&q=40" />

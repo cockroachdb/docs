@@ -327,7 +327,7 @@ $ gcloud container clusters create <your-cluster-name> --no-enable-cloud-logging
 
 However, essentials like `kube-proxy` and `kube-dns` are effectively required to have a compliant Kubernetes cluster. This means that you'll always have some pods that aren't yours running in your cluster, so it's important to understand and account for the possible effects of CockroachDB having to share a machine with other processes. The more processes there are on the same machine as a CockroachDB pod, the worse and less predictable its performance will likely be. To protect against this, it's strongly recommended to run with [Resource Requests](#resource-requests) on your CockroachDB pods to provide some level of CPU and memory isolation.
 
-Setting resource requests isn't a panacea, though. There can still be contention for shared resources like network I/O or, in [exceptional](https://sysdig.com/blog/container-isolation-gone-wrong/) [cases](https://hackernoon.com/another-reason-why-your-docker-containers-may-be-slow-d37207dec27f), internal kernel data structures. For these reasons and because of the Kubernetes infrastructure processes running on each machine, CockroachDB running on Kubernetes simply cannot reach quite the same levels of performance as running directly on dedicated machines. Thankfully, it can at least get quite close if you use Kubernetes wisely.
+Setting resource requests isn't a panacea, though. There can still be contention for shared resources like network I/O or, in [exceptional](https://sysdig.com/blog/container-isolation-gone-wrong/) cases, internal kernel data structures. For these reasons and because of the Kubernetes infrastructure processes running on each machine, CockroachDB running on Kubernetes simply cannot reach quite the same levels of performance as running directly on dedicated machines. Thankfully, it can at least get quite close if you use Kubernetes wisely.
 
 If for some reason setting appropriate resource requests still isn't getting you the performance you expect, you might want to consider going all the way to [dedicated nodes](#dedicated-nodes).
 
@@ -417,7 +417,7 @@ To set up a CockroachDB `DaemonSet`:
 
 <section class="filter-content" markdown="1" data-scope="secure">
 
-1. [Start Kubernetes](orchestrate-cockroachdb-with-kubernetes.html#step-1-start-kubernetes), as described in the tutorial on using the `StatefulSet` feature.
+1. [Start Kubernetes](deploy-cockroachdb-with-kubernetes.html#step-1-start-kubernetes), as described in the tutorial on using the `StatefulSet` feature.
 
 2. Download the [`cockroachdb-daemonset-secure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-secure.yaml) configuration file:
 
@@ -438,9 +438,9 @@ To set up a CockroachDB `DaemonSet`:
     $ kubectl create -f cockroachdb-daemonset-secure.yaml
     ~~~
 
-5. [Manually check and approve each node's certificates](orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
+5. [Manually check and approve each node's certificates](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
 
-6. [Use the `cluster-init-secure.yaml` file to initialize the cluster](orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
+6. [Use the `cluster-init-secure.yaml` file to initialize the cluster](../v20.2/orchestrate-cockroachdb-with-kubernetes.html#step-2-start-cockroachdb), as described in the tutorial on using the `StatefulSet` feature.
 
     For the initialization step to work, you will need to change the address on the `--host=cockroachdb-0.cockroach` line from `cockroachdb-0.cockroach` to the address of one of your nodes.
 
@@ -448,7 +448,7 @@ To set up a CockroachDB `DaemonSet`:
 
 <section class="filter-content" markdown="1" data-scope="insecure">
 
-1. [Start Kubernetes](orchestrate-cockroachdb-with-kubernetes-insecure.html#step-1-start-kubernetes) as described in the tutorial on using the `StatefulSet` feature.
+1. [Start Kubernetes](deploy-cockroachdb-with-kubernetes-insecure.html#step-1-start-kubernetes) as described in the tutorial on using the `StatefulSet` feature.
 
 2. Download the [`cockroachdb-daemonset-insecure.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/performance/cockroachdb-daemonset-insecure.yaml) configuration file:
 

@@ -2,7 +2,6 @@
 title: Start a Local Cluster (Secure)
 summary: Run a secure multi-node CockroachDB cluster locally, using TLS certificates to encrypt network communication.
 toc: true
-asciicast: true
 ---
 
 <div class="filters filters-big clearfix">
@@ -20,12 +19,6 @@ Running multiple nodes on a single host is useful for testing CockroachDB, but i
 
 - Make sure you have already [installed CockroachDB](install-cockroachdb.html).
 - For quick SQL testing or app development, consider [running a single-node cluster](cockroach-start-single-node.html) instead.
-
-<!-- TODO: update the asciicast
-Also, feel free to watch this process in action before going through the steps yourself. Note that you can copy commands directly from the video, and you can use **<** and **>** to go back and forward.
-
-<asciinema-player class="asciinema-demo" src="asciicasts/secure-a-cluster.json" cols="107" speed="2" theme="monokai" poster="npt:0:52" title="Secure a Cluster"></asciinema-player>
--->
 
 ## Step 1. Generate certificates
 
@@ -325,7 +318,7 @@ The CockroachDB [Admin UI](admin-ui-overview.html) gives you insight into the ov
 
     <img src="{{ 'images/v19.2/admin_ui_cluster_overview_3_nodes.png' | relative_url }}" alt="CockroachDB Admin UI" style="border:1px solid #eee;max-width:100%" />
 
-    This demonstrates CockroachDB's [automated replication](demo-data-replication.html) of data via the Raft consensus protocol.    
+    This demonstrates CockroachDB's [automated replication](demo-replication-and-rebalancing.html) of data via the Raft consensus protocol.    
 
     {{site.data.alerts.callout_info}}
     Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, see this [limitation](known-limitations.html#available-capacity-metric-in-the-admin-ui).

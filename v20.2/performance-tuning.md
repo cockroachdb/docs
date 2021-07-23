@@ -48,14 +48,14 @@ You'll start with a 3-node CockroachDB cluster in the `us-east1-b` GCE zone, wit
 
 1. [Create 3 instances](https://cloud.google.com/compute/docs/instances/create-start-instance) for your CockroachDB nodes. While creating each instance:  
     - Select the `us-east1-b` [zone](https://cloud.google.com/compute/docs/regions-zones/).
-    - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
+    - Use the `n2-standard-4` machine type (4 vCPUs, 16 GB memory).
     - Use the Ubuntu 16.04 OS image.
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
     - To apply the DB Console firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
+2. Note the internal and external IP addresses of each `n2-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
-3. Create a separate instance for running a client application workload, also in the `us-east1-b` zone. This instance can be smaller, such as `n1-standard-1`.
+3. Create a separate instance for running a client application workload, also in the `us-east1-b` zone. This instance can be smaller, such as `n2-standard-2`.
 
 ### Step 3. Start a 3-node cluster
 
@@ -1173,14 +1173,14 @@ Given that MovR is active on both US coasts, you'll now scale the cluster into t
 ### Step 8. Create more instances
 
 1. [Create 6 more instances](https://cloud.google.com/compute/docs/instances/create-start-instance), 3 in the `us-west1-a` zone (Oregon), and 3 in the `us-west2-a` zone (Los Angeles). While creating each instance:
-    - Use the `n1-standard-4` machine type (4 vCPUs, 15 GB memory).
+    - Use the `n2-standard-4` machine type (4 vCPUs, 16 GB memory).
     - Use the Ubuntu 16.04 OS image.
     - [Create and mount a local SSD](https://cloud.google.com/compute/docs/disks/local-ssd#create_local_ssd).
     - To apply the DB Console firewall rule you created earlier, click **Management, disk, networking, SSH keys**, select the **Networking** tab, and then enter `cockroachdb` in the **Network tags** field.
 
-2. Note the internal and external IP addresses of each `n1-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
+2. Note the internal and external IP addresses of each `n2-standard-4` instance. You'll need these addresses when generating security certificates and when starting the CockroachDB nodes.
 
-3. Create an additional instance in the `us-west1-a` and `us-west2-a` zones. These can be smaller, such as `n1-standard-1`.
+3. Create an additional instance in the `us-west1-a` and `us-west2-a` zones. These can be smaller, such as `n2-standard-2`.
 
 ### Step 9. Scale the cluster
 

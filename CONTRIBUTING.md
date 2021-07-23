@@ -153,10 +153,8 @@ Field | Description | Default
 `toc` | Adds an auto-generated table of contents to the right of the page body (on standard screens) or at the top of the page (on smaller screens). | `true`
 `toc_not_nested` | Limits a page's TOC to h2 headers only. | `false`
 `allowed_hashes` | Specifies a list of allowed hashes that do not correspond to a section heading on the page. | Nothing
-`asciicast` | Adds code required to play asciicasts on the page. See [Asciicasts](#asciicasts) for more details. | `false`
 `feedback` | Adds "Yes/No" feedback buttons at the bottom of the page. See [Feedback Widget](#feedback-widget) for more details. | `true`
 `contribute` | Adds "Contribute" options at the top-right of the page. See [Contributing Options](#contributing-options) for more details. | `true`
-`redirect_from` | Specifies other internal URLs that should redirect to the page. See [Client-Side Redirects](#client-side-redirects) | Nothing
 `twitter` | Adds code required to track the page as part of a Twitter campaign | `false`
 `no_sidebar` | If `true`, removes the sidebar from a page. See [Sidebar](#sidebar) for more details. | Nothing
 `block_search` | If `true`, adds meta tags to the header that excludes the page from search indexing/caching. | Nothing
@@ -214,21 +212,6 @@ Here's an example from a page with OS toggles:
 allowed_hashes: [os-mac, os-linux, os-windows]
 ```
 
-#### Asciicasts
-
-1. [Install asciinema](https://asciinema.org/docs/installation).
-2. Size your shell window to be a bit narrower than our code blocks.
-3. Initiate an asciicast with `asciinema rec -c "/bin/bash -l"`. This makes the asciicast use your shell's appearance.
-4. Press **CTRL + D** to stop recording.
-5. Press **Enter** to upload the recording to asciinema.
-6. Click **Download**.
-7. Rename the `.json` asciicast file and place it in the `/asciicasts` directory.
-8. On the page, set `asciicast: true` in the front-matter.
-9. On the page, include the following html where you want the asciicast to appear. Change the `src` filepath as relevant, and change `poster` to the time in the asciicast that you want to use as the static image. For other details about customizing the asciicast appearance, see the asciinema [README](https://github.com/asciinema/asciinema-player#asciinema-player-element-attributes).
-
-  ```
-  <asciinema-player class="asciinema-demo" src="asciicasts/start-a-local-cluster.json" cols="107" speed="2" theme="solarized-dark" poster="npt:0:30" title="Start a Local Cluster"></asciinema-player>
-  ```
 #### Images
 
 For information about how we use images in our docs, see [Images](https://github.com/cockroachdb/docs/wiki/Style-Guide#images) in our [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
@@ -240,22 +223,6 @@ We show "Yes/No" feedback buttons at the bottom of every page by default. To rem
 #### Contributing Options
 
 We show "Contribute" options in the top-right of every page by default. To remove these options from a page, set `contribute: false` in the page's front-matter.
-
-#### Client-Side Redirects
-
-We use the [JekyllRedirectFrom](https://github.com/jekyll/jekyll-redirect-from) plugin to ensure that multiple URLs resolve to a single page. This is most useful in cases where we change the filename or directory structure of a page.
-
-For example, if `v1.0.html` page were moved from the root level to `releases/v1.0.html`, you would add `redirect-from: /v1.0.html` to the page's front-matter to ensure that `https://cockroachlabs.com/docs/v1.0.html` gets redirected to `https:/cockroachlabs.com/docs/releases/v1.0.html`.
-
-If you rename or restructure a versioned page, use a relative link, not an absolute link. For example, if `show-transaction.md` and `show-time-zone.md` are merged into `show-vars.md` for v1.1, use the following `redirect_from` specification:
-
-```md
-redirect_from:
-- show-transaction.html
-- show-time-zone.html
-```
-
-This ensures that if `v1.1` is also the `stable` or `dev` version, the corresponding `stable` or `dev` redirects will be generated as well.
 
 ### Sidebar
 

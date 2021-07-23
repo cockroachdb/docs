@@ -6,7 +6,7 @@ toc: true
 
 The `UNSPLIT AT` [statement](sql-statements.html) removes a [split enforcement](split-at.html) on a [range split](architecture/distribution-layer.html#range-splits), at a specified row in a table or index.
 
-Removing a split enforcement from a table or index ("unsplitting") allows CockroachDB to merge ranges as needed, to help improve your cluster's performance. For more information, see [Range Merges](range-merges.html).
+Removing a split enforcement from a table or index ("unsplitting") allows CockroachDB to merge ranges as needed, to help improve your cluster's performance. For more information, see [Range Merges](architecture/distribution-layer.html#range-merges).
 
 ## Synopsis
 
@@ -133,7 +133,7 @@ Now unsplit the table to remove the split enforcements:
 (12 rows)
 ~~~
 
-The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](range-merges.html) in the table as needed.
+The `users` table is still split into ranges at `'chicago'`, `'new york'`, and `'seattle'`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
 
 ### Unsplit an index
 
@@ -218,13 +218,13 @@ Now unsplit the index to remove the split enforcements:
 (13 rows)
 ~~~
 
-The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](range-merges.html) in the table as needed.
+The table is still split into ranges at `25.00`, `50.00`, and `75.00`, but the `split_enforced_until` column is now `NULL` for all ranges in the table. The split is no longer enforced, and CockroachDB can [merge the data](architecture/distribution-layer.html#range-merges) in the table as needed.
 
 ## See also
 
 - [`SPLIT AT`](split-at.html)
 - [Selection Queries](selection-queries.html)
 - [Distribution Layer](architecture/distribution-layer.html)
-- [Range Merges](range-merges.html)
+- [Range Merges](architecture/distribution-layer.html#range-merges)
 - [Replication Layer](architecture/replication-layer.html)
 - [`SHOW JOBS`](show-jobs.html)

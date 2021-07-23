@@ -51,7 +51,7 @@ Because this log is treated as serializable, it can be replayed to bring a node 
 
 In versions prior to v21.1, CockroachDB only supported _voting_ replicas: that is, [replicas](overview.html#glossary) that participate as voters in the [Raft consensus protocol](#raft). However, the need for all replicas to participate in the consensus algorithm meant that increasing the [replication factor](../configure-replication-zones.html#num_replicas) came at a cost of increased write latency, since the additional replicas needed to participate in Raft [quorum](overview.html#architecture-overview-consensus).
 
-<span class="version-tag">New in v21.1:</span> In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) possible), a new type of replica is introduced: the _non-voting_ replica.
+<span class="version-tag">New in v21.1:</span> In order to provide [better support for multi-region clusters](../multiregion-overview.html), (including the features that make [fast multi-region reads](../multiregion-overview.html#global-tables) and [surviving region failures](../multiregion-overview.html#surviving-region-failures) possible), a new type of replica is introduced: the _non-voting_ replica.
 
 Non-voting replicas follow the [Raft log](#raft-logs) (and are thus able to serve [follower reads](../follower-reads.html)), but do not participate in quorum. They have almost no impact on write latencies.
 
@@ -83,15 +83,32 @@ To achieve this, each lease renewal or transfer also attempts to collocate them.
 
 #### Epoch-based leases (table data)
 
-To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to immediately lose all of its leases.
+To manage leases for table data, CockroachDB implements a notion of "epochs," which are defined as the period between a node joining a cluster and a node disconnecting from a cluster. To extend its leases, each node must periodically update its liveness record, which is stored on a system range key. When a node disconnects, it stops updating the liveness record, and the epoch is considered changed. This causes the node to [lose all of its leases](#how-leases-are-transferred-from-a-dead-node) a few seconds later when the liveness record expires.
 
-Because leases don't expire until a node disconnects from a cluster, leaseholders do not have to individually renew their own leases. Tying lease lifetimes to node liveness in this way lets us eliminate a substantial amount of traffic and Raft processing we would otherwise incur, while still tracking leases for every range.
+Because leases do not expire until a node disconnects from a cluster, leaseholders do not have to individually renew their own leases. Tying lease lifetimes to node liveness in this way lets us eliminate a substantial amount of traffic and Raft processing we would otherwise incur, while still tracking leases for every range.
 
 #### Expiration-based leases (meta and system ranges)
 
 A table's meta and system ranges (detailed in the [distribution layer](distribution-layer.html#meta-ranges)) are treated as normal key-value data, and therefore have leases just like table data.
 
 However, unlike table data, system ranges cannot use epoch-based leases because that would create a circular dependency: system ranges are already being used to implement epoch-based leases for table data. Therefore, system ranges use expiration-based leases instead. Expiration-based leases expire at a particular timestamp (typically after a few seconds). However, as long as a node continues proposing Raft commands, it continues to extend the expiration of its leases. If it doesn't, the next node containing a replica of the range that tries to read from or write to the range will become the leaseholder.
+
+#### How leases are transferred from a dead node
+
+When a node disconnects, the process by which each of its leases is transferred to a healthy node is as follows:
+
+1. The dead node's liveness record, which is stored in a system range, has an expiration time of 9 seconds, and is heartbeated every 4.5 seconds. When the node dies, the amount of time the cluster has to wait for the record to expire varies, but on average is 6.75 seconds.
+1. A healthy node attempts to acquire the lease. This is rejected because lease acquisition can only happen on the Raft leader, which the healthy node is not (yet). Therefore, a Raft election must be held.
+1. The rejected attempt at lease acquisition [unquiesces](../ui-replication-dashboard.html#replica-quiescence) ("wakes up") the range associated with the lease.
+1. What happens next depends on whether the lease is on [table data](#epoch-based-leases-table-data) or [meta ranges or system ranges](#expiration-based-leases-meta-and-system-ranges):
+    - If the lease is on [meta or system ranges](#expiration-based-leases-meta-and-system-ranges), the node that unquiesced the range checks if the Raft leader is alive according to the liveness record. If the leader is not alive, it kicks off a campaign to try and win Raft leadership so it can become the leaseholder.
+    - If the lease is on [table data](#epoch-based-leases-table-data), the "is the leader alive?" check described above is skipped and an election is called immediately. The check is skipped since it would introduce a circular dependency on the liveness record used for table data, which is itself stored in a system range.
+1. The Raft election is held and a new leader is chosen from among the healthy nodes.
+1. The lease acquisition can now be processed by the newly elected Raft leader.
+
+This process should take no more than 9 seconds for liveness expiration plus the cost of 2 network roundtrips: 1 for Raft leader election, and 1 for lease acquisition.
+
+Finally, note that the process described above is lazily initiated: it only occurs when a new request comes in for the range associated with the lease.
 
 #### Leaseholder rebalancing
 

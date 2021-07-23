@@ -29,7 +29,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+  <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 ### Create a free cluster
 
@@ -39,7 +39,7 @@ Choose whether to run a local cluster or a free CockroachDB cluster on Cockroach
 
 {% include cockroachcloud/quickstart/set-up-your-cluster-connection.md %}
 
-</section>
+  </section>
 
 ## Step 2. Create a database and a user
 
@@ -688,7 +688,7 @@ Typically, Liquibase properties are defined in a separate [`liquibase.properties
 
 The `contexts` property specifies a single [Liquibase context](https://docs.liquibase.com/concepts/advanced/contexts.html) (`crdb`). In order for a changeset to run, its `context` attribute must match a context set by this property. The `context` value is `crdb` in both of the changeset definitions in `changelog-master.xml`, so both changesets run at application startup.
 
-For simplicity, `application.yml` only specifies properties for a single [Spring profile](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles), with a single set of Liquibase properties. If you want the changelog to include changesets that only run in specific environments (e.g., for debugging and development), you can create a new Spring profile in a separate properties file (e.g. `application-dev.yml`), and specify a different set of Liquibase properties for that profile. The profile set by the application configuration will automatically use the properties in that profile's properties file. For information about setting profiles, see the [Spring documentation website](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles).
+For simplicity, `application.yml` only specifies properties for a single [Spring profile](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles), with a single set of Liquibase properties. If you want the changelog to include changesets that only run in specific environments (e.g., for debugging and development), you can create a new Spring profile in a separate properties file (e.g., `application-dev.yml`), and specify a different set of Liquibase properties for that profile. The profile set by the application configuration will automatically use the properties in that profile's properties file. For information about setting profiles, see the [Spring documentation website](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-profiles).
 
 ### Domain entities
 
@@ -712,7 +712,7 @@ The contents of [`AccountModel.java`](https://github.com/cockroachlabs/roach-dat
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/roach-data/master/roach-data-jdbc/src/main/java/io/roach/data/jdbc/AccountModel.java %}
 ~~~
 
-We don't go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
+We do not go into much detail about hypermedia representation in this tutorial. For more information, see the [Spring HATEOAS Reference Documentation](https://docs.spring.io/spring-hateoas/docs/current/reference/html/).
 
 ### Spring repositories
 

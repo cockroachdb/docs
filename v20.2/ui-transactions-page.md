@@ -2,7 +2,6 @@
 title: Transactions Page
 summary: The Transactions page helps you identify frequently retried or high latency transactions and view transaction details.
 toc: true
-redirect_from: admin-ui-transactions-page.html
 ---
 
 {{site.data.alerts.callout_info}}
@@ -52,7 +51,7 @@ Statements | Number of SQL statements in the transaction.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](ui-statements-page.html#time-interval).
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
 Rows Affected | Average number of rows returned while executing this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Latency | Average service latency of this transaction within the last hour or specified [time interval](#time-interval). This includes the total time the transaction remains open, which can exceed the latency of the SQL statements in the transaction. To view the SQL statement latency for this transaction, see the [**Transaction Details**](#transaction-details-page) page. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Latency | Average service latency of this transaction within the last hour or specified [time interval](#time-interval). This includes the total time the transaction remains open, which can exceed the latency of the SQL statements in the transaction. To view the SQL statement latency for this transaction, see the [**Transaction Details** page](#transaction-details-page). <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 
 {{site.data.alerts.callout_info}}
 Significant transactions on your database are likely to have a high execution count or number of rows affected.
