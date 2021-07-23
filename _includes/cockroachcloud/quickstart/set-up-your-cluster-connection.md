@@ -15,3 +15,5 @@ Once your cluster is created, the **Connect to cluster-name** dialog displays. U
     {{site.data.alerts.callout_danger}}
     This connection string contains your password, which will be provided only once. If you forget your password, you can reset it by going to the [**SQL Users** page](https://www.cockroachlabs.com/docs/cockroachcloud/user-authorization.html).
     {{site.data.alerts.end}}
+    
+    {% include cockroachcloud/sql-connection-string-free.md %}

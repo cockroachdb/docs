@@ -55,6 +55,10 @@ Now that you have set up your project and created a database, in this section yo
 
 Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
 
+{{site.data.alerts.callout_info}}
+The following examples use the SSL mode `require` because the .NET Npgsql driver validates certificates differently from other Postgres drivers. For other drivers, we recommend using `verify-full` as a best security practice.
+{{site.data.alerts.end}}
+
 <section class="filter-content" markdown="1" data-scope="local">
 
 {% include_cached copy-clipboard.html %}
@@ -68,7 +72,7 @@ Replace the contents of the `Program.cs` file that was automatically generated i
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/basic.cs %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/cc-basic.cs %}
 ~~~
 
 </section>
@@ -108,7 +112,7 @@ connStringBuilder.SslMode = SslMode.Require;
 connStringBuilder.Username = "{username}";
 connStringBuilder.Password = "{password}";
 connStringBuilder.Database = "{cluster-name}.bank";
-connStringBuilder.RootCertificate = "{certs-dir}/cc-ca.crt";
+connStringBuilder.RootCertificate = "~/.postgres/root.crt";
 connStringBuilder.TrustServerCertificate = true;
 ~~~
 
@@ -116,7 +120,6 @@ Where:
 
 - `{username}` and `{password}` specify the SQL username and password that you created earlier.
 - `{host-name}` is the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- `{certs-dir}` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 - `{cluster_name}` is the name of your cluster.
 
 </section>
@@ -157,7 +160,7 @@ Open `cockroachdb-test-app/Program.cs` again and replace the contents with the c
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/transaction.cs %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/cc-transaction.cs %}
 ~~~
 
 </section>
