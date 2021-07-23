@@ -56,7 +56,7 @@ Now that you have set up your project and created a database, in this section yo
 Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
 
 {{site.data.alerts.callout_info}}
-The following examples use the SSL mode `require` because the .NET Npgsql driver validates certificates differently from other Postgres drivers. For other drivers, we recommend using `verify-full` as a best security practice.
+The following examples use the SSL mode `require` because the .NET Npgsql driver validates certificates differently from other PostgreSQL drivers. For other drivers, we recommend using `verify-full` as a security best practice.
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="local">
