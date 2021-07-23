@@ -1,6 +1,6 @@
 To import from `userfile`, first create the table that you would like to import into:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 CREATE TABLE customers (
   id INT,

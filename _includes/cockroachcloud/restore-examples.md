@@ -2,7 +2,7 @@
 
 <span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](../{{site.versions["stable"]}}/restore.html#view-the-backup-subdirectories):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW BACKUPS IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
@@ -22,7 +22,7 @@ When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23
 
 To restore a full cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
@@ -33,7 +33,7 @@ To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["s
 
 To restore a database:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE DATABASE bank FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
@@ -48,14 +48,14 @@ To view the available subdirectories, use [`SHOW BACKUPS`](../{{site.versions["s
 
 To restore a single table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE TABLE bank.customers FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~
 
 To restore multiple tables:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > RESTORE TABLE bank.customers, bank.accounts FROM 's3://{BUCKET NAME}/{path/to/backup/subdirectory}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}';
 ~~~

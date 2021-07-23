@@ -1,6 +1,6 @@
 To import a table from `userfile`, use the following command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~sql
 IMPORT TABLE customers (
         id UUID PRIMARY KEY,
