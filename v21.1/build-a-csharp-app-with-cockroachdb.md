@@ -72,7 +72,7 @@ The following examples use the SSL mode `require` because the .NET Npgsql driver
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/cc-basic.cs %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/cc-basic.cs %}
 ~~~
 
 </section>
@@ -160,7 +160,7 @@ Open `cockroachdb-test-app/Program.cs` again and replace the contents with the c
 
 {% include_cached copy-clipboard.html %}
 ~~~ c#
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/cc-transaction.cs %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/cc-transaction.cs %}
 ~~~
 
 </section>
