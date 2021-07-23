@@ -51,7 +51,7 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ### Why is CockroachCloud Free in beta?
 
-CockroachCloud Free is in beta while we work on adding core features like [import](../{{site.versions["stable"]}}/import.html) and [backups](backups-page.html).
+CockroachCloud Free is in beta while we work on adding core features like [import](run-bulk-operations.html#import-data-into-your-cockroachcloud-cluster) and [backups](run-bulk-operations.html#backup-and-restore-with-userfile).
 
 ### Where can I submit feedback or bugs on the beta?
 
@@ -98,13 +98,4 @@ Yes, you can view and your clusters in the [CockroachCloud Console](https://cock
 
 ### Can I backup my CockroachCloud Free (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clusters for our own purposes. Currently, these backups are not available to you and you cannot backup and restore a CockroachCloud Free (beta) cluster yourself. We expect to support user-initiated backup and restore of free clusters in the future.
-
-In the meantime, you can run a [`SELECT`](../{{site.versions["stable"]}}/select-clause.html) statement using the [`--format=csv` flag](../{{site.versions["stable"]}}/cockroach-sql.html#general) to print the output into a file. For example:
-
-{% include_cached copy-clipboard.html %}
-~~~
-$ cockroach sql -e 'SELECT * FROM test_database.table1' --format=csv --url='postgres://username:password@free-tier...' > users.txt
-~~~
-
-For an example on how to use this output to migrate to a paid CockroachCloud cluster, see [Migrate from a CockroachCloud Free (beta) to CockroachCloud Cluster](migrate-from-free-to-dedicated.html).
+Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clusters for our own purposes. Currently, these backups are not available to you. We support [`BACKUP`](../{{site.versions["stable"]}}/backup.html) and [`RESTORE`](../{{site.versions["stable"]}}/restore.html) of databases and tables on CockroachCloud Free (beta) clusters through [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage. For an example on using `userfile` for backups, see [Backup and restore with `userfile`](run-bulk-operations.html#backup-and-restore-with-userfile).
