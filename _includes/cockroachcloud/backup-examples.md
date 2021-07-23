@@ -39,3 +39,5 @@ To take a [full backup](../{{site.versions["stable"]}}/take-full-and-incremental
 INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
+
+To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](backups-page.html#troubleshooting).

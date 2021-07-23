@@ -21,6 +21,8 @@ The CockroachCloud tiers offer different levels of support for the following bul
 
 <section class="filter-content" markdown="1" data-scope="cc-free">
 
+For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
+
 {{site.data.alerts.callout_info}}
 `userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free (beta) **after upgrading to v21.1.**
 {{site.data.alerts.end}}
@@ -46,15 +48,15 @@ For information on `userfile` commands, visit the following pages:
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
-To create a core changefeed in CockroachCloud Free (beta), use the following example.
-
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on CockroachCloud Free (beta). To create a changefeed into a configurable sink, like cloud storage sink or Kafka, use CockroachCloud, which has this feature enabled by default.
+Only core changefeeds are available on CockroachCloud Free (beta). To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
-For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html).
+To create a core changefeed in CockroachCloud Free (beta), use the following example.
 
 {% include cockroachcloud/cdc/create-core-changefeed.md %}
+
+For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) and [`CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html).
 
 ## See also
 
@@ -65,6 +67,8 @@ For further information on changefeeds, read [Stream Data Out of CockroachDB](..
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cc-ded">
+
+For guidance on connecting to your CockroachCloud cluster, visit [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
 The examples below use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
@@ -100,7 +104,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 ;
 ~~~
 
-Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) for more examples and guidance using `IMPORT`.
+Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more examples and guidance.
 
 ### Export data out of CockroachCloud
 

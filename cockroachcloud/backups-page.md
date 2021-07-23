@@ -79,7 +79,7 @@ For each table in the database, the following details display:
 Additional ways to restore data:
 
 - [Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster)
-- [Back up and restore data manually](#back-up-and-restore-data-manually)
+- [Back up and restore data manually](run-bulk-operations.html)
 
 ### Restore a database
 
@@ -149,7 +149,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachCloud will need the `specified` credentials upon [`RESTORE`](../{{site.versions["stable"]}}/restore.html).
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachCloud will need the `specified` credentials upon [`RESTORE`](../{{site.versions["stable"]}}/restore.html). For more information on authentication parameters to cloud storage providers, see [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html#authentication).
     {{site.data.alerts.end}}
 
 1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
@@ -164,38 +164,6 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
 
 
 1. [Restore](../{{site.versions["stable"]}}/restore.html) to your CockroachCloud cluster:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > RESTORE DATABASE example_database FROM 'gs://bucket_name/path_to_backup?AUTH=specified';
-    ~~~
-
-### Back up and restore data manually
-
-Additionally, you can [back up and restore](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html) your Cockroach Cloud data manually:
-
-1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
-
-    <div class="filters clearfix">
-      <button class="filter-button page-level" data-scope="mac">Mac</button>
-      <button class="filter-button page-level" data-scope="linux">Linux</button>
-      <button class="filter-button page-level" data-scope="windows">Windows</button>
-    </div>
-    
-    {% include cockroachcloud/sql-connection-string.md %}
-
-1. [Back up](../{{site.versions["stable"]}}/backup.html) your databases and/or tables to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > BACKUP DATABASE example_database TO 'gs://bucket_name/path_to_backup?AUTH=specified';
-    ~~~
-
-    {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
-    {{site.data.alerts.end}}
-
-1. To [restore](../{{site.versions["stable"]}}/restore.html) to your CockroachCloud cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

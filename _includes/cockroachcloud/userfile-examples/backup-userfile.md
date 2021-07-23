@@ -35,3 +35,5 @@ cockroach userfile delete bank-backup --url {CONNECTION STRING}
 ~~~
 
 If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](../{{site.versions["stable"]}}/configure-replication-zones.html#gc-ttlseconds) to be removed from disk.
+
+To resolve database or table naming conflicts during a restore, see [Troubleshooting naming conflicts](backups-page.html#troubleshooting).
