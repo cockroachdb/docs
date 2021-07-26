@@ -17,12 +17,12 @@ We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim 
 
 In your terminal, run the following commands:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet new console -o cockroachdb-test-app
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd cockroachdb-test-app
 ~~~
@@ -33,7 +33,7 @@ The `dotnet` command creates a new app of type `console`. The `-o` parameter cre
 
 Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet add package Npgsql
 ~~~
@@ -169,7 +169,7 @@ Open `cockroachdb-test-app/Program.cs` again and replace the contents with the c
 
 This time, running the code will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet run
 ~~~
@@ -187,7 +187,7 @@ Final balances:
 
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts'
 ~~~
