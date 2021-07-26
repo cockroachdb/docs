@@ -181,7 +181,7 @@ Once restarted, monitor the Replica Quiescence graph on the [**Replication Dashb
 Resolved as of [v20.2.4](../releases/v20.2.4.html). See [#57789](https://github.com/cockroachdb/cockroach/pull/57789).
 {{site.data.alerts.end}}
 
-When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.  
+When a node is offline, the [Raft logs](architecture/replication-layer.html#raft-logs) for the ranges on the node get truncated. When the node comes back online, it therefore often needs [Raft snapshots](architecture/replication-layer.html#snapshots) to get many of its ranges back up-to-date. While in this state, requests to a range will hang until its snapshot has been applied, which can take a long time.
 
 To work around this limitation, you can adjust the `kv.snapshot_recovery.max_rate` [cluster setting](cluster-settings.html) to temporarily relax the throughput rate limiting applied to snapshots. For example, changing the rate limiting from the default 8 MB/s, at which 1 GB of snapshots takes at least 2 minutes, to 64 MB/s can result in an 8x speedup in snapshot transfers and, therefore, a much shorter interruption of requests to an impacted node:
 
@@ -537,3 +537,21 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 CockroachDB does not support partitioning inverted indexes, including [spatial indexes](spatial-indexes.html).
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/43643)
+
+### Inverted index scans can't be generated for some statement filters
+
+CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
+
+~~~ sql
+SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';
+~~~
+
+CockroachDB v20.1 and earlier would generate index scans for these filters, though it is not recommended as the normalization rules used to convert the filters into JSON containment expressions would sometimes produce inequivalent expressions.
+
+The workaround is to rewrite the statement filters to avoid using both JSON fetch values and containment operators. The following statement is index-accelerated and equivalent to the non-accelerated statement above:
+
+~~~ sql
+SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
+~~~
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
