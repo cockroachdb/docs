@@ -9,167 +9,128 @@ This tutorial shows you how build a simple C# application with CockroachDB and t
 
 We have tested the [.NET Npgsql driver](http://www.npgsql.org/) enough to claim **beta-level** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
 
-## Before you begin
+## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/before-you-begin.md %}
+{% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 1. Create a .NET project
+## Step 2. Create a .NET project
 
-{% include copy-clipboard.html %}
+In your terminal, run the following commands:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet new console -o cockroachdb-test-app
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cd cockroachdb-test-app
 ~~~
 
 The `dotnet` command creates a new app of type `console`. The `-o` parameter creates a directory named `cockroachdb-test-app` where your app will be stored and populates it with the required files. The `cd cockroachdb-test-app` command puts you into the newly created app directory.
 
-## Step 2. Install the Npgsql driver
+## Step 3. Install the Npgsql driver
 
 Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql/) into the .NET project using the built-in nuget package manager:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet add package Npgsql
 ~~~
 
-<section class="filter-content" markdown="1" data-scope="secure">
+## Step 4. Create a database
 
-## Step 3. Create the `maxroach` user and `bank` database
+{% include {{page.version.version}}/app/create-a-database.md %}
 
-{% include {{page.version.version}}/app/create-maxroach-user-and-bank-database.md %}
+## Step 5. Run the C# code
 
-## Step 4. Generate a certificate for the `maxroach` user
-
-Create a certificate and key for the `maxroach` user by running the following command.  The code samples will run as this user.
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key
-~~~
-
-## Step 5. Convert the key file for use by C# programs
-
-The private key generated for user `maxroach` by CockroachDB is [PEM encoded](https://tools.ietf.org/html/rfc1421).  To read the key in a C# application, you will need to convert it into PKCS#12 format.
-
-To convert the key to PKCS#12 format, run the following OpenSSL command on the `maxroach` user's key file in the directory where you stored your certificates:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ openssl pkcs12 -inkey client.maxroach.key -password pass: -in client.maxroach.crt -export -out client.maxroach.pfx
-~~~
-
-As of December 2018, you need to provide a password for this to work on macOS. See <https://github.com/dotnet/corefx/issues/24225>.
-
-## Step 6. Run the C# code
-
-Now that you have created a database and set up encryption keys, in this section you will:
+Now that you have set up your project and created a database, in this section you will:
 
 - [Create a table and insert some rows](#basic-example)
 - [Execute a batch of statements as a transaction](#transaction-example-with-retry-logic)
 
 ### Basic example
 
-Replace the contents of `cockroachdb-test-app/Program.cs` with the following code:
+#### Get the code
 
-{% include copy-clipboard.html %}
-~~~ csharp
-{% include {{ page.version.version }}/app/basic-sample.cs %}
-~~~
+Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
 
-Then, run the code to connect as the `maxroach` user.  This time, execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
+{{site.data.alerts.callout_info}}
+The following examples use the SSL mode `require` because the .NET Npgsql driver validates certificates differently from other PostgreSQL drivers. For other drivers, we recommend using `verify-full` as a security best practice.
+{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ dotnet run
-~~~
+<section class="filter-content" markdown="1" data-scope="local">
 
-The output should be:
-
-~~~
-Initial balances:
-	account 1: 1000
-	account 2: 250
-~~~
-
-### Transaction example (with retry logic)
-
-Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below.
-
-{% include {{page.version.version}}/client-transaction-retry.md %}
-
-{% include copy-clipboard.html %}
-~~~ csharp
-{% include {{ page.version.version }}/app/txn-sample.cs %}
-~~~
-
-Then, run the code to connect as the `maxroach` user.  This time, execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ dotnet run
-~~~
-
-The output should be:
-
-~~~
-Initial balances:
-	account 1: 1000
-	account 2: 250
-Final balances:
-	account 1: 900
-	account 2: 350
-~~~
-
-However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --database=bank -e 'SELECT id, balance FROM accounts'
-~~~
-
-~~~
-  id | balance
-+----+---------+
-   1 |     900
-   2 |     350
-(2 rows)
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/basic.cs %}
 ~~~
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="insecure">
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-## Step 3. Create the `maxroach` user and `bank` database
-
-{% include {{page.version.version}}/app/insecure/create-maxroach-user-and-bank-database.md %}
-
-## Step 4. Run the C# code
-
-Now that you have created a database and set up encryption keys, in this section you will:
-
-- [Create a table and insert some rows](#basic2)
-- [Execute a batch of statements as a transaction](#transaction2)
-
-<a name="basic2"></a>
-
-### Basic example
-
-Replace the contents of `cockroachdb-test-app/Program.cs` with the following code:
-
-{% include copy-clipboard.html %}
-~~~ csharp
-{% include {{ page.version.version }}/app/insecure/basic-sample.cs %}
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/basic.cs %}
 ~~~
 
-Then, run the code to connect as the `maxroach` user and execute some basic SQL statements: creating a table, inserting rows, and reading and printing the rows:
+</section>
 
-{% include copy-clipboard.html %}
+#### Update the connection parameters
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+In a text editor, modify `Program.cs` with the settings to connect to the demo cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ csharp
+connStringBuilder.Host = "{localhost}";
+connStringBuilder.Port = 26257;
+connStringBuilder.SslMode = SslMode.Require;
+connStringBuilder.Username = "{username}";
+connStringBuilder.Password = "{password}";
+connStringBuilder.Database = "bank";
+connStringBuilder.TrustServerCertificate = true;
+~~~
+
+Where `{username}` and `{password}` are the database username and password you created earlier.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+1. In the CockroachCloud Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
+
+1. In a text editor, modify the connection parameters in `Program.cs` with the settings to connect to your cluster:
+
+{% include_cached copy-clipboard.html %}
+~~~ csharp
+connStringBuilder.Host = "{host-name}";
+connStringBuilder.Port = 26257;
+connStringBuilder.SslMode = SslMode.Require;
+connStringBuilder.Username = "{username}";
+connStringBuilder.Password = "{password}";
+connStringBuilder.Database = "{cluster-name}.bank";
+connStringBuilder.RootCertificate = "~/.postgres/root.crt";
+connStringBuilder.TrustServerCertificate = true;
+~~~
+
+Where:
+
+- `{username}` and `{password}` specify the SQL username and password that you created earlier.
+- `{host-name}` is the name of the CockroachCloud free tier host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- `{cluster_name}` is the name of your cluster.
+
+</section>
+
+#### Run the code
+
+Compile and run the code:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
-$ dotnet run
+dotnet run
 ~~~
 
 The output should be:
@@ -180,22 +141,35 @@ Initial balances:
 	account 2: 250
 ~~~
 
-<a name="transaction2"></a>
-
 ### Transaction example (with retry logic)
 
-Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below.
+#### Get the code
 
-{% include {{page.version.version}}/client-transaction-retry.md %}
+Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below. Make sure to keep the connection parameters the same as in the [previous example](#update-the-connection-parameters).
 
-{% include copy-clipboard.html %}
-~~~ csharp
-{% include {{ page.version.version }}/app/insecure/txn-sample.cs %}
+<section class="filter-content" markdown="1" data-scope="local">
+
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/main/transaction.cs %}
 ~~~
 
-Then, run the code to connect as the `maxroach` user.  This time, execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
+</section>
 
-{% include copy-clipboard.html %}
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include_cached copy-clipboard.html %}
+~~~ c#
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-csharp/cockroachcloud/transaction.cs %}
+~~~
+
+</section>
+
+#### Run the code
+
+This time, running the code will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
+
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ dotnet run
 ~~~
@@ -213,7 +187,7 @@ Final balances:
 
 However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](cockroach-sql.html):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts'
 ~~~
@@ -226,7 +200,6 @@ $ cockroach sql --insecure  --database=bank -e 'SELECT id, balance FROM accounts
 (2 rows)
 ~~~
 
-</section>
 
 ## What's next?
 
