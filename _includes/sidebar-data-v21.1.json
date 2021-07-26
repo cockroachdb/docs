@@ -1914,6 +1914,12 @@
                     ]
                   },
                   {
+                    "title": "<code>SHOW FULL TABLE SCANS</code>",
+                    "urls": [
+                      "/${VERSION}/show-full-table-scans.html"
+                    ]
+                  },
+                  {
                     "title": "<code>SHOW GRANTS</code>",
                     "urls": [
                       "/${VERSION}/show-grants.html"

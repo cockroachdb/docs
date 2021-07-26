@@ -85,9 +85,10 @@ Statement | Usage
 [`SHOW CREATE`](show-create.html) | View the `CREATE` statement for a table, view, or sequence.
 [`SHOW DATABASES`](show-databases.html) | List databases in the cluster.
 [`SHOW ENUMS`](show-enums.html) |   List user-defined, [enumerated data types](enum.html) in a database.
-[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`SHOW FULL TABLE SCANS`](show-full-table-scans.html) | <span class="version-tag">New in v21.1:</span> List recent queries that used a full table scan.
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
+[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
 [`SHOW REGIONS`](show-regions.html) | <span class="version-tag">New in v21.1:</span> List the [cluster regions](multiregion-overview.html#cluster-regions) or [database regions](multiregion-overview.html#database-regions) in a [multi-region cluster](multiregion-overview.html).
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
