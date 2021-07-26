@@ -40,11 +40,11 @@ For information on `userfile` commands, visit the following pages:
 
 {% include cockroachcloud/userfile-examples/backup-userfile.md %}
 
-### Import data into your CockroachCloud cluster
+### Import data into your CockroachCloud Free (beta) cluster
 
 {% include cockroachcloud/userfile-examples/import-into-userfile.md %}
 
-### Stream data out of CockroachCloud
+### Stream data out of your CockroachCloud Free (beta) cluster
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
