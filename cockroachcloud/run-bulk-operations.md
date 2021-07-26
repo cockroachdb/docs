@@ -15,11 +15,11 @@ The CockroachCloud tiers offer different levels of support for the following bul
 ## Examples
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="cc-free">CockroachCloud Free (beta) </button>
-  <button class="filter-button" data-scope="cc-ded">CockroachCloud</button>
+  <button class="filter-button" data-scope="ccfree">CockroachCloud Free (beta) </button>
+  <button class="filter-button" data-scope="ccded">CockroachCloud</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="cc-free">
+<section class="filter-content" markdown="1" data-scope="ccfree">
 
 For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
 
@@ -66,7 +66,7 @@ For further information on changefeeds, read [Stream Data Out of CockroachDB](..
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="cc-ded">
+<section class="filter-content" markdown="1" data-scope="ccded">
 
 For guidance on connecting to your CockroachCloud cluster, visit [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
