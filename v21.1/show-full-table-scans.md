@@ -27,7 +27,7 @@ To follow along, run [`cockroach demo`](cockroach-demo.html) to start a temporar
 $ cockroach demo
 ~~~
 
-Now, suppose that you want to query the `rides` table for all rides that cost above 90¤ (i.e., `WHERE revenue > 90`):
+Now, suppose that you want to query the `rides` table for all rides that cost above 90 (i.e., `WHERE revenue > 90`):
 
 {% include copy-clipboard.html %}
 ~~~ sql
