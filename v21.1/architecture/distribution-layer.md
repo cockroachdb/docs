@@ -179,6 +179,7 @@ Range descriptors are updated whenever there are:
 
 - Membership changes to a range's Raft group (discussed in more detail in the [Replication Layer](replication-layer.html#membership-changes-rebalance-repair))
 - Range splits
+- Range merges
 
 All of these updates to the range descriptor occur locally on the range, and then propagate to the `meta2` range.
 
