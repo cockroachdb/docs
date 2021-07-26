@@ -93,7 +93,7 @@ For more information on taking backups and restoring to your cluster, read the f
 
 To import a table into your cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > IMPORT TABLE customers (
 		id UUID PRIMARY KEY,
