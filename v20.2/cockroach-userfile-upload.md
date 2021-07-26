@@ -121,6 +121,10 @@ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testd
 successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 ~~~
 
+## Known limitation
+
+{% include {{ page.version.version }}/known-limitations/userfile-upload-non-recursive.md %}
+
 ## See also
 
 - [`cockroach userfile list`](cockroach-userfile-list.html)

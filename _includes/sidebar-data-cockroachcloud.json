@@ -192,6 +192,12 @@
       	    "/cockroachcloud/cluster-management.html"
       	  ]
       	},
+        {
+          "title": "Run Bulk Operations",
+          "urls": [
+            "/cockroachcloud/run-bulk-operations.html"
+          ]
+        },
       	{
       	  "title": "Restore Data from a Backup",
       	  "urls": [

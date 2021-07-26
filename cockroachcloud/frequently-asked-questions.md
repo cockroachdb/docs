@@ -92,11 +92,11 @@ The backups for AWS clusters are encrypted using [AWS S3’s server-side encrypt
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
 {{site.data.alerts.end}}
 
-You can also [backup and restore](backups-page.html#back-up-and-restore-data-manually) data on your own. If you need additional help, [contact us](https://support.cockroachlabs.com).
+You can also [backup and restore](run-bulk-operations.html) data on your own. If you need additional help, [contact us](https://support.cockroachlabs.com).
 
 ### Can I download the backups that CockroachCloud takes for me?
 
-CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](backups-page.html#back-up-and-restore-data-manually) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
