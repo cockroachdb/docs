@@ -22,7 +22,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 
 | Driver/ORM Framework                             | Support level  | Example apps                                            |
 |--------------------------------------------------+----------------+--------------------------------------------------------|
-| [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb.html)
+| [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Hello World](hello-world-go-sqlalchemy.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb.html)
 | [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-pq.html)
 | [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-gorm.html)
 | [upper/db](https://github.com/upper/db)          | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-upperdb.html)

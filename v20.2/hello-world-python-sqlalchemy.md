@@ -61,7 +61,7 @@ The terminal will prompt you for a connection string.
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Copy and paste the connection string provided in the `(sql)` connection string from SQL shell welcome text, and replace the `postgres` prefix with `cockroachdb`.
+Copy and paste the connection string provided in the `(sql/tcp)` connection string from SQL shell welcome text, and replace the `postgres` prefix with `cockroachdb`.
 
 For example:
 

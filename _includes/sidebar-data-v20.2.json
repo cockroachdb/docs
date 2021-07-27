@@ -419,6 +419,12 @@
                 "title": "Hello World",
                 "items": [
                   {
+                    "title": "Go",
+                    "urls": [
+                      "/${VERSION}/hello-world-go-pgx.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"
