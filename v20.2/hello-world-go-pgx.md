@@ -55,7 +55,7 @@ Enter a connection string:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Enter the `(sql/unix)` connection URL provided in the demo cluster's SQL shell welcome text.
+Enter the `(sql)` connection URL provided in the demo cluster's SQL shell welcome text.
 
 </section>
 

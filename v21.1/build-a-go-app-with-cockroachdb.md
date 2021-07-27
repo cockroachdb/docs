@@ -43,7 +43,7 @@ This tutorial shows you how build a simple CRUD Go application with CockroachDB 
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
 1. Run the [`cockroach demo`](cockroach-demo.html) command:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo \
     --no-example-database
@@ -67,7 +67,7 @@ This tutorial shows you how build a simple CRUD Go application with CockroachDB 
 
 Clone the code's GitHub repo:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ git clone https://github.com/cockroachlabs/example-app-go-pgx/
 ~~~
@@ -91,7 +91,7 @@ The `main.go` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELE
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/main.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/main.go %}
 ~~~
 
 {{site.data.alerts.callout_info}}
