@@ -12,6 +12,8 @@ The CockroachCloud tiers offer different levels of support for the following bul
 - [`EXPORT`](../{{site.versions["stable"]}}/export.html)
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
 
+The examples below include details on the storage options available with each of the CockroachCloud tiers.
+
 ## Examples
 
 <div class="filters clearfix">
@@ -23,11 +25,11 @@ The CockroachCloud tiers offer different levels of support for the following bul
 
 For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
 
+In CockroachCloud Free (beta) clusters, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html), a per-user bulk file storage, is the **only available storage option** for `BACKUP`, `RESTORE`, and `IMPORT` operations.
+
 {{site.data.alerts.callout_info}}
 `userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free (beta) [**after upgrading to v21.1.**](upgrade-to-v21.1.html)
 {{site.data.alerts.end}}
-
-In CockroachCloud Free (beta) clusters, `BACKUP`, `RESTORE`, and `IMPORT` can be used with [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage, a per-user bulk file storage.
 
 For information on `userfile` commands, visit the following pages:
 
