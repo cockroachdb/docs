@@ -64,17 +64,17 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cockroach demo \
-    --no-example-database
+    --empty
     ~~~
 
     This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql)` connection string in the SQL shell welcome text:
+1. Take note of the `(sql/tcp)` connection string in the SQL shell welcome text:
 
     ~~~
     # Connection parameters:
-    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
-    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
-    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    #   (console) http://127.0.0.1:49584
+    #   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo180485299&port=26257
+    #   (sql/tcp) postgres://root:admin@127.0.0.1:49586?sslmode=require
     ~~~
 
     You'll use this connection string to connect to the database later in this tutorial.
@@ -133,7 +133,7 @@ $ python3 main.py '<connection_string>'
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Where `<connection_string>` is the `(sql)` connection URL provided in the demo cluster's SQL shell welcome text.
+Where `<connection_string>` is the `(sql/tcp)` connection URL provided in the demo cluster's SQL shell welcome text.
 
 </section>
 
