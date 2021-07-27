@@ -60,6 +60,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `nullas`            |    `CSV DATA`, `DELIMITED DATA`          |  The string that should be used to represent _NULL_ values. To avoid collisions, it is important to pick `nullas` values that do not appear in the exported data. <br><br>To use empty columns as _NULL_: `WITH nullas = ''`
 `compression`       |    `CSV DATA`   |  This instructs export to write `gzip` compressed CSV files to the specified destination. <br><br>See the [example](#export-gzip-compressed-csv-files) below.
 `chunk_rows`        |    `CSV DATA`   |  The number of rows to be converted to CSV and written to a single CSV file. **Default:** `100000`. <br><br>For example, `WITH chunk_rows = '5000'` for a table with 10,000 rows would produce two CSV files.
+`chunk_size`        |    `CSV DATA`   | A target size per CSV file that you can specify during an `EXPORT`. Once the target size is reached, the CSV file is uploaded before processing further rows. **Default:** `32MB`. <br><br> For example, `WITH chunk_size = '10MB'`.
 
 ## Success responses
 
