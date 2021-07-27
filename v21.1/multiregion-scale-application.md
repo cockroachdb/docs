@@ -18,7 +18,7 @@ Scaling an application from a single region to multiple regions consists of:
 
 ## Scale the database
 
-### Step 1. Prep the database schema
+### Step 1. Prep the database
 
 Use an [`ALTER DATABASE ... SET PRIMARY REGION`](set-primary-region.html) statement to set the database's [primary region](multiregion-overview.html#database-regions) to a region in which the cluster is deployed. This region must have been specified as a [regional locality](cockroach-start.html#locality) at cluster startup.
 
