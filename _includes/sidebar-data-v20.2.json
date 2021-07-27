@@ -1569,7 +1569,7 @@
                     ]
                   },
                   {
-                    "title": "<code>EXPORT</code> (Enterprise)",
+                    "title": "<code>EXPORT</code>",
                     "urls": [
                       "/${VERSION}/export.html"
                     ]
