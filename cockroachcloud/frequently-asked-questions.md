@@ -106,6 +106,12 @@ Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-host
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
 {{site.data.alerts.end}}
 
+### Can I set up VPC peering or AWS PrivateLink after my cluster is created?
+
+AWS clusters can set up a [PrivateLink connection](network-authorization.html#aws-privatelink) at any time after the cluster is created.
+
+GCP clusters can also set up VPC peering after the cluster is created, but you will be locked into our default IP range (`172.28.0.0/14`) unless you configure a different IP range during cluster creation. You can use the default IP range for VPC peering as long as it doesn't overlap with the IP ranges in your network. For more information, see [VPC peering](network-authorization.html#vpc-peering).
+
 ## Product features
 
 ### Are enterprise features available to me?
