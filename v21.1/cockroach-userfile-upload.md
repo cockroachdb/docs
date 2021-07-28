@@ -202,7 +202,7 @@ database-backup/
 
 If you should need to recover that data, or, apply it for testing purposes, you can now upload these files to a cluster with `cockroach userfile upload` and [`RESTORE`](restore.html).
 
-For the purposes of this examples, [`DROP`](drop.html) the database:
+For the purposes of this examples, [`DROP`](drop-database.html) the database:
 
 ~~~sql
 DROP DATABASE movr CASCADE;
