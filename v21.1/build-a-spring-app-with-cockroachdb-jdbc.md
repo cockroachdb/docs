@@ -255,7 +255,7 @@ The output should look like the following:
 2020-06-17 14:56:55.387  INFO 43008 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
 2020-06-17 14:56:55.452  INFO 43008 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59ms. Found 2 JDBC repository interfaces.
 2020-06-17 14:56:56.581  INFO 43008 --- [           main] org.eclipse.jetty.util.log               : Logging initialized @3378ms to org.eclipse.jetty.util.log.Slf4jLog
-2020-06-17 14:56:56.657  INFO 43008 --- [           main] o.s.b.w.e.j.JettyServletWebServerFactory : Server initialized with port: 8080
+2020-06-17 14:56:56.657  INFO 43008 --- [           main] o.s.b.w.e.j.JettyServletWebServerFactory : Server initialized with port: 9090
 2020-06-17 14:56:56.661  INFO 43008 --- [           main] org.eclipse.jetty.server.Server          : jetty-9.4.28.v20200408; built: 2020-04-08T17:49:39.557Z; git: ab228fde9e55e9164c738d7fa121f8ac5acd51c9; jvm 11.0.7+10
 2020-06-17 14:56:56.696  INFO 43008 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring embedded WebApplicationContext
 2020-06-17 14:56:56.696  INFO 43008 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2088 ms
@@ -315,8 +315,8 @@ create table account
 2020-06-17 14:57:01.610  INFO 43008 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-06-17 14:57:01.610  INFO 43008 --- [           main] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2020-06-17 14:57:01.620  INFO 43008 --- [           main] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
-2020-06-17 14:57:01.653  INFO 43008 --- [           main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@733c423e{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
-2020-06-17 14:57:01.654  INFO 43008 --- [           main] o.s.b.web.embedded.jetty.JettyWebServer  : Jetty started on port(s) 8080 (http/1.1) with context path '/'
+2020-06-17 14:57:01.653  INFO 43008 --- [           main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@733c423e{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+2020-06-17 14:57:01.654  INFO 43008 --- [           main] o.s.b.web.embedded.jetty.JettyWebServer  : Jetty started on port(s) 9090 (http/1.1) with context path '/'
 2020-06-17 14:57:01.657  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Started JdbcApplication in 7.92 seconds (JVM running for 8.454)
 2020-06-17 14:57:01.659  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Lets move some $$ around!
 2020-06-17 14:57:03.552  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : Worker finished - 7 remaining
@@ -330,7 +330,7 @@ create table account
 2020-06-17 14:57:03.608  INFO 43008 --- [           main] io.roach.data.jdbc.JdbcApplication       : All client workers finished but server keeps running. Have a nice day!
 ~~~
 
-As the output states, the application configures a database connection, starts a web servlet listening on the address `http://localhost:8080/`, initializes the `account` table and changelog tables with [Liquibase](https://www.liquibase.org/), and then runs some test operations as requests to the application's REST API.
+As the output states, the application configures a database connection, starts a web servlet listening on the address `http://localhost:9090/`, initializes the `account` table and changelog tables with [Liquibase](https://www.liquibase.org/), and then runs some test operations as requests to the application's REST API.
 
 For more details about the application code, see [Implementation details](#implementation-details).
 
@@ -338,13 +338,13 @@ For more details about the application code, see [Implementation details](#imple
 
 #### Reads
 
-The `http://localhost:8080/account` endpoint returns information about all accounts in the database. `GET` requests to these endpoints are executed on the database as `SELECT` statements.
+The `http://localhost:9090/account` endpoint returns information about all accounts in the database. `GET` requests to these endpoints are executed on the database as `SELECT` statements.
 
 The following `curl` command sends a `GET` request to the endpoint. The `json_pp` command formats the JSON response.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account | json_pp
+$ curl -X GET http://localhost:9090/account | json_pp
 ~~~
 
 ~~~
@@ -354,7 +354,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/1"
+                  "href" : "http://localhost:9090/account/1"
                }
             },
             "balance" : 500,
@@ -364,7 +364,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/2"
+                  "href" : "http://localhost:9090/account/2"
                }
             },
             "balance" : 500,
@@ -374,7 +374,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/3"
+                  "href" : "http://localhost:9090/account/3"
                }
             },
             "balance" : 500,
@@ -384,7 +384,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/4"
+                  "href" : "http://localhost:9090/account/4"
                }
             },
             "balance" : 500,
@@ -395,7 +395,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
    },
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account?page=0&size=5"
+         "href" : "http://localhost:9090/account?page=0&size=5"
       }
    },
    "page" : {
@@ -411,14 +411,14 @@ For a single account, specify the account number in the endpoint. For example, t
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/1 | json_pp
+$ curl -X GET http://localhost:9090/account/1 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/1"
+         "href" : "http://localhost:9090/account/1"
       }
    },
    "balance" : 500,
@@ -429,14 +429,14 @@ $ curl -X GET http://localhost:8080/account/1 | json_pp
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/2 | json_pp
+$ curl -X GET http://localhost:9090/account/2 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/2"
+         "href" : "http://localhost:9090/account/2"
       }
    },
    "balance" : 500,
@@ -445,29 +445,29 @@ $ curl -X GET http://localhost:8080/account/2 | json_pp
 }
 ~~~
 
-The `http://localhost:8080/transfer` endpoint performs transfers between accounts. `POST` requests to this endpoint are executed as writes (i.e., [`INSERT`s](insert.html) and [`UPDATE`s](update.html)) to the database.
+The `http://localhost:9090/transfer` endpoint performs transfers between accounts. `POST` requests to this endpoint are executed as writes (i.e., [`INSERT`s](insert.html) and [`UPDATE`s](update.html)) to the database.
 
 #### Writes
 
-To make a transfer, send a `POST` request to the `transfer` endpoint, using the arguments specified in the `"href`" URL (i.e., `http://localhost:8080/transfer%7B?fromId,toId,amount`).
+To make a transfer, send a `POST` request to the `transfer` endpoint, using the arguments specified in the `"href`" URL (i.e., `http://localhost:9090/transfer%7B?fromId,toId,amount`).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X POST -d fromId=2 -d toId=1 -d amount=150 http://localhost:8080/transfer
+$ curl -X POST -d fromId=2 -d toId=1 -d amount=150 http://localhost:9090/transfer
 ~~~
 
 You can use the `accounts` endpoint to verify that the transfer was successfully completed:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/1 | json_pp
+$ curl -X GET http://localhost:9090/account/1 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/1"
+         "href" : "http://localhost:9090/account/1"
       }
    },
    "balance" : 350,
@@ -478,14 +478,14 @@ $ curl -X GET http://localhost:8080/account/1 | json_pp
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/2 | json_pp
+$ curl -X GET http://localhost:9090/account/2 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/2"
+         "href" : "http://localhost:9090/account/2"
       }
    },
    "balance" : 650,
@@ -496,62 +496,62 @@ $ curl -X GET http://localhost:8080/account/2 | json_pp
 
 ### Monitor the application
 
-`http://localhost:8080/actuator` is the base URL for a number of [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints that let you monitor the activity and health of the application.
+`http://localhost:9090/actuator` is the base URL for a number of [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready) endpoints that let you monitor the activity and health of the application.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/actuator | json_pp
+$ curl -X GET http://localhost:9090/actuator | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "conditions" : {
-         "href" : "http://localhost:8080/actuator/conditions",
+         "href" : "http://localhost:9090/actuator/conditions",
          "templated" : false
       },
       "configprops" : {
-         "href" : "http://localhost:8080/actuator/configprops",
+         "href" : "http://localhost:9090/actuator/configprops",
          "templated" : false
       },
       "env" : {
-         "href" : "http://localhost:8080/actuator/env",
+         "href" : "http://localhost:9090/actuator/env",
          "templated" : false
       },
       "env-toMatch" : {
-         "href" : "http://localhost:8080/actuator/env/{toMatch}",
+         "href" : "http://localhost:9090/actuator/env/{toMatch}",
          "templated" : true
       },
       "health" : {
-         "href" : "http://localhost:8080/actuator/health",
+         "href" : "http://localhost:9090/actuator/health",
          "templated" : false
       },
       "health-path" : {
-         "href" : "http://localhost:8080/actuator/health/{*path}",
+         "href" : "http://localhost:9090/actuator/health/{*path}",
          "templated" : true
       },
       "info" : {
-         "href" : "http://localhost:8080/actuator/info",
+         "href" : "http://localhost:9090/actuator/info",
          "templated" : false
       },
       "liquibase" : {
-         "href" : "http://localhost:8080/actuator/liquibase",
+         "href" : "http://localhost:9090/actuator/liquibase",
          "templated" : false
       },
       "metrics" : {
-         "href" : "http://localhost:8080/actuator/metrics",
+         "href" : "http://localhost:9090/actuator/metrics",
          "templated" : false
       },
       "metrics-requiredMetricName" : {
-         "href" : "http://localhost:8080/actuator/metrics/{requiredMetricName}",
+         "href" : "http://localhost:9090/actuator/metrics/{requiredMetricName}",
          "templated" : true
       },
       "self" : {
-         "href" : "http://localhost:8080/actuator",
+         "href" : "http://localhost:9090/actuator",
          "templated" : false
       },
       "threaddump" : {
-         "href" : "http://localhost:8080/actuator/threaddump",
+         "href" : "http://localhost:9090/actuator/threaddump",
          "templated" : false
       }
    }
@@ -562,7 +562,7 @@ Each actuator endpoint shows specific metrics on the application. For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/actuator/health | json_pp
+$ curl -X GET http://localhost:9090/actuator/health | json_pp
 ~~~
 
 ~~~
