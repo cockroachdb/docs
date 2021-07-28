@@ -125,6 +125,181 @@ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testd
 successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 ~~~
 
+### Upload a backup directory recursively
+
+Currently in v21.1 and prior, it's [not possible to use `cockroach userfile upload` recursively](#known-limitation) when uploading a directory of files that also contains a subdirectory. When you need to upload a directory of files, such as a backup, to `userfile` storage, it is possible to programmatically upload your files.
+
+The following example uses `userfile` storage and its features to backup a database and then restore it to the cluster. When quick testing is required, or, to protect against accidental loss of data, this workflow provides a way to recover in those scenarios when using `userfile` as your storage option.
+
+After connecting to the cluster that contains the data you would like to backup, run the [`BACKUP`](backup.html) statement:
+
+~~~sql
+BACKUP DATABASE movr TO 'userfile://defaultdb.public.userfiles_$user/database-backup' AS OF SYSTEM TIME '-10s';
+~~~
+
+This will make a backup of the database under `database-backup` in the default `userfile` space.
+
+~~~
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+-------------------+-----------+--------------------+------+---------------+---------
+679645548255936513 | succeeded |                  1 | 2997 |          1060 | 492713
+(1 row)
+~~~
+
+Next, on the command line, use the following [`cockroach userfile get`](cockroach-userfile-get.html) command to fetch the files stored in the `userfile` storage and download them to your local directory. (Note that without passing a specific directory this command will fetch all files stored within the default user space in `userfile`.)
+
+~~~shell
+cockroach userfile get 'userfile://defaultdb.public.userfiles_$user/database-backup' --url {CONNECTION STRING}
+~~~
+
+The output will show the files downloading:
+
+~~~
+downloaded database-backup/BACKUP-CHECKPOINT-679645548255936513-CHECKSUM to database-backup/BACKUP-CHECKPOINT-679645548255936513-CHECKSUM (4 B)
+downloaded database-backup/BACKUP-CHECKPOINT-CHECKSUM to database-backup/BACKUP-CHECKPOINT-CHECKSUM (4 B)
+downloaded database-backup/BACKUP-STATISTICS to database-backup/BACKUP-STATISTICS (53 KiB)
+downloaded database-backup/BACKUP_MANIFEST to database-backup/BACKUP_MANIFEST (2.6 KiB)
+downloaded database-backup/BACKUP_MANIFEST-CHECKSUM to database-backup/BACKUP_MANIFEST-CHECKSUM (4 B)
+downloaded database-backup/data/679645557047099393.sst to database-backup/data/679645557047099393.sst (5.8 KiB)
+downloaded database-backup/data/679645557048475649.sst to database-backup/data/679645557048475649.sst (1.6 KiB)
+downloaded database-backup/data/679645557048868865.sst to database-backup/data/679645557048868865.sst (1.7 KiB)
+downloaded database-backup/data/679645558151741442.sst to database-backup/data/679645558151741442.sst (2.0 KiB)
+downloaded database-backup/data/679645558151774210.sst to database-backup/data/679645558151774210.sst (1.4 KiB)
+downloaded database-backup/data/679645558151806978.sst to database-backup/data/679645558151806978.sst (1.8 KiB)
+downloaded database-backup/data/679645558153281539.sst to database-backup/data/679645558153281539.sst (1.3 KiB)
+downloaded database-backup/data/679645558153904131.sst to database-backup/data/679645558153904131.sst (1.1 KiB)
+downloaded database-backup/data/679645558154264579.sst to database-backup/data/679645558154264579.sst (1.6 KiB)
+downloaded database-backup/data/679645558404448257.sst to database-backup/data/679645558404448257.sst (5.8 KiB)
+downloaded database-backup/data/679645558408249345.sst to database-backup/data/679645558408249345.sst (41 KiB)
+. . .
+~~~
+
+At this point, you have backed up the database to `userfile` storage and you have a copy of that backup on your local machine.
+
+Your backup will contain files similar to the following structure:
+
+~~~
+database-backup/
+├── BACKUP-CHECKPOINT-679645548255936513-CHECKSUM
+├── BACKUP-CHECKPOINT-CHECKSUM
+├── BACKUP-STATISTICS
+├── BACKUP_MANIFEST
+├── BACKUP_MANIFEST-CHECKSUM
+└── data
+    ├── 679645557047099393.sst
+    ├── 679645557048475649.sst
+    ├── 679645557048868865.sst
+    ├── 679645558151741442.sst
+    ├── 679645558151774210.sst
+    ├── 679645558151806978.sst
+    ├── 679645558153281539.sst
+    ├── 679645558153904131.sst
+    ├── 679645558154264579.sst
+    ├── 679645558404448257.sst
+    ├── 679645558408249345.sst
+. . .
+~~~
+
+If you should need to recover that data, or, apply it for testing purposes, you can now upload these files to a cluster with `cockroach userfile upload` and [`RESTORE`](restore.html).
+
+For the purposes of this examples, [`DROP`](drop.html) the database:
+
+~~~sql
+DROP DATABASE movr CASCADE;
+~~~
+
+And then, use [`cockroach userfile delete`](cockroach-userfile-delete.html) to remove this from `userfile`:
+
+~~~shell
+cockroach userfile delete 'userfile://defaultdb.public.userfiles_$user/database-backup' --url 'postgresql://root@localhost:26257?sslmode=disable'
+~~~
+
+~~~
+successfully deleted database-backup/BACKUP-CHECKPOINT-679645548255936513-CHECKSUM
+successfully deleted database-backup/BACKUP-CHECKPOINT-CHECKSUM
+successfully deleted database-backup/BACKUP-STATISTICS
+successfully deleted database-backup/BACKUP_MANIFEST
+successfully deleted database-backup/BACKUP_MANIFEST-CHECKSUM
+successfully deleted database-backup/data/679645557047099393.sst
+successfully deleted database-backup/data/679645557048475649.sst
+successfully deleted database-backup/data/679645557048868865.sst
+successfully deleted database-backup/data/679645558151741442.sst
+successfully deleted database-backup/data/679645558151774210.sst
+successfully deleted database-backup/data/679645558151806978.sst
+successfully deleted database-backup/data/679645558153281539.sst
+successfully deleted database-backup/data/679645558153904131.sst
+successfully deleted database-backup/data/679645558154264579.sst
+~~~
+
+Currently, `cockroach userfile upload` will not recursively upload files from a directory. See this [known limitation](../{{site.versions["stable"]}}/cockroach-userfile-upload.html#known-limitation).
+
+#### NOTE Which do your prefer below?
+
+
+It is possible to programmatically upload your files from the command line. For example, the loop in the below Bash script will upload each of the files to `database-backup` in the `userfile` space from the `~/database-backup` directory on your local machine.
+
+~~~shell
+for x in database-backup/* database-backup/*/*; do cockroach userfile upload $x $x --url="YOUR_CONNECTION STRING"; done
+~~~
+
+~~~
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP-CHECKPOINT-679645548255936513-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP-CHECKPOINT-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP-STATISTICS
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP_MANIFEST
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP_MANIFEST-CHECKSUM
+E210728 14:36:13.465248 1 1@cli/error.go:399  [-] 1  source file database-backup/data is a directory, not a file
+ERROR: source file database-backup/data is a directory, not a file
+Failed running "userfile upload"
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645557047099393.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645557048475649.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645557048868865.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645558151741442.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645558151774210.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645558151806978.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645558153281539.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645558153904131.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679645558154264579.sst
+~~~
+
+<!--TODO -->
+#### alternative:
+
+It is possible to programmatically upload your files from the command line. For example, the following command finds all files under `database-backup` and pipes them through to [`xargs`](https://linux.die.net/man/1/xargs), which will execute `cockroach userfile upload` for each file. Every occurrence of `{}` in the command, is replaced with the filename.
+
+~~~shell
+find database-backup -type f | xargs -I{} cockroach userfile upload {} {} --url='postgresql://root@localhost:26257?sslmode=disable'
+~~~
+
+~~~
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP_MANIFEST-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP-CHECKPOINT-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP-STATISTICS
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP-CHECKPOINT-679678586269007873-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/BACKUP_MANIFEST
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678597597560835.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678594426601474.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678592925335554.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678594438758403.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678597585862658.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678596261609475.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678592971046913.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678597584846850.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678594429222913.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678596269113346.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/database-backup/data/679678592927498243.sst
+. . .
+~~~
+ -->
+
+Now, with the backup files present in `userfile` storage, you can `RESTORE` the database to the cluster:
+
+~~~sql
+RESTORE DATABASE movr FROM 'userfile:///database-backup';
+~~~
+
+Note that `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
+
 ## Known limitation
 
 {% include {{ page.version.version }}/known-limitations/userfile-upload-non-recursive.md %}
