@@ -288,7 +288,7 @@ The output should look like the following:
 2020-06-22 11:54:47.224  INFO 81343 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data JDBC - Could not safely identify store assignment for repository candidate interface io.roach.data.jpa.AccountRepository. If you want this repository to be a JDBC repository, consider annotating your entities with one of these annotations: org.springframework.data.relational.core.mapping.Table.
 2020-06-22 11:54:47.224  INFO 81343 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 JDBC repository interfaces.
 2020-06-22 11:54:47.913  INFO 81343 --- [           main] org.eclipse.jetty.util.log               : Logging initialized @2990ms to org.eclipse.jetty.util.log.Slf4jLog
-2020-06-22 11:54:47.982  INFO 81343 --- [           main] o.s.b.w.e.j.JettyServletWebServerFactory : Server initialized with port: 8080
+2020-06-22 11:54:47.982  INFO 81343 --- [           main] o.s.b.w.e.j.JettyServletWebServerFactory : Server initialized with port: 9090
 2020-06-22 11:54:47.985  INFO 81343 --- [           main] org.eclipse.jetty.server.Server          : jetty-9.4.28.v20200408; built: 2020-04-08T17:49:39.557Z; git: ab228fde9e55e9164c738d7fa121f8ac5acd51c9; jvm 11.0.7+10
 2020-06-22 11:54:48.008  INFO 81343 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring embedded WebApplicationContext
 2020-06-22 11:54:48.008  INFO 81343 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1671 ms
@@ -344,8 +344,8 @@ The output should look like the following:
 2020-06-22 11:54:52.958  INFO 81343 --- [           main] o.e.j.s.h.ContextHandler.application     : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-06-22 11:54:52.958  INFO 81343 --- [           main] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2020-06-22 11:54:52.966  INFO 81343 --- [           main] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
-2020-06-22 11:54:52.997  INFO 81343 --- [           main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@1568159{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
-2020-06-22 11:54:52.999  INFO 81343 --- [           main] o.s.b.web.embedded.jetty.JettyWebServer  : Jetty started on port(s) 8080 (http/1.1) with context path '/'
+2020-06-22 11:54:52.997  INFO 81343 --- [           main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@1568159{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+2020-06-22 11:54:52.999  INFO 81343 --- [           main] o.s.b.web.embedded.jetty.JettyWebServer  : Jetty started on port(s) 9090 (http/1.1) with context path '/'
 2020-06-22 11:54:53.001  INFO 81343 --- [           main] io.roach.data.jpa.JpaApplication         : Started JpaApplication in 7.518 seconds (JVM running for 8.077)
 2020-06-22 11:54:53.002  INFO 81343 --- [           main] io.roach.data.jpa.JpaApplication         : Lets move some $$ around!
 2020-06-22 11:54:54.399  INFO 81343 --- [           main] io.roach.data.jpa.JpaApplication         : Worker finished - 7 remaining
@@ -359,7 +359,7 @@ The output should look like the following:
 2020-06-22 11:54:54.447  INFO 81343 --- [           main] io.roach.data.jpa.JpaApplication         : All client workers finished but server keeps running. Have a nice day!
 ~~~
 
-As the output states, the application configures a database connection, starts a web servlet listening on the address `http://localhost:8080/`, initializes the `account` table and changelog tables with [Liquibase](https://www.liquibase.org/), and then runs some test operations as requests to the application's REST API.
+As the output states, the application configures a database connection, starts a web servlet listening on the address `http://localhost:9090/`, initializes the `account` table and changelog tables with [Liquibase](https://www.liquibase.org/), and then runs some test operations as requests to the application's REST API.
 
 For more details about the application code, see [Implementation details](#implementation-details).
 
@@ -367,13 +367,13 @@ For more details about the application code, see [Implementation details](#imple
 
 #### Reads
 
-The `http://localhost:8080/account` endpoint returns information about all accounts in the database. `GET` requests to these endpoints are executed on the database as `SELECT` statements.
+The `http://localhost:9090/account` endpoint returns information about all accounts in the database. `GET` requests to these endpoints are executed on the database as `SELECT` statements.
 
 The following `curl` command sends a `GET` request to the endpoint. The `json_pp` command formats the JSON response.
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account | json_pp
+$ curl -X GET http://localhost:9090/account | json_pp
 ~~~
 
 ~~~
@@ -383,7 +383,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/1"
+                  "href" : "http://localhost:9090/account/1"
                }
             },
             "balance" : 500,
@@ -393,7 +393,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/2"
+                  "href" : "http://localhost:9090/account/2"
                }
             },
             "balance" : 500,
@@ -403,7 +403,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/3"
+                  "href" : "http://localhost:9090/account/3"
                }
             },
             "balance" : 500,
@@ -413,7 +413,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
          {
             "_links" : {
                "self" : {
-                  "href" : "http://localhost:8080/account/4"
+                  "href" : "http://localhost:9090/account/4"
                }
             },
             "balance" : 500,
@@ -424,7 +424,7 @@ $ curl -X GET http://localhost:8080/account | json_pp
    },
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account?page=0&size=5"
+         "href" : "http://localhost:9090/account?page=0&size=5"
       }
    },
    "page" : {
@@ -440,14 +440,14 @@ For a single account, specify the account number in the endpoint. For example, t
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/1 | json_pp
+$ curl -X GET http://localhost:9090/account/1 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/1"
+         "href" : "http://localhost:9090/account/1"
       }
    },
    "balance" : 500,
@@ -458,14 +458,14 @@ $ curl -X GET http://localhost:8080/account/1 | json_pp
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/2 | json_pp
+$ curl -X GET http://localhost:9090/account/2 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/2"
+         "href" : "http://localhost:9090/account/2"
       }
    },
    "balance" : 500,
@@ -474,29 +474,29 @@ $ curl -X GET http://localhost:8080/account/2 | json_pp
 }
 ~~~
 
-The `http://localhost:8080/transfer` endpoint performs transfers between accounts. `POST` requests to this endpoint are executed as writes (i.e., [`INSERT`s](insert.html) and [`UPDATE`s](update.html)) to the database.
+The `http://localhost:9090/transfer` endpoint performs transfers between accounts. `POST` requests to this endpoint are executed as writes (i.e., [`INSERT`s](insert.html) and [`UPDATE`s](update.html)) to the database.
 
 #### Writes
 
-To make a transfer, send a `POST` request to the `transfer` endpoint, using the arguments specified in the `"href`" URL (i.e., `http://localhost:8080/transfer%7B?fromId,toId,amount`).
+To make a transfer, send a `POST` request to the `transfer` endpoint, using the arguments specified in the `"href`" URL (i.e., `http://localhost:9090/transfer%7B?fromId,toId,amount`).
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl -X POST -d fromId=2 -d toId=1 -d amount=150 http://localhost:8080/transfer
+$ curl -X POST -d fromId=2 -d toId=1 -d amount=150 http://localhost:9090/transfer
 ~~~
 
 You can use the `accounts` endpoint to verify that the transfer was successfully completed:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/1 | json_pp
+$ curl -X GET http://localhost:9090/account/1 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/1"
+         "href" : "http://localhost:9090/account/1"
       }
    },
    "balance" : 650,
@@ -507,14 +507,14 @@ $ curl -X GET http://localhost:8080/account/1 | json_pp
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ curl -X GET http://localhost:8080/account/2 | json_pp
+$ curl -X GET http://localhost:9090/account/2 | json_pp
 ~~~
 
 ~~~
 {
    "_links" : {
       "self" : {
-         "href" : "http://localhost:8080/account/2"
+         "href" : "http://localhost:9090/account/2"
       }
    },
    "balance" : 350,
