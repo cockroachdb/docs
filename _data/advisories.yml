@@ -1,3 +1,7 @@
+- advisory: 62842
+  summary: TRUNCATE TABLE during CREATE/ALTER INDEX can cause data corruption
+  versions: 20.2.0-20.2.8
+  date: July 29, 2021
 - advisory: 64325
   summary: Race condition between reads and replica removal
   versions: 20.1 and later
