@@ -51,11 +51,11 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 ### Get the code
 
-Clone the `hello-world-java-jdbc` repo to your machine:
+Clone the `example-app-java-jdbc` repo to your machine:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-java-jdbc
+git clone https://github.com/cockroachlabs/example-app-java-jdbc
 ~~~
 
 ### Update the connection parameters
@@ -112,7 +112,7 @@ The contents of `BasicExample.java`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
 
 The output will look like the following:

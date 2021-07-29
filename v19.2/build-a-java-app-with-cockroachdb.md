@@ -75,12 +75,6 @@ To run it:
     $ java -classpath .:/path/to/postgresql.jar BasicExample
     ~~~
 
-{{site.data.alerts.callout_success}}
-To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
-
-`git clone https://github.com/cockroachlabs/hello-world-java-jdbc/`
-{{site.data.alerts.end}}
-
 The contents of [`BasicExample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/{{page.version.version}}/app/BasicExample.java):
 
 {% include copy-clipboard.html %}
@@ -116,15 +110,8 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 To run it:
 
-1. Clone the `hello-world-java-jdbc` repo to your machine:
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    git clone https://github.com/cockroachlabs/hello-world-java-jdbc/
-    ~~~
-
-2. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
-3. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
+1. Download [the PostgreSQL JDBC driver](https://jdbc.postgresql.org/download.html).
+1. Compile and run the code (adding the PostgreSQL JDBC driver to your classpath):
 
     {% include copy-clipboard.html %}
     ~~~ shell
