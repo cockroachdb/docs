@@ -1,0 +1,1 @@
+For new clusters using the [multi-region SQL abstractions](multiregion-overview.html), we recommend lowering the [`--max-offset`](cockroach-start.html#flags-max-offset) setting to `250ms`.  This is especially helpful for lowering the write latency of [global tables](multiregion-overview.html#global-tables).
