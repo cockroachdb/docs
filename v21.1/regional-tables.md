@@ -9,8 +9,10 @@ In a [multi-region deployment](multiregion-overview.html), the [Regional Table L
 - Read and write latency must be low.
 - Rows in the table, and all latency-sensitive queries, can be tied to specific regions.
 
-{{site.data.alerts.callout_info}}
 Tables with the Regional Table Locality Pattern can survive zone or region failures, depending on the database-level [survival goal](multiregion-overview.html#survival-goals) setting.
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}

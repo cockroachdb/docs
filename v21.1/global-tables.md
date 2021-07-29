@@ -12,8 +12,10 @@ In a [multi-region deployment](multiregion-overview.html), the [`GLOBAL` table l
 
 In general, this pattern is suited well for reference tables that are rarely updated.
 
-{{site.data.alerts.callout_info}}
 Tables with the `GLOBAL` locality can survive zone or region failures, depending on the database-level [survival goal](multiregion-overview.html#survival-goals) setting.
+
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
