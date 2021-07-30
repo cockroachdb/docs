@@ -41,17 +41,13 @@ For examples of applications that use CockroachCloud Free (beta), check out the 
 
 ### What are the limitations of CockroachCloud Free (beta)?
 
-CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as the ability to enable backups, to import data, and no-downtime upgrades to a paid tier. If you want to use any of these capabilities, try a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
+CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as no-downtime upgrades to a paid cluster. If you want to try out a paid cluster, you can get a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
 ### How do I connect to my cluster?
 
 To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
 
 ## Beta release
-
-### Why is CockroachCloud Free in beta?
-
-CockroachCloud Free is in beta while we work on adding core features like [import](run-bulk-operations.html#import-data-into-your-cockroachcloud-cluster) and [backups](run-bulk-operations.html#backup-and-restore-with-userfile).
 
 ### Where can I submit feedback or bugs on the beta?
 
