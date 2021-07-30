@@ -437,6 +437,12 @@
                     ]
                   },
                   {
+                    "title": "Java",
+                    "urls": [
+                      "/${VERSION}/hello-world-java-jdbc.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"

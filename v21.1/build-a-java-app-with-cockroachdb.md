@@ -1,5 +1,5 @@
 ---
-title: Build a Java App with CockroachDB and JDBC
+title: Build a Simple CRUD Java App with CockroachDB and JDBC
 summary: Learn how to use CockroachDB from a simple Java application with the JDBC driver.
 toc: true
 twitter: false
@@ -13,7 +13,7 @@ referral_id: docs_hello_world_java_jdbc
     <a href="build-a-spring-app-with-cockroachdb-mybatis.html"><button style="width: 25%" class="filter-button">Use <strong>MyBatis-Spring</strong></button></a>
 </div>
 
-This tutorial shows you how to build a simple Java application with CockroachDB and the Java JDBC driver.
+This tutorial shows you how to build a simple CRUD Java application with CockroachDB and the Java JDBC driver.
 
 {% include {{page.version.version}}/app/java-version-note.md %}
 
@@ -23,61 +23,185 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
+</div>
 
-## Step 2. Create a database
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include {{page.version.version}}/app/create-a-database.md %}
+### Create a free cluster
 
-## Step 3. Run the Java code
+{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-The code below uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
+### Set up your cluster connection
 
-1. `BasicExample`, which is where the application logic lives.
-2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class has logic to handle [transaction retries](transactions.html#transaction-retries) (see the `BasicExampleDAO.runSQL()` method).
+1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
 
-It performs the following steps which roughly correspond to method calls in the `BasicExample` class.
+1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
 
-| Step                                                                                                       | Method                                                                                          |
-|------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------|
-| 1. Create an `accounts` table in the `bank` database                                                       | `BasicExampleDAO.createAccounts()`                                                              |
-| 2. Insert account data using a `Map` that corresponds to the input to `INSERT` on the backend              | `BasicExampleDAO.updateAccounts(Map balance)`                                                   |
-| 3. Transfer money from one account to another, printing out account balances before and after the transfer | `BasicExampleDAO.transferFunds(int from, int to, BigDecimal amount)`                                   |
-| 4. Insert random account data using JDBC's bulk insertion support                                          | `BasicExampleDAO.bulkInsertRandomAccountData()`                                                 |
-| 5. Print out some account data                                                                             | `BasicExampleDAO.readAccounts(int limit)`                                                       |
-| 6. Drop the `accounts` table and perform any other necessary cleanup                                       | `BasicExampleDAO.tearDown()` (This cleanup step means you can run this program more than once.) |
-
-It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
-
-### Get the code
-
-Clone the `example-app-java-jdbc` repo to your machine:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-git clone https://github.com/cockroachlabs/example-app-java-jdbc
-~~~
-
-### Update the connection parameters
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the demo cluster:
-
-Modify the options in the `PGSimpleDataSource` instance:
-
-{% include_cached copy-clipboard.html %}
-~~~ java
-ds.setPortNumber({port});
-ds.setUser("{username}");
-ds.setPassword("{password}");
-~~~
-
-Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
+1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
 
 </section>
 
+<section class="filter-content" markdown="1" data-scope="local">
+
+1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
+1. Run the [`cockroach demo`](cockroach-demo.html) command:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach demo \
+    --no-example-database
+    ~~~
+
+    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
+1. Take note of the `(sql)` connection string in the SQL shell welcome text:
+
+    ~~~
+    # Connection parameters:
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ~~~
+
+    You'll use this connection information to connect to the database later in this tutorial.
+
+</section>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ git clone https://github.com/cockroachlabs/example-app-java-jdbc/
+~~~
+
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+Check out the `cockroachcloud` branch:
+
+{% include_cached copy-clipboard.html %}
+~~~shell
+git checkout cockroachcloud
+~~~
+
+</div>
+
+The project has the following directory structure:
+
+~~~
+├── README.md
+├── app
+│   ├── build.gradle
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── com
+│           │       └── cockroachlabs
+│           │           └── BasicExample.java
+│           └── resources
+│               └── dbinit.sql
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+└── settings.gradle
+~~~
+
+The `dbinit.sql` file initializes the database schema that the application uses:
+
+{% include_cached copy-clipboard.html %}
+~~~ java
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/resources/dbinit.sql %}
+~~~
+
+The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
+
+{% include_cached copy-clipboard.html %}
+~~~ java
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
+~~~
+
+The sample app uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
+
+1. `BasicExample`, which is where the application logic lives.
+2. `BasicExampleDAO`, which is used by the application to access the data store (in this case CockroachDB). This class also includes a helper function (`runSql`) that runs SQL statements inside a transaction, [retrying statements](transactions.html#transaction-retries) as needed.
+
+The `main` method of the app performs the following steps which roughly correspond to method calls in the `BasicExample` class.
+
+| Step                                                                                                       | Method                                                                                          |
+|------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------|
+| 1. Insert account data using a `Map` that corresponds to the input to `INSERT` on the backend              | `BasicExampleDAO.updateAccounts(Map balance)`                                                   |
+| 2. Transfer money from one account to another, printing out account balances before and after the transfer | `BasicExampleDAO.transferFunds(UUID from, UUID to, BigDecimal amount)`                                   |
+| 3. Insert random account data using JDBC's bulk insertion support                                          | `BasicExampleDAO.bulkInsertRandomAccountData()`                                                 |
+| 4. Print out some account data                                                                             | `BasicExampleDAO.readAccounts(int limit)`                                                       |
+
+It does all of the above using the practices we recommend for using JDBC with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
+
+## Step 3. Initialize the database
+
+To initialize the example database, pass the `dbinit.sql` file to the [`cockroach sql`](cockroach-sql.html) command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach sql --url '<connection-string>' -f app/src/main/resources/dbinit.sql
+~~~
+
+Where `<connection-string>` is the connection string to the running cluster.
+
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{{site.data.alerts.callout_success}}
+Use the connection string you obtained earlier from the CockroachCloud Console.
+{{site.data.alerts.end}}
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="local">
+
+{{site.data.alerts.callout_success}}
+Use the connection string you obtained earlier from the `cockroach demo` welcome text.
+{{site.data.alerts.end}}
+
+</div>
+
+The SQL statements in the initialization file should execute:
+
+~~~
+SET
+
+Time: 1ms
+
+SET
+
+Time: 2ms
+
+DROP DATABASE
+
+Time: 1ms
+
+CREATE DATABASE
+
+Time: 2ms
+
+SET
+
+Time: 10ms
+
+CREATE TABLE
+
+Time: 4ms
+~~~
+
+## Step 4. Run the code
+
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+### Update the connection parameters
 
 In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
 
@@ -85,21 +209,18 @@ In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` 
 ~~~ java
 ds.setServerNames(new String[]{"{globalhost}"});
 ds.setDatabaseName("{cluster_name}.bank");
-ds.setUser("{user}");
+ds.setUser("{username}");
 ds.setPassword("{password}");
-ds.setSslMode("verify-full");
-ds.setSslRootCert("{path to the CA certificate}")
+ds.setSslRootCert(System.getenv("{path to the CA certificate}"));
 ~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
-
-</section>
 
 {{site.data.alerts.callout_success}}
 For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
 {{site.data.alerts.end}}
 
-### Run the code
+</section>
 
 Compile and run the code:
 
@@ -108,84 +229,78 @@ Compile and run the code:
 ./gradlew run
 ~~~
 
-The contents of `BasicExample.java`:
+<section class="filter-content" markdown="1" data-scope="local">
 
-{% include_cached copy-clipboard.html %}
-~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
+The app will prompt you for the password to the demo cluster:
+
 ~~~
+> Task :app:run
+Enter the demo password:
+<=========----> 75% EXECUTING [22s]
+~~~
+
+Enter the password.
+
+</section>
 
 The output will look like the following:
 
 ~~~
-BasicExampleDAO.createAccounts:
-    'CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance DECIMAL(12,2), CONSTRAINT balance_gt_0 CHECK (balance >= 0))'
+com.cockroachlabs.BasicExampleDAO.updateAccounts:
+    'INSERT INTO accounts (id, balance) VALUES ('b5679853-b968-4206-91ec-68945fa3e716', 250)'
 
-BasicExampleDAO.updateAccounts:
-    'INSERT INTO accounts (id, balance) VALUES (1, 1000)'
-
-BasicExampleDAO.updateAccounts:
-    'INSERT INTO accounts (id, balance) VALUES (2, 250)'
+com.cockroachlabs.BasicExampleDAO.updateAccounts:
+    'INSERT INTO accounts (id, balance) VALUES ('d1c41041-6589-4b06-8d7c-b9d6d901727e', 1000)'
 BasicExampleDAO.updateAccounts:
     => 2 total updated accounts
 main:
-    => Account balances at time '11:54:06.904':
+    => Account balances at time '15:09:08.902':
     ID 1 => $1000
     ID 2 => $250
 
+com.cockroachlabs.BasicExampleDAO.transferFunds:
+    'UPSERT INTO accounts (id, balance) VALUES('d99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752', ((SELECT balance FROM accounts WHERE id = 'd99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752') - 100)),('6f0c1f94-509a-47e3-a9ab-6a9e3965945c', ((SELECT balance FROM accounts WHERE id = '6f0c1f94-509a-47e3-a9ab-6a9e3965945c') + 100))'
 BasicExampleDAO.transferFunds:
-    'UPSERT INTO accounts (id, balance) VALUES(1, ((SELECT balance FROM accounts WHERE id = 1) - 100)),(2, ((SELECT balance FROM accounts WHERE id = 2) + 100))'
-BasicExampleDAO.transferFunds:
-    => $100 transferred between accounts 1 and 2, 2 rows updated
+    => $100 transferred between accounts d99e6bb5-ecd1-48e5-b6b6-47fc9a4bc752 and 6f0c1f94-509a-47e3-a9ab-6a9e3965945c, 2 rows updated
 main:
-    => Account balances at time '11:54:06.985':
-    ID 1 => $900
-    ID 2 => $350
+    => Account balances at time '15:09:09.142':
+    ID 1 => $1000
+    ID 2 => $250
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (354685257, '158423397'::numeric)'
+    'INSERT INTO accounts (id, balance) VALUES ('b70a0c48-fdf4-42ea-b07a-2fea83d77c7d', '287108674'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (206179866, '950590234'::numeric)'
+    'INSERT INTO accounts (id, balance) VALUES ('75a5f894-532a-464d-b37e-a4b9ec1c1db6', '189904311'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (708995411, '892928833'::numeric)'
+    'INSERT INTO accounts (id, balance) VALUES ('0803968f-ba07-4ece-82d5-24d4da9fdee9', '832474731'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
-    'INSERT INTO accounts (id, balance) VALUES (500817884, '189050420'::numeric)'
+    'INSERT INTO accounts (id, balance) VALUES ('082e634d-4930-41eb-9839-298632a5530a', '665918272'::numeric)'
     => 128 row(s) updated in this batch
 
 BasicExampleDAO.bulkInsertRandomAccountData:
     => finished, 512 total rows inserted
 
-BasicExampleDAO.readAccounts:
+com.cockroachlabs.BasicExampleDAO.readAccounts:
     'SELECT id, balance FROM accounts LIMIT 10'
-    id       =>          1
-    balance  =>        900
-    id       =>          2
-    balance  =>        350
-    id       =>     190756
-    balance  =>  966414958
-    id       =>    1002343
-    balance  =>  243354081
-    id       =>    1159751
-    balance  =>   59745201
-    id       =>    2193125
-    balance  =>  346719279
-    id       =>    2659707
-    balance  =>  770266587
-    id       =>    6819325
-    balance  =>  511618834
-    id       =>    9985390
-    balance  =>  905049643
-    id       =>   12256472
-    balance  =>  913034434
+    balance  =>  424934060
+    balance  =>   62220740
+    balance  =>  454671673
+    balance  =>  556061618
+    balance  =>  450164589
+    balance  =>  996867752
+    balance  =>   55869978
+    balance  =>  747446662
+    balance  =>  175832969
+    balance  =>  181799597
 
-BasicExampleDAO.tearDown:
-    'DROP TABLE accounts'
+BUILD SUCCESSFUL in 8s
+3 actionable tasks: 3 executed
 ~~~
 
 ## Recommended Practices
