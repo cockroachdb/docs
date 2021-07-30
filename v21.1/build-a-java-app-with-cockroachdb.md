@@ -123,7 +123,7 @@ The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDA
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-pgx/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
 
 The sample app uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
