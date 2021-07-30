@@ -51,10 +51,6 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ## Beta release
 
-### Why is CockroachCloud Serverless in beta?
-
-CockroachCloud Serverless is in beta while we work on additional capabilities and features such as multi-region clusters.
-
 ### Where can I submit feedback or bugs on the beta?
 
 You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
