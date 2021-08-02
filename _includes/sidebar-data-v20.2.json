@@ -2664,12 +2664,6 @@
                 "urls": [
                   "/${VERSION}/load-based-splitting.html"
                 ]
-              },
-              {
-                "title": "Range Merges",
-                "urls": [
-                  "/${VERSION}/range-merges.html"
-                ]
               }
             ]
           },
