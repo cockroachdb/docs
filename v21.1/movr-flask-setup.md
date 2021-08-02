@@ -20,7 +20,7 @@ This page walks you through setting up a virtual environment for developing and 
 
 ## Set up a demo multi-region CockroachDB cluster
 
-For debugging and development purposes, you can use the [`cockroach demo`](cockroach-demo.html) command. This command starts up an insecure, nine-node demo cluster.
+For debugging and development purposes, you can use the [`cockroach demo`](cockroach-demo.html) command. This command starts up a secure, nine-node demo cluster.
 
 1. To set up the demo multi-region cluster, run `cockroach demo`, with the `--nodes` and `--demo-locality` flags. The localities specified below assume GCP region names.
 
@@ -40,7 +40,7 @@ For debugging and development purposes, you can use the [`cockroach demo`](cockr
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ cockroach sql --insecure --url='postgres://demo:<demo_password>@127.0.0.1:26257?sslmode=require' -f dbinit.sql
+    $ cockroach sql --url='postgres://demo:<demo_password>@127.0.0.1:26257?sslmode=require' -f dbinit.sql
     ~~~
 
 
