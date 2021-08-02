@@ -1017,6 +1017,29 @@
                 "urls": [
                   "/${VERSION}/cluster-api.html"
                 ]
+              },
+              {
+                "title": "Third-Party Monitoring Integrations",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/third-party-monitoring-tools.html"
+                    ]
+                  },
+                  {
+                    "title": "Datadog",
+                    "urls": [
+                      "/${VERSION}/datadog.html"
+                    ]                    
+                  },
+                  {
+                    "title": "Kibana",
+                    "urls": [
+                      "/${VERSION}/kibana.html"
+                    ]                    
+                  }
+                ]
               }
             ]
           },
