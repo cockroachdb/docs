@@ -631,3 +631,19 @@ SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
+
+### The optimizer won't plan locality optimized searches using unique indexes on virtual computed columns
+
+CockroachDB will not plan [locality optimized searches](multiregion-overview.html) using unique indexes on [virtual computed columns](computed-columns.html).
+
+A workaround is to use [stored computed columns](computed-columns.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/68129)
+
+### Unique indexes on virtual computed columns can't be used with multi-region clusters
+
+CockroachDB performs a full-table scan on all inserts when using [partitioned unique indexes](add-constraint.html) on [virtual computed columns](computed-columns.html).
+
+A workaround is to use [stored computed columns](computed-columns.html).
+
+[Tracking GitHub Issues](https://github.com/cockroachdb/cockroach/issues/68132)
