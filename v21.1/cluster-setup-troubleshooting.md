@@ -214,7 +214,7 @@ To identify a network partition:
 1.  Access the [Network Latency](ui-network-latency-page.html) page of the DB Console.
 2.  In the **Latencies** table, check for nodes with [no connections](ui-network-latency-page.html#no-connections). This indicates that a node cannot communicate with another node, and might indicate a network partition.
 
-## CockroachDB authentication issues
+## Authentication issues
 
 ### Missing certificate
 
@@ -255,6 +255,23 @@ Failed running "sql"
 ~~~
 
 **Solution:** To successfully connect to the cluster, you must first either generate a client certificate or create a password for the user.
+
+### Cannot create new connections to cluster for up to 40 seconds after a node dies
+
+When a node [dies abruptly and/or loses its network connection to the cluster](#node-liveness-issues), the following behavior can occur:
+
+1. For a period of up to 40 seconds, clients trying to connect with [username and password authentication](authentication.html#client-authentication) cannot create new connections to any of the remaining nodes in the cluster.
+1. Applications start timing out when trying to connect to the cluster during this window.
+
+The reason this happens is as follows:
+
+- Username and password information is stored in a system range.
+- Since all system ranges are located [near the beginning of the keyspace](architecture/distribution-layer.html#monolithic-sorted-map-structure), the system range containing the username/password info can sometimes be colocated with another system range that is used to determine [node liveness](#node-liveness-issues).
+- If the username/password info and the node liveness record are stored together as described above, it can take extra time for the lease on this range to be transferred to another node. Normally, lease transfers take about 10 seconds, but in this case it may require multiple rounds of consensus to determine that the node in question is actually dead (the node liveness record check may be retried several times before failing).
+
+For more information about how lease transfers work when a node dies, see [How leases are transferred from a dead node](architecture/replication-layer.html#how-leases-are-transferred-from-a-dead-node).
+
+The solution is to add connection retry logic to your application.
 
 ## Clock sync issues
 
