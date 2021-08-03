@@ -66,6 +66,10 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
     {{site.data.alerts.callout_info}}
     By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should [substitute values](operate-cockroachdb-kubernetes.html#allocate-resources) that are appropriate for your machines and workload.
     {{site.data.alerts.end}}
+    
+    {{site.data.alerts.callout_info}}
+    If you configured a namespace for the operator, you have to add the namespace in the `CrdbCluster` too. The file example.yaml assumes you are deploying to namespace default.
+    {{site.data.alerts.end}}
 
 1. Apply `example.yaml`:
 
