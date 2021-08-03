@@ -646,4 +646,4 @@ CockroachDB performs a full-table scan on all inserts when using [partitioned un
 
 A workaround is to use [stored computed columns](computed-columns.html).
 
-[GitHub Tracking Issues](https://github.com/cockroachdb/cockroach/issues/68132)
+[Tracking GitHub Issues](https://github.com/cockroachdb/cockroach/issues/68132)
