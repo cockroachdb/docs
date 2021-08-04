@@ -74,10 +74,10 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. Confirm that the Operator is running:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ oc get pods
-    ~~~
+	  {% include_cached copy-clipboard.html %}
+	  ~~~ shell
+	  $ oc get pods
+	  ~~~
 
 	~~~
 	NAME                                  READY   STATUS    RESTARTS   AGE
@@ -114,6 +114,10 @@ This article assumes you have already installed the OpenShift Container Platform
 	crdb-tls-example-1                    1/1     Running   0          103s
 	crdb-tls-example-2                    1/1     Running   0          89s
 	~~~
+
+{{site.data.alerts.callout_info}}
+Due to a [known issue](https://github.com/cockroachdb/cockroach-operator/issues/575), in rare cases the Operator can crash while installing CockroachDB. This causes the CockroachDB pods to fail to start, while the version checker [job](https://kubernetes.io/docs/concepts/workloads/controllers/job/) continues to run. If this happens, run `oc get jobs` to find the names of any running `cockroachdb-vcheck` jobs, and delete these jobs with `oc delete job {cockroachdb-vcheck-job}`. Then wait for the version checker job to restart and succeed.
+{{site.data.alerts.end}}
 
 ## Step 4. Create a secure client pod
 
