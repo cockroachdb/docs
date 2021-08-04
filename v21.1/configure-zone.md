@@ -46,7 +46,7 @@ Adding replication zones for secondary indexes and partitions is an [enterprise-
 
 ## Required privileges
 
-If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be an [`admin`](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have the [CREATE](grant.html#supported-privileges) privilege on the target database or table.
+If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be an [`admin`](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have either the [`CREATE`](grant.html#supported-privileges) or the [`ZONECONFIG`](grant.html#supported-privileges) privilege on the target database or table.
 
 ## Parameters
 
