@@ -2748,15 +2748,15 @@
                 ]
               },
               {
-                "title": "Statements Page",
-                "urls": [
-                  "/${VERSION}/ui-statements-page.html"
-                ]
-              },
-              {
                 "title": "Transactions Page",
                 "urls": [
                   "/${VERSION}/ui-transactions-page.html"
+                ]
+              },
+              {
+                "title": "Statements Page",
+                "urls": [
+                  "/${VERSION}/ui-statements-page.html"
                 ]
               },
               {

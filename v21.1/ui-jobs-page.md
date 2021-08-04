@@ -69,7 +69,7 @@ A job that is currently running will be displayed with its percent completion an
 
 Click any description on the [jobs list](#jobs-list) to see the full SQL statement that created the job.
 
-The job ID, creation time, users, and status are also shown.
+The job ID, creation time, users, status, and error messages (if any) are also shown.
 
 <img src="{{ 'images/v21.1/ui_jobs_page_details.png' | relative_url }}" alt="DB Console Jobs Page" style="border:1px solid #eee;max-width:100%" />
 
