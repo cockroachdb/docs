@@ -74,15 +74,15 @@ This article assumes you have already installed the OpenShift Container Platform
 
 1. Confirm that the Operator is running:
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ oc get pods
-    ~~~
+	  {% include_cached copy-clipboard.html %}
+	  ~~~ shell
+	  $ oc get pods
+	  ~~~
 
-		~~~
-		NAME                                  READY   STATUS    RESTARTS   AGE
-		cockroach-operator-65c4f6df45-h5r5n   1/1     Running   0          51s
-		~~~
+	~~~
+	NAME                                  READY   STATUS    RESTARTS   AGE
+	cockroach-operator-65c4f6df45-h5r5n   1/1     Running   0          51s
+	~~~
 
 ## Step 3. Start CockroachDB
 
