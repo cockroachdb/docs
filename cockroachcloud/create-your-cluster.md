@@ -71,12 +71,12 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
     Factor | Description
     ----------|------------
-    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second 4 vCPUs can handle 4000 transactions per second.
-    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend at least 4 to 8 vCPUs per node.
+    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second and 4 vCPUs can handle 4000 transactions per second.
+    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs per node**.
 
 1. Select the **Storage**.
 
-    When selecting your storage capacity, consider the following factors:
+    You can choose up to 150GiB per vCPU. When selecting your storage capacity, consider the following factors:
     
     Factor | Description
     ----------|------------
@@ -85,7 +85,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
     Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
     Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
-For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
+    For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
 
 To change the hardware configuration after the cluster is created, [contact Support](https://support.cockroachlabs.com).
 
@@ -148,11 +148,11 @@ At 40% Compression, we can expect a savings of 200 GB. Then the amount of data w
 
 Let's consider a storage buffer of 50% to account for overhead and data growth. Then net raw data amount to be stored is 450 GB.
 
-With the default replication factor of 3, the total amount of data stored is (3 * 450GB) = 1350 GB.
+With the default replication factor of 3, the total amount of data stored is (3 * 450 GB) = 1350 GB.
 
-To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). We can see that the best option to store 1350 GB of data is 9 `Option 2` nodes.
+To determine the number of nodes and the hardware configuration to store 1350 GB of data, refer to the table in [Step 2](#step-2-select-the-cloud-provider). One way to reach a 1350 GB storage capacity is 3 nodes with 480 GiB per node, which gives us a capacity of (3*480 GiB) = 1440 GiB.
 
-Let's verify if 9 `Option 2` nodes meet our performance requirements of 2000 TPS. 9 `Option 2` nodes have (9*4) = 36 vCPUs. Since each vCPU can handle around 1000 TPS, 9 `Option 2` nodes can meet our performance requirements.
+Let's see how many vCPUs we need to meet our performance requirement of 2000 TPS. We know that 2 vCPU nodes are not recommended for production, so the first compute power we should check is 3 nodes with 4 vCPUs per node. We can calculate that this configuration would have (3*4 vCPUs) = 12 vCPUs. Since each vCPU can handle around 1000 TPS, 4 vCPU nodes can meet our performance requirements.
 
 Thus our final configuration is as follows:
 
@@ -160,8 +160,9 @@ Component | Selection
 ----------|----------
 Cloud provider | GCP
 Region | us-east1
-Number of nodes | 9
-Size | `Option 2`
+Number of nodes | 3
+Compute | 4 vCPU
+Storage | 480 GiB
 
 ## What's next
 
