@@ -63,19 +63,27 @@ Currently, you can add a maximum of 150 nodes to your cluster. For larger config
 
 ## Step 5. Select the hardware per node
 
-The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster. To select the hardware configuration, consider the following factors:
+The choice of hardware per node determines the [cost](#step-2-select-the-cloud-provider), throughput, and performance characteristics of your cluster.
 
-Factor | Description
-----------|------------
-Capacity | Total raw data size you expect to store without replication.
-Replication | The default replication factor for a CockroachCloud cluster is 3.
-Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
-Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
-Transactions per second | Each vCPU can handle around 1000 transactions per second. Hence an `Option 1` node (2vCPUs) can handle 2000 transactions per second and an `Option 2` node (4vCPUs) can handle 4000 transactions per second. If you need more than 4000 transactions per second per node, [contact us](https://support.cockroachlabs.com/hc/en-us/requests/new).
+1. Select the **Compute**.
 
-{{site.data.alerts.callout_success}}
-When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend at least 4 to 8 vCPUs per node.
-{{site.data.alerts.end}}
+    When selecting your compute power, consider the following factors:
+
+    Factor | Description
+    ----------|------------
+    Transactions per second | Each vCPU can handle around 1000 transactions per second. For example, 2 vCPUs can handle 2000 transactions per second 4 vCPUs can handle 4000 transactions per second.
+    Scaling | When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend at least 4 to 8 vCPUs per node.
+
+1. Select the **Storage**.
+
+    When selecting your storage capacity, consider the following factors:
+    
+    Factor | Description
+    ----------|------------
+    Capacity | Total raw data size you expect to store without replication.
+    Replication | The default replication factor for a CockroachCloud cluster is 3.
+    Buffer | Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.
+    Compression | The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.
 
 For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
 
