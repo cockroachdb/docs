@@ -77,8 +77,6 @@ Nodes are considered dead once they have not [updated their liveness record](clu
 
 The following details are also shown.
 
-<img src="{{ 'images/v21.1/ui-node-list.png' | relative_url }}" alt="DB Console node list" style="border:1px solid #eee;max-width:100%" />
-
 Column | Description
 -------|------------
 Node Count | Number of nodes in the locality.
@@ -87,7 +85,7 @@ Uptime | Amount of time the node has been running.
 Replicas | Number of replicas on the node or in the locality.
 Capacity Usage | Percentage of usable disk space occupied by CockroachDB data on the node or in the locality. See [Capacity metrics](#capacity-metrics).
 Memory Usage | Memory used by CockroachDB as a percentage of the total memory on the node or in the locality.
-CPUs | Number of vCPUs on the machine.
+vCPUs | Number of vCPUs on the machine.
 Version | Build tag of the CockroachDB version installed on the node.
 
 ### Decommissioned Nodes
