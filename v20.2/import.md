@@ -180,8 +180,6 @@ If initiated correctly, the statement returns when the import is finished or if 
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
   <button class="filter-button" data-scope="azure">Azure Storage</button>
