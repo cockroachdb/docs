@@ -46,10 +46,10 @@ Adding replication zones for secondary indexes and partitions is an [enterprise-
 
 ## Required privileges
 
-If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be an [`admin`](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have the [CREATE](grant.html#supported-privileges) privilege on the target database or table.
+If the target is a [`system` range](#create-a-replication-zone-for-a-system-range), the [`system` database](show-databases.html#preloaded-databases), or a table in the `system` database, the user must be a member of the [`admin` role](authorization.html#create-and-manage-roles). For all other databases and tables, the user must have been granted either the [`CREATE`](grant.html#supported-privileges) or the [`ZONECONFIG`](grant.html#supported-privileges) privilege on the target database or table.
 
 {{site.data.alerts.callout_danger}}
-Required privileges for `CONFIGURE ZONE` statements in CockroachDB v20.1 may be backward-incompatible for users running scripted statements with restricted permissions in v19.1 and earlier.<br>To add the necessary permissions, use [`GRANT` &lt;privileges&gt;](grant.html) or [`GRANT` &lt;roles&gt;](grant-roles.html) as a user with an admin role. <br>For example, to grant a user the admin role, run `GRANT admin TO <user>`.<br>To grant the `CREATE` privilege on a database or table, run `GRANT CREATE ON [DATABASE | TABLE] <name> TO <user>`.
+Required privileges for `CONFIGURE ZONE` statements in CockroachDB v20.1 may be backward-incompatible for users running scripted statements with restricted permissions in v19.1 and earlier.<br>To add the necessary permissions, use [`GRANT` &lt;privileges&gt;](grant.html) or [`GRANT` &lt;roles&gt;](grant-roles.html) as a user with an `admin` role. <br>For example, to grant a user the `admin` role, run `GRANT admin TO <user>`.<br>To grant the `CREATE` privilege on a database or table, run `GRANT CREATE ON [DATABASE | TABLE] <name> TO <user>`.<br>To grant the `ZONECONFIG` privilege on a database or table, run `GRANT ZONECONFIG ON [DATABASE | TABLE] <name> TO <user>`.
 {{site.data.alerts.end}}
 
 ## Parameters
