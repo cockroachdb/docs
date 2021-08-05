@@ -100,10 +100,10 @@ All supported sink types use the following common parameters.
 
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `filter`        | Minimum severity level at which logs enter the channel. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                                     |
-| `format`        | Log message format to use. Accepts one of the valid [log formats](log-formats.html). For details, see [file logging format](#file-logging-format) and [network logging format](#network-logging-format).                                                                                                                                                                                                                      |
+| `filter`        | Minimum severity level at which logs enter the channel. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                          |
+| `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats](log-formats.html). For details, see [file logging format](#file-logging-format) and [network logging format](#network-logging-format).                                                                                                                                                                                           |
 | `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or [over a network](#output-to-network). For details, see [Redact logs](#redact-logs).                                                                                                                                           |
-| `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats](log-formats.html).              |
+| `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats](log-formats.html).             |
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
 | `auditable`     | If `true`, enables `exit-on-error` on the sink. Also disables `buffered-writes` if the sink is under `file-groups`. This guarantees [non-repudiability](https://en.wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically enabled for [security-related logs](logging-use-cases.html#security-and-audit-monitoring). |
 
@@ -206,6 +206,10 @@ sinks:
 ~~~
 
 The `stderr` configuration accepts the following parameters along with the [common sink parameters](#common-sink-parameters).
+
+{{site.data.alerts.callout_info}}
+The `format` parameter for `stderr` is set to [`crdb-v2-tty`](log-formats.html#format-crdb-v2-tty) and cannot be changed.      
+{{site.data.alerts.end}}
 
 | Parameter  | Description                                                       |
 |------------|-------------------------------------------------------------------|
@@ -421,7 +425,6 @@ sinks:
   stderr:
     channels: all
     filter: NONE
-    format: crdb-v2-tty
     redact: false
     redactable: true
     exit-on-error: true
