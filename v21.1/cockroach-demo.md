@@ -407,7 +407,7 @@ $ cockroach demo ycsb
 $ cockroach demo --with-load
 ~~~
 
-This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [DB Console](ui-overview-dashboard.html#sql-queries).
+This command starts a demo cluster with the `movr` database preloaded and then inserts rows into each table in the `movr` database. You can monitor the workload progress on the [DB Console](ui-overview-dashboard.html#sql-statements).
 
 When running a multi-node demo cluster, load is balanced across all nodes.
 
