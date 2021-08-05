@@ -214,6 +214,10 @@ To cancel an enterprise changefeed:
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
+### Configuring all changefeeds
+
+{% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
+
 ## Monitor a changefeed
 
 {{site.data.alerts.callout_info}}

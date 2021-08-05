@@ -326,6 +326,10 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
+#### Configuring all changefeeds
+
+{% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
+
 ### Start a new changefeed where another ended
 
 Find the [high-water timestamp](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed) for the ended changefeed:
