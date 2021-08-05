@@ -8,7 +8,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 
 ## Considerations
 
-- `IMPORT INTO` works for existing tables. To import data into new tables, read the following [example](#import-into-a-new-table-from-a-csv-file).
+- `IMPORT INTO` works for existing tables. To import data into new tables, read the following [Import into a new table from a CSV file](#import-into-a-new-table-from-a-csv-file) example.
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html) or during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
@@ -175,10 +175,6 @@ The following provide connection examples to cloud storage providers. For more i
 ### Import into a new table from a CSV file
 
 To import into a new table, use [`CREATE TABLE`](create-table.html) followed by `IMPORT INTO`.
-
-{{site.data.alerts.callout_info}}
-Note that as of v21.2 [`IMPORT TABLE`](import.html) will be deprecated; therefore, we recommend using the following example to import data into a new table.
-{{site.data.alerts.end}}
 
 First, create the new table with the necessary columns and data types:
 

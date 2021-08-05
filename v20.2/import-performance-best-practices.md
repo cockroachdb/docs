@@ -65,8 +65,6 @@ However, `MYSQLDUMP` and `PGDUMP` run a single thread to parse their data, and t
 - [Provide the table schema in-line](#provide-the-table-schema-in-line)
 - [Import the schema separately from the data](#import-the-schema-separately-from-the-data)
 
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
 ### Provide the table schema in-line
 
 When importing bundled data formats, it is often faster to provide schema for the imported table in-line. For example, instead of importing both the table schema and data from the same file:

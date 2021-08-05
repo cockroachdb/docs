@@ -124,7 +124,7 @@ Before using `IMPORT`, you should have:
 - The schema of the table you want to import.
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
 
-Refer to [Considerations](#considerations) when running an `IMPORT` for further information.
+For more information on details to consider when running an IMPORT, see [Considerations](#considerations).
 
 ### Import targets
 

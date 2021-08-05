@@ -16,9 +16,6 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 ## Considerations
 
 - `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
 - `IMPORT` is a blocking statement and cannot be used within a [transaction](transactions.html).
 - `IMPORT` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 - <span class="version-tag">New in v20.2:</span> `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
@@ -119,13 +116,11 @@ Before using `IMPORT`, you should have:
 - The schema of the table you want to import.
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
 
-Refer to [Considerations](#considerations) when running an `IMPORT` for further information.
+For more information on details to consider when running an IMPORT, see [Considerations](#considerations).
 
 ### Import targets
 
-{% include {{ page.version.version }}/import-table-deprecate.md %}
-
-To use `IMPORT` in v21.1 and prior, imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
+Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
 
 You can specify the target database in the table name in the `IMPORT` statement. If it's not specified there, the active database in the SQL session is used.
 
@@ -136,8 +131,6 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 - Specify the table's columns explicitly from the [SQL client](cockroach-sql.html). For an example, see [Import a table from a CSV file](#import-a-table-from-a-csv-file) below.
 
 - Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
-
-- **Recommended**: Since `IMPORT TABLE` will be deprecated from v21.2, use [`CREATE TABLE`](create-table.html) followed by [`IMPORT INTO`](import-into.html). For an example, see [Import into a new table from a CSV file](import-into.html#import-into-a-new-table-from-a-csv-file).
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
