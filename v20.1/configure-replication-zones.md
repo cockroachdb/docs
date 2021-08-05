@@ -24,7 +24,7 @@ For each of the above objects you can control:
 This page explains how replication zones work and how to use the [`CONFIGURE ZONE`](configure-zone.html) statement to manage them.
 
 {{site.data.alerts.callout_info}}
-To configure replication zones, a user must be a member of the [`admin` role](authorization.html#admin-role) or have been granted [`CREATE`](authorization.html#supported-privileges) or [`ZONECONFIG`](authorization.html#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
+To configure replication zones, a user must be a member of the [`admin` role](authorization.html#admin-role) or have been granted [`CREATE`](grant.html#supported-privileges) or [`ZONECONFIG`](grant.html#supported-privileges) privileges. To configure [`system` objects](#for-system-data), the user must be a member of the `admin` role.
 {{site.data.alerts.end}}
 
 ## Overview
