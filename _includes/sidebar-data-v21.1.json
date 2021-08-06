@@ -699,6 +699,12 @@
                 ]
               },
               {
+                "title": "Data Domiciling",
+                "urls": [
+                  "/${VERSION}/data-domiciling.html"
+                ]
+              },
+              {
                 "title": "Topology Patterns",
                 "items": [
                   {
