@@ -13,21 +13,16 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
-{{site.data.alerts.callout_success}}
-`IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-{{site.data.alerts.end}}
+## Considerations
 
-{{site.data.alerts.callout_info}}
-`IMPORT` is a blocking statement. To run an import job asynchronously, use the `DETACHED` option. See the [options](#import-options) below.
-{{site.data.alerts.end}}
+- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
 
-{{site.data.alerts.callout_danger}}
-`IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/import-table-deprecate.md %}
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
-{{site.data.alerts.end}}
+- `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
+- `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
+- `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
+- {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
 
 ## Required privileges
 
@@ -114,7 +109,7 @@ Key                 | <div style="width:130px">Context</div> | Value            
 `data_as_json_records` | `AVRO DATA`    | Use when [importing a JSON file containing Avro records](migrate-from-avro.html#import-binary-or-json-records). The schema is not included in the file, so you need to specify the schema with either the `schema` or `schema_uri` option.
 `schema`               | `AVRO DATA`    | The schema of the Avro records included in the binary or JSON file. This is not needed for Avro OCF.
 `schema_uri`           | `AVRO DATA`    | The URI of the file containing the schema of the Avro records include in the binary or JSON file. This is not needed for Avro OCF.
-`DETACHED`             | N/A            | <span class="version-tag">New in v21.1:</span> When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
+<a name="options-detached"></a>`DETACHED`             | N/A            | <span class="version-tag">New in v21.1:</span> When an import runs in `DETACHED` mode, it will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](import.html#run-an-import-within-a-transaction) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run an import within a [transaction](transactions.html), use the `DETACHED` option.
 
 For examples showing how to use these options, see the [Examples](#examples) section below.
 
@@ -129,13 +124,13 @@ Before using `IMPORT`, you should have:
 - The schema of the table you want to import.
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
 
-{{site.data.alerts.callout_info}}
-`IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead. </span>
-{{site.data.alerts.end}}
+For more information on details to consider when running an IMPORT, see [Considerations](#considerations).
 
 ### Import targets
 
-Imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
+{% include {{ page.version.version }}/import-table-deprecate.md %}
+
+To use `IMPORT` in v21.1 and prior, imported tables must not exist and must be created in the `IMPORT` statement. If the table you want to import already exists, you must drop it with [`DROP TABLE`](drop-table.html) or use [`IMPORT INTO`](import-into.html).
 
 You can specify the target database in the table name in the `IMPORT` statement. If it's not specified there, the active database in the SQL session is used.
 
@@ -146,6 +141,8 @@ Your `IMPORT` statement must reference a `CREATE TABLE` statement representing t
 - Specify the table's columns explicitly from the [SQL client](cockroach-sql.html). For an example, see [Import a table from a CSV file](#import-a-table-from-a-csv-file) below.
 
 - Load a file that already contains a `CREATE TABLE` statement. For an example, see [Import a Postgres database dump](#import-a-postgres-database-dump) below.
+
+- **Recommended**: Since `IMPORT TABLE` will be deprecated from v21.2, use [`CREATE TABLE`](create-table.html) followed by [`IMPORT INTO`](import-into.html). For an example, see [Import into a new table from a CSV file](import-into.html#import-into-a-new-table-from-a-csv-file).
 
 We also recommend [specifying all secondary indexes you want to use in the `CREATE TABLE` statement](create-table.html#create-a-table-with-secondary-and-inverted-indexes). It is possible to [add secondary indexes later](create-index.html), but it is significantly faster to specify them during import.
 
@@ -194,6 +191,8 @@ If initiated correctly, the statement returns when the import is finished or if 
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+{% include {{ page.version.version }}/import-table-deprecate.md %}
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
