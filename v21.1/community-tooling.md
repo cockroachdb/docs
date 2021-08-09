@@ -34,6 +34,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 ## Schema migration tools
 
 - [SchemaHero](https://schemahero.io/databases/cockroachdb/connecting/)
+- [DbUp](https://github.com/DbUp/DbUp/issues/464#issuecomment-895503849)
 
 ## Connection pooling tools
 
