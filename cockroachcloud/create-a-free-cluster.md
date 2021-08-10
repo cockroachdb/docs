@@ -5,11 +5,11 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="create-a-free-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
     <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page walks you through the process of creating a cluster using CockroachCloud Free (beta). Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -25,7 +25,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 2. Select Free Plan
 
-1. On the **Create your cluster** page, select the **CockroachCloud Free**.
+1. On the **Create your cluster** page, select the **{{ site.data.products.serverless-plan }}**.
 
     {{site.data.alerts.callout_info}}
     This cluster will be free forever.
@@ -46,9 +46,9 @@ Your cluster will be created in approximately 20-30 seconds.
 
 ## Usage examples
 
-CockroachCloud Free (beta) can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
+{{ site.data.products.serverless }} can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
 
-For examples of applications that use CockroachCloud Free (beta), check out the following [Hack the North](https://hackthenorth.com/) projects:
+For examples of applications that use {{ site.data.products.serverless }}, check out the following [Hack the North](https://hackthenorth.com/) projects:
 
 - [flock](https://devpost.com/software/flock-figure-out-what-film-to-watch-with-friends)
 - [mntr.tech](https://devpost.com/software/mntr-tech)

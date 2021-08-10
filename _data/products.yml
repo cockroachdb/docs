@@ -1,0 +1,5 @@
+serverless: CockroachCloud Free (beta)
+serverless-plan: CockroachCloud Free
+dedicated: CockroachCloud
+core: CockroachDB Core
+enterprise: CockroachDB Enterprise

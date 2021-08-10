@@ -5,7 +5,7 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="quickstart.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
+    <a href="quickstart.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
 </div>
 

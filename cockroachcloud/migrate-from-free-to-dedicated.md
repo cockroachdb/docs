@@ -4,10 +4,10 @@ summary: Learn how to migrate data from a CockroachCloud Free (beta) cluster int
 toc: true
 ---
 
-This page has instructions for migrating data from a CockroachCloud Free (beta) cluster to a paid CockroachCloud cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
+This page has instructions for migrating data from a {{ site.data.products.serverless }} cluster to a paid CockroachCloud cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
 
-- You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per CockroachCloud Free (beta) cluster.
-- You want to use any of the capabilities that are not yet available in CockroachCloud Free (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
+- You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per {{ site.data.products.serverless }} cluster.
+- You want to use any of the capabilities that are not yet available in {{ site.data.products.serverless }} clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
 
 The steps below use sample data from the [`tpcc` workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads).
 
@@ -15,7 +15,7 @@ The steps below use sample data from the [`tpcc` workload](../{{site.versions["s
 
 These instructions assume you already have the following:
 
-- A [CockroachCloud Free (beta) cluster](quickstart.html) from which you want to migrate data
+- A [{{ site.data.products.serverless }} cluster](quickstart.html) from which you want to migrate data
 - A [paid CockroachCloud cluster](quickstart-trial-cluster.html)
 
     Your first paid CockroachCloud cluster is free for a 30-day trial.
@@ -24,7 +24,7 @@ These instructions assume you already have the following:
 
 ## Step 1. Export data to a local CSV file
 
-In CockroachCloud Free (beta) clusters, all external service integrations are disabled. This means that if you want to export data, you need to use [`cockroach sql --execute`](../{{site.versions["stable"]}}/cockroach-sql.html#general) to query the data you want to export, and then pipe the data to a local file. For example:
+In {{ site.data.products.serverless }} clusters, all external service integrations are disabled. This means that if you want to export data, you need to use [`cockroach sql --execute`](../{{site.versions["stable"]}}/cockroach-sql.html#general) to query the data you want to export, and then pipe the data to a local file. For example:
 
 {% include copy-clipboard.html %}
 ~~~ shell
@@ -87,7 +87,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 1. Write an [`IMPORT`](../{{site.versions["stable"]}}/import.html) statement that matches the schema of the table data you're importing.
 
     {{site.data.alerts.callout_success}}
-    You can use the [`SHOW CREATE TABLE`](../{{site.versions["stable"]}}/show-create.html#show-the-create-table-statement-for-a-table) statement in the CockroachCloud Free (beta) cluster to view the `CREATE` statement for the table you're migrating.
+    You can use the [`SHOW CREATE TABLE`](../{{site.versions["stable"]}}/show-create.html#show-the-create-table-statement-for-a-table) statement in the {{ site.data.products.serverless }} cluster to view the `CREATE` statement for the table you're migrating.
     {{site.data.alerts.end}}
 
     {% include v20.2/misc/csv-import-callout.md %}

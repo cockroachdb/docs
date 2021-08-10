@@ -86,7 +86,7 @@ cockroachdb://<username>:<password>@<globalhost>:26257/<cluster-name>.bank?sslmo
 Where you update the connection string as follows:
 
 - Replace `<username>` and `<password>` with a SQL username and password.
-- Replace `<globalhost>` with the name of the CockroachCloud Free host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- Replace `<globalhost>` with the name of the {{ site.data.products.serverless-plan }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - Replace `<cluster-name>` with the name of your cluster.
 - Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
 

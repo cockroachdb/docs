@@ -17,18 +17,18 @@ The examples below include details on the storage options available with each of
 ## Examples
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="ccfree">CockroachCloud Free (beta) </button>
+  <button class="filter-button" data-scope="ccfree">{{ site.data.products.serverless }} </button>
   <button class="filter-button" data-scope="ccded">CockroachCloud</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="ccfree">
 
-For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
+For guidance on connecting to your CockroachCloud cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-free-cluster.html).
 
-In CockroachCloud Free (beta) clusters, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html), a per-user bulk file storage, is the **only available storage option** for `BACKUP`, `RESTORE`, and `IMPORT` operations.
+In {{ site.data.products.serverless }} clusters, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html), a per-user bulk file storage, is the **only available storage option** for `BACKUP`, `RESTORE`, and `IMPORT` operations.
 
 {{site.data.alerts.callout_info}}
-`userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free (beta) [**after upgrading to v21.1.**](upgrade-to-v21.1.html)
+`userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on {{ site.data.products.serverless }} [**after upgrading to v21.1.**](upgrade-to-v21.1.html)
 {{site.data.alerts.end}}
 
 For information on `userfile` commands, visit the following pages:
@@ -42,19 +42,19 @@ For information on `userfile` commands, visit the following pages:
 
 {% include cockroachcloud/userfile-examples/backup-userfile.md %}
 
-### Import data into your CockroachCloud Free (beta) cluster
+### Import data into your {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/userfile-examples/import-into-userfile.md %}
 
-### Stream data out of your CockroachCloud Free (beta) cluster
+### Stream data out of your {{ site.data.products.serverless }} cluster
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on CockroachCloud Free (beta). To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud, which has this feature enabled by default.
+Only core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
-To create a core changefeed in CockroachCloud Free (beta), use the following example.
+To create a core changefeed in {{ site.data.products.serverless }}, use the following example.
 
 {% include cockroachcloud/cdc/create-core-changefeed.md %}
 

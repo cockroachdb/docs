@@ -27,7 +27,7 @@ The following error is displayed if you try to connect to a [third-party tool](.
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
-**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for CockroachCloud Free (beta) clusters, or `<cluster-name>.<database>` for paid CockroachCloud clusters.
+**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for {{ site.data.products.serverless }} clusters, or `<cluster-name>.<database>` for paid CockroachCloud clusters.
 
 For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 

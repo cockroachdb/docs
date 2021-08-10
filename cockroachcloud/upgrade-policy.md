@@ -9,12 +9,12 @@ This page describes the upgrade policy for CockroachCloud.
 CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
 
 {{site.data.alerts.callout_danger}}
-[CockroachCloud Free (beta)](quickstart.html) clusters are subject to automatic upgrades for both minor and major releases.
+[{{ site.data.products.serverless }}](quickstart.html) clusters are subject to automatic upgrades for both minor and major releases.
 {{site.data.alerts.end}}
 
 ## Minor version upgrades
 
-[Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. All clusters, including both CockroachCloud Free (beta) and CockroachCloud clusters, are subject to automatic upgrades to the latest supported minor version (for example, v21.1.0 → v21.1.1).
+[Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. All clusters, including both {{ site.data.products.serverless }} and CockroachCloud clusters, are subject to automatic upgrades to the latest supported minor version (for example, v21.1.0 → v21.1.1).
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
@@ -24,7 +24,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 [Major version releases](../releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.2.x → v21.1.x).
 
-When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the CockroachCloud Console](upgrade-to-v21.1.html) for clusters using the paid version of CockroachCloud. CockroachCloud Free (beta) clusters are subject to automatic upgrades to the latest supported major version.
+When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the CockroachCloud Console](upgrade-to-v21.1.html) for clusters using the paid version of CockroachCloud. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
 
 ### Support downgrade for older CockroachDB versions
 

@@ -43,7 +43,7 @@ Open the `ormconfig.ts` file, and edit the ORM configuration parameters:
 - At the top of the file, uncomment the `import * as fs from "fs";` line.
 
     This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the CockroachCloud Console.
-- Replace the value for `host` with the name of the CockroachCloud Free host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
+- Replace the value for `host` with the name of the {{ site.data.products.serverless-plan }} host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
 - Replace the value for `port` with the port to your cluster.
 - Replace the value for `username` with the user you created earlier.
 - Replace the value for `password` with the password you created for your user.

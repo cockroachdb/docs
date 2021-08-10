@@ -4,44 +4,44 @@ summary: Get answers to frequently asked questions about CockroachCloud Free (be
 toc: true
 ---
 
-This page answers the frequently asked questions about CockroachCloud Free (beta) and the paid version of CockroachCloud.
+This page answers the frequently asked questions about {{ site.data.products.serverless }} and the paid version of CockroachCloud.
 
 <div class="filters clearfix">
-    <a href="free-faqs.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="free-faqs.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
     <a href="frequently-asked-questions.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
 ## General
 
-### What is CockroachCloud Free (beta)?
+### What is {{ site.data.products.serverless }}?
 
-CockroachCloud Free (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic.
+{{ site.data.products.serverless }} delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic.
 
-### How do I start using CockroachCloud Free (beta)?
+### How do I start using {{ site.data.products.serverless }}?
 
-To get started with CockroachCloud Free (beta), <a href="https://cockroachlabs.cloud/signup?referralId=docs_free_faq" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
+To get started with {{ site.data.products.serverless }}, <a href="https://cockroachlabs.cloud/signup?referralId=docs_free_faq" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
 
 ### What are the usage limits of Cockroach Cloud Free (beta)?
 
 There is an upper limit of usage of up to 1 vCPU and 5GB storage per free cluster. If you hit the storage limit, you will receive an email asking you to delete enough data to stay under the 5GB limit. If you do not respond within the next 30 days, you will be blocked from accessing your cluster.
 
-### Do I have to pay for CockroachCloud Free (beta)?
+### Do I have to pay for {{ site.data.products.serverless }}?
 
-No, you do not have to pay anything. CockroachCloud Free (beta) is free forever.
+No, you do not have to pay anything. {{ site.data.products.serverless }} is free forever.
 
-### What can I use CockroachCloud Free (beta) for?
+### What can I use {{ site.data.products.serverless }} for?
 
-CockroachCloud Free (beta) can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
+{{ site.data.products.serverless }} can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
 
-For examples of applications that use CockroachCloud Free (beta), check out the following [Hack the North](https://hackthenorth.com/) projects:
+For examples of applications that use {{ site.data.products.serverless }}, check out the following [Hack the North](https://hackthenorth.com/) projects:
 
 - [flock](https://devpost.com/software/flock-figure-out-what-film-to-watch-with-friends)
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-### What are the limitations of CockroachCloud Free (beta)?
+### What are the limitations of {{ site.data.products.serverless }}?
 
-CockroachCloud Free is currently in beta and there are capabilities we are still working on enabling, such as no-downtime upgrades to a paid cluster. If you want to try out a paid cluster, you can get a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
+{{ site.data.products.serverless-plan }} is currently in beta and there are capabilities we are still working on enabling, such as no-downtime upgrades to a paid cluster. If you want to try out a paid cluster, you can get a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
 
 ### How do I connect to my cluster?
 
@@ -59,7 +59,7 @@ You can submit feedback or log any bugs you find through [this survey](https://f
 
 Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
-### Is encryption-at-rest enabled on CockroachCloud Free (beta)?
+### Is encryption-at-rest enabled on {{ site.data.products.serverless }}?
 
 Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
@@ -70,28 +70,28 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-CockroachCloud Free (beta) is a multi-tenant offering and resources are shared between clusters.
+{{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters.
 
 ## Cluster maintenance
 
 ### How do I add nodes?
 
-You cannot add nodes to your CockroachCloud Free (beta) cluster, and there is an upper limit of usage of up to 1 vCPU and 5GB storage. If you exceed this limit or want a more powerful cluster, you can create a cluster using the paid version of [CockroachCloud](create-your-cluster.html).
+You cannot add nodes to your {{ site.data.products.serverless }} cluster, and there is an upper limit of usage of up to 1 vCPU and 5GB storage. If you exceed this limit or want a more powerful cluster, you can create a cluster using the paid version of [CockroachCloud](create-your-cluster.html).
 
-### Can I upgrade my cluster from CockroachCloud Free (beta) to the paid version of CockroachCloud?
+### Can I upgrade my cluster from {{ site.data.products.serverless }} to the paid version of CockroachCloud?
 
-At this time, a CockroachCloud Free (beta) cluster cannot be upgraded. In the future, you will have the ability to move from CockroachCloud Free (beta) to a paid version of CockroachCloud.
+At this time, a {{ site.data.products.serverless }} cluster cannot be upgraded. In the future, you will have the ability to move from {{ site.data.products.serverless }} to a paid version of CockroachCloud.
 
 ## Product features
 
 ### Are partitioning or change data capture available to me?
 
-No, change data capture and partitioning are not available on CockroachCloud Free (beta) clusters, but will be in the future.
+No, change data capture and partitioning are not available on {{ site.data.products.serverless }} clusters, but will be in the future.
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for CockroachCloud Free (beta) clusters.
+Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for {{ site.data.products.serverless }} clusters.
 
-### Can I backup my CockroachCloud Free (beta) cluster? Does Cockroach Labs take backups of my cluster?
+### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Free (beta) clusters for our own purposes. Currently, these backups are not available to you. We support [`BACKUP`](../{{site.versions["stable"]}}/backup.html) and [`RESTORE`](../{{site.versions["stable"]}}/restore.html) of databases and tables on CockroachCloud Free (beta) clusters through [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage. For an example on using `userfile` for backups, see [Backup and restore with `userfile`](run-bulk-operations.html#backup-and-restore-with-userfile).
+Cockroach Labs takes full cluster backups of all {{ site.data.products.serverless }} clusters for our own purposes. Currently, these backups are not available to you. We support [`BACKUP`](../{{site.versions["stable"]}}/backup.html) and [`RESTORE`](../{{site.versions["stable"]}}/restore.html) of databases and tables on {{ site.data.products.serverless }} clusters through [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) storage. For an example on using `userfile` for backups, see [Backup and restore with `userfile`](run-bulk-operations.html#backup-and-restore-with-userfile).

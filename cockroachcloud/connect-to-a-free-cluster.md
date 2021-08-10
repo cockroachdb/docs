@@ -5,11 +5,11 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud Free (beta) cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
+This page shows you how to connect to your {{ site.data.products.serverless }} cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -97,7 +97,7 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to CockroachCloud Free (beta).
+1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to {{ site.data.products.serverless }}.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
