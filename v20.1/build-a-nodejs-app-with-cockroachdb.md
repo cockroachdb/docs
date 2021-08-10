@@ -33,7 +33,7 @@ $ npm install pg
 
 ## Step 4. Get the code
 
-<a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-node-pg/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-node-pg).
+<a href="https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-node-postgres).
 
 ## Step 5. Update the connection parameters
 
@@ -70,7 +70,7 @@ Here are the contents of `app.js`:
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-pg/main/app.js %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/app.js %}
 ~~~
 
 Note that all of the database operations are wrapped in the `retryTxn` function. This function attempts to commit statements in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
