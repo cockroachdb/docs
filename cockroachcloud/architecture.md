@@ -8,13 +8,21 @@ CockroachCloud is a fully-managed deployment of CockroachDB. This page describes
 
 ## CockroachCloud Serverless
 
-CockroachCloud Serverless (beta) is a fully-managed, multi-tenant deployment of CockroachDB. All CockroachCloud Serverless (beta) clusters share resources, however, SQL pods are not shared--only the KV layer is shared.
+CockroachCloud Serverless (beta) is a fully-managed, multi-tenant deployment of CockroachDB. Being familiar with the following concepts will help you understand what our Serverless architecture achieves.
 
-### Request Units
+### Concepts
 
-All resource usage in CockroachCloud Serverless (beta) is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a read or a write query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost 100 RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
+CockroachDB relies heavily on the following concepts. Being familiar with them will help you understand what our architecture achieves.
 
-RUs = SQL CPU + ReadRequests + ReadBytes + WriteRequests + WriteBytes
+Term | Definition
+-----|-----------
+**Serverless cluster** | A cluster that’s automatically billed and scaled in response to the resources it consumes (as opposed to a dedicated cluster, which is billed and scaled statically).
+**Request Unit (RU)** | Request Units represent the compute and I/O resources used by a read or a write query. All database operations in CockroachCloud Serverless cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost 100 RUs. You can see how many request Units your cluster has used on the Cluster Overview page.
+**Spend limit** | This is the maximum amount of money a user indicates that they would like to be billed in a particular billing period for a cluster. The actual amount a user is billed is based on the resources used during that billing period. A cluster's budget is allocated across storage, baseline performance, and burst performance.
+**Projected usage** | The amount of usage that we project a cluster will consume during a billing period. This is important for allocating a cluster’s spend limit, because we must leave enough budget to pay for storage for the rest of the billing period.
+**Baseline performance** | The minimum compute and IO performance that a user can expect from their cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RU/s at all times. 
+**Burst capacity** | Burst capacity is the ability of the Serverless cluster to perform above the baseline. Supporting application traffic that “bursts,” i.e., can fluctuate above baseline traffic, is a key feature of Serverless clusters. Every Serverless cluster starts with a certain amount of burst capacity. If the actual usage of a cluster is lower than the baseline performance, the cluster can “store up” Request Units that can be burst capacity than is allocated for the rest of the month. 
+**Storage** | Disk space for permanently storing data over time. All data in CockroachCloud Serverless (beta) is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage users see in the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page is the amount of data before considering the replication multiplier.
 
 ### Performance 
 
@@ -22,15 +30,15 @@ Serverless clusters scale based on the application load they are serving. Paid c
 
 Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for Request Units, and vice versa. If you hit your budget, your cluster will be throttled down to free-tier performance levels. In this case, you can increase your budget or adjust your workload to stay within budget.
 
+Storage always gets first priority in the budget since you need to be able to store the data first and foremost. The remainder of the budget is allocated to burst and baseline performance. A user can theoretically use up all their budget for burst in the first few minutes of a cluster being created. If this happens, they will be brought back to the baseline performance (see “Cluster Usage Subsidies and Limits”), after which point they can reaccumulate burst performance if they don’t use all of their request units.
+
 Burst capacity is the ability of the Serverless (beta) cluster to scale above baseline performance. Supporting application traffic that “burst” i.e., can fluctuate above baseline traffic is a key feature of Serverless clusters.
 
 CockroachCloud Serverless (beta) clusters have the ability to scale to zero and consume no resources when there are no active queries. When there are no active queries, you will pay for storage your app is using, but not for Request Units. To avoid wasted resources, CockroachCloud automatically pauses free clusters that are inactive, which is defined by having no connection to the cluster for 2 consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling  clusters is a fully-managed process and will not disrupt or affect the user experience.
 
-### Storage
+### Architecture
 
-All data in CockroachCloud Serverless (beta) is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage users see in the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page is the amount of data before considering the replication multiplier.
-
-### Diagram
+<img src="{{ 'images/cockroachcloud/serverless-diagram.jpeg' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 ## CockroachCloud Dedicated
 
@@ -48,9 +56,9 @@ All clusters are secure by default, and we use a combination of certificates and
 
 Backups are encrypted in S3 and GCS buckets using the cloud provider keys. 
 
-### Multi-region
+### Multi-region architecture
 
-Diagram placeholder
+<img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 ## Learn more
 
