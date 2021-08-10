@@ -84,7 +84,7 @@ The `dbinit.sql` file initializes the database schema that the application uses:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/master/dbinit.sql %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-postgres/main/dbinit.sql %}
 ~~~
 
 The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:

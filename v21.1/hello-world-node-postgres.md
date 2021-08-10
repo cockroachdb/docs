@@ -24,7 +24,7 @@ The `app.js` file contains all of the code for the sample Hello World app:
 
 {% include_cached copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-postgres %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-postgres/master/app.js %}
 ~~~
 
 This program does the following:
