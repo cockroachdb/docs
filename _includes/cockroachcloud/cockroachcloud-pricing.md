@@ -2,9 +2,10 @@ The choice of the cloud provider decides the price per node. For pricing compari
 
  Example hardware configuration            | AWS IOPS                        | GCP Pricing (per node, per hour)	  | AWS Pricing (per node, per hour) 
 -----------------------------------+---------------------------------+------------------------------------+------------------------------------
-2 vCPU, 60 GiB disk   | 600	                           | $0.50	                            | $0.55
-4 vCPU, 150 GiB disk  | 900	                           | $0.89                            	| $1.02
-8 vCPU, 500 GiB disk  | 1800	                           | $1.78                              | $2.00
-16 vCPU, 900 GiB disk | 2000	                           | $3.38                              | $3.83
+2 vCPU, 75 GiB disk   | 525	                           | $0.43	                            | $0.57
+4 vCPU, 150 GiB disk  | 1050	                           | $0.66                            	| $0.92
+8 vCPU, 300 GiB disk  | 2100	                           | $1.12                             | $1.61
+16 vCPU, 600 GiB disk | 4200	                           | $2.05                             | $3.00
+32 vCPU, 1200 GiB disk | 8400	                           | $3.91                              | $5.78
 
 CockroachCloud does not charge you for data transfer costs.
