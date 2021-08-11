@@ -1,0 +1,16 @@
+group 'com.cockroachlabs'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.cockroachlabs.Sample'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.hibernate:hibernate-core:5.4.19.Final'
+    implementation 'org.postgresql:postgresql:42.2.9'
+}
