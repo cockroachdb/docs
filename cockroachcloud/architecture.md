@@ -26,33 +26,33 @@ Term | Definition
 
 ### Performance 
 
-Serverless clusters scale based on the application load they are serving. Paid clusters can scale up to the amount of resources being paid for, and free clusters can scale up to 100M Request Units and 5GB of storage.
+Serverless clusters scale based on your application's workload. Free clusters include 250M RUs with 10M RUs reserved for [burst performance](#concepts) and 5GiB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or 2.5K QPS. If you set a budget for your cluster, you will have access to additional resources without throttling.
 
 Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for Request Units, and vice versa. If you hit your budget, your cluster will be throttled down to free-tier performance levels. In this case, you can increase your budget or adjust your workload to stay within budget.
 
-Storage always gets first priority in the budget since you need to be able to store the data first and foremost. The remainder of the budget is allocated to burst and baseline performance. A user can theoretically use up all their budget for burst in the first few minutes of a cluster being created. If this happens, they will be brought back to the baseline performance (see “Cluster Usage Subsidies and Limits”), after which point they can reaccumulate burst performance if they don’t use all of their request units.
+Storage always gets first priority in the budget since you need to be able to store the data first and foremost. The remainder of the budget is allocated to burst and baseline performance. A user can theoretically use up all their budget for burst performance in the first few minutes of a cluster being created. If this happens, they will be throttled back to the baseline performance and can reaccumulate burst capacity by using fewer RUs.
 
-Burst capacity is the ability of the Serverless (beta) cluster to scale above baseline performance. Supporting application traffic that “burst” i.e., can fluctuate above baseline traffic is a key feature of Serverless clusters.
-
-CockroachCloud Serverless (beta) clusters have the ability to scale to zero and consume no resources when there are no active queries. When there are no active queries, you will pay for storage your app is using, but not for Request Units. To avoid wasted resources, CockroachCloud automatically pauses free clusters that are inactive, which is defined by having no connection to the cluster for 2 consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling  clusters is a fully-managed process and will not disrupt or affect the user experience.
+Serverless clusters also have the ability to scale to zero and consume no resources when there are no active queries. When there are no active queries, you will pay for storage your app is using, but not for Request Units. To avoid wasted resources, CockroachCloud automatically pauses free clusters that are inactive, which is defined by having no connection to the cluster for two consecutive minutes. Once the user attempts to reconnect to the cluster, the cluster will automatically resume. Pausing, resuming, and scaling clusters is a fully-managed process and will not disrupt or affect the user experience. However, it is important for your application to have connection retry logic in the event of node restarts or network disruptions. For more information, see the [Production Checklist](production-checklist.html).
 
 ### Architecture
+
+Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes cluster that hosts CockroachDB. However, unlike a regular CockroachDB cluster where the SQL and KV layers run in the same process, our serverless architecture fully decouples the SQL layer from the KV layer so that both layers run in separate processes running in separate Kubernetes pods.
 
 <img src="{{ 'images/cockroachcloud/serverless-diagram.jpeg' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
 ## CockroachCloud Dedicated
 
-CockroachDB Serverless may not be right for enterprises that have rigorous security requirements due to its multi-tenant architecture. For those use cases we recommend CockroachDB Dedicated. CockroachCloud Dedicated supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform.
+If you need a single-tenant cluster with no shared resources, we recommend CockroachCloud Dedicated. CockroachCloud Dedicated supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform.
 
 ### Hardware
 
-We use the Kubernetes offerings in AWS and GCP to run our offering - EKS and GKE respectively. For compute we use the C5 series of machines in AWS and the N1-standard machine types in GCP. For storage we use Elastic Block Storage with provisioned iops in AWS, and Persistent Disks in GCP. Each single region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. For multi-region clusters, similarly, nodes are spread across three or more AZs in each region.
+We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run CockroachCloud offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. For multi-region clusters, similarly, nodes are spread across three or more AZs in each region.
 
 ### Security and Connection
 
-CockroachCloud Dedicated clusters are single tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two clusters share any resources between each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Currently a customer connects to them using the load balancer in front of each region leading to one connection string if the cluster is single region and multiple connection strings (one per region) if the cluster is multi-region. Since we don’t support VPC peering (yet), the connections are over TLS 1.2 secure over the internet.
+CockroachCloud Dedicated clusters are single tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two Dedicated clusters share any resources with each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Users connect to a Dedicated cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.2 protocol for inter-node and client-node communication.
 
-All clusters are secure by default, and we use a combination of certificates and passwords authentication. We generate one certificate per cluster. We use certificates (verify-full SSL mode) for the nodes to authenticate each other, and for the nodes to authenticate the client. We use passwords for the client to authenticate the node. We use a network security model where IPs must be whitelisted for SQL connections to be allowed to the cluster - this prevents denial of service and brute password attacks.
+CockroachCloud clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
 
 Backups are encrypted in S3 and GCS buckets using the cloud provider keys. 
 

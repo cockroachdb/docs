@@ -4,7 +4,7 @@ All resource usage in CockroachCloud Serverless (beta) is measured in Request Un
 
 ### Cluster scaling
 
-CockroachCloud Serverless (beta) clusters scale based on your workload. Free clusters include 100M RUs and 5GB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or 2.5K QPS.
+CockroachCloud Serverless (beta) clusters scale based on your workload. Free clusters include 250M RUs with 10M RUs reserved for [burst performance](architecture.html#concepts) and 5GiB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or 2.5K QPS.
 
 Paid clusters include additional resources with no throttling. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 

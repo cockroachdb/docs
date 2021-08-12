@@ -45,6 +45,13 @@
     {
       "title": "Use Your Cluster",
       "items": [
+        {
+          "title": "Manage Your Cluster",
+          "urls": [
+            "/cockroachcloud/serverless-cluster-management.html",
+            "/cockroachcloud/cluster-management.html"
+          ]
+        },
       	{
       	  "title": "Secure Your Cluster",
       	  "items": [
@@ -178,13 +185,6 @@
       	  "title": "Troubleshoot Your Cluster",
       	  "urls": [
       	    "/cockroachcloud/troubleshooting-page.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Manage Your Cluster",
-      	  "urls": [
-            "/cockroachcloud/serverless-cluster-management.html",
-      	    "/cockroachcloud/cluster-management.html"
       	  ]
       	},
       	{
