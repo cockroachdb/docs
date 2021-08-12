@@ -17,7 +17,7 @@ Statement | Usage
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`COPY FROM`](copy-from.html) | Copy data from a third-party client to a CockroachDB cluster.<br>Note that CockroachDB currently only supports `COPY FROM` statements issued from third-party clients, for compatibility with PostgreSQL drivers and ORMs. `COPY FROM` statements cannot be issued from the [`cockroach` SQL shell](cockroach-sql.html). To import data from files, we use an [`IMPORT`](import.html) statement instead.
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. Note that this statement requires an [enterprise license](enterprise-licensing.html).
+[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files.
 [`IMPORT`](import.html) | Bulk-insert CSV data into a new table.
 [`IMPORT INTO`](import-into.html) | Bulk-insert CSV data into an existing table.
 [`INSERT`](insert.html) | Insert rows into a table.
