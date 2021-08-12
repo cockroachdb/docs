@@ -444,5 +444,6 @@ The small demo cluster used in this example is essentially in a state of overloa
 - [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html)
 - [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
 - [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
+- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
 - [Reads and Writes in CockroachDB](architecture/reads-and-writes-overview.html)
 - [Install CockroachDB](install-cockroachdb.html)
