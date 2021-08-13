@@ -28,6 +28,10 @@ The steps above describe the simplest case, where you accept all of the default 
 
 For more information about CockroachDB's multi-region capabilities and the customization options that are available, see below.
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/misc/multiregion-max-offset.md %}
+{{site.data.alerts.end}}
+
 {% include enterprise-feature.md %}
 
 ## Cluster Regions
