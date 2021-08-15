@@ -1,0 +1,223 @@
+[
+  {
+    "title": "Deploying CockroachDB",
+    "is_top_level": true,
+    "urls": [
+      ""
+    ],
+    "items": [
+      {
+        "title": "",
+        "urls": [
+          ""
+        ]
+      },
+      {
+        "title": "Using CockroachCloud",
+        "items": [
+          {
+            "title": "FAQs",
+            "urls": [
+              "/cockroachcloud/free-faqs.html",
+              "/cockroachcloud/frequently-asked-questions.html"
+            ]
+          },
+        	{
+        	  "title": "Secure your cluster",
+        	  "items": [
+        	    {
+        	      "title": "Security overview",
+        	      "urls": [
+        		      "/cockroachcloud/security-overview.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Authentication",
+        	      "urls": [
+        		      "/cockroachcloud/authentication.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "User authorization",
+        	      "urls": [
+        		      "/cockroachcloud/user-authorization.html"
+        	      ]
+        	    },
+              {
+        	      "title": "Network authorization",
+        	      "urls": [
+        		      "/cockroachcloud/network-authorization.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "SQL audit logging",
+        	      "urls": [
+        		      "/cockroachcloud/sql-audit-logging.html"
+        	      ]
+        	    },
+              {
+                "title": "Manage Console Access",
+                "urls": [
+          	       "/cockroachcloud/console-access-management.html"
+                ]
+              }
+        	  ]
+        	},
+        	{
+        	  "title": "Migrate data",
+        	  "items": [
+        	    {
+        	      "title": "Migration overview",
+        	      "urls": [
+        		      "/{{site.versions["stable"]}}/migration-overview.html"
+        	      ]
+        	    },
+              {
+        	      "title": "Migrate from a free to paid cluster",
+        	      "urls": [
+        		      "/cockroachcloud/migrate-from-free-to-dedicated.html"
+        	      ]
+        	    },
+              {
+        	      "title": "Migrate from Oracle",
+        	      "urls": [
+        		      "/{{site.versions["stable"]}}/migrate-from-oracle.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Migrate from Postgres",
+        	      "urls": [
+        		      "/{{site.versions["stable"]}}/migrate-from-postgres.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Migrate from MySQL",
+        	      "urls": [
+        		      "/{{site.versions["stable"]}}/migrate-from-mysql.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Migrate from CSV",
+        	      "urls": [
+        		      "/{{site.versions["stable"]}}/migrate-from-csv.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Migrate from Avro",
+        	      "urls": [
+        		      "/{{site.versions["stable"]}}/migrate-from-avro.html"
+        	      ]
+        	    },
+              {
+                "title": "Import performance best practices",
+                "urls": [
+                  "/{{site.versions["stable"]}}/import-performance-best-practices.html"
+                ]
+              }
+        	  ]
+        	},
+        	{
+        	  "title": "Tune performance",
+        	  "urls": [
+        	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
+        	  ]
+        	},
+        	{
+        	  "title": "Move into production",
+        	  "urls": [
+        	    "/cockroachcloud/production-checklist.html"
+        	  ]
+        	},
+          {
+            "title": "Monitor your cluster",
+            "items": [
+              {
+                "title": "Alerts page",
+                "urls": [
+                  "/cockroachcloud/alerts-page.html"
+                ]
+              },
+              {
+                "title": "Monitoring page",
+                "urls": [
+                  "/cockroachcloud/monitoring-page.html"
+                ]
+              },
+              {
+                "title": "Statements page",
+                "urls": [
+                  "/cockroachcloud/statements-page.html"
+                ]
+              },
+              {
+                "title": "Sessions page",
+                "urls": [
+                  "/cockroachcloud/sessions-page.html"
+                ]
+              },
+              {
+                "title": "Transactions page",
+                "urls": [
+                  "/cockroachcloud/transactions-page.html"
+                ]
+              }
+            ]
+          },
+        	{
+        	  "title": "Troubleshoot your cluster",
+        	  "urls": [
+        	    "/cockroachcloud/troubleshooting-page.html"
+        	  ]
+        	},
+        	{
+        	  "title": "Manage your cluster",
+        	  "urls": [
+        	    "/cockroachcloud/cluster-management.html"
+        	  ]
+        	},
+          {
+            "title": "Run bulk operations",
+            "urls": [
+              "/cockroachcloud/run-bulk-operations.html"
+            ]
+          },
+        	{
+        	  "title": "Restore data from a backup",
+        	  "urls": [
+        	    "/cockroachcloud/backups-page.html"
+        	  ]
+        	},
+        	{
+        	  "title": "Upgrade your cluster",
+        	  "items": [
+        	    {
+        	      "title": "Upgrade policy",
+        	      "urls": [
+        		       "/cockroachcloud/upgrade-policy.html"
+        	      ]
+        	    },
+              {
+        	      "title": "Upgrade to v21.1",
+        	      "urls": [
+        		       "/cockroachcloud/upgrade-to-v21.1.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Upgrade to v20.2",
+        	      "urls": [
+        		       "/cockroachcloud/upgrade-to-v20.2.html"
+        	      ]
+        	    },
+        	    {
+        	      "title": "Upgrade to v20.1",
+        	      "urls": [
+        		       "/cockroachcloud/upgrade-to-v20.1.html"
+        	      ]
+        	    }
+        	  ]
+        	}
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,184 @@
+[
+  {
+    "title": "Docs Home",
+    "is_top_level": true,
+    "urls": [
+      "/"
+    ]
+  },
+  {
+    "title": "New to CockroachDB",
+    "is_top_level": true,
+    "urls": [
+      "/cockroachcloud/quickstart.html",
+      "/cockroachcloud/quickstart-trial-cluster.html"
+    ],
+    "items": [
+      {
+        "title": "Get started with CockroachCloud",
+        "items": [
+          {
+        	  "title": "Create an account",
+        	  "urls": [
+        	    "/cockroachcloud/create-an-account.html"
+        	  ]
+        	},
+        	{
+        	  "title": "Create a CockroachCloud cluster",
+        	  "urls": [
+        	    "/cockroachcloud/create-a-free-cluster.html",
+              "/cockroachcloud/create-your-cluster.html"
+        	  ]
+        	},
+          {
+        	  "title": "Connect to your cluster",
+        	  "urls": [
+        	    "/cockroachcloud/connect-to-a-free-cluster.html",
+              "/cockroachcloud/connect-to-your-cluster.html"
+        	  ]
+        	},
+        	{
+        	  "title": "Learn CockroachDB SQL",
+        	  "urls": [
+        	    "/cockroachcloud/learn-cockroachdb-sql.html"
+        	  ]
+        	},
+        	{
+        	  "title": "Build a 'Hello World' app",
+        	  "urls": [
+              "/cockroachcloud/hello-world-example-apps.html"
+          	  ]
+          },
+          {
+            "title": "CockroachCloud FAQs",
+            "urls": [
+              "/cockroachcloud/free-faqs.html",
+              "/cockroachcloud/frequently-asked-questions.html"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Get started with CockroachDB",
+        "items": [
+          {
+            "title": "Install CockroachDB",
+            "urls": [
+              "/${VERSION}/install-cockroachdb.html",
+              "/${VERSION}/install-cockroachdb-mac.html",
+              "/${VERSION}/install-cockroachdb-linux.html",
+              "/${VERSION}/install-cockroachdb-windows.html"
+            ]
+          },
+          {
+            "title": "Start a local cluster",
+            "items": [
+              {
+                "title": "From binary",
+                "urls": [
+                  "/${VERSION}/secure-a-cluster.html",
+                  "/${VERSION}/start-a-local-cluster.html"
+                ]
+              },
+              {
+                "title": "In Kubernetes",
+                "urls": [
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+                ]
+              },
+              {
+                "title": "In Docker",
+                "urls": [
+                  "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
+                  "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
+                  "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
+                ]
+              },
+              {
+                "title": "Simulate a multi-region cluster on localhost",
+                "urls": [
+                  "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Learn CockroachDB SQL",
+            "urls": [
+              "/${VERSION}/learn-cockroachdb-sql.html"
+            ]
+          },
+          {
+            "title": "Explore database features",
+            "items": [
+              {
+                "title": "Replication & rebalancing",
+                "urls": [
+                  "/${VERSION}/demo-replication-and-rebalancing.html"
+                ]
+              },
+              {
+                "title": "Fault tolerance & recovery",
+                "urls": [
+                  "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+                ]
+              },
+              {
+                "title": "Multi-region performance",
+                "urls": [
+                  "/${VERSION}/demo-low-latency-multi-region-deployment.html"
+                ]
+              },
+              {
+                "title": "Serializable transactions",
+                "urls": [
+                  "/${VERSION}/demo-serializable.html"
+                ]
+              },
+              {
+                "title": "Spatial data",
+                "urls": [
+                  "/${VERSION}/spatial-tutorial.html"
+                ]
+              },
+              {
+                "title": "Cross-cloud migration",
+                "urls": [
+                  "/${VERSION}/demo-automatic-cloud-migration.html"
+                ]
+              },
+              {
+                "title": "Orchestration with Kubernetes",
+                "urls": [
+                  "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
+                ]
+              },
+              {
+                "title": "JSON support",
+                "urls": [
+                  "/${VERSION}/demo-json-support.html"
+                ]
+              },
+              {
+                "title": "SQL tuning with <code>EXPLAIN</code>",
+                "urls": [
+                  "/${VERSION}/sql-tuning-with-explain.html"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "SQL playground",
+        "urls": [
+          ""
+        ]
+      }
+    ]
+  },
+  {% include_cached sidebar-data-developers.json %},
+  {% include_cached sidebar-data-operators.json %},
+  {% include_cached sidebar-data-reference.json %}
+]
