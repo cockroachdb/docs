@@ -305,7 +305,7 @@ For each region, navigate to the Security Groups section of the [Amazon EC2 cons
 Remember to create these inbound rules in all 3 regions. This enables CockroachDB to communicate across each Kubernetes cluster.
 {{site.data.alerts.end}}
 
-#### Inter-region communciation
+#### Inter-region communication
 
  Field | Value
 -------|-------------------
