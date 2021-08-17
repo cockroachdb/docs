@@ -113,6 +113,8 @@ spans | The interval of the key space read by the processor. If `spans` is `FULL
 
 You can obtain this ZIP file by following the link provided in the `EXPLAIN ANALYZE (DEBUG)` output, or by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
+{% include {{ page.version.version }}/sql/statement-bundle-warning.md %}
+
 ## DistSQL plan viewer
 
 The graphical diagram when using the `DISTSQL` option displays the processors and operations that make up the statement plan. While the text output from `PLAN` shows the statement plan across the cluster, `DISTSQL` shows details on each node involved in the query.
