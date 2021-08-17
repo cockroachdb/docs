@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters clearfix">
     <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current"{{ site.data.products.dedicated }}
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
 This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.

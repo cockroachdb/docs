@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters clearfix">
     <a href="quickstart.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level"{{ site.data.products.dedicated }}
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
 This page guides you through the quickest way to get started with CockroachDB by setting up a {{ site.data.products.serverless }} cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see the [Learn more](#learn-more) section.

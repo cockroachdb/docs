@@ -8,7 +8,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 <div class="filters clearfix">
     <a href="free-faqs.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="frequently-asked-questions.html"><button class="filter-button page-level"{{ site.data.products.dedicated }}
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
 ## General

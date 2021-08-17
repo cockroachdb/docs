@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters clearfix">
     <a href="quickstart.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current"{{ site.data.products.dedicated }}
+    <a href="quickstart-trial-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
 This page shows you how to deploy a CockroachDB cluster on {{ site.data.products.dedicated }} (free for a 30-day trial for your first cluster), connect to it using a sample workload, and run your first query.
