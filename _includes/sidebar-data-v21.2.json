@@ -1037,13 +1037,13 @@
                     "title": "Datadog",
                     "urls": [
                       "/${VERSION}/datadog.html"
-                    ]                    
+                    ]
                   },
                   {
                     "title": "Kibana",
                     "urls": [
                       "/${VERSION}/kibana.html"
-                    ]                    
+                    ]
                   }
                 ]
               }
@@ -1772,6 +1772,12 @@
                     "title": "<code>PAUSE SCHEDULES</code>",
                     "urls": [
                       "/${VERSION}/pause-schedules.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>REASSIGN OWNED</code>",
+                    "urls": [
+                      "/${VERSION}/reassign-owned.html"
                     ]
                   },
                   {
