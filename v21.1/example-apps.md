@@ -39,7 +39,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 
 | Driver/ORM Framework                                    | Support level  | Example apps                                            |
 |---------------------------------------------------------+----------------+--------------------------------------------------------|
-| [pg](https://www.npmjs.com/package/pg)                  | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
+| [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Hello World](hello-world-node-postgres.html)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-sequelize.html)
 | [TypeORM](https://www.npmjs.com/package/typeorm)        | Full           | [Simple CRUD](build-a-typescript-app-with-cockroachdb.html)
 

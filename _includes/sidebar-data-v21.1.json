@@ -443,6 +443,12 @@
                     ]
                   },
                   {
+                    "title": "JavaScript (Node.js)",
+                    "urls": [
+                      "/${VERSION}/hello-world-node-postgres.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"
@@ -472,7 +478,7 @@
                     ]
                   },
                   {
-                    "title": "JavaScript/TypeScript",
+                    "title": "JavaScript/TypeScript (Node.js)",
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
