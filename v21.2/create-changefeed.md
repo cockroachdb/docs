@@ -100,8 +100,8 @@ Option | Value | Description
 `resolved` | [`INTERVAL`](interval.html) | Periodically emit [resolved timestamps](stream-data-out-of-cockroachdb-using-changefeeds.html#resolved-def) to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
-`format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for [Avro is limited and experimental](#avro-limitations). For mappings of CockroachDB types to Avro types, [see the table below](#avro-types). <br><br>Default: `format=json`.
-`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
+`format` | `json` / `avro` | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](#avro-types) and detail on [Avro limitations](#avro-limitations) below. <br><br>Default: `format=json`.
+`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
 `key_in_value` | N/A | Make the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for these sinks (currently only [cloud storage sinks](#cloud-storage-sink)).
 `diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
 `compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
@@ -110,26 +110,28 @@ Option | Value | Description
 `schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), perform no logical backfills.</li><li>`stop`: [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
-`avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
+`avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 
 {{site.data.alerts.callout_info}}
- Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
+ Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro).
-
-Below is a list of unsupported SQL types and values for Avro changefeeds:
+You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro). Below are clarifications for particular SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
-- [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.
+- [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
 
-    {{site.data.alerts.callout_info}}
-    To avoid `NaN` or infinite values, add a [`CHECK` constraint](check.html) to prevent these values from being inserted into decimal columns.
-    {{site.data.alerts.end}}
+  For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
-- [`TIME`, `DATE`, `INTERVAL`](https://github.com/cockroachdb/cockroach/issues/32472), [`UUID`, `INET`](https://github.com/cockroachdb/cockroach/issues/34417), [`ARRAY`](https://github.com/cockroachdb/cockroach/issues/34420), [`JSONB`](https://github.com/cockroachdb/cockroach/issues/34421), `BIT`, and collated `STRING` are not supported in Avro yet.
+  For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set).
+
+  This example encodes into an array as follows:
+
+  ~~~
+  {"array": [1, <first 64 bits>, <second 64 bits>, 0 or 9223372036854775808]}
+  ~~~
 
 #### Avro types
 
@@ -145,10 +147,20 @@ CockroachDB Type | Avro Type | Avro Logical Type
 [`TIME`](time.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
 [`TIMESTAMP`](timestamp.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
 [`TIMESTAMPTZ`](timestamp.html) | [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`TIME-MICROS`](https://avro.apache.org/docs/1.8.1/spec.html#Time+%28microsecond+precision%29)
-[`DECIMAL`](decimal.html) | [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DECIMAL`](https://avro.apache.org/docs/1.8.1/spec.html#Decimal)
+[`DECIMAL`](decimal.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive), [`BYTES`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) | [`DECIMAL`](https://avro.apache.org/docs/1.8.1/spec.html#Decimal)
 [`UUID`](uuid.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`INET`](inet.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
 [`JSONB`](jsonb.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`ENUMS`](enum.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`INTERVAL`](interval.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`ARRAY`](array.html) | [`ARRAY`](https://avro.apache.org/docs/1.8.1/spec.html#schema_complex) |
+[`BIT`](bit.html) | Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`VARBIT`](bit.html)| Array of [`LONG`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+[`COLLATE`](collate.html) | [`STRING`](https://avro.apache.org/docs/1.8.1/spec.html#schema_primitive) |
+
+{{site.data.alerts.callout_info}}
+The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
+{{site.data.alerts.end}}
 
 #### Topic Naming
 
@@ -255,7 +267,7 @@ For more information on how to create a changefeed connected to Kafka, see [Stre
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
-  WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
+  WITH format = avro, confluent_schema_registry = <schema_registry_address>;
 ~~~
 ~~~
 +--------------------+

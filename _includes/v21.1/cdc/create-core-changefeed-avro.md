@@ -57,7 +57,7 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > EXPERIMENTAL CHANGEFEED FOR bar WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    > EXPERIMENTAL CHANGEFEED FOR bar WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     ~~~
