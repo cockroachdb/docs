@@ -5,7 +5,7 @@ toc: true
 toc_not_nested: true
 ---
 
-This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with CockroachCloud as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
+This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://kubernetes.io/) with {{ site.data.products.dedicated }} as the datastore. The app is written in Python with Flask as the web framework and SQLAlchemy for working with SQL data, and the code is [open-source and forkable](https://github.com/cockroachdb/examples-python/tree/master/flask-sqlalchemy).
 
 ## Before you begin
 
@@ -19,19 +19,19 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
     [Docker](https://docs.docker.com/v17.12/docker-for-mac/install/) | You'll dockerize your application for running in Kubernetes.
     [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) | This is the tool you'll use to run Kubernetes locally, for your OS. This includes installing a hypervisor and `kubectl`, the command-line tool used to manage Kubernetes from your local workstation.
 
-1. If you haven't already, [create a CockroachCloud cluster](create-your-cluster.html).
+1. If you haven't already, [create a {{ site.data.products.dedicated }} cluster](create-your-cluster.html).
 
 ## Prepare your cluster
 
 - [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
 - [Step 2. Create a SQL user](#step-2-create-a-sql-user)
 - [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string)
-- [Step 4. Create the CockroachCloud database](#step-4-create-the-cockroachcloud-database)
+- [Step 4. Create the {{ site.data.products.dedicated }} database](#step-4-create-the-cockroachcloud-database)
 - [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string)
 
 ### Step 1. Authorize your local workstation's network
 
-Before you connect to your CockroachCloud cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
+Before you connect to your {{ site.data.products.dedicated }} cluster, you need to authorize your network (i.e., add the public IP address of the workstation to the allowlist). Otherwise, connections from this workstation will be rejected.
 
 Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console to authorize your network:
 
@@ -74,7 +74,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
     Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
 
-### Step 4. Create the CockroachCloud database
+### Step 4. Create the {{ site.data.products.dedicated }} database
 
 On your local workstation's terminal:
 

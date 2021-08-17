@@ -6,10 +6,10 @@ toc: true
 
 <div class="filters clearfix">
     <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current"{{ site.data.products.dedicated }}
 </div>
 
-This page shows you how to connect to your CockroachCloud cluster.
+This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.
 
 ## Before you start
 
@@ -18,7 +18,7 @@ This page shows you how to connect to your CockroachCloud cluster.
 
 ## Step 1. Authorize your network
 
-CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
+{{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.

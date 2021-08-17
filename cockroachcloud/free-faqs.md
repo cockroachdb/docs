@@ -4,11 +4,11 @@ summary: Get answers to frequently asked questions about CockroachCloud Free (be
 toc: true
 ---
 
-This page answers the frequently asked questions about {{ site.data.products.serverless }} and the paid version of CockroachCloud.
+This page answers the frequently asked questions about {{ site.data.products.serverless }} and the paid version of {{ site.data.products.dedicated }}.
 
 <div class="filters clearfix">
     <a href="free-faqs.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="frequently-asked-questions.html"><button class="filter-button page-level">CockroachCloud</button></a>
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level"{{ site.data.products.dedicated }}
 </div>
 
 ## General
@@ -41,11 +41,11 @@ For examples of applications that use {{ site.data.products.serverless }}, check
 
 ### What are the limitations of {{ site.data.products.serverless }}?
 
-{{ site.data.products.serverless-plan }} is currently in beta and there are capabilities we are still working on enabling, such as no-downtime upgrades to a paid cluster. If you want to try out a paid cluster, you can get a [30-day trial of CockroachCloud](quickstart-trial-cluster.html).
+{{ site.data.products.serverless-plan }} is currently in beta and there are capabilities we are still working on enabling, such as no-downtime upgrades to a paid cluster. If you want to try out a paid cluster, you can get a [30-day trial of {{ site.data.products.dedicated }}](quickstart-trial-cluster.html).
 
 ### How do I connect to my cluster?
 
-To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your Cluster](connect-to-your-cluster.html).
 
 ## Beta release
 
@@ -76,11 +76,11 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 ### How do I add nodes?
 
-You cannot add nodes to your {{ site.data.products.serverless }} cluster, and there is an upper limit of usage of up to 1 vCPU and 5GB storage. If you exceed this limit or want a more powerful cluster, you can create a cluster using the paid version of [CockroachCloud](create-your-cluster.html).
+You cannot add nodes to your {{ site.data.products.serverless }} cluster, and there is an upper limit of usage of up to 1 vCPU and 5GB storage. If you exceed this limit or want a more powerful cluster, you can create a cluster using the paid version of [{{ site.data.products.dedicated }}](create-your-cluster.html).
 
-### Can I upgrade my cluster from {{ site.data.products.serverless }} to the paid version of CockroachCloud?
+### Can I upgrade my cluster from {{ site.data.products.serverless }} to the paid version of {{ site.data.products.dedicated }}?
 
-At this time, a {{ site.data.products.serverless }} cluster cannot be upgraded. In the future, you will have the ability to move from {{ site.data.products.serverless }} to a paid version of CockroachCloud.
+At this time, a {{ site.data.products.serverless }} cluster cannot be upgraded. In the future, you will have the ability to move from {{ site.data.products.serverless }} to a paid version of {{ site.data.products.dedicated }}.
 
 ## Product features
 

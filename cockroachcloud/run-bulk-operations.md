@@ -18,12 +18,12 @@ The examples below include details on the storage options available with each of
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="ccfree">{{ site.data.products.serverless }} </button>
-  <button class="filter-button" data-scope="ccded">CockroachCloud</button>
+  <button class="filter-button" data-scope="ccded">{{ site.data.products.dedicated }}</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="ccfree">
 
-For guidance on connecting to your CockroachCloud cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-free-cluster.html).
+For guidance on connecting to your {{ site.data.products.serverless }} cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-free-cluster.html).
 
 In {{ site.data.products.serverless }} clusters, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html), a per-user bulk file storage, is the **only available storage option** for `BACKUP`, `RESTORE`, and `IMPORT` operations.
 
@@ -51,7 +51,7 @@ For information on `userfile` commands, visit the following pages:
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud, which has this feature enabled by default.
+Only core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
 To create a core changefeed in {{ site.data.products.serverless }}, use the following example.
@@ -70,7 +70,7 @@ For further information on changefeeds, read [Stream Data Out of CockroachDB](..
 
 <section class="filter-content" markdown="1" data-scope="ccded">
 
-For guidance on connecting to your CockroachCloud cluster, visit [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+For guidance on connecting to your {{ site.data.products.dedicated }} cluster, visit [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 The examples below use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
@@ -91,7 +91,7 @@ For more information on taking backups and restoring to your cluster, read the f
 - [Full and incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html)
 - [Scheduled backups](../{{site.versions["stable"]}}/manage-a-backup-schedule.html)
 
-### Import data into your CockroachCloud cluster
+### Import data into your {{ site.data.products.dedicated }} cluster
 
 To import a table into your cluster:
 
@@ -108,7 +108,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 
 Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more examples and guidance.
 
-### Export data out of CockroachCloud
+### Export data out of {{ site.data.products.dedicated }}
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
 

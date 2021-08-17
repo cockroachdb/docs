@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters clearfix">
     <a href="create-a-free-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level"{{ site.data.products.dedicated }}
 </div>
 
 This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.

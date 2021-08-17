@@ -4,11 +4,11 @@ summary: Get answers to frequently asked questions about CockroachCloud
 toc: true
 ---
 
-This page answers the frequently asked questions about {{ site.data.products.serverless }} and the paid version of CockroachCloud.
+This page answers the frequently asked questions about {{ site.data.products.serverless }} and the paid version of {{ site.data.products.dedicated }}.
 
 <div class="filters clearfix">
     <a href="free-faqs.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="frequently-asked-questions.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="frequently-asked-questions.html"><button class="filter-button page-level current"{{ site.data.products.dedicated }}
 </div>
 
 ## Cluster basics
@@ -28,9 +28,9 @@ We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS 
 
 If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
 
-### How do CockroachCloud free trials work?
+### How do {{ site.data.products.dedicated }} free trials work?
 
-CockroachCloud offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
+{{ site.data.products.dedicated }} offers a 30-day free trial. Free trials require a credit card so we can validate that you are not a bot and provide a seamless transition into production. Free trials apply when you:
 
 - Create the first cluster in your organization
 - Select 4 or fewer nodes (we recommend starting with 3 so you can try scaling)
@@ -40,7 +40,7 @@ Once the 30-day period is over, your trial cluster can be scaled beyond 4 nodes.
 
 ### How do I connect to my cluster?
 
-To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+To connect to a cluster, you need to authorize your network, create a SQL user, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 ## Security
 
@@ -60,7 +60,7 @@ Because we are relying on the cloud provider's encryption implementation, we do 
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-CockroachCloud is a single-tenant offering and resources are not shared between clusters.
+{{ site.data.products.dedicated }} is a single-tenant offering and resources are not shared between clusters.
 
 ### Who has access to my cluster data?
 
@@ -116,7 +116,7 @@ GCP clusters can also set up VPC peering after the cluster is created, but you w
 
 ### Are enterprise features available to me?
 
-Yes, CockroachCloud clusters run the enterprise version of CockroachDB and all [enterprise features](../stable/enterprise-licensing.html) are available to you.
+Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of CockroachDB and all [enterprise features](../stable/enterprise-licensing.html) are available to you.
 
 ### Is there a public API for CockroachCloud?
 
@@ -126,22 +126,22 @@ Our team is currently working on creating a public API for CockroachCloud. The i
 
 All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
 
-### What latency should I expect when making a call to CockroachCloud?
+### What latency should I expect when making a call to {{ site.data.products.dedicated }}?
 
 Response times are under 10ms for public access but typically much lower. Additionally, using [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink) will reduce latency.
 
 ## Support
 
-### Where can I find the Support Policy and Service Level Agreement (SLA) for CockroachCloud?
+### Where can I find the Support Policy and Service Level Agreement (SLA) for {{ site.data.products.dedicated }}?
 
 The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions):
 
 - [CockroachCloud Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
 - [CockroachCloud SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
 
-### Am I in control of upgrades for my CockroachCloud clusters?
+### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
-Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. CockroachCloud clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 

@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters clearfix">
     <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level"{{ site.data.products.dedicated }}
 </div>
 
 This page shows you how to connect to your {{ site.data.products.serverless }} cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).

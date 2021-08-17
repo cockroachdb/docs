@@ -261,4 +261,4 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
 ## See also
 
 - [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
-- [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)
+- [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)
