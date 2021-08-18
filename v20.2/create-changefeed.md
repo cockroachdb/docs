@@ -117,7 +117,7 @@ Option | Value | Description
 
 #### Avro limitations
 
-You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro). Below is a list of unsupported SQL types and values for Avro changefeeds:
+Below is a list of unsupported SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
 - [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.

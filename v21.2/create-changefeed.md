@@ -118,20 +118,36 @@ Option | Value | Description
 
 #### Avro limitations
 
-You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro). Below are clarifications for particular SQL types and values for Avro changefeeds:
+Below are clarifications for particular SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
 - [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
 
-  For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
+    For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, base 2 `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
-  For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set).
+    For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set, or `1000000000000000000000000000000000000000000000000000000000000000` when base 2).
 
-  This example encodes into an array as follows:
+    This example is base-10 encoded into an array as follows:
 
-  ~~~
-  {"array": [1, <first 64 bits>, <second 64 bits>, 0 or 9223372036854775808]}
-  ~~~
+    ~~~
+    {"array": [1, <first 64 bits>, <second 64 bits>, 0 or 9223372036854775808]}
+    ~~~
+
+    For downstream processing, it is necessary to base 2 encode every element in the array (except for the first element). The first number in the array gives you the number of bits to take from the last base 2 number — that is, the most significant bits. So, in the example above this would be `1`. Finally, all the base 2 numbers can be appended together, which will result in the original number of bits, 129.
+
+    To clarify this process, in another example in which you had a bitfield of 135 bits, the array would be as follow when base 10:
+
+    ~~~
+    {"array": [7, 18293058736425533439, 18446744073709551615, 13690942867206307840]}
+    ~~~
+
+    To then work with this, you would convert each of the elements in the array to base 2 numbers, besides the first element:
+
+    ~~~
+    [7, 1111110111011011111111111111111111111111111111111111111111111111, 1111111111111111111111111111111111111111111111111111111111111111, 1011111000000000000000000000000000000000000000000000000000000000]
+    ~~~
+
+    Next, you use the first number to take the number of bits from the last base 2 element, `1011111`. Finally, you append each of the base 2 numbers (the last number from the array being truncated), which in this case, results in 135 bits.
 
 #### Avro types
 
