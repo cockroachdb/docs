@@ -60,7 +60,7 @@ Contention](performance-best-practices-overview.html#understanding-and-avoiding-
 
 ## Does CockroachDB support `JOIN`?
 
-[CockroachDB supports SQL joins](joins.html).  We are working to improve their execution performance.
+[CockroachDB supports SQL joins](joins.html).
 
 ## Does CockroachDB support JSON or Protobuf datatypes?
 
