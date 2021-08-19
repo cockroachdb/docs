@@ -1,6 +1,6 @@
 ---
 title: Quickstart with CockroachCloud Free (beta)
-summary: Learn how to create and use your free CockroachCloud cluster.
+summary: Learn how to create and use your free {{ site.data.products.db }} cluster.
 toc: true
 ---
 
@@ -9,14 +9,14 @@ toc: true
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page guides you through the quickest way to get started with CockroachDB by setting up a {{ site.data.products.serverless }} cluster with the default options and minimal connection security. For information on how to create a CockroachCloud cluster with other options, see the [Learn more](#learn-more) section.
+This page guides you through the quickest way to get started with CockroachDB by setting up a {{ site.data.products.serverless }} cluster with the default options and minimal connection security. For information on how to create a {{ site.data.products.db }} cluster with other options, see the [Learn more](#learn-more) section.
 
 {% include cockroachcloud/free-limitations.md %}
 
 ## Step 1. Create a free cluster
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Clusters** page, click **Create Cluster**.
 1. On the **Create your cluster** page, select **{{ site.data.products.serverless-plan }}**.
 1. Click **Create your free cluster**.

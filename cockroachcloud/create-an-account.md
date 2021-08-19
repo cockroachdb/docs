@@ -1,10 +1,10 @@
 ---
-title: Create a CockroachCloud Account
-summary: Learn how to create and delete a CockroachCloud Account
+title: Create a {{ site.data.products.db }} account
+summary: Learn how to create and delete a {{ site.data.products.db }} account
 toc: true
 ---
 
-Before you [create a CockroachCloud cluster](create-your-cluster.html), you must first create a CockroachCloud account. You can register for CockroachCloud using a GitHub account or an email address.
+Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for CockroachCloud using a GitHub account or an email address.
 
 ## Register a new account
 
@@ -54,7 +54,7 @@ GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/g
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-If you have already [registered a new CockroachCloud account](#register-a-new-account) using GitHub, you can log in to CockroachCloud:
+If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using GitHub, you can log in to CockroachCloud:
 
 1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
 1. Click **Log in with GitHub**.
@@ -64,7 +64,7 @@ If you have already [registered a new CockroachCloud account](#register-a-new-ac
 </section>
 
 <section class="filter-content" markdown="1" data-scope="email">
-If you have already [registered a new CockroachCloud account](#register-a-new-account) using an email address, you can log in to CockroachCloud:
+If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using an email address, you can log in to CockroachCloud:
 
 1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
 1. Enter your **Email** and **Password**.

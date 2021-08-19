@@ -90,7 +90,7 @@ Note that these limitations are specific to upgrades from v19.2 to v20.1; they d
 
 To start the upgrade process:
 
-1. [Sign in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. [Sign in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 
 2. In the **Clusters** list, select the cluster you want to upgrade.
 

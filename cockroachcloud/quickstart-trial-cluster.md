@@ -1,6 +1,6 @@
 ---
 title: Quickstart with CockroachCloud
-summary: Learn how to create and use your CockroachCloud cluster.
+summary: Learn how to create and use your {{ site.data.products.db }} cluster.
 toc: true
 ---
 
@@ -15,13 +15,13 @@ To run CockroachDB on your local machine instead, see [Start a Local Cluster](..
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 
 ## Step 1. Create a free trial cluster
 
 For this tutorial, we will create a 3-node GCP cluster in the `us-west2` region.
 
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Overview** page, click **Create Cluster**.
 1. On the **Create new cluster** page, for **Cloud provider**, select **Google Cloud**.
 1. For **Regions & nodes**, use the default selection of `California (us-west)` region and 3 nodes.

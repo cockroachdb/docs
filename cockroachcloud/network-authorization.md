@@ -1,6 +1,6 @@
 ---
 title: Network Authorization
-summary: Learn about the network authorization features for CockroachCloud clusters.
+summary: Learn about the network authorization features for {{ site.data.products.db }} clusters.
 toc: true
 ---
 

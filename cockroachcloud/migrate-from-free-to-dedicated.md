@@ -1,6 +1,6 @@
 ---
 title: Migrate from a CockroachCloud Free (beta) to CockroachCloud Cluster
-summary: Learn how to migrate data from a CockroachCloud Free (beta) cluster into a paid CockroachCloud cluster.
+summary: Learn how to migrate data from a CockroachCloud Free (beta) cluster into a paid {{ site.data.products.db }} cluster.
 toc: true
 ---
 

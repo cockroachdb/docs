@@ -141,7 +141,7 @@ Where `<connection_string>` is the `(sql)` connection URL provided in the demo c
 
 Where `<connection_string>` is the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
 
-Note that you need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+Note that you need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
 
 </section>
 

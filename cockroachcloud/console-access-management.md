@@ -4,7 +4,7 @@ summary: Manage your account roles and permissions.
 toc: true
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
 
 ## Organization
 

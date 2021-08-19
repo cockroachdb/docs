@@ -1,10 +1,10 @@
 ---
 title: Run Bulk Operations from Your Cluster
-summary: Run backups, restores, and imports from your CockroachCloud cluster.
+summary: Run backups, restores, and imports from your {{ site.data.products.db }} cluster.
 toc: true
 ---
 
-The CockroachCloud tiers offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples.
+The CockroachCloud tiers offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in each {{ site.data.products.db }} cluster tier and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
@@ -76,7 +76,7 @@ The examples below use Amazon S3 for demonstration purposes. For guidance on con
 
 ### Backup and restore your CockroachCloud data
 
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
+Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
 
 The following examples show how to run manual backups and restores:
 

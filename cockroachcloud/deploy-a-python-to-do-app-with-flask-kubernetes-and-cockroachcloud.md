@@ -9,7 +9,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 
 ## Before you begin
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_python_flask" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_cc_python_flask" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 
 1. Install the following tools, if you do not already have them:
 

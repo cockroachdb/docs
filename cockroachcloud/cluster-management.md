@@ -54,13 +54,13 @@ The **Overview** page displays details about the selected {{ site.data.products.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for CockroachCloud cluster configuration.
+Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for {{ site.data.products.db }} cluster configuration.
 
 {% include cockroachcloud/planning-your-cluster.md %}
 
 ## View cluster overview
     
-The **Overview** page displays details about the selected CockroachCloud cluster:
+The **Overview** page displays details about the selected {{ site.data.products.db }} cluster:
 
 - The **Current Charges** and next billing date for the cluster
 - The cluster's **Cloud** provider
@@ -134,7 +134,7 @@ You can add or remove up to three regions at a time through the Console. See the
 {% endcomment %}
 ## Restore data from a backup
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.

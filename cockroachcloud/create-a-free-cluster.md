@@ -9,17 +9,17 @@ toc: true
     <a href="create-your-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {% include cockroachcloud/free-limitations.md %}
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_free_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_free_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 
 ## Step 1. Start the cluster creation process
 
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 3. On the **Overview** page, click **Create Cluster**.
 

@@ -19,7 +19,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### How do I start using {{ site.data.products.serverless }}?
 
-To get started with {{ site.data.products.serverless }}, <a href="https://cockroachlabs.cloud/signup?referralId=docs_free_faq" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
+To get started with {{ site.data.products.serverless }}, <a href="https://cockroachlabs.cloud/signup?referralId=docs_free_faq" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
 
 ### What are the usage limits of Cockroach Cloud Free (beta)?
 

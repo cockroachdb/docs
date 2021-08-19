@@ -64,7 +64,7 @@ Because we are relying on the cloud provider's encryption implementation, we do 
 
 ### Who has access to my cluster data?
 
-The Cockroach Labs SRE team has direct access to CockroachCloud cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions).
+The Cockroach Labs SRE team has direct access to {{ site.data.products.db }} cluster data. They adhere to the confidentiality agreement described in our [Terms and Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions).
 
 ## Cluster maintenance
 
@@ -84,7 +84,7 @@ Today, we do not automatically scale nodes based on your capacity usage. To add 
 
 ### Who is responsible for backup?
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
 The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
 
@@ -100,7 +100,7 @@ CockroachCloud automated backups cannot be downloaded, but you can manually [run
 
 ### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
 
-Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["stable"]}}/restore.html) to your CockroachCloud cluster.
+Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster.
 
 {{site.data.alerts.callout_danger}}
 If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter.
@@ -152,8 +152,8 @@ CockroachCloud supports the latest major version of CockroachDB and the version 
 The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a publicly available page that displays the current uptime status of the following services:
 
 - [**{{ site.data.products.db }} Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for CockroachCloud, cluster creation and management, and user management.
-- **AWS**: The status reported here reflects the health of existing AWS CockroachCloud clusters and the ability to provision new clusters in AWS.
-- **GCP**: The status reported here reflects the health of existing GCP CockroachCloud clusters and the ability to provision new clusters in GCP.
+- **AWS**: The status reported here reflects the health of existing AWS {{ site.data.products.db }} clusters and the ability to provision new clusters in AWS.
+- **GCP**: The status reported here reflects the health of existing GCP {{ site.data.products.db }} clusters and the ability to provision new clusters in GCP.
 
 ## Cluster troubleshooting
 
