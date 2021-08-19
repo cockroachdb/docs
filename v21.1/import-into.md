@@ -170,16 +170,6 @@ The following provide connection examples to cloud storage providers. For more i
   <button class="filter-button" data-scope="gcs">Google Cloud Storage</button>
 </div>
 
-{% assign connection = null %}
-
-{% if page.s3 == true %}
-  {% assign connection = "'s3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'" %}
-{% elsif page.gcs == true %}
-  {% assign connection = "'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'" %}
-{% elsif page.azure == true %}
-  {% assign connection = "'azure://{CONTAINER NAME}/{customers.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'" %}
-{% endif %}
-
 <section class="filter-content" markdown="1" data-scope="s3">
 
 {% include {{ page.version.version }}/backups/aws-auth-note.md %}
@@ -190,7 +180,7 @@ The following provide connection examples to cloud storage providers. For more i
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
-      {{ connection }}
+      's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
     );
 ~~~
 
@@ -251,7 +241,7 @@ For more information about importing data from Avro, including examples, see [Mi
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
-      {{ connection }}
+      'azure://{CONTAINER NAME}/{customers.csv}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={ENCODED KEY}'
     );
 ~~~
 
@@ -315,7 +305,7 @@ For more information about importing data from Avro, including examples, see [Mi
 ~~~ sql
 > IMPORT INTO customers (id, name)
     CSV DATA (
-      {{ connection }}
+      'gs://{BUCKET NAME}/{customers.csv}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
     );
 ~~~
 
