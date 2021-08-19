@@ -167,9 +167,9 @@ CockroachDB does not support database connections across HTTP(S). All database c
 
 As of v21.1, CockroachDB includes the [Cluster API](cluster-api.html), a REST API that accepts HTTP(S) requests for monitoring data.
 
-In a future release, we plan to add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
+In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69010)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
 
 ### `IMPORT` into a `REGIONAL BY ROW` table
 
