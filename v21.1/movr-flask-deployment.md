@@ -105,7 +105,6 @@ We do not recommend deploying insecure web applications on public networks.
 1. In the [API Library](https://console.cloud.google.com/apis/library), enable the following APIs for your project:
     - Container Registry API
     - Cloud Run Admin API
-    - Secret Manager API
     - Serverless VPC Access API
 
 1. **Optional:** Enable the [Google Maps Embed API](https://console.cloud.google.com/apis/library), create an API key, restrict the API key to all URLS on your domain name (e.g., `https://site.com/*`), and retrieve the API key.
@@ -165,6 +164,8 @@ We do not recommend deploying insecure web applications on public networks.
 
 ### Containerize the application
 
+1. Create a new folder named `certs` at the top level of the `movr-flask` project, and then copy the root certificate that you downloaded for your cluster to the new folder. The `Dockerfile` for the application contains instructions to mount this folder and certificate onto the container.
+
 1. Build and run the Docker image locally.
 
     {% include copy-clipboard.html %}
@@ -183,12 +184,9 @@ We do not recommend deploying insecure web applications on public networks.
 
 ### Deploy the application
 
-1. From the [Secret Manager console](https://console.cloud.google.com/security/secret-manager), create a secret for the CockroachCloud cluster's root certificate that you downloaded earlier.
-
 1. Create a [Google Cloud Run](https://console.cloud.google.com/run/) service for the application, in one of the regions in which the database is deployed (e.g., `gcp-us-east1`):
     - Select the container image URL for the image that you just pushed to the container registry.
     - Under **Advanced settings**->**Variables & Secrets**, do the following:
-        - Mount the secret that you created for the CockroachCloud certificate on the `certs` volume, with a full path ending in the filename of the cert (e.g., `certs/root.crt`).
         - Set an environment variable named `DB_URI` to the VPC connection string for a node on the CockroachCloud cluster, in the region in which this first Cloud Run service is located.    
 
             Verify that the `DB_URI` value:
@@ -198,7 +196,7 @@ We do not recommend deploying insecure web applications on public networks.
 
             For example: `cockroachdb://user:password@internal-cluster.gcp-us-east1.cockroachlabs.cloud:26257/movr?sslmode=verify-full&sslrootcert=certs/root.crt`
         - Set an environment variable named `REGION` to the CockroachCloud region (e.g., `gcp-us-east1`).
-        - **Optional:** Create a secret for your Google Maps API key and use it to set the environment variable `API_KEY`.
+        - **Optional:** Create a secret for your Google Maps API key and use it to set the environment variable `API_KEY`. You may need to enable the Secret Manager API to do this.
 
 1. Repeat the Google Cloud Run set-up steps for all regions.
 
