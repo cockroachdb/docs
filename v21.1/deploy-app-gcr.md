@@ -192,7 +192,7 @@ The project directory structure should look like this:
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
     {{site.data.alerts.end}}
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud init
     ~~~
@@ -209,7 +209,7 @@ From the [Secret Manager](https://console.cloud.google.com/security/secret-manag
 
 1. Build the Docker image locally:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker build -t gcr.io/<gcp_project_id>/crdb-sample:v1 .
     ~~~
@@ -218,14 +218,14 @@ From the [Secret Manager](https://console.cloud.google.com/security/secret-manag
 
 1. Authenticate Docker with GCP's Container Registry:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ gcloud auth configure-docker
     ~~~
 
 1. Push the Docker image to the project's registry.
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ docker push gcr.io/<gcp_project_id>/crdb-sample:v1
     ~~~
@@ -246,7 +246,7 @@ From the [Secret Manager](https://console.cloud.google.com/security/secret-manag
 
 After the revision is deployed, you should be able to send requests to the application from a browser, or using a REST client (e.g., `curl`). For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ curl https://<GCR_HOST>/customer/
 ~~~
