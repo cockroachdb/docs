@@ -15,7 +15,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### Why are certain regions in AWS and GCP not available?
 
-We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the CockroachCloud Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
 
 **Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
@@ -74,7 +74,7 @@ Contact [Support](https://support.cockroachlabs.com/hc/en-us) to change your clu
 
 ### How do I add nodes?
 
-You can add nodes by accessing the **Clusters** page on the [CockroachCloud Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
+You can add nodes by accessing the **Clusters** page on the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) and clicking the **...** button for the cluster you want to add or delete nodes for. See [Cluster Mangement](cluster-management.html?filters=dedicated#add-or-remove-nodes-from-a-cluster) for more details.
 
 {% include cockroachcloud/nodes-limitation.md %}
 
@@ -141,7 +141,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
-Yes, you can apply major release upgrades directly [through the CockroachCloud Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, you can apply major release upgrades directly [through the {{ site.data.products.db }} Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
@@ -151,7 +151,7 @@ CockroachCloud supports the latest major version of CockroachDB and the version 
 
 The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a publicly available page that displays the current uptime status of the following services:
 
-- [**CockroachCloud Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for CockroachCloud, cluster creation and management, and user management.
+- [**{{ site.data.products.db }} Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for CockroachCloud, cluster creation and management, and user management.
 - **AWS**: The status reported here reflects the health of existing AWS CockroachCloud clusters and the ability to provision new clusters in AWS.
 - **GCP**: The status reported here reflects the health of existing GCP CockroachCloud clusters and the ability to provision new clusters in GCP.
 

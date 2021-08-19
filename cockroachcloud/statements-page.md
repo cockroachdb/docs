@@ -10,7 +10,7 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, click **Statements** in the left-hand navigation of the CockroachCloud Console.
+To view this page, click **Statements** in the left-hand navigation of the {{ site.data.products.db }} Console.
 
 ## Search and filter by application
 
@@ -30,7 +30,7 @@ Use this page to identify SQL statements that you may want to [troubleshoot](../
 This page is initially blank on clusters where no queries have yet been executed.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/cockroachcloud/statements_page.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_page.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 Parameter | Description
 -----|------------
@@ -121,7 +121,7 @@ When you activate diagnostics for a fingerprint, CockroachCloud waits for the ne
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 - Click the **Activate** button to begin collecting diagnostics for the fingerprint. This will open the list of **Statement diagnostics** with a status next to each activated diagnostic.
 	- `WAITING FOR QUERY` indicates that a SQL statement matching the fingerprint has not yet been recorded.
@@ -135,7 +135,7 @@ The information collected in the bundle can be used to diagnose problematic SQL 
 
 The **Logical Plan** section displays CockroachCloud's query plan for an [explainable statement](../{{site.versions["stable"]}}/sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](../{{site.versions["stable"]}}/explain.html).
 
-<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 By default, the logical plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](../{{site.versions["stable"]}}/cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](../{{site.versions["stable"]}}/set-cluster-setting.html) command:
 

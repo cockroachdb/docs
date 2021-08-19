@@ -100,7 +100,7 @@ Where `{username}` and `{password}` are the database username and password you c
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-1. In the CockroachCloud Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
+1. In the {{ site.data.products.db }} Console, select the **Connection Parameters** tab of the **Connection Info** dialog.
 
 1. In a text editor, modify the connection parameters in `Program.cs` with the settings to connect to your cluster:
 

@@ -3,7 +3,10 @@ serverless: CockroachCloud Free (beta)
 serverless-plan: CockroachCloud Free #i.e. "1. Choose the **CockroachCloud Free** plan."
 # to be Serverless
 dedicated: CockroachCloud
-# to be CockroachDB Dedicated
+# to be CockroachDB Managed
 core: CockroachDB Core
+#stays the same
 enterprise: CockroachDB Enterprise
 # to be CockroachDB Self-Hosted
+db: CockroachCloud
+# to be CockroachDB

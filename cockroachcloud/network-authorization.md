@@ -62,7 +62,7 @@ There are four steps to setting up an AWS PrivateLink connection between your {{
 
 ### Set up a cluster
 
-1.  Use the CockroachCloud Console to [create your {{ site.data.products.dedicated }} cluster](create-your-cluster.html) on AWS in the same region as your application.
+1.  Use the {{ site.data.products.db }} Console to [create your {{ site.data.products.dedicated }} cluster](create-your-cluster.html) on AWS in the same region as your application.
  
     {{site.data.alerts.callout_info}}
     If you have a multi-region cluster, you will have to create a PrivateLink connection for each region you are operating in.

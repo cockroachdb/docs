@@ -92,7 +92,7 @@ To change your account name:
 
 ### Change your email
 
-If you registered with an email address, you can change your account password in the CockroachCloud Console:
+If you registered with an email address, you can change your account password in the {{ site.data.products.db }} Console:
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.
@@ -104,7 +104,7 @@ If you registered with an email address, you can change your account password in
 
 ### Change your account password
 
-If you registered with an email address, you can change your account password in the CockroachCloud Console:
+If you registered with an email address, you can change your account password in the {{ site.data.products.db }} Console:
 
 1. Click the account icon in the top right corner.
 1. From the dropdown, select **My Account**.

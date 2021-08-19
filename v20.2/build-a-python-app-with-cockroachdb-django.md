@@ -140,7 +140,7 @@ Where:
 - `<password>` is the password that you created for the `<user>`.
 - `<globalhost>` is the name of the {{ site.data.products.serverless }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - `<cluster_name>` is the name of your cluster.
-- `<certs_dir>` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+- `<certs_dir>` is the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 {{site.data.alerts.callout_info}}
 If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, hostname, and cluster name will be pre-populated.

@@ -9,7 +9,7 @@ toc: true
     <a href="create-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a CockroachCloud cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {{site.data.alerts.callout_success}}
 To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart](quickstart.html).

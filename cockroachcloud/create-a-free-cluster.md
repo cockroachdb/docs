@@ -9,7 +9,7 @@ toc: true
     <a href="create-your-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
 
 {% include cockroachcloud/free-limitations.md %}
 

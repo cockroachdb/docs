@@ -91,7 +91,7 @@ The [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) generates
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the CockroachCloud Console [earlier](#set-up-your-cluster-connection):
+1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the {{ site.data.products.db }} Console [earlier](#set-up-your-cluster-connection):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

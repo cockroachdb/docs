@@ -90,7 +90,7 @@ No, change data capture and partitioning are not available on {{ site.data.produ
 
 ### Do you have a UI? How can I see details?
 
-Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for {{ site.data.products.serverless }} clusters.
+Yes, you can view and your clusters in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/). However, [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages (e.g., **Statements** or **Database** pages) are not currently available for {{ site.data.products.serverless }} clusters.
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 

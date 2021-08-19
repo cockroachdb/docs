@@ -139,7 +139,7 @@ Where `<connection_string>` is the `(sql/tcp)` connection URL provided in the de
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Where `<connection_string>` is the connection string provided in the **Connection info** window of the CockroachCloud Console.
+Where `<connection_string>` is the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
 
 Note that you need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
 

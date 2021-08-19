@@ -20,7 +20,7 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Step 1. Select a connection method
 
-1. In the top right corner of the CockroachCloud Console, click the **Connect** button.
+1. In the top right corner of the {{ site.data.products.db }} Console, click the **Connect** button.
 
     The **Connect** modal displays on the **Step 2. Connect > Command Line** subtab.
 

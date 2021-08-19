@@ -17,7 +17,7 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
+**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
 
 ### Invalid cluster name in a third-party tool
 
@@ -27,7 +27,7 @@ The following error is displayed if you try to connect to a [third-party tool](.
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
-**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for {{ site.data.products.serverless }} clusters, or `<cluster-name>.<database>` for paid {{ site.data.products.dedicated }} clusters.
+**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for {{ site.data.products.serverless }} clusters, or `<cluster-name>.<database>` for paid {{ site.data.products.dedicated }} clusters.
 
 For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 
@@ -82,7 +82,7 @@ Failed running "sql"
 **Solution:**
 Check if you are using the correct host name.
 
-You can find your host name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
+You can find your host name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
 
 ## Security errors
 

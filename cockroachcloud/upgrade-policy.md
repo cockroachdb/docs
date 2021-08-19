@@ -24,7 +24,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 [Major version releases](../releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.2.x → v21.1.x).
 
-When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the CockroachCloud Console](upgrade-to-v21.1.html) for clusters using the paid version of {{ site.data.products.dedicated }}. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
+When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the {{ site.data.products.db }} Console](upgrade-to-v21.1.html) for clusters using the paid version of {{ site.data.products.dedicated }}. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
 
 ### Support downgrade for older CockroachDB versions
 
@@ -32,11 +32,11 @@ As CockroachDB releases new major versions, older versions reach their End of Su
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
 
-If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. You can [upgrade your cluster](upgrade-to-v21.1.html) directly from the CockroachCloud Console.
+If you are running a CockroachDB version nearing EOS, you will be reminded at least one month before that version’s EOS that your clusters must be upgraded by the EOS date to avoid losing support. You can [upgrade your cluster](upgrade-to-v21.1.html) directly from the {{ site.data.products.db }} Console.
 
 ### Rollback support
 
-When you upgrade to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can trigger a rollback to the previous major version directly from the CockroachCloud Console. If you see problems after the upgrade has been finalized, it will not be possible to roll back via the CockroachCloud Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+When you upgrade to a new major version, once all nodes are running the new version, you have approximately 72 hours before the upgrade is automatically finalized. During this window, if you see unexpected behavior, you can trigger a rollback to the previous major version directly from the {{ site.data.products.db }} Console. If you see problems after the upgrade has been finalized, it will not be possible to roll back via the {{ site.data.products.db }} Console; you will have to [reach out to support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## See also
 

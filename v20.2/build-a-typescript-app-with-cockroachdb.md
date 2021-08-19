@@ -42,7 +42,7 @@ Open the `ormconfig.ts` file, and edit the ORM configuration parameters:
 
 - At the top of the file, uncomment the `import * as fs from "fs";` line.
 
-    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the CockroachCloud Console.
+    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the {{ site.data.products.db }} Console.
 - Replace the value for `host` with the name of the {{ site.data.products.serverless-plan }} host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
 - Replace the value for `port` with the port to your cluster.
 - Replace the value for `username` with the user you created earlier.
@@ -50,7 +50,7 @@ Open the `ormconfig.ts` file, and edit the ORM configuration parameters:
 - Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
 - Remove the `ssl: true` key-value pair.
 - Remove the `extra` object and its contents.
-- Uncomment the `ssl` object with the `ca` key-value pair, and edit the `fs.readFileSync('certs/cc-ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+- Uncomment the `ssl` object with the `ca` key-value pair, and edit the `fs.readFileSync('certs/cc-ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 </section>
 

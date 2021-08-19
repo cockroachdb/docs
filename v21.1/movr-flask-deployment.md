@@ -126,7 +126,7 @@ We do not recommend deploying insecure web applications on public networks.
     - Under **Advanced settings**->**Variables & Secrets**, do the following:
         - Set an environment variable named `DB_URI` to the connection string for a gateway node on the CockroachCloud cluster, in the region in which this first Cloud Run service is located (e.g., `cockroachdb://user:password@movr-db.gcp-us-east1.cockroachlabs.cloud:26257/movr?sslmode=verify-full&sslrootcert=certs/movr-db-ca.crt`).
         - Set an environment variable named `REGION` to the CockroachCloud region (e.g., `gcp-us-east1`).
-        - Create a secret for the CockroachCloud certificate, and mount it on the `certs` volume, with a full path ending in the name of the cert (e.g., `certs/movr-db-ca.crt`). This is the cert downloaded from the CockroachCloud Console, and referenced in the `DB_URI` connection string.
+        - Create a secret for the CockroachCloud certificate, and mount it on the `certs` volume, with a full path ending in the name of the cert (e.g., `certs/movr-db-ca.crt`). This is the cert downloaded from the {{ site.data.products.db }} Console, and referenced in the `DB_URI` connection string.
         - **Optional:** Create a secret for your Google Maps API key and use it to set the environment variable `API_KEY`.
 
 1. Repeat the Google Cloud Run set-up steps for all regions.
