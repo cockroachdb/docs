@@ -4,7 +4,7 @@ summary: Learn about the user authorization features for CockroachCloud Cockroac
 toc: true
 ---
 
-CockroachCloud requires you to create SQL users to access the cluster.
+{{ site.data.products.db }} requires you to create SQL users to access the cluster.
 
 By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 

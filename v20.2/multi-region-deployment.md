@@ -22,7 +22,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, using [CockroachCloud](../cockroachcloud/quickstart.html):
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, using [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html):
 
 1. Create a {{ site.data.products.db }} account at [https://cockroachlabs.cloud](https://cockroachlabs.cloud).
 
@@ -176,8 +176,8 @@ To serve a secure web application, you also need a public domain name!
     Where:
     <ul>
       <li>`<context-name>` is the cluster context for a regional deployment. To get the contexts for all deployments, run `$ kubectl config get-contexts -o name`.</li>
-      <li>`<full-path-to-cert>` is the full directory path to the certificates for [the multi-region {{ site.data.products.db }} cluster](#multi-region-database-deployment). These certificates are available for download from the CockroachCloud console, and they are the same for all regions.</li>
-      <li>`<connection-string>` is the full connection string to the gateway node of [a regional CockroachCloud deployment](#multi-region-database-deployment). It should look something like:<br> `postgresql://user:password@region.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs-dir/movr-app-ca.crt`</li>
+      <li>`<full-path-to-cert>` is the full directory path to the certificates for [the multi-region {{ site.data.products.db }} cluster](#multi-region-database-deployment). These certificates are available for download from the {{ site.data.products.db }} console, and they are the same for all regions.</li>
+      <li>`<connection-string>` is the full connection string to the gateway node of [a regional {{ site.data.products.db }} deployment](#multi-region-database-deployment). It should look something like:<br> `postgresql://user:password@region.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs-dir/movr-app-ca.crt`</li>
       <li>`<APIkey>` is the API key for the [Google Maps Embed API](https://console.cloud.google.com/apis/library). This API key is *not* required to run the demo application. Not providing a Google Maps Embed API key will not break the application.</li>
     </ul>
 
@@ -269,7 +269,7 @@ Some time after you have deployed your application, you will likely need to push
 ## See also
 
 - [MovR (live demo)](https://movr.cloud)
-- [CockroachCloud documentation](../cockroachcloud/quickstart.html)
+- [{{ site.data.products.db }} documentation](../cockroachcloud/quickstart.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)

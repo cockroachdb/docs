@@ -15,10 +15,10 @@ This tutorial shows you how to build a [Spring Boot](https://spring.io/projects/
 
 ## Step 1. Start CockroachDB
 
-Choose whether to run a local cluster or a free CockroachDB cluster on CockroachCloud.
+Choose whether to run a local cluster or a free CockroachDB cluster on {{ site.data.products.serverless }}.
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 

@@ -74,7 +74,7 @@ cockroachdb://demo:demo4276@127.0.0.1:26257?sslmode=require
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Copy and paste the connection string from the CockroachCloud console, and replace the `postgres` prefix with `cockroachdb`. Make sure that the right username, password, and certificate are specified as well.
+Copy and paste the connection string from the {{ site.data.products.db }} console, and replace the `postgres` prefix with `cockroachdb`. Make sure that the right username, password, and certificate are specified as well.
 
 For example:
 

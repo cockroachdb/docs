@@ -11,7 +11,7 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [fu
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html). You can also use [CockroachCloud](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 {{site.data.alerts.end}}
 
 You can [backup a full cluster](#backup-a-cluster), which includes:

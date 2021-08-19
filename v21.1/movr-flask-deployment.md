@@ -21,7 +21,7 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, using [CockroachCloud](../cockroachcloud/quickstart.html):
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, using [{{ site.data.products.dedicated }}](../cockroachcloud/quickstart-trial-cluster.html):
 
 1. Create a {{ site.data.products.db }} account at [https://cockroachlabs.cloud](https://cockroachlabs.cloud).
 
@@ -125,8 +125,8 @@ We do not recommend deploying insecure web applications on public networks.
     - Select the container image URL for the image that you just pushed to the container registry.
     - Under **Advanced settings**->**Variables & Secrets**, do the following:
         - Set an environment variable named `DB_URI` to the connection string for a gateway node on the {{ site.data.products.db }} cluster, in the region in which this first Cloud Run service is located (e.g., `cockroachdb://user:password@movr-db.gcp-us-east1.cockroachlabs.cloud:26257/movr?sslmode=verify-full&sslrootcert=certs/movr-db-ca.crt`).
-        - Set an environment variable named `REGION` to the CockroachCloud region (e.g., `gcp-us-east1`).
-        - Create a secret for the CockroachCloud certificate, and mount it on the `certs` volume, with a full path ending in the name of the cert (e.g., `certs/movr-db-ca.crt`). This is the cert downloaded from the {{ site.data.products.db }} Console, and referenced in the `DB_URI` connection string.
+        - Set an environment variable named `REGION` to the Cloud provider region (e.g., `gcp-us-east1`).
+        - Create a secret for the {{ site.data.products.db }} certificate, and mount it on the `certs` volume, with a full path ending in the name of the cert (e.g., `certs/movr-db-ca.crt`). This is the cert downloaded from the {{ site.data.products.db }} Console, and referenced in the `DB_URI` connection string.
         - **Optional:** Create a secret for your Google Maps API key and use it to set the environment variable `API_KEY`.
 
 1. Repeat the Google Cloud Run set-up steps for all regions.
@@ -162,7 +162,7 @@ Some time after you have deployed your application, you will likely need to push
 ## See also
 
 - [MovR (live demo)](https://movr.cloud)
-- [CockroachCloud documentation](../cockroachcloud/quickstart.html)
+- [{{ site.data.products.dedicated }} documentation](../cockroachcloud/quickstart-trial-cluster.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)

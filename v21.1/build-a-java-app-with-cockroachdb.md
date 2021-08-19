@@ -24,7 +24,7 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 ## Step 1. Start CockroachDB
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 

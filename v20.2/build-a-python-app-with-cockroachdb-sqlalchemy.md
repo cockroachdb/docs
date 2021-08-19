@@ -36,7 +36,7 @@ For other ways to install SQLAlchemy, see the [official documentation](http://do
 ## Step 2. Start CockroachDB
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.db }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
