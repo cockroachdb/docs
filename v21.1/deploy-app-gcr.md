@@ -1,6 +1,6 @@
 ---
-title: Deploy a Containerized Django Application with Google Cloud Run
-summary: Learn how to use Google Cloud Run to deploy a Django application that communicates with CockroachCloud Free Tier.
+title: Deploy a Containerized Application with Google Cloud Run
+summary: Learn how to use Google Cloud Run and CockroachCloud to deploy a serverless application.
 toc: true
 twitter: false
 ---
