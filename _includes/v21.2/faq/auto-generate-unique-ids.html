@@ -1,0 +1,107 @@
+To auto-generate unique row IDs, use the [`UUID`](uuid.html) column with the `gen_random_uuid()` [function](functions-and-operators.html#id-generation-functions) as the [default value](default-value.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users (
+        id UUID NOT NULL DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users;
+~~~
+
+~~~
+                   id                  |   city   | name  | address | credit_card
++--------------------------------------+----------+-------+---------+-------------+
+  cf8ee4e2-cd74-449a-b6e6-a0fb2017baa4 | new york | Petee | NULL    | NULL
+  2382564e-702f-42d9-a139-b6df535ae00a | seattle  | Eric  | NULL    | NULL
+  7d27e40b-263a-4891-b29b-d59135e55650 | seattle  | Dan   | NULL    | NULL
+(3 rows)
+~~~
+
+Alternatively, you can use the [`BYTES`](bytes.html) column with the `uuid_v4()` function as the default value instead:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users2 (
+        id BYTES DEFAULT uuid_v4(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users2 (name, city) VALUES ('Anna', 'new york'), ('Jonah', 'seattle'), ('Terry', 'chicago');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users;
+~~~
+
+~~~
+                        id                       |   city   | name  | address | credit_card
++------------------------------------------------+----------+-------+---------+-------------+
+  4\244\277\323/\261M\007\213\275*\0060\346\025z | chicago  | Terry | NULL    | NULL
+  \273*t=u.F\010\274f/}\313\332\373a             | new york | Anna  | NULL    | NULL
+  \004\\\364nP\024L)\252\364\222r$\274O0         | seattle  | Jonah | NULL    | NULL
+(3 rows)
+~~~
+
+In either case, generated IDs will be 128-bit, large enough for there to be virtually no chance of generating non-unique values. Also, once the table grows beyond a single key-value range (more than 512 MiB by default), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
+
+This approach has the disadvantage of creating a primary key that may not be useful in a query directly, which can require a join with another table or a secondary index.
+
+If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type](int.html) with the `unique_rowid()` [function](functions-and-operators.html#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type](serial.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE users3 (
+        id INT DEFAULT unique_rowid(),
+        city STRING NOT NULL,
+        name STRING NULL,
+        address STRING NULL,
+        credit_card STRING NULL,
+        CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+        FAMILY "primary" (id, city, name, address, credit_card)
+);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO users3 (name, city) VALUES ('Blake', 'chicago'), ('Hannah', 'seattle'), ('Bobby', 'seattle');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM users3;
+~~~
+
+~~~
+          id         |  city   |  name  | address | credit_card
++--------------------+---------+--------+---------+-------------+
+  469048192112197633 | chicago | Blake  | NULL    | NULL
+  469048192112263169 | seattle | Hannah | NULL    | NULL
+  469048192112295937 | seattle | Bobby  | NULL    | NULL
+(3 rows)
+~~~
+
+Upon insert or upsert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert. Such time-ordered values are likely to be globally unique except in cases where a very large number of IDs (100,000+) are generated per node per second. Also, there can be gaps and the order is not completely guaranteed.

@@ -419,6 +419,18 @@
                 "title": "Hello World",
                 "items": [
                   {
+                    "title": "Go",
+                    "urls": [
+                      "/${VERSION}/hello-world-go-pgx.html"
+                    ]
+                  },
+                  {
+                    "title": "Java",
+                    "urls": [
+                      "/${VERSION}/hello-world-java-jdbc.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"
@@ -1563,7 +1575,7 @@
                     ]
                   },
                   {
-                    "title": "<code>EXPORT</code> (Enterprise)",
+                    "title": "<code>EXPORT</code>",
                     "urls": [
                       "/${VERSION}/export.html"
                     ]
@@ -2652,12 +2664,6 @@
                 "urls": [
                   "/${VERSION}/load-based-splitting.html"
                 ]
-              },
-              {
-                "title": "Range Merges",
-                "urls": [
-                  "/${VERSION}/range-merges.html"
-                ]
               }
             ]
           },
@@ -2742,15 +2748,15 @@
                 ]
               },
               {
-                "title": "Statements Page",
-                "urls": [
-                  "/${VERSION}/ui-statements-page.html"
-                ]
-              },
-              {
                 "title": "Transactions Page",
                 "urls": [
                   "/${VERSION}/ui-transactions-page.html"
+                ]
+              },
+              {
+                "title": "Statements Page",
+                "urls": [
+                  "/${VERSION}/ui-statements-page.html"
                 ]
               },
               {

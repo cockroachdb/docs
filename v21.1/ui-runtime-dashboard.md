@@ -65,6 +65,7 @@ Sys CPU Time | Total CPU seconds per second used for CockroachDB system-level op
 The **Runtime** dashboard shows other time series graphs that are important for CockroachDB developers:
 
 - Goroutine Count
+- Runnable Goroutines per CPU
 - GC Runs
 - GC Pause Time
 

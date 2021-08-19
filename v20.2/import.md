@@ -13,13 +13,12 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - [CockroachDB dump files](cockroach-dump.html)
 - [Delimited data files](#delimited-data-files)
 
-{{site.data.alerts.callout_success}}
-`IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
-{{site.data.alerts.end}}
+## Considerations
 
-{{site.data.alerts.callout_danger}}
-`IMPORT` is a blocking statement and cannot be used within a [transaction](transactions.html). Also, `IMPORT` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
-{{site.data.alerts.end}}
+- `IMPORT` only works for creating new tables. For information on how to import into existing tables, see [`IMPORT INTO`](import-into.html). Also, for instructions and working examples on how to migrate data from other databases, see the [Migration Overview](migration-overview.html).
+- `IMPORT` is a blocking statement and cannot be used within a [transaction](transactions.html).
+- `IMPORT` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
+- <span class="version-tag">New in v20.2:</span> `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 
 ## Required privileges
 
@@ -117,9 +116,7 @@ Before using `IMPORT`, you should have:
 - The schema of the table you want to import.
 - The data you want to import, preferably hosted on cloud storage. This location must be equally accessible to all nodes using the same import file location.  This is necessary because the `IMPORT` statement is issued once by the client, but is executed concurrently across all nodes of the cluster.  For more information, see the [Import file location](#import-file-location) section below.
 
-{{site.data.alerts.callout_info}}
-<span class="version-tag">New in v20.2:</span> `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead. </span>
-{{site.data.alerts.end}}
+For more information on details to consider when running an IMPORT, see [Considerations](#considerations).
 
 ### Import targets
 

@@ -1,0 +1,8 @@
+<ul>
+	<li>If the node was started with a process manager, gracefully stop the node by sending <code>SIGTERM</code> with the process manager. If the node is not shutting down after 1 minute, send <code>SIGKILL</code> to terminate the process. When using <code><a href="https://www.freedesktop.org/wiki/Software/systemd/" target="_blank">systemd</a></code>, for example, set <code>TimeoutStopSecs=60</code> in your configuration template and run <code>systemctl stop &lt;systemd config filename&gt;</code> to stop the node without <code>systemd</code> restarting it.</li>
+	<div class="bs-callout bs-callout--info"><div class="bs-callout__label">Note:</div>
+	<p>The amount of time you should wait before sending <code>SIGKILL</code> can vary depending on your cluster configuration and workload, which affects how long it takes your nodes to complete a graceful shutdown. In certain edge cases, forcefully terminating the process before the node has completed shutdown can result in temporary data unavailability, latency spikes, uncertainty errors, ambiguous commit errors, or query timeouts. If you need maximum cluster availability, you can run <a href="cockroach-node.html"><code>cockroach node drain</code></a> prior to node shutdown and actively monitor the draining process instead of automating it.</p>
+	</div>
+	<li>If the node was started using <a href="cockroach-start.html"><code>cockroach start</code></a> and is running in the foreground, press <code>ctrl-c</code> in the terminal.</li>
+	<li>If the node was started using <a href="cockroach-start.html"><code>cockroach start</code></a> and the <code>--background</code> and <code>--pid-file</code> flags, run <code>kill &lt;pid&gt;</code>, where <code>&lt;pid&gt;</code> is the process ID of the node.</li>
+</ul>

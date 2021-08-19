@@ -255,6 +255,12 @@
                     "urls": [
                       "/${VERSION}/spatial-indexes.html"
                     ]
+                  },
+                  {
+                    "title": "Scale to Multi-region",
+                    "urls": [
+                      "/${VERSION}/multiregion-scale-application.html"
+                    ]
                   }
                 ]
               }
@@ -425,6 +431,24 @@
                 "title": "Hello World",
                 "items": [
                   {
+                    "title": "Go",
+                    "urls": [
+                      "/${VERSION}/hello-world-go-pgx.html"
+                    ]
+                  },
+                  {
+                    "title": "Java",
+                    "urls": [
+                      "/${VERSION}/hello-world-java-jdbc.html"
+                    ]
+                  },
+                  {
+                    "title": "JavaScript (Node.js)",
+                    "urls": [
+                      "/${VERSION}/hello-world-node-postgres.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"
@@ -454,7 +478,7 @@
                     ]
                   },
                   {
-                    "title": "JavaScript/TypeScript",
+                    "title": "JavaScript/TypeScript (Node.js)",
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
@@ -678,6 +702,12 @@
                 "title": "When to use REGIONAL vs. GLOBAL tables",
                 "urls": [
                   "/${VERSION}/when-to-use-regional-vs-global-tables.html"
+                ]
+              },
+              {
+                "title": "Data Domiciling",
+                "urls": [
+                  "/${VERSION}/data-domiciling.html"
                 ]
               },
               {
@@ -998,6 +1028,29 @@
                 "title": "Cluster API",
                 "urls": [
                   "/${VERSION}/cluster-api.html"
+                ]
+              },
+              {
+                "title": "Third-Party Monitoring Integrations",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/third-party-monitoring-tools.html"
+                    ]
+                  },
+                  {
+                    "title": "Datadog",
+                    "urls": [
+                      "/${VERSION}/datadog.html"
+                    ]
+                  },
+                  {
+                    "title": "Kibana",
+                    "urls": [
+                      "/${VERSION}/kibana.html"
+                    ]
+                  }
                 ]
               }
             ]
@@ -1656,7 +1709,7 @@
                     ]
                   },
                   {
-                    "title": "<code>EXPORT</code> (Enterprise)",
+                    "title": "<code>EXPORT</code>",
                     "urls": [
                       "/${VERSION}/export.html"
                     ]
@@ -1725,6 +1778,12 @@
                     "title": "<code>PAUSE SCHEDULES</code>",
                     "urls": [
                       "/${VERSION}/pause-schedules.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>REASSIGN OWNED</code>",
+                    "urls": [
+                      "/${VERSION}/reassign-owned.html"
                     ]
                   },
                   {
@@ -1911,6 +1970,12 @@
                     "title": "<code>SHOW ENUMS</code>",
                     "urls": [
                       "/${VERSION}/show-enums.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>SHOW FULL TABLE SCANS</code>",
+                    "urls": [
+                      "/${VERSION}/show-full-table-scans.html"
                     ]
                   },
                   {
@@ -2795,12 +2860,6 @@
                 ]
               },
               {
-                "title": "Log Sinks",
-                "urls": [
-                  "/${VERSION}/log-sinks.html"
-                ]
-              },
-              {
                 "title": "Log Formats",
                 "urls": [
                   "/${VERSION}/log-formats.html"
@@ -2895,15 +2954,15 @@
                 ]
               },
               {
-                "title": "Statements Page",
-                "urls": [
-                  "/${VERSION}/ui-statements-page.html"
-                ]
-              },
-              {
                 "title": "Transactions Page",
                 "urls": [
                   "/${VERSION}/ui-transactions-page.html"
+                ]
+              },
+              {
+                "title": "Statements Page",
+                "urls": [
+                  "/${VERSION}/ui-statements-page.html"
                 ]
               },
               {
