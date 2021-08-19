@@ -643,6 +643,17 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "title": "Application Deployment Tools",
+                    "items": [
+                      {
+                        "title": "Google Cloud Run",
+                        "urls": [
+                          "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
