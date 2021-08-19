@@ -1,3 +1,7 @@
+- advisory: 68005
+  summary: sql.trace.txn.enable_threshold cluster setting causes crash loops
+  versions: 21.1.0-21.1.6
+  date: August 20, 2021
 - advisory: 62842
   summary: TRUNCATE TABLE during CREATE/ALTER INDEX can cause data corruption
   versions: 20.2.0-20.2.8
