@@ -102,6 +102,7 @@ Query parameters include:
 
 Parameter          | <div style="width:100px">Sink Type</div>      | <div style="width:75px">Type</div>  | Description
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
+`topic_name`       | [Kafka](#kafka)                               | [`STRING`](string.html)             | Allows arbitrary topic naming for Kafka topics. <br><br>For example, `CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic_name=all'` will emit all records to a topic named `all`. Note that schemas will still be registered separately. <br><br>**Default:** table name.
 `topic_prefix`     | [Kafka](#kafka), [cloud](#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled`      | [Kafka](#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
 `ca_cert`          | [Kafka](#kafka), [webhook](#webhook-sink)     | [`STRING`](string.html)             | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
