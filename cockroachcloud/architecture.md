@@ -12,8 +12,6 @@ CockroachCloud Serverless (beta) is a fully-managed, multi-tenant deployment of 
 
 ### Concepts
 
-CockroachDB relies heavily on the following concepts. Being familiar with them will help you understand what our architecture achieves.
-
 Term | Definition
 -----|-----------
 **Serverless cluster** | A cluster that’s automatically billed and scaled in response to the resources it consumes (as opposed to a dedicated cluster, which is billed and scaled statically).
