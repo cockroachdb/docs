@@ -109,8 +109,8 @@ Option | Value | Description
 `schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`](add-column.html) events for columns that have a non-`NULL` [`DEFAULT` value](default-value.html) or are [computed](computed-columns.html), and all [`DROP COLUMN`](drop-column.html) events.</li><li>`column_changes`: Include all all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
 `schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), perform no logical backfills.</li><li>`stop`: [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
-`full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
-`avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
+`full_table_name` | N/A | Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
+`avro_schema_prefix` | Schema prefix name               | Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 
 {{site.data.alerts.callout_info}}
  Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
@@ -123,7 +123,7 @@ Below are clarifications for particular SQL types and values for Avro changefeed
 - [Decimals](decimal.html) must have precision specified.
 - [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
 
-    For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, base 2 `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
+    For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, [base-2 (binary format)](https://en.wikipedia.org/wiki/Binary_number#Conversion_to_and_from_other_numeral_systems) `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
     For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set, or `1000000000000000000000000000000000000000000000000000000000000000` when base 2).
 
@@ -133,21 +133,21 @@ Below are clarifications for particular SQL types and values for Avro changefeed
     {"array": [1, <first 64 bits>, <second 64 bits>, 0 or 9223372036854775808]}
     ~~~
 
-    For downstream processing, it is necessary to base 2 encode every element in the array (except for the first element). The first number in the array gives you the number of bits to take from the last base 2 number — that is, the most significant bits. So, in the example above this would be `1`. Finally, all the base 2 numbers can be appended together, which will result in the original number of bits, 129.
+    For downstream processing, it is necessary to base 2 encode every element in the array (except for the first element). The first number in the array gives you the number of bits to take from the last base-2 number — that is, the most significant bits. So, in the example above this would be `1`. Finally, all the base-2 numbers can be appended together, which will result in the original number of bits, 129.
 
-    To clarify this process, in another example in which you had a bitfield of 135 bits, the array would be as follow when base 10:
-
-    ~~~
-    {"array": [7, 18293058736425533439, 18446744073709551615, 13690942867206307840]}
-    ~~~
-
-    To then work with this, you would convert each of the elements in the array to base 2 numbers, besides the first element:
+    In a different example of this process where the bitfield is 136 bits long, the array would be similar to the following when base-10 encoded:
 
     ~~~
-    [7, 1111110111011011111111111111111111111111111111111111111111111111, 1111111111111111111111111111111111111111111111111111111111111111, 1011111000000000000000000000000000000000000000000000000000000000]
+    {"array": [8, 18293058736425533439, 18446744073709551615, 13690942867206307840]}
     ~~~
 
-    Next, you use the first number to take the number of bits from the last base 2 element, `1011111`. Finally, you append each of the base 2 numbers (the last number from the array being truncated), which in this case, results in 135 bits.
+    To then work with this data, you would convert each of the elements in the array to base-2 numbers, besides the first element. For the above array, this would convert to:
+
+    ~~~
+    [8, 1111110111011011111111111111111111111111111111111111111111111111, 1111111111111111111111111111111111111111111111111111111111111111, 1011111000000000000000000000000000000000000000000000000000000000]
+    ~~~
+
+    Next, you use the first number to take the number of bits from the last base-2 element, `10111110`. Finally, you append each of the base-2 numbers (the last number from the array being truncated), which in this case results in 136 bits, the original number of bits.
 
 #### Avro types
 

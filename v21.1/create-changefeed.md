@@ -100,8 +100,8 @@ Option | Value | Description
 `resolved` | [`INTERVAL`](interval.html) | Periodically emit [resolved timestamps](stream-data-out-of-cockroachdb-using-changefeeds.html#resolved-def) to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
 `envelope` | `key_only` / `wrapped` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=wrapped`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emit any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>When starting a changefeed at a specific `cursor`, the `cursor` cannot be before the configured garbage collection window (see [`gc.ttlseconds`](configure-replication-zones.html#replication-zone-variables)) for the table you're trying to follow; otherwise, the changefeed will error. With default garbage collection settings, this means you cannot create a changefeed that starts more than 25 hours in the past.<br><br>`cursor` can be used to [start a new changefeed where a previous changefeed ended.](#start-a-new-changefeed-where-another-ended)<br><br>Example: `CURSOR='1536242855577149065.0000000000'`
-`format` | `json` / `avro` | Format of the emitted record. For mappings of CockroachDB types to Avro types, [see the table](#avro-types) and detail on [Avro limitations](#avro-limitations) below. <br><br>Default: `format=json`.
-`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
+`format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for [Avro is limited and experimental](#avro-limitations). For mappings of CockroachDB types to Avro types, [see the table below](#avro-types). <br><br>Default: `format=json`.
+`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
 `key_in_value` | N/A | Make the [primary key](primary-key.html) of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). `key_in_value` is automatically used for these sinks (currently only [cloud storage sinks](#cloud-storage-sink)).
 `diff` | N/A |  Publish a `before` field with each message, which includes the value of the row before the update was applied.
 `compression` | `gzip` |  Compress changefeed data files written to a [cloud storage sink](#cloud-storage-sink). Currently, only [Gzip](https://www.gnu.org/software/gzip/) is supported for compression.
@@ -110,26 +110,22 @@ Option | Value | Description
 `schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), perform no logical backfills.</li><li>`stop`: [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
-`avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
+`avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 
 {{site.data.alerts.callout_info}}
- Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
+ Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
 
 #### Avro limitations
 
+Currently, support for Avro is limited and experimental. You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro).
+
 Below are clarifications for particular SQL types and values for Avro changefeeds:
 
-- [Decimals](decimal.html) must have precision specified.
-- [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.
+  - [Decimals](decimal.html) must have precision specified.
+  - [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
 
-    {{site.data.alerts.callout_info}}
-    To avoid `NaN` or infinite values, add a [`CHECK` constraint](check.html) to prevent these values from being inserted into decimal columns.
-    {{site.data.alerts.end}}
-
-- [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
-
-    For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, base 2 `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
+    For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, [base-2 (binary format)](https://en.wikipedia.org/wiki/Binary_number#Conversion_to_and_from_other_numeral_systems) `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
     For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set, or `1000000000000000000000000000000000000000000000000000000000000000` when base 2).
 
@@ -139,21 +135,21 @@ Below are clarifications for particular SQL types and values for Avro changefeed
     {"array": [1, <first 64 bits>, <second 64 bits>, 0 or 9223372036854775808]}
     ~~~
 
-    For downstream processing, it is necessary to base 2 encode every element in the array (except for the first element). The first number in the array gives you the number of bits to take from the last base 2 number — that is, the most significant bits. So, in the example above this would be `1`. Finally, all the base 2 numbers can be appended together, which will result in the original number of bits, 129.
+    For downstream processing, it is necessary to base 2 encode every element in the array (except for the first element). The first number in the array gives you the number of bits to take from the last base-2 number — that is, the most significant bits. So, in the example above this would be `1`. Finally, all the base-2 numbers can be appended together, which will result in the original number of bits, 129.
 
-    To clarify this process, in another example in which you had a bitfield of 135 bits, the array would be as follow when base 10:
-
-    ~~~
-    {"array": [7, 18293058736425533439, 18446744073709551615, 13690942867206307840]}
-    ~~~
-
-    To then work with this, you would convert each of the elements in the array to base 2 numbers, besides the first element:
+    In a different example of this process where the bitfield is 136 bits long, the array would be similar to the following when base-10 encoded:
 
     ~~~
-    [7, 1111110111011011111111111111111111111111111111111111111111111111, 1111111111111111111111111111111111111111111111111111111111111111, 1011111000000000000000000000000000000000000000000000000000000000]
+    {"array": [8, 18293058736425533439, 18446744073709551615, 13690942867206307840]}
     ~~~
 
-    Next, you use the first number to take the number of bits from the last base 2 element, `1011111`. Finally, you append each of the base 2 numbers (the last number from the array being truncated), which in this case, results in 135 bits.
+    To then work with this data, you would convert each of the elements in the array to base-2 numbers, besides the first element. For the above array, this would convert to:
+
+    ~~~
+    [8, 1111110111011011111111111111111111111111111111111111111111111111, 1111111111111111111111111111111111111111111111111111111111111111, 1011111000000000000000000000000000000000000000000000000000000000]
+    ~~~
+
+    Next, you use the first number to take the number of bits from the last base-2 element, `10111110`. Finally, you append each of the base-2 numbers (the last number from the array being truncated), which in this case results in 136 bits, the original number of bits.
 
 #### Avro types
 
@@ -285,7 +281,7 @@ For more information on how to create a changefeed connected to Kafka, see [Stre
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
   INTO 'kafka://host:port'
-  WITH format = avro, confluent_schema_registry = <schema_registry_address>;
+  WITH format = experimental_avro, confluent_schema_registry = <schema_registry_address>;
 ~~~
 ~~~
 +--------------------+
