@@ -4,7 +4,7 @@ summary: Run backups, restores, and imports from your CockroachCloud cluster.
 toc: true
 ---
 
-The CockroachCloud tiers offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in each CockroachCloud cluster tier and examples.
+CockroachCloud Serverless (beta) and CockroachCloud Dedicated offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of CockroachCloud cluster and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
@@ -12,23 +12,23 @@ The CockroachCloud tiers offer different levels of support for the following bul
 - [`EXPORT`](../{{site.versions["stable"]}}/export.html)
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
 
-The examples below include details on the storage options available with each of the CockroachCloud tiers.
+The examples below include details on the storage options available in CockroachCloud Serverless and Dedicated.
 
 ## Examples
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="ccfree">CockroachCloud Free (beta) </button>
-  <button class="filter-button" data-scope="ccded">CockroachCloud</button>
+  <button class="filter-button" data-scope="serverless">CockroachCloud Serverless </button>
+  <button class="filter-button" data-scope="dedicated">CockroachCloud Dedicated</button>
 </div>
 
-<section class="filter-content" markdown="1" data-scope="ccfree">
+<section class="filter-content" markdown="1" data-scope="serverless">
 
-For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Free (beta) Cluster](connect-to-a-free-cluster.html).
+For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Serverless (beta) Cluster](connect-to-a-serverless-cluster.html).
 
-In CockroachCloud Free (beta) clusters, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html), a per-user bulk file storage, is the **only available storage option** for `BACKUP`, `RESTORE`, and `IMPORT` operations.
+In CockroachCloud Serverless clusters, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html), a per-user bulk file storage, is the **only available storage option** for `BACKUP`, `RESTORE`, and `IMPORT` operations.
 
 {{site.data.alerts.callout_info}}
-`userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Free (beta) [**after upgrading to v21.1.**](upgrade-to-v21.1.html)
+`userfile` is only available as storage for `BACKUP`, `RESTORE`, and `IMPORT` operations on CockroachCloud Serverless [**after upgrading to v21.1.**](upgrade-to-v21.1.html)
 {{site.data.alerts.end}}
 
 For information on `userfile` commands, visit the following pages:
@@ -42,19 +42,19 @@ For information on `userfile` commands, visit the following pages:
 
 {% include cockroachcloud/userfile-examples/backup-userfile.md %}
 
-### Import data into your CockroachCloud Free (beta) cluster
+### Import data into your CockroachCloud Serverless (beta) cluster
 
 {% include cockroachcloud/userfile-examples/import-into-userfile.md %}
 
-### Stream data out of your CockroachCloud Free (beta) cluster
+### Stream data out of your CockroachCloud Serverless (beta) cluster
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on CockroachCloud Free (beta). To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud, which has this feature enabled by default.
+Only core changefeeds are available on CockroachCloud Serverless (beta). To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
-To create a core changefeed in CockroachCloud Free (beta), use the following example.
+To create a core changefeed in CockroachCloud Serverless (beta), use the following example.
 
 {% include cockroachcloud/cdc/create-core-changefeed.md %}
 
@@ -68,9 +68,9 @@ For further information on changefeeds, read [Stream Data Out of CockroachDB](..
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="ccded">
+<section class="filter-content" markdown="1" data-scope="dedicated">
 
-For guidance on connecting to your CockroachCloud cluster, visit [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+For guidance on connecting to your CockroachCloud cluster, visit [Connect to Your CockroachCloud Dedicated Cluster](connect-to-your-cluster.html).
 
 The examples below use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
@@ -91,7 +91,7 @@ For more information on taking backups and restoring to your cluster, read the f
 - [Full and incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html)
 - [Scheduled backups](../{{site.versions["stable"]}}/manage-a-backup-schedule.html)
 
-### Import data into your CockroachCloud cluster
+### Import data into your CockroachCloud Dedicated cluster
 
 To import a table into your cluster:
 
@@ -108,7 +108,7 @@ CSV DATA ('s3://{BUCKET NAME}/{customer-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS
 
 Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more examples and guidance.
 
-### Export data out of CockroachCloud
+### Export data out of CockroachCloud Dedicated
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
 
@@ -120,7 +120,7 @@ EXPORT INTO CSV
 
 Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) page for more examples and guidance.
 
-### Stream data out of CockroachCloud
+### Stream data out of CockroachCloud Dedicated
 
 {% include cockroachcloud/cdc/cdc-bulk-examples.md %}
 

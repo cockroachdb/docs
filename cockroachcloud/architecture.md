@@ -6,6 +6,13 @@ toc: true
 
 CockroachCloud is a fully-managed deployment of CockroachDB. This page describes CockroachCloud's architecture and how it relates to CockroachDB.
 
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="serverless">CockroachCloud Serverless </button>
+  <button class="filter-button" data-scope="dedicated">CockroachCloud Dedicated</button>
+</div>
+
+<section class="filter-content" markdown="1" data-scope="serverless">
+
 ## CockroachCloud Serverless
 
 CockroachCloud Serverless (beta) is a fully-managed, multi-tenant deployment of CockroachDB. Being familiar with the following concepts will help you understand what our Serverless architecture achieves.
@@ -38,6 +45,10 @@ Traffic comes in from the public internet and is routed by the cloud provider’
 
 <img src="{{ 'images/cockroachcloud/serverless-diagram.jpeg' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
 
+</section>
+
+<section class="filter-content" markdown="1" data-scope="dedicated">
+
 ## CockroachCloud Dedicated
 
 If you need a single-tenant cluster with no shared resources, we recommend CockroachCloud Dedicated. CockroachCloud Dedicated supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform.
@@ -57,6 +68,8 @@ Backups are encrypted in S3 and GCS buckets using the cloud provider keys.
 ### Multi-region architecture
 
 <img src="{{ 'images/cockroachcloud/multiregion-diagram.png' | relative_url }}" alt="Perf tuning concepts" style="max-width:100%" />
+
+</section>
 
 ## Learn more
 
