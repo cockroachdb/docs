@@ -16,6 +16,8 @@ In this tutorial, you'll work through the process of using DBeaver with a secure
 For more information about using DBeaver, see the [DBeaver documentation](https://dbeaver.io/docs/).
 
 If you run into problems, please file an issue on the [DBeaver issue tracker](https://github.com/dbeaver/dbeaver/issues).
+
+For information on using DBeaver with CockroachCloud, see [this blog post](https://paul-logston.medium.com/setting-up-a-sql-gui-with-cockroachdb-a9fd5fe15d9d).
 {{site.data.alerts.end}}
 
 ## Before You Begin
@@ -33,7 +35,7 @@ Start DBeaver, and select **Database > New Connection** from the menu.  In the d
 
 ## Step 2. Update the connection settings
 
-On the **Create new connection** dialog that appears, click **Network settings**.  
+On the **Create new connection** dialog that appears, click **Network settings**.
 
 <img src="{{ 'images/v2.1/dbeaver-02-cockroachdb-connection-settings.png' | relative_url }}" alt="DBeaver - CockroachDB connection settings" style="border:1px solid #eee;max-width:100%" />
 
