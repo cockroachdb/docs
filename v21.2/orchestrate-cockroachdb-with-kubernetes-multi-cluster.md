@@ -280,7 +280,7 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
 ### Set up VPC peering
 
-For pods to communciate across three separate Kubernetes clusters, the VPCs in all regions need to be peered. Network traffic can then be routed between the VPCs. For more information about VPC peering, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html).
+For pods to communicate across three separate Kubernetes clusters, the VPCs in all regions need to be peered. Network traffic can then be routed between the VPCs. For more information about VPC peering, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html).
 
 1. Open the [Amazon VPC console](https://console.aws.amazon.com/vpc/) and note the ID of the VPC in each region. The VPC ID is found in the section called Your VPCs.
 
@@ -305,7 +305,7 @@ For each region, navigate to the Security Groups section of the [Amazon EC2 cons
 Remember to create these inbound rules in all 3 regions. This enables CockroachDB to communicate across each Kubernetes cluster.
 {{site.data.alerts.end}}
 
-#### Inter-region communciation
+#### Inter-region communication
 
  Field | Value
 -------|-------------------
