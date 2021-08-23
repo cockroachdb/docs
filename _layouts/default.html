@@ -76,5 +76,7 @@
       {% include_cached twitter_analytics.html %}
     {% endif %}
 
+    {% if page.comparison == true %}<link rel="stylesheet" type="text/css" href="{{ 'css/select2.min.css' | relative_url }}">{% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ 'css/customstyles.css' | relative_url }}">
   </body>
 </html>
