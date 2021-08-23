@@ -173,7 +173,7 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 
 
 {{site.data.alerts.callout_info}}
-To make the optimizer prefer lookup joins to merge or hash joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
+To make the optimizer prefer lookup joins over merge or hash joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on` (merge joins are the default for single row inserts, and hash joins are the default for multi row inserts).
 {{site.data.alerts.end}}
 
 ### Additional considerations
