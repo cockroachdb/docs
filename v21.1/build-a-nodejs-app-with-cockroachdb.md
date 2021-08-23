@@ -96,7 +96,62 @@ The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELET
 
 All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error](transaction-retry-error-reference.html) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
 
-## Step 3. Run the code
+## Step 3. Initialize the database
+
+To initialize the example database, pass the `dbinit.sql` file to the [`cockroach sql`](cockroach-sql.html) command:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cockroach sql --url '<connection-string>' -f dbinit.sql
+~~~
+
+Where `<connection-string>` is the connection string to the running cluster.
+
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{{site.data.alerts.callout_success}}
+Use the connection string you obtained earlier from the CockroachCloud Console.
+{{site.data.alerts.end}}
+
+</div>
+
+<div class="filter-content" markdown="1" data-scope="local">
+
+{{site.data.alerts.callout_success}}
+Use the connection string you obtained earlier from the `cockroach demo` welcome text.
+{{site.data.alerts.end}}
+
+</div>
+
+The SQL statements in the initialization file should execute:
+
+~~~
+SET
+
+Time: 1ms
+
+SET
+
+Time: 2ms
+
+DROP DATABASE
+
+Time: 1ms
+
+CREATE DATABASE
+
+Time: 2ms
+
+SET
+
+Time: 10ms
+
+CREATE TABLE
+
+Time: 4ms
+~~~
+
+## Step 4. Run the code
 
 Initialize and run the app:
 
@@ -137,7 +192,6 @@ After entering the connection string, the program will execute.
 The output should look like this:
 
 ~~~
-Initializing bank database...
 Initializing accounts table...
 New account balances:
 { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '1000' }
