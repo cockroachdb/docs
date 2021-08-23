@@ -127,7 +127,7 @@ Before using `IMPORT INTO`, you should have:
 - `random()`
 - `gen_random_uuid()`
 - `unique_rowid()`
-- <span class="version-tag"> New in v21.1: </span>`nextval()`
+- `nextval()`
 
 ### Available storage
 

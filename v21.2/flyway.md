@@ -15,7 +15,7 @@ This page walks you through a series of simple database schema changes using Fly
 Before you begin, do the following:
 
 1. [Install CockroachDB](install-cockroachdb.html) and [start a secure cluster](secure-a-cluster.html).    
-1. Download the latest version of the [Flyway command-line tool](https://flywaydb.org/documentation/commandline/#download-and-installation). CockroachDB v21.1 is fully compatible with Flyway versions 7.1.0 and greater.
+1. Download the latest version of the [Flyway command-line tool](https://flywaydb.org/documentation/commandline/#download-and-installation). CockroachDB v21.1 and later are fully compatible with Flyway versions 7.1.0 and greater.
 
 ## Step 1. Configure Flyway connect to CockroachDB
 

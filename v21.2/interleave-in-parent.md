@@ -6,7 +6,7 @@ toc_not_nested: true
 ---
 
 {{site.data.alerts.callout_danger}}
-`INTERLEAVE IN PARENT` is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
+`INTERLEAVE IN PARENT` is disabled by default, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
 
 For details, see [below](#deprecation).
 {{site.data.alerts.end}}
@@ -75,11 +75,11 @@ Interleaving tables and indexes was deprecated in CockroachDB v20.2 for the foll
 - Database schema changes are slower for interleaved objects and their parents than they are for non-interleaved objects and objects with no interleaved children. For example, if you add or remove a column to a parent or child table, CockroachDB must rewrite the entire interleaved hierarchy for that table and its parents/children.
 - [Internal benchmarks](https://github.com/cockroachdb/cockroach/issues/53455) have shown the performance benefits of interleaving tables and indexes are limited to a small number of use cases.
 
-In CockroachDB v21.1, interleaving is disabled with the `sql.defaults.interleaved_tables.enabled` [cluster setting](cluster-settings.html) set to `false` by default. Interleaving will be permanently disabled in a future release.
+Interleaving is disabled with the `sql.defaults.interleaved_tables.enabled` [cluster setting](cluster-settings.html) set to `false` by default. Interleaving will be permanently disabled in a future release.
 
 For more details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/52009).
 
-After [upgrading to v21.1](upgrade-cockroach-version.html), we recommend that you do the following:
+After [upgrading to v21.2](upgrade-cockroach-version.html), we recommend that you do the following:
 
 - [Convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables).
 - [Replace any existing interleaved secondary indexes with non-interleaved indexes](#replace-interleaved-indexes).
