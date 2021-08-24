@@ -98,58 +98,7 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 ## Step 3. Initialize the database
 
-To initialize the example database, pass the `dbinit.sql` file to the [`cockroach sql`](cockroach-sql.html) command:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach sql --url '<connection-string>' < dbinit.sql
-~~~
-
-Where `<connection-string>` is the connection string to the running cluster.
-
-<div class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the CockroachCloud Console.
-{{site.data.alerts.end}}
-
-</div>
-
-<div class="filter-content" markdown="1" data-scope="local">
-
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the `cockroach demo` welcome text.
-{{site.data.alerts.end}}
-
-</div>
-
-The SQL statements in the initialization file should execute:
-
-~~~
-SET
-
-Time: 1ms
-
-SET
-
-Time: 2ms
-
-DROP DATABASE
-
-Time: 1ms
-
-CREATE DATABASE
-
-Time: 2ms
-
-SET
-
-Time: 10ms
-
-CREATE TABLE
-
-Time: 4ms
-~~~
+{% include {{ page.version.version }}/app/init-bank-sample.md %}
 
 ## Step 4. Run the code
 
