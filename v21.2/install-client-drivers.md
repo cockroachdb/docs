@@ -178,7 +178,7 @@ You will also need to specify the CockroachDB dialect in your [Hibernate configu
 
 All dialect versions are forward-compatible (e.g., CockroachDB v20.1 is compatible with `CockroachDB192Dialect`), as long as your application is not affected by any backward-incompatible changes listed in your CockroachDB version's [release notes](../releases/index.html). In the event of a CockroachDB version upgrade, using a previous version of the CockroachDB dialect will not break an application, but, to enable all features available in your version of CockroachDB, we recommend keeping the dialect version in sync with the installed version of CockroachDB.
 
-Not all versions of CockroachDB have a corresponding dialect yet. Use the dialect number that is closest to your installed version of CockroachDB. For example, use `CockroachDB201Dialect` when using CockroachDB v21.1.
+Not all versions of CockroachDB have a corresponding dialect yet. Use the dialect number that is closest to your installed version of CockroachDB. For example, use `CockroachDB201Dialect` when using CockroachDB v21.1 and later.
 
 ### jOOQ
 

@@ -40,9 +40,9 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-[Interleaving data](interleave-in-parent.html) is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
+[Interleaving data](interleave-in-parent.html) is disabled by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
 
-To backup interleaved data in v21.1, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
+To backup interleaved data, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
 {{site.data.alerts.end}}
 
 ## Required privileges
