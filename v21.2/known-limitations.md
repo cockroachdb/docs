@@ -214,6 +214,14 @@ To work around this limitation, you will need to take the following steps:
     ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
     ~~~
 
+### `BACKUP` of a `REGIONAL BY ROW` table
+
+CockroachDB does not currently support [`BACKUP`s](backup.html) of [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/61133)
+
+The workaround for this issue is the same as the workaround for the [`IMPORT` into a `REGIONAL BY ROW` table](#import-into-a-regional-by-row-table) limitation described above.
+
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.
