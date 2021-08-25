@@ -72,6 +72,12 @@ Example of a cloud storage sink URI:
 
 Cloud storage sink URIs must be pre-pended with `experimental-` when working with changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
 
+#### Webhook sink
+
+
+<!--TODO -->
+
+
 #### Query parameters
 
 {% include {{ page.version.version }}/cdc/url-encoding.md %}
@@ -82,7 +88,7 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 -------------------+-----------------------------------------------+-------------------------------------+------------------------------------------------------------
 `topic_prefix`     | [Kafka](#kafka), [cloud](#cloud-storage-sink) | [`STRING`](string.html)             | Adds a prefix to all topic names.<br><br>For example, `CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic_prefix=bar_'` would emit rows under the topic `bar_foo` instead of `foo`.
 `tls_enabled`      | [Kafka](#kafka)                               | [`BOOL`](bool.html)                 | If `true`, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a `ca_cert` (see below). <br><br>**Default:** `false`
-`ca_cert`          | [Kafka](#kafka)                               | [`STRING`](string.html)             | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
+`ca_cert`          | [Kafka](#kafka), [webhook](#webhook-sink)     | [`STRING`](string.html)             | The base64-encoded `ca_cert` file.<br><br>Note: To encode your `ca.cert`, run `base64 -w 0 ca.cert`.
 `client_cert`      | [Kafka](#kafka)                               | [`STRING`](string.html)             | The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with `client_key`.
 `client_key`       | [Kafka](#kafka)                               | [`STRING`](string.html)             | The base64-encoded private key for the PEM certificate. This is used with `client_cert`.
 `sasl_enabled`     | [Kafka](#kafka)                               | [`BOOL`](bool.html)                 | If `true`, the authentication protocol can be set to SCRAM or PLAIN using the `sasl_mechanism` parameter. You must have `tls_enabled` set to `true` to use SASL. <br><br> **Default:** `false`
@@ -90,7 +96,8 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 `sasl_user`        | [Kafka](#kafka)                               | [`STRING`](string.html)             | Your SASL username.
 `sasl_password`    | [Kafka](#kafka)                               | [`STRING`](string.html)             | Your SASL password.
 `file_size`        | [cloud](#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
-`insecure_tls_skip_verify` |  [Kafka](#kafka)                      | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+`insecure_tls_skip_verify` |  [Kafka](#kafka), [webhook](#webhook-sink)                    | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
+
 
 ### Options
 
@@ -111,6 +118,9 @@ Option | Value | Description
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
 `avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
+`webhook_client_timeout` | [INTERVAL](interval.html)          | If a response is not recorded from the sink within this timeframe, it will error and retry to connect. Note this must be a positive value. <br><br>**Default:** `"3s"`
+`webhook_auth_header`    | [`STRING`](string.html)            | To pass a value (password, token etc.) to the HTTP [Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) with a webhook request for a "Basic" HTTP authentication scheme. <br><br> Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". `WITH webhook_auth_header='Basic dXNlcjpwd2Q='`.
+`topic_in_value`        | [`BOOL`](bool.html)              | Set to include topic in each row
 
 {{site.data.alerts.callout_info}}
  Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
