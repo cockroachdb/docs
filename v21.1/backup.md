@@ -215,6 +215,10 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
+{{site.data.alerts.end}}
+
 ### Create incremental backups
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
@@ -467,6 +471,10 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 ### Slow (or hung) backups and queries due to write intent buildup
 
 {% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
+
+### `BACKUP` of multi-region tables
+
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 
 ## See also
 
