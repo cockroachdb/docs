@@ -334,6 +334,5 @@ After testing, we recommend that you update the [`ALLOWED_HOSTS` property in `se
 ## See also
 
 - [Build a Simple Django App with CockroachDB](build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Global, Serverless Application](movr-flask-deployment.html)
 
 {% include {{page.version.version}}/app/see-also-links.md %}
