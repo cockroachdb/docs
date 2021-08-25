@@ -1,6 +1,6 @@
 ---
 title: Deploy a CockroachCloud Application with Google Cloud Run
-summary: Learn how to use Google Cloud Run and CockroachCloud to deploy a serverless application.
+summary: Learn how to use Google Cloud Run (GCR) and CockroachCloud Free Tier to deploy a serverless application.
 toc: true
 twitter: false
 ---
