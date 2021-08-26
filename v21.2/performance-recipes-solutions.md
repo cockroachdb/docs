@@ -26,7 +26,7 @@ The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-content
 
 {%comment%} Add screenshot of high-contention graph {%endcomment%}
 
-The [KV Transaction Restarts graph](ui-overview.html) graph is showing spikes in retries over time.
+The [Transaction Restarts graph](ui-sql-dashboard.html) graph is showing spikes in retries over time.
 
 {%comment%} Add screenshot of high-retries graph {%endcomment%}
 
@@ -58,6 +58,8 @@ WHERE FullTableScan = 'True';
 Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-details-page) of the DB Console indicates that the plan contains full table scans.
 
 If the statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
+
+The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
 
 ## Fixing full table scans in statements
 
