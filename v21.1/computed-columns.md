@@ -19,8 +19,8 @@ Computed columns are especially useful when used with [`JSONB`](jsonb.html) colu
 Computed columns:
 
 - Cannot be used to generate other computed columns.
-- Behave like any other column, with the exception that they cannot be written to directly.
 - Cannot reference a [foreign key](foreign-key.html).
+- Behave like any other column, with the exception that they cannot be written to directly.
 - Are mutually exclusive with [`DEFAULT`](default-value.html).
 
 Virtual computed columns:
