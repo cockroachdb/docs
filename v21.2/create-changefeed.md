@@ -67,7 +67,7 @@ Currently, cloud storage sinks only work with `JSON` and emits newline-delimited
 Example of a cloud storage sink URI:
 
 ~~~
-`experimental-s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456`
+'experimental-s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456'
 ~~~
 
 Cloud storage sink URIs must be pre-pended with `experimental-` when working with changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
@@ -78,7 +78,7 @@ Cloud storage sink URIs must be pre-pended with `experimental-` when working wit
 Currently, the webhook sink is currently in beta.
 {{site.data.alerts.end}}
 
-Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
+<span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
 
 Example of a webhook sink URL:
 
@@ -135,7 +135,7 @@ Option | Value | Description
 `webhook_client_timeout` | [INTERVAL](interval.html)          | If a response is not recorded from the sink within this timeframe, it will error and retry to connect. Note this must be a positive value. <br><br>**Default:** `"3s"`
 `webhook_auth_header`    | [`STRING`](string.html)            | To pass a value (password, token etc.) to the HTTP [Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) with a webhook request for a "Basic" HTTP authentication scheme. <br><br> Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". `WITH webhook_auth_header='Basic dXNlcjpwd2Q='`.
 `topic_in_value`         | [`BOOL`](bool.html)              | Set to include the topic in each emitted row update. Note this is automatically set for webhook sinks.
-`webhook_sink_config`    | [`STRING`](string.html)          | Set fields to configure sink batching and retries. <br><br>The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`: </li><li>`Flush.Messages`: When the batch reaches this size, it should be flushed (batch sent). Type, `INT`. Default, `0`. </li><li>`Flush.Bytes`: When the total byte size of all the messages in the batch reaches this amount, it should be flushed. Type, `INT`. Default, `0`. </li><li>`Flush.Frequency`: When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. Type, `INTERVAL`. Default, `"0s"`. </li><li>`Retry.Max`: The maximum amount of time the sink will retry a single HTTP request to send a batch. This value must be positive (> 0). If infinite retries are desired, use `inf`. Type, `INT` or `STRING`. Default, 0s. </li><li>`Retry.Backoff`: The initial backoff the sink will wait after the first failure. The backoff will double (exponential backoff strategy), until the max is hit. Type, `INTERVAL`. Default, `"500ms"`. 
+`webhook_sink_config`    | [`STRING`](string.html)          | Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`<br><br></li><li>`Flush.Messages`: When the batch reaches this configured size, it should be flushed (batch sent). Type, `INT`. Default, `0`. </li><li>`Flush.Bytes`: When the total byte size of all the messages in the batch reaches this amount, it should be flushed. Type, `INT`. Default, `0`. </li><li>`Flush.Frequency`: When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. Type, `INTERVAL`. Default, `"0s"`. </li><li>`Retry.Max`: The maximum amount of time the sink will retry a single HTTP request to send a batch. This value must be positive (> 0). If infinite retries are desired, use `inf`. Type, `INT` or `STRING`. Default, `"0s"`. </li><li>`Retry.Backoff`: The initial backoff the sink will wait after the first failure. The backoff will double (exponential backoff strategy), until the max is hit. Type, `INTERVAL`. Default, `"500ms"`.
 
 
 {{site.data.alerts.callout_info}}
@@ -323,7 +323,19 @@ For more information on how to create a changefeed connected to a cloud storage 
 
 ### Create a changefeed connected to a webhook sink
 
-<!--TODO Minimal SQL statement include here. -->
+{% include copy-clipboard.html %}
+~~~sql
+CREATE CHANGEFEED FOR TABLE name, name2, name3 INTO 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true' WITH updated;
+~~~
+
+~~~
++---------------------+
+|      job_id         |
+----------------------+
+| 687842491801632769  |
++---------------------+
+(1 row)
+~~~
 
 ### Manage a changefeed
 

@@ -818,7 +818,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 [`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
-In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
+<span class="version-tag">New in v21.2:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
 
 1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
 
@@ -830,7 +830,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     ~~~
 
 3. In this example, to set up some data for your changefeed, you'll run CockroachDB's [Movr](movr.html) application workload:
-    
+
    First create the schema for the workload: <!--TODO Check connection string for both commands-->
 
    {% include copy-clipboard.html %}
