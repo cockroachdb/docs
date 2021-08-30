@@ -164,17 +164,10 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 
 ## Multi-column inverted indexes
 
-<span class="version-tag">New in v21.1:</span> You can enable the ability to create multi-column inverted indexes by setting the `experimental_enable_mutlti_column_inverted_indexes` session setting to `true`.
-
-{{site.data.alerts.callout_danger}}
-This feature is experimental, and the behavior of multi-column inverted indexes is undefined. Using this feature will likely result in errors. Do not enable this setting in a production cluster.
-{{site.data.alerts.end}}
-
-You can create an inverted index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
+<span class="version-tag">New in v21.1:</span> You can create an inverted index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SET experimental_enable_multi_column_inverted_indexes=true;
 CREATE TABLE users (
   profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_type STRING,
