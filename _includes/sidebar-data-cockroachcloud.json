@@ -271,13 +271,14 @@
         {
           "title": "Latest Release Notes",
           "urls": [
-            "/releases/cockroachcloud-08092021.html"
+            "/releases/cockroachcloud-09062021.html"
           ]
         },
         {
           "title": "All Release Notes",
           "urls": [
             "/releases/index-cockroachcloud.html",
+            "/releases/cockroachcloud-08092021.html",
             "/releases/cockroachcloud-07062021.html",
             "/releases/cockroachcloud-06072021.html",
             "/releases/cockroachcloud-05032021.html",
