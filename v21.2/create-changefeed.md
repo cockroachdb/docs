@@ -74,8 +74,9 @@ Cloud storage sink URIs must be pre-pended with `experimental-` when working wit
 
 #### Webhook sink
 
+<!--TODO To figure out the note/callout on this -->
 {{site.data.alerts.callout_info}}
-Currently, the webhook sink is currently in beta.
+The webhook sink is currently in beta.
 {{site.data.alerts.end}}
 
 <span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
@@ -90,7 +91,7 @@ The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`](#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and and certificates.
 * Only supports for JSON output.
-* This is no concurrency configurability.
+* There is no concurrency configurability.
 
 #### Query parameters
 
@@ -130,17 +131,63 @@ Option | Value | Description
 `schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`](add-column.html) events for columns that have a non-`NULL` [`DEFAULT` value](default-value.html) or are [computed](computed-columns.html), and all [`DROP COLUMN`](drop-column.html) events.</li><li>`column_changes`: Include all all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
 `schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), perform no logical backfills.</li><li>`stop`: [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
-`full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
+`full_table_name` | N/A | Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
 `avro_schema_prefix` | Schema prefix name               | Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 `webhook_client_timeout` | [INTERVAL](interval.html)          | If a response is not recorded from the sink within this timeframe, it will error and retry to connect. Note this must be a positive value. <br><br>**Default:** `"3s"`
-`webhook_auth_header`    | [`STRING`](string.html)            | To pass a value (password, token etc.) to the HTTP [Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) with a webhook request for a "Basic" HTTP authentication scheme. <br><br> Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". `WITH webhook_auth_header='Basic dXNlcjpwd2Q='`.
+`webhook_auth_header`    | [`STRING`](string.html)            | Pass a value (password, token etc.) to the HTTP [Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) with a webhook request for a "Basic" HTTP authentication scheme. <br><br> Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". `WITH webhook_auth_header='Basic dXNlcjpwd2Q='`.
 `topic_in_value`         | [`BOOL`](bool.html)              | Set to include the topic in each emitted row update. Note this is automatically set for webhook sinks.
-`webhook_sink_config`    | [`STRING`](string.html)          | Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`<br><br></li><li>`Flush.Messages`: When the batch reaches this configured size, it should be flushed (batch sent). Type, `INT`. Default, `0`. </li><li>`Flush.Bytes`: When the total byte size of all the messages in the batch reaches this amount, it should be flushed. Type, `INT`. Default, `0`. </li><li>`Flush.Frequency`: When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. Type, `INTERVAL`. Default, `"0s"`. </li><li>`Retry.Max`: The maximum amount of time the sink will retry a single HTTP request to send a batch. This value must be positive (> 0). If infinite retries are desired, use `inf`. Type, `INT` or `STRING`. Default, `"0s"`. </li><li>`Retry.Backoff`: The initial backoff the sink will wait after the first failure. The backoff will double (exponential backoff strategy), until the max is hit. Type, `INTERVAL`. Default, `"500ms"`.
-
+`webhook_sink_config`    | [`STRING`](string.html)          | Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`. <br><br>**Note** that if either `Messages` or `Bytes` are nonzero, then a non-zero value for `Frequency` must be provided. <br><br>See the [Webhook sink configuration section](#webhook-sink-configuration) for more details on using this option.
 
 {{site.data.alerts.callout_info}}
  Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
 {{site.data.alerts.end}}
+
+#### Webhook sink configuration
+
+This option allows configuration of the webhook sink flushing and retry behavior.
+
+
+* `Flush.Messages`: When the batch reaches this configured size, it should be flushed (batch sent).
+  * Type, `INT`. Default, `0`.
+* `Flush.Bytes`: When the total byte size of all the messages in the batch reaches this amount, it should be flushed.
+  * Type, `INT`. Default, `0`.
+* `Flush.Frequency`: When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed.
+  * Type, `INTERVAL`. Default, `"0s"`.
+* `Retry.Max`: The maximum amount of time the sink will retry a single HTTP request to send a batch. This value must be positive (> 0). If infinite retries are desired, use `inf`.
+  * Type, `INT` or `STRING`. Default, `"0s"`.
+* `Retry.Backoff`: The initial backoff the sink will wait after the first failure. The backoff will double (exponential backoff strategy), until the max is hit.   
+  * Type, `INTERVAL`. Default, `"500ms"`.
+
+{{site.data.alerts.callout_info}}
+Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency`, will cause the sink to assume `Frequency` has an infinity value. This configuration would be invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger. Therefore, if either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided.
+{{site.data.alerts.end}}
+
+Some complexities to consider when setting `Flush` fields for batching:
+
+When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time." This would be the same as not providing any configuration at all:
+
+~~~
+{
+  "Flush": {
+    "Messages": 0,
+    "Bytes": 0,
+    "Frequency": "0s"
+  }
+}
+~~~
+
+If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, with the following configuration:
+
+~~~
+{
+  "Flush": {
+    "Messages": 100,
+    "Frequency": "5s"
+  }
+}
+~~~
+
+The sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` is set to `0` by default in this case, so a batch will never trigger because of the byte size.
 
 #### Avro limitations
 
@@ -215,9 +262,11 @@ Statement                                      | Response
 `INSERT INTO office_dogs VALUES (1, 'Petee');` | JSON: `[1]	{"after": {"id": 1, "name": "Petee"}}` </br>Avro: `{"id":{"long":1}}	{"after":{"office_dogs":{"id":{"long":1},"name":{"string":"Petee"}}}}`
 `DELETE FROM office_dogs WHERE name = 'Petee'` | JSON: `[1]	{"after": null}` </br>Avro: `{"id":{"long":1}}	{"after":null}`
 
-### Webhook sink response format
+For webhook sinks, the response format comes as a batch of changefeed messages with a `payload` and `length`. Batching is done with a per-key guarantee, which means that the messages with the same key are considered for the same batch. Note that batches are only collected for row updates and not [resolved timestamps](#resolved-option).
 
-<!--TODO Add detail on response format for webhook here -->
+~~~
+{"payload": [{"after" : {"a" : 1, "b" : "a"}, "key": [1], "topic": "foo"}, {"after": {"a": 1, "b": "b"}, "key": [1], "topic": "foo" }], "length":2}
+~~~
 
 ### Files
 
@@ -325,7 +374,9 @@ For more information on how to create a changefeed connected to a cloud storage 
 
 {% include copy-clipboard.html %}
 ~~~sql
-CREATE CHANGEFEED FOR TABLE name, name2, name3 INTO 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true' WITH updated;
+CREATE CHANGEFEED FOR TABLE name, name2, name3
+  INTO 'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
+  WITH updated;
 ~~~
 
 ~~~
