@@ -20,8 +20,8 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 ## Step 1. Start the cluster creation process
 
 1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
-2. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
-3. On the **Overview** page, click **Create Cluster**.
+1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
+1. On the **Overview** page, click **Create Cluster**.
 
 ## Step 2. Select a cloud provider & region
 
@@ -63,6 +63,7 @@ Your cluster will be created in approximately 20-30 seconds.
 1. Click **Continue to payment details**.
 
 1. Verify the hourly estimated cost for the cluster.
+
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}

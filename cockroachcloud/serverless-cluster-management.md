@@ -51,7 +51,7 @@ You can edit your spend limit from the **Overview** page. The change in your spe
 1. Navigate to the **Overview** page for the cluster you want to edit.
 1. Click the pencil icon in the top right corner of the **Monthly Budget** section.
 
-    You will be taken to **Edit cluster** page with a graph of your cluster's **Historical usage**.
+    You will be taken to the **Edit cluster** page with a graph of your cluster's **Historical usage**.
 
 1. In the **Spend limit** dropdown, enter your new budget.
 

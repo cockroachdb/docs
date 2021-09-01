@@ -82,10 +82,6 @@ Yes, you can upgrade your cluster through the Console by [increasing your spend 
 
 ## Product features
 
-### Are partitioning or change data capture available to me?
-
-Yes, clusters that are running version 21.1 or later have access to [Core Changefeeds].
-
 ### Do you have a UI? How can I see details?
 
 Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, some [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages are not currently available for CockroachCloud Serverless (beta) clusters.
@@ -93,6 +89,10 @@ Yes, you can view and your clusters in the [CockroachCloud Console](https://cock
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
 Yes, see [Run Bulk Operations](run-bulk-operations.html) for more information. If you don't have billing information on file for your Organization, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is the only available storage options for bulk operations. Once you enter billing information, even if you don't set a budget, you will have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
+
+### Is change data capture available to me?
+
+Yes, CockroachCloud Serverless clusters have access to [Core Changefeeds](run-bulk-operations.html#stream-data-out-of-your-cockroachcloud-cluster).
 
 ### Can I backup my CockroachCloud Serverless (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
