@@ -35,8 +35,10 @@ Free clusters include 250M RUs with 10M RUs reserved for [burst performance](arc
 
 Paid clusters include additional resources with no throttling. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 
-{{site.data.alerts.callout_info}}
 For more information on determining your resource usage, see [Planning your cluster](serverless-cluster-management.html#planning-your-cluster).
+
+{{site.data.alerts.callout_info}}
+Regardless of whether you set a spend limit, [adding billing information](console-access-management.html#manage-billing-for-the-organization) for your Organization allows you to create a maximum of 10 Serverless clusters and use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to five Serverless clusters and [using `userfile` storage for bulk operations](run-bulk-operations.html).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">

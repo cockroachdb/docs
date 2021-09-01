@@ -84,12 +84,16 @@ Yes, you can upgrade your cluster through the Console by [increasing your spend 
 
 ### Are partitioning or change data capture available to me?
 
-Yes, clusters that are running version 21.1 or later have access to Core Changefeeds.
+Yes, clusters that are running version 21.1 or later have access to [Core Changefeeds].
 
 ### Do you have a UI? How can I see details?
 
 Yes, you can view and your clusters in the [CockroachCloud Console](https://cockroachlabs.cloud/). However, some [DB Console](../{{site.versions["stable"]}}/ui-overview.html) pages are not currently available for CockroachCloud Serverless (beta) clusters.
 
+### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
+
+Yes, see [Run Bulk Operations](run-bulk-operations.html) for more information. If you don't have billing information on file for your Organization, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is the only available storage options for bulk operations. Once you enter billing information, even if you don't set a budget, you will have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
+
 ### Can I backup my CockroachCloud Serverless (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. If your Organization is [verified](console-access-management.html#organization-verification) at the Basic level, you can take backups locally to `userfile`. If you are at the Core level of verification, you can backup to cloud storage or `userfile`. See [Organization verification](console-access-management.html#organization-verification) for more information.
+Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. If you don't have [billing information on file](console-access-management.html#manage-billing-for-the-organization) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-with-userfile) to `userfile`. Once you enter billing information, even if you don't set a budget, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-with-userfile).
