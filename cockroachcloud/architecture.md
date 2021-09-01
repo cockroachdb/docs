@@ -31,7 +31,7 @@ Term | Definition
 
 ### Performance 
 
-Serverless clusters scale based on your application's workload. Free clusters include 250M RUs with 10M RUs reserved for [burst performance](#concepts) and 5GiB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or 2.5K QPS. If you set a budget for your cluster, you will have access to additional resources without throttling.
+Serverless clusters scale based on your application's workload. Free clusters include 250M RUs with 10M RUs reserved for [burst performance](#concepts) and 5GiB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS. If you set a budget for your cluster, you will have access to additional resources without throttling.
 
 Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for Request Units, and vice versa. If you hit your budget, your cluster will be throttled down to baseline performance levels. If this occurs, you can opt to increase your budget, adjust your workload to stay within the current spend limit, or stay at the baseline performance level until the next month.
 

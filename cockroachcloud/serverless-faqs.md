@@ -15,7 +15,7 @@ This page answers the frequently asked questions about CockroachCloud Serverless
 
 ### What is CockroachCloud Serverless (beta)?
 
-CockroachCloud Serverless (beta) delivers free CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that removes the friction of initial cluster sizing and auto-scales based on your application traffic.
+CockroachCloud Serverless (beta) delivers free and paid CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
 ### How do I start using CockroachCloud Serverless (beta)?
 
@@ -23,15 +23,15 @@ To get started with CockroachCloud Serverless (beta), <a href="https://cockroach
 
 ### What are the usage limits of Cockroach Cloud Serverless (beta)?
 
-Free clusters have a limit of 100M Request Units per month and 5GB of storage, but the performance is throttled to a maximum of 100 RUs/second. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
+Free clusters have a limit of 250M Request Units per month and 5GB of storage, but the performance is throttled to a maximum of 100 RUs/second. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
 
 ### What is a Request Unit?
 
-All resource usage in CockroachCloud Serverless (beta) is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a read or a write query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost 100 RUs.
+All resource usage in CockroachCloud Serverless (beta) is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes might cost 100 RUs.
 
 ### Do I have to pay for CockroachCloud Serverless (beta)?
 
-No, you can create a Serverless cluster that is free forever. If you choose to create a paid cluster, you will only be charged for the resources you use up to your spend limit.
+No, you can create a Serverless cluster that is free forever. If you choose to set a budget for your cluster, you will only be charged for the resources you use up to your spend limit.
 
 ### What can I use CockroachCloud Serverless (beta) for?
 
@@ -43,7 +43,7 @@ For examples of applications that use free clusters, check out the following [Ha
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-Paid Serverless clusters have higher performance, additional features, and the ability to scale according to your needs. They can be used for all kinds of production applications.
+Paid Serverless clusters include additional resources with no throttling. They can be used for all kinds of production applications.
 
 ### How do I connect to my cluster?
 
