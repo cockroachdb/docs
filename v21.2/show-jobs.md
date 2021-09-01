@@ -11,7 +11,8 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 - Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html)
 - The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`
--  [Scheduled backups](manage-a-backup-schedule.html)
+- [Scheduled backups](manage-a-backup-schedule.html)
+- <span class="version-tag">New in v21.2:</span> Details for [enterprise changefeeds](create-changefeed.html), including the [sink URI](create-changefeed.html#sink-uri) and full table name, are not displayed on running the `SHOW JOBS` statement. Use [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs) to view these details
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
@@ -127,6 +128,41 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 (1 row)
 ~~~
 
+### Show changefeed jobs
+
+<span class="version-tag">New in v21.2:</span> You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`. These additional fields include the [`high_water_timestamp`](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed), [`sink_uri`](create-changefeed.html#sink-uri), and `full_table_names` fields:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CHANGEFEED JOBS;
+~~~
+
+~~~
+job_id               |                                                                                   description                                                                  | user_name | status  |              running_status              |          created           |          started           | finished |          modified          |      high_water_timestamp      | error |         sink_uri       |      full_table_names      | format
+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------+------------------------------------------+----------------------------+----------------------------+----------+----------------------------+--------------------------------+-------+------------------------+----------------------------+---------
+685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | running | running: resolved=1629336943.183631090,0 | 2021-08-19 01:35:43.19592  | 2021-08-19 01:35:43.225445 | NULL     | 2021-08-19 01:35:43.252318 | 1629336943183631090.0000000000 |       | kafka://localhost:9092 | {defaultdb.public.mytable} | avro
+685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | paused  | NULL                                     | 2021-08-19 01:32:33.609989 | 2021-08-19 01:32:33.64293  | NULL     | 2021-08-19 01:35:44.224961 | NULL                           |       | kafka://localhost:9092 | {defaultdb.public.mytable} | avro
+(2 rows)
+~~~
+
+Changefeed jobs can be [paused](stream-data-out-of-cockroachdb-using-changefeeds#pause), [resumed](stream-data-out-of-cockroachdb-using-changefeeds#resume), and [canceled](stream-data-out-of-cockroachdb-using-changefeeds#cancel).
+
+### Filter changefeed jobs
+
+You can filter jobs by using `SHOW CHANGEFEED JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the values with a `WHERE` clause. For example, you can filter by the `status` of changefeed jobs:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('paused');
+~~~
+
+~~~
+job_id             |                                                              description                                                                                       | user_name | status | running_status |          created           |          started           | finished |          modified          | high_water_timestamp | error |      sink_uri             |    full_table_names        | format
+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+--------+----------------+----------------------------+----------------------------+----------+----------------------------+----------------------+-------+---------------------------+----------------------------+---------
+685723987509116929 | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | paused | NULL           | 2021-08-19 01:32:33.609989 | 2021-08-19 01:32:33.64293  | NULL     | 2021-08-19 01:35:44.224961 | NULL                 |       | kafka://localhost:9092    | {defaultdb.public.mytable} | avro
+(1 row)
+~~~
+
 ### Show schema changes
 
 You can show just schema change jobs by using `SHOW JOBS` as the data source for a [`SELECT`](select-clause.html) statement, and then filtering the `job_type` value with the `WHERE` clause:
@@ -196,3 +232,4 @@ You can also view multiple schedules by nesting a [`SELECT` clause](select-claus
 - [`ALTER TABLE`](alter-table.html)
 - [`BACKUP`](backup.html)
 - [`RESTORE`](restore.html)
+- [`CREATE CHANGEFEED`](create-changefeed.html)
