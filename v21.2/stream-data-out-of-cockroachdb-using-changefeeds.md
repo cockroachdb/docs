@@ -921,7 +921,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"3893 Dunn Fall Apt. 11","ext":{"color":"black"},"id":"21b2ec54-81ad-4af7-a76d-6087b9c7f0f8","owner_id":"8924c3af-ea6e-4e7e-b2c8-2e318f973393","status":"lost","type":"scooter"},"key":["san francisco","21b2ec54-81ad-4af7-a76d-6087b9c7f0f8"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
     ~~~
 
-    See [webhook sink response format](create-changefeed.html#webhook-sink-response-format) for more detail on the emitted changefeed messages.
+    For more detail on emitted changefeed messages, see [responses](create-changefeed.html#responses).
 
 ## Known limitations
 
