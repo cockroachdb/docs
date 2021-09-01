@@ -227,16 +227,16 @@ Changefeed progress is exposed as a high-water timestamp that advances as the ch
 
 - On the [Changefeed Dashboard](ui-cdc-dashboard.html) of the DB Console.
 - On the [Jobs page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
-- Using `crdb_internal.jobs`:
+- Using `SHOW CHANGEFEED JOB <job_id>`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
+    SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
     ~~~
-            job_id       |  job_type  |                              description                               | ... |      high_water_timestamp      | error | coordinator_id
-    +--------------------+------------+------------------------------------------------------------------------+ ... +--------------------------------+-------+----------------+
-      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
+            job_id       |  job_type  |                              description                              | ... |      high_water_timestamp      | ... |
+    +--------------------+------------+-----------------------------------------------------------------------+ ... +--------------------------------+ ... +
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 | ... |
     (1 row)
     ~~~
 
