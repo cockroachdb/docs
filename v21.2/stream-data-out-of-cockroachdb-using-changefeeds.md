@@ -165,7 +165,7 @@ For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
 ## Configure a changefeed (Enterprise)
 
-An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
+An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., [Kafka](create-changefeed.html#kafka) or a [cloud storage sink](create-changefeed.html#cloud-storage-sink)). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
 
 ### Create
 
