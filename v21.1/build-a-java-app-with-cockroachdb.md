@@ -121,10 +121,23 @@ The `dbinit.sql` file initializes the database schema that the application uses:
 
 The `BasicExample.java` file contains the code for `INSERT`, `SELECT`, and `UPDATE` SQL operations. The file also contains the `main` method of the program.
 
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+{% include_cached copy-clipboard.html %}
+~~~ java
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/cockroachcloud/app/src/main/java/com/cockroachlabs/BasicExample.java %}
+~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="local">
+
 {% include_cached copy-clipboard.html %}
 ~~~ java
 {% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-jdbc/master/app/src/main/java/com/cockroachlabs/BasicExample.java %}
 ~~~
+
+</section>
 
 The sample app uses JDBC and the [Data Access Object (DAO)](https://en.wikipedia.org/wiki/Data_access_object) pattern to map Java methods to SQL operations. It consists of two classes:
 

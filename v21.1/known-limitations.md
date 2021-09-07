@@ -161,6 +161,16 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ## Unresolved limitations
 
+### HTTP(S) connections
+
+CockroachDB does not support database connections across HTTP(S). All database connections must be made via TCP.
+
+As of v21.1, CockroachDB includes the [Cluster API](cluster-api.html), a REST API that accepts HTTP(S) requests for monitoring data.
+
+In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
+
 ### `IMPORT` into a `REGIONAL BY ROW` table
 
 CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
@@ -203,6 +213,10 @@ To work around this limitation, you will need to take the following steps:
     ~~~ sql
     ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
     ~~~
+
+### `BACKUP` of multi-region tables
+
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 

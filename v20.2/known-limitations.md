@@ -97,6 +97,14 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
 ## Unresolved limitations
 
+### HTTP(S) connections
+
+CockroachDB does not support database connections across HTTP(S). All database connections must be made via TCP.
+
+In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
+
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.

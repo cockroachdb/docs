@@ -443,6 +443,12 @@
                     ]
                   },
                   {
+                    "title": "JavaScript (Node.js)",
+                    "urls": [
+                      "/${VERSION}/hello-world-node-postgres.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"
@@ -472,7 +478,7 @@
                     ]
                   },
                   {
-                    "title": "JavaScript/TypeScript",
+                    "title": "JavaScript/TypeScript (Node.js)",
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
@@ -655,6 +661,17 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "title": "Application Deployment Tools",
+                    "items": [
+                      {
+                        "title": "Google Cloud Run",
+                        "urls": [
+                          "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
@@ -696,6 +713,12 @@
                 "title": "When to use REGIONAL vs. GLOBAL tables",
                 "urls": [
                   "/${VERSION}/when-to-use-regional-vs-global-tables.html"
+                ]
+              },
+              {
+                "title": "Data Domiciling",
+                "urls": [
+                  "/${VERSION}/data-domiciling.html"
                 ]
               },
               {
@@ -1031,13 +1054,13 @@
                     "title": "Datadog",
                     "urls": [
                       "/${VERSION}/datadog.html"
-                    ]                    
+                    ]
                   },
                   {
                     "title": "Kibana",
                     "urls": [
                       "/${VERSION}/kibana.html"
-                    ]                    
+                    ]
                   }
                 ]
               }
@@ -1766,6 +1789,12 @@
                     "title": "<code>PAUSE SCHEDULES</code>",
                     "urls": [
                       "/${VERSION}/pause-schedules.html"
+                    ]
+                  },
+                  {
+                    "title": "<code>REASSIGN OWNED</code>",
+                    "urls": [
+                      "/${VERSION}/reassign-owned.html"
                     ]
                   },
                   {

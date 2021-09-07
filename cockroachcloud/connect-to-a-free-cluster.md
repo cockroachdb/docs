@@ -40,6 +40,8 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Step 2. Connect to your cluster
 
+{% include cockroachcloud/cc-cert-expire.md %}
+
   <section class="filter-content" markdown="1" data-scope="command-line">
 
 To connect to your cluster with the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html):
