@@ -31,7 +31,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 3. Enter a spend limit
 
-Free clusters include 250M RUs with 10M RUs reserved for [burst performance](architecture.html#concepts) and 5GiB of storage per month. They have a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS.
+Every cluster includes 250M RUs and 5GiB of storage per month for free. Every cluster also has a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS.
 
 Paid clusters include additional resources with no throttling. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 
@@ -50,7 +50,7 @@ Regardless of whether you set a spend limit, [adding billing information](consol
 
 1. Click **Create cluster**.
 
-Your cluster will be created in approximately 20-30 seconds.
+Your cluster will be created in a few seconds.
 
 </section>
 

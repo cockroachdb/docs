@@ -23,7 +23,7 @@ To get started with CockroachCloud Serverless (beta), <a href="https://cockroach
 
 ### What are the usage limits of Cockroach Cloud Serverless (beta)?
 
-Free clusters have a limit of 250M Request Units per month and 5GB of storage, but the performance is throttled to a maximum of 100 RUs/second. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
+Free clusters have a limit of 250M Request Units per month and 5GB of storage. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
 
 ### What is a Request Unit?
 
@@ -31,7 +31,7 @@ All resource usage in CockroachCloud Serverless (beta) is measured in Request Un
 
 ### Do I have to pay for CockroachCloud Serverless (beta)?
 
-No, you can create a Serverless cluster that is free forever. If you choose to set a budget for your cluster, you will only be charged for the resources you use up to your spend limit.
+No, you can create a Serverless cluster that is free forever. If you choose to set a spend limit for your cluster, you will only be charged for the resources you use up to your spend limit.
 
 ### What can I use CockroachCloud Serverless (beta) for?
 
@@ -88,7 +88,7 @@ Yes, you can view and your clusters in the [CockroachCloud Console](https://cock
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, see [Run Bulk Operations](run-bulk-operations.html) for more information. If you don't have billing information on file for your Organization, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is the only available storage options for bulk operations. Once you enter billing information, even if you don't set a budget, you will have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
+Yes, see [Run Bulk Operations](run-bulk-operations.html) for more information. If you don't have billing information on file for your Organization, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is the only available storage options for bulk operations. Once you enter billing information, even if you don't set a spend limit, you will have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
 ### Is change data capture available to me?
 
@@ -96,4 +96,4 @@ Yes, CockroachCloud Serverless clusters have access to [Core Changefeeds](run-bu
 
 ### Can I backup my CockroachCloud Serverless (beta) cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. If you don't have [billing information on file](console-access-management.html#manage-billing-for-the-organization) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a budget, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+Cockroach Labs takes full cluster backups of all CockroachCloud Serverless (beta) clusters for our own purposes. If you don't have [billing information on file](console-access-management.html#manage-billing-for-the-organization) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
