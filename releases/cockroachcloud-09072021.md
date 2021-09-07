@@ -12,7 +12,7 @@ Get future release notes emailed to you:
 
 ### General changes
 
-- New CockroachCloud clusters will now run CockroachDB [v21.1.8](v21.1.8.html).
+- New CockroachCloud clusters will now run CockroachDB [v21.1.7](v21.1.7.html).
 
 ### Console changes
 
