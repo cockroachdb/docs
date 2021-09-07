@@ -1,3 +1,7 @@
+- advisory: 69874
+  summary: CockroachDB v21.1.8 can not be downgraded
+  versions: 21.1.8
+  date: September 7, 2021
 - advisory: 68005
   summary: <code>sql.trace.txn.enable_threshold</code> cluster setting causes crash loops
   versions: 21.1.0-21.1.6
