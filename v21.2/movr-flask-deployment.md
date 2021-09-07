@@ -70,7 +70,7 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
 
 1. Open a new terminal window on your local machine, and navigate to the `movr-flask` project directory.
 
-1. In the CockroachCloud cluster console, select **Connect** at the top-right corner of the page.
+1. In the {{ site.data.products.db }} Console, select **Connect** at the top-right corner of the page.
 
 1. Select the **SQL User** that you created and the **Region** closest to you, and then select **Next**.
 
@@ -136,7 +136,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 ### Set up VPC peering
 
-1. Open the CockroachCloud console for your cluster, select the **Networking**, and then select **VPC peering**.
+1. Open the {{ site.data.products.db }} Console for your cluster, select the **Networking**, and then select **VPC peering**.
 
 1. Set up a new VPC peering connection, with your Google Cloud project's ID, the `default` VPC network created for your Google Cloud project, and a new VPC connection name (e.g., `movr-app-vpc`).
 
@@ -148,7 +148,7 @@ We do not recommend deploying insecure web applications on public networks.
 
 1. Obtain the VPC connection string for each region:
 
-    1. Open CockroachCloud console, and select **Connect** at the top right of the page.
+    1. Open {{ site.data.products.db }} Console, and select **Connect** at the top right of the page.
     1. Select **VPC Peering** for **Network Security**, your SQL username for the **SQL User**, one of the cluster regions for **Region**, `movr` for the **Database**.
     1. Select **Next**. On the following page, select the **Connection string** tab, and then copy the connection string provided.
 

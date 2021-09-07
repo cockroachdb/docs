@@ -27,7 +27,7 @@ Before starting the tutorial, do the following:
 ## Step 3. Create a database
 
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the CockroachCloud Console earlier:
+1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the {{ site.data.products.db }} Console earlier:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -35,7 +35,7 @@ Before starting the tutorial, do the following:
     --url='postgres://<username>:<password>@<global host>:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
     ~~~
 
-    In the connection string copied from the CockroachCloud Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created earlier.
+    In the connection string copied from the {{ site.data.products.db }} Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created earlier.
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
@@ -106,7 +106,7 @@ Before starting the tutorial, do the following:
     $ pip install -r requirements.txt
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string provided in the **Connection info** window of the CockroachCloud Console, but with the root certificate located in the local `certs` directory:
+1. Set the `DATABASE_URL` environment variable to the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console, but with the root certificate located in the local `certs` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
