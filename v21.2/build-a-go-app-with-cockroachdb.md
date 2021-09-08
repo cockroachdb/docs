@@ -17,51 +17,7 @@ This tutorial shows you how build a simple CRUD Go application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-### Create a free cluster
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-### Set up your cluster connection
-
-1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
-
-1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
-
-1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach demo`](cockroach-demo.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach demo \
-    --no-example-database
-    ~~~
-
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql/unix)` connection string in the SQL shell welcome text:
-
-    ~~~
-    # Connection parameters:
-    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
-    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
-    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
-    ~~~
-
-    You'll use this connection string to connect to the database later in this tutorial.
-
-</section>
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -98,99 +54,105 @@ The `main.go` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELE
 CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in the case of read/write contention. The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
 {{site.data.alerts.end}}
 
-## Step 3. Run the code
+## Step 3. Initialize the database
 
-Initialize the module:
+{% include {{ page.version.version }}/app/init-bank-sample.md %}
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ go mod init basic-sample && go mod tidy
-~~~
+## Step 4. Run the code
 
-Then run the code:
+1. Initialize the module:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ go run main.go
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ go mod init basic-sample && go mod tidy
+    ~~~
 
-The program will prompt you for a connection string to the database:
+1. Run the code:
 
-~~~
-Enter a connection string:
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ go run main.go
+    ~~~
 
-<section class="filter-content" markdown="1" data-scope="local">
+    The program will prompt you for a connection string to the database:
 
-Enter the `(sql/unix)` connection URL provided in the demo cluster's SQL shell welcome text.
+    ~~~
+    Enter a connection string:
+    ~~~
 
-</section>
+1. Enter the connection string to your running cluster.
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+    <section class="filter-content" markdown="1" data-scope="local">
 
-Enter the connection string provided in the **Connection info** window of the CockroachCloud Console.
+    {{site.data.alerts.callout_success}}
+    `postgresql://root@localhost:26257?sslmode=disable` should be the `sql` connection URL provided in the `cockroach` welcome text.
+    {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-You need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
-{{site.data.alerts.end}}
+    </section>
 
-</section>
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-The output should look similar to the following:
+    {{site.data.alerts.callout_success}}
+    Use the connection string provided in the **Connection info** window of the CockroachCloud Console.
+    {{site.data.alerts.end}}
 
-~~~
-2021/07/20 14:48:01 Initializing bank database...
-2021/07/20 14:48:02 bank database initialized.
-2021/07/20 14:48:02 Creating new rows...
-2021/07/20 14:48:02 New rows created.
-2021/07/20 14:48:02 Initial balances:
-2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
-2021/07/20 14:48:02 8d1849dd-9222-4b12-a4ff-94e583b544a8: 250
-2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 500
-2021/07/20 14:48:02 d0ce1f5c-e468-4899-8590-2bb6076247f2: 100
-2021/07/20 14:48:02 Transferring funds from account with ID c6ae8917-d24e-4115-b719-f663dbfb9ffb to account with ID d0ce1f5c-e468-4899-8590-2bb6076247f2...
-2021/07/20 14:48:02 Transfer successful.
-2021/07/20 14:48:02 Balances after transfer:
-2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
-2021/07/20 14:48:02 8d1849dd-9222-4b12-a4ff-94e583b544a8: 250
-2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 400
-2021/07/20 14:48:02 d0ce1f5c-e468-4899-8590-2bb6076247f2: 200
-2021/07/20 14:48:02 Deleting rows with IDs 8d1849dd-9222-4b12-a4ff-94e583b544a8 and d0ce1f5c-e468-4899-8590-2bb6076247f2...
-2021/07/20 14:48:02 Rows deleted.
-2021/07/20 14:48:02 Balances after deletion:
-2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
-2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 400
-~~~
+    {{site.data.alerts.callout_info}}
+    You need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+    {{site.data.alerts.end}}
 
-As shown in the output, the code does the following:
+    </section>
 
-- Initializes the `bank` database with the `accounts` table, using the `dbinit.sql` file.
-- Inserts some rows into the `accounts` table.
-- Reads values from the table.
-- Updates values in the table.
-- Deletes values from the table.
+    The output should look similar to the following:
 
-To verify that the SQL statements were executed, run the following query from inside the SQL shell:
+    ~~~
+    2021/07/20 14:48:02 Creating new rows...
+    2021/07/20 14:48:02 New rows created.
+    2021/07/20 14:48:02 Initial balances:
+    2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
+    2021/07/20 14:48:02 8d1849dd-9222-4b12-a4ff-94e583b544a8: 250
+    2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 500
+    2021/07/20 14:48:02 d0ce1f5c-e468-4899-8590-2bb6076247f2: 100
+    2021/07/20 14:48:02 Transferring funds from account with ID c6ae8917-d24e-4115-b719-f663dbfb9ffb to account with ID d0ce1f5c-e468-4899-8590-2bb6076247f2...
+    2021/07/20 14:48:02 Transfer successful.
+    2021/07/20 14:48:02 Balances after transfer:
+    2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
+    2021/07/20 14:48:02 8d1849dd-9222-4b12-a4ff-94e583b544a8: 250
+    2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 400
+    2021/07/20 14:48:02 d0ce1f5c-e468-4899-8590-2bb6076247f2: 200
+    2021/07/20 14:48:02 Deleting rows with IDs 8d1849dd-9222-4b12-a4ff-94e583b544a8 and d0ce1f5c-e468-4899-8590-2bb6076247f2...
+    2021/07/20 14:48:02 Rows deleted.
+    2021/07/20 14:48:02 Balances after deletion:
+    2021/07/20 14:48:02 3a936990-a0c9-45bf-bc24-92e10d91dca9: 300
+    2021/07/20 14:48:02 c6ae8917-d24e-4115-b719-f663dbfb9ffb: 400
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> USE bank;
-~~~
+    As shown in the output, the code does the following:
+    - Inserts some rows into the `accounts` table.
+    - Reads values from the table.
+    - Updates values in the table.
+    - Deletes values from the table.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT id, balance FROM accounts;
-~~~
+1. To verify that the SQL statements were executed, run the following query from inside the SQL shell:
 
-The output should look similar to the following:
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > USE bank;
+    ~~~
 
-~~~
-                   id                  | balance
----------------------------------------+----------
-  3a936990-a0c9-45bf-bc24-92e10d91dca9 |     300
-  c6ae8917-d24e-4115-b719-f663dbfb9ffb |     400
-(2 rows)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT id, balance FROM accounts;
+    ~~~
+
+    The output should look similar to the following:
+
+    ~~~
+                       id                  | balance
+    ---------------------------------------+----------
+      3a936990-a0c9-45bf-bc24-92e10d91dca9 |     300
+      c6ae8917-d24e-4115-b719-f663dbfb9ffb |     400
+    (2 rows)
+    ~~~
 
 ## What's next?
 

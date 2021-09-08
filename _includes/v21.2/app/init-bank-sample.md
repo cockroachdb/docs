@@ -1,25 +1,26 @@
 
 To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cat dbinit.sql | cockroach sql --url "<connection-string>"
-~~~
-
-Where `<connection-string>` is the connection string to the running cluster.
-
 <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the CockroachCloud Console.
-{{site.data.alerts.end}}
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cat dbinit.sql | cockroach sql --url '<connection-string>'
+~~~
+
+Where `<connection-string>` is the connection string you obtained earlier from the CockroachCloud Console.
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the `cockroach demo` welcome text.
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cat dbinit.sql | cockroach sql --url 'postgresql://root@localhost:26257?sslmode=disable'
+~~~
+
+{{site.data.alerts.callout_info}}
+`postgresql://root@localhost:26257?sslmode=disable` is the `sql` connection string you obtained earlier from the `cockroach` welcome text.
 {{site.data.alerts.end}}
 
 </div>

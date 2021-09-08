@@ -18,70 +18,11 @@ referral_id: docs_hello_world_python_sqlalchemy
 
 This tutorial shows you how build a simple CRUD Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/en/latest/) ORM.
 
-## Step 1. Install SQLAlchemy
+## Step 1. Start CockroachDB
 
-To install SQLAlchemy, as well as a [CockroachDB Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb) that accounts for some differences between CockroachDB and PostgreSQL, run the following command:
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ pip install sqlalchemy sqlalchemy-cockroachdb psycopg2
-~~~
-
-{{site.data.alerts.callout_success}}
-You can substitute psycopg2 for other alternatives that include the psycopg python package.
-{{site.data.alerts.end}}
-
-For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
-
-## Step 2. Start CockroachDB
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-### Create a free cluster
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-### Set up your cluster connection
-
-1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
-
-1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
-
-1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach demo`](cockroach-demo.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach demo \
-    --no-example-database
-    ~~~
-
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql)` connection string in the SQL shell welcome text:
-
-    ~~~
-    # Connection parameters:
-    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
-    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
-    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
-    ~~~
-
-    You'll use this connection string to connect to the database later in this tutorial.
-
-</section>
-
-## Step 3. Get the code
+## Step 2. Get the code
 
 Clone the code's GitHub repo:
 
@@ -96,7 +37,15 @@ The project has the following directory structure:
 ├── README.md
 ├── dbinit.sql
 ├── main.py
-└── models.py
+├── models.py
+└── requirements.txt
+~~~
+
+The `requirements.txt` file includes the required libraries to connect to CockroachDB with SQLAlchemy, including the [`sqlalchemy-cockroachdb` Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb), which accounts for some differences between CockroachDB and PostgreSQL:
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-sqlalchemy/master/requirements.txt %}
 ~~~
 
 The `dbinit.sql` file initializes the database schema that the application uses:
@@ -122,7 +71,32 @@ The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
 
 `main.py` also executes the `main` method of the program.
 
-## Step 4. Run the code
+## Step 3. Install the application requirements
+
+1. At the top level of the app's project directory, create and then activate a virtual environment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ virtualenv env
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ source env/bin/activate
+    ~~~
+
+1. Install the required modules to the virtual environment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ pip install -r requirements.txt
+    ~~~
+
+## Step 4. Initialize the database
+
+{% include {{ page.version.version }}/app/init-bank-sample.md %}
+
+## Step 5. Run the code
 
 To run the app, pass the connection string for your cluster to `main.py`:
 
@@ -133,7 +107,7 @@ $ python3 main.py '<connection_string>'
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Where `<connection_string>` is the `(sql)` connection URL provided in the demo cluster's SQL shell welcome text.
+Where `<connection_string>` is the `sql` connection URL provided in the cluster's welcome text.
 
 </section>
 
@@ -145,33 +119,11 @@ Note that you need to provide a SQL user password in order to securely connect t
 
 </section>
 
-The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements. It will then initialize the database with the DDL SQL statements in the `dbinit.sql`. After the table is initialized, the app performs some simple row inserts, updates, and deletes.
+The application will format the connection string to fit the CockroachDB SQLAlchemy dialect requirements, and then perform some simple row inserts, updates, and deletes.
 
 The output should look something like the following:
 
 ~~~
-Initializing the bank database...
-SET
-
-Time: 0ms
-
-DROP DATABASE
-
-Time: 29ms
-
-CREATE DATABASE
-
-Time: 7ms
-
-SET
-
-Time: 7ms
-
-CREATE TABLE
-
-Time: 3ms
-
-Database initialized.
 Creating new accounts...
 Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
 Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
