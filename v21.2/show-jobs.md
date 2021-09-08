@@ -134,7 +134,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 <span class="version-tag">New in v21.2:</span> You can display specific fields relating to changefeed jobs by running `SHOW CHANGEFEED JOBS`, which include:
 
-* [`high_water_timestamp`](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed): The timestamp that guarantees all changes before or at this time have been emitted.
+* [`high_water_timestamp`](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
 * `full_table_names`: Provides the full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable`, the database (`defaultdb`), schema (`public`), and table name (`mytable`).
 
