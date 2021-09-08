@@ -41,7 +41,11 @@ Serverless clusters also have the ability to scale to zero and consume no resour
 
 ### Architecture
 
+<<<<<<< Updated upstream
 Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes cluster that hosts CockroachDB. However, unlike a self-hosted CockroachDB cluster where the SQL and KV layers run in the same process, our serverless architecture fully decouples the SQL layer from the KV layer so that both layers run in separate processes running in separate Kubernetes pods.
+=======
+Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes cluster that hosts CockroachDB.
+>>>>>>> Stashed changes
 
 <img src="{{ 'images/cockroachcloud/serverless-diagram.jpeg' | relative_url }}" alt="Serverless architecture" style="max-width:100%" />
 

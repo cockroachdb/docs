@@ -13,9 +13,7 @@ CockroachCloud Serverless (beta) and CockroachCloud Dedicated offer different le
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
 
 {{site.data.alerts.callout_info}}
-For CockroachCloud Serverless clusters, you must have [billing information](console-access-management.html#manage-billing-for-the-organization) on file for your Organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. 
-
-CockroachCloud Dedicated users can run bulk operations with `userfile` or cloud storage.
+For CockroachCloud Serverless clusters, you must have [billing information](console-access-management.html#manage-billing-for-the-organization) on file for your Organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. CockroachCloud Dedicated users can run bulk operations with `userfile` or cloud storage.
 {{site.data.alerts.end}}
 
 For information on `userfile` commands, visit the following pages:
@@ -97,16 +95,9 @@ Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more ex
 
 ### Export data out of CockroachCloud
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
-  <button class="filter-button" data-scope="cloud">Cloud storage</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="userfile">
-PLACEHOLDER
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cloud">
+{{site.data.alerts.callout_info}}
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your Organization](console-access-management.html#manage-billing-for-the-organization) to access cloud storage or [export data to a local CSV file](migrate-from-free-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
+{{site.data.alerts.end}}
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
 
@@ -117,8 +108,6 @@ EXPORT INTO CSV
 ~~~
 
 Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) page for more examples and guidance.
-
-</section>
 
 ### Stream data out of your CockroachCloud cluster
 
