@@ -151,7 +151,7 @@ job_id               |                                                          
 (2 rows)
 ~~~
 
-Changefeed jobs can be [paused](stream-data-out-of-cockroachdb-using-changefeeds#pause), [resumed](stream-data-out-of-cockroachdb-using-changefeeds#resume), and [canceled](stream-data-out-of-cockroachdb-using-changefeeds#cancel).
+Changefeed jobs can be [paused](stream-data-out-of-cockroachdb-using-changefeeds.html#pause), [resumed](stream-data-out-of-cockroachdb-using-changefeeds.html#resume), and [canceled](stream-data-out-of-cockroachdb-using-changefeeds.html#cancel).
 
 ### Filter changefeed jobs
 

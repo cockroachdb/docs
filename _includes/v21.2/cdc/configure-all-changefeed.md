@@ -7,7 +7,7 @@ To pause all running changefeeds:
 PAUSE JOBS (SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('running'));
 ~~~
 
-This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW CHANGEFEED JOBS`](../{{site.versions["stable"]}}/show-jobs.html#show-changefeed-jobs).
+This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW CHANGEFEED JOBS`](show-jobs.html#show-changefeed-jobs).
 
 To resume all running changefeeds:
 
