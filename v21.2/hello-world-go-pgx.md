@@ -10,7 +10,7 @@ This tutorial shows you how build a simple Hello World Go application with Cockr
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{page.version.version}}/app/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -55,7 +55,7 @@ Enter a connection string:
 
 <section class="filter-content" markdown="1" data-scope="local">
 
-Enter the `(sql/unix)` connection URL provided in the demo cluster's SQL shell welcome text.
+Enter `postgresql://root@localhost:26257?sslmode=disable` (the `sql` connection URL provided in the `cockroach` welcome text).
 
 </section>
 
