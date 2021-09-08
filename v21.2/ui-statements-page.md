@@ -80,7 +80,7 @@ Click on a SQL statement fingerprint to open **Statement Details**. For each sta
 
 - [Overview](#overview)
 - [Diagnostics](#diagnostics)
-- [Logical plan](#logical-plan)
+- [Explain plan](#explain-plan)
 - [Execution stats](#execution-stats)
 
 ### Overview
