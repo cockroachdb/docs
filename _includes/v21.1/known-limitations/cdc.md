@@ -9,4 +9,4 @@
 - When an [`IMPORT INTO`](import-into.html) statement is run, changefeed jobs targeting that table will fail.
 - Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files.
 - Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1.
-- Enterprise changefeeds are currently disabled for CockroachCloud [Free Tier clusters](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart). Core changefeeds are enabled.    
+- {{ site.data.products.enterprise }} changefeeds are currently disabled for CockroachCloud [Free Tier clusters](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart). Core changefeeds are enabled.    
