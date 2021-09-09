@@ -111,6 +111,7 @@ Option | Value | Description
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `full_table_name` | N/A | Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
 `avro_schema_prefix` | Schema prefix name               | Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
+`kafka_sink_config` | [`STRING`](string.html) | <span class="version-tag">New in v21.2:</span> Set fields to configure delivery, version, and batching parameters for Kafka sinks. See [Advanced Configuration](#advanced-configuration) for more detail on configuring this option. <br><br>Default: `CREATE CHANGEFEED FOR table INTO 'kafka://localhost:9092' WITH kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "version": "", "RequiredAcks": "ONE" }'`
 
 {{site.data.alerts.callout_info}}
  Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
@@ -166,6 +167,19 @@ Kafka has the following topic limitations:
 - The maximum character length of a topic name is 249.
 - Topics with a period (`.`) and underscore (`_`) can collide on internal Kafka data structures, so you should use either but not both.
 - Characters not accepted by Kafka will be automatically encoded as unicode characters by CockroachDB.
+
+## Advanced Configuration
+
+### Kafka Sink Configuration
+
+<span class="version-tag">New in v21.2:</span>The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters. The configurable fields include:
+
+* `Flush.MaxMessages` and `Flush.Frequency`: Batching parameters to set up depending on latency and throughput needs. For example, if `MaxMessages` is set to 1000 and `Frequency` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
+  * `MaxMessages`: Maximum number of messages the producer will send in a single broker request. Increasing this value allows you to send all values in a batch. Default: 1. Type: `INT`.
+  * `Frequency`: Maximum time that messages will be batched. Default: `"0s"`. Type: `INTERVAL`.
+
+  
+
 
 ## Responses
 
