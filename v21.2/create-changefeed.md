@@ -89,7 +89,7 @@ Example of a webhook sink URL:
 The following are considerations when using the webhook sink:
 
 * Only supports HTTPS. Use the [`insecure_tls_skip_verify`](#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
-* Only supports for JSON output.
+* Only supports JSON output format.
 * There is no concurrency configurability.
 
 #### Query parameters
@@ -143,7 +143,7 @@ Option | Value | Description
 
 #### Webhook sink configuration
 
-<span class="version-tag">New in v21.2:</span> The `webhook_sink_config` option allows the changefeed flushing and retry behavior to your webhook sink to be confnigured.
+<span class="version-tag">New in v21.2:</span> The `webhook_sink_config` option allows the changefeed flushing and retry behavior to your webhook sink to be configured.
 
 The following details the configurable fields:
 
