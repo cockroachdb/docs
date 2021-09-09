@@ -117,7 +117,7 @@ Option | Value | Description
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro). Below is a list of unsupported SQL types and values for Avro changefeeds:
+Currently, support for Avro is limited and experimental. Below is a list of unsupported SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
 - [`INTERVAL`](https://github.com/cockroachdb/cockroach/issues/32472), [`ARRAY`](https://github.com/cockroachdb/cockroach/issues/34420), `BIT`, and collated `STRING` are not supported in Avro yet.
