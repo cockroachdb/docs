@@ -4,9 +4,9 @@ summary: Learn about the CockroachCloud upgrade policy.
 toc: true
 ---
 
-This page describes the upgrade policy for CockroachCloud.
+This page describes the upgrade policy for {{ site.data.products.db }}.
 
-CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
+{{ site.data.products.db }} supports the latest major version of CockroachDB and the version immediately preceding it. Support for these versions includes minor version updates and security patches.
 
 {{site.data.alerts.callout_danger}}
 [{{ site.data.products.serverless }}](quickstart.html) clusters are subject to automatic upgrades for both minor and major releases.
@@ -24,11 +24,11 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 [Major version releases](../releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.2.x → v21.1.x).
 
-When a new major version is available, [CockroachCloud Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the {{ site.data.products.db }} Console](upgrade-to-v21.1.html) for clusters using the paid version of {{ site.data.products.dedicated }}. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
+When a new major version is available, [{{ site.data.products.db }} Admins](console-access-management.html#console-admin) will be able to [start an upgrade directly from the {{ site.data.products.db }} Console](upgrade-to-v21.1.html) for clusters using the paid version of {{ site.data.products.dedicated }}. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
 
 ### Support downgrade for older CockroachDB versions
 
-As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on CockroachCloud. A CockroachDB version reaches EOS when it is 2 major versions behind the latest version. For example, now that CockroachDB v21.1 has been released, CockroachDB v20.1 has reached EOS.
+As CockroachDB releases new major versions, older versions reach their End of Support (EOS) on {{ site.data.products.db }}. A CockroachDB version reaches EOS when it is 2 major versions behind the latest version. For example, now that CockroachDB v21.1 has been released, CockroachDB v20.1 has reached EOS.
 
 Clusters running unsupported CockroachDB versions are not eligible for our [availability SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions). Further downgrades in support may occur as per the [CockroachDB Release Support Policy](../releases/release-support-policy.html).
 

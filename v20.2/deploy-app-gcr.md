@@ -5,18 +5,18 @@ toc: true
 twitter: false
 ---
 
-This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a CockroachCloud Free Tier cluster.
+This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a {{ site.data.products.serverless }} cluster.
 
 ## Prerequisites
 
 Before starting the tutorial, do the following:
 
-1. Create a [CockroachCloud](https://cockroachlabs.cloud/signup) account
+1. Create a [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup) account
 1. Create a [Google Cloud](https://cloud.google.com/) account
 1. Install the [Google Cloud SDK](https://cloud.google.com/sdk)
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-## Step 1. Create a free CockroachCloud cluster
+## Step 1. Create a {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 

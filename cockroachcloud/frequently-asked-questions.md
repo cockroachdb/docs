@@ -15,7 +15,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### Why are certain regions in AWS and GCP not available?
 
-We run CockroachCloud in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
+We run {{ site.data.products.db }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See
 [list of EKS regions](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) and [list of GKE regions](https://cloud.google.com/about/locations/) for details.
 
 **Known issue:** In addition to the non-GKE regions, we had to temporarily disable the following GCP regions due to GCP's quota restrictions:
@@ -52,9 +52,9 @@ The allowlist is comprised of IP addresses that you provide to us, and is an add
 
 We use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
 
-### Is encryption-at-rest enabled on CockroachCloud?
+### Is encryption-at-rest enabled on {{ site.data.products.dedicated }}?
 
-Yes. All data on CockroachCloud is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
+Yes. All data on {{ site.data.products.dedicated }} is encrypted-at-rest using the tools provided by the cloud provider that your cluster is running in.
 
 Because we are relying on the cloud provider's encryption implementation, we do not enable CockroachDB's [internal implementation of encryption-at-rest](../{{site.versions["stable"]}}/encryption.html#encryption-at-rest-enterprise). This means that encryption will appear to be disabled in the [DB Console](../{{site.versions["stable"]}}/ui-overview.html), since it is unaware of cloud provider encryption. For more information, see the [Security Overview](security-overview.html).
 
@@ -94,11 +94,11 @@ All databases are not backed up at the same time. Each database is backed up eve
 
 You can also [backup and restore](run-bulk-operations.html) data on your own. If you need additional help, [contact us](https://support.cockroachlabs.com).
 
-### Can I download the backups that CockroachCloud takes for me?
+### Can I download the backups that {{ site.data.products.db }} takes for me?
 
-CockroachCloud automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
+{{ site.data.products.db }} automated backups cannot be downloaded, but you can manually [run a backup](run-bulk-operations.html) to your own [storage location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) at any time. To do this, you will need either `admin` or `SELECT` privileges on the data you are backing up.
 
-### Can I restore my self-hosted CockroachDB cluster to CockroachCloud?
+### Can I restore my self-hosted CockroachDB cluster to {{ site.data.products.dedicated }}?
 
 Yes. You can [backup](../{{site.versions["stable"]}}/backup.html) your self-hosted CockroachDB databases to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls) and then [restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster.
 
@@ -118,13 +118,13 @@ GCP clusters can also set up VPC peering after the cluster is created, but you w
 
 Yes, {{ site.data.products.dedicated }} clusters run the enterprise version of CockroachDB and all [enterprise features](../stable/enterprise-licensing.html) are available to you.
 
-### Is there a public API for CockroachCloud?
+### Is there a public API for {{ site.data.products.db }}?
 
-Our team is currently working on creating a public API for CockroachCloud. The initial work is focused on core automation requirements, such as creation, modification, and deletion of clusters. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
+Our team is currently working on creating a public API for {{ site.data.products.db }}. The initial work is focused on core automation requirements, such as creation, modification, and deletion of clusters. We’re always looking for design partners and customer input for our features, so please [contact us](https://support.cockroachlabs.com/hc/en-us) if you have specific API requirements.
 
 ### Do you have a UI? How can I see details?
 
-All customers of our CockroachCloud service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
+All customers of our {{ site.data.products.dedicated }} service can view and manage their clusters in the [Console](https://cockroachlabs.cloud/).
 
 ### What latency should I expect when making a call to {{ site.data.products.dedicated }}?
 
@@ -136,8 +136,8 @@ Response times are under 10ms for public access but typically much lower. Additi
 
 The following pages can be found in our [Terms & Conditions](https://www.cockroachlabs.com/cloud-terms-and-conditions):
 
-- [CockroachCloud Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
-- [CockroachCloud SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
+- [{{ site.data.products.db }} Support Policy](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroach-support-policy)
+- [{{ site.data.products.db }} SLA](https://www.cockroachlabs.com/cloud-terms-and-conditions/cockroachcloud-technical-service-level-agreement)
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
@@ -145,13 +145,13 @@ Yes, you can apply major release upgrades directly [through the {{ site.data.pro
 
 ### What is the support policy for older versions of the software?
 
-CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. We highly recommend running one of the two latest versions of CockroachDB, but we will never force a major upgrade to a cluster without your knowledge. You can contact [Support](https://support.cockroachlabs.com/hc/en-us) if you require an exception.
+{{ site.data.products.dedicated }} supports the latest major version of CockroachDB and the version immediately preceding it. We highly recommend running one of the two latest versions of CockroachDB, but we will never force a major upgrade to a cluster without your knowledge. You can contact [Support](https://support.cockroachlabs.com/hc/en-us) if you require an exception.
 
-### How do I check to see if CockroachCloud is down?
+### How do I check to see if {{ site.data.products.db }} is down?
 
-The [**CockroachCloud Status** page](https://status.cockroachlabs.cloud) is a publicly available page that displays the current uptime status of the following services:
+The [**{{ site.data.products.db }} Status** page](https://status.cockroachlabs.cloud) is a publicly available page that displays the current uptime status of the following services:
 
-- [**{{ site.data.products.db }} Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for CockroachCloud, cluster creation and management, and user management.
+- [**{{ site.data.products.db }} Console**](https://cockroachlabs.cloud/clusters): The UI used for signing up for {{ site.data.products.db }}, cluster creation and management, and user management.
 - **AWS**: The status reported here reflects the health of existing AWS {{ site.data.products.db }} clusters and the ability to provision new clusters in AWS.
 - **GCP**: The status reported here reflects the health of existing GCP {{ site.data.products.db }} clusters and the ability to provision new clusters in GCP.
 

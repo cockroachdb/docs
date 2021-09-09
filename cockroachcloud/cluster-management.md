@@ -30,7 +30,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 Select the type of cluster you are viewing (and page content below will change accordingly):
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="free">{{ site.data.products.serverless }}</button>
-  <button class="filter-button page-level" data-scope="dedicated">CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="free">
@@ -69,7 +69,7 @@ The **Overview** page displays details about the selected {{ site.data.products.
 
     For each node, the page displays the node's `Name` and `Status`, nested under its region.
     
-From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html).
+From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 ## Add or remove nodes from a cluster
 

@@ -4,11 +4,11 @@ summary: Learn how to create and delete a {{ site.data.products.db }} account
 toc: true
 ---
 
-Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for CockroachCloud using a GitHub account or an email address.
+Before you [create a {{ site.data.products.db }} cluster](create-your-cluster.html), you must first create a {{ site.data.products.db }} account. You can register for {{ site.data.products.db }} using a GitHub account or an email address.
 
 ## Register a new account
 
-To register a new account, navigate to the [CockroachCloud registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
+To register a new account, navigate to the [{{ site.data.products.db }} registration page](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="github">Register with GitHub</button>
@@ -21,7 +21,7 @@ To register a new account, navigate to the [CockroachCloud registration page](ht
 1. Click **Sign up with GitHub**.
 1. Select the checkbox to accept the [terms of service](https://www.cockroachlabs.com/cloud-terms-and-conditions) and [privacy policy](https://www.cockroachlabs.com/privacy).
 1. Log in to GitHub if you haven't already.
-1. Click **Authorize CockroachCloud by Cockroach Labs**.
+1. Click **Authorize {{ site.data.products.db }} by Cockroach Labs**.
 
     A confirmation email will be sent.
 
@@ -54,9 +54,9 @@ GitHub will verify your identity using [GitHub 2FA](https://docs.github.com/en/g
 
 <section class="filter-content" markdown="1" data-scope="github">
 
-If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using GitHub, you can log in to CockroachCloud:
+If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using GitHub, you can log in to {{ site.data.products.db }}:
 
-1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
+1. Navigate to the [{{ site.data.products.db }} Log In page](https://cockroachlabs.cloud/clusters).
 1. Click **Log in with GitHub**.
 1. Follow the GitHub prompts to log in.
 
@@ -64,9 +64,9 @@ If you have already [registered a new {{ site.data.products.db }} account](#regi
 </section>
 
 <section class="filter-content" markdown="1" data-scope="email">
-If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using an email address, you can log in to CockroachCloud:
+If you have already [registered a new {{ site.data.products.db }} account](#register-a-new-account) using an email address, you can log in to {{ site.data.products.db }}:
 
-1. Navigate to the [CockroachCloud Log In page](https://cockroachlabs.cloud/clusters).
+1. Navigate to the [{{ site.data.products.db }} Log In page](https://cockroachlabs.cloud/clusters).
 1. Enter your **Email** and **Password**.
 1. Click **Continue**.
 
@@ -147,7 +147,7 @@ If you want to change your login method, you can do so at any time:
     A confirmation email will be sent.
   
 {{site.data.alerts.callout_info}}
-As a best security practice, you can also [remove CockroachCloud's access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
+As a best security practice, you can also [remove {{ site.data.products.db }}'s access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
 {{site.data.alerts.end}}
 
 ### Switch from an email login to GitHub
@@ -158,6 +158,6 @@ As a best security practice, you can also [remove CockroachCloud's access to you
 1. In the **Log in with GitHub** dialog, enter your **Password**.
 1. Click **Continue**.
 1. Log in to GitHub if you haven't already.
-1. Click **Authorize CockroachCloud by Cockroach Labs**.
+1. Click **Authorize {{ site.data.products.db }} by Cockroach Labs**.
 
     A confirmation email will be sent.

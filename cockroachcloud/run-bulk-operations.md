@@ -4,7 +4,7 @@ summary: Run backups, restores, and imports from your {{ site.data.products.db }
 toc: true
 ---
 
-The CockroachCloud tiers offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in each {{ site.data.products.db }} cluster tier and examples.
+The {{ site.data.products.db }} tiers offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in each {{ site.data.products.db }} cluster tier and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
@@ -12,7 +12,7 @@ The CockroachCloud tiers offer different levels of support for the following bul
 - [`EXPORT`](../{{site.versions["stable"]}}/export.html)
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
 
-The examples below include details on the storage options available with each of the CockroachCloud tiers.
+The examples below include details on the storage options available with each of the {{ site.data.products.db }} tiers.
 
 ## Examples
 
@@ -74,7 +74,7 @@ For guidance on connecting to your {{ site.data.products.dedicated }} cluster, v
 
 The examples below use Amazon S3 for demonstration purposes. For guidance on connecting to other storage options or using other authentication parameters, read [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
-### Backup and restore your CockroachCloud data
+### Backup and restore your {{ site.data.products.db }} data
 
 Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
 
@@ -120,7 +120,7 @@ EXPORT INTO CSV
 
 Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) page for more examples and guidance.
 
-### Stream data out of CockroachCloud
+### Stream data out of {{ site.data.products.db }}
 
 {% include cockroachcloud/cdc/cdc-bulk-examples.md %}
 

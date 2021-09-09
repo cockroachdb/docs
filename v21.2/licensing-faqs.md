@@ -87,7 +87,7 @@ For quick local testing of enterprise features, you can use the [`cockroach demo
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Cockroach Labs is willing to offer self-hosted CockroachDB enterprise features free of charge and discounted prices for CockroachCloud to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
+Cockroach Labs is willing to offer self-hosted CockroachDB enterprise features free of charge and discounted prices for {{ site.data.products.dedicated }} to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
 ## Set a license

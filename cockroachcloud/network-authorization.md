@@ -47,7 +47,7 @@ GKE users should note that [alias IP addresses](https://cloud.google.com/kuberne
 
 ### Establish a VPC Peering connection after creating your {{ site.data.products.dedicated }} cluster
 
-After creating your {{ site.data.products.dedicated }} cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
+After creating your {{ site.data.products.dedicated }} cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from {{ site.data.products.db }}'s **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
 
 ## AWS PrivateLink
 
@@ -113,7 +113,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
       The VPC Endpoint ID displays.  
       
-1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
+1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
   
   </section>
   
@@ -132,7 +132,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
     
 1.  Locate the VPC Endpoint ID in the CLI output.
     
-1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
+1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
     
   </section>
 
@@ -140,7 +140,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1.  Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
 1.  Click **Verify**.
-1.  CockroachCloud will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
+1.  {{ site.data.products.db }} will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
 
 ### Enable private DNS
 

@@ -185,7 +185,7 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert.md %}
 
-1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachCloud.
+1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
@@ -234,4 +234,4 @@ For most tools, the full name of your database should be in the format `<cluster
 ## What's next
 
 - [Build a "Hello, World" app](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)

@@ -31,7 +31,7 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
 
 1. <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">Sign up for a {{ site.data.products.db }} account</a>.
 
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 
 1. On the **Overview** page, select **Create Cluster**.
 

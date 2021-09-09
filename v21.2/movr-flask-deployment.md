@@ -21,22 +21,22 @@ In addition to the requirements listed in [Setting Up a Virtual Environment for 
 
 ## Multi-region database deployment
 
-In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [CockroachCloud](../cockroachcloud/quickstart.html).
+In production, you want to start a secure CockroachDB cluster, with nodes on machines located in different areas of the world. To deploy CockroachDB in multiple regions, we recommend using [{{ site.data.products.dedicated }}](../cockroachcloud/quickstart.html).
 
 {{site.data.alerts.callout_info}}
 You can also deploy CockroachDB manually. For instructions, see the [Manual Deployment](manual-deployment.html) page of the Cockroach Labs documentation site.
 {{site.data.alerts.end}}
 
-### Create a multi-region CockroachCloud cluster
+### Create a multi-region {{ site.data.products.dedicated }} cluster
 
-1. <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">Sign up for a CockroachCloud account</a>.
+1. <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">Sign up for a {{ site.data.products.db }} account</a>.
 
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 
 1. On the **Overview** page, select **Create Cluster**.
 
 1. On the **Create new cluster** page:
-    - For **Plan**, select CockroachCloud. You won't be charged for the first 30 days of service.
+    - For **Plan**, select {{ site.data.products.db }}. You won't be charged for the first 30 days of service.
     - For **Cloud Provider**, select Google Cloud.
     - For **Regions & nodes**, add "us-east1", "us-west1", and "europe-west1", with 3 nodes in each region.
     - Leave the **Hardware** and **Cluster name** as their default values.
@@ -82,7 +82,7 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
     $ cockroach sql --url 'postgresql://user:password@cluster.gcp-us-east1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/root.crt' -f dbinit.sql
     ~~~
 
-    This command will initialize the `movr` database on your CockroachCloud cluster.
+    This command will initialize the `movr` database on your {{ site.data.products.dedicated }} cluster.
 
 ## Global application deployment
 
@@ -143,7 +143,7 @@ We do not recommend deploying insecure web applications on public networks.
 1. Copy the `gcloud` command provided by the console, and execute the command in a new terminal window.
 
     {{site.data.alerts.callout_info}}
-    The connection strings used to connect to CockroachCloud from an application in a VPC network differ slightly from connection strings to allow-listed IP addresses.
+    The connection strings used to connect to {{ site.data.products.db }} from an application in a VPC network differ slightly from connection strings to allow-listed IP addresses.
     {{site.data.alerts.end}}
 
 1. Obtain the VPC connection string for each region:
@@ -187,7 +187,7 @@ We do not recommend deploying insecure web applications on public networks.
 1. Create a [Google Cloud Run](https://console.cloud.google.com/run/) service for the application, in one of the regions in which the database is deployed (e.g., `gcp-us-east1`):
     - Select the container image URL for the image that you just pushed to the container registry.
     - Under **Advanced settings**->**Variables & Secrets**, do the following:
-        - Set an environment variable named `DB_URI` to the VPC connection string for a node on the CockroachCloud cluster, in the region in which this first Cloud Run service is located.    
+        - Set an environment variable named `DB_URI` to the VPC connection string for a node on the {{ site.data.products.dedicated }} cluster, in the region in which this first Cloud Run service is located.    
 
             Verify that the `DB_URI` value:
             1. Specifies `cockroachdb` as the database protocol.
@@ -195,7 +195,7 @@ We do not recommend deploying insecure web applications on public networks.
             1. Includes the path to the container-mounted root certificate (e.g., `certs/root.crt`).
 
             For example: `cockroachdb://user:password@internal-cluster.gcp-us-east1.cockroachlabs.cloud:26257/movr?sslmode=verify-full&sslrootcert=certs/root.crt`
-        - Set an environment variable named `REGION` to the CockroachCloud region (e.g., `gcp-us-east1`).
+        - Set an environment variable named `REGION` to the {{ site.data.products.db }} region (e.g., `gcp-us-east1`).
         - **Optional:** Create a secret for your Google Maps API key and use it to set the environment variable `API_KEY`. You may need to enable the Secret Manager API to do this.
 
 1. Repeat the Google Cloud Run set-up steps for all regions.
@@ -235,7 +235,7 @@ Some time after you have deployed your application, you will likely need to push
 ## See also
 
 - [MovR (live demo)](https://movr.cloud)
-- [CockroachCloud documentation](../cockroachcloud/quickstart.html)
+- [{{ site.data.products.db }} documentation](../cockroachcloud/quickstart.html)
 - [Google Cloud Platform documentation](https://cloud.google.com/docs/)
 - [Docker documentation](https://docs.docker.com/)
 - [Kubernetes documentation](https://kubernetes.io/docs/home/)

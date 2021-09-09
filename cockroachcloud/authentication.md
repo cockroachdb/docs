@@ -4,7 +4,7 @@ summary: Learn about the authentication features for {{ site.data.products.db }}
 toc: true
 ---
 
-CockroachCloud uses TLS 1.2 for inter-node and client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
+{{ site.data.products.db }} uses TLS 1.2 for inter-node and client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
 
 ## Node identity verification
 
@@ -19,7 +19,7 @@ You can also use the `require` SSL mode, although we do not recommend using it s
 
 ## Client identity verification
 
-CockroachCloud uses password authentication for verifying a client’s identity. If no password has been set up for a user, password authentication will always fail for that user and you won’t be able to connect to the cluster.
+{{ site.data.products.db }} uses password authentication for verifying a client’s identity. If no password has been set up for a user, password authentication will always fail for that user and you won’t be able to connect to the cluster.
 
 For more information about creating SQL users and passwords, see [User Authorization](user-authorization.html).
 
@@ -35,4 +35,4 @@ The table below lists the `sslmode` settings you can use to [connect to your clu
 ## See also
 
 - [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
-- [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)
+- [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

@@ -26,7 +26,7 @@ To create and connect to a 30-day free {{ site.data.products.db }} cluster and r
 
 On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
+{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
@@ -100,11 +100,11 @@ If you have multiple clusters, you will have to create a new VPC Peering or AWS 
 You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the {{ site.data.products.db }} cluster. To enable VPC peering:
 
 1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
-1. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
+1. Configure the IP address range and size (in CIDR format) for the {{ site.data.products.db }} network based on the following considerations:
       -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
       - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
 
-        Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
+        Alternatively, you can use {{ site.data.products.db }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
 
@@ -161,7 +161,7 @@ To start using your {{ site.data.products.db }} cluster, see the following pages
 
 - [Connect to your cluster](connect-to-your-cluster.html)
 - [Authorize users](user-authorization.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
 
 If you created a multi-region cluster, it is important to carefully choose:
 

@@ -154,7 +154,7 @@ This page outlines the quickest way to get started with CockroachDB. For informa
 - To create a free cluster with other configurations (e.g., a different cloud provider or region), see [Create a {{ site.data.products.serverless }} Cluster](create-a-free-cluster.html).
 - To connect to a free cluster with other options (e.g., a CA certificate or different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-free-cluster.html).
 - For information about how to connect securely to your cluster (recommended), see [Authentication](authentication.html).
-- To watch a video walkthrough of connecting to a cluster, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
+- To watch a video walkthrough of connecting to a cluster, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
 Next steps:
 

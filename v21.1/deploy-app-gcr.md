@@ -5,7 +5,7 @@ toc: true
 twitter: false
 ---
 
-This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a CockroachCloud Free Tier cluster.
+This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a {{ site.data.products.serverless }} cluster.
 
 ## Prerequisites
 
