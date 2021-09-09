@@ -22,154 +22,182 @@ CockroachDB supports Django versions 2.2, 3.0, and 3.1.
 The example code and instructions on this page use Python 3 and Django 3.1.
 {{site.data.alerts.end}}
 
-## Step 1. Install Django and the CockroachDB backend for Django
-
-Install [Django](https://docs.djangoproject.com/en/3.1/topics/install/):
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ python3 -m pip install 'django>=3.1.*'
-~~~
-
-Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
-
-- [psycopg2](https://pypi.org/project/psycopg2/), which has some [prerequisites](https://www.psycopg.org/docs/install.html#prerequisites) of its own. This package is recommended for production environments.
-
-- [psycopg2-binary](https://pypi.org/project/psycopg2-binary/). This package is recommended for development and testing.
-
-After you install the psycopg2 prerequisite, install the CockroachDB Django backend:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ python3 -m pip install 'django-cockroachdb>=3.1.*'
-~~~
-
-{{site.data.alerts.callout_info}}
-The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
-{{site.data.alerts.end}}
-
-## Step 2. Start CockroachDB
+## Step 1. Start CockroachDB
 
 {% include {{page.version.version}}/app/start-cockroachdb.md %}
 
-## Step 3. Create a database
+## Step 2. Create a database
 
 {% include {{page.version.version}}/app/create-a-database.md %}
 
-## Step 4. Create a Django project
-
-In the directory where you'd like to store your code, use the [`django-admin` command-line tool](https://docs.djangoproject.com/en/3.1/ref/django-admin/) to create an application project:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ django-admin startproject cockroach_example
-~~~
-
-This creates a new project directory called `cockroach_example`. `cockroach_example` contains the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin/) and a subdirectory, also named `cockroach_example`, that contains some `.py` files.
-
-Open `cockroach_example/cockroach_example/settings.py`, and add `0.0.0.0` to the `ALLOWED_HOSTS`, so that it reads as follows:
-
-{% include_cached copy-clipboard.html %}
-~~~ python
-ALLOWED_HOSTS = ['0.0.0.0']
-~~~
-
-Then add `cockroach_example` to the list of `INSTALLED_APPS`, so that it reads as follows:
-
-{% include_cached copy-clipboard.html %}
-~~~ python
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'cockroach_example',
-]
-~~~
-
-Next, change `DATABASES` to reads as follows:
+## Step 3. Get the sample code
 
 <section class="filter-content" markdown="1" data-scope="local">
 
+Clone the code's GitHub repo:
+
 {% include_cached copy-clipboard.html %}
-~~~ python
-DATABASES = {
-    'default': {
-        'ENGINE' : 'django_cockroachdb',
-        'PORT' : <port>,
-        'USER' : '<user>',
-        'PASSWORD': '<password>',
-        'HOST' : 'localhost',
-        'NAME' : 'bank',
-    }
-}
+~~~ shell
+$ git clone https://github.com/cockroachlabs/example-app-python-django/
 ~~~
 
-Where:
+The project directory structure should look like this:
 
-- `<user>` is the username that you created earlier.
-- `<password>` is the password that you created for the `<user>`.
-- `<port>` is the port listed in the `(sql)` connection string in the SQL shell welcome text. For example, for the connection string `postgres://demo:demo11762@127.0.0.1:26257?sslmode=require`, the port is `26257`.
+~~~
+├── Dockerfile
+├── README.md
+├── cockroach_example
+│   ├── cockroach_example
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   └── wsgi.py
+│   └── manage.py
+└── requirements.txt
+~~~
 
 </section>
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{% include_cached copy-clipboard.html %}
-~~~ python
-DATABASES = {
-    'default': {
-        'ENGINE' : 'django_cockroachdb',
-        'USER' : '<user>',
-        'PASSWORD': '<password>',
-        'HOST' : '<globalhost>',
-        'PORT' : 26257,
-        'NAME' : '<cluster_name>.bank',
-        'OPTIONS': {
-            'sslmode': 'verify-full',
-            'sslrootcert': '<certs_dir>/cc-ca.crt',
-        },
-}
-~~~
+1. Clone the code's GitHub repo:
 
-Where:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ git clone https://github.com/cockroachlabs/example-app-python-django/
+    ~~~
 
-- `<user>` is the username that you created earlier.
-- `<password>` is the password that you created for the `<user>`.
-- `<globalhost>` is the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
-- `<cluster_name>` is the name of your cluster.
-- `<certs_dir>` is the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+1. Create a new folder named `certs` at the top level of the `example-app-python-django` project, and then copy the root certificate that you downloaded for your cluster to the new folder.
 
-{{site.data.alerts.callout_info}}
-If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, hostname, and cluster name will be pre-populated.
-{{site.data.alerts.end}}
+    The project directory structure should look like this:
+
+    ~~~
+    ├── Dockerfile
+    ├── README.md
+    ├── certs
+    │   └── root.crt
+    ├── cockroach_example
+    │   ├── cockroach_example
+    │   │   ├── __init__.py
+    │   │   ├── asgi.py
+    │   │   ├── migrations
+    │   │   │   ├── 0001_initial.py
+    │   │   │   └── __init__.py
+    │   │   ├── models.py
+    │   │   ├── settings.py
+    │   │   ├── urls.py
+    │   │   ├── views.py
+    │   │   └── wsgi.py
+    │   └── manage.py
+    └── requirements.txt
+    ~~~
 
 </section>
 
-## Step 5. Write the application logic
+## Step 4. Install the application requirements
 
-After you generate the initial Django project files and edit the project's configuration settings, you need to build out the application with a few `.py` files in `cockroach_example/cockroach_example`.
+To use CockroachDB with Django, the following modules are required:
 
-### Models
+- [`django`](https://docs.djangoproject.com/en/3.1/topics/install/)
+- [`psycopg2`](https://pypi.org/project/psycopg2/) (recommended for production environments) or [`psycopg2-binary`](https://pypi.org/project/psycopg2-binary/) (recommended for development and testing).
+- [`django-cockroachdb`](https://github.com/cockroachdb/django-cockroachdb)
 
-Start by building some [models](https://docs.djangoproject.com/en/3.1/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/models.py" download>download the file directly</a>.
+{{site.data.alerts.callout_info}}
+The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
+{{site.data.alerts.end}}
+
+The `requirements.txt` file at the top level of the `example-app-python-django` project directory contains a list of the requirements needed to run this application:
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/models.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/requirements.txt %}
+~~~
+
+{{site.data.alerts.callout_info}}
+The `requirements.txt` file also lists the `dj_database_url` module, which is not a strict requirement. The sample app uses this module to configure the database connection from a connection URL.
+{{site.data.alerts.end}}
+
+1. At the top level of the app's project directory, create and then activate a virtual environment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ virtualenv env
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ source env/bin/activate
+    ~~~
+
+1. Install the modules listed in `requirements.txt` to the virtual environment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ pip install -r requirements.txt
+    ~~~
+
+## Step 5. Configure the database connection
+
+The `cockroach_example/cockroach_example/settings.py` file defines database connection information for the application, in [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings/#databases):
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(default=os.path.expandvars(
+    os.environ['DATABASE_URL']), engine='django_cockroachdb')
+~~~
+
+Note that, rather than using [discrete connection parameters](connection-parameters.html), the sample `settings.py` passes a single variable (the `DATABASE_URL` environment variable) to the `dj_database_url` module.
+
+Set the `DATABASE_URL` environment variable to the connection string:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ export DATABASE_URL="<connection_string>"
+~~~
+
+<section class="filter-content" markdown="1" data-scope="local">
+
+Where `<connection_string>` is the `sql` connection URL provided in the cluster's welcome text.
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+Where `<connection_string>` is the connection string provided in the **Connection info** window of the CockroachCloud Console, but with the root certificate located in the local `certs` directory.
+
+Note that you also need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+
+</section>
+
+## Step 6. Build out the application
+
+After you have configured the app's database connection, you can start building out the application.
+
+### Models
+
+Start by building some [models](https://docs.djangoproject.com/en/3.1/topics/db/models/), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py" download>download the file directly</a>.
+
+{% include_cached copy-clipboard.html %}
+~~~ python
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py %}
 ~~~
 
 In this file, we define some simple classes that map to the tables in the example database `bank`.
 
 ### Views
 
-Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/views.py" download>download the file directly</a>.
+Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/topics/class-based-views/) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can <a href="https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py" download>download the file directly</a>.
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/views.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py %}
 ~~~
 
 This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
@@ -178,103 +206,117 @@ Importantly, the file defines a [transaction retry loop](transactions.html#trans
 
 ### URL routes
 
-Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/http/urls/) in a file called `urls.py`. The `django-admin` command-line tool generated this file when you created the Django project, so it should already exist in `cockroach_example/cockroach_example`. You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/urls.py" download>download the file directly</a> and replace the existing one.
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/http/urls/) in a file called `urls.py`. You can copy the sample code below and paste it into the existing `urls.py` file, or you can <a href="https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py" download>download the file directly</a> and replace the existing one.
 
 {% include_cached copy-clipboard.html %}
 ~~~ python
-{% remote_include https://raw.githubusercontent.com/cockroachdb/examples-orms/master/python/django/cockroach_example/urls.py %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py %}
 ~~~
 
-## Step 6. Set up and run the Django app
+## Step 7. Initialize the database
 
-In the top `cockroach_example` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin/) to create [Django migrations](https://docs.djangoproject.com/en/3.1/topics/migrations/) that initialize the database for the application:
+1. In the top `cockroach_example` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin/) to create [Django migrations](https://docs.djangoproject.com/en/3.1/topics/migrations/) that initialize the database for the application:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ python3 manage.py makemigrations cockroach_example
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ python3 manage.py makemigrations cockroach_example
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ python3 manage.py migrate
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ python3 manage.py migrate
+    ~~~
 
-This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
+    This initializes the `bank` database with the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
 
-To verify that the migration succeeded, open the terminal with the SQL shell to the temporary CockroachDB cluster, and issue the following statements:
+1. To verify that the migration succeeded, open the terminal with the SQL shell to the temporary CockroachDB cluster, and issue the following statements:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> USE bank;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > USE bank;
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SHOW TABLES;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SHOW TABLES;
+    ~~~
 
-~~~
-  schema_name |            table_name            | type  | estimated_row_count
---------------+----------------------------------+-------+----------------------
-  public      | auth_group                       | table |                   0
-  public      | auth_group_permissions           | table |                   0
-  public      | auth_permission                  | table |                  36
-  public      | auth_user                        | table |                   0
-  public      | auth_user_groups                 | table |                   0
-  public      | auth_user_user_permissions       | table |                   0
-  public      | cockroach_example_customers      | table |                   0
-  public      | cockroach_example_orders         | table |                   0
-  public      | cockroach_example_orders_product | table |                   0
-  public      | cockroach_example_products       | table |                   0
-  public      | django_admin_log                 | table |                   0
-  public      | django_content_type              | table |                   9
-  public      | django_migrations                | table |                   1
-  public      | django_session                   | table |                   0
-(14 rows)
-~~~
+    ~~~
+      schema_name |            table_name            | type  | estimated_row_count
+    --------------+----------------------------------+-------+----------------------
+      public      | auth_group                       | table |                   0
+      public      | auth_group_permissions           | table |                   0
+      public      | auth_permission                  | table |                  36
+      public      | auth_user                        | table |                   0
+      public      | auth_user_groups                 | table |                   0
+      public      | auth_user_user_permissions       | table |                   0
+      public      | cockroach_example_customers      | table |                   0
+      public      | cockroach_example_orders         | table |                   0
+      public      | cockroach_example_orders_product | table |                   0
+      public      | cockroach_example_products       | table |                   0
+      public      | django_admin_log                 | table |                   0
+      public      | django_content_type              | table |                   9
+      public      | django_migrations                | table |                   1
+      public      | django_session                   | table |                   0
+    (14 rows)
+    ~~~
 
-In a different terminal, navigate to the top of the `cockroach_example` directory, and start the app:
+## Step 8. Run the app
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ python3 manage.py runserver 0.0.0.0:8000
-~~~
+1. In a different terminal, navigate to the top of the `cockroach_example` directory, and start the app:
 
-To perform simple reads and writes to the database, you can send HTTP requests to the application.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ python3 manage.py runserver 0.0.0.0:8000
+    ~~~
 
-For example, in a new terminal, you can use `curl` to send a POST request to the application that inserts a new row into the `customers` table:
+    The output should look like this:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ curl --header "Content-Type: application/json" \
---request POST \
---data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
-~~~
+    ~~~
+    ...
+    Starting development server at http://0.0.0.0:8000/
+    Quit the server with CONTROL-C.
+    ~~~
 
-You can then send a GET request to read from that table:
+    To perform simple reads and writes to the database, you can send HTTP requests to the application server listening at `http://0.0.0.0:8000/`.
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ curl http://0.0.0.0:8000/customer/
-~~~
+1. In a new terminal, use `curl` to send a POST request to the application:
 
-~~~
-[{"id": 523377322022797313, "name": "Carl"}]
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ curl --header "Content-Type: application/json" \
+    --request POST \
+    --data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
+    ~~~
 
-You can also query the tables directly in the SQL shell to see the changes:
+    This request inserts a new row into the `cockroach_example_customers` table.
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM cockroach_example_customers;
-~~~
+1. Send a GET request to read from the `cockroach_example_customers` table:
 
-~~~
-          id         | name
----------------------+-------
-  523377322022797313 | Carl
-(1 row)
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ curl http://0.0.0.0:8000/customer/
+    ~~~
+
+    ~~~
+    [{"id": "bb7d6c4d-efb3-45f8-b790-9911aae7d8b2", "name": "Carl"}]
+    ~~~
+
+    You can also query the table directly in the [SQL shell](cockroach-sql.html) to see the changes:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    > SELECT * FROM bank.cockroach_example_customers;
+    ~~~
+
+    ~~~
+                       id                  | name
+    ---------------------------------------+-------
+      bb7d6c4d-efb3-45f8-b790-9911aae7d8b2 | Carl
+    (1 row)
+    ~~~
+
+1. Enter **Ctrl+C** to stop the application.
 
 ## What's next?
 
