@@ -67,13 +67,13 @@ For a simple but complete "Hello World" example app, see [Build a Python App wit
 
 **Support level:** Full
 
-CockroachDB supports Django versions 2.2 and 3.0.
+CockroachDB supports Django versions 3.1+.
 
 To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install django==3.0.*
+$ pip install django==3.1.*
 ~~~
 
 Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
@@ -88,7 +88,7 @@ After you install the psycopg2 prerequisite, you can install the CockroachDB Dja
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install django-cockroachdb==3.0.*
+$ pip install django-cockroachdb==3.1.*
 ~~~
 
 {{site.data.alerts.callout_info}}

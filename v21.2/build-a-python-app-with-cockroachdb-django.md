@@ -16,10 +16,10 @@ referral_id: docs_hello_world_python_django
 
 This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
 
-CockroachDB supports Django versions 2.2, 3.0, and 3.1.
+CockroachDB supports Django versions 3.1+.
 
 {{site.data.alerts.callout_info}}
-The example code and instructions on this page use Python 3 and Django 3.1.
+The example code and instructions on this page use Python 3.9 and Django 3.1.
 {{site.data.alerts.end}}
 
 ## Step 1. Start CockroachDB
