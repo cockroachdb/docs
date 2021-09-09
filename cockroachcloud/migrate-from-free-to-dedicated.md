@@ -1,13 +1,10 @@
 ---
-title: Migrate from a CockroachCloud Serverless (beta) to CockroachCloud Cluster
-summary: Learn how to migrate data from a CockroachCloud Serverless (beta) cluster into a paid CockroachCloud cluster.
+title: Migrate from a CockroachCloud Serverless (beta) to CockroachCloud Dedicated Cluster
+summary: Learn how to migrate data from a CockroachCloud Serverless (beta) cluster into a CockroachCloud Dedicated cluster.
 toc: true
 ---
 
-This page has instructions for migrating data from a CockroachCloud Serverless (beta) cluster to a paid CockroachCloud cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of CockroachCloud if:
-
-- You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per CockroachCloud Serverless (beta) cluster.
-- You want to use any of the capabilities that are not yet available in CockroachCloud Serverless (beta) clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
+This page has instructions for migrating data from a CockroachCloud Serverless (beta) cluster to a CockroachCloud Dedicated cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to CockroachCloud Dedicated if you want a single-tenant cluster with no shared resources.
 
 The steps below use sample data from the [`tpcc` workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads).
 
@@ -18,7 +15,7 @@ These instructions assume you already have the following:
 - A [CockroachCloud Serverless (beta) cluster](quickstart.html) from which you want to migrate data
 - A [a CockroachCloud Dedicated cluster](quickstart-trial-cluster.html)
 
-    Your first paid CockroachCloud cluster is free for a 30-day trial.
+    Your first CockroachCloud Dedicated cluster is free for a 30-day trial.
 
 - [Cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html)
 
@@ -173,7 +170,7 @@ For best practices for optimizing import performance in CockroachDB, see [Import
 
 ## Step 4. Add any foreign key relationships
 
-Once all of the tables you want to migrate have been imported into the CockroachCloud cluster, add the [foreign key](../{{site.versions["stable"]}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
+Once all of the tables you want to migrate have been imported into the Dedicated cluster, add the [foreign key](../{{site.versions["stable"]}}/foreign-key.html) relationships. To do this, use [`ALTER TABLE ... ADD CONSTRAINT`](../{{site.versions["stable"]}}/add-constraint.html). For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
