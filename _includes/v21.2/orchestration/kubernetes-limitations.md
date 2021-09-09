@@ -6,6 +6,8 @@ Kubernetes 1.15 or higher is required in order to use our current configuration 
 
 Helm 3.0 or higher is required when using our instructions to deploy via Helm.
 
+The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. 
+
 #### Resources
 
 When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Operate CockroachDB on Kubernetes](operate-cockroachdb-kubernetes.html#allocate-resources).
