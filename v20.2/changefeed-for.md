@@ -57,16 +57,10 @@ Option | Value | Description
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. Below is a list of unsupported SQL types and values for Avro changefeeds:
+Currently, support for Avro is limited and experimental. You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro). Below is a list of unsupported SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
-- [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.
-
-    {{site.data.alerts.callout_info}}
-    To avoid `NaN` or infinite values, add a [`CHECK` constraint](check.html) to prevent these values from being inserted into decimal columns.
-    {{site.data.alerts.end}}
-
-- [`time`, `date`, `interval`](https://github.com/cockroachdb/cockroach/issues/32472), [`uuid`, `inet`](https://github.com/cockroachdb/cockroach/issues/34417), [`array`](https://github.com/cockroachdb/cockroach/issues/34420), and [`jsonb`](https://github.com/cockroachdb/cockroach/issues/34421) are not supported in Avro yet.
+- [`INTERVAL`](https://github.com/cockroachdb/cockroach/issues/32472), [`ARRAY`](https://github.com/cockroachdb/cockroach/issues/34420), `BIT`, and collated `STRING` are not supported in Avro yet.
 
 ## Examples
 

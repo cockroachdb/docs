@@ -52,21 +52,41 @@ Option | Value | Description
 `resolved` | [`INTERVAL`](interval.html) | Periodically emit resolved timestamps to the changefeed. Optionally, set a minimum duration between emitting resolved timestamps. If unspecified, all resolved timestamps are emitted.<br><br>Example: `resolved='10s'`
 `envelope` | `key_only` / `row` | Use `key_only` to emit only the key and no value, which is faster if you only want to know when the key changes.<br><br>Default: `envelope=row`
 `cursor` | [Timestamp](as-of-system-time.html#parameters)  | Emits any changes after the given timestamp, but does not output the current state of the table first. If `cursor` is not specified, the changefeed starts by doing a consistent scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br><br>`cursor` can be used to start a new changefeed where a previous changefeed ended.<br><br>Example: `CURSOR=1536242855577149065.0000000000`
-`format` | `json` / `experimental_avro` | Format of the emitted record. Currently, support for [Avro is limited and experimental](#avro-limitations). <br><br>Default: `format=json`.
-`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `experimental_avro`.
+`format` | `json` / `avro` | Format of the emitted record. Currently, support for [Avro is limited](#avro-limitations). <br><br>Default: `format=json`.
+`confluent_schema_registry` | Schema Registry address | The [Schema Registry](https://docs.confluent.io/current/schema-registry/docs/index.html#sr) address is required to use `avro`.
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. Below is a list of unsupported SQL types and values for Avro changefeeds:
+Below are clarifications for particular SQL types and values for Avro changefeeds:
 
 - [Decimals](decimal.html) must have precision specified.
-- [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.
+- [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
 
-    {{site.data.alerts.callout_info}}
-    To avoid `NaN` or infinite values, add a [`CHECK` constraint](check.html) to prevent these values from being inserted into decimal columns.
-    {{site.data.alerts.end}}
+    For efficiency, CockroachDB encodes `BIT` and `VARBIT` bitfield types as arrays of 64-bit integers. That is, [base-2 (binary format)](https://en.wikipedia.org/wiki/Binary_number#Conversion_to_and_from_other_numeral_systems) `BIT` and `VARBIT` data types are converted to base 10 and stored in arrays. Encoding in CockroachDB is [big-endian](https://en.wikipedia.org/wiki/Endianness), therefore the last value may have many trailing zeroes. For this reason, the first value of each array is the number of bits that are used in the last value of the array.
 
-- [`time`, `date`, `interval`](https://github.com/cockroachdb/cockroach/issues/32472), [`uuid`, `inet`](https://github.com/cockroachdb/cockroach/issues/34417), [`array`](https://github.com/cockroachdb/cockroach/issues/34420), and [`jsonb`](https://github.com/cockroachdb/cockroach/issues/34421) are not supported in Avro yet.
+    For instance, if the bitfield is 129 bits long, there will be 4 integers in the array. The first integer will be `1`; representing the number of bits in the last value, the second integer will be the first 64 bits, the third integer will be bits 65–128, and the last integer will either be `0` or `9223372036854775808` (i.e. the integer with only the first bit set, or `1000000000000000000000000000000000000000000000000000000000000000` when base 2).
+
+    This example is base-10 encoded into an array as follows:
+
+    ~~~
+    {"array": [1, <first 64 bits>, <second 64 bits>, 0 or 9223372036854775808]}
+    ~~~
+
+    For downstream processing, it is necessary to base 2 encode every element in the array (except for the first element). The first number in the array gives you the number of bits to take from the last base-2 number — that is, the most significant bits. So, in the example above this would be `1`. Finally, all the base-2 numbers can be appended together, which will result in the original number of bits, 129.
+
+    In a different example of this process where the bitfield is 136 bits long, the array would be similar to the following when base-10 encoded:
+
+    ~~~
+    {"array": [8, 18293058736425533439, 18446744073709551615, 13690942867206307840]}
+    ~~~
+
+    To then work with this data, you would convert each of the elements in the array to base-2 numbers, besides the first element. For the above array, this would convert to:
+
+    ~~~
+    [8, 1111110111011011111111111111111111111111111111111111111111111111, 1111111111111111111111111111111111111111111111111111111111111111, 1011111000000000000000000000000000000000000000000000000000000000]
+    ~~~
+
+    Next, you use the first number to take the number of bits from the last base-2 element, `10111110`. Finally, you append each of the base-2 numbers (the last number from the array being truncated), which in this case results in 136 bits, the original number of bits.
 
 ## Examples
 
