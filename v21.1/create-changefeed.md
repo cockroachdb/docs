@@ -118,7 +118,7 @@ Option | Value | Description
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. You can only emit an Avro record if you are using a changefeed [connected to Kafka](#create-a-changefeed-connected-to-kafka-using-avro).
+Currently, support for Avro is limited and experimental. 
 
 Below are clarifications for particular SQL types and values for Avro changefeeds:
 
