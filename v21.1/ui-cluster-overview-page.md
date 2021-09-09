@@ -98,7 +98,7 @@ Nodes that have been [decommissioned](remove-nodes.html#how-it-works) will be li
 When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB transfers all range replicas and range leases off the node so that it can be safely shut down.
 {{site.data.alerts.end}}
 
-## Node Map (Enterprise)
+## Node Map ({{ site.data.products.enterprise }})
 
 The **Node Map** is an [enterprise](enterprise-licensing.html) feature that visualizes the geographical configuration of your cluster. It requires that [`--locality` flags have been defined](cockroach-start.html#locality) for your nodes.
 

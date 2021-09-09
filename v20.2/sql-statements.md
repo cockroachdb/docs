@@ -189,11 +189,11 @@ Statement | Usage
 [`DROP SCHEDULES`](drop-schedules.html) | <span class="version-tag">New in v20.2:</span> Drop backup schedules.
 
 
-## Changefeed statements (Enterprise)
+## Changefeed statements ({{ site.data.products.enterprise }})
 
 [Change data capture](stream-data-out-of-cockroachdb-using-changefeeds.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`](create-changefeed.html) | _(Enterprise)_ Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (Kafka or a cloud storage sink).
+[`CREATE CHANGEFEED`](create-changefeed.html) | _({{ site.data.products.enterprise }})_ Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (Kafka or a cloud storage sink).
 [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | _(Core)_ Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.

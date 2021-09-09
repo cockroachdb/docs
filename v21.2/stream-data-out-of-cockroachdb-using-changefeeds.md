@@ -12,7 +12,7 @@ While CockroachDB is an excellent system of record, it also needs to coexist wit
 
 The main feature of CDC is the changefeed, which targets an allowlist of tables, called the "watched rows". There are two implementations of changefeeds:
 
-| [Core changefeeds](#create-a-core-changefeed)   | [Enterprise changefeeds](#configure-a-changefeed-enterprise) |
+| [Core changefeeds](#create-a-core-changefeed)   | [{{ site.data.products.enterprise }} changefeeds](#configure-a-changefeed-enterprise) |
 --------------------------------------------------|-----------------------------------------------------------------|
 | Useful for prototyping or quick testing. | Recommended for production use. |
 | Available in all products. | Available in {{ site.data.products.dedicated }} or with an [enterprise license](enterprise-licensing.html) in CockroachDB. |
@@ -163,7 +163,7 @@ To create a core changefeed:
 
 For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
-## Configure a changefeed (Enterprise)
+## Configure a changefeed ({{ site.data.products.enterprise }})
 
 An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
 

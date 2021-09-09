@@ -37,6 +37,6 @@ The following section summarizes the CockroachDB security features and provides 
 Security feature | Description
 -------------|------------
 [Authentication](authentication.html) | <ul><li>Inter-node and node identity authentication using TLS 1.2</li><li>Client identity authentication using TLS 1.2 or username/password</li></ul>
-[Encryption](encryption.html) | <ul><li>Encryption in flight using TLS 1.2</li><li> Encryption at Rest using AES in counter mode (Enterprise feature)</li></ul>
+[Encryption](encryption.html) | <ul><li>Encryption in flight using TLS 1.2</li><li> Encryption at Rest using AES in counter mode ({{ site.data.products.enterprise }} feature)</li></ul>
 [Authorization](authorization.html) | <ul><li>Users and privileges</li><li> Role-based access control</li></ul>
 [Audit logging](sql-audit-logging.html) | `ALTER TABLE...EXPERIMENTAL AUDIT` to get detailed information about queries being executed against your system

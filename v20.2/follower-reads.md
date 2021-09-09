@@ -111,5 +111,5 @@ COMMIT;
 - [Cluster Settings Overview](cluster-settings.html)
 - [Load-Based Splitting](load-based-splitting.html)
 - [Network Latency Page](ui-network-latency-page.html)
-- [Enterprise Features](enterprise-licensing.html)
+- [{{ site.data.products.enterprise }} Features](enterprise-licensing.html)
 - [Follower Reads Topology Pattern](topology-follower-reads.html)

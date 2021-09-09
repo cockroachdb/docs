@@ -6,7 +6,7 @@ dedicated: CockroachCloud
 # to be CockroachDB Managed
 core: CockroachDB Core
 #stays the same
-enterprise: CockroachDB Enterprise
+enterprise: Enterprise
 # to be CockroachDB Self-Hosted
 db: CockroachCloud #i.e. "Sign up for a CockroachCloud account"
 # to be CockroachDB

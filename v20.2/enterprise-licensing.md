@@ -8,7 +8,7 @@ CockroachDB distributes a single binary that contains both core and [enterprise 
 
 This page lists enterprise features. For information on how to obtain and set trial and enterprise license keys for CockroachDB, see the [Licensing FAQs](licensing-faqs.html#obtain-a-license).
 
-## Enterprise features
+## {{ site.data.products.enterprise }} features
 
 {% include {{ page.version.version }}/misc/enterprise-features.md %}
 
@@ -16,4 +16,4 @@ This page lists enterprise features. For information on how to obtain and set tr
 
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
-- [Enterprise Trial –– Get Started](get-started-with-enterprise-trial.html)
+- [{{ site.data.products.enterprise }} Trial –– Get Started](get-started-with-enterprise-trial.html)

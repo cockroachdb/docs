@@ -56,7 +56,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
 **[Other advanced backup features](backup.html)** | | | ✓
 **[Core changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
-**[Enterprise changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
+**[{{ site.data.products.enterprise }} changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
 **[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓
@@ -79,7 +79,7 @@ More information about all enterprise features can be found [here](enterprise-li
 
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
-- An **Enterprise License** enables you to use CockroachDB enterprise features for longer periods (one year or more). To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
+- An **{{ site.data.products.enterprise }} License** enables you to use CockroachDB enterprise features for longer periods (one year or more). To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
 - A **Trial License** enables you to try out CockroachDB enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
 
 {{site.data.alerts.callout_success}}

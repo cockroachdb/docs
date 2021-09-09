@@ -22,7 +22,7 @@ Table partitioning helps you reduce latency and cost:
 Table partitioning involves a combination of CockroachDB features:
 
 - [Node Attributes](#node-attributes)
-- [Enterprise License](#enterprise-license)
+- [{{ site.data.products.enterprise }} License](#enterprise-license)
 - [Table Creation](#table-creation)
 - [Replication Zones](#replication-zones)
 
@@ -36,9 +36,9 @@ To store partitions in specific locations (e.g., geo-partitioning), or on machin
 
 For more details about these flags, see the [`cockroach start`](cockroach-start.html) documentation.
 
-### Enterprise license
+### {{ site.data.products.enterprise }} license
 
-You must have a valid enterprise license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
+You must have a valid {{ site.data.products.enterprise }} license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [{{ site.data.products.enterprise }} Licensing](enterprise-licensing.html).
 
 Note that the following features do not work with an **expired license**:
 
@@ -275,7 +275,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
 
 #### Step 3. Request and set a trial enterprise license
 
-See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
+See [Set the Trial or {{ site.data.products.enterprise }} License Key](licensing-faqs.html#set-a-license).
 
 #### Step 4. Create the `roachlearn` database and `students` table
 
@@ -454,7 +454,7 @@ We want to archival-partition the table to keep newer data on faster devices and
 
 #### Step 2. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
+To set the enterprise license, see [Set the Trial or {{ site.data.products.enterprise }} License Key](licensing-faqs.html#set-a-license).
 
 #### Step 3. Start each node with the appropriate storage device specified in the `--store` flag
 
@@ -589,7 +589,7 @@ $ cockroach init --insecure --host=<address of any node>
 
 #### Step 3. Set the enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
+To set the enterprise license, see [Set the Trial or {{ site.data.products.enterprise }} License Key](licensing-faqs.html#set-a-license).
 
 #### Step 4. Create a table with the appropriate partitions
 

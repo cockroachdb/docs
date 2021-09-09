@@ -1,17 +1,17 @@
 ---
-title: Enterprise Trial –– Get Started
-summary: Check out this page to get started with your CockroachDB Enterprise Trial
+title: {{ site.data.products.enterprise }} Trial –– Get Started
+summary: Check out this page to get started with your CockroachDB {{ site.data.products.enterprise }} Trial
 toc: true
 license: true
 ---
 
-Congratulations on starting your CockroachDB Enterprise Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our Enterprise-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).
+Congratulations on starting your CockroachDB {{ site.data.products.enterprise }} Trial! With it, you'll not only get access to CockroachDB's core capabilities like [high availability](frequently-asked-questions.html#how-does-cockroachdb-survive-failures) and [`SERIALIZABLE` isolation](frequently-asked-questions.html#how-is-cockroachdb-strongly-consistent), but also our {{ site.data.products.enterprise }}-only features like distributed [`BACKUP`](backup.html) &amp; [`RESTORE`](restore.html), [multi-region capabilities](multiregion-overview.html), and [cluster visualization](enable-node-map.html).
 
 ## Install CockroachDB
 
 If you haven't already, you'll need to [locally install](install-cockroachdb.html), [remotely deploy](manual-deployment.html), or [orchestrate](orchestration.html) CockroachDB.
 
-## Enable Enterprise features
+## Enable {{ site.data.products.enterprise }} features
 
 As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode.
 
@@ -38,7 +38,7 @@ Then verify your organization in response to the following query:
 >  SHOW CLUSTER SETTING cluster.organization;
 ~~~
 
-## Use Enterprise features
+## Use {{ site.data.products.enterprise }} features
 
 Your cluster now has access to all of CockroachDB's enterprise features for the length of the trial:
 
@@ -50,6 +50,6 @@ If you or your team need any help during your trial, our engineers are available
 
 ## See also
 
-- [Enterprise Licensing](enterprise-licensing.html)
+- [{{ site.data.products.enterprise }} Licensing](enterprise-licensing.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
