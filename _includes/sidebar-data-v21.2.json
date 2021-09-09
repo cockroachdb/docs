@@ -803,50 +803,78 @@
             "title": "Orchestrated Deployment",
             "items": [
               {
-                "title": "Overview",
-                "urls": [
-                  "/${VERSION}/orchestration.html"
+                "title": "Kubernetes",
+                "items": [
+                  {
+                    "title": "Overview",
+                    "urls": [
+                      "/${VERSION}/kubernetes-overview.html"
+                    ]
+                  },
+                  {
+                    "title": "Single-Cluster Deployment",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
+                    ]
+                  },
+                  {
+                    "title": "Operate CockroachDB on Kubernetes",
+                    "items": [
+                      {
+                        "title": "Configure the Cluster",
+                        "urls": [
+                          "/${VERSION}/configure-cockroachdb-kubernetes.html"
+                        ]
+                      },
+                      {
+                        "title": "Secure the Cluster",
+                        "urls": [
+                          "/${VERSION}/secure-cockroachdb-kubernetes.html"
+                        ]
+                      },
+                      {
+                        "title": "Scale the Cluster",
+                        "urls": [
+                          "/${VERSION}/scale-cockroachdb-kubernetes.html"
+                        ]
+                      },
+                      {
+                        "title": "Monitor the Cluster",
+                        "urls": [
+                          "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+                        ]
+                      },
+                      {
+                        "title": "Upgrade the Cluster",
+                        "urls": [
+                          "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+                        ]
+                      },
+                      {
+                        "title": "Optimize Performance",
+                        "urls": [
+                          "/${VERSION}/kubernetes-performance.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "OpenShift Deployment",
+                    "urls": [
+                      "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
+                    ]
+                  },
+                  {
+                    "title": "Multi-Cluster Deployment",
+                    "urls": [
+                      "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
+                    ]
+                  }
                 ]
               },
               {
-                "title": "Kubernetes Single-Cluster Deployment",
-                "urls": [
-                  "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
-                ]
-              },
-              {
-                "title": "Operate CockroachDB on Kubernetes",
-                "urls": [
-                  "/${VERSION}/operate-cockroachdb-kubernetes.html"
-                ]
-              },
-              {
-                "title": "Monitor CockroachDB on Kubernetes",
-                "urls": [
-                  "/${VERSION}/monitor-cockroachdb-kubernetes.html"
-                ]
-              },
-              {
-                "title": "OpenShift Single-Cluster Deployment",
-                "urls": [
-                  "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
-                ]
-              },
-              {
-                "title": "Kubernetes Multi-Cluster Deployment",
-                "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
-                ]
-              },
-              {
-                "title": "Kubernetes Performance Optimization",
-                "urls": [
-                  "/${VERSION}/kubernetes-performance.html"
-                ]
-              },
-              {
-                "title": "Docker Swarm Deployment",
+                "title": "Docker Swarm",
                 "urls": [
                   "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
                   "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
