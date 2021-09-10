@@ -40,7 +40,7 @@ $ pip install psycopg2
 
 For other ways to install psycopg2, see the [official documentation](http://initd.org/psycopg/docs/install.html).
 
-For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and psycopg2](build-a-python-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Python App with CockroachDB and psycopg2](build-a-python-app-with-cockroachdb.html).
 
 ## Python ORM frameworks
 
@@ -61,19 +61,19 @@ You can substitute psycopg2 for other alternatives that include the psycopg pyth
 
 For other ways to install SQLAlchemy, see the [official documentation](http://docs.sqlalchemy.org/en/latest/intro.html#installation-guide).
 
-For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
+For a simple but complete example app, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
 
 ### Django
 
 **Support level:** Full
 
-CockroachDB supports Django versions 2.2 and 3.0.
+CockroachDB supports Django versions 3.1+.
 
 To install [Django](https://docs.djangoproject.com/en/3.0/topics/install/):
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install django==3.0.*
+$ pip install django==3.1.*
 ~~~
 
 Before installing the [CockroachDB backend for Django](https://github.com/cockroachdb/django-cockroachdb), you must install one of the following psycopg2 prerequisites:
@@ -88,14 +88,14 @@ After you install the psycopg2 prerequisite, you can install the CockroachDB Dja
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ pip install django-cockroachdb==3.0.*
+$ pip install django-cockroachdb==3.1.*
 ~~~
 
 {{site.data.alerts.callout_info}}
 The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
 {{site.data.alerts.end}}
 
-For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and Django](build-a-python-app-with-cockroachdb-django.html).
+For a simple but complete example app, see [Build a Python App with CockroachDB and Django](build-a-python-app-with-cockroachdb-django.html).
 
 ### PonyORM
 
@@ -108,7 +108,7 @@ To install PonyORM:
 $ pip install pony
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
+For a simple but complete example app, see [Build a Python App with CockroachDB and PonyORM](build-a-python-app-with-cockroachdb-pony.html).
 
 ### peewee
 
@@ -139,7 +139,7 @@ For instructions on using peewee with CockroachDB, see the [CockroachDatabase pe
 
 Download and set up the Java JDBC driver as described in the [official documentation](https://jdbc.postgresql.org/documentation/head/setup.html). We recommend using the PostgreSQL JDBC 42.2.9 driver.
 
-For a simple but complete "Hello World" example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Java App with CockroachDB and JDBC](build-a-java-app-with-cockroachdb.html).
 
 ## Java ORM frameworks
 
@@ -156,7 +156,7 @@ implementation 'org.hibernate:hibernate-core:5.4.19.Final'
 implementation 'org.postgresql:postgresql:42.2.9'
 ~~~
 
-For a simple but complete "Hello World" example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
+For a simple but complete example app that uses Gradle for dependency management, see [Build a Java App with CockroachDB and Hibernate](build-a-java-app-with-cockroachdb-hibernate.html).
 
 If you are using Maven, add the following to your `<dependencies>`:
 
@@ -186,7 +186,7 @@ Not all versions of CockroachDB have a corresponding dialect yet. Use the dialec
 
 You can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies for your application, including jOOQ.
 
-For a simple but complete "Hello World" example app that uses Maven for dependency management, see [Build a Java App with CockroachDB and jOOQ](build-a-java-app-with-cockroachdb-jooq.html).
+For a simple but complete example app that uses Maven for dependency management, see [Build a Java App with CockroachDB and jOOQ](build-a-java-app-with-cockroachdb-jooq.html).
 
 </section>
 
@@ -205,7 +205,7 @@ To install the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx):
 $ go get -u github.com/jackc/pgx
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html).
 
 ### pq
 
@@ -218,7 +218,7 @@ To install the [Go pq driver](https://godoc.org/github.com/lib/pq):
 $ go get -u github.com/lib/pq
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Go App with CockroachDB and the Go pq Driver](build-a-go-app-with-cockroachdb.html).
 
 ## Go ORM frameworks
 
@@ -238,7 +238,7 @@ $ go get -u github.com/lib/pq # dependency
 $ go get -u github.com/jinzhu/gorm
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Go App with CockroachDB and GORM](build-a-go-app-with-cockroachdb-gorm.html).
+For a simple but complete example app, see [Build a Go App with CockroachDB and GORM](build-a-go-app-with-cockroachdb-gorm.html).
 
 </section>
 
@@ -257,7 +257,7 @@ To install the [Ruby pg driver](https://rubygems.org/gems/pg):
 $ gem install pg
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Ruby App with CockroachDB and the Ruby pg Driver](build-a-ruby-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Ruby App with CockroachDB and the Ruby pg Driver](build-a-ruby-app-with-cockroachdb.html).
 
 ## Ruby ORM frameworks
 
@@ -276,7 +276,7 @@ $ gem install activerecord pg activerecord-cockroachdb-adapter
 The exact command above will vary depending on the desired version of ActiveRecord. Specifically, version 5.1.x of ActiveRecord requires version 0.2.x of the adapter; version 5.2.x of ActiveRecord requires version 5.2.x of the adapter; version 6.0.x of ActiveRecord requires version 6.0.0betax of the adapter.
 {{site.data.alerts.end}}
 
-For a simple but complete "Hello World" example app, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
+For a simple but complete example app, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
 
 </section>
 
@@ -302,7 +302,7 @@ Some apps might also requires [`async`](https://www.npmjs.com/package/async):
 $ npm install async
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and the Node.js pg Driver](build-a-nodejs-app-with-cockroachdb.html).
 
 ## JavaScript/TypeScript ORM frameworks
 
@@ -317,7 +317,7 @@ To install Sequelize and a [CockroachDB Node.js package](https://github.com/cock
 $ npm install sequelize sequelize-cockroachdb
 ~~~
 
-For a simple but complete "Hello World" example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
+For a simple but complete example app, see [Build a Node.js App with CockroachDB and Sequelize](build-a-nodejs-app-with-cockroachdb-sequelize.html).
 
 ### TypeORM
 
@@ -325,7 +325,7 @@ For a simple but complete "Hello World" example app, see [Build a Node.js App wi
 
 Install TypeORM as described in the [official documentation](https://typeorm.io/#/).
 
-For a simple but complete "Hello World" example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a TypeScript App with CockroachDB and TypeORM](build-a-typescript-app-with-cockroachdb.html).
 
 </section>
 
@@ -355,7 +355,7 @@ Install the C++ libpqxx driver as described in the [official documentation](http
 If you are running macOS, you need to install version 4.0.1 or higher of the libpqxx driver.
 {{site.data.alerts.end}}
 
-For a simple but complete "Hello World" example app, see [Build a C++ App with CockroachDB and libpqxx](build-a-c++-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a C++ App with CockroachDB and libpqxx](build-a-c++-app-with-cockroachdb.html).
 
 </section>
 
@@ -388,7 +388,7 @@ For a simple but complete "Hello World" example app, see [Build a C++ App with C
     $ dotnet add package Npgsql
     ~~~
 
-For a simple but complete "Hello World" example app, see [Build a C# App with CockroachDB and the .NET Npgsql Driver](build-a-csharp-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a C# App with CockroachDB and the .NET Npgsql Driver](build-a-csharp-app-with-cockroachdb.html).
 
 </section>
 
@@ -402,7 +402,7 @@ For a simple but complete "Hello World" example app, see [Build a C# App with Co
 
 Install the Clojure `lein` utility as described in its [official documentation](https://leiningen.org/).
 
-For a simple but complete "Hello World" example app, see [Build a Closure App with CockroachDB and java.jdbc](build-a-clojure-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Closure App with CockroachDB and java.jdbc](build-a-clojure-app-with-cockroachdb.html).
 
 </section>
 
@@ -416,7 +416,7 @@ For a simple but complete "Hello World" example app, see [Build a Closure App wi
 
 Install the php-pgsql driver as described in the [official documentation](http://php.net/manual/en/book.pgsql.php).
 
-For a simple but complete "Hello World" example app, see [Build a PHP App with CockroachDB and the PHP pgsql Driver](build-a-php-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a PHP App with CockroachDB and the PHP pgsql Driver](build-a-php-app-with-cockroachdb.html).
 
 </section>
 
@@ -430,7 +430,7 @@ For a simple but complete "Hello World" example app, see [Build a PHP App with C
 
 Install the Rust Postgres driver as described in the <a href="https://crates.io/crates/postgres" data-proofer-ignore>official documentation</a>.
 
-For a simple but complete "Hello World" example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Rust App with CockroachDB and the Rust Postgres Driver](build-a-rust-app-with-cockroachdb.html).
 
 </section>
 

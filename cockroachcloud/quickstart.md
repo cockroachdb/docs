@@ -89,7 +89,7 @@ mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs
 Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
 </section>
 
-## Step 4. Use the built-in SQL client
+## Step 5. Use the built-in SQL client
 
 1. In your terminal, run the connection string provided in the third step of the dialog to connect to CockroachDB's built-in SQL client. Your username and cluster name are pre-populated for you in the dialog.
 

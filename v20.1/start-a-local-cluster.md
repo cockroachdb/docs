@@ -209,7 +209,7 @@ Now that your cluster is live, you can use any node as a SQL gateway. To test th
 
 ## Step 3. Run a sample workload
 
-CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).
+CockroachDB also comes with a number of [built-in workloads](cockroach-workload.html) for simulating client traffic. Let's run the workload based on CockroachDB's sample vehicle-sharing application, [MovR](movr.html).
 
 1. Load the initial dataset:
 
