@@ -1,5 +1,5 @@
 ---
-title: {{ site.data.products.enterprise }} Trial –– Get Started
+title: Enterprise Trial –– Get Started
 summary: Check out this page to get started with your CockroachDB {{ site.data.products.enterprise }} Trial
 toc: true
 license: true
