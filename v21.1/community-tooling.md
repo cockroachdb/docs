@@ -12,8 +12,9 @@ If you encounter problems with using these tools, please contact the maintainer 
 If you have a tested or developed a third-party tool with CockroachDB, and would like it listed on this page, please [open a pull request to our docs GitHub repository](https://github.com/cockroachdb/docs/edit/master/v21.1/community-tooling.md).
 {{site.data.alerts.end}}
 
-## Drivers
+## Drivers and data access frameworks
 
+- [sqlx (for Go)](http://jmoiron.github.io/sqlx/)
 - [clojure.java.jdbc](build-a-clojure-app-with-cockroachdb.html)
 - [libpqxx](build-a-c++-app-with-cockroachdb.html)
 - [Npgsql (for Powershell)](https://blog.ervits.com/2020/03/exploring-cockroachdb-with-jupyter.html)
