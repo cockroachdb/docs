@@ -21,7 +21,7 @@ If you run into problems with this integration, please file an issue on the [Dat
 - [Datadog Agent](https://app.datadoghq.com/account/settings#agent)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [CockroachCloud](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [{{ site.data.products.serverless }}](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB check

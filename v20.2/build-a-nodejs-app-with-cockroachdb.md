@@ -17,7 +17,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 ## Step 1. Start CockroachDB
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use CockroachCloud</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless-plan }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
@@ -128,10 +128,10 @@ Enter the `(sql)` connection URL provided in the demo cluster's SQL shell welcom
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-Enter the connection string provided in the **Connection info** window of the CockroachCloud Console.
+Enter the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
 
 {{site.data.alerts.callout_info}}
-You need to provide a SQL user password in order to securely connect to a CockroachCloud cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
 {{site.data.alerts.end}}
 
 </section>

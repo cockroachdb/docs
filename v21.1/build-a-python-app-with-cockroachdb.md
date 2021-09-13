@@ -97,9 +97,9 @@ $ python3 example.py \
 Before running the command, update the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog as follows:
 
 - Replace `<username>` and `<password>` with the SQL username and password that you created earlier.
-- Replace `<globalhost>` with the name of the CockroachCloud Free (beta) host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
+- Replace `<globalhost>` with the name of the {{ site.data.products.serverless }} host (e.g., `free-tier.gcp-us-central1.cockroachlabs.cloud`).
 - Replace `<cluster-name>` with the name of your cluster.
-- Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+- Replace `<certs_directory>` with the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 {{site.data.alerts.callout_info}}
 If you are using the connection string that you [copied from the **Connection info** dialog](#set-up-your-cluster-connection), your username, password, and cluster name will be pre-populated.

@@ -11,7 +11,7 @@ For more information about creating, managing, monitoring, and restoring from a 
 {{site.data.alerts.callout_info}}
 Core users can only use backup scheduling for [full backups](#create-a-schedule-for-full-backups-only-core) of clusters, databases, or tables.
 
-To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
+To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -124,7 +124,7 @@ Core users can only use backup scheduling for full backups of clusters, database
 (1 row)
 ~~~
 
-To use the other backup features, you need an [enterprise license](enterprise-licensing.html).
+To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
 ### Create a scheduled backup for a cluster
 

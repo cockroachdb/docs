@@ -15,7 +15,7 @@ For reference documentation on the `CREATE DATABASE` statement, including additi
 Before reading this page, do the following:
 
 - [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.db }} cluster](../cockroachcloud/create-your-cluster.html).
 - [Review the database schema objects](schema-design-overview.html).
 
 ## Create a database

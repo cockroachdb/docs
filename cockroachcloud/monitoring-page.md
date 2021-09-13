@@ -25,7 +25,7 @@ For details on creating additional users that can connect to the cluster and acc
 ## Explore the DB Console
 
 - For an overview of all the areas of the DB Console, see [DB Console Overview](../{{site.versions["stable"]}}/ui-overview.html).
-- Be sure to check out the [**Node Map**](../{{site.versions["stable"]}}/ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This Enterprise feature has been pre-configured and enabled for you.
+- Be sure to check out the [**Node Map**](../{{site.versions["stable"]}}/ui-overview.html), which visualizes the geographic configuration of your cluster on a world map and provides real-time cluster metrics, with the ability to drill down to individual nodes. This {{ site.data.products.enterprise }} feature has been pre-configured and enabled for you.
 
 {{site.data.alerts.callout_info}}
 If you have a single-node cluster, you may see a warning that you have under-replicated ranges. This is expected because the default replication factor is set to 3, and you can only have one [replica](../{{site.versions["stable"]}}/architecture/overview.html#terms) per node. For more information about replication issues, see [Cluster Setup Troubleshooting](../{{site.versions["stable"]}}/cluster-setup-troubleshooting.html#db-console-shows-under-replicated-unavailable-ranges).
