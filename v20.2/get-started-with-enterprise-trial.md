@@ -40,7 +40,7 @@ Then verify your organization in response to the following query:
 
 ## Use {{ site.data.products.enterprise }} features
 
-Your cluster now has access to all of CockroachDB's enterprise features for the length of the trial:
+Your cluster now has access to all of CockroachDB's {{ site.data.products.enterprise }} features for the length of the trial:
 
 {% include {{ page.version.version }}/misc/enterprise-features.md %}
 

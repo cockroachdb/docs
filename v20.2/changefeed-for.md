@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-`EXPERIMENTAL CHANGEFEED FOR` is the core implementation of changefeeds. For the [enterprise-only](enterprise-licensing.html) version, see [`CREATE CHANGEFEED`](create-changefeed.html).
+`EXPERIMENTAL CHANGEFEED FOR` is the core implementation of changefeeds. For the [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) version, see [`CREATE CHANGEFEED`](create-changefeed.html).
 {{site.data.alerts.end}}
 
 The `EXPERIMENTAL CHANGEFEED FOR` [statement](sql-statements.html) creates a new core changefeed, which streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled. A core changefeed can watch one table or multiple tables in a comma-separated list.
