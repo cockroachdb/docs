@@ -1,6 +1,6 @@
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.db }}</button>
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.dedicated }}</button>
   <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
