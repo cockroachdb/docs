@@ -1,8 +1,8 @@
-serverless: CockroachCloud Free (beta)
+serverless: CockroachCloud Serverless (beta)
 # to be CockroachCloud Serverless then CockroachDB Serverless (beta)
-serverless-plan: CockroachCloud Free #i.e. "1. Choose the **CockroachCloud Free** plan."
+serverless-plan: CockroachCloud Serverless #i.e. "1. Choose the **CockroachCloud Free** plan."
 # to be CockroachCloud Serverless
-dedicated: CockroachCloud
+dedicated: CockroachCloud Dedicated
 # to be CockroachDB Managed
 core: Core
 #stays the same
