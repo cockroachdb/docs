@@ -15,7 +15,8 @@ The following requirements apply to all role names (also known as usernames).
 ### Role membership and privileges
 
 - After creating roles, you can [grant them privileges to databases and tables](grant.html) and later [revoke](revoke.html) privileges.
-- Roles can be members of other roles. All privileges of a role are inherited by all of its members.
+- Roles can be members of other roles. All [privileges](authorization.html#privileges) of a role are inherited by all of its members.
+- Role options of a role are NOT inherited by any of its members.
 - All roles belong to the `public` role, to which you can likewise [grant](grant.html) and [revoke](revoke.html) privileges.
 - There is no limit to the number of members in a role.
 - Membership loops are not allowed (whether direct: `A is a member of B is a member of A` or indirect: `A is a member of B is a member of C ... is a member of A`).
