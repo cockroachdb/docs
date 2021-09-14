@@ -111,7 +111,7 @@ Option | Value | Description
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
 `avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
-`kafka_sink_config` | [`STRING`](string.html) | Set fields to configure delivery, version, and batching parameters for Kafka sinks. See [Advanced Configuration](#advanced-configuration) for more detail on configuring this option. <br><br>Example: `CREATE CHANGEFEED FOR table INTO 'kafka://localhost:9092' WITH kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "version": "", "RequiredAcks": "ONE" }'`
+`kafka_sink_config` | [`STRING`](string.html) | Set fields to configure the required level of message acknowledgement from the Kafka server, the version of the server, and batching parameters for Kafka sinks. See [Advanced Configuration](#advanced-configuration) for more detail on configuring all the available fields for this option. <br><br>Example: `CREATE CHANGEFEED FOR table INTO 'kafka://localhost:9092' WITH kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "RequiredAcks": "ONE"}'`
 
 {{site.data.alerts.callout_info}}
  Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
@@ -175,11 +175,11 @@ Kafka has the following topic limitations:
 The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
 
 {{site.data.alerts.callout_danger}}
-It's important to note that each of the following settings have significant impact on a changefeed's behavior, such as latency. For example, it is possible to configure batching parameters to be very high, which would negatively impact changefeed latency. As a result it would take a long time to see messages coming through to the sink. Also, the Kafka sink could be configured to reject batches that are too large.
+It's important to note that each of the following settings have significant impact on a changefeed's behavior, such as latency. For example, it is possible to configure batching parameters to be very high, which would negatively impact changefeed latency. As a result it would take a long time to see messages coming through to the sink. Also, large batches may be rejected by the Kafka server unless it's separately configured to accept a high [`max.message.bytes`](https://kafka.apache.org/documentation/#brokerconfigs_message.max.bytes).
 {{site.data.alerts.end}}
 
 ~~~
-kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "version": "", "RequiredAcks": "ONE" }'
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "0.8.2.0", "RequiredAcks": "ONE" }'
 ~~~
 
 The configurable fields include:
@@ -188,7 +188,7 @@ The configurable fields include:
   * `"MaxMessages"`: sets the maximum number of messages the producer will send in a single broker request. Increasing this value allows all messages to be sent in a batch. Default: `1`. Type: `INT`.
   * `"Frequency"`: sets the maximum time that messages will be batched. Default: `"0s"`. Type: `INTERVAL`.
 
-* `"version"`: sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"version": "0.8.2.0"}'`). Default: `""` Type: `STRING`.
+* `"Version"`: sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). Default: `"1.0.0.0"` Type: `STRING`.
 
 * `"RequiredAcks"`: specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) — this value defines the _delivery_. Type: `STRING`. The possible values are:
   * `"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails. **This is the default value.**
