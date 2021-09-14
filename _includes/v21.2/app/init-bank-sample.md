@@ -8,13 +8,7 @@ To initialize the example database, use the [`cockroach sql`](cockroach-sql.html
 cat dbinit.sql | cockroach sql --url "<connection-string>"
 ~~~
 
-Where `<connection-string>` is the connection string to the running cluster.
-
-<div class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the {{ site.data.products.db }} Console.
-{{site.data.alerts.end}}
+Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
 
 </div>
 

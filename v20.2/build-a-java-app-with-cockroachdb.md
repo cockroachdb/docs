@@ -23,51 +23,7 @@ For a sample app and tutorial that uses Spring Data JDBC and CockroachDB, see [B
 
 ## Step 1. Start CockroachDB
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.db }}</button>
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-### Create a free cluster
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-### Set up your cluster connection
-
-1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
-
-1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
-
-1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach demo`](cockroach-demo.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach demo \
-    --empty
-    ~~~
-
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql)` connection string in the SQL shell welcome text:
-
-    ~~~
-    # Connection parameters:
-    #   (console) http://127.0.0.1:64757
-    #   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo591709510&port=26257
-    #   (sql/tcp) postgres://root:admin@127.0.0.1:64759?sslmode=require
-    ~~~
-
-    You'll use this connection information to connect to the database later in this tutorial.
-
-</section>
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -157,27 +113,28 @@ It does all of the above using the practices we recommend for using JDBC with Co
 
 ## Step 3. Initialize the database
 
-To initialize the example database, pass the `dbinit.sql` file to the [`cockroach sql`](cockroach-sql.html) command:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-cockroach sql --url '<connection-string>' -f app/src/main/resources/dbinit.sql
-~~~
-
-Where `<connection-string>` is the connection string to the running cluster.
+To initialize the example database, use the [`cockroach sql`](cockroach-sql.html) command to execute the SQL statements in the `dbinit.sql` file:
 
 <div class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the {{ site.data.products.db }} Console.
-{{site.data.alerts.end}}
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cat app/src/main/resources/dbinit.sql | cockroach sql --url "<connection-string>"
+~~~
+
+Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
 
 </div>
 
 <div class="filter-content" markdown="1" data-scope="local">
 
-{{site.data.alerts.callout_success}}
-Use the connection string you obtained earlier from the `cockroach demo` welcome text.
+{% include_cached copy-clipboard.html %}
+~~~ shell
+cat app/src/main/resources/dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
+~~~
+
+{{site.data.alerts.callout_info}}
+`postgresql://root@localhost:26257?sslmode=disable` is the `sql` connection string you obtained earlier from the `cockroach` welcome text.
 {{site.data.alerts.end}}
 
 </div>
@@ -212,9 +169,9 @@ Time: 4ms
 
 ## Step 4. Run the code
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
 ### Update the connection parameters
+
+<section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
 In a text editor modify `app/src/main/java/com/cockroachlabs/BasicExample.java` with the settings to connect to the cluster:
 
@@ -229,11 +186,11 @@ ds.setSslRootCert(System.getenv("{path to the CA certificate}"));
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
 
+</section>
+
 {{site.data.alerts.callout_success}}
 For guidance on connection pooling, with an example using JDBC and [HikariCP](https://github.com/brettwooldridge/HikariCP), see [Connection Pooling](connection-pooling.html).
 {{site.data.alerts.end}}
-
-</section>
 
 Compile and run the code:
 
@@ -241,20 +198,6 @@ Compile and run the code:
 ~~~ shell
 ./gradlew run
 ~~~
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-The app will prompt you for the password to the demo cluster:
-
-~~~
-> Task :app:run
-Enter the demo password:
-<=========----> 75% EXECUTING [22s]
-~~~
-
-Enter the password.
-
-</section>
 
 The output will look like the following:
 
