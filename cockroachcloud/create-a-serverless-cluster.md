@@ -31,7 +31,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 3. Enter a spend limit
 
-Every cluster includes 250M RUs and 5GiB of storage per month for free. Every cluster also has a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS.
+Every cluster includes 250M RUs per month and 5 GiB of storage for free. Every cluster also has a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS.
 
 Paid clusters include additional resources with no throttling. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
 
