@@ -44,6 +44,8 @@ The **Overview** page displays details about the selected CockroachCloud Serverl
 - The cluster's **Request units used**
 - The cluster's **SQL statements**
 
+For details, see [Cluster Overview Page](cluster-overview-page.html).
+
 ## Edit your spend limit  
 
 You can edit your spend limit from the **Overview** page. The change in your spend limit will affect current and upcoming billing cycles. See [Planning your cluster](#planning-your-cluster) for more information on resource usage. 
