@@ -12,7 +12,7 @@ This doc provides information about how to take and restore encrypted backups in
 - [Using a passphrase](#use-a-passphrase)
 
 {{site.data.alerts.callout_info}}
-Encrypted [`BACKUP`](backup.html) is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an enterprise license.
+Encrypted [`BACKUP`](backup.html) is an [{{ site.data.products.enterprise }}-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an {{ site.data.products.enterprise }} license.
 {{site.data.alerts.end}}
 
 ## Use AWS Key Management Service

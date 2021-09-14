@@ -24,7 +24,7 @@ Subcommand | Description | Can combine with other subcommands?
 [`DROP CONSTRAINT`](drop-constraint.html) | Remove constraints from columns. | Yes
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Enable per-table audit logs, for security purposes. | Yes
 [`OWNER TO`](owner-to.html) |  Change the owner of the table.
-[`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([Enterprise-only](enterprise-licensing.html)). | Yes
+[`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition a table ([{{ site.data.products.enterprise }}-only](enterprise-licensing.html)). | Yes
 [`RENAME COLUMN`](rename-column.html) | Change the names of columns. | Yes
 [`RENAME CONSTRAINT`](rename-constraint.html) | Change constraints columns. | Yes
 [`RENAME TO`](rename-table.html) | Change the names of tables. | No

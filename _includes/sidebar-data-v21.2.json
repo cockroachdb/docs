@@ -443,6 +443,12 @@
                     ]
                   },
                   {
+                    "title": "JavaScript (Node.js)",
+                    "urls": [
+                      "/${VERSION}/hello-world-node-postgres.html"
+                    ]
+                  },
+                  {
                     "title": "Python",
                     "urls": [
                       "/${VERSION}/hello-world-python-sqlalchemy.html"
@@ -652,6 +658,17 @@
                         "title": "IntelliJ IDEA",
                         "urls": [
                           "/${VERSION}/intellij-idea.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Application Deployment Tools",
+                    "items": [
+                      {
+                        "title": "Google Cloud Run",
+                        "urls": [
+                          "/${VERSION}/deploy-app-gcr.html"
                         ]
                       }
                     ]

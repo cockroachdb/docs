@@ -13,7 +13,7 @@ The **Transactions** page helps you:
 In contrast with the [**Statements** page](statements-page.html), which displays [SQL statement fingerprints](statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction](../{{site.versions["stable"]}}/transactions.html).
 {{site.data.alerts.end}}
 
-To view this page, click **Transactions** in the left-hand navigation of the CockroachCloud Console.
+To view this page, click **Transactions** in the left-hand navigation of the {{ site.data.products.db }} Console.
 
 ## Search and filter by application
 

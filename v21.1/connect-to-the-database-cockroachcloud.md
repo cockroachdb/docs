@@ -1,17 +1,17 @@
 ---
 title: Connect to the Database (CockroachCloud)
-summary: How to connect to a CockroachCloud cluster from your application
+summary: How to connect to a {{ site.data.products.db }} cluster from your application
 toc: true
 ---
 
 <div class="filters filters-big clearfix">
   <a href="connect-to-the-database.html"><button class="filter-button">Local</button></a>
-  <button class="filter-button current">CockroachCloud</button>
+  <button class="filter-button current">{{ site.data.products.serverless }}</button>
 </div>
 
-This page has instructions for connecting to a CockroachCloud cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
+This page has instructions for connecting to a {{ site.data.products.db }} cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
 
-The connection strings listed on this page set the required authentication options to connect to [free CockroachCloud](../cockroachcloud/authentication.html) clusters. CockroachCloud clusters use a signed certificate generated for your cluster that you download from the CockroachCloud console.
+The connection strings listed on this page set the required authentication options to connect to [free {{ site.data.products.serverless }}](../cockroachcloud/authentication.html) clusters. {{ site.data.products.db }} clusters use a signed certificate generated for your cluster that you download from the {{ site.data.products.db }} console.
 
 For a reference that lists all of the supported cluster connection parameters, see [Connection Parameters][connection_params].
 
@@ -21,9 +21,9 @@ Do the following:
 
  <a name="set-up-your-cluster-connection"></a>
 
-- Set up a CockroachCloud cluster:
-  - [Create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
-  - [Connect to the CockroachCloud cluster](../cockroachcloud/connect-to-your-cluster.html).
+- Set up a {{ site.data.products.db }} cluster:
+  - [Create a {{ site.data.products.db }} cluster](../cockroachcloud/create-your-cluster.html).
+  - [Connect to the {{ site.data.products.db }} cluster](../cockroachcloud/connect-to-your-cluster.html).
 - [Install a client driver or ORM framework](install-client-drivers.html).
 
 ## Connect

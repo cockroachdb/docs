@@ -27,7 +27,7 @@ Install the Clojure `lein` utility as described in its [official documentation](
 
 Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
 
-<span class="version-tag">New in v19.1</span>: Pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+Pass the [`--also-generate-pkcs8-key` flag](cockroach-cert.html#flag-pkcs8) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
 
 {% include copy-clipboard.html %}
 ~~~ shell

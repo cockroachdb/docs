@@ -23,6 +23,7 @@ This page lists general considerations to be aware of as you plan your migration
 
 In addition to the information listed below, see the following pages for specific instructions and considerations that apply to the database (or data format) you're migrating from:
 
+- [Migrate from a {{ site.data.products.serverless }} to {{ site.data.products.dedicated }} Cluster](../cockroachcloud/migrate-from-free-to-dedicated.html)
 - [Migrate from Oracle][oracle]
 - [Migrate from Postgres][postgres]
 - [Migrate from MySQL][mysql]

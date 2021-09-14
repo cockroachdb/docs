@@ -17,7 +17,7 @@ homepage: true
         <a href="quickstart.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">            
             <h6 class="mt-2 mt-0 text-black">Quickstart with<br>CockroachCloud</h6>
-            <p class="text-black">Learn how to create and use your CockroachCloud cluster</p>
+            <p class="text-black">Learn how to create and use your {{ site.data.products.db }} cluster</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="mt-2 mt-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
           </a>

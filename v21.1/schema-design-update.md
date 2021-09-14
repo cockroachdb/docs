@@ -11,7 +11,7 @@ This page provides an overview on changing and removing the objects in a databas
 Before reading this page, do the following:
 
 - [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.db }} cluster](../cockroachcloud/create-your-cluster.html).
 - [Review the database schema objects](schema-design-overview.html).
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).

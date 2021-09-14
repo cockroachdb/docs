@@ -5,11 +5,11 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level">CockroachCloud Serverless (beta)</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
+    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud Dedicated cluster.
+This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.
 
 ## Before you start
 
@@ -18,7 +18,7 @@ This page shows you how to connect to your CockroachCloud Dedicated cluster.
 
 ## Step 1. Authorize your network
 
-CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
+{{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
@@ -185,7 +185,7 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert.md %}
 
-1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachCloud.
+1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
@@ -234,4 +234,4 @@ For most tools, the full name of your database should be in the format `<cluster
 ## What's next
 
 - [Build a "Hello, World" app](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)

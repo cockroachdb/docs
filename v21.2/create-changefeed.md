@@ -5,10 +5,10 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+`CREATE CHANGEFEED` is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new enterprise changefeed, which targets an allowlist of tables, called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an enterprise changefeed.
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables, called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
 
@@ -109,8 +109,8 @@ Option | Value | Description
 `schema_change_events` | `default` / `column_changes` |  The type of schema change event that triggers the behavior specified by the `schema_change_policy` option:<ul><li>`default`: Include all [`ADD COLUMN`](add-column.html) events for columns that have a non-`NULL` [`DEFAULT` value](default-value.html) or are [computed](computed-columns.html), and all [`DROP COLUMN`](drop-column.html) events.</li><li>`column_changes`: Include all all schema change events that add or remove any column.</li></ul><br>Default: `schema_change_events=default`
 `schema_change_policy` | `backfill` / `nobackfill` / `stop` |  The behavior to take when an event specified by the `schema_change_events` option occurs:<ul><li>`backfill`: When [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) are finished, output all watched rows using the new schema.</li><li>`nobackfill`: For [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), perform no logical backfills.</li><li>`stop`: [schema changes with column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill), wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An `error: schema change occurred at <timestamp>` will display in the `cockroach.log` file.</li></ul><br>Default: `schema_change_policy=backfill`
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
-`full_table_name` | N/A | <span class="version-tag"> New in v21.1: </span> Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
-`avro_schema_prefix` | Schema prefix name               | <span class="version-tag"> New in v21.1: </span> Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
+`full_table_name` | N/A | Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
+`avro_schema_prefix` | Schema prefix name               | Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
 
 {{site.data.alerts.callout_info}}
  Using the `format=experimental_avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
@@ -244,7 +244,7 @@ For example:
 ~~~
 
 {{site.data.alerts.callout_info}}
-Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1.
+Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1 and later.
 {{site.data.alerts.end}}
 
 For more information on how to create a changefeed connected to Kafka, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-changefeed-connected-to-kafka).
@@ -325,6 +325,10 @@ For more information, see [`RESUME JOB`](resume-job.html).
 ~~~
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
+
+#### Configuring all changefeeds
+
+{% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
 
 ### Start a new changefeed where another ended
 

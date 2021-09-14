@@ -70,7 +70,40 @@ Note the following:
 
 - The CA key is never loaded automatically by `cockroach` commands, so it should be created in a separate directory, identified by the `--ca-key` flag.
 
-- Keys (files ending in `.key`) must not have group or world permissions (maximum permissions are 0700, or `rwx------`). This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
+### Key file permissions
+
+{{site.data.alerts.callout_info}}
+This check is only relevant on macOS, Linux, and other UNIX-like systems.
+{{site.data.alerts.end}}
+
+To reduce the likelihood of a malicious user or process accessing a certificate key (files ending in ".key"), we require that the certificate key be owned by one of the following system users:
+
+- The user that the CockroachDB process runs as.
+- The system `root` user (not to be confused with the [CockroachDB `root` user](authorization.html#root-user)) and the group that the CockroachDB process runs in.
+
+For example, if running the CockroachDB process as a system user named `cockroach`, we can determine the group that the process will run in by running `id cockroach`:
+
+```shell
+id cockroach
+uid=1000(cockroach) gid=1000(cockroach) groups=1000(cockroach),1000(cockroach)
+```
+
+In the output, we can see that the system user `cockroach` is also in the `cockroach` group (with the group id or gid of 1000).
+
+If the key file is owned by the system `root` user (who has a user ID of 0), CockroachDB won't be able to read it unless it has permission to read because of its group membership. Because we know that CockroachDB is running in the `cockroach` group, we can allow CockroachDB to read the key by changing the group owner of the key file to the `cockroach` group. We then give the group read permissions by running `chmod`.
+
+```shell
+sudo chgrp cockroach ui.key
+sudo chmod 0740 ui.key
+```
+
+However, if the `ui.key` file is owned by the `cockroach` system user, CockroachDB ignores the group ownership of the file, and requires that the permissions only allow the `cockroach` system user to interact with it (`0700` or `rwx------`).
+
+Note the following:
+
+- When running in Kubernetes, you will not be able to change the user that owns a certificate file mounted from a Secret or another Volume, but you will be able to override the group by setting the `fsGroup` flag in a Pod or Container's Security Context. In our example above, you would set `fsGroup` to "1000". You will also need to set the key's "mode" using the `mode` flag on individual items or the `defaultMode` flag if applying to the entire secret.
+
+- This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK` to `true`.
 
 ## Synopsis
 

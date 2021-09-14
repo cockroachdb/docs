@@ -17,7 +17,7 @@ Statement | Usage
 [`CREATE TABLE AS`](create-table-as.html) | Create a new table in a database using the results from a [selection query](selection-queries.html).
 [`COPY FROM`](copy-from.html) | Copy data from a third-party client to a CockroachDB cluster.<br>Note that CockroachDB currently only supports `COPY FROM` statements issued from third-party clients, for compatibility with PostgreSQL drivers and ORMs. `COPY FROM` statements cannot be issued from the [`cockroach` SQL shell](cockroach-sql.html). To import data from files, we use an [`IMPORT`](import.html) statement instead.
 [`DELETE`](delete.html) | Delete specific rows from a table.
-[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. Note that this statement requires an [enterprise license](enterprise-licensing.html).
+[`EXPORT`](export.html) | Export an entire table's data, or the results of a `SELECT` statement, to CSV files. Note that this statement requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`IMPORT`](import.html) | Bulk-insert CSV data into a new table.
 [`IMPORT INTO`](import-into.html) | Bulk-insert CSV data into an existing table.
 [`INSERT`](insert.html) | Insert rows into a table.
@@ -38,7 +38,7 @@ Statement | Usage
 [`ALTER COLUMN`](alter-column.html) | Change a column's [Default constraint](default-value.html), [`NOT NULL` constraint](not-null.html), or [data type](data-types.html).
 [`ALTER DATABASE`](alter-database.html) | Apply a schema change to a database.
 [`ALTER INDEX`](alter-index.html) | Apply a schema change to an index.
-[`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`ALTER PARTITION`](alter-partition.html) | Configure the replication zone for a partition. Note that [partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`ALTER PRIMARY KEY`](alter-primary-key.html) |  Change the [primary key](primary-key.html) of a table.
 [`ALTER RANGE`](alter-range.html) | Configure the replication zone for a system range.
 [`ALTER SCHEMA`](alter-schema.html) | <span class="version-tag">New in v20.2</span>: Alter a user-defined schema.
@@ -69,7 +69,7 @@ Statement | Usage
 [`DROP TYPE`](drop-type.html) | <span class="version-tag">New in v20.2:</span> Remove a user-defined, [enumerated data type](enum.html).
 [`DROP VIEW`](drop-view.html)| Remove a view.
 [`EXPERIMENTAL_AUDIT`](experimental-audit.html) | Turn SQL audit logging on or off for a table.
-[`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`PARTITION BY`](partition-by.html) | Partition, re-partition, or un-partition a table or secondary index. Note that [partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`REFRESH`](refresh.html) | <span class="version-tag">New in v20.2:</span> Refresh the stored query results of a [materialized view](views.html#materialized-views).
 [`RENAME COLUMN`](rename-column.html) | Rename a column in a table.
 [`RENAME CONSTRAINT`](rename-constraint.html) | Rename a constraint on a column.
@@ -85,7 +85,7 @@ Statement | Usage
 [`SHOW ENUMS`](show-enums.html) |  <span class="version-tag">New in v20.2:</span> List user-defined, [enumerated data types](enum.html) in a database.
 [`SHOW INDEX`](show-index.html) | View index information for a table or database.
 [`SHOW LOCALITY`](show-locality.html) | View the locality of the current node.
-[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [enterprise license](enterprise-licensing.html).
+[`SHOW PARTITIONS`](show-partitions.html) | List partitions in a database. Note that [partitioning](partitioning.html) requires an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 [`SHOW SCHEMAS`](show-schemas.html) | List the schemas in a database.
 [`SHOW SEQUENCES`](show-sequences.html) | List the sequences in a database.
 [`SHOW TABLES`](show-tables.html) | List tables or views in a database or virtual schema.
@@ -166,7 +166,7 @@ Statement | Usage
 
 ## Job management statements
 
-Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or enterprise backups or restores.
+Jobs in CockroachDB represent tasks that might not complete immediately, such as schema changes or {{ site.data.products.enterprise }} backups or restores.
 
 Statement | Usage
 ----------|------------
@@ -189,11 +189,11 @@ Statement | Usage
 [`DROP SCHEDULES`](drop-schedules.html) | <span class="version-tag">New in v20.2:</span> Drop backup schedules.
 
 
-## Changefeed statements (Enterprise)
+## Changefeed statements ({{ site.data.products.enterprise }})
 
-[Change data capture](stream-data-out-of-cockroachdb-using-changefeeds.html) (CDC) provides an enterprise and core version of row-level change subscriptions for downstream processing.
+[Change data capture](stream-data-out-of-cockroachdb-using-changefeeds.html) (CDC) provides an {{ site.data.products.enterprise }} and core version of row-level change subscriptions for downstream processing.
 
 Statement | Usage
 ----------|------------
-[`CREATE CHANGEFEED`](create-changefeed.html) | _(Enterprise)_ Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (Kafka or a cloud storage sink).
+[`CREATE CHANGEFEED`](create-changefeed.html) | _({{ site.data.products.enterprise }})_ Create a new changefeed to stream row-level changes in a configurable format to a configurable sink (Kafka or a cloud storage sink).
 [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html) | _(Core)_ Create a new changefeed to stream row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.

@@ -13,7 +13,7 @@ CockroachDB core is free to use.  Most [core features](#feature-licensing) are l
 
 Non-CCL core features from version 19.1 and earlier are licensed under [Apache 2.0](#apache); however, some features remain under third-party licenses. Beginning in version 19.2, these non-CCL features are licensed under the BSL for three years before [converting](#license-conversion-timeline) to the Apache 2.0 license.
 
-CockroachDB [enterprise features](enterprise-licensing.html) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License.
+CockroachDB [{{ site.data.products.enterprise }} features](enterprise-licensing.html) require a [paid license](#obtain-a-license) from Cockroach and are licensed under the Cockroach Community License.
 
 {{site.data.alerts.callout_info}}
 You can find any feature's license by checking the code's file header in the [CockroachDB repository](https://github.com/cockroachdb/cockroach).
@@ -25,7 +25,7 @@ Type | Description
 -------------|------------
 <a name="apache"></a>**Apache 2.0 License** | Core features under the Apache License are free to use and fully open-source. BSL features convert to this license three years after their release. For license conversion dates, see the [table below](#license-conversion-timeline).
 <a name="bsl"></a>**Business Source License**| BSL features are free to use and the source code is available, but users may not use CockroachDB [as a service](#what-constitutes-hosting-cockroachdb-as-a-service) without an agreement with Cockroach Labs. The BSL is not certified as an open-source license, but most of the [Open Source Initiative](https://en.wikipedia.org/wiki/Open_Source_Initiative) (OSI) criteria are met.
-<a name="ccl"></a>**Cockroach <br/> Community License** | <ul><li> CCL (Free) features are free to use. The source code is available to view and modify, but it cannot be reused without an agreement with Cockroach Labs. </li><li> CCL (Paid) features require an enterprise license key to access. The source code is available to view and modify, but it cannot be used without an agreement with Cockroach Labs. </li></ul>
+<a name="ccl"></a>**Cockroach <br/> Community License** | <ul><li> CCL (Free) features are free to use. The source code is available to view and modify, but it cannot be reused without an agreement with Cockroach Labs. </li><li> CCL (Paid) features require an {{ site.data.products.enterprise }} license key to access. The source code is available to view and modify, but it cannot be used without an agreement with Cockroach Labs. </li></ul>
 
 For additional custom licensing options, [contact us](https://support.cockroachlabs.com/hc/en-us).
 
@@ -45,7 +45,7 @@ CockroachDB version | License | Converts to Apache 2.0
 
 ## Feature licensing
 
-The table below shows how certain core and enterprise features are licensed:
+The table below shows how certain core and {{ site.data.products.enterprise }} features are licensed:
 
 Feature          | BSL | CCL (free)      | CCL (paid)
 -----------------|:-----:|:-----------------:|:---------------:
@@ -56,7 +56,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Incremental backups](take-full-and-incremental-backups.html#incremental-backups)** | | | ✓
 **[Other advanced backup features](backup.html)** | | | ✓
 **[Core changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-core-changefeed)** | | ✓ |
-**[Enterprise changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
+**[{{ site.data.products.enterprise }} changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#configure-a-changefeed-enterprise)** | | | ✓
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
 **[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓
@@ -72,22 +72,22 @@ Individual feature licensing may change with each release of CockroachDB. You ca
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-More information about all enterprise features can be found [here](enterprise-licensing.html).
+More information about all {{ site.data.products.enterprise }} features can be found [here](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## Obtain a license
 
 All CockroachDB code is included in the same binary. No license key is required to access BSL and CCL (Free) features. To access CCL (Paid) features, users have two options:
 
-- An **Enterprise License** enables you to use CockroachDB enterprise features for longer periods (one year or more). To upgrade to an enterprise license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
-- A **Trial License** enables you to try out CockroachDB enterprise features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
+- An **{{ site.data.products.enterprise }} License** enables you to use CockroachDB {{ site.data.products.enterprise }} features for longer periods (one year or more). To upgrade to an {{ site.data.products.enterprise }} license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a>.
+- A **Trial License** enables you to try out CockroachDB {{ site.data.products.enterprise }} features for 30 days for free. To obtain a trial license, fill out [the registration form](https://www.cockroachlabs.com/get-cockroachdb/) and receive your trial license via email within a few minutes.
 
 {{site.data.alerts.callout_success}}
-For quick local testing of enterprise features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
+For quick local testing of {{ site.data.products.enterprise }} features, you can use the [`cockroach demo`](cockroach-demo.html) command, which starts a temporary, in-memory cluster with a SQL shell open and a trial license applied automatically.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Cockroach Labs is willing to offer self-hosted CockroachDB enterprise features free of charge and discounted prices for CockroachCloud to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
+Cockroach Labs is willing to offer self-hosted CockroachDB {{ site.data.products.enterprise }} features free of charge and discounted prices for {{ site.data.products.dedicated }} to select non-profit organizations and non-commercial academic projects. To learn more, please [contact us](https://support.cockroachlabs.com/hc/en-us).
 {{site.data.alerts.end}}
 
 ## Set a license
@@ -147,11 +147,11 @@ I171116 18:11:48.279604 1514 sql/event_log.go:102  [client=[::1]:56357,user=root
 
 ## Monitoring for license expiry
 
-You can monitor the time until your license expires with [Prometheus](monitor-cockroachdb-with-prometheus.html). The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the enterprise license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting](monitoring-and-alerting.html).
+You can monitor the time until your license expires with [Prometheus](monitor-cockroachdb-with-prometheus.html). The `seconds_until_enterprise_license_expiry` metric reports the number of seconds until the {{ site.data.products.enterprise }} license on a cluster expires. It will report 0 if there is no license or a negative number if the license has already expired. For more information, see [Monitoring and Alerting](monitoring-and-alerting.html).
 
 ## Renew an expired license
 
-After your license expires, the enterprise features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
+After your license expires, the {{ site.data.products.enterprise }} features stop working, but your production setup is unaffected. For example, the backup and restore features would not work until the license is renewed, but you would be able to continue using all other features of CockroachDB without interruption.
 
 To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sales</a> and then [set](#set-a-license) the new license.
 
@@ -159,7 +159,7 @@ To renew an expired license, <a href="mailto:sales@cockroachlabs.com">contact Sa
 
 ### Can I host CockroachDB as a service for internal use at my organization?
 
-Yes, employees and contractors can use your internal CockroachDB instance as a service, but no people outside of your organization will be able to use it without purchasing a license. Use of enterprise features will always require a license.
+Yes, employees and contractors can use your internal CockroachDB instance as a service, but no people outside of your organization will be able to use it without purchasing a license. Use of {{ site.data.products.enterprise }} features will always require a license.
 
 ### What constitutes hosting CockroachDB as a service?
 

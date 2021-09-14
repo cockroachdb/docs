@@ -21,7 +21,7 @@ If you run into problems with this integration, please file an issue on the [Dat
 - [Datadog Agent](https://app.datadoghq.com/account/settings#agent)
 
 {{site.data.alerts.callout_info}}
-This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [CockroachCloud](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
+This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [{{ site.data.products.db }}](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
 ## Step 1. Enable CockroachDB check
@@ -160,7 +160,7 @@ The example alert below will trigger when [a node has less than 15% of storage c
 
 <img src="{{ 'images/v21.2/datadog-crdb-threshold-alert.png' | relative_url }}" alt="CockroachDB Threshold Alert in Datadog" style="border:1px solid #eee;max-width:100%" />
 
-- `cockroachdb.capacity.available` is divided by `cockroachdb.capacity.total` to determine the fraction of available capacity on the node's [store](https://www.cockroachlabs.com/docs/v21.1/architecture/storage-layer) (the directory on each node where CockroachDB reads and writes its data).
+- `cockroachdb.capacity.available` is divided by `cockroachdb.capacity.total` to determine the fraction of available capacity on the node's [store](architecture/storage-layer.html) (the directory on each node where CockroachDB reads and writes its data).
 - The alert threshold is set to `0.15`.
 
 The timeseries graph at the top of the page indicates the configured metric and threshold:

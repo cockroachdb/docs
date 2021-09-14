@@ -1,10 +1,10 @@
 ---
 title: Run Bulk Operations from Your Cluster
-summary: Run backups, restores, and imports from your CockroachCloud cluster.
+summary: Run backups, restores, and imports from your {{ site.data.products.db }} cluster.
 toc: true
 ---
 
-CockroachCloud Serverless (beta) and CockroachCloud Dedicated offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of CockroachCloud cluster and examples.
+{{ site.data.products.serverless }} and {{ site.data.products.dedicated }} offer different levels of support for the following bulk operations. This page provides information on the availability of these operations in both types of {{ site.data.products.db }} cluster and examples.
 
 - [`BACKUP`](../{{site.versions["stable"]}}/backup.html)
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
@@ -13,7 +13,7 @@ CockroachCloud Serverless (beta) and CockroachCloud Dedicated offer different le
 - [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
 
 {{site.data.alerts.callout_info}}
-For CockroachCloud Serverless clusters, you must have [billing information](console-access-management.html#manage-billing-for-the-organization) on file for your Organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. CockroachCloud Dedicated users can run bulk operations with `userfile` or cloud storage.
+For {{ site.data.products.serverless }} clusters, you must have [billing information](console-access-management.html#manage-billing-for-the-organization) on file for your Organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
 {{site.data.alerts.end}}
 
 For information on `userfile` commands, visit the following pages:
@@ -27,7 +27,7 @@ The cloud storage examples on this page use Amazon S3 for demonstration purposes
 
 ## Examples
 
-Before you begin, connect to your cluster. For guidance on connecting to your CockroachCloud cluster, visit [Connect to a CockroachCloud Serverless (beta) Cluster](connect-to-a-serverless-cluster.html) or [Connect to Your CockroachCloud Dedicated Cluster](connect-to-your-cluster.html).
+Before you begin, connect to your cluster. For guidance on connecting to your {{ site.data.products.db }} cluster, visit [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html) or [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
 ### Backup and restore data
 
@@ -44,7 +44,7 @@ Before you begin, connect to your cluster. For guidance on connecting to your Co
 
 <section class="filter-content" markdown="1" data-scope="cloud">
 
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
+Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days. For more information, read [Restore Data From a Backup](../cockroachcloud/backups-page.html).
 
 The following examples show how to run manual backups and restores:
 
@@ -61,7 +61,7 @@ For more information on taking backups and restoring to your cluster, read the f
 
 </section>
 
-### Import data into your CockroachCloud cluster
+### Import data into your {{ site.data.products.db }} cluster
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="userfile"><code>userfile</code></button>
@@ -93,7 +93,7 @@ Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more ex
 
 </section>
 
-### Export data out of CockroachCloud
+### Export data out of {{ site.data.products.db }}
 
 {{site.data.alerts.callout_info}}
 Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your Organization](console-access-management.html#manage-billing-for-the-organization) to access cloud storage or [export data to a local CSV file](migrate-from-free-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
@@ -109,22 +109,22 @@ EXPORT INTO CSV
 
 Read the [`EXPORT`](../{{site.versions["stable"]}}/export.html) page for more examples and guidance.
 
-### Stream data out of your CockroachCloud cluster
+### Stream data out of your {{ site.data.products.db }} cluster
 
 Core changefeeds stream row-level changes to a client until the underlying SQL connection is closed.
 
 {{site.data.alerts.callout_info}}
-Only core changefeeds are available on CockroachCloud Serverless (beta). To create a changefeed into a configurable sink, like cloud storage or Kafka, use CockroachCloud Dedicated, which has this feature enabled by default.
+Only core changefeeds are available on {{ site.data.products.serverless }}. To create a changefeed into a configurable sink, like cloud storage or Kafka, use {{ site.data.products.dedicated }}, which has this feature enabled by default.
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
-  <button class="filter-button" data-scope="serverless">CockroachCloud Serverless</button>
-  <button class="filter-button" data-scope="dedicated">CockroachCloud Dedicated</button>
+  <button class="filter-button" data-scope="serverless">{{ site.data.products.serverless }}</button>
+  <button class="filter-button" data-scope="dedicated">{{ site.data.products.dedicated }}</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="serverless">
 
-To create a core changefeed in CockroachCloud Serverless (beta), use the following example.
+To create a core changefeed in {{ site.data.products.serverless }}, use the following example.
 
 {% include cockroachcloud/cdc/create-core-changefeed.md %}
 

@@ -24,7 +24,7 @@ Throughout the documentation, however, we refer to a "user" or "role" based on t
 
 ## Users
 
-A SQL user (a role with `LOGIN` priviliges) can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
+A SQL user (a role with `LOGIN` privileges) can interact with a CockroachDB database using the [built-in SQL shell](cockroach-sql.html) or through an application.
 
 ### Create and manage users
 

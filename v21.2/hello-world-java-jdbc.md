@@ -9,7 +9,7 @@ This tutorial shows you how build a simple Hello World Java application with Coc
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
 ## Step 2. Get the code
 
