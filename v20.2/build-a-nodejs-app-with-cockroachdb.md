@@ -16,51 +16,7 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 ## Step 1. Start CockroachDB
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless-plan }}</button>
-  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
-</div>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-### Create a free cluster
-
-{% include cockroachcloud/quickstart/create-a-free-cluster.md %}
-
-### Set up your cluster connection
-
-1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
-
-1. Navigate to the **Cluster Overview page**, select **Connect**, and, under the **Connection String** tab, download the cluster certificate.
-
-1. Take note of the connection string provided. You'll use it to connect to the database later in this tutorial.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Run the [`cockroach demo`](cockroach-demo.html) command:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cockroach demo \
-    --empty
-    ~~~
-
-    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
-1. Take note of the `(sql)` connection string in the SQL shell welcome text:
-
-    ~~~
-    # Connection parameters:
-    #   (console) http://127.0.0.1:53930
-    #   (sql)     postgres://root:admin@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo777666364&port=26257
-    #   (sql/tcp) postgres://root:admin@127.0.0.1:53932?sslmode=require
-    ~~~
-
-    You'll use this connection string to connect to the database later in this tutorial.
-
-</section>
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
 ## Step 2. Get the code
 
@@ -102,39 +58,47 @@ All of the database operations are wrapped in a helper function named `retryTxn`
 
 ## Step 4. Run the code
 
-Initialize and run the app:
+1. Install the app requirements:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ npm install
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ npm install
+    ~~~
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ node app.js
-~~~
+1. Run the app:
 
-The program will prompt you for a connection string to the database:
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ node app.js
+    ~~~
 
-~~~
-prompt: connectionString:
-~~~
+    The program will prompt you for a connection string to the database:
 
-<section class="filter-content" markdown="1" data-scope="local">
+    ~~~
+    prompt: connectionString:
+    ~~~
 
-Enter the `(sql)` connection URL provided in the demo cluster's SQL shell welcome text.
+1. Enter the connection string to your running cluster.
 
-</section>
+    <section class="filter-content" markdown="1" data-scope="local">
 
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
+    {{site.data.alerts.callout_success}}
+    `postgresql://root@localhost:26257?sslmode=disable` should be the `sql` connection URL provided in the `cockroach` welcome text.
+    {{site.data.alerts.end}}
 
-Enter the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
+    </section>
 
-{{site.data.alerts.callout_info}}
-You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
-{{site.data.alerts.end}}
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-</section>
+    {{site.data.alerts.callout_success}}
+    Use the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_info}}
+    You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+    {{site.data.alerts.end}}
+
+    </section>
 
 After entering the connection string, the program will execute.
 
