@@ -119,7 +119,7 @@ To initialize the example database, use the [`cockroach sql`](cockroach-sql.html
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cat app/src/main/resources/dbinit.sql | cockroach sql --url '<connection-string>'
+cat app/src/main/resources/dbinit.sql | cockroach sql --url "<connection-string>"
 ~~~
 
 Where `<connection-string>` is the connection string you obtained earlier from the {{ site.data.products.db }} Console.
@@ -130,7 +130,7 @@ Where `<connection-string>` is the connection string you obtained earlier from t
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cat app/src/main/resources/dbinit.sql | cockroach sql --url 'postgresql://root@localhost:26257?sslmode=disable'
+cat app/src/main/resources/dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
 ~~~
 
 {{site.data.alerts.callout_info}}

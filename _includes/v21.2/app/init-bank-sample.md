@@ -5,7 +5,7 @@ To initialize the example database, use the [`cockroach sql`](cockroach-sql.html
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cat dbinit.sql | cockroach sql --url '<connection-string>'
+cat dbinit.sql | cockroach sql --url "<connection-string>"
 ~~~
 
 Where `<connection-string>` is the connection string to the running cluster.
@@ -22,7 +22,7 @@ Use the connection string you obtained earlier from the {{ site.data.products.db
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-cat dbinit.sql | cockroach sql --url 'postgresql://root@localhost:26257?sslmode=disable'
+cat dbinit.sql | cockroach sql --url "postgresql://root@localhost:26257?sslmode=disable"
 ~~~
 
 {{site.data.alerts.callout_info}}
