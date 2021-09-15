@@ -129,10 +129,10 @@ successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 
 Currently in v21.1 and prior, it's [not possible to use `cockroach userfile upload` recursively](#known-limitation) when uploading a directory of files. When you need to upload a directory (such as a backup) to `userfile` storage, it is possible to programmatically upload your files.
 
-The following example uses `userfile` storage and its features to backup a database and then restore it to a cluster. When quick testing is required, or, to protect against accidental loss of data, this workflow provides a way to recover in those scenarios when using `userfile` as your storage option.
+The following example uses `userfile` storage and its features to backup a database and then restore it to a cluster. This workflow provides a way to recover backup data when using `userfile` as your storage option.
 
 {{site.data.alerts.callout_info}}
-Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
+Only database and table-level backups are possible when using `userfile` as storage. Restoring [cluster-level backups](backup.html#backup-a-cluster) will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
 {{site.data.alerts.end}}
 
 After connecting to the cluster that contains the data you would like to backup, run the [`BACKUP`](backup.html) statement:
@@ -172,7 +172,10 @@ downloaded database-backup/data/679645558404448257.sst to database-backup/data/6
 downloaded database-backup/data/679645558408249345.sst to database-backup/data/679645558408249345.sst (41 KiB)
 ~~~
 
-At this point, you have backed up the database to `userfile` storage and you have a copy of that backup on your local machine.
+At this point, you have two copies of the data:
+
+* One in the database's `userfile` storage
+* One on your local machine
 
 Your backup will contain files similar to the following structure:
 
@@ -191,15 +194,13 @@ database-backup/
 . . .
 ~~~
 
-If you should need to recover that data, or, apply it for testing purposes, you can now upload these files to a cluster with `cockroach userfile upload` and [`RESTORE`](restore.html).
-
-For the purposes of this example, [`DROP`](drop-database.html) the database:
+Use [`DROP`](drop-database.html) to remove the `movr` database:
 
 ~~~sql
 DROP DATABASE movr CASCADE;
 ~~~
 
-And then, use [`cockroach userfile delete`](cockroach-userfile-delete.html) to remove this from `userfile`:
+Next, use [`cockroach userfile delete`](cockroach-userfile-delete.html) to remove this from `userfile`:
 
 ~~~shell
 cockroach userfile delete 'userfile://defaultdb.public.userfiles_$user/database-backup' --url 'postgresql://root@localhost:26257?sslmode=disable'
@@ -216,9 +217,9 @@ successfully deleted database-backup/data/679645557047099393.sst
 successfully deleted database-backup/data/679645558154264579.sst
 ~~~
 
-Currently, `cockroach userfile upload` will not recursively upload files from a directory. See this [known limitation](../{{site.versions["stable"]}}/cockroach-userfile-upload.html#known-limitation). It is possible to programmatically upload your files from the command line.
+`cockroach userfile upload` will not recursively upload files from a directory. See this [known limitation](../{{site.versions["stable"]}}/cockroach-userfile-upload.html#known-limitation). It is possible to programmatically upload your files from the command line.
 
-For example, the following command finds all files under `database-backup` and pipes them through to [`xargs`](https://linux.die.net/man/1/xargs), which will execute `cockroach userfile upload` for each file. Every occurrence of `{}` in the command, is replaced with the filename.
+For example, the following command finds all files under `database-backup` and runs `cockroach userfile upload` on each file:
 
 ~~~shell
 find database-backup -type f | xargs -I{} cockroach userfile upload {} {} --url='postgresql://root@localhost:26257?sslmode=disable'
