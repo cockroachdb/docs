@@ -293,11 +293,14 @@ For more information on how to create a changefeed connected to a cloud storage 
 
 ### Manage a changefeed
 
-Use the following SQL statements to pause, resume, and cancel a changefeed.
+<span class="version-tag">New in v21.2:</span> For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
 
-{{site.data.alerts.callout_info}}
-Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in the future.
-{{site.data.alerts.end}}
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CHANGEFEED JOBS;
+~~~
+
+Use the following SQL statements to pause, resume, or cancel a changefeed.
 
 #### Pause a changefeed
 
