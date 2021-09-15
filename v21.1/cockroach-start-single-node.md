@@ -285,17 +285,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER database system CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER DATABASE system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     {% include copy-clipboard.html %}
@@ -305,17 +295,32 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE system.public.jobs CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE DISCARD;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING gc.ttlseconds = 600, constraints = '[]', lease_preferences = '[]';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE DISCARD;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING gc.ttlseconds = 600, constraints = '[]', lease_preferences = '[]';
     ~~~
 </section>
 
@@ -385,17 +390,7 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER database system CONFIGURE ZONE USING num_replicas = 5;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER DATABASE system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     {% include copy-clipboard.html %}
@@ -405,17 +400,32 @@ Scaling a cluster started with `cockroach start-single-node` involves restarting
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE system.public.jobs CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER RANGE system CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER RANGE liveness CONFIGURE ZONE USING num_replicas = 5;
     ~~~
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING num_replicas = 5;
+    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE DISCARD;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING gc.ttlseconds = 600, constraints = '[]', lease_preferences = '[]';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE DISCARD;
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING gc.ttlseconds = 600, constraints = '[]', lease_preferences = '[]';
     ~~~
 </section>
 
