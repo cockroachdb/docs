@@ -2,9 +2,10 @@
   releases:
     - date: Aug 30, 2021
       version: v21.1.8
-      latest: true
+      withdrawn: true
     - date: Aug 9, 2021
       version: v21.1.7
+      latest: true
     - date: Jul 20, 2021
       version: v21.1.6
     - date: Jul 2, 2021
@@ -19,6 +20,8 @@
       version: v21.1.1
     - date: May 18, 2021
       version: v21.1.0
+    - date: Sep 13, 2021
+      version: v20.2.16
     - date: Aug 23, 2021
       version: v20.2.15
     - date: Aug 16, 2021

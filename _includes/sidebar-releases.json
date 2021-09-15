@@ -13,7 +13,7 @@
         {
           "title": "Latest v20.2",
           "urls": [
-            "/releases/v20.2.15.html"
+            "/releases/v20.2.16.html"
           ]
         },
         {
@@ -35,6 +35,9 @@
             "/releases/v21.1.2.html",
             "/releases/v21.1.1.html",
             "/releases/v21.1.0.html",
+            "/releases/v20.2.16.html",
+            "/releases/v20.2.15.html",
+            "/releases/v20.2.14.html",
             "/releases/v20.2.13.html",
             "/releases/v20.2.12.html",
             "/releases/v20.2.11.html",
@@ -113,7 +116,22 @@
     {
       "title": "Technical Advisories",
       "urls": [
-        "/advisories/index.html"
+        "/advisories/index.html",
+        "/advisories/a30821.html",
+        "/advisories/a42567.html",
+        "/advisories/a43870.html",
+        "/advisories/a44166.html",
+        "/advisories/a44299.html",
+        "/advisories/a44348.html",
+        "/advisories/a48860.html",
+        "/advisories/a50587.html",
+        "/advisories/a54418.html",
+        "/advisories/a56116.html",
+        "/advisories/a58932.html",
+        "/advisories/a62842.html",
+        "/advisories/a63162.html",
+        "/advisories/a64325.html",
+        "/advisories/a68005.html"
       ]
     }
   ]

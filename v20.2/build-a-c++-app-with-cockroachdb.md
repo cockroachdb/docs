@@ -62,7 +62,7 @@ Use the following code to connect and execute some basic SQL statements, creatin
 
 You will need to open `basic-sample.cpp`, and edit the following:
 
-- Replace the connection string in the code with the connection string that was provided in the CockroachCloud Console [earlier](#set-up-your-cluster-connection).
+- Replace the connection string in the code with the connection string that was provided in the {{ site.data.products.db }} Console [earlier](#set-up-your-cluster-connection).
 - Replace `defaultdb` in the connection string with `bank` to connect to the `bank` database you created [earlier](#step-2-create-a-database-and-a-user).
 
 </section>
@@ -107,7 +107,7 @@ Next, use the following code to again connect, but this time execute a batch of 
 
 You will need to open `txn-sample.cpp`, and edit the following:
 
-- Replace the connection string in the code with the connection string that was provided in the CockroachCloud Console [earlier](#set-up-your-cluster-connection).
+- Replace the connection string in the code with the connection string that was provided in the {{ site.data.products.db }} Console [earlier](#set-up-your-cluster-connection).
 - Replace `defaultdb` in the connection string with `bank` to connect to the `bank` database you created [earlier](#step-2-create-a-database-and-a-user).
 
 </section>

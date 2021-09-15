@@ -318,7 +318,7 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### Enterprise `BACKUP` does not capture database/table/column comments
+### {{ site.data.products.enterprise }} `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
@@ -530,10 +530,6 @@ As a workaround, you can either [manually split a table's columns into multiple 
 When a node has both a high number of client connections and running queries, the node may crash due to memory exhaustion. This is due to CockroachDB not accurately limiting the number of clients and queries based on the amount of available RAM on the node.
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
-
-### Query planning for `OR` expressions
-
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
 
 ### Privileges for `DELETE` and `UPDATE`
 

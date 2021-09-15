@@ -13,7 +13,7 @@ The `ALTER INDEX` [statement](sql-statements.html) applies a schema change to an
 Subcommand | Description
 -----------|------------
 [`CONFIGURE ZONE`](configure-zone.html) | [Configure replication zones](configure-replication-zones.html) for an index.
-[`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition an index. ([Enterprise-only](enterprise-licensing.html)).
+[`PARTITION BY`](partition-by.html)  | Partition, re-partition, or un-partition an index. ([{{ site.data.products.enterprise }}-only](enterprise-licensing.html)).
 [`RENAME`](rename-index.html) | Change the name of an index.
 [`SPLIT AT`](split-at.html) | Force a range split at the specified row in the index.
 [`UNSPLIT AT`](unsplit-at.html) | Remove a range split enforcement at a specified row in the index.

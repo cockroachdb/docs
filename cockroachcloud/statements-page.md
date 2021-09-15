@@ -10,15 +10,15 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, click **Statements** in the left-hand navigation of the CockroachCloud Console.
+To view this page, click **Statements** in the left-hand navigation of the {{ site.data.products.db }} Console.
 
 ## Search and filter by application
 
-By default, this page shows SQL statements from all applications running on the cluster, and hides internal CockroachCloud queries.
+By default, this page shows SQL statements from all applications running on the cluster, and hides internal {{ site.data.products.db }} queries.
 
 To filter the statements by [`application_name`](../{{site.versions["stable"]}}/connection-parameters.html#additional-connection-parameters), use the **App** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`. 
 
-CockroachCloud's internal queries are only displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
+{{ site.data.products.db }}'s internal queries are only displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
 
 You can also search for statements using the search bar.
 
@@ -30,12 +30,12 @@ Use this page to identify SQL statements that you may want to [troubleshoot](../
 This page is initially blank on clusters where no queries have yet been executed.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/cockroachcloud/statements_page.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_page.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 Parameter | Description
 -----|------------
 Statement | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [**Statement Details** page](#statement-details-page).
-Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](../{{site.versions["stable"]}}/begin-transaction.html) and [`COMMIT`](../{{site.versions["stable"]}}/commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](../{{site.versions["stable"]}}/architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, CockroachCloud wraps each statement in individual implicit transactions.
+Txn Type | Type of transaction (implicit or explicit). Explicit transactions refer to statements that are wrapped by [`BEGIN`](../{{site.versions["stable"]}}/begin-transaction.html) and [`COMMIT`](../{{site.versions["stable"]}}/commit-transaction.html) statements by the client. Explicit transactions employ [transactional pipelining](../{{site.versions["stable"]}}/architecture/transaction-layer.html#transaction-pipelining) and therefore report latencies that do not account for replication.<br><br>For statements not in explicit transactions, {{ site.data.products.db }} wraps each statement in individual implicit transactions.
 Retries | Cumulative number of [retries](../{{site.versions["stable"]}}/transactions.html#transaction-retries) of statements with this fingerprint within the last hour or specified [time interval](#time-interval).
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour or specified [time interval](#time-interval).<br><br>The bar indicates the ratio of runtime success (gray) to [retries](../{{site.versions["stable"]}}/transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Rows Affected | Average number of rows returned while executing statements with this fingerprint within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
@@ -115,13 +115,13 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 The **Diagnostics** section of the Statement Details page allows you to activate and view diagnostics for the SQL statement fingerprint.
 
-When you activate diagnostics for a fingerprint, CockroachCloud waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces](../{{site.versions["stable"]}}/show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger](../{{site.versions["stable"]}}/query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`](../{{site.versions["stable"]}}/explain-analyze.html#debug-option).
+When you activate diagnostics for a fingerprint, {{ site.data.products.db }} waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces](../{{site.versions["stable"]}}/show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger](../{{site.versions["stable"]}}/query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`](../{{site.versions["stable"]}}/explain-analyze.html#debug-option).
 
 {{site.data.alerts.callout_success}}
 Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_diagnostics.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 - Click the **Activate** button to begin collecting diagnostics for the fingerprint. This will open the list of **Statement diagnostics** with a status next to each activated diagnostic.
 	- `WAITING FOR QUERY` indicates that a SQL statement matching the fingerprint has not yet been recorded.
@@ -133,9 +133,9 @@ The information collected in the bundle can be used to diagnose problematic SQL 
 
 ### Logical Plan
 
-The **Logical Plan** section displays CockroachCloud's query plan for an [explainable statement](../{{site.versions["stable"]}}/sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](../{{site.versions["stable"]}}/explain.html).
+The **Logical Plan** section displays {{ site.data.products.db }}'s query plan for an [explainable statement](../{{site.versions["stable"]}}/sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](../{{site.versions["stable"]}}/explain.html).
 
-<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="CockroachCloud Console Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_logical_plan.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 By default, the logical plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](../{{site.versions["stable"]}}/cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](../{{site.versions["stable"]}}/set-cluster-setting.html) command:
 

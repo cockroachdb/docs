@@ -1,6 +1,6 @@
 ---
 title: SQL Audit Logging
-summary: Learn about the SQL Audit Logging feature for CockroachCloud clusters.
+summary: Learn about the SQL Audit Logging feature for {{ site.data.products.db }} clusters.
 toc: true
 ---
 
