@@ -300,7 +300,7 @@ For more information on how to create a changefeed connected to a cloud storage 
 > SHOW CHANGEFEED JOBS;
 ~~~
 
-Use the following SQL statements to pause, resume, and cancel a changefeed.
+Use the following SQL statements to pause, resume, or cancel a changefeed.
 
 #### Pause a changefeed
 
