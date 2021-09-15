@@ -97,6 +97,12 @@
       	      ]
       	    },
             {
+              "title": "Migrate from Serverless to Dedicated",
+              "urls": [
+                "/cockroachcloud/migrate-from-free-to-dedicated.html"
+              ]
+            },
+            {
       	      "title": "Migrate from Oracle",
       	      "urls": [
       		      "/{{site.versions["stable"]}}/migrate-from-oracle.html"
@@ -134,12 +140,23 @@
             }
       	  ]
       	},
-      	{
-      	  "title": "Tune Performance",
-      	  "urls": [
-      	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
-      	  ]
-      	},
+        {
+          "title": "Perfomance",
+          "items": [
+          	{
+          	  "title": "Tune Performance",
+          	  "urls": [
+          	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
+          	  ]
+          	},
+            {
+              "title": "Serverless Performance Benchmarking",
+              "urls": [
+                "/cockroachcloud/serverless-benchmarking.html"
+              ]
+            }
+          ]
+        },   
       	{
       	  "title": "Move into Production",
       	  "urls": [
