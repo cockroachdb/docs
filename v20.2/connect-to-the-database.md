@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters filters-big clearfix">
   <button class="filter-button current">Local</button>
-  <a href="connect-to-the-database-cockroachcloud.html"><button class="filter-button"{{ site.data.products.dedicated }}
+  <a href="connect-to-the-database-cockroachcloud.html"><button class="filter-button">{{ site.data.products.dedicated }}
 </div>
 
 This page has instructions for connecting to a CockroachDB cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
