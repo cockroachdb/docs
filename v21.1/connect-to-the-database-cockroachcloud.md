@@ -6,7 +6,7 @@ toc: true
 
 <div class="filters filters-big clearfix">
   <a href="connect-to-the-database.html"><button class="filter-button">Local</button></a>
-  <button class="filter-button current">{{ site.data.products.serverless }}</button>
+  <button class="filter-button current">{{ site.data.products.db }}</button>
 </div>
 
 This page has instructions for connecting to a {{ site.data.products.db }} cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
