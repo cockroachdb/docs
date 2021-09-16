@@ -8,7 +8,7 @@ toc: true
 `CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new enterprise changefeed, which targets an allowlist of tables, called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [cloud storage sink](#cloud-storage-sink), or a [webhook sink](#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an enterprise changefeed.
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [cloud storage sink](#cloud-storage-sink), or a [webhook sink](#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an enterprise changefeed.
 
 For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
 
@@ -43,7 +43,7 @@ The sink URI follows the basic format of:
 
 URI Component      | Description
 -------------------+------------------------------------------------------------------
-`scheme`           | The type of sink: [`kafka`](#kafka) or any [cloud storage sink](#cloud-storage-sink).
+`scheme`           | The type of sink: [`kafka`](#kafka), any [cloud storage sink](#cloud-storage-sink), or [webhook sink](#webhook-sink).
 `host`             | The sink's hostname or IP address.
 `port`             | The sink's port.
 `query_parameters` | The sink's [query parameters](#query-parameters).
@@ -75,7 +75,7 @@ Cloud storage sink URIs must be pre-pended with `experimental-` when working wit
 #### Webhook sink
 
 {{site.data.alerts.callout_info}}
-The webhook sink is currently in **beta**. For more information, read about its usage considerations below, available [parameters](../v21.2/create-changefeed.html#parameters), and [options](../v21.2/create-changefeed.html#options).
+The webhook sink is currently in **beta**. For more information, read about its usage considerations available [parameters](../v21.2/create-changefeed.html#parameters), and [options](../v21.2/create-changefeed.html#options) below.
 {{site.data.alerts.end}}
 
 <span class="version-tag">New in v21.2:</span> Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
@@ -132,7 +132,7 @@ Option | Value | Description
 `initial_scan` / `no_initial_scan` | N/A |  Control whether or not an initial scan will occur at the start time of a changefeed. `initial_scan` and `no_initial_scan` cannot be used simultaneously. If neither `initial_scan` nor `no_initial_scan` is specified, an initial scan will occur if there is no `cursor`, and will not occur if there is one. This preserves the behavior from previous releases.<br><br>Default: `initial_scan` <br>If used in conjunction with `cursor`, an initial scan will be performed at the cursor timestamp. If no `cursor` is specified, the initial scan is performed at `now()`.
 `full_table_name` | N/A | Use fully-qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases. <br><br>Example: `CREATE CHANGEFEED FOR foo... WITH full_table_name` will create the topic name `defaultdb.public.foo` instead of `foo`.
 `avro_schema_prefix` | Schema prefix name               | Use fully-qualified schema name for a table instead of the default table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br><br>Example: `CREATE CHANGEFEED FOR foo WITH format=experimental_avro, confluent_schema_registry='registry_url', avro_schema_prefix='super'` will register subjects as `superfoo-key` and `superfoo-value` with the namespace `super`.
-`webhook_client_timeout` | [INTERVAL](interval.html)          | <span class="version-tag">New in v21.2:</span> If a response is not recorded from the sink within this timeframe, it will error and retry to connect. Note this must be a positive value. <br><br>**Default:** `"3s"`
+`webhook_client_timeout` | [`INTERVAL`](interval.html)          | <span class="version-tag">New in v21.2:</span> If a response is not recorded from the sink within this timeframe, it will error and retry to connect. Note this must be a positive value. <br><br>**Default:** `"3s"`
 `webhook_auth_header`    | [`STRING`](string.html)            | <span class="version-tag">New in v21.2:</span> Pass a value (password, token etc.) to the HTTP [Authorization header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization) with a webhook request for a "Basic" HTTP authentication scheme. <br><br> Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". `WITH webhook_auth_header='Basic dXNlcjpwd2Q='`.
 `topic_in_value`         | [`BOOL`](bool.html)              | <span class="version-tag">New in v21.2:</span> Set to include the topic in each emitted row update. Note this is automatically set for [webhook sinks](#webhook-sink).
 `webhook_sink_config`    | [`STRING`](string.html)          | <span class="version-tag">New in v21.2:</span> Set fields to configure sink batching and retries. The schema is as follows:<br><br> `{ "Flush": { "Messages": ..., "Bytes": ..., "Frequency": ..., }, "Retry": {"Max": ..., "Backoff": ..., } }`. <br><br>**Note** that if either `Messages` or `Bytes` are nonzero, then a non-zero value for `Frequency` must be provided. <br><br>See the [Webhook sink configuration section](#webhook-sink-configuration) for more details on using this option.
@@ -143,28 +143,25 @@ Option | Value | Description
 
 #### Webhook sink configuration
 
-<span class="version-tag">New in v21.2:</span> The `webhook_sink_config` option allows the changefeed flushing and retry behavior to your webhook sink to be configured.
+<span class="version-tag">New in v21.2:</span> The `webhook_sink_config` option allows the changefeed flushing and retry behavior of your webhook sink to be configured.
 
 The following details the configurable fields:
 
-* `Flush.Messages`: When the batch reaches this configured size, it should be flushed (batch sent).
-  * Type, `INT`. Default, `0`.
-* `Flush.Bytes`: When the total byte size of all the messages in the batch reaches this amount, it should be flushed.
-  * Type, `INT`. Default, `0`.
-* `Flush.Frequency`: When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed.
-  * Type, `INTERVAL`. Default, `"0s"`.
-* `Retry.Max`: The maximum amount of time the sink will retry a single HTTP request to send a batch. This value must be positive (> 0). If infinite retries are desired, use `inf`.
-  * Type, `INT` or `STRING`. Default, `"0s"`.
-* `Retry.Backoff`: The initial backoff the sink will wait after the first failure. The backoff will double (exponential backoff strategy), until the max is hit.   
-  * Type, `INTERVAL`. Default, `"500ms"`.
+Field              | Type                | Description      | Default
+-------------------+---------------------+------------------+-------------------
+`Flush.Messages`   | [`INT`](int.html)   | When the batch reaches this configured size, it should be flushed (batch sent). | `0`
+`Flush.Bytes`      | [`INT`](int.html)   | When the total byte size of all the messages in the batch reaches this amount, it should be flushed. | `0`
+`Flush.Frequency`  | [`INTERVAL`](interval.html) | When this amount of time has passed since the **first** received message in the batch without it flushing, it should be flushed. | `"0s"`
+`Retry.Max`        | [`INT`](int.html) or [`STRING`](string.html) | The maximum amount of time the sink will retry a single HTTP request to send a batch. This value must be positive (> 0). If infinite retries are desired, use `inf`. | `"0s"`
+`Retry.Backoff`    | [`INTERVAL`](interval.html) | The initial backoff the sink will wait after the first failure. The backoff will double (exponential backoff strategy), until the max is hit. | `"500ms"`
 
-{{site.data.alerts.callout_info}}
-Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency`, will cause the sink to assume `Frequency` has an infinity value. This configuration would be invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger. Therefore, if either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided.
+{{site.data.alerts.callout_danger}}
+Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency`, will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
 {{site.data.alerts.end}}
 
 Some complexities to consider when setting `Flush` fields for batching:
 
-When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time." This would be the same as not providing any configuration at all:
+- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time." This would be the same as not providing any configuration at all:
 
 ~~~
 {
@@ -176,7 +173,7 @@ When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"
 }
 ~~~
 
-If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, with the following configuration:
+- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` defaults to `0` in this case, so a batch will never trigger due to a configured byte size:
 
 ~~~
 {
@@ -187,7 +184,6 @@ If one or more fields are set as non-zero values, any fields with a zero value t
 }
 ~~~
 
-The sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` is set to `0` by default in this case, so a batch will never trigger because of the byte size.
 
 #### Avro limitations
 
