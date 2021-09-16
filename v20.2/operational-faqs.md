@@ -5,73 +5,75 @@ toc: true
 toc_not_nested: true
 ---
 
-## Why is my process hanging when I try to start it in the background?
+## Why is my process hanging when I try to start nodes with the `--background` flag?
 
-The first question that needs to be asked is whether or not you have previously
-run a multi-node cluster using the same data directory. If you haven't, then you
-should check out our [Cluster Setup Troubleshooting
-docs](cluster-setup-troubleshooting.html). If you have previously started and
-stopped a multi-node cluster and are now trying to bring it back up, you're in
-the right place.
+Check whether you have previously run a multi-node cluster using the same data directory. If you have not, refer to [Troubleshoot Cluster Setup](cluster-setup-troubleshooting.html). 
 
-In order to keep your data consistent, CockroachDB only works when at least a
-majority of its nodes are running. This means that if only one node of a three
-node cluster is running, that one node will not be able to do anything. The
-`--background` flag of [`cockroach start`](cockroach-start.html) causes the start
-command to wait until the node has fully initialized and is able to start
-serving queries.
+If you have previously started and stopped a multi-node cluster, and are now trying to bring it back up, note the following:
 
-Together, these two facts mean that the `--background` flag will cause
-`cockroach start` to hang until a majority of nodes are running. In order to
-restart your cluster, you should either use multiple terminals so that you can
-start multiple nodes at once or start each node in the background using your
-shell's functionality (e.g., `cockroach start &`) instead of the `--background`
-flag.
+The [`--background`](cockroach-start.html#general) flag of [`cockroach start`](cockroach-start.html) causes the `start` command to wait until the node has fully initialized and is able to start serving queries. In addition, to keep your data consistent, CockroachDB waits until a majority of nodes are running. This means that if only one node of a three-node cluster is running, that one node will not be operational. 
+
+As a result, starting nodes with the `--background` flag will cause `cockroach start` to hang until a majority of nodes are fully initialized. 
+
+To restart your cluster, you should either: 
+
+- Use multiple terminals to start multiple nodes at once. 
+- Start each node in the background using your shell's functionality (e.g., `cockroach start &`) instead of using the `--background` flag.
 
 ## Why is memory usage increasing despite lack of traffic?
 
-Like most databases, CockroachDB caches the most recently accessed data in memory so that it can provide faster reads, and [its periodic writes of timeseries data](#why-is-disk-usage-increasing-despite-lack-of-writes) cause that cache size to increase until it hits its configured limit. For information about manually controlling the cache size, see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size).
+Like most databases, CockroachDB caches the most recently accessed data in memory so that it can provide faster reads, and [its periodic writes of time-series data](#why-is-disk-usage-increasing-despite-lack-of-writes) cause that cache size to increase until it hits its configured limit. For information about manually controlling the cache size, see [Recommended Production Settings](recommended-production-settings.html#cache-and-sql-memory-size).
 
 ## Why is disk usage increasing despite lack of writes?
 
-The timeseries data used to power the graphs in the DB Console is stored within the cluster and accumulates for 10 days before it starts getting truncated. As a result, for the first 10 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster yourself.
+The time-series data used in the [DB Console](ui-overview-dashboard.html) is stored within the cluster and accumulates for 10 days before it starts to be truncated. As a result, for the first 10 days or so of a cluster's life, you will see a steady increase in disk usage and the number of ranges even if you are not writing data to the cluster.
 
-## Can I reduce or disable the storage of timeseries data?
+## Can I reduce or disable the storage of time-series data?
 
-Yes. By default, CockroachDB stores timeseries data for the last 90 days for display in the DB Console, but you can [reduce the interval for timeseries storage](#reduce-the-interval-for-timeseries-storage) or [disable timeseries storage entirely](#disable-timeseries-storage-entirely).
-
-{{site.data.alerts.callout_info}}After reducing or disabling timeseries storage, it can take up to 24 hours for timeseries data to be deleted and for the change to be reflected in DB Console metrics.{{site.data.alerts.end}}
-
-### Reduce the interval for timeseries storage
-
-To reduce the interval for storage of timeseries data, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days). For example, to store timeseries data for the last 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '120h0m0s';
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW CLUSTER SETTING timeseries.storage.resolution_10s.ttl;
-~~~
-
-~~~
-  timeseries.storage.resolution_10s.ttl
-+---------------------------------------+
-  120:00:00
-(1 row)
-~~~
-
-You can follow similar steps to reduce the interval for storage of timeseries data with 30m resolution. You will need to change the `timeseries.storage.resolution_30m.ttl` cluster setting for this.
-
-### Disable timeseries storage entirely
+Yes, you can either [reduce the interval for time-series storage](#reduce-the-interval-for-time-series-storage) or [disable time-series storage entirely](#disable-time-series-storage-entirely).
 
 {{site.data.alerts.callout_info}}
-Disabling timeseries storage is recommended only if you exclusively use a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for timeseries monitoring. Prometheus and other such tools do not rely on CockroachDB-stored timeseries data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.
+After reducing or disabling time-series storage, it can take up to 24 hours for time-series data to be deleted and for the change to be reflected in DB Console metrics.
 {{site.data.alerts.end}}
 
-To disable the storage of timeseries data entirely, run the following command:
+### Reduce the interval for time-series storage
+
+By default, CockroachDB stores time-series data at 10s resolution for 10 days. This data is aggregated into time-series data at 30m resolution, which is stored for 90 days.
+
+To reduce the interval for storage of time-series data:
+
+- For data stored at 10s resolution, change the `timeseries.storage.resolution_10s.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `240h0m0s` (10 days). 
+
+  For example, to change the storage interval for time-series data at 10s resolution to 5 days, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+
+  {% include copy-clipboard.html %}
+  ~~~ sql
+  > SET CLUSTER SETTING timeseries.storage.resolution_10s.ttl = '120h0m0s';
+  ~~~
+
+  {% include copy-clipboard.html %}
+  ~~~ sql
+  > SHOW CLUSTER SETTING timeseries.storage.resolution_10s.ttl;
+  ~~~
+
+  ~~~
+    timeseries.storage.resolution_10s.ttl
+  +---------------------------------------+
+    120:00:00
+  (1 row)
+  ~~~
+
+  Note that this data is still aggregated into data at 30m resolution, which is stored for 90 days by default.
+
+- For data stored at 30m resolution, change the `timeseries.storage.resolution_30m.ttl` cluster setting to an [`INTERVAL`](interval.html) value less than `2160h0m0s` (90 days).
+
+### Disable time-series storage entirely
+
+{{site.data.alerts.callout_info}}
+Disabling time-series storage is recommended only if you exclusively use a third-party tool such as [Prometheus](monitor-cockroachdb-with-prometheus.html) for time-series monitoring. Prometheus and other such tools do not rely on CockroachDB-stored time-series data; instead, they ingest metrics exported by CockroachDB from memory and then store the data themselves.
+{{site.data.alerts.end}}
+
+To disable the storage of time-series data entirely, run the following command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -90,7 +92,7 @@ To disable the storage of timeseries data entirely, run the following command:
 (1 row)
 ~~~
 
-If you want all existing timeseries data to be deleted, change the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster setting as well:     
+If you want all existing time-series data to be deleted, also change both the `timeseries.storage.resolution_10s.ttl` and `timeseries.storage.resolution_30m.ttl` cluster settings:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -104,7 +106,7 @@ If you want all existing timeseries data to be deleted, change the `timeseries.s
 
 ## What happens when a node runs out of disk space?
 
-When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up. To prepare for this case, place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory that can be deleted to free up enough space to be able to restart the node. If you did not create a ballast file, look for other files that can be deleted, such as log files.
+When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up. To prepare for this case, place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory that can be deleted to free up enough space to be able to restart the node. If you did not create a ballast file, look for other files that can be deleted, such as [log files](configure-logs.html#logging-directory).
 
 {{site.data.alerts.callout_info}}
 In addition to using ballast files, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).
@@ -112,18 +114,13 @@ In addition to using ballast files, it is important to actively [monitor remaini
 
 ## Why would increasing the number of nodes not result in more operations per second?
 
-If queries operate on different data, then increasing the number
-of nodes should improve the overall throughput (transactions/second or QPS).
+If queries operate on different data, then increasing the number of nodes should improve the overall throughput (transactions/second or QPS).
 
-However, if your queries operate on the same data, you may be
-observing transaction contention. See [Understanding and Avoiding
-Transaction
-Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
-for more details.
+However, if your queries operate on the same data, you may be observing transaction contention. For details, see [SQL Performance Best Practices](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 
 ## Why does CockroachDB collect anonymized cluster usage details by default?
 
-Collecting information about CockroachDB's real world usage helps us prioritize the development of product features. We choose our default as "opt-in" to strengthen the information we receive from our collection efforts, but we also make a careful effort to send only anonymous, aggregate usage statistics. See [Diagnostics Reporting](diagnostics-reporting.html) for a detailed look at what information is sent and how to opt-out.
+Cockroach Labs collects information about CockroachDB's real-world usage to help prioritize the development of product features. We choose our default as "opt-in" to strengthen the information collected, and are careful to send only anonymous, aggregate usage statistics. For details on what information is collected and how to opt out, see [Diagnostics Reporting](diagnostics-reporting.html).
 
 ## What happens when node clocks are not properly synchronized?
 
@@ -133,7 +130,7 @@ Collecting information about CockroachDB's real world usage helps us prioritize 
 
 {% include {{ page.version.version }}/faq/clock-synchronization-monitoring.html %}
 
-You can also see these metrics in [the Clock Offset graph](ui-runtime-dashboard.html#clock-offset) on the DB Console's Runtime dashboard.
+You can also see these metrics in [the Clock Offset graph](ui-runtime-dashboard.html#clock-offset) on the DB Console.
 
 ## How do I prepare for planned node maintenance?
 
@@ -141,5 +138,6 @@ You can also see these metrics in [the Clock Offset graph](ui-runtime-dashboard.
 
 ## See also
 
+- [Production Checklist](recommended-production-settings.html)
 - [Product FAQs](frequently-asked-questions.html)
 - [SQL FAQs](sql-faqs.html)
