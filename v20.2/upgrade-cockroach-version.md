@@ -115,24 +115,14 @@ We recommend creating scripts to perform these steps instead of performing them 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ tar -xzf cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ tar -xzf cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
     </div>
 

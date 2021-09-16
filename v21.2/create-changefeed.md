@@ -5,10 +5,10 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-`CREATE CHANGEFEED` is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
+`CREATE CHANGEFEED` is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new enterprise changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [cloud storage sink](#cloud-storage-sink), or a [webhook sink](#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an enterprise changefeed.
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
 
@@ -319,7 +319,7 @@ For example:
 ~~~
 
 {{site.data.alerts.callout_info}}
-Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1.
+Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported in CockroachDB v21.1 and later.
 {{site.data.alerts.end}}
 
 For more information on how to create a changefeed connected to Kafka, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html#create-a-changefeed-connected-to-kafka).
@@ -388,11 +388,14 @@ CREATE CHANGEFEED FOR TABLE name, name2, name3
 
 ### Manage a changefeed
 
-Use the following SQL statements to pause, resume, and cancel a changefeed.
+<span class="version-tag">New in v21.2:</span> For enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](show-jobs.html) to check the status of your changefeed jobs:
 
-{{site.data.alerts.callout_info}}
-Changefeed-specific SQL statements (e.g., `CANCEL CHANGEFEED`) will be added in the future.
-{{site.data.alerts.end}}
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CHANGEFEED JOBS;
+~~~
+
+Use the following SQL statements to pause, resume, or cancel a changefeed.
 
 #### Pause a changefeed
 
@@ -420,6 +423,10 @@ For more information, see [`RESUME JOB`](resume-job.html).
 ~~~
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
+
+#### Configuring all changefeeds
+
+{% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
 
 ### Start a new changefeed where another ended
 

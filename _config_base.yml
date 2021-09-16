@@ -72,16 +72,16 @@ release_info:
     start_time: 2021-05-17 11:01:26.34274101 +0000 UTC
     version: v20.1.17
   v20.2:
-    build_time: 2021/08/16 11:00:26 (go1.13.4)
+    build_time: 2021/09/13 11:00:26 (go1.13.4)
     docker_image: cockroachdb/cockroach
-    name: v20.2.14
-    start_time: 2021-08-16 11:01:26.34274101 +0000 UTC
-    version: v20.2.14
+    name: v20.2.16
+    start_time: 2021-09-13 11:01:26.34274101 +0000 UTC
+    version: v20.2.16
   v21.1:
-    build_time: 2021/8/9 11:00:26 (go1.15.5)
+    build_time: 2021/8/30 11:00:26 (go1.15.5)
     docker_image: cockroachdb/cockroach
     name: v21.1.7
-    start_time: 2021-8-9 11:01:26.34274101 +0000 UTC
+    start_time: 2021-8-09 11:01:26.34274101 +0000 UTC
     version: v21.1.7
   v21.2:
     build_time: 2021/08/12 11:00:26 (go1.13.4)

@@ -1,22 +1,23 @@
 ---
-title: Deploy a Containerized Application with Google Cloud Run
-summary: Learn how to use Google Cloud Run and CockroachCloud to deploy a serverless application.
+title: Deploy a CockroachCloud Application with Google Cloud Run
+summary: Learn how to use Google Cloud Run (GCR) and CockroachCloud Free Tier to deploy a serverless application.
 toc: true
 twitter: false
+referral_id: docs_gcr_django
 ---
 
-This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a CockroachCloud Free Tier cluster.
+This tutorial shows you how to use Google Cloud Run to deploy a containerized Django application that communicates with a {{ site.data.products.serverless }} cluster.
 
 ## Prerequisites
 
 Before starting the tutorial, do the following:
 
-1. Create a [CockroachCloud](https://cockroachlabs.cloud/signup) account
-1. Create a [Google Cloud Platform](https://cloud.google.com/) account
-1. Install the [Google Cloud Platform SDK](https://cloud.google.com/sdk)
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+1. Create a [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}) account.
+1. Create a [Google Cloud](https://cloud.google.com/) account.
+1. Install the [Google Cloud SDK](https://cloud.google.com/sdk).
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
 
-## Step 1. Create a free CockroachCloud cluster
+## Step 1. Create a {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
@@ -27,7 +28,7 @@ Before starting the tutorial, do the following:
 ## Step 3. Create a database
 
 1. If you haven't already, [download the CockroachDB binary](install-cockroachdb.html).
-1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the CockroachCloud Console earlier:
+1. Start the [built-in SQL shell](cockroach-sql.html) using the connection string you got from the {{ site.data.products.db }} Console earlier:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -35,7 +36,7 @@ Before starting the tutorial, do the following:
     --url='postgres://<username>:<password>@<global host>:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/cc-ca.crt'
     ~~~
 
-    In the connection string copied from the CockroachCloud Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created earlier.
+    In the connection string copied from the {{ site.data.products.db }} Console, your username, password and cluster name are pre-populated. Replace the `<certs_dir>` placeholder with the path to the `certs` directory that you created earlier.
 
 1. In the SQL shell, create the `bank` database that your application will use:
 
@@ -53,33 +54,37 @@ Before starting the tutorial, do the following:
 
 ## Step 4. Get the application code
 
-Clone the code's GitHub repo:
+1. Clone the code's GitHub repo:
 
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ git clone https://github.com/cockroachlabs/example-app-python-django/
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ git clone https://github.com/cockroachlabs/example-app-python-django/
+    ~~~
 
-The project directory structure should look like this:
+1. Create a new folder named `certs` at the top level of the `example-app-python-django` project, and then copy the root certificate that you downloaded for your cluster to the new folder.
 
-~~~
-├── Dockerfile
-├── README.md
-├── cockroach_example
-│   ├── cockroach_example
-│   │   ├── __init__.py
-│   │   ├── asgi.py
-│   │   ├── migrations
-│   │   │   ├── 0001_initial.py
-│   │   │   └── __init__.py
-│   │   ├── models.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── views.py
-│   │   └── wsgi.py
-│   └── manage.py
-└── requirements.txt
-~~~
+    The project directory structure should look like this:
+
+    ~~~
+    ├── Dockerfile
+    ├── README.md
+    ├── certs
+    │   └── root.crt
+    ├── cockroach_example
+    │   ├── cockroach_example
+    │   │   ├── __init__.py
+    │   │   ├── asgi.py
+    │   │   ├── migrations
+    │   │   │   ├── 0001_initial.py
+    │   │   │   └── __init__.py
+    │   │   ├── models.py
+    │   │   ├── settings.py
+    │   │   ├── urls.py
+    │   │   ├── views.py
+    │   │   └── wsgi.py
+    │   └── manage.py
+    └── requirements.txt
+    ~~~
 
 ## Step 5. Initialize the database and test the app locally
 
@@ -102,17 +107,17 @@ The project directory structure should look like this:
     $ pip install -r requirements.txt
     ~~~
 
-1. Set the `DATABASE_URL` environment variable to the connection string provided in the **Connection info** window of the CockroachCloud Console:
+1. Set the `DATABASE_URL` environment variable to the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console, but with the root certificate located in the local `certs` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ export DATABASE_URL='<connection_string>'
+    $ export DATABASE_URL="postgresql://user:password@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs/root.crt&options=--cluster%3Dcluster-name"
     ~~~
 
     This Django app uses the `dj_database_url` module to configure the database connection from a connection URL. The module uses the value assigned to the `DATABASE_URL` environment variable for the connection.
 
     {{site.data.alerts.callout_info}}
-    In the Cloud Run deployment, we use GCP services to define the `DATABASE_URL` environment variable for the Docker container, and to mount the certificate to a directory in the container.
+    In the Cloud Run deployment, we use the Google Cloud Secret Manager to define the `DATABASE_URL` environment variable for the deployment.
     {{site.data.alerts.end}}
 
 1. Execute the initial database schema migration:
@@ -177,16 +182,11 @@ The project directory structure should look like this:
     (1 row)
     ~~~
 
+1. Enter **Ctrl+C** to stop the application.
+
 ## Step 6. Configure GCP
 
-1. From the [GCP console](https://console.cloud.google.com/), create a Google Cloud project for the application.
-
-1. In the [API Library](https://console.cloud.google.com/apis/library), enable the following APIs for your project:
-    - Container Registry API
-    - Cloud Run Admin API
-    - Secret Manager API
-
-1. In a local terminal, configure the `gcloud` command-line tool to use the new project:
+1. In the terminal, authenticate the `gcloud` command-line tool with your Google Cloud account:
 
     {{site.data.alerts.callout_info}}
     `gcloud` is included with the [Google Cloud SDK](https://cloud.google.com/sdk) installation.
@@ -194,24 +194,45 @@ The project directory structure should look like this:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
+    $ gcloud auth login
+    ~~~
+
+    Follow the prompts to authenticate.
+
+1. Create a Google Cloud project for the application deployment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud projects create <gcp_project_id>
+    ~~~
+
+    {{site.data.alerts.callout_info}}
+    You can specify a location for the project within your Google Cloud resources with the `--organization` or `--folder` flags.
+    {{site.data.alerts.end}}
+
+1. Configure the CLI to use your Google Cloud account and the new project ID by default:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
     $ gcloud init
     ~~~
 
-    Follow the prompts to authenticate your GCP account, and then enter your GCP project ID.
+1. Set the `PROJECT_ID` environment variable:
 
-## Step 7. Create a secret for the CockroachCloud root certificate
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ export PROJECT_ID=<gcp_project_id>
+    ~~~
 
-To authenticate with CockroachCloud, your application must have access to the root certificate that you downloaded from the CockroachCloud console. You can store the certificate as a secret with the GCP Secret Manager service.
+    For the rest of the tutorial, we use `PROJECT_ID` to refer to the project ID.
 
-From the [Secret Manager](https://console.cloud.google.com/security/secret-manager), create a secret for the CockroachCloud cluster's root certificate.
-
-## Step 8. Containerize the application and push it to the registry
+## Step 7. Containerize the application and push it to the registry
 
 1. Build the Docker image locally:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker build -t gcr.io/<gcp_project_id>/crdb-sample:v1 .
+    $ docker build -t gcr.io/$PROJECT_ID/crdb-sample:v1 .
     ~~~
 
     If there are no errors, the container built successfully.
@@ -223,26 +244,76 @@ From the [Secret Manager](https://console.cloud.google.com/security/secret-manag
     $ gcloud auth configure-docker
     ~~~
 
+1. Enable the Container Registry API for the project:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud services enable containerregistry.googleapis.com
+    ~~~
+
 1. Push the Docker image to the project's registry.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker push gcr.io/<gcp_project_id>/crdb-sample:v1
+    $ docker push gcr.io/$PROJECT_ID/crdb-sample:v1
+    ~~~
+
+## Step 8. Create a secret for the database connection URI
+
+1. Create a service account to manage the secrets for your project:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud iam service-accounts create cockroach-labs
+    ~~~
+
+1. Enable the Secret Manager API for the project:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud services enable secretmanager.googleapis.com
+    ~~~
+
+1. Create a secret for the connection string stored locally in the `DATABASE_URL` environment variable, and bind the new service account to the secret.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ echo $DATABASE_URL | gcloud secrets create cockroach-connection-uri --data-file=- --replication-policy=automatic
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud secrets add-iam-policy-binding cockroach-connection-uri \
+        --member=serviceAccount:cockroach-labs@${PROJECT_ID}.iam.gserviceaccount.com \
+        --role=roles/secretmanager.secretAccessor
     ~~~
 
 ## Step 9. Deploy the application on Cloud Run
 
-1. Create a [Cloud Run](https://console.cloud.google.com/run/) service for the application, in the region closest to you.
+1. Enable the Cloud Run API for the project:
 
-1. Select the container image URL for the image that you just pushed to the container registry.
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud services enable run.googleapis.com
+    ~~~
 
-1. Under **Advanced settings**->**Variables & Secrets**, do the following:
-    - Mount the secret that you created for the CockroachCloud certificate on the `certs` volume, with a full path ending in the name of the cert (e.g., `certs/root.crt`).
+1. Create a [Cloud Run](https://console.cloud.google.com/run/) service for the application:
 
-        {{site.data.alerts.callout_info}}
-        You might need to grant your GCP service account permissions to access the secret.
-        {{site.data.alerts.end}}
-    - Set an environment variable named `DATABASE_URL` to the connection string for a gateway node on the CockroachCloud cluster, with the root certificate located in the mounted `certs` volume (e.g., `'postgresql://user:password@free-tier.gcp-us-central1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=certs/root.crt&options=--cluster%3Dable-cattle-1220'`).
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ gcloud alpha run deploy crl-app --region us-central1 --allow-unauthenticated \
+     --service-account=cockroach-labs@${PROJECT_ID}.iam.gserviceaccount.com \
+       --set-secrets="DATABASE_URL=cockroach-connection-uri:latest" \
+       --image=gcr.io/${PROJECT_ID}/crdb-sample:v1
+    ~~~
+
+    Note the following:
+      - The `--region` flag specifies the region of the CockroachDB node targeted in the connection string.
+      - The `--service-account` flag specifies the `cockroach-labs` service account that you created earlier for the app deployment.
+      - The `--set-secrets` flag sets the `DATABASE_URL` environment variable to the `cockroach-connection-uri` secret that you created earlier.
+      - The `--image` flag specifies the container image URL for the `crdb-sample` image that you pushed to the container registry.
+
+    If prompted, select `Cloud Run (fully managed)`.
 
 After the revision is deployed, you should be able to send requests to the application from a browser, or using a REST client (e.g., `curl`). For example:
 

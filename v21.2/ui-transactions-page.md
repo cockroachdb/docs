@@ -28,7 +28,9 @@ To filter the transactions by [`application_name`](connection-parameters.html#ad
 - CockroachDB's internal transactions are only displayed under the `$ internal` app.
 - Transactions from the SQL shell are displayed under the `$ cockroach sql` app.
 
-You can also search for transactions using the search bar.
+You can also search for transactions using the search bar, or by date using the date bar. To search by date pick a date range that is within the time period since the statistics were last cleared, indicated on the upper right of the table. Click **reset time** to reset the date.
+
+Click **Clear SQL Stats** to clear the statistics.
 
 ## Filter by transaction latency
 
@@ -48,11 +50,12 @@ Transactions | The [SQL statement fingerprints](ui-statements-page.html#sql-stat
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
 Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing this transaction within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
 Bytes Read | Aggregation of all bytes [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean.
-Statement Time | Average [planning and execution time](architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Transaction Time | Average [planning and execution time](architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 Contention | Average time this transaction was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean.
 Max Memory | Maximum memory used by this transaction at any time during its execution within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
 Network | Amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](#time-interval).
+Regions/Nodes | The region and nodes in which the transaction was executed.
 Statements | Number of SQL statements in the transaction.
 
 {{site.data.alerts.callout_info}}

@@ -11,7 +11,7 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [fu
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [enterprise license](enterprise-licensing.html). You can also use [CockroachCloud](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 {{site.data.alerts.end}}
 
 You can [backup a full cluster](#backup-a-cluster), which includes:
@@ -32,7 +32,7 @@ You can also back up:
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 {{site.data.alerts.callout_success}}
-To view the contents of an enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+To view the contents of an {{ site.data.products.enterprise }} backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -40,9 +40,9 @@ To view the contents of an enterprise backup created with the `BACKUP` statement
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-[Interleaving data](interleave-in-parent.html) is disabled in v21.1 by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
+[Interleaving data](interleave-in-parent.html) is disabled by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
 
-To backup interleaved data in v21.1, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
+To backup interleaved data, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -215,6 +215,10 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
+{{site.data.alerts.end}}
+
 ### Create incremental backups
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
@@ -310,6 +314,10 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
+
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
+{{site.data.alerts.end}}
 
 ### Create incremental backups
 
@@ -411,6 +419,10 @@ INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
+{{site.data.alerts.callout_danger}}
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
+{{site.data.alerts.end}}
+
 ### Create incremental backups
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
@@ -467,6 +479,10 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 ### Slow (or hung) backups and queries due to write intent buildup
 
 {% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
+
+### `BACKUP` of multi-region tables
+
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 
 ## See also
 

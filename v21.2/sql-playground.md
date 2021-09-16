@@ -4,7 +4,7 @@ summary: The SQL Playground gives you an interactive SQL shell to a single-node 
 toc: false
 ---
 
-This playground gives you an interactive SQL shell to a single-node CockroachDB cluster running v21.1. The cluster is pre-loaded with a sample dataset, configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality, and set up with a DB Console user.
+This playground gives you an interactive SQL shell to a single-node CockroachDB cluster. The cluster is pre-loaded with a sample dataset, configured for CockroachDB's <a href="spatial-features.html" target="_blank">spatial</a> functionality, and set up with a DB Console user.
 
 - To access the DB Console, click the **DB Console** tab and then login with the username `max` and the password `roach`.
 - For docs on our SQL dialect, see <a href="sql-statements.html" target="_blank">SQL Reference</a>.

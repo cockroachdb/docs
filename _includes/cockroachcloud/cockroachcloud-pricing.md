@@ -7,4 +7,4 @@ The choice of the cloud provider decides the price per node. For pricing compari
 `Option 3` (8 vCPU, 500 GiB disk)  | 1800	                           | $1.78                              | $2.00
 `Option 4` (16 vCPU, 900 GiB disk) | 2000	                           | $3.38                              | $3.83
 
-CockroachCloud does not charge you for data transfer costs.
+{{ site.data.products.db }} does not charge you for data transfer costs.

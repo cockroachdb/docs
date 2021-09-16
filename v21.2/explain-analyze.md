@@ -244,10 +244,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 Time: 62ms total (execution 61ms / network 0ms)
 ~~~
 
-To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided:
-
-<img src="{{ 'images/v21.2/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
-
+To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided.
 
 ### `EXPLAIN ANALYZE (DEBUG)`
 

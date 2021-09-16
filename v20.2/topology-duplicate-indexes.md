@@ -32,7 +32,7 @@ In general, this pattern is suited well for immutable/reference tables that are 
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Pinning secondary indexes requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
+Pinning secondary indexes requires an [{{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -53,7 +53,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 );
 ~~~
 
-1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. [Create a replication zone](configure-zone.html) for the table and set a leaseholder preference telling CockroachDB to put the leaseholder for the table in one of the regions, for example `us-west`:
 

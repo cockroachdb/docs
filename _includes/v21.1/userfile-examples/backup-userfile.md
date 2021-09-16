@@ -4,8 +4,6 @@ We recommend starting backups from a time at least 10 seconds in the past using 
 Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
 {{site.data.alerts.end}}
 
-#### Database and table
-
 When working on the same cluster, `userfile` storage allows for database and table-level backups.
 
 First, run the following statement to backup a database to a directory in the default `userfile` space:
@@ -18,6 +16,8 @@ This directory will hold the files that make up a backup; including the manifest
 
 {{site.data.alerts.callout_info}}
 When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`](../{{site.versions["stable"]}}/cockroach-userfile-get.html) to download the backup files to a local machine and [`cockroach userfile upload --url {CONNECTION STRING}`](../{{site.versions["stable"]}}/cockroach-userfile-upload.html) to upload to the `userfile` of the alternate cluster.
+
+For an example, read [Upload a backup directory recursively](../{{site.versions["stable"]}}/cockroach-userfile-upload.html#upload-a-backup-directory-recursively).
 {{site.data.alerts.end}}
 
 In cases when your database needs to be restored, run the following:

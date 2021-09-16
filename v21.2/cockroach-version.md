@@ -5,7 +5,7 @@ toc: true
 key: view-version-details.html
 ---
 
-To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html), or run `cockroach --version` (new in v21.1):
+To view version details for a specific `cockroach` binary, run the `cockroach version` [command](cockroach-commands.html), or run `cockroach --version`:
 
 {% include copy-clipboard.html %}
 ~~~ shell

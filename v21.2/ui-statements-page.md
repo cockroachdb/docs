@@ -24,7 +24,9 @@ To filter the statements by [`application_name`](connection-parameters.html#addi
 
 CockroachDB's internal queries are displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
 
-You can also search for statements using the search bar.
+You can also search for statements using the search bar, or using the date bar. To search by date pick a date range that is within the time period since the statistics were last cleared, indicated on the upper right of the table. Click **reset time** to reset the date.
+
+Click **Clear SQL Stats** to clear the statistics.
 
 ## Understand the Statements page
 
@@ -78,7 +80,7 @@ Click on a SQL statement fingerprint to open **Statement Details**. For each sta
 
 - [Overview](#overview)
 - [Diagnostics](#diagnostics)
-- [Logical plan](#logical-plan)
+- [Explain plan](#explain-plan)
 - [Execution stats](#execution-stats)
 
 ### Overview
@@ -104,6 +106,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 - **Distributed execution?** indicates whether the execution was distributed.
 - **Vectorized execution?** indicates whether the execution used the [vectorized execution engine](vectorized-execution.html).
 - **Transaction type** displays the type of transaction (implicit or explicit).
+- **Last execution time** shows when the statement was last executed.
 
 **Execution counts** displays execution statistics for the SQL statement fingerprint.
 
@@ -138,11 +141,11 @@ The information collected in the bundle can be used to diagnose problematic SQL 
 
 Click **All statement diagnostics** to view a complete history of your collected diagnostics, each of which can be downloaded. Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. If you need to access diagnostics that were collected for a fingerprint not present in the past [interval](#time-interval), you can find the bundle here.
 
-### Logical Plan
+### Explain Plan
 
-The **Logical Plan** section displays CockroachDB's query plan for an [explainable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about logical plans, see [`EXPLAIN`](explain.html).
+The **Explain Plan** section displays CockroachDB's statement plan for an [explainable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`](explain.html).
 
-By default, the logical plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
+By default, the explain plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
 {% include copy-clipboard.html %}
 ~~~ sql

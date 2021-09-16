@@ -21,7 +21,7 @@ With Auto TLS, your cluster creates the CA (certificate authority) certificate a
 - Additional CLI instructions and feedback.
 {{site.data.alerts.end}}
 
-Auto TLS simplifies the default method for [creating secure clusters](secure-a-cluster.html). Rather than manually generating certificates and keys and distributing them to all nodes, you run a one-time `cockroach connect` command for each node, specifiying a common token. A CA cert and key are distributed to all nodes, along with all other certificates that nodes require to communicate with other nodes and with clients, all signed by the CA.
+Auto TLS simplifies the default method for [creating secure clusters](secure-a-cluster.html). Rather than manually generating certificates and keys and distributing them to all nodes, you run a one-time `cockroach connect` command for each node, specifying a common token. A CA cert and key are distributed to all nodes, along with all other certificates that nodes require to communicate with other nodes and with clients, all signed by the CA.
 
 {{site.data.alerts.callout_info}}
 To create client certificates, you will still need to run [`cockroach cert create-client`](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) or the equivalent [OpenSSL commands](create-security-certificates-openssl.html#step-3-create-the-certificate-and-key-pair-for-the-first-user) and manually distribute these.
@@ -123,7 +123,7 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 ## Step 4: Create additional users to administer the cluster
 
-1. Using the `root` user, log in to the [SQL shell](cockroach-sql.html). [Create additional users](create-role.html#create-a-role-that-can-log-in-to-the-database), specifying privileges as [parameters](create-role.html#parameters), or add the users as members of the `admin` role to confer all privileges, if appropriate.
+1. Using the `root` user, log in to the [SQL shell](cockroach-sql.html). [Create additional users](create-role.html#create-a-role-that-can-log-in-to-the-database), specifying role options as [parameters](create-role.html#parameters), or add the users as members of the `admin` role to confer all role options, if appropriate.
 
 2. Create the certificate and key pair for each of the additional users.
 

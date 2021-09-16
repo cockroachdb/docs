@@ -12,11 +12,11 @@ While CockroachDB is an excellent system of record, it also needs to coexist wit
 
 The main feature of CDC is the changefeed, which targets an allowlist of tables, called the "watched rows". There are two implementations of changefeeds:
 
-| [Core changefeeds](#create-a-core-changefeed)   | [Enterprise changefeeds](#configure-a-changefeed-enterprise) |
+| [Core changefeeds](#create-a-core-changefeed)   | [{{ site.data.products.enterprise }} changefeeds](#configure-a-changefeed-enterprise) |
 --------------------------------------------------|-----------------------------------------------------------------|
 | Useful for prototyping or quick testing. | Recommended for production use. |
-| Available in all products. | Available in CockroachCloud or with an [enterprise license](enterprise-licensing.html) in CockroachDB. |
-| Streams indefinitely until underlying SQL connection is closed. | Maintains connection to configured sink. ([Kafka](create-changefeed.html#kafka), [cloud storage](create-changefeed.html#cloud-storage-sink), [webhook sink](create-changefeed.html#webhook-sink)) |
+| Available in all products. | Available in {{ site.data.products.dedicated }} or with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html) in CockroachDB. |
+| Streams indefinitely until underlying SQL connection is closed. | Maintains connection to configured sink. |
 | Create with [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html). | Create with [`CREATE CHANGEFEED`](create-changefeed.html). |
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a configurable sink  ([Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed). |
@@ -163,13 +163,13 @@ To create a core changefeed:
 
 For more information, see [`CHANGEFEED FOR`](changefeed-for.html).
 
-## Configure a changefeed (Enterprise)
+## Configure a changefeed ({{ site.data.products.enterprise }})
 
-An enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an enterprise changefeed.
+An {{ site.data.products.enterprise }} changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), [cancel](#cancel), [monitor](#monitor-a-changefeed), and [debug](#debug-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 ### Create
 
-To create an enterprise changefeed:
+To create an {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -182,7 +182,7 @@ For more information, see [`CREATE CHANGEFEED`](create-changefeed.html).
 
 ### Pause
 
-To pause an enterprise changefeed:
+To pause an {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -193,7 +193,7 @@ For more information, see [`PAUSE JOB`](pause-job.html).
 
 ### Resume
 
-To resume a paused enterprise changefeed:
+To resume a paused {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -204,7 +204,7 @@ For more information, see [`RESUME JOB`](resume-job.html).
 
 ### Cancel
 
-To cancel an enterprise changefeed:
+To cancel an {{ site.data.products.enterprise }} changefeed:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -213,26 +213,30 @@ To cancel an enterprise changefeed:
 
 For more information, see [`CANCEL JOB`](cancel-job.html).
 
+### Configuring all changefeeds
+
+{% include {{ page.version.version }}/cdc/configure-all-changefeed.md %}
+
 ## Monitor a changefeed
 
 {{site.data.alerts.callout_info}}
-Monitoring is only available for enterprise changefeeds.
+Monitoring is only available for {{ site.data.products.enterprise }} changefeeds.
 {{site.data.alerts.end}}
 
 Changefeed progress is exposed as a high-water timestamp that advances as the changefeed progresses. This is a guarantee that all changes before or at the timestamp have been emitted. You can monitor a changefeed:
 
 - On the [Changefeed Dashboard](ui-cdc-dashboard.html) of the DB Console.
 - On the [Jobs page](ui-jobs-page.html) of the DB Console. Hover over the high-water timestamp to view the [system time](as-of-system-time.html).
-- Using `crdb_internal.jobs`:
+- Using `SHOW CHANGEFEED JOB <job_id>`:
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SELECT * FROM crdb_internal.jobs WHERE job_id = <job_id>;
+    SHOW CHANGEFEED JOB 383870400694353921;
     ~~~
     ~~~
-            job_id       |  job_type  |                              description                               | ... |      high_water_timestamp      | error | coordinator_id
-    +--------------------+------------+------------------------------------------------------------------------+ ... +--------------------------------+-------+----------------+
-      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 |       |              1
+            job_id       |  job_type  |                              description                              | ... |      high_water_timestamp      | ... |
+    +--------------------+------------+-----------------------------------------------------------------------+ ... +--------------------------------+ ... +
+      383870400694353921 | CHANGEFEED | CREATE CHANGEFEED FOR TABLE office_dogs INTO 'kafka://localhost:9092' | ... | 1537279405671006870.0000000000 | ... |
     (1 row)
     ~~~
 
@@ -246,7 +250,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Using logs
 
-For enterprise changefeeds, [use log information](logging-overview.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+For {{ site.data.products.enterprise }} changefeeds, [use log information](logging-overview.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client
@@ -256,20 +260,21 @@ I190312 18:56:53.537661 585 vendor/github.com/Shopify/sarama/client.go:500  [kaf
 I190312 18:56:53.537686 585 vendor/github.com/Shopify/sarama/client.go:170  [kafka-producer] Successfully initialized new client
 ~~~
 
-### Using `SHOW JOBS`
+### Using `SHOW CHANGEFEED JOBS`
 
-For enterprise changefeeds, you can check the status by using:
+<span class="version-tag">New in v21.2:</span> For {{ site.data.products.enterprise }} changefeeds, use `SHOW CHANGEFEED JOBS` to check the status of your changefeed jobs:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-SELECT * FROM [SHOW JOBS] WHERE job_type='CHANGEFEED';
+> SHOW CHANGEFEED JOBS;
 ~~~
 
-Or:
-
-{% include copy-clipboard.html %}
-~~~ sql
-SELECT * from crdb_internal.jobs WHERE job_type='CHANGEFEED';
+~~~
+job_id               |                                                                                   description                                                                  | user_name | status  |              running_status              |          created           |          started           | finished |          modified          |      high_water_timestamp      | error |         sink_uri       |      full_table_names      | format
+---------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------+------------------------------------------+----------------------------+----------------------------+----------+----------------------------+--------------------------------+-------+------------------------+----------------------------+---------
+685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | running | running: resolved=1629336943.183631090,0 | 2021-08-19 01:35:43.19592  | 2021-08-19 01:35:43.225445 | NULL     | 2021-08-19 01:35:43.252318 | 1629336943183631090.0000000000 |       | kafka://localhost:9092 | {defaultdb.public.mytable} | avro
+685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | paused  | NULL                                     | 2021-08-19 01:32:33.609989 | 2021-08-19 01:32:33.64293  | NULL     | 2021-08-19 01:35:44.224961 | NULL                           |       | kafka://localhost:9092 | {defaultdb.public.mytable} | avro
+(2 rows)
 ~~~
 
 For more information, see [`SHOW JOBS`](show-jobs.html).
@@ -296,12 +301,12 @@ For more information, see [`SHOW JOBS`](show-jobs.html).
 ### Create a changefeed connected to Kafka
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
 2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
@@ -354,7 +359,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach sql --insecure
     ~~~
 
-7. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+7. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -493,12 +498,12 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to Kafka using Avro
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed-using-avro).
 {{site.data.alerts.end}}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to a Kafka sink and emits [Avro](https://avro.apache.org/docs/1.8.2/spec.html) records. The changefeed will watch two tables.
 
-1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
 2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
@@ -551,7 +556,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach sql --insecure
     ~~~
 
-7. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+7. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -690,14 +695,14 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 ### Create a changefeed connected to a cloud storage sink
 
 {{site.data.alerts.callout_info}}
-[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
 In this example, you'll set up a changefeed for a single-node cluster that is connected to an AWS S3 sink. The changefeed watches two tables. Note that you can set up changefeeds for any of [these cloud storage providers](create-changefeed.html#cloud-storage-sink).
 
-1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](enterprise-licensing.html).
 
 2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
 
@@ -713,7 +718,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach sql --insecure
     ~~~
 
-4. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+4. Set your organization name and [{{ site.data.products.enterprise }} license](enterprise-licensing.html) key that you received via email:
 
     {% include copy-clipboard.html %}
     ~~~ sql

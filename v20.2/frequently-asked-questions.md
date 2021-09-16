@@ -157,14 +157,14 @@ We also fully support [importing your data via CSV](migrate-from-csv.html).
 
 ## Does Cockroach Labs offer a cloud database as a service?
 
-Yes. The CockroachCloud offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
+Yes. The {{ site.data.products.db }} offering is currently in Limited Availability and accepting customers on a qualified basis. The offering provides a running CockroachDB cluster suitable to your needs, fully managed by Cockroach Labs on GCP or AWS. Benefits include:
 
 - No provisioning or deployment efforts for you
 - Daily full backups and hourly incremental backups of your data
 - Upgrades to the latest stable release of CockroachDB
 - Monitoring to provide SLA-level support
 
-For more details, see the [CockroachCloud](../cockroachcloud/quickstart.html) docs.
+For more details, see the [{{ site.data.products.db }}](../cockroachcloud/quickstart.html) docs.
 
 ## Why did Cockroach Labs change the license for CockroachDB?
 

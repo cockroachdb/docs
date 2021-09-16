@@ -4,9 +4,9 @@ summary: The Sessions page provides details of all open sessions in the cluster.
 toc: true
 ---
 
-The **Sessions** page of the CockroachCloud Console provides details of all open sessions in the cluster.
+The **Sessions** page of the {{ site.data.products.db }} Console provides details of all open sessions in the cluster.
 
-To view this page, click **Sessions** in the left-hand navigation of the CockroachCloud Console.
+To view this page, click **Sessions** in the left-hand navigation of the {{ site.data.products.db }} Console.
 
 ## Sessions list
 
@@ -24,7 +24,7 @@ A session is *active* if it has an open transaction (including implicit transact
 An active session can have an open transaction that is not currently running SQL. In this case, the **Statement** and **Statement Duration** columns will display `N/A` and **Transaction Duration** will display a value. Transactions that are held open can cause [contention](../{{site.versions["stable"]}}/performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
 {{site.data.alerts.end}}
 
-<img src="{{ 'images/cockroachcloud/sessions-page.png' | relative_url }}" alt="CockroachCloud Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/sessions-page.png' | relative_url }}" alt="{{ site.data.products.db }} Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 The following are displayed for each active session:
 
@@ -45,7 +45,7 @@ Sort by **Transaction Duration** to display all active sessions at the top.
 
 Click the **Session Duration** of any session to display details and possible actions for that session.
 
-<img src="{{ 'images/cockroachcloud/sessions-details-page.png' | relative_url }}" alt="CockroachCloud Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/sessions-details-page.png' | relative_url }}" alt="{{ site.data.products.db }} Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
 
 - **Session** shows the ID of the connected session.
 	- **Session Start Time** shows the timestamp at which the session started.
