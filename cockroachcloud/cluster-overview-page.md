@@ -30,14 +30,14 @@ The **Usage this month** panel displays your cluster usage statistics for the cu
 
 This panel displays operational statistics for your cluster.
 
-| Field               | Description                                                                                                                 |
-|---------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| Throughput          | The cluster throughput in queries per second (QPS).                                                                         |
-| P99 latency         | The 99th percentile of service latency. Over the last minute, this cluster executed 99 percent of queries within this time. |
-| Databases           | The number of databases in the cluster.                                                                                     |
-| Tables              | The total number of system and user-created tables in your databases.                                                       |
-| Open sessions       | The number of open sessions in the cluster.                                                                                 |
-| Transaction retries | The cumulative number of retries of this transaction within the last hour.                                                  |
+| Field               | Description                                                                                                                         |
+|---------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Throughput          | The cluster throughput in queries per second (QPS).                                                                                 |
+| P99 latency         | The 99th percentile of service latency. Over the last minute, the cluster executed 99 percent of queries within the indicated time. |
+| Databases           | The number of databases in the cluster.                                                                                             |
+| Tables              | The total number of system and user-created tables in your databases.                                                               |
+| Open sessions       | The number of open sessions in the cluster.                                                                                         |
+| Transaction retries | The cumulative number of retries of this transaction within the last hour.                                                          |
 
 ## Cluster Overview metrics
 
