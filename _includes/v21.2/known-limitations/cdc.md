@@ -8,5 +8,8 @@
 - Additional target options will be added, including partitions.
 - When an [`IMPORT INTO`](import-into.html) statement is run, changefeed jobs targeting that table will fail.
 - Using a [cloud storage sink](create-changefeed.html#cloud-storage-sink) only works with `JSON` and emits [newline-delimited json](http://ndjson.org) files.
+- Webhook sinks only support HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+- Currently, webhook sinks only have support for emitting `JSON`.
+- There is no concurrency configurability for [webhook sinks](create-changefeed.html#webhook-sink).
 - Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported.
 - {{ site.data.products.enterprise }} changefeeds are currently disabled for [{{ site.data.products.serverless }} clusters](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart). Core changefeeds are enabled.    

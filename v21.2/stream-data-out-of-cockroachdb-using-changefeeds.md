@@ -815,6 +815,119 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
     $ cockroach quit --insecure
     ~~~
 
+### Create a changefeed connected to a webhook sink
+
+{{site.data.alerts.callout_info}}
+[`CREATE CHANGEFEED`](create-changefeed.html) is an [enterprise-only](enterprise-licensing.html) feature. For the core version, see [the `CHANGEFEED FOR` example above](#create-a-core-changefeed).
+{{site.data.alerts.end}}
+
+{% include {{ page.version.version }}/cdc/webhook-beta.md %}
+
+<span class="version-tag">New in v21.2:</span> In this example, you'll set up a changefeed for a single-node cluster that is connected to a local HTTP server via a webhook. For this example, you'll use an [example HTTP server](https://github.com/cockroachlabs/cdc-webhook-sink-test-server/tree/master/go-https-server) to test out the webhook sink.
+
+1. If you do not already have one, [request a trial enterprise license](enterprise-licensing.html).
+
+2. Use the [`cockroach start-single-node`](cockroach-start-single-node.html) command to start a single-node cluster:
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach start-single-node --insecure --listen-addr=localhost --background
+    ~~~
+
+3. In this example, you'll run CockroachDB's [Movr](movr.html) application workload to set up some data for your changefeed.
+
+     First create the schema for the workload:
+
+     {% include copy-clipboard.html %}
+     ~~~shell
+     cockroach workload init movr "postgresql://root@127.0.0.1:26257?sslmode=disable"
+     ~~~
+
+     Then run the workload:
+
+     {% include copy-clipboard.html %}
+     ~~~shell
+     cockroach workload run movr --duration=1m "postgresql://root@127.0.0.1:26257?sslmode=disable"
+     ~~~
+
+4. Open the [built-in SQL client](cockroach-sql.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure
+    ~~~
+
+5. Set your organization name and [enterprise license](enterprise-licensing.html) key that you received via email:
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING cluster.organization = '<organization name>';
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING enterprise.license = '<secret>';
+    ~~~
+
+6. Enable the `kv.rangefeed.enabled` [cluster setting](cluster-settings.html):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET CLUSTER SETTING kv.rangefeed.enabled = true;
+    ~~~
+
+7. In a separate terminal window, set up your HTTP server. Clone the test repository:
+
+    {% include copy-clipboard.html %}
+    ~~~shell
+    git clone https://github.com/cockroachlabs/cdc-webhook-sink-test-server.git
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~shell
+    cd cdc-webhook-sink-test-server/go-https-server
+    ~~~
+
+8. Next make the script executable and then run the server (passing a specific port if preferred, otherwise it will default to `:3000`):
+
+    {% include copy-clipboard.html %}
+    ~~~shell
+    chmod +x ./server.sh
+    ~~~
+
+    {% include copy-clipboard.html %}
+    ~~~shell
+    ./server.sh <port>
+    ~~~
+
+9. Back in your SQL shell, run the following statement to create a changefeed that emits to your webhook sink:
+
+    {% include copy-clipboard.html %}
+    ~~~sql
+    CREATE CHANGEFEED FOR TABLE movr.vehicles INTO 'webhook-https://localhost:3000?insecure_tls_skip_verify=true' WITH updated;
+    ~~~
+
+    You set up a changefeed on the `vehicles` table, which emits changefeed messages to the local HTTP server.
+
+    See the [options table](create-changefeed.html#options) for more information on the options available for creating your changefeed to a webhook sink.
+
+    ~~~
+          job_id
+    ----------------------
+    687842491801632769
+    (1 row)
+    ~~~
+
+    In the terminal where your HTTP server is running, you'll receive output similar to:
+
+    ~~~
+    2021/08/24 14:00:21 {"payload":[{"after":{"city":"rome","creation_time":"2019-01-02T03:04:05","current_location":"39141 Travis Curve Suite 87","ext":{"brand":"Schwinn","color":"red"},"id":"d7b18299-c0c4-4304-9ef7-05ae46fd5ee1","owner_id":"5d0c85b5-8866-47cf-a6bc-d032f198e48f","status":"in_use","type":"bike"},"key":["rome","d7b18299-c0c4-4304-9ef7-05ae46fd5ee1"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
+    2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"84888 Wallace Wall","ext":{"color":"black"},"id":"020cf7f4-6324-48a0-9f74-6c9010fb1ab4","owner_id":"b74ea421-fcaf-4d80-9dcc-d222d49bdc17","status":"available","type":"scooter"},"key":["san francisco","020cf7f4-6324-48a0-9f74-6c9010fb1ab4"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
+    2021/08/24 14:00:22 {"payload":[{"after":{"city":"san francisco","creation_time":"2019-01-02T03:04:05","current_location":"3893 Dunn Fall Apt. 11","ext":{"color":"black"},"id":"21b2ec54-81ad-4af7-a76d-6087b9c7f0f8","owner_id":"8924c3af-ea6e-4e7e-b2c8-2e318f973393","status":"lost","type":"scooter"},"key":["san francisco","21b2ec54-81ad-4af7-a76d-6087b9c7f0f8"],"topic":"vehicles","updated":"1629813621680097993.0000000000"}],"length":1}
+    ~~~
+
+    For more detail on emitted changefeed messages, see [responses](create-changefeed.html#responses).
+
 ## Known limitations
 
 {% include {{ page.version.version }}/known-limitations/cdc.md %}
