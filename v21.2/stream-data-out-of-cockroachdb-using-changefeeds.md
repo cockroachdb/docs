@@ -630,7 +630,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = experimental_avro, confluent_schema_registry = 'http://localhost:8081';
+    > CREATE CHANGEFEED FOR TABLE office_dogs, employees INTO 'kafka://localhost:9092' WITH format = avro, confluent_schema_registry = 'http://localhost:8081';
     ~~~
 
     ~~~
