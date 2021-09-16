@@ -50,6 +50,14 @@ When a query is successfully cancelled, CockroachDB sends a `query execution can
 - If the canceled query was a single, stand-alone statement, no further action is required by the client.
 - If the canceled query was part of a larger, multi-statement [transaction](transactions.html), the client should then issue a [`ROLLBACK`](rollback-transaction.html) statement.
 
+You can cancel all queries from a particular application by using a subquery.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CANCEL QUERIES (SELECT query_id FROM [SHOW CLUSTER QUERIES]
+      WHERE application_name = 'test_app');
+~~~
+
 ## Improve query performance
 
 After cancelling a long-running query, use the [`EXPLAIN`](explain.html) statement to examine it. It's possible that the query was slow because it performs a full-table scan. In these cases, you can likely improve the query's performance by [adding an index](create-index.html).

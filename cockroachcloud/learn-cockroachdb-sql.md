@@ -16,7 +16,7 @@ Make sure you have already [connected the CockroachDB SQL client](connect-to-you
 
 ## Create a database
 
-Your CockroachCloud cluster comes with a `defaultdb` for testing and some internal databases.
+Your {{ site.data.products.db }} cluster comes with a `defaultdb` for testing and some internal databases.
 
 To create a new database, connect with your initial "admin" user and use [`CREATE DATABASE`](../{{site.versions["stable"]}}/create-database.html) followed by a database name:
 

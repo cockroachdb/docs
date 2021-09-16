@@ -5,11 +5,11 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current">CockroachCloud Free (beta)</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level">CockroachCloud</button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud Free (beta) cluster. If you'd like to follow along with a video walkthrough, see [How to connect to CockroachCloud and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
+This page shows you how to connect to your {{ site.data.products.serverless }} cluster. If you'd like to follow along with a video walkthrough, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -20,7 +20,7 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster. I
 
 ## Step 1. Select a connection method
 
-1. In the top right corner of the CockroachCloud Console, click the **Connect** button.
+1. In the top right corner of the {{ site.data.products.db }} Console, click the **Connect** button.
 
     The **Connect** modal displays on the **Step 2. Connect > Command Line** subtab.
 
@@ -39,6 +39,8 @@ This page shows you how to connect to your CockroachCloud Free (beta) cluster. I
 <p></p>
 
 ## Step 2. Connect to your cluster
+
+{% include cockroachcloud/cc-cert-expire.md %}
 
   <section class="filter-content" markdown="1" data-scope="command-line">
 
@@ -97,7 +99,7 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to CockroachCloud Free (beta).
+1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to {{ site.data.products.serverless }}.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
@@ -149,4 +151,4 @@ For most tools, the full name of your database should be in the format `<cluster
 ## What's next
 
 - [Build a "Hello, World" app](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)

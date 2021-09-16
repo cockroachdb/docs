@@ -7,7 +7,7 @@ Command | Usage
 `\!` | Run an external command and print its results to `stdout`. [See an example](cockroach-sql.html#run-external-commands-from-the-sql-shell).
 <code>&#92;&#124;</code> | Run the output of an external command as SQL statements. [See an example](cockroach-sql.html#run-external-commands-from-the-sql-shell).
 `\set <option>`<br><br>`\unset <option>` | Enable or disable a client-side option. For more details, see [Client-side options](#client-side-options).<br>You can also use the [`--set` flag](#general) to enable or disable client-side options before starting the SQL shell.
-`\show`<br><br>`\p` | During a multi-line statement or transaction, show the SQL that has been entered but not yet executed.<br>`\show` is deprecated in v21.1. Use `\p` instead.
+`\show`<br><br>`\p` | During a multi-line statement or transaction, show the SQL that has been entered but not yet executed.<br>`\show` was deprecated as of v21.1. Use `\p` instead.
 `\h <statement>`<br><br>`\hf <function>` | View help for specific SQL statements or functions. See [SQL shell help](#help) for more details.
 `\c`<br><br>`\connect` |  Change the current database. This is equivalent to `SET <database>` and `USE <database>`.
 `\l` | List all databases in the CockroachDB cluster. This command is equivalent to [`SHOW DATABASES`](show-databases.html).

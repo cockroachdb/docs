@@ -113,6 +113,8 @@ spans | The interval of the key space read by the processor. If `spans` is `FULL
 
 You can obtain this ZIP file by following the link provided in the `EXPLAIN ANALYZE (DEBUG)` output, or by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
+{% include {{ page.version.version }}/sql/statement-bundle-warning.md %}
+
 ## DistSQL plan viewer
 
 The graphical diagram when using the `DISTSQL` option displays the processors and operations that make up the statement plan. While the text output from `PLAN` shows the statement plan across the cluster, `DISTSQL` shows details on each node involved in the query.
@@ -242,10 +244,7 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 Time: 62ms total (execution 61ms / network 0ms)
 ~~~
 
-To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided:
-
-<img src="{{ 'images/v21.2/explain-analyze-distsql-plan.png' | relative_url }}" alt="EXPLAIN ANALYZE (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
-
+To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided.
 
 ### `EXPLAIN ANALYZE (DEBUG)`
 

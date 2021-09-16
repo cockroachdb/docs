@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v21.1
+title: Known Limitations in CockroachDB v21.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 ---
@@ -161,6 +161,16 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ## Unresolved limitations
 
+### HTTP(S) connections
+
+CockroachDB does not support database connections across HTTP(S). All database connections must be made via TCP.
+
+As of v21.1, CockroachDB includes the [Cluster API](cluster-api.html), a REST API that accepts HTTP(S) requests for monitoring data.
+
+In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
+
 ### `IMPORT` into a `REGIONAL BY ROW` table
 
 CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
@@ -203,6 +213,10 @@ To work around this limitation, you will need to take the following steps:
     ~~~ sql
     ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
     ~~~
+
+### `BACKUP` of multi-region tables
+
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
@@ -304,7 +318,7 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### Enterprise `BACKUP` does not capture database/table/column comments
+### {{ site.data.products.enterprise }} `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
@@ -516,10 +530,6 @@ As a workaround, you can either [manually split a table's columns into multiple 
 When a node has both a high number of client connections and running queries, the node may crash due to memory exhaustion. This is due to CockroachDB not accurately limiting the number of clients and queries based on the amount of available RAM on the node.
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
-
-### Query planning for `OR` expressions
-
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
 
 ### Privileges for `DELETE` and `UPDATE`
 

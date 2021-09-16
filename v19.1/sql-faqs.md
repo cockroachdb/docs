@@ -53,7 +53,7 @@ Contention](performance-best-practices-overview.html#understanding-and-avoiding-
 
 ## Does CockroachDB support `JOIN`?
 
-[CockroachDB supports SQL joins](joins.html).  We are working to improve their execution performance.
+[CockroachDB supports SQL joins](joins.html).
 
 At this time `LATERAL` joins are not yet supported.  For details, see [this Github issue](https://github.com/cockroachdb/cockroach/issues/24560).
 

@@ -34,7 +34,8 @@ For secure clusters, you can avoid getting the warning message by using a certif
 
 1. Request a certificate from a public CA (for example, [Let's Encrypt](https://letsencrypt.org/)). The certificate must have the IP addresses and DNS names used to reach the DB Console listed in the `Subject Alternative Name` field.
 2. Rename the certificate and key as `ui.crt` and `ui.key`.
-3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must not have group or world permissions (maximum permissions are 0700, or rwx------). You can disable this check by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
+3. Add the `ui.crt` and `ui.key` to the [certificate directory](cockroach-cert.html#certificate-directory). `ui.key` must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
+ .
 4. For nodes that are already running, load the `ui.crt` certificate without restarting the node by issuing a `SIGHUP` signal to the cockroach process:
    {% include copy-clipboard.html %}
    ~~~ shell

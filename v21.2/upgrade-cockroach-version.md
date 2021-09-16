@@ -1,5 +1,5 @@
 ---
-title: Upgrade to CockroachDB v21.1
+title: Upgrade to CockroachDB v21.2
 summary: Learn how to upgrade your CockroachDB cluster to a new version.
 toc: true
 ---
@@ -10,13 +10,13 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
 
-Therefore, if you are upgrading from v20.1 to v20.2, or from a testing release (alpha/beta) of v20.2 to v21.1:
+Therefore, if you are upgrading from v20.2 to v21.1, or from a testing release (alpha/beta) of v21.1 to v21.2:
 
-1. First [upgrade to a production release of v20.2](../v20.2/upgrade-cockroach-version.html). Be sure to complete all the steps.
+1. First [upgrade to a production release of v21.1](../v21.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
 
-2. Then return to this page and perform a second rolling upgrade to v21.1.
+2. Then return to this page and perform a second rolling upgrade to v21.2.
 
-If you are upgrading from any production release of v20.2, or from any earlier v21.1 release, you do not have to go through intermediate releases; continue to step 2.
+If you are upgrading from any production release of v21.1, or from any earlier v21.2 release, you do not have to go through intermediate releases; continue to step 2.
 
 ## Step 2. Prepare to upgrade
 
@@ -40,25 +40,22 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.1](../releases/v21.1.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.1.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.1.
+Review the [changes in v21.2](../releases/v21.2.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
-Two changes that are particularly important to note:
+Changes that are important to note:
 
-- As of v21.1, CockroachDB always uses the [Pebble storage engine](https://github.com/cockroachdb/pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag on the `cockroach start` command. RocksDB can no longer be used as the storage engine.
-    - If your cluster currently uses RocksDB as the storage engine, before you upgrade to v21.1, restart each of your nodes, removing `--storage-engine=rocksdb` from the `cockroach start` command. You can follow the same rolling process described in [step 4](#step-4-perform-the-rolling-upgrade) below, but do not change the binary; just remove the `--storage-engine=rocksdb` flag and restart.
-
-- [Interleaving data](interleave-in-parent.html) was deprecated in v20.2 and is now disabled by default in v21.1. Interleaving will be permanently removed from CockroachDB in a future release. For migration steps, see the [interleave deprecation](../v21.1/interleave-in-parent.html#deprecation) notice.
+- [Interleaving data](interleave-in-parent.html) was deprecated in v20.2 and is now disabled by default. Interleaving will be permanently removed from CockroachDB in a future release. For migration steps, see the [interleave deprecation](../v21.1/interleave-in-parent.html#deprecation) notice.
     - If your cluster includes interleaved data and you perform backups, first make sure you are running [v20.2.10+](../v20.2/upgrade-cockroach-version.html); then update your `BACKUP` commands to use the [`INCLUDE_DEPRECATED_INTERLEAVES` option](backup.html#include-deprecated-interleaves); and only then return to this page and upgrade to v21.1. Note that the `INCLUDE_DEPRECATED_INTERLEAVES` option is a no-op in v20.2.10, but this sequence is the only way to prevent backups including interleaved data from failing on v21.1.
 
 ## Step 3. Decide how the upgrade will be finalized
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades within the v21.1.x series, skip this step.
+This step is relevant only when upgrading from v21.1.x to v21.2. For upgrades within the v21.2.x series, skip this step.
 {{site.data.alerts.end}}
 
-By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.1](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to v20.2. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
+By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.2](#features-that-require-upgrade-finalization). However, it will no longer be possible to perform a downgrade to v21.1. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in [step 5](#step-5-finish-the-upgrade):
 
-1. [Upgrade to v20.2](../v20.2/upgrade-cockroach-version.html), if you haven't already.
+1. [Upgrade to v21.1](../v21.1/upgrade-cockroach-version.html), if you haven't already.
 
 2. Start the [`cockroach sql`](cockroach-sql.html) shell against any node in the cluster.
 
@@ -66,14 +63,14 @@ By default, after all nodes are running the new version, the upgrade process wil
 
     {% include copy-clipboard.html %}
     ~~~ sql
-    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '20.2';
+    > SET CLUSTER SETTING cluster.preserve_downgrade_option = '21.1';
     ~~~
 
     It is only possible to set this setting to the current cluster version.
 
 ### Features that require upgrade finalization
 
-When upgrading from v20.2 to v21.1, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
+When upgrading from v21.1 to v21.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
 - **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
 
@@ -115,24 +112,14 @@ We recommend creating scripts to perform these steps instead of performing them 
     <div class="filter-content" markdown="1" data-scope="mac">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ tar -xzf cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.darwin-10.9-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
     <div class="filter-content" markdown="1" data-scope="linux">
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ shell
-    $ tar -xzf cockroach-{{page.release_info.version}}.linux-amd64.tgz
+    $ curl https://binaries.cockroachdb.com/cockroach-{{page.release_info.version}}.linux-amd64.tgz|tar -xzf -
     ~~~
     </div>
 
@@ -218,7 +205,7 @@ We recommend creating scripts to perform these steps instead of performing them 
 ## Step 5. Finish the upgrade
 
 {{site.data.alerts.callout_info}}
-This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades within the v21.1.x series, skip this step.
+This step is relevant only when upgrading from v21.1.x to v21.2. For upgrades within the v21.2.x series, skip this step.
 {{site.data.alerts.end}}
 
 If you disabled auto-finalization in [step 3](#step-3-decide-how-the-upgrade-will-be-finalized), monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.

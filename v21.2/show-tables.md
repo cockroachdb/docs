@@ -206,13 +206,13 @@ To view virtual tables with comments and documentation links, use `SHOW TABLES F
      schema_name     |            table_name             | type  | estimated_row_count |                                                              comment
 ---------------------+-----------------------------------+-------+---------------------+-------------------------------------------------------------------------------------------------------------------------------------
   information_schema | administrable_role_authorizations | table |                NULL | roles for which the current user has admin option
-                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.1/information-schema.html#administrable_role_authorizations
+                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#administrable_role_authorizations
                      |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-administrable-role-authorizations.html
   information_schema | applicable_roles                  | table |                NULL | roles available to the current user
-                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.1/information-schema.html#applicable_roles
+                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#applicable_roles
                      |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-applicable-roles.html
   information_schema | check_constraints                 | table |                NULL | check constraints
-                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.1/information-schema.html#check_constraints
+                     |                                   |       |                     | https://www.cockroachlabs.com/docs/v21.2/information-schema.html#check_constraints
                      |                                   |       |                     | https://www.postgresql.org/docs/9.5/infoschema-check-constraints.html
 ...
 (23 rows)

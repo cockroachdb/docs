@@ -4,7 +4,7 @@ summary: Manage your account roles and permissions.
 toc: true
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your CockroachCloud Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
 
 ## Organization
 
@@ -25,7 +25,7 @@ Anyone with database admin privileges can [change a SQL user's databases privile
 
 ## Roles
 
-Every CockroachCloud user is either a Developer or a Console Admin for the Organization.
+Every {{ site.data.products.db }} user is either a Developer or a Console Admin for the Organization.
 
 ### Developer
 
@@ -38,18 +38,18 @@ To access a cluster, you need to ask a Console Admin for the username and passwo
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
 - [Create a cluster](create-your-cluster.html)
-- [Invite Team Members to CockroachCloud](#invite-team-members-to-cockroachcloud)
+- [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachcloud)
 - [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](user-authorization.html#create-a-sql-user)
 - [Manage billing for the Organization](#manage-billing-for-the-organization)
-- [Restore databases and tables from a CockroachCloud backup](backups-page.html#ways-to-restore-data)
+- [Restore databases and tables from a {{ site.data.products.db }} backup](backups-page.html#ways-to-restore-data)
 - [Delete an Organization](#delete-an-organization)
 
 ## Administrative tasks
 
-### Invite Team Members to CockroachCloud
+### Invite Team Members to {{ site.data.products.db }}
 
-As a Console Admin, you can invite Team Members to CockroachCloud. To invite Team Members:
+As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
 1. If you are a member of multiple Organizations, navigate to the Organization to which you want to invite a Team Member. You can navigate to the correct Organization by using the drop-down box in the top-right corner.
 2. On the **Access** page, click **Add Team Member**.
@@ -121,7 +121,7 @@ We keep a card on file after the associated Organization is deleted so we can pr
 
 #### Check trial code details
 
-If you had used a CockroachCloud trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Billing page**.
+If you had used a {{ site.data.products.dedicated }} trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Billing page**.
 
 {{site.data.alerts.callout_info}}
 Your credit card will be charged after the trial ends. You can check the expiration date of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.

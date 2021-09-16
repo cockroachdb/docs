@@ -9,7 +9,7 @@ toc: true
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
 {{site.data.alerts.callout_info}}
-[Partitioning](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature. If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
+[Partitioning](partitioning.html) is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
