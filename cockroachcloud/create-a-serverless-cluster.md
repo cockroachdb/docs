@@ -5,21 +5,21 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level current">CockroachCloud Serverless (beta)</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level">CockroachCloud Dedicated</button></a>
+    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page walks you through the process of creating a cluster using CockroachCloud Serverless (beta). Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a cluster using {{ site.data.products.serverless }}. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {% include cockroachcloud/free-limitations.md %}
 
 ## Before you begin
 
-If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_serverless_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
+If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_serverless_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 
 ## Step 1. Start the cluster creation process
 
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
 
@@ -79,14 +79,14 @@ Your cluster will be created in approximately 20-30 minutes.
 
 ## What's next
 
-- [Connect to your CockroachCloud Serverless (beta) cluster](connect-to-a-serverless-cluster.html)
+- [Connect to your {{ site.data.products.serverless }} cluster](connect-to-a-serverless-cluster.html)
 - [Authorize users](user-authorization.html)
 
 ## Usage examples
 
-Free CockroachCloud Serverless (beta) clusters can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
+Free {{ site.data.products.serverless }} clusters can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
 
-For examples of applications that use free CockroachCloud clusters, check out the following [Hack the North](https://hackthenorth.com/) projects:
+For examples of applications that use free {{ site.data.products.db }} clusters, check out the following [Hack the North](https://hackthenorth.com/) projects:
 
 - [flock](https://devpost.com/software/flock-figure-out-what-film-to-watch-with-friends)
 - [mntr.tech](https://devpost.com/software/mntr-tech)

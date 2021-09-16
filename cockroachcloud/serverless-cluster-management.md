@@ -5,8 +5,8 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="serverless-cluster-management.html"><button class="filter-button page-level current">CockroachCloud Serverless (beta)</button></a>
-    <a href="cluster-management.html"><button class="filter-button page-level">CockroachCloud Dedicated</button></a>
+    <a href="serverless-cluster-management.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
+    <a href="cluster-management.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
 This page describes the cluster management and cluster deletion workflows.
@@ -17,7 +17,7 @@ This page describes the cluster management and cluster deletion workflows.
 
 ## View Clusters page
 
-On [logging in to the CockroachCloud Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
+On [logging in to the {{ site.data.products.db }} Console](https://cockroachlabs.cloud/), the **Clusters** page is displayed. The **Clusters** page provides a high-level view of your clusters.
 
 For each cluster, the following details display:
 
@@ -33,7 +33,7 @@ To view and manage a specific cluster, click the name of the cluster. The [**Ove
 
 ## View cluster overview
 
-The **Overview** page displays details about the selected CockroachCloud Serverless (beta) cluster:
+The **Overview** page displays details about the selected {{ site.data.products.serverless }} cluster:
 
 - The **Plan** that the cluster was created with
 - The cluster's **Cloud** provider
@@ -61,7 +61,7 @@ You can edit your spend limit from the **Overview** page. The change in your spe
 
 ## Restore data from a backup
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every CockroachCloud cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
@@ -78,7 +78,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Free CockroachCloud clusters are subject to deletion after 6 months of no activity.
+Free {{ site.data.products.serverless-plan }} clusters are subject to deletion after 6 months of no activity.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:

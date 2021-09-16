@@ -5,15 +5,15 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="serverless-cluster-management.html"><button class="filter-button page-level">CockroachCloud Serverless (beta)</button></a>
-    <a href="cluster-management.html"><button class="filter-button page-level current">CockroachCloud Dedicated</button></a>
+    <a href="serverless-cluster-management.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
+    <a href="cluster-management.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
 This page describes the cluster management and cluster deletion workflows.
 
 ## Planning your cluster
 
-Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for CockroachCloud cluster configuration.
+Before making any changes to your cluster's nodes or regions, review our requirements and recommendations for {{ site.data.products.db }} cluster configuration.
 
 {% include cockroachcloud/planning-your-cluster.md %}
 
