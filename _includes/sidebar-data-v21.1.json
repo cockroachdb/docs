@@ -433,7 +433,8 @@
                   {
                     "title": "Go",
                     "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html"
+                      "/${VERSION}/hello-world-go-pgx.html",
+                      "/${VERSION}/hello-world-go-gorm.html"
                     ]
                   },
                   {
