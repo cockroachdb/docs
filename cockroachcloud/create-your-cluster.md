@@ -126,7 +126,7 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
     {{site.data.alerts.end}}
     You will be billed monthly.
 1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
-1. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
+1. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-dedicated-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
       Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
       {{site.data.alerts.end}}

@@ -74,7 +74,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
     Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
 
-### Step 4. Create the {{ site.data.products.dedicated }} database
+### Step 4. Create the {{ site.data.products.db }} database
 
 On your local workstation's terminal:
 
