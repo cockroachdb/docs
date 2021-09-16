@@ -13,7 +13,7 @@ referral_id: docs_hello_world_go_gorm
     <a href="build-a-go-app-with-cockroachdb-upperdb.html"><button class="filter-button">Use <strong>upper/db</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
+This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
 
 {{site.data.alerts.callout_success}}
 For another use of GORM with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
@@ -21,84 +21,109 @@ For another use of GORM with CockroachDB, see our [`examples-orms`](https://gith
 
 ## Step 1. Start CockroachDB
 
-{% include {{page.version.version}}/app/start-cockroachdb.md %}
+{% include {{ page.version.version }}/app/sample-setup.md %}
 
-## Step 2. Create a database
+## Step 2. Get the code
 
-{% include {{page.version.version}}/app/create-a-database.md %}
-
-## Step 3. Run the Go code
-
-The following code uses the [GORM](http://gorm.io) ORM (v1) to map Go-specific objects to SQL operations, and the [`crdbgorm`](https://godoc.org/github.com/cockroachdb/cockroach-go/crdb/crdbgorm) package to handle [transactions](transactions.html). Specifically:
-
-- `db.AutoMigrate(&Account{})` creates an `accounts` table based on the Account model.
-- `db.Create(&Account{})` inserts rows into the table.
-- `db.Find(&accounts)` selects from the table so that balances can be printed.
-- The funds transfer occurs in `transferFunds()`. To ensure that we [handle retry errors](transactions.html#client-side-intervention), we wrap the function call in [`crdbgorm.ExecuteTx()`](https://github.com/cockroachdb/cockroach-go/blob/master/crdb/crdbgorm/gorm.go#L29).
-
-### Get the code
-
-You can copy the code below, <a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-go-gorm/master/main.go">download the code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-go-gorm).
-
-Here are the contents of `main.go`:
-
-{% include_cached copy-clipboard.html %}
-~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-gorm/master/main.go %}
-~~~
-
-### Update the connection parameters
-
-<section class="filter-content" markdown="1" data-scope="local">
-
-Edit the `addr` constant so that:
-
-- `{username}` and `{password}` specify the SQL username and password that you created earlier.
-- `{hostname}` and `{port}` specify the hostname and port in the `(sql)` connection string from SQL shell welcome text.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="cockroachcloud">
-
-Replace the string given for the `addr` constant definition with the connection string that you copied [earlier](#set-up-your-cluster-connection) from the **Connection info** dialog.
-
-The constant definition should look similar to the following:
-
-{% include_cached copy-clipboard.html %}
-~~~ go
-const addr = "postgresql://{user}:{password}@{globalhost}:26257/bank?sslmode=verify-full&sslrootcert={path to the CA certificate}&options=--cluster={cluster_name}"
-~~~
-
-{% include {{page.version.version}}/app/cc-free-tier-params.md %}
-
-</section>
-
-### Run the code
-
-Initialize the module:
+Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ go mod init basic-sample
+$ git clone https://github.com/cockroachlabs/example-app-go-gorm/
 ~~~
 
-Then run the code:
+The project has the following directory structure:
+
+~~~
+├── README.md
+└── main.go
+~~~
+
+The `main.go` file defines an `Account` struct that maps to a new `accounts` table in the `bank` database. The file also contains some read and write database operations that are executed in the `main` method of the program.
 
 {% include_cached copy-clipboard.html %}
-~~~ shell
-$ go run main.go
+~~~ go
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-go-gorm/master/main.go %}
 ~~~
 
-The output should be:
+{{site.data.alerts.callout_info}}
+CockroachDB may require the [client to retry a transaction](transactions.html#transaction-retries) in the case of read/write contention. The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
+{{site.data.alerts.end}}
 
-~~~
-Balance at '2020-12-01 17:31:01.499548 -0500 EST m=+0.092649542':
-1 1000
-2 250
-Balance at '2020-12-01 17:31:01.570412 -0500 EST m=+0.163512523':
-1 900
-2 350
-~~~
+## Step 3. Run the code
+
+1. Initialize the module:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ go mod init basic-sample && go mod tidy
+    ~~~
+
+1. Run the code:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ go run main.go
+    ~~~
+
+    The program will prompt you for a connection string to the database:
+
+    ~~~
+    Enter a connection string:
+    ~~~
+
+1. Enter the connection string to your running cluster.
+
+    <section class="filter-content" markdown="1" data-scope="local">
+
+    {{site.data.alerts.callout_success}}
+    `postgresql://root@localhost:26257?sslmode=disable` should be the `sql` connection URL provided in the `cockroach` welcome text.
+    {{site.data.alerts.end}}
+
+    </section>
+
+    <section class="filter-content" markdown="1" data-scope="cockroachcloud">
+
+    {{site.data.alerts.callout_success}}
+    Use the connection string provided in the **Connection info** window of the {{ site.data.products.db }} Console.
+    {{site.data.alerts.end}}
+
+    {{site.data.alerts.callout_info}}
+    You need to provide a SQL user password in order to securely connect to a {{ site.data.products.db }} cluster. The connection string should have a placeholder for the password (`<ENTER-PASSWORD>`).
+    {{site.data.alerts.end}}
+
+    </section>
+
+    The output should look similar to the following:
+
+    ~~~
+    2021/09/16 14:17:12 Creating 5 new accounts...
+    2021/09/16 14:17:12 Accounts created.
+    Balance at '2021-09-16 14:17:12.68843 -0400 EDT m=+2.760587790':
+    1580d2f4-c9ec-4f26-bbe7-6a53e9aa5170 1947
+    26ddc77b-8068-409b-b305-0c5d873f7c43 7987
+    3d97ea5a-5108-4388-88e8-92524d5de5e8 4159
+    af49831d-d637-4a20-a9a7-01e9fe4628fe 8181
+    f0cc97ef-e3fe-4abb-a44a-0dd04207f7d4 2181
+    2021/09/16 14:17:12 Transferring 100 from account af49831d-d637-4a20-a9a7-01e9fe4628fe to account 3d97ea5a-5108-4388-88e8-92524d5de5e8...
+    2021/09/16 14:17:12 Funds transferred.
+    Balance at '2021-09-16 14:17:12.759686 -0400 EDT m=+2.831841311':
+    1580d2f4-c9ec-4f26-bbe7-6a53e9aa5170 1947
+    26ddc77b-8068-409b-b305-0c5d873f7c43 7987
+    3d97ea5a-5108-4388-88e8-92524d5de5e8 4259
+    af49831d-d637-4a20-a9a7-01e9fe4628fe 8081
+    f0cc97ef-e3fe-4abb-a44a-0dd04207f7d4 2181
+    2021/09/16 14:17:12 Deleting accounts created...
+    2021/09/16 14:17:12 Accounts deleted.
+    ~~~
+
+    The code runs a migration that creates the `accounts` table in the `bank` database, based on the `Account` struct defined at the top of the `main.go` file.
+
+    As shown in the output, the code also does the following:
+    - Inserts some rows into the `accounts` table.
+    - Reads values from the table.
+    - Updates values in the table.
+    - Deletes values from the table.
 
 ## What's next?
 
