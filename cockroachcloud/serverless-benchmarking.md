@@ -6,35 +6,35 @@ toc: true
 
 This page describes {{ site.data.products.serverless }} performance benchmarking with a KV workload.
 
-## Topology 
+## Introduction
 
-The host cluster used was an AWS 3-node cluster using r5.4xlarge (the same type used for production host clusters). We can't create GCP
-clusters right now so can’t test there.
+{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. This page describes what you can expect from the free {{ site.data.products.serverless-plan }} baseline performance of 100 RU/s. Results for [burst performance](architecture.html#concepts) and Serverless clusters with larger budgets are coming soon. For more information about how {{ site.data.products.serverless-plan }} scales based on your workload, see [Architecture](architecture.html#performance).
 
-The workload client was cockroach workload run kv
+### What are RUs?
 
-The first parameter that was varied between runs was executing the client
-remotely from the cluster (40 ms latency) vs executing it locally on the proxy pod
+Most resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
 
-I also tried running the workload with different % of reads vs writes. I tried 0% reads, 95% reads and 100% reads.
+### What is KV 95?
 
-Also varried the number of concurrent connections from the client to the server. I tried 1, 12 and 72.
+KV 95 is a simple benchmark that tests linear scaling by [running a workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads) that is 95% point reads and 5% point writes. Reads and writes are distributed to keys spread uniformly across the cluster.
 
-Also tried the test against low trust (limit 0.3 vCPUs and 1.5GB mem) and high trust (limit 4 vCPUs and 8GB mem) pools to see the effect of the pod limits. The usage limits are not implemented yet so we can’t test.
+## Baseline Performance
 
-The RU usage was determined by monitoring the metrics provided by each of the host cluster nodes. These get updated every 10 seconds.
+### Topology 
 
-## Results 
+Baseline performance was benchmarked for a free {{ site.data.products.serverless-plan }} cluster hosted by an AWS 3-node cluster using `r5.4xlarge` machine type.
 
-The first observation that came out of the test is that there is an idle RU consumption that is between 2 and 11 RUs/sec and varies slightly each period. Andy mentioned that this is a known problem that we will try to fix. I tried to adjust the numbers a bit based on that but it is hard to be exact.
+The RU usage was determined by monitoring the metrics provided by each of the host cluster nodes, which get updated every 10 seconds.
 
-The overall test results show a fairly stable cost of approx 1.15 RU per KV95 operation. Measured separately, a read costs 1.13 RU while a write costs 1.65 RU.
-I tried adjusting the number slightly, accounting for the phantom continuous RU use. This only matters under light load were it is a bit more significant.
+High vs low trust.
 
-Running the workload client locally (on the proxy pod) against a low trust pod using 12 connections (the default) yields 717 KV95 operations/sec
-which seems to be the maximum that a low trust pod can handle. So 12 connections gets the maximum ops/sec possible and increasing the connections doesn't increase the ops/sec further.
-Same workload ran remotely (~40 ms latency) with 12 connections, yields only 318 ops/sec and requires several times more connections to get to the maximum of 709 ops/sec.
+### Results 
 
-A high trust pod seems to be reaching a maximum of around 1080 KV95 ops/sec. Similarly to the low trust case, the remote workload only gets to 300 ops/sec with 12 connections and requires few times more to get to the maximum. Locally, 12 connections are close to saturating the pod and yield 960 KV95 ops/sec. The overall limitation in this case may be due to the KV limits set as host cluster settings per tenant.
+Placeholder text
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
+
+## Learn more
+
+- See [CockroachDB Performance](../{{site.versions["stable"]}}/performance.html) for more information about CockroachDB performance benchmarking.
+- See [SQL Performance Best Practices](../{{site.versions["stable"]}}/performance-best-practices-overview.html) for guidance on tuning real workloads.
