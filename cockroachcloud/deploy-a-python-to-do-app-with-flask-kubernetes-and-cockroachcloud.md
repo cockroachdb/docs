@@ -440,8 +440,12 @@ You must use the `cockroachdb://` prefix in the URL passed to [`sqlalchemy.creat
 1. On the Console, navigate to the cluster's **Monitoring** page and click **Open DB Console**.
 
     You can also access the DB Console by navigating to `https://<cluster-name>crdb.io:8080/#/metrics/overview/cluster`. Replace the `<cluster-name>` placeholder with the name of your cluster.
-2. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
-3. Click **Log In**.
+    
+1. Enter the SQL user's username and password you created while [preparing the cluster](#step-2-create-a-sql-user).
+    
+    {% include cockroachcloud/postgresql-special-characters.md %}
+    
+1. Click **Log In**.
 
 ### Step 2. Monitor cluster health, metrics, and SQL statements
 

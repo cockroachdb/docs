@@ -89,6 +89,8 @@ Once your cluster is created, you will be redirected to the **Cluster Overview**
     
 1. Enter the SQL user's password and hit enter.
 
+    {% include cockroachcloud/postgresql-special-characters.md %}
+
     A welcome message displays:
 
     ~~~
