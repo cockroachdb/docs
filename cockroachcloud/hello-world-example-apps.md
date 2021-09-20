@@ -1,5 +1,5 @@
 ---
-title: Hello World Example Apps for CockroachCloud
+title: Hello World Example Apps for CockroachDB Cloud
 summary: Examples that show you how to build a simple "Hello World" application with CockroachDB
 tags: golang, python, java
 toc: true

@@ -1,6 +1,6 @@
 ---
-title: CockroachCloud Serverless (beta) FAQs
-summary: Get answers to frequently asked questions about CockroachCloud Serverless (beta)
+title: CockroachDB Serverless (beta) FAQs
+summary: Get answers to frequently asked questions about CockroachDB Serverless (beta)
 toc: true
 ---
 

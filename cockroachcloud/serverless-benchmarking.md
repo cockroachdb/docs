@@ -1,6 +1,6 @@
 ---
 title: Serverless Performance Benchmarking
-summary: Learn more about CockroachCloud Serverless performance benchmarks
+summary: Learn more about CockroachDB Serverless performance benchmarks
 toc: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: User Authorization
-summary: Learn about the user authorization features for CockroachCloud clusters.
+summary: Learn about the user authorization features for CockroachDB Cloud clusters.
 toc: true
 ---
 

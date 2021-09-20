@@ -1,6 +1,6 @@
 ---
-title: Create a CockroachCloud Dedicated Cluster
-summary: Learn how to create your CockroachCloud Dedicated cluster.
+title: Create a CockroachDB Dedicated Cluster
+summary: Learn how to create your CockroachDB Dedicated cluster.
 toc: true
 ---
 

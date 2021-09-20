@@ -1,6 +1,6 @@
 ---
-title: Create a CockroachCloud Serverless (beta) Cluster
-summary: Learn how to create a cluster using CockroachCloud Serverless (beta).
+title: Create a CockroachDB Serverless (beta) Cluster
+summary: Learn how to create a cluster using CockroachDB Serverless (beta).
 toc: true
 ---
 

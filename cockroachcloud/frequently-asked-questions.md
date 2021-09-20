@@ -1,6 +1,6 @@
 ---
-title: CockroachCloud FAQs
-summary: Get answers to frequently asked questions about CockroachCloud
+title: CockroachDB Cloud FAQs
+summary: Get answers to frequently asked questions about CockroachDB Cloud
 toc: true
 ---
 

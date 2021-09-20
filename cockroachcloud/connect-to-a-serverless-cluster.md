@@ -1,5 +1,5 @@
 ---
-title: Connect to a CockroachCloud Serverless (beta) Cluster
+title: Connect to a CockroachDB Serverless (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 ---

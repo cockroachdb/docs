@@ -1,6 +1,6 @@
 ---
-title: Quickstart with CockroachCloud Serverless (beta)
-summary: Learn how to create and use your free CockroachCloud cluster.
+title: Quickstart with CockroachDB Serverless (beta)
+summary: Learn how to create and use your free CockroachDB Cloud cluster.
 toc: true
 ---
 

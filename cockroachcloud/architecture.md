@@ -1,6 +1,6 @@
 ---
-title: CockroachCloud Architecture
-summary: Learn more about CockroachCloud architecture
+title: CockroachDB Cloud Architecture
+summary: Learn more about CockroachDB Cloud architecture
 toc: true
 ---
 

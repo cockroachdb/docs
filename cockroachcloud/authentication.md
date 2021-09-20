@@ -1,6 +1,6 @@
 ---
 title: Authentication
-summary: Learn about the authentication features for CockroachCloud clusters.
+summary: Learn about the authentication features for CockroachDB Cloud clusters.
 toc: true
 ---
 

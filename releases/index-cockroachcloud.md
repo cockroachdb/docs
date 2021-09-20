@@ -1,12 +1,12 @@
 ---
-title: CockroachCloud Release Notes
-summary: Release notes for older versions of CockroachCloud.
+title: CockroachDB Cloud Release Notes
+summary: Release notes for older versions of CockroachDB Cloud.
 toc: true
 ---
 
-CockroachCloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [CockroachCloud Free (beta)](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases.
+CockroachDB Cloud supports the latest major version of CockroachDB and the version immediately preceding it. All clusters are subject to automatic upgrades to the latest supported minor version. [{{ site.data.products.serverless }}](../cockroachcloud/quickstart.html) clusters are subject to automatic upgrades for both minor and major releases.
 
-For more information, see the [CockroachCloud Upgrade Policy](../cockroachcloud/upgrade-policy.html).
+For more information, see the [{{ site.data.products.db }} Upgrade Policy](../cockroachcloud/upgrade-policy.html).
 
 ## Past release notes
 

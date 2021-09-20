@@ -1,5 +1,5 @@
 ---
-title: Connect to Your CockroachCloud Cluster
+title: Connect to Your CockroachDB Cloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 ---

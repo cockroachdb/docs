@@ -1,5 +1,5 @@
 {
-  "title": "CockroachCloud",
+  "title": "CockroachDB Cloud",
   "is_top_level": true,
   "urls": [
     "/cockroachcloud/index.html"
@@ -15,7 +15,7 @@
       	  ]
       	},
       	{
-      	  "title": "Create a CockroachCloud Cluster",
+      	  "title": "Create a CockroachDB Cloud Cluster",
       	  "urls": [
       	    "/cockroachcloud/create-a-serverless-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
@@ -263,7 +263,7 @@
       "title": "Tutorials",
       "items": [
       	{
-      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud",
+      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
       	  "urls": [
       	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
       	  ]

@@ -1,12 +1,11 @@
 serverless: CockroachDB Serverless (beta)
-# to be CockroachCloud Serverless then CockroachDB Serverless (beta)
-serverless-plan: CockroachDB Serverless #i.e. "1. Choose the **CockroachCloud Free** plan."
+# to be CockroachDB Serverless (beta)
+serverless-plan: CockroachDB Serverless #i.e. "1. Choose the **CockroachDB Serverless** plan."
 # to be CockroachCloud Serverless
 dedicated: CockroachDB Dedicated
 # to be CockroachDB Managed
-core: Core
-#stays the same
-enterprise: Enterprise
-# to be CockroachDB Self-Hosted
-db: CockroachDB Cloud #i.e. "Sign up for a CockroachCloud account"
-# to be CockroachDB
+core: CockroachDB Self-Hosted
+# tbd
+enterprise: CockroachDB Self-Hosted
+# tbd
+db: CockroachDB Cloud #i.e. "Sign up for a CockroachDB Cloud account", tbd

@@ -1,6 +1,6 @@
 ---
 title: Alerts Page
-summary: The Alerts page allows you to toggle CockroachCloud alerts and view alert history.
+summary: The Alerts page allows you to toggle CockroachDB Cloud alerts and view alert history.
 toc: true
 ---
 

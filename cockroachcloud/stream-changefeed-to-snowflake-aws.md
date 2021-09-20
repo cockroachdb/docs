@@ -1,6 +1,6 @@
 ---
 title: Stream a Changefeed to Snowflake
-summary: Use a CockroachCloud cluster to stream changefeed messages to a Snowflake cluster.
+summary: Use a CockroachDB Cloud cluster to stream changefeed messages to a Snowflake cluster.
 toc: true
 ---
 

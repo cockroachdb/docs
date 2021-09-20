@@ -1,6 +1,6 @@
 ---
 title: Restore Data from a Backup
-summary: Restore a table or database from a backup in CockroachCloud.
+summary: Restore a table or database from a backup in CockroachDB Cloud.
 toc: true
 ---
 

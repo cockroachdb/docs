@@ -1,6 +1,6 @@
 ---
-title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud
-summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachCloud
+title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
+summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachDB Cloud
 toc: true
 toc_not_nested: true
 ---
