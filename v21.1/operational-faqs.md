@@ -17,7 +17,7 @@ As a result, starting nodes with the `--background` flag will cause `cockroach s
 
 To restart your cluster, you should either: 
 
-- Use multiple terminals to start multiple nodes at once. 
+- Use multiple terminals to start multiple nodes at once.
 - Start each node in the background using your shell's functionality (e.g., `cockroach start &`) instead of using the `--background` flag.
 
 ## Why is memory usage increasing despite lack of traffic?
