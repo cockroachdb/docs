@@ -1,17 +1,17 @@
 ---
-title: Build a Hello World App with CockroachDB and the Go pgx Driver
-summary: Learn how to use CockroachDB from a Hello World Go application with the pgx driver.
+title: Build a Hello World App with CockroachDB and the GORM ORM.
+summary: Learn how to use CockroachDB from a Hello World Go application with the GORM ORM.
 toc: true
 twitter: false
-referral_id: docs_hello_world_go_pgx
+referral_id: docs_hello_world_go_gorm
 ---
 
 <div class="filters filters-big clearfix">
-    <a href="hello-world-go-pgx.html"><button class="filter-button current">Use <strong>pgx</strong></button></a>
-    <a href="hello-world-go-gorm.html"><button class="filter-button">Use <strong>GORM</strong></button></a>
+    <a href="hello-world-go-pgx.html"><button class="filter-button">Use <strong>pgx</strong></button></a>
+    <a href="hello-world-go-gorm.html"><button class="filter-button current">Use <strong>GORM</strong></button></a>
 </div>
 
-This tutorial shows you how build a simple Hello World Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
+This tutorial shows you how build a simple Hello World Go application with CockroachDB and the [GORM ORM](https://gorm.io/index.html).
 
 ## Step 1. Start CockroachDB
 
@@ -23,14 +23,14 @@ Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/hello-world-go-pgx/
+$ git clone https://github.com/cockroachlabs/hello-world-go-gorm
 ~~~
 
 The `main.go` file contains all of the code for the sample Hello World app:
 
 {% include_cached copy-clipboard.html %}
 ~~~ go
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-pgx/main/main.go %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-go-gorm/main/main.go %}
 ~~~
 
 The `main` method of this program does the following:
@@ -82,11 +82,10 @@ The output should look like this:
 Hey! You successfully connected to your CockroachDB cluster.
 ~~~
 
-
 ## See also
 
-- [Build a Simple CRUD Go App with CockroachDB and the Go pgx Driver](build-a-go-app-with-cockroachdb.html)
-- The [pgx](https://pkg.go.dev/github.com/jackc/pgx) docs
+- [Build a Simple CRUD Go App with CockroachDB and the GORM ORM](build-a-go-app-with-cockroachdb-gorm.html)
+- The [GORM](https://gorm.io/index.html) docs
 - [Transactions](transactions.html)
 
 {% include {{page.version.version}}/app/see-also-links.md %}
