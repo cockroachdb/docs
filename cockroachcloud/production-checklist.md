@@ -1,6 +1,6 @@
 ---
 title: Production Checklist
-summary: Learn how to move from testing to production on your {{ site.data.products.dedicated }} cluster.
+summary: Learn how to move from testing to production on your CockroachDB Dedicated cluster.
 toc: true
 ---
 

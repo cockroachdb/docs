@@ -1,6 +1,6 @@
 ---
-title: Create a {{ site.data.products.db }} account
-summary: Learn how to create and delete a {{ site.data.products.db }} account
+title: Create a CockroachCloud account
+summary: Learn how to create and delete a CockroachCloud account
 toc: true
 ---
 

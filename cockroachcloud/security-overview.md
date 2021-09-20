@@ -1,6 +1,6 @@
 ---
 title: CockroachCloud Security
-summary: Learn about the authentication, encryption, authorization, and audit log features for {{ site.data.products.db }} clusters.
+summary: Learn about the authentication, encryption, authorization, and audit log features for CockroachCloud clusters.
 toc: true
 ---
 

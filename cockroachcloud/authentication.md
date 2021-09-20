@@ -1,6 +1,6 @@
 ---
 title: Authentication
-summary: Learn about the authentication features for {{ site.data.products.db }} clusters.
+summary: Learn about the authentication features for CockroachCloud clusters.
 toc: true
 ---
 
