@@ -50,7 +50,7 @@ Logging channels are analogous to [logging facilities in Syslog](https://en.wiki
 
 Prior to v21.1, logs were separated into a general CockroachDB log and secondary SQL and storage logs. These were output to correspondingly named log files.
 
-The events collected by those logs are now directed into the following [logging channels](#logging-channels):
+The events collected by [logging channels](#logging-channels) are now redirected to file sinks as follows:
 
 | Filename (legacy)         | Description             | Channel            |
 |---------------------------|-------------------------|--------------------|
@@ -60,10 +60,6 @@ The events collected by those logs are now directed into the following [logging 
 | `cockroach-sql-exec.log`  | SQL execution log       | `SQL_EXEC`         |
 | `cockroach-auth.log`      | SQL authentication log  | `SESSIONS`         |
 | `cockroach-sql-slow.log`  | Slow query log          | `SQL_PERF`         |
-
-{{site.data.alerts.callout_info}}
-In v21.1, the [default logging configuration](configure-logs.html#default-logging-configuration) keeps the legacy filenames for these channels. Starting in v21.2, you will need to explicitly map the channels to the legacy filenames in order to preserve this configuration. For details on this, see [Configure Logs](configure-logs.html#configure-log-sinks).
-{{site.data.alerts.end}}
 
 Notable events that were previously collected in the general CockroachDB log are now directed into several new logging channels:
 
