@@ -86,7 +86,9 @@ At this time, a {{ site.data.products.serverless }} cluster cannot be upgraded. 
 
 ### Are partitioning or change data capture available to me?
 
-No, change data capture and partitioning are not available on {{ site.data.products.serverless }} clusters, but will be in the future.
+No, partitioning is not available on {{ site.data.products.serverless }} clusters, but will be in the future.
+
+Change data capture is available on {{ site.data.products.serverless }} clusters through [core changefeeds](../{{site.versions["stable"]}}/changefeed-for.html). See [Stream Data out of your {{ site.data.products.serverless }} cluster](run-bulk-operations.html#stream-data-out-of-your-cockroachcloud-free-beta-cluster) for an example of creating a core changefeed.
 
 ### Do you have a UI? How can I see details?
 
