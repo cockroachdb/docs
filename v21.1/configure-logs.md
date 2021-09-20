@@ -447,10 +447,6 @@ When `capture-stray-errors` is disabled, [`redactable`](#redact-logs) cannot be 
 
 The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). To retain backward compatibility with v20.2 and earlier, these settings match the [log filenames used in previous versions](logging-overview.html#changes-to-logging-system).
 
-{{site.data.alerts.callout_danger}}
-These `file-groups` defaults will be removed in v21.2.
-{{site.data.alerts.end}}
-
 ~~~ yaml
 file-defaults:
   max-file-size: 10MiB
@@ -477,8 +473,10 @@ sinks:
       channels: [STORAGE]
     sql-audit:
       channels: [SENSITIVE_ACCESS]
+      auditable: true
     sql-auth:
       channels: [SESSIONS]
+      auditable: true
     sql-exec:
       channels: [SQL_EXEC]
     sql-slow:

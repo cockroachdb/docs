@@ -13,10 +13,6 @@ This page describes how to configure CockroachDB logs with the [`--log` or `log-
 
 For examples of how these settings can be used in practice, see [Logging Use Cases](logging-use-cases.html).
 
-{{site.data.alerts.callout_info}}
-The logging flags previously used with `cockroach` commands are now deprecated. Instead, use the YAML definitions as described below. The [default logging configuration](#default-logging-configuration) uses YAML settings that are backward-compatible with the log files used in v20.2 and earlier.
-{{site.data.alerts.end}}
-
 ## Flag
 
 To configure the logging behavior of a `cockroach` command, include one of these flags with the command:
@@ -60,7 +56,8 @@ file-defaults: ...       # defaults inherited by file sinks
 fluent-defaults: ...     # defaults inherited by network sinks
 sinks:
    file-groups: ...      # file sink definitions
-   fluent-servers: ...   # network sink definitions
+   fluent-servers: ...   # Fluent sink definitions
+   http-servers: ...     # HTTP sink definitions
    stderr: ...           # stderr sink definitions
 capture-stray-errors: ... # parameters for the stray error capture system
 ~~~
@@ -88,6 +85,10 @@ sinks:
       channels: {channels}
       ...
   fluent-servers:
+    {server name}:
+      channels: {channels}
+      ...
+  http-servers:
     {server name}:
       channels: {channels}
       ...
@@ -170,7 +171,7 @@ cockroach-health.log
 The files generated for a group named `default` are named after the pattern `cockroach.{metadata}.log`.
 {{site.data.alerts.end}}
 
-### Output to network
+### Output to Fluent-compatible network collectors
 
 CockroachDB can send logs over the network to a [Fluentd](https://www.fluentd.org/)-compatible log collector (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)). `fluent-servers` specifies the channels that output to a server, along with its configuration details. For example:
 
@@ -198,6 +199,44 @@ Along with the [common sink parameters](#common-sink-parameters), each Fluentd s
 | `net`     | Network protocol to use. Can be `tcp`, `tcp4`, `tcp6`, `udp`, `udp4`, `udp6`, or `unix`.<br><br>**Default:** `tcp` |
 
 A Fluentd sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the Fluentd collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
+
+For an example network logging configuration, see [Logging use cases](logging-use-cases.html#network-logging).
+
+### Output to HTTP network collectors
+
+CockroachDB can send logs over the network to a HTTP server. `http-servers` specifies the channels that output to a server, along with its configuration details. For example:
+
+~~~ yaml
+file-defaults: ...
+fluent-defaults: ...
+sinks:
+  http-servers:
+    health:
+      channels: [HEALTH]
+      address: 127.0.0.1:5170
+	  method: POST
+	  unsafe-tls: false
+	  timeout: 2s
+	  disable-keep-alives: false
+    ...
+~~~
+
+{{site.data.alerts.callout_info}}
+A network sink can be listed more than once with different `address` values. This routes the same logs to different HTTP servers.
+{{site.data.alerts.end}}
+
+Along with the [common sink parameters](#common-sink-parameters), each HTTP server accepts the following parameters:
+
+| Parameter             | Description                                                                                                                                                                                                                                                                                                                                                        |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `channels`            | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
+| `address`             | Network address and port of the log collector.                                                                                                                                                                                                                                                                                                                     |
+| `method`              | HTTP method to use. Can be `GET` or `POST`.<br><br>**Default:** `POST`                                                                                                                                                                                                                                                                                             |
+| `unsafe-tls`          | Whether to bypass TLS server validation.<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                               |
+| `timeout`             | Timeout before requests are abandoned.<br><br>**Default:** `0` (no timeout)                                                                                                                                                                                                                                                                                        |
+| `disable-keep-alives` | Whether to disallow reuse of the server connection across requests.<br><br>**Default:** `false` (reuses connections)                                                                                                                                                                                                                                               |
+
+A HTTP sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the HTTP collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
 
 For an example network logging configuration, see [Logging use cases](logging-use-cases.html#network-logging).
 
@@ -236,13 +275,23 @@ Each sink can select multiple channels. The names of selected channels can be sp
 
 ~~~ yaml
 # Select just these two channels. Space is important.
+# This uses the severity filter set by the separate 'filter' attribute
+# in the sink configuration.
 channels: [OPS, HEALTH]
 
-# Selection is case-insensitive.
+# Select PERF at severity INFO, and HEALTH and OPS at severity WARNING.
+# The 'filter' attribute in the sink configuration is ignored.
+channels: {INFO: [PERF], WARNING: [HEALTH, OPS]}
+
+# The brackets are optional when selecting a single channel.
+channels: OPS
+channels: {INFO: PERF}
+
+# The selection is case-insensitive.
 channels: [ops, HeAlTh]
 
-# Same configuration, as a YAML string. 
-# Avoid space around commas when using the YAML inline format.
+# Same configuration, as a YAML string. Avoid space around comma
+# if using the YAML "inline" format.
 channels: OPS,HEALTH
 
 # Same configuration, as a quoted string.
@@ -252,6 +301,13 @@ channels: 'OPS, HEALTH'
 channels:
 - OPS
 - HEALTH
+
+channels:
+  INFO:
+  - PERF
+  WARNING:
+  - OPS
+  - HEALTH
 ~~~
 
 To select all channels, using the `all` keyword:
@@ -320,9 +376,9 @@ file-defaults:
 `format` refers to the envelope of the log message, which contains the event metadata. This is separate from the event payload, which corresponds to its [event type](eventlog.html).
 {{site.data.alerts.end}}
 
-### Set network defaults
+### Set Fluent defaults
 
-Defaults for network sinks are set in `fluent-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
+Defaults for Fluent-compatible network sinks are set in `fluent-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
 
 Note that the [server parameters](#output-to-network) `address` and `net` are *not* specified in `fluent-defaults`:
 
@@ -342,14 +398,42 @@ fluent-defaults:
 `format` refers to the envelope of the log message. This is separate from the event payload, which is structured according to [event type](eventlog.html).
 {{site.data.alerts.end}}
 
+### Set HTTP defaults
+
+Defaults for HTTP  sinks are set in `http-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
+
+Note that the [server parameters](#output-to-network) `address` and `method` are *not* specified in `fluent-defaults`:
+
+- `address` must be specified for each sink under `http-servers`.
+- `method` is not required and defaults to `POST`.
+
+#### Network logging format
+
+The default message format for HTTP output is [`json-compact`](log-formats.html#format-json-compact). Each log message is structured as a JSON payload that can be read programmatically. For details, see [Log formats](log-formats.html#format-json-fluent-compact).
+
+~~~ yaml
+http-defaults:
+  format: json
+~~~
+
+{{site.data.alerts.callout_info}}
+`format` refers to the envelope of the log message. This is separate from the event payload, which is structured according to [event type](eventlog.html).
+{{site.data.alerts.end}}
+
 ### Set logging levels
 
-Log messages are associated with a [severity level](logging.html#logging-levels-severities) when they are generated. Each logging sink is configured to output messages that meet a minimum severity level, specified with `filter`. Messages with severity levels below the `filter` threshold do not enter logging channels and are discarded.
+Log messages are associated with a [severity level](logging.html#logging-levels-severities) when they are generated.
+
+Each logging sink accepts messages from each logging channel at a minimum severity level.
+This minimum severity level can be specified per channel, or by default using the `filter` attribute.
+
+Messages with severity levels below the configured threshold do not enter logging channels and are discarded.
 
 The [default configuration](#default-logging-configuration) uses the following severity levels for [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html):
 
 - `file-defaults` and `fluent-defaults` each use `filter: INFO`. Since `INFO` is the lowest severity level, file and network sinks will emit all log messages.
 - `stderr` uses `filter: NONE` and does not emit log messages.
+- The `default` file sink includes a copy of the events from all the non-`DEV`, non-`OPS` channels at severity `WARNING` or higher.
 
 {{site.data.alerts.callout_info}}
 All other `cockroach` commands use `filter: WARNING` and log to `stderr` by default, with these exceptions:
@@ -358,16 +442,26 @@ All other `cockroach` commands use `filter: WARNING` and log to `stderr` by defa
 - [`cockroach demo`](cockroach-demo.html#logging) uses `filter: NONE` (discards all log messages).
 {{site.data.alerts.end}}
 
-You can also override the `file-defaults` and `fluent-defaults` severity levels on a per-sink basis. For example, use `filter: NONE` to disable logging for certain channels:
+You can also override the `file-defaults` and `fluent-defaults` severity levels on a per-sink basis. 
+
+For example, this includes `DEV` at severity `INFO`, and `OPS` at severity `ERROR`:
 
 ~~~ yaml
-file-defaults: ...
-fluent-defaults: ...
 sinks:
   file-groups:
     dev:
-      channels: [DEV]
-      filter: NONE
+      channels: {INFO: DEV, ERROR: OPS}
+~~~
+
+The `filter` attribute is used when `channels` does not specify a severity threshold.
+For example, the following includes `DEV` at severity `WARNING`:
+
+~~~ yaml
+sinks:
+  file-groups:
+    dev:
+      channels: DEV
+	  filter: WARNING
 ~~~
 
 ### Redact logs
@@ -414,8 +508,6 @@ sinks:
       channels: [DEV]
       dir: /custom/dir/path/
     ...
-  fluent-servers:
-    ...
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -447,10 +539,6 @@ When `capture-stray-errors` is disabled, [`redactable`](#redact-logs) cannot be 
 
 The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). To retain backward compatibility with v20.2 and earlier, these settings match the [log filenames used in previous versions](logging-overview.html#changes-to-logging-system).
 
-{{site.data.alerts.callout_danger}}
-These `file-groups` defaults will be removed in v21.2.
-{{site.data.alerts.end}}
-
 ~~~ yaml
 file-defaults:
   max-file-size: 10MiB
@@ -469,22 +557,46 @@ fluent-defaults:
   redactable: true
   exit-on-error: false
   auditable: false
+http-defaults:
+  method: POST
+  unsafe-tls: false
+  timeout: 0s
+  disable-keep-alives: false
+  filter: INFO
+  format: json-compact
+  redact: false
+  redactable: true
+  exit-on-error: false
+  auditable: false
 sinks:
   file-groups:
     default:
-      channels: [DEV, OPS, HEALTH, SQL_SCHEMA, USER_ADMIN, PRIVILEGES]
+      channels:
+          INFO: [DEV, OPS]
+          WARNING: all except [DEV, OPS]
+    health:
+      channels: [HEALTH]
     pebble:
       channels: [STORAGE]
+    security:
+      channels: [PRIVILEGES, USER_ADMIN]
+      auditable: true
     sql-audit:
       channels: [SENSITIVE_ACCESS]
+      auditable: true
     sql-auth:
       channels: [SESSIONS]
+      auditable: true
     sql-exec:
       channels: [SQL_EXEC]
     sql-slow:
       channels: [SQL_PERF]
     sql-slow-internal-only:
       channels: [SQL_INTERNAL_PERF]
+    telemetry:
+      channels: [TELEMETRY]
+      max-file-size: 100KiB
+      max-group-size: 1.0MiB
   stderr:
     channels: all
     filter: NONE
