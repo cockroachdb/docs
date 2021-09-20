@@ -29,7 +29,7 @@ Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/example-app-go-gorm/
+$ git clone https://github.com/cockroachlabs/example-app-go-gorm
 ~~~
 
 The project has the following directory structure:

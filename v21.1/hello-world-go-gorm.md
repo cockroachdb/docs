@@ -23,7 +23,7 @@ Clone the code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/hello-world-go-gorm/
+$ git clone https://github.com/cockroachlabs/hello-world-go-gorm
 ~~~
 
 The `main.go` file contains all of the code for the sample Hello World app:
