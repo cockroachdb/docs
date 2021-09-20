@@ -1,6 +1,6 @@
 ---
 title: Run Bulk Operations from Your Cluster
-summary: Run backups, restores, and imports from your {{ site.data.products.db }} cluster.
+summary: Run backups, restores, and imports from your CockroachCloud cluster.
 toc: true
 ---
 
