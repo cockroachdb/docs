@@ -154,8 +154,9 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 
 <span class="version-tag">New in v21.2:</span> When working with changefeeds on regional by row tables, it is necessary to consider the following:
 
-- Setting a table's locality to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) is equivalent to a schema change. Therefore, when existing tables targeted by changefeeds are made regional by row, it will cause a backfill of the table through the changefeed. The backfill will cause the changefeed to fail if `fail_on_schema_change` (is this [`schema_change_policy=stop`]?) is set to `stop`. (See [Schema changes with a column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) for more details on the effects of schema changes on changefeeds.)
--
+- Setting a table's locality to [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) is equivalent to a schema change. Therefore, when existing tables targeted by changefeeds are made regional by row, it will trigger a backfill of the table through the changefeed. The backfill will cause the changefeed to fail if [`schema_change_policy`](create-changefeed.html#options) to `stop`. (See [Schema changes with a column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) for more details on the effects of schema changes on changefeeds.)
+- The primary key
+- The [`crdb_region`](set-locality.html#crdb_region) hidden column will be present in changefeed output.
 
 - primary key may look different... may need to change how you ingest
 - regional change of a row may look like an insert/delete in the changefeed
