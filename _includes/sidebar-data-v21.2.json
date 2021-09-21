@@ -1463,6 +1463,12 @@
                     ]
                   },
                   {
+                    "title": "<code>ALTER VIEW</code>",
+                    "urls": [
+                      "/${VERSION}/alter-view.html"
+                    ]
+                  },
+                  {
                     "title": "<code>AS OF SYSTEM TIME</code>",
                     "urls": [
                       "/${VERSION}/as-of-system-time.html"
@@ -1472,12 +1478,6 @@
                     "title": "<code>EXPERIMENTAL_AUDIT</code>",
                     "urls": [
                       "/${VERSION}/experimental-audit.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>ALTER VIEW</code>",
-                    "urls": [
-                      "/${VERSION}/alter-view.html"
                     ]
                   },
                   {
