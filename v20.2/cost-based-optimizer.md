@@ -161,16 +161,11 @@ You cannot specify join hints with a bare hint keyword (e.g., `MERGE`) due to SQ
 
 - `LOOKUP`: Forces a lookup join into the right side; the right side must be a table with a suitable index. Note that `LOOKUP` can only be used with `INNER` and `LEFT` joins.
 
-- `INVERTED`:  Forces an inverted join into the right side; the right side must be a table with a suitable [inverted index](inverted-indexes.html). Note that `INVERTED` can only be used with `INNER` and `LEFT` joins.
-
-    {{site.data.alerts.callout_info}}
-    You cannot use inverted joins on [partial inverted indexes](inverted-indexes.html#partial-inverted-indexes).
-    {{site.data.alerts.end}}
-
 If it is not possible to use the algorithm specified in the hint, an error is signaled.
 
+
 {{site.data.alerts.callout_info}}
-To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
+<span class="version-tag">New in v20.2:</span> To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](set-vars.html) to `on`.
 {{site.data.alerts.end}}
 
 ### Additional considerations
@@ -188,6 +183,32 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
   - `(a JOIN b) JOIN c` might be changed to `a JOIN (b JOIN c)`, but this does not happen if `a JOIN b` uses a hint; the hint forces that particular join to happen as written in the query.
 
 - You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
+
+## Preferring the nearest index
+
+Given multiple identical [indexes](indexes.html) that have different locality constraints using [replication zones](configure-replication-zones.html), the optimizer will prefer the index that is closest to the gateway node that is planning the query. In a properly configured geo-distributed cluster, this can lead to performance improvements due to improved data locality and reduced network traffic.
+
+{{site.data.alerts.callout_info}}
+This feature is only available to users with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). For insight into how to use this feature to get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
+{{site.data.alerts.end}}
+
+This feature enables scenarios such as:
+
+- Reference data such as a table of postal codes that can be replicated to different regions, and queries will use the copy in the same region. See [Example - zone constraints](#zone-constraints) for more details.
+- Optimizing for local reads (potentially at the expense of writes) by adding leaseholder preferences to your zone configuration. See [Example - leaseholder preferences](#leaseholder-preferences) for more details.
+
+To take advantage of this feature, you need to:
+
+1. Have an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+2. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
+3. Create multiple [secondary indexes](indexes.html) on the reference tables. **Note that these indexes must include (in key or using [`STORED`](create-index.html#store-columns)) *every* column that you wish to query**. For example, if you run `SELECT * from db.table` and not every column of `db.table` is in the set of secondary indexes you created, the optimizer will have no choice but to fall back to the primary index.
+4. Create [replication zones](configure-replication-zones.html) for each index.
+
+With the above pieces in place, the optimizer will automatically choose the index nearest the gateway node that is planning the query.
+
+{{site.data.alerts.callout_info}}
+The optimizer does not actually understand geographic locations, i.e., the relative closeness of the gateway node to other nodes that are located to its "east" or "west". It is matching against the [node locality constraints](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) you provided when you configured your replication zones.
+{{site.data.alerts.end}}
 
 ## Examples
 
