@@ -191,9 +191,469 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 ## Examples
 
-### Inverted join examples
+#### Zone constraints
 
-{% include {{ page.version.version }}/sql/inverted-joins.md %}
+We can demonstrate the necessary configuration steps using a local cluster. The instructions below assume that you are already familiar with:
+
+- How to [start a local cluster](start-a-local-cluster.html).
+- The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+- Using [the built-in SQL client](cockroach-sql.html).
+
+First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=usa  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
+  --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=eu   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
+  --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
+  --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach init --insecure --host=localhost --port=26257
+~~~
+
+Next, from the SQL client, add your organization name and {{ site.data.products.enterprise }} license:
+
+{% include_cached copy-clipboard.html %}
+~~~ sh
+$ cockroach sql --insecure --host=localhost --port=26257
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING enterprise.license = 'xxxxx';
+~~~
+
+Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE IF NOT EXISTS test;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> USE test;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE postal_codes (
+    id INT PRIMARY KEY,
+    code STRING,
+    INDEX idx_eu (id) STORING (code),
+    INDEX idx_apac (id) STORING (code)
+);
+~~~
+
+Next, we modify the replication zone configuration via SQL so that:
+
+- Nodes in the USA will use the primary key index.
+- Nodes in the EU will use the `postal_codes@idx_eu` index (which is identical to the primary key index).
+- Nodes in APAC will use the `postal_codes@idx_apac` index (which is also identical to the primary key index).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER TABLE postal_codes CONFIGURE ZONE USING constraints='["+region=usa"]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER INDEX postal_codes@idx_eu CONFIGURE ZONE USING constraints='["+region=eu"]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ALTER INDEX postal_codes@idx_apac CONFIGURE ZONE USING constraints='["+region=apac"]';
+~~~
+
+To verify this feature is working as expected, we'll query the database from each of our local nodes as shown below. Each node has been configured to be in a different region, and it should now be using the index pinned to that region.
+
+{{site.data.alerts.callout_info}}
+In a geo-distributed scenario with a cluster that spans multiple datacenters, it may take time for the optimizer to fetch schemas from other nodes the first time a query is planned; thereafter, the schema should be cached locally.
+
+For example, if you have 11 nodes, you may see 11 queries with high latency due to schema cache misses.  Once all nodes have cached the schema locally, the latencies will drop.
+
+This behavior may also cause the [Statements page of the Web UI](ui-statements-page.html) to show misleadingly high latencies until schemas are cached locally.
+{{site.data.alerts.end}}
+
+As expected, the node in the USA region uses the primary key index.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~
+
+~~~
+  tree |        field        |     description
+-------+---------------------+-----------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | postal_codes@primary
+       | spans               | [/1 - /1]
+(6 rows)
+~~~
+
+As expected, the node in the EU uses the `idx_eu` index.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~
+
+~~~
+  tree |        field        |     description
+-------+---------------------+----------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | postal_codes@idx_eu
+       | spans               | [/1 - /1]
+(6 rows)
+~~~
+
+As expected, the node in APAC uses the `idx_apac` index.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
+~~~
+
+~~~
+  tree |        field        |      description
+-------+---------------------+------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | postal_codes@idx_apac
+       | spans               | [/1 - /1]
+(6 rows)
+~~~
+
+You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
+
+#### Leaseholder preferences
+
+If you provide [leaseholder preferences](configure-replication-zones.html#lease_preferences) in addition to replication zone constraints, the optimizer will attempt to take your leaseholder preferences into account as well when selecting an index for your query. There are several factors to keep in mind:
+
+- Zone constraints are always respected (hard constraint), whereas lease preferences are taken into account as "additional information" -- as long as they do not contradict the zone constraints.
+
+- The optimizer does not consider the real-time location of leaseholders when selecting an index; it is pattern matching on the text values passed in the configuration (e.g., the [`ALTER INDEX`](alter-index.html) statements shown below). For the same reason, the optimizer only matches against the first locality in your `lease_preferences` array.
+
+- The optimizer may use an index that satisfies your leaseholder preferences even though that index has moved to a different node/region due to [leaseholder rebalancing](architecture/replication-layer.html#leaseholder-rebalancing). This can cause slower performance than you expected. Therefore, you should only use this feature if you’re confident you know where the leaseholders will end up based on your cluster's usage patterns. We recommend thoroughly testing your configuration to ensure the optimizer is selecting the index(es) you expect.
+
+In this example, we'll set up an authentication service using the access token / refresh token pattern from [OAuth 2](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2). To support fast local reads in our geo-distributed use case, we will have 3 indexes into the same authentication data: one for each region of our cluster. We configure each index using zone configurations and lease preferences so that the optimizer will use the local index for better performance.
+
+The instructions below assume that you are already familiar with:
+
+- How to [start a local cluster](start-a-local-cluster.html).
+- The syntax for [assigning node locality when configuring replication zones](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes).
+- Using [the built-in SQL client](cockroach-sql.html).
+
+First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region.
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=us-east  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
+  --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=us-central   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
+  --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach start --locality=region=us-west --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
+  --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ cockroach init --insecure --host=localhost --port=26257
+~~~
+
+From the SQL client, add your organization name and {{ site.data.products.enterprise }} license:
+
+{% include_cached copy-clipboard.html %}
+~~~ sh
+$ cockroach sql --insecure --host=localhost --port=26257
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SET CLUSTER SETTING enterprise.license = 'xxxxx';
+~~~
+
+Create an authentication database and table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE DATABASE if NOT EXISTS auth;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> USE auth;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE token (
+	token_id VARCHAR(100) NULL,
+	access_token VARCHAR(4000) NULL,
+	refresh_token VARCHAR(4000) NULL
+  );
+~~~
+
+Create the indexes for each region:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX token_id_west_idx ON token (token_id) STORING (access_token, refresh_token);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX token_id_central_idx ON token (token_id) STORING (access_token, refresh_token);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> CREATE INDEX token_id_east_idx ON token (token_id) STORING (access_token, refresh_token);
+~~~
+
+Enter zone configurations to distribute replicas across the cluster as follows:
+
+- For the "East" index, store 2 replicas in the East, 2 in Central, and 1 in the West. Further, prefer that the leaseholders for that index live in the East or, failing that, in the Central region.
+- Follow the same replica and leaseholder patterns for each of the Central and West regions.
+
+The idea is that, for example, `token_id_east_idx` will have sufficient replicas (2/5) so that even if one replica goes down, the leaseholder will stay in the East region. That way, if a query comes in that accesses the columns covered by that index from the East gateway node, the optimizer will select `token_id_east_idx` for fast reads.
+
+{{site.data.alerts.callout_info}}
+The `ALTER TABLE` statement below is not required since it's later made redundant by the `token_id_west_idx` index. In production, you might go with the `ALTER TABLE` to put your table's lease preferences in the West, and then create only 2 indexes (for East and Central); however, the use of 3 indexes makes the example easier to understand.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE token CONFIGURE ZONE USING
+        num_replicas = 5, constraints = '{+region=us-east: 1, +region=us-central: 2, +region=us-west: 2}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER INDEX token_id_east_idx CONFIGURE ZONE USING num_replicas = 5,
+        constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-east], [+region=us-central]]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER INDEX token_id_central_idx CONFIGURE ZONE USING num_replicas = 5,
+        constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-central], [+region=us-east]]';
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> ALTER INDEX token_id_west_idx CONFIGURE ZONE USING num_replicas = 5,
+        constraints = '{+region=us-west: 2, +region=us-central: 2, +region=us-east: 1}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
+~~~
+
+Next let's [check our zone configurations](show-zone-configurations.html) to make sure they match our expectation:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> SHOW ZONE CONFIGURATIONS;
+~~~
+
+The output should include the following:
+
+~~~
+                       target                      |                                    raw_config_sql
+---------------------------------------------------+---------------------------------------------------------------------------------------
+  RANGE default                                    | ALTER RANGE default CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 90000,
+                                                   |     num_replicas = 3,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  DATABASE system                                  | ALTER DATABASE system CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 90000,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  RANGE meta                                       | ALTER RANGE meta CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 3600,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  RANGE system                                     | ALTER RANGE system CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 90000,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  RANGE liveness                                   | ALTER RANGE liveness CONFIGURE ZONE USING
+                                                   |     range_min_bytes = 134217728,
+                                                   |     range_max_bytes = 536870912,
+                                                   |     gc.ttlseconds = 600,
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  TABLE system.public.replication_constraint_stats | ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING
+                                                   |     gc.ttlseconds = 600,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  TABLE system.public.replication_stats            | ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING
+                                                   |     gc.ttlseconds = 600,
+                                                   |     constraints = '[]',
+                                                   |     lease_preferences = '[]'
+  TABLE auth.public.token                          | ALTER TABLE auth.public.token CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                                   |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+  INDEX auth.public.token@token_id_east_idx        | ALTER INDEX auth.public.token@token_id_east_idx CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                                   |     lease_preferences = '[[+region=us-east], [+region=us-central]]'
+  INDEX auth.public.token@token_id_central_idx     | ALTER INDEX auth.public.token@token_id_central_idx CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 2, +region=us-west: 1}',
+                                                   |     lease_preferences = '[[+region=us-central], [+region=us-east]]'
+  INDEX auth.public.token@token_id_west_idx        | ALTER INDEX auth.public.token@token_id_west_idx CONFIGURE ZONE USING
+                                                   |     num_replicas = 5,
+                                                   |     constraints = '{+region=us-central: 2, +region=us-east: 1, +region=us-west: 2}',
+                                                   |     lease_preferences = '[[+region=us-west], [+region=us-central]]'
+(11 rows)
+~~~
+
+Now that we've set up our indexes the way we want them, we need to insert some data. The first statement below inserts 10,000 rows of placeholder data; the second inserts a row with a specific UUID string that we'll later query against to check which index is used.
+
+{{site.data.alerts.callout_info}}
+On a freshly created cluster like this one, you may need to wait a moment after adding the data to give [automatic statistics](#table-statistics) time to update. Then, the optimizer can generate a query plan that uses the expected index.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> INSERT
+  INTO
+      token (token_id, access_token, refresh_token)
+  SELECT
+      gen_random_uuid()::STRING,
+      gen_random_uuid()::STRING,
+      gen_random_uuid()::STRING
+  FROM
+      generate_series(1, 10000);
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> INSERT
+  INTO
+      token (token_id, access_token, refresh_token)
+  VALUES
+      (
+          '2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9',
+          '49E36152-6152-11E9-8CDC-3682F23211D9',
+          '4E0E91B6-6152-11E9-BAC1-3782F23211D9'
+      );
+~~~
+
+Finally, we [`EXPLAIN`](explain.html) a [selection query](selection-queries.html) from each node to verify which index is being queried against. For example, when running the query shown below against the `us-west` node, we expect it to use the `token_id_west_idx` index.
+
+{% include_cached copy-clipboard.html %}
+~~~ sh
+$ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West" node
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> EXPLAIN
+      SELECT
+          access_token, refresh_token
+      FROM
+          token
+      WHERE
+          token_id = '2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9';
+~~~
+
+~~~
+  tree |        field        |                                     description
+-------+---------------------+--------------------------------------------------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | token@token_id_east_idx
+       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
+(6 rows)
+~~~
+
+Similarly, queries from the `us-east` node should use the `token_id_east_idx` index (and the same should be true for `us-central`).
+
+{% include_cached copy-clipboard.html %}
+~~~ sh
+$ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East" node
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+> EXPLAIN
+      SELECT
+          access_token, refresh_token
+      FROM
+          token
+      WHERE
+          token_id = '2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9';
+~~~
+
+~~~
+  tree |        field        |                                     description
+-------+---------------------+--------------------------------------------------------------------------------------
+       | distribution        | local
+       | vectorized          | false
+  scan |                     |
+       | estimated row count | 1
+       | table               | token@token_id_east_idx
+       | spans               | [/'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9' - /'2E1B5BFE-6152-11E9-B9FD-A7E0F13211D9']
+(6 rows)
+~~~
+
+You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
+
 
 ## See also
 
