@@ -417,3 +417,5 @@ layout: null
 {%- for version in site.versions -%}
 {{ version[0]|relative_url }}/* {{ version[1]|relative_url }}/:splat 200
 {% endfor -%}
+
+/docs/frequently-asked-questions.html /docs/stable/frequently-asked-questions.html  301
