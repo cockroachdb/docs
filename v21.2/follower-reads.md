@@ -22,7 +22,7 @@ This is an [{{ site.data.products.enterprise }} feature](enterprise-licensing.ht
 
 ## How follower reads work
 
-Each CockroachDB node tracks a property called its "closed timestamp", which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward by some target interval behind the current time. If the replica receives a write at a timestamp less than its closed timestamp, it rejects the write.
+Each CockroachDB range tracks a property called its ["closed timestamp"](architecture/transaction-layer.html#closed-timestamps), which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward by some target interval behind the current time. If the range receives a write at a timestamp less than its closed timestamp, it rejects the write.
 
 With [follower reads enabled](#enable-disable-follower-reads), any replica on a node can serve a read for a key as long as the time at which the operation is performed (i.e., the [`AS OF SYSTEM TIME`](as-of-system-time.html) value) is less or equal to the node's closed timestamp.
 

@@ -42,6 +42,11 @@ If transactions fail for other reasons, such as failing to pass a SQL constraint
 
 If the transaction has not been aborted, the transaction layer begins executing read operations. If a read only encounters standard MVCC values, everything is fine. However, if it encounters any write intents, the operation must be resolved as a [transaction conflict](#transaction-conflicts).
 
+CockroachDB provides the following types of reads:
+
+- Strongly-consistent (a.k.a. "non-stale") reads: These are the default and most common type of read. For example, read-write transactions will always perform strongly-consistent reads. These reads go through the [leaseholder](replication-layer.html#leases) and always return data that is correct and up to date.
+- Stale reads: These are useful in situations where you can afford to read data that is slightly stale in exchange for faster reads. They can only be used in read-only transactions. They do not need to go through the leaseholder, since they ensure consistency by reading from a local replica at a timestamp that is never higher than the [closed timestamp](#closed-timestamps). For more information about how to use stale reads from SQL, see [Follower Reads](../follower-reads.html).
+
 ### Commits (phase 2)
 
 CockroachDB checks the running transaction's record to see if it's been `ABORTED`; if it has, it restarts the transaction.
@@ -93,7 +98,23 @@ For more detail about the risks that large clock offsets can cause, see [What ha
 
 As part of providing serializability, whenever an operation reads a value, we store the operation's timestamp in a timestamp cache, which shows the high-water mark for values being read.
 
+The timestamp cache is a data structure used to store information about the reads performed by [leaseholders](replication-layer.html#leases). This is used to ensure that once some transaction *t1* reads a row, another transaction *t2* that comes along and tries to write to that row will be ordered after *t1*, thus ensuring a serial order of transactions, a.k.a. serializability.
+
 Whenever a write occurs, its timestamp is checked against the timestamp cache. If the timestamp is less than the timestamp cache's latest value, we attempt to push the timestamp for its transaction forward to a later time. Pushing the timestamp might cause the transaction to restart in the second phase of the transaction (see [read refreshing](#read-refreshing)).
+
+### Closed timestamps
+
+Each CockroachDB range tracks a property called its "closed timestamp", which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances forward by some target interval behind the current time. If the range receives a write at a timestamp less than its closed timestamp, it rejects the write.
+
+In other words, a closed timestamp is a promise by the range's [leaseholder](replication-layer.html#leases) to its follower replicas that it will not accept writes below that timestamp. Generally speaking, the leaseholder continuously closes timestamps a few seconds in the past.
+
+The closed timestamps subsystem works by propagating information from leaseholders to followers by piggy-backing closed timestamps onto Raft commands such that the replication stream is synchronized with timestamp closing. This means that a follower replica can start serving reads with timestamps at or below the closed timestamp as soon as it has applied all of the Raft commands up to the position in the [Raft log](replication-layer.html#raft-logs) specified by the leaseholder.
+
+Once the follower replica has applied the abovementioned Raft commands, it has all the data necessary to serve reads with timestamps less than or equal to the closed timestamp.
+
+Note that closed timestamps are durable even if the leaseholder changes; in other words, they are preserved across [lease transfers](replication-layer.html#epoch-based-leases-table-data).
+
+Closed timestamps provide the guarantees that are used to provide support for low-latency historical (stale) reads, also known as [Follower Reads](../follower-reads.html). Follower reads can be particularly useful in [multi-region deployments](../multiregion-overview.html).
 
 ### client.Txn and TxnCoordSender
 
@@ -267,7 +288,7 @@ If there is a deadlock between transactions (i.e., they're each blocked by each 
 
 ### Read refreshing
 
-Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the timestamp cache, or they perform the check whenever they encounter a `ReadWithinUncertaintyIntervalError` immediately, before continuing).
+Whenever a transaction's timestamp has been pushed, additional checks are required before allowing it to commit at the pushed timestamp: any values which the transaction previously read must be checked to verify that no writes have subsequently occurred between the original transaction timestamp and the pushed transaction timestamp. This check prevents serializability violation. The check is done by keeping track of all the reads using a dedicated `RefreshRequest`. If this succeeds, the transaction is allowed to commit (transactions perform this check at commit time if they've been pushed by a different transaction or by the [timestamp cache](#timestamp-cache), or they perform the check whenever they encounter a [`ReadWithinUncertaintyIntervalError`](../transaction-retry-error-reference.html#readwithinuncertaintyinterval) immediately, before continuing).
 If the refreshing is unsuccessful, then the transaction must be retried at the pushed timestamp.
 
 ### Transaction pipelining
@@ -386,7 +407,7 @@ The consistency guarantees offered by non-blocking transactions are enforced thr
 Non-blocking transactions are implemented via _non-blocking ranges_. Every non-blocking range has the following properties:
 
 - Any transaction that writes to this range has its write timestamp pushed into the future.
-- The range is able to propagate a [closed timestamp](../follower-reads.html#how-follower-reads-work) in the future of present time.
+- The range is able to propagate a [closed timestamp](#closed-timestamps) in the future of present time.
 - A transaction that writes to this range and commits with a future time commit timestamp needs to wait until the HLC advances past its commit timestamp. This process is known as _"commit-wait"_. Essentially, the HLC waits until it advances past the future timestamp on its own, or it advances due to updates from other timestamps.
 - A transaction that reads a future-time write to this range can have its commit timestamp bumped into the future as well, if the write falls in the read's uncertainty window (this is dictated by the [maximum clock offset](#max-clock-offset-enforcement) configured for the cluster). Such transactions (a.k.a. "conflicting readers") may also need to commit-wait.
 
