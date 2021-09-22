@@ -1,56 +1,57 @@
-[
-  {
+[{
     "title": "Docs Home",
     "is_top_level": true,
     "urls": [
       "/"
     ]
-  },
-  {
+  }, {
     "title": "New to CockroachDB",
     "is_top_level": true,
-    "urls": [
-      "/cockroachcloud/quickstart.html",
-      "/cockroachcloud/quickstart-trial-cluster.html"
-    ],
     "items": [
       {
-        "title": "Get started with CockroachCloud",
+        "title": "Get started with CockroachDB Serverless",
         "items": [
           {
-        	  "title": "Create an account",
-        	  "urls": [
-        	    "/cockroachcloud/create-an-account.html"
-        	  ]
-        	},
-        	{
-        	  "title": "Create a CockroachCloud cluster",
-        	  "urls": [
-        	    "/cockroachcloud/create-a-free-cluster.html",
-              "/cockroachcloud/create-your-cluster.html"
-        	  ]
-        	},
-          {
-        	  "title": "Connect to your cluster",
-        	  "urls": [
-        	    "/cockroachcloud/connect-to-a-free-cluster.html",
-              "/cockroachcloud/connect-to-your-cluster.html"
-        	  ]
-        	},
-        	{
-        	  "title": "Learn CockroachDB SQL",
-        	  "urls": [
-        	    "/cockroachcloud/learn-cockroachdb-sql.html"
-        	  ]
-        	},
-        	{
-        	  "title": "Build a 'Hello World' app",
-        	  "urls": [
-              "/cockroachcloud/hello-world-example-apps.html"
-          	  ]
+            "title": "Quick start",
+            "urls": [
+              "/cockroachcloud/quickstart.html",
+              "/cockroachcloud/quickstart-trial-cluster.html"
+            ]
           },
           {
-            "title": "CockroachCloud FAQs",
+            "title": "Create an account",
+            "urls": [
+              "/cockroachcloud/create-an-account.html"
+            ]
+          },
+          {
+            "title": "Create a CockroachDB cluster",
+            "urls": [
+              "/cockroachcloud/create-a-free-cluster.html",
+              "/cockroachcloud/create-your-cluster.html"
+            ]
+          },
+          {
+            "title": "Connect to your cluster",
+            "urls": [
+              "/cockroachcloud/connect-to-a-free-cluster.html",
+              "/cockroachcloud/connect-to-your-cluster.html"
+            ]
+          },
+          {
+            "title": "Learn CockroachDB SQL",
+            "urls": [
+              "/cockroachcloud/learn-cockroachdb-sql.html"
+            ]
+          },
+          {
+            "title": "Build a 'Hello World' app",
+            "urls": [
+              "/cockroachcloud/hello-world-example-apps.html"
+            ]
+          },
+          {
+            "title": "CockroachDB Serverless and Dedicated FAQs",
             "urls": [
               "/cockroachcloud/free-faqs.html",
               "/cockroachcloud/frequently-asked-questions.html"
@@ -59,10 +60,9 @@
         ]
       },
       {
-        "title": "Get started with CockroachDB",
-        "items": [
-          {
-            "title": "Install CockroachDB",
+        "title": "Get started with CockroachDB Self-Hosted",
+        "items": [{
+            "title": "Install CockroachDB Self-Hosted",
             "urls": [
               "/${VERSION}/install-cockroachdb.html",
               "/${VERSION}/install-cockroachdb-mac.html",
@@ -72,8 +72,7 @@
           },
           {
             "title": "Start a local cluster",
-            "items": [
-              {
+            "items": [{
                 "title": "From binary",
                 "urls": [
                   "/${VERSION}/secure-a-cluster.html",
@@ -111,8 +110,7 @@
           },
           {
             "title": "Explore database features",
-            "items": [
-              {
+            "items": [{
                 "title": "Replication & rebalancing",
                 "urls": [
                   "/${VERSION}/demo-replication-and-rebalancing.html"

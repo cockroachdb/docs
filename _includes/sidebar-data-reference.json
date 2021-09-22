@@ -1,5 +1,4 @@
-[
-  {
+{
     "title": "Reference",
     "is_top_level": true,
     "items": [
@@ -11,7 +10,7 @@
         "items": [
           {
             "title": "SQL Syntax",
-            "urls": [
+            "items": [
               {
                 "title": "Full SQL Grammar",
                 "urls": [
@@ -64,7 +63,7 @@
           },
           {
             "title": "SQL Statements",
-            "urls": [
+            "items": [
               {
                 "title": "Overview",
                 "urls": [
@@ -861,7 +860,7 @@
           },
           {
             "title": "SQL Data Types",
-            "urls": [
+            "items": [
               {
                 "title": "Overview",
                 "urls": [
@@ -980,7 +979,7 @@
           },
           {
             "title": "Constraints",
-            "urls": [
+            "items": [
               {
                 "title": "Overview",
                 "urls": [
@@ -1449,4 +1448,3 @@
       {% include_cached sidebar-releases.json %}
     ]
   }
-]

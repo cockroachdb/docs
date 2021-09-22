@@ -1,223 +1,683 @@
-[
-  {
-    "title": "Deploying CockroachDB",
-    "is_top_level": true,
-    "urls": [
-      ""
-    ],
-    "items": [
-      {
-        "title": "",
-        "urls": [
-          ""
-        ]
-      },
-      {
-        "title": "Using CockroachCloud",
-        "items": [
-          {
-            "title": "FAQs",
-            "urls": [
-              "/cockroachcloud/free-faqs.html",
-              "/cockroachcloud/frequently-asked-questions.html"
-            ]
-          },
-        	{
-        	  "title": "Secure your cluster",
-        	  "items": [
-        	    {
-        	      "title": "Security overview",
-        	      "urls": [
-        		      "/cockroachcloud/security-overview.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Authentication",
-        	      "urls": [
-        		      "/cockroachcloud/authentication.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "User authorization",
-        	      "urls": [
-        		      "/cockroachcloud/user-authorization.html"
-        	      ]
-        	    },
-              {
-        	      "title": "Network authorization",
-        	      "urls": [
-        		      "/cockroachcloud/network-authorization.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "SQL audit logging",
-        	      "urls": [
-        		      "/cockroachcloud/sql-audit-logging.html"
-        	      ]
-        	    },
-              {
-                "title": "Manage Console Access",
-                "urls": [
-          	       "/cockroachcloud/console-access-management.html"
-                ]
-              }
-        	  ]
-        	},
-        	{
-        	  "title": "Migrate data",
-        	  "items": [
-        	    {
-        	      "title": "Migration overview",
-        	      "urls": [
-        		      "/{{site.versions["stable"]}}/migration-overview.html"
-        	      ]
-        	    },
-              {
-        	      "title": "Migrate from a free to paid cluster",
-        	      "urls": [
-        		      "/cockroachcloud/migrate-from-free-to-dedicated.html"
-        	      ]
-        	    },
-              {
-        	      "title": "Migrate from Oracle",
-        	      "urls": [
-        		      "/{{site.versions["stable"]}}/migrate-from-oracle.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Migrate from Postgres",
-        	      "urls": [
-        		      "/{{site.versions["stable"]}}/migrate-from-postgres.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Migrate from MySQL",
-        	      "urls": [
-        		      "/{{site.versions["stable"]}}/migrate-from-mysql.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Migrate from CSV",
-        	      "urls": [
-        		      "/{{site.versions["stable"]}}/migrate-from-csv.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Migrate from Avro",
-        	      "urls": [
-        		      "/{{site.versions["stable"]}}/migrate-from-avro.html"
-        	      ]
-        	    },
-              {
-                "title": "Import performance best practices",
-                "urls": [
-                  "/{{site.versions["stable"]}}/import-performance-best-practices.html"
-                ]
-              }
-        	  ]
-        	},
-        	{
-        	  "title": "Tune performance",
-        	  "urls": [
-        	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
-        	  ]
-        	},
-        	{
-        	  "title": "Move into production",
-        	  "urls": [
-        	    "/cockroachcloud/production-checklist.html"
-        	  ]
-        	},
-          {
-            "title": "Monitor your cluster",
-            "items": [
-              {
-                "title": "Alerts page",
-                "urls": [
-                  "/cockroachcloud/alerts-page.html"
-                ]
-              },
-              {
-                "title": "Monitoring page",
-                "urls": [
-                  "/cockroachcloud/monitoring-page.html"
-                ]
-              },
-              {
-                "title": "Statements page",
-                "urls": [
-                  "/cockroachcloud/statements-page.html"
-                ]
-              },
-              {
-                "title": "Sessions page",
-                "urls": [
-                  "/cockroachcloud/sessions-page.html"
-                ]
-              },
-              {
-                "title": "Transactions page",
-                "urls": [
-                  "/cockroachcloud/transactions-page.html"
-                ]
-              }
-            ]
-          },
-        	{
-        	  "title": "Troubleshoot your cluster",
-        	  "urls": [
-        	    "/cockroachcloud/troubleshooting-page.html"
-        	  ]
-        	},
-        	{
-        	  "title": "Manage your cluster",
-        	  "urls": [
-        	    "/cockroachcloud/cluster-management.html"
-        	  ]
-        	},
-          {
-            "title": "Run bulk operations",
-            "urls": [
-              "/cockroachcloud/run-bulk-operations.html"
-            ]
-          },
-        	{
-        	  "title": "Restore data from a backup",
-        	  "urls": [
-        	    "/cockroachcloud/backups-page.html"
-        	  ]
-        	},
-        	{
-        	  "title": "Upgrade your cluster",
-        	  "items": [
-        	    {
-        	      "title": "Upgrade policy",
-        	      "urls": [
-        		       "/cockroachcloud/upgrade-policy.html"
-        	      ]
-        	    },
-              {
-        	      "title": "Upgrade to v21.1",
-        	      "urls": [
-        		       "/cockroachcloud/upgrade-to-v21.1.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Upgrade to v20.2",
-        	      "urls": [
-        		       "/cockroachcloud/upgrade-to-v20.2.html"
-        	      ]
-        	    },
-        	    {
-        	      "title": "Upgrade to v20.1",
-        	      "urls": [
-        		       "/cockroachcloud/upgrade-to-v20.1.html"
-        	      ]
-        	    }
-        	  ]
-        	}
-        ]
-      }
-    ]
-  }
-]
+{
+  "title": "Deploying CockroachDB",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Using CockroachDB Serverless and Dedicated",
+      "items": [{
+          "title": "FAQs",
+          "urls": [
+            "/cockroachcloud/free-faqs.html",
+            "/cockroachcloud/frequently-asked-questions.html"
+          ]
+        },
+        {
+          "title": "Secure your cluster",
+          "items": [{
+              "title": "Security overview",
+              "urls": [
+                "/cockroachcloud/security-overview.html"
+              ]
+            },
+            {
+              "title": "Authentication",
+              "urls": [
+                "/cockroachcloud/authentication.html"
+              ]
+            },
+            {
+              "title": "User authorization",
+              "urls": [
+                "/cockroachcloud/user-authorization.html"
+              ]
+            },
+            {
+              "title": "Network authorization",
+              "urls": [
+                "/cockroachcloud/network-authorization.html"
+              ]
+            },
+            {
+              "title": "SQL audit logging",
+              "urls": [
+                "/cockroachcloud/sql-audit-logging.html"
+              ]
+            },
+            {
+              "title": "Manage Console Access",
+              "urls": [
+                "/cockroachcloud/console-access-management.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Migrate data",
+          "items": [{
+              "title": "Migration overview",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/migration-overview.html"
+              ]
+            },
+            {
+              "title": "Migrate from a free to paid cluster",
+              "urls": [
+                "/cockroachcloud/migrate-from-free-to-dedicated.html"
+              ]
+            },
+            {
+              "title": "Migrate from Oracle",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/migrate-from-oracle.html"
+              ]
+            },
+            {
+              "title": "Migrate from Postgres",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/migrate-from-postgres.html"
+              ]
+            },
+            {
+              "title": "Migrate from MySQL",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/migrate-from-mysql.html"
+              ]
+            },
+            {
+              "title": "Migrate from CSV",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/migrate-from-csv.html"
+              ]
+            },
+            {
+              "title": "Migrate from Avro",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/migrate-from-avro.html"
+              ]
+            },
+            {
+              "title": "Import performance best practices",
+              "urls": [
+                "/{{site.versions["
+                stable "]}}/import-performance-best-practices.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Tune performance",
+          "urls": [
+            "/{{site.versions["
+            stable "]}}/performance-best-practices-overview.html"
+          ]
+        },
+        {
+          "title": "Move into production",
+          "urls": [
+            "/cockroachcloud/production-checklist.html"
+          ]
+        },
+        {
+          "title": "Monitor your cluster",
+          "items": [{
+              "title": "Alerts page",
+              "urls": [
+                "/cockroachcloud/alerts-page.html"
+              ]
+            },
+            {
+              "title": "Monitoring page",
+              "urls": [
+                "/cockroachcloud/monitoring-page.html"
+              ]
+            },
+            {
+              "title": "Statements page",
+              "urls": [
+                "/cockroachcloud/statements-page.html"
+              ]
+            },
+            {
+              "title": "Sessions page",
+              "urls": [
+                "/cockroachcloud/sessions-page.html"
+              ]
+            },
+            {
+              "title": "Transactions page",
+              "urls": [
+                "/cockroachcloud/transactions-page.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Troubleshoot your cluster",
+          "urls": [
+            "/cockroachcloud/troubleshooting-page.html"
+          ]
+        },
+        {
+          "title": "Manage your cluster",
+          "urls": [
+            "/cockroachcloud/cluster-management.html"
+          ]
+        },
+        {
+          "title": "Run bulk operations",
+          "urls": [
+            "/cockroachcloud/run-bulk-operations.html"
+          ]
+        },
+        {
+          "title": "Restore data from a backup",
+          "urls": [
+            "/cockroachcloud/backups-page.html"
+          ]
+        },
+        {
+          "title": "Upgrade your cluster",
+          "items": [{
+              "title": "Upgrade policy",
+              "urls": [
+                "/cockroachcloud/upgrade-policy.html"
+              ]
+            },
+            {
+              "title": "Upgrade to v21.1",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v21.1.html"
+              ]
+            },
+            {
+              "title": "Upgrade to v20.2",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v20.2.html"
+              ]
+            },
+            {
+              "title": "Upgrade to v20.1",
+              "urls": [
+                "/cockroachcloud/upgrade-to-v20.1.html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Using CockroachDB Self-Hosted",
+      "items": [{
+          "title": "Production checklist",
+          "urls": [
+            "/${VERSION}/recommended-production-settings.html"
+          ]
+        },
+        {
+          "title": "Multi-region capabilities",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/multiregion-overview.html"
+              ]
+            },
+            {
+              "title": "Choosing a multi-region configuration",
+              "urls": [
+                "/${VERSION}/choosing-a-multi-region-configuration.html"
+              ]
+            },
+            {
+              "title": "When to use ZONE vs. REGION Survival Goals",
+              "urls": [
+                "/${VERSION}/when-to-use-zone-vs-region-survival-goals.html"
+              ]
+            },
+            {
+              "title": "When to use REGIONAL vs. GLOBAL tables",
+              "urls": [
+                "/${VERSION}/when-to-use-regional-vs-global-tables.html"
+              ]
+            },
+            {
+              "title": "Data domiciling",
+              "urls": [
+                "/${VERSION}/data-domiciling.html"
+              ]
+            },
+            {
+              "title": "Topology patterns",
+              "items": [{
+                  "title": "Overview",
+                  "urls": [
+                    "/${VERSION}/topology-patterns.html"
+                  ]
+                },
+                {
+                  "title": "Development",
+                  "urls": [
+                    "/${VERSION}/topology-development.html"
+                  ]
+                },
+                {
+                  "title": "Basic production",
+                  "urls": [
+                    "/${VERSION}/topology-basic-production.html"
+                  ]
+                },
+                {
+                  "title": "Regional tables",
+                  "urls": [
+                    "/${VERSION}/regional-tables.html"
+                  ]
+                },
+                {
+                  "title": "Global tables",
+                  "urls": [
+                    "/${VERSION}/global-tables.html"
+                  ]
+                },
+                {
+                  "title": "Follower reads",
+                  "urls": [
+                    "/${VERSION}/topology-follower-reads.html"
+                  ]
+                },
+                {
+                  "title": "Follow-the-workload",
+                  "urls": [
+                    "/${VERSION}/topology-follow-the-workload.html"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Manual deployment",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/manual-deployment.html"
+              ]
+            },
+            {
+              "title": "On-premises",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-on-premises.html",
+                "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"
+              ]
+            },
+            {
+              "title": "AWS",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-on-aws.html",
+                "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+              ]
+            },
+            {
+              "title": "Azure",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
+                "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+              ]
+            },
+            {
+              "title": "Digital Ocean",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
+                "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+              ]
+            },
+            {
+              "title": "Google Cloud Platform GCE",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
+                "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Orchestrated deployment",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/orchestration.html"
+              ]
+            },
+            {
+              "title": "Kubernetes single-cluster deployment",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
+                "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+              ]
+            },
+            {
+              "title": "Operate CockroachDB on Kubernetes",
+              "urls": [
+                "/${VERSION}/operate-cockroachdb-kubernetes.html"
+              ]
+            },
+            {
+              "title": "Monitor CockroachDB on Kubernetes",
+              "urls": [
+                "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+              ]
+            },
+            {
+              "title": "OpenShift single-cluster deployment",
+              "urls": [
+                "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
+              ]
+            },
+            {
+              "title": "Kubernetes multi-cluster deployment",
+              "urls": [
+                "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
+              ]
+            },
+            {
+              "title": "Kubernetes performance optimization",
+              "urls": [
+                "/${VERSION}/kubernetes-performance.html"
+              ]
+            },
+            {
+              "title": "Docker swarm deployment",
+              "urls": [
+                "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
+                "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Back up and restore data",
+          "items": [{
+              "title": "Full and incremental backups",
+              "urls": [
+                "/${VERSION}/take-full-and-incremental-backups.html"
+              ]
+            },
+            {
+              "title": "Backups with revision history and point-in-time restore",
+              "urls": [
+                "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+              ]
+            },
+            {
+              "title": "Encrypted backup and restore",
+              "urls": [
+                "/${VERSION}/take-and-restore-encrypted-backups.html"
+              ]
+            },
+            {
+              "title": "Locality-aware backup and restore",
+              "urls": [
+                "/${VERSION}/take-and-restore-locality-aware-backups.html"
+              ]
+            },
+            {
+              "title": "Scheduled backups",
+              "urls": [
+                "/${VERSION}/manage-a-backup-schedule.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "File storage for bulk operations",
+          "items": [{
+              "title": "Cloud storage",
+              "urls": [
+                "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+              ]
+            },
+            {
+              "title": "Userfile storage",
+              "urls": [
+                "/${VERSION}/use-userfile-for-bulk-operations.html"
+              ]
+            },
+            {
+              "title": "Local file server",
+              "urls": [
+                "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Performance",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/performance.html"
+              ]
+            },
+            {
+              "title": "Benchmarking instructions",
+              "urls": [
+                "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+                "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+                "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+                "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+              ]
+            },
+            {
+              "title": "Tuning best practices",
+              "urls": [
+                "/${VERSION}/performance-best-practices-overview.html"
+              ]
+            },
+            {
+              "title": "Improving statement performance",
+              "urls": [
+                "/${VERSION}/make-queries-fast.html"
+              ]
+            },
+            {
+              "title": "Tuning with EXPLAIN",
+              "urls": [
+                "/${VERSION}/sql-tuning-with-explain.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Security",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/security-overview.html"
+              ]
+            },
+            {
+              "title": "Authentication",
+              "urls": [
+                "/${VERSION}/authentication.html"
+              ]
+            },
+            {
+              "title": "Encryption",
+              "urls": [
+                "/${VERSION}/encryption.html"
+              ]
+            },
+            {
+              "title": "Authorization",
+              "urls": [
+                "/${VERSION}/authorization.html"
+              ]
+            },
+            {
+              "title": "SQL audit logging",
+              "urls": [
+                "/${VERSION}/sql-audit-logging.html"
+              ]
+            },
+            {
+              "title": "GSSAPI authentication",
+              "urls": [
+                "/${VERSION}/gssapi_authentication.html"
+              ]
+            },
+            {
+              "title": "Single sign-on",
+              "urls": [
+                "/${VERSION}/sso.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Monitoring and alerting",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/monitoring-and-alerting.html"
+              ]
+            },
+            {
+              "title": "Enable the Node Map",
+              "urls": [
+                "/${VERSION}/enable-node-map.html"
+              ]
+            },
+            {
+              "title": "Use Prometheus and Alertmanager",
+              "urls": [
+                "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+              ]
+            },
+            {
+              "title": "Cluster API",
+              "urls": [
+                "/${VERSION}/cluster-api.html"
+              ]
+            },
+            {
+              "title": "Third-Party monitoring integrations",
+              "items": [{
+                  "title": "Overview",
+                  "urls": [
+                    "/${VERSION}/third-party-monitoring-tools.html"
+                  ]
+                },
+                {
+                  "title": "Datadog",
+                  "urls": [
+                    "/${VERSION}/datadog.html"
+                  ]
+                },
+                {
+                  "title": "Kibana",
+                  "urls": [
+                    "/${VERSION}/kibana.html"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Logging",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/logging-overview.html"
+              ]
+            },
+            {
+              "title": "Configure logs",
+              "urls": [
+                "/${VERSION}/configure-logs.html"
+              ]
+            },
+            {
+              "title": "Logging use cases",
+              "urls": [
+                "/${VERSION}/logging-use-cases.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cluster maintenance",
+          "items": [{
+              "title": "Upgrade to CockroachDB v21.2",
+              "urls": [
+                "/${VERSION}/upgrade-cockroach-version.html"
+              ]
+            },
+            {
+              "title": "Online schema changes",
+              "urls": [
+                "/${VERSION}/online-schema-changes.html"
+              ]
+            },
+            {
+              "title": "Manage long-running queries",
+              "urls": [
+                "/${VERSION}/manage-long-running-queries.html"
+              ]
+            },
+            {
+              "title": "Decommission nodes",
+              "urls": [
+                "/${VERSION}/remove-nodes.html"
+              ]
+            },
+            {
+              "title": "Rotate security certificates",
+              "urls": [
+                "/${VERSION}/rotate-certificates.html"
+              ]
+            },
+            {
+              "title": "Disaster recovery",
+              "urls": [
+                "/${VERSION}/disaster-recovery.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Replication controls",
+          "urls": [
+            "/${VERSION}/configure-replication-zones.html"
+          ]
+        },
+        {
+          "title": "Stream data out of CockroachDB",
+          "urls": [
+            "/${VERSION}/stream-data-out-of-cockroachdb-using-changefeeds.html"
+          ]
+        },
+        {
+          "title": "Enterprise features",
+          "items": [{
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/enterprise-licensing.html"
+              ]
+            },
+            {
+              "title": "Table partitioning",
+              "urls": [
+                "/${VERSION}/partitioning.html"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
