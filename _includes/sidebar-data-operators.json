@@ -1,9 +1,9 @@
 {
-  "title": "Deploying CockroachDB",
+  "title": "Deploy CockroachDB",
   "is_top_level": true,
   "items": [
     {
-      "title": "Using CockroachDB Serverless and Dedicated",
+      "title": "Use CockroachDB Serverless and Dedicated",
       "items": [{
           "title": "FAQs",
           "urls": [
@@ -204,7 +204,7 @@
       ]
     },
     {
-      "title": "Using CockroachDB Self-Hosted",
+      "title": "Use CockroachDB Self-Hosted",
       "items": [{
           "title": "Production checklist",
           "urls": [
@@ -470,13 +470,13 @@
               ]
             },
             {
-              "title": "Improving statement performance",
+              "title": "Improve statement performance",
               "urls": [
                 "/${VERSION}/make-queries-fast.html"
               ]
             },
             {
-              "title": "Tuning with EXPLAIN",
+              "title": "Tune statements with EXPLAIN",
               "urls": [
                 "/${VERSION}/sql-tuning-with-explain.html"
               ]
