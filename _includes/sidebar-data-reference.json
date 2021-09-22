@@ -1390,12 +1390,6 @@
         ],
         "items": [
           {
-            "title": "Log sinks",
-            "urls": [
-              "/${VERSION}/log-sinks.html"
-            ]
-          },
-          {
             "title": "Log formats",
             "urls": [
               "/${VERSION}/log-formats.html"

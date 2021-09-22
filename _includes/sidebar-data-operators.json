@@ -56,8 +56,7 @@
           "items": [{
               "title": "Migration overview",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/migration-overview.html"
+                "/${VERSION}/migration-overview.html"
               ]
             },
             {
@@ -69,43 +68,37 @@
             {
               "title": "Migrate from Oracle",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/migrate-from-oracle.html"
+                "/${VERSION}/migrate-from-oracle.html"
               ]
             },
             {
               "title": "Migrate from Postgres",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/migrate-from-postgres.html"
+                "/${VERSION}/migrate-from-postgres.html"
               ]
             },
             {
               "title": "Migrate from MySQL",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/migrate-from-mysql.html"
+                "/${VERSION}/migrate-from-mysql.html"
               ]
             },
             {
               "title": "Migrate from CSV",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/migrate-from-csv.html"
+                "/${VERSION}/migrate-from-csv.html"
               ]
             },
             {
               "title": "Migrate from Avro",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/migrate-from-avro.html"
+                "/${VERSION}/migrate-from-avro.html"
               ]
             },
             {
               "title": "Import performance best practices",
               "urls": [
-                "/{{site.versions["
-                stable "]}}/import-performance-best-practices.html"
+                "/${VERSION}/import-performance-best-practices.html"
               ]
             }
           ]
@@ -113,8 +106,7 @@
         {
           "title": "Tune performance",
           "urls": [
-            "/{{site.versions["
-            stable "]}}/performance-best-practices-overview.html"
+            "/${VERSION}/performance-best-practices-overview.html"
           ]
         },
         {
