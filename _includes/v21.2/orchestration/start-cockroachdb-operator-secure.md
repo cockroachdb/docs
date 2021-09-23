@@ -64,7 +64,7 @@
     {{site.data.alerts.end}}
 
     {{site.data.alerts.callout_info}}
-    By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. To authenticate using your own CA, see [Secure the Cluster](secure-cockroachdb-kubernetes.html).
+    By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. This means that if you do not provide a CA, a `cockroach`-generated CA is used. To authenticate using your own CA, see [Secure the Cluster](secure-cockroachdb-kubernetes.html).
     {{site.data.alerts.end}}
 
 1. Apply `example.yaml`:
