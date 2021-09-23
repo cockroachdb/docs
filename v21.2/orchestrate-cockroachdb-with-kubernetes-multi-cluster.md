@@ -1063,7 +1063,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
         - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#scale-the-cluster) to your cluster before beginning your upgrade.
 
-1. Review the [backward-incompatible changes in v21.2](../releases/v21.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.2.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+1. Review the [backward-incompatible changes in v21.2](../releases/{{page.release_info.version}}#backward-incompatible-changes) and [deprecated features](../releases/{{page.release_info.version}}#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
 1. Decide how the upgrade will be finalized.
 
