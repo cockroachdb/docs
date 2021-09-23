@@ -21,6 +21,7 @@ exclude:
 - archived
 - package.json
 - package-lock.json
+- v21.2
 include:
 - _redirects
 keep_files:
