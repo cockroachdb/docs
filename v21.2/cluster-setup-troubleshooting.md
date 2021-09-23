@@ -65,7 +65,7 @@ Networking issues might prevent the node from communicating with itself on its h
 
 ### CockroachDB process hangs when trying to start a node in the background
 
-See [Why is my process hanging when I try to start it in the background?](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-it-in-the-background)
+See [Why is my process hanging when I try to start it in the background?](operational-faqs.html#why-is-my-process-hanging-when-i-try-to-start-nodes-with-the-background-flag)
 
 ## Cannot run SQL statements using built-in SQL client
 
@@ -318,7 +318,7 @@ Like any database system, if you run out of disk space the system will no longer
 
 - [Why is memory usage increasing despite lack of traffic?](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
--  [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-timeseries-data)
+-  [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
 
 ## Memory issues
 
