@@ -723,6 +723,12 @@
                 ]
               },
               {
+                "title": "Migrate to Multi-region SQL",
+                "urls": [
+                  "/${VERSION}/migrate-to-multiregion-sql.html"
+                ]
+              },
+              {
                 "title": "Topology Patterns",
                 "items": [
                   {

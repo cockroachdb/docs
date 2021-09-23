@@ -37,3 +37,4 @@ For more information about how to choose an overall multi-region configuration, 
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
+- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
