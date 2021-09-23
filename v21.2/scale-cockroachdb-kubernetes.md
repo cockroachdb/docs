@@ -18,6 +18,12 @@ This page explains how to add and remove CockroachDB nodes on Kubernetes.
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>
 
+<section class="filter-content" markdown="1" data-scope="operator">
+{{site.data.alerts.callout_success}}
+If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
+{{site.data.alerts.end}}
+</section>
+
 ## Add nodes
 
 <section class="filter-content" markdown="1" data-scope="operator">
