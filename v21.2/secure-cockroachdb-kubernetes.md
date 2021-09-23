@@ -412,7 +412,7 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
     Remember that `nodeTLSSecret` and `clientTLSSecret` in the Operator's [custom resource](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster) must specify these secret names. For details, see [Use a custom CA](#use-a-custom-ca).
     {{site.data.alerts.end}}
 
-1. Trigger a rolling restart of the pods by annotating the cluster (named `cockroachdb` in our [example](#apply-settings)):
+1. Trigger a rolling restart of the pods by annotating the cluster (named `cockroachdb` in our [deployment example](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster)):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell

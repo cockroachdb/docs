@@ -1097,7 +1097,7 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 <section class="filter-content" markdown="1" data-scope="operator">
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release and not a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a [production release](../releases/index.html#production-releases) and not a [testing release](../releases/index.html#testing-releases) (alpha/beta).
 
     Therefore, in order to upgrade to v21.1, you must be on a production release of v20.2.
 

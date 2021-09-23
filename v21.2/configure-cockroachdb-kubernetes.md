@@ -8,13 +8,19 @@ secure: true
 
 This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage. 
 
-These settings override the defaults used when [deploying CockroachDB on Kubernetes](deploy-cockroachdb-kubernetes.html).
+These settings override the defaults used when [deploying CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html).
 
 <div class="filters filters-big clearfix">
     <button class="filter-button" data-scope="operator">Operator</button>
     <button class="filter-button" data-scope="manual">Manual Configs</button>
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>
+
+<section class="filter-content" markdown="1" data-scope="operator">
+{{site.data.alerts.callout_success}}
+If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
+{{site.data.alerts.end}}
+</section>
 
 On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. We recommend that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
 

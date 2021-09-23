@@ -21,24 +21,28 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
+{{site.data.alerts.callout_success}}
+If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
+{{site.data.alerts.end}}
+
 1. Verify that you can upgrade.
 
-    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release and not a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a [production release](../releases/index.html#production-releases) and not a [testing release](../releases/index.html#testing-releases) (alpha/beta).
 
     Therefore, in order to upgrade to v21.2, you must be on a production release of v21.1.
 
-    1. If you are upgrading to v21.2 from a production release earlier than v21.1, or from a testing release (alpha/beta), first [upgrade to a production release of v21.1](../v21.1/orchestrate-cockroachdb-with-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to v21.2 from a production release earlier than v21.1, or from a testing release (alpha/beta), first [upgrade to a production release of v21.1](../v21.1/operate-cockroachdb-kubernetes.html#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to v21.2.
 
     1. If you are upgrading from a production release of v21.1, or from any earlier v21.2 patch release, you do not have to go through intermediate releases; continue to step 2.
 
 1. Verify the overall health of your cluster using the [DB Console](ui-overview.html). On the **Overview**:
-    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](scale-cockroachdb-kubernetes.html#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
     - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to [identify and resolve the cause of range under-replication and/or unavailability](cluster-setup-troubleshooting.html#replication-issues) before beginning your upgrade.
     - In the **Node List**:
         - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
-        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#add-nodes) to your cluster before beginning your upgrade.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](scale-cockroachdb-kubernetes.html#add-nodes) to your cluster before beginning your upgrade.
 
 1. Review the [backward-incompatible changes in v21.2](../releases/v21.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.2.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
@@ -49,7 +53,14 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
       name: cockroachdb/cockroach:{{page.release_info.version}}
     ~~~
 
-1. [Apply](#apply-settings) the new value. The Operator will perform the staged update.
+1. Apply the new settings to the cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl apply -f example.yaml
+    ~~~
+
+    The Operator will perform the staged update.
 
     {{site.data.alerts.callout_info}}
     The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting](cluster-settings.html) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade. This will enable certain [features and performance improvements introduced in v21.2](upgrade-cockroach-version.html#features-that-require-upgrade-finalization).
