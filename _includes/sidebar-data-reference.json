@@ -3,6 +3,56 @@
     "is_top_level": true,
     "items": [
       {
+        "title": "Architecture",
+        "urls": [
+          "/${VERSION}/architecture/overview.html"
+        ],
+        "items": [
+          {
+            "title": "SQL Layer",
+            "urls": [
+              "/${VERSION}/architecture/sql-layer.html"
+            ]
+          },
+          {
+            "title": "Transaction Layer",
+            "urls": [
+              "/${VERSION}/architecture/transaction-layer.html"
+            ]
+          },
+          {
+            "title": "Distribution Layer",
+            "urls": [
+              "/${VERSION}/architecture/distribution-layer.html"
+            ]
+          },
+          {
+            "title": "Replication Layer",
+            "urls": [
+              "/${VERSION}/architecture/replication-layer.html"
+            ]
+          },
+          {
+            "title": "Storage Layer",
+            "urls": [
+              "/${VERSION}/architecture/storage-layer.html"
+            ]
+          },
+          {
+            "title": "Life of a Distributed Transaction",
+            "urls": [
+              "/${VERSION}/architecture/life-of-a-distributed-transaction.html"
+            ]
+          },
+          {
+            "title": "Reads and Writes Overview",
+            "urls": [
+              "/${VERSION}/architecture/reads-and-writes-overview.html"
+            ]
+          }
+        ]
+      },
+      {
         "title": "SQL",
         "urls": [
           "/${VERSION}/sql-feature-support.html"
