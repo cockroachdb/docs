@@ -8,7 +8,7 @@ The Operator is currently supported for GKE only.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
     ~~~
 
     ~~~
@@ -19,7 +19,7 @@ The Operator is currently supported for GKE only.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/manifests/operator.yaml
     ~~~
 
     ~~~
@@ -49,7 +49,7 @@ On a production cluster, you will need to modify the StatefulSet configuration w
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/example.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/examples/example.yaml
     ~~~
 
     {% include copy-clipboard.html %}
