@@ -38,7 +38,7 @@ To access a cluster, you need to ask a Console Admin for the username and passwo
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
 - [Create a cluster](create-your-cluster.html)
-- [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachcloud)
+- [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachdb-cloud)
 - [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](user-authorization.html#create-a-sql-user)
 - [Manage billing for the Organization](#manage-billing-for-the-organization)

@@ -1,4 +1,4 @@
-CockroachDB Cloud---
+---
 title: CockroachDB Cloud Docs
 summary: CockroachDB Cloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
 toc: false

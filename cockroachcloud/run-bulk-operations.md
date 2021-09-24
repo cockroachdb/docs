@@ -96,7 +96,7 @@ Read the [`IMPORT`](../{{site.versions["stable"]}}/import.html) page for more ex
 ### Export data out of {{ site.data.products.db }}
 
 {{site.data.alerts.callout_info}}
-Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your Organization](console-access-management.html#manage-billing-for-the-organization) to access cloud storage or [export data to a local CSV file](migrate-from-free-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
+Using `EXPORT` with `userfile` is not recommended. If you need to export data from a Serverless cluster, you can either [set up billing for your Organization](console-access-management.html#manage-billing-for-the-organization) to access cloud storage or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
 {{site.data.alerts.end}}
 
 The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:

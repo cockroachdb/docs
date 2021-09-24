@@ -7,7 +7,7 @@ toc: true
 The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign privileges to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
 {{site.data.alerts.callout_info}}
- <code>CREATE ROLE</code> is no longer an {{ site.data.products.enterprise }} feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `CREATE ROLE` is now an alias for [`CREATE USER`](create-user.html).
+ <code>CREATE ROLE</code> is no longer an Enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `CREATE ROLE` is now an alias for [`CREATE USER`](create-user.html).
 {{site.data.alerts.end}}
 
 ## Considerations

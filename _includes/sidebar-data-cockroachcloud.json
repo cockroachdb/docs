@@ -99,7 +99,7 @@
             {
               "title": "Migrate from Serverless to Dedicated",
               "urls": [
-                "/cockroachcloud/migrate-from-free-to-dedicated.html"
+                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
               ]
             },
             {

@@ -92,7 +92,7 @@ Yes, see [Run Bulk Operations](run-bulk-operations.html) for more information. I
 
 ### Is change data capture available to me?
 
-Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Changefeeds](run-bulk-operations.html#stream-data-out-of-your-cockroachcloud-cluster).
+Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Changefeeds](run-bulk-operations.html#stream-data-out-of-your-cockroachdb-cloud-cluster).
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
