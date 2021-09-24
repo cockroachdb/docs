@@ -17,6 +17,12 @@ Despite CockroachDB's various [built-in safeguards against failure](architecture
     <button class="filter-button" data-scope="helm">Use Helm</button>
 </div>
 
+<section class="filter-content" markdown="1" data-scope="operator">
+{{site.data.alerts.callout_success}}
+If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
+{{site.data.alerts.end}}
+</section>
+
 ## Configure Prometheus
 
 Every node of a CockroachDB cluster exports granular timeseries metrics formatted for easy integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying timeseries data. This section shows you how to orchestrate Prometheus as part of your Kubernetes cluster and pull these metrics into Prometheus for external monitoring.
