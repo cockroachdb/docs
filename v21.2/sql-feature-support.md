@@ -174,7 +174,7 @@ table tr td:nth-child(2) {
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
  Computed columns (stored and virtual) | ✓ | Common Extension | [Computed Columns documentation](computed-columns.html)
- Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
+ Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)<br>{{site.data.alerts.callout_danger}}Interleaving was deprecated in CockroachDB v20.2, and is disabled by default in CockroachDB v21.1 and later. For details, see [`INTERLEAVE IN PARENT` Deprecation](interleave-in-parent.html#deprecation).{{site.data.alerts.end}}
  Multi-region capabilities | ✓ | CockroachDB Extension | [Multi-region documentation](multiregion-overview.html)
  System catalog schemas | ✓ | Standard, PostgreSQL/CockroachDB Extension | [`crdb_internal`](crdb-internal.html) (CockroachDB Extension)<br>[`information_schema`](information-schema.html) (Standard)<br>[`pg_catalog`](pg-catalog.html) (PostgreSQL Extension)<br>[`pg_extension`](pg-extension.html) (PostgreSQL Extension)
  Sequences |  ✓ | Common Extension | [`CREATE SEQUENCE` documentation](create-sequence.html)
