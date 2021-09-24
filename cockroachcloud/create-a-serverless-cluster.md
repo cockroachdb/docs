@@ -2,6 +2,7 @@
 title: Create a CockroachDB Serverless (beta) Cluster
 summary: Learn how to create a cluster using CockroachDB Serverless (beta).
 toc: true
+redirect_from: create-a-free-cluster.html
 ---
 
 <div class="filters clearfix">

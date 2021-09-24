@@ -2,6 +2,7 @@
 title: CockroachDB Serverless (beta) FAQs
 summary: Get answers to frequently asked questions about CockroachDB Serverless (beta)
 toc: true
+redirect_from: free-faqs.html
 ---
 
 This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
