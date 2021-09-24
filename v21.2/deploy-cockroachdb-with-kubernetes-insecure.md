@@ -153,7 +153,7 @@ To delete the Kubernetes cluster:
 ## See also
 
 - [Kubernetes Overview](kubernetes-overview.html)
-- [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-kubernetes.html)
+- [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html)
 - [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Kubernetes Performance Guide](kubernetes-performance.html)

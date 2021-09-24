@@ -181,6 +181,10 @@ If you want to run on another cloud or on-premises, use this [basic network test
 
     This includes installing and configuring the AWS CLI and `eksctl`, which is the command-line tool used to create and delete Kubernetes clusters on EKS, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
+    {{site.data.alerts.callout_info}}
+    If you are running [EKS-Anywhere](https://aws.amazon.com/eks/eks-anywhere/), CockroachDB requires that you [configure your default storage class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/) to auto-provision persistent volumes. Alternatively, you can define a custom storage configuration as required by your install pattern.
+    {{site.data.alerts.end}}
+
 1. From your local workstation, create three Kubernetes clusters. For each cluster, specify a unique region and a **non-overlapping** IP range for the VPC in CIDR notation (e.g., 10.0.0.0/16). Refer to the AWS documentation for valid [regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions) and [CIDR blocks](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html#VPC_Sizing).
 
     {{site.data.alerts.callout_danger}}
@@ -1063,7 +1067,11 @@ The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/doc
         - Make sure all nodes are on the same version. If any nodes are behind, upgrade them to the cluster's current version first, and then start this process over.
         - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics > Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](#scale-the-cluster) to your cluster before beginning your upgrade.
 
-1. Review the [backward-incompatible changes in v21.2](../releases/{{page.release_info.version}}#backward-incompatible-changes) and [deprecated features](../releases/{{page.release_info.version}}#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+{% comment %}
+1. Review the [backward-incompatible changes in v21.2](../releases/v21.2.0.html#backward-incompatible-changes) and [deprecated features](../releases/v21.2.0.html#deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+{% endcomment %}
+
+1. Review the backward-incompatible changes in v21.2 and deprecated features. If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
 1. Decide how the upgrade will be finalized.
 
