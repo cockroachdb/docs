@@ -16,19 +16,9 @@ This page provides solutions for common performance issues in your clusters. See
 <section class="filter-content" markdown="1" data-scope="contention">
 ## Indicators that your workoad is experiencing contention
 
-Your application is experiencing degraded performance with serialization errors like:
-
-  - `SQLSTATE: 40001`
-  - `RETRY_WRITE_TOO_OLD`
-  - `RETRY_SERIALIZABLE`
-
-The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
-
-{%comment%} Add screenshot of high-contention graph {%endcomment%}
-
-The [Transaction Restarts graph](ui-sql-dashboard.html) graph is showing spikes in retries over time.
-
-{%comment%} Add screenshot of high-retries graph {%endcomment%}
+* Your application is experiencing degraded performance with serialization errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`.
+* The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
+* The [Transaction Restarts graph](ui-sql-dashboard.html) graph is showing spikes in retries over time.
 
 ## Fixing contention problems
 
@@ -39,31 +29,27 @@ The [Transaction Restarts graph](ui-sql-dashboard.html) graph is showing spikes 
 
 ## Indicators that your workload has statements with full table scans
 
-The following query returns statements with full table scans in their statement plan:
+* The following query returns statements with full table scans in their statement plan:
 
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SHOW FULL TABLE SCANS;
-~~~
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SHOW FULL TABLE SCANS;
+    ~~~
+* The following query against the `CRDB_INTERNAL.node_statement_statistics` table returns results:
 
-The following query against the `CRDB_INTERNAL.node_statement_statistics` table returns results:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT count(*) as total_full_scans
-FROM crdb_internal.node_statement_statistics
-WHERE FullTableScan = 'True';
-~~~
-
-Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-details-page) of the DB Console indicates that the plan contains full table scans.
-
-If the statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
-
-The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT count(*) as total_full_scans
+    FROM crdb_internal.node_statement_statistics
+    WHERE FullTableScan = 'True';
+    ~~~
+* Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-details-page) of the DB Console indicates that the plan contains full table scans.
+* The statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
+* The [Full Table/Index Scans graph](ui-sql-dashboard.html#full-table-index-scans) in the DB Console is showing spikes over time.
 
 ## Fixing full table scans in statements
 
-Full table scans often result in poor statement performance. Not every full table scan is an indicator of poor performance, however. The cost-based optimizer may decide on a full table scan when other index or join scans would result in longer execution time.
+Full table scans often result in poor statement performance. Not every full table scan is an indicator of poor performance, however. The [cost-based optimizer](cost-based-optimizer.html) may decide on a full table scan when other [index](indexes.html) or [join scans](joins.html) would result in longer execution time.
 
 [Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
 
@@ -73,14 +59,13 @@ Full table scans often result in poor statement performance. Not every full tabl
 
 ## Indicators that your tables are using suboptimal primary keys
 
-The [Hardware metrics dashboard](ui-hardware-dashboard.html) in the DB Console shows high resource usage per node.
-
-The Problem Ranges report on the [Advanced Debug page](ui-debug-pages.html) of the DB Console indicates a high number of queries per second on a subset of ranges or nodes.
+* The [Hardware metrics dashboard](ui-hardware-dashboard.html) in the DB Console shows high resource usage per node.
+* The Problem Ranges report on the [Advanced Debug page](ui-debug-pages.html) of the DB Console indicates a high number of queries per second on a subset of ranges or nodes.
 
 ## Fixing suboptimal primary keys
 
 Evaluate the schema of your table to see if you can redistribute data more evenly across multiple ranges. Specifically, make sure you have followed [best practices when selecting your primary key](schema-design-table.html#primary-key-best-practices).
 
-If your workload with a small dataset (for example, few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](split-at.html#split-a-table) to reduce resource contention.
+If your workload with a small dataset (for example, a dataset that contains few index key values) is experiencing resource contention, consider splitting your tables and indexes to [distribute ranges across multiple nodes](split-at.html#split-a-table) to reduce resource contention.
 
 </section>
