@@ -1,12 +1,26 @@
 Find the transactions and statements within the transactions that are experiencing contention. CockroachDB has several ways of tracking down transactions that are experiencing contention:
 
 * The [Transactions page](ui-transactions-page.html) and the [Statements page](ui-statements-page.html) in the DB Console allow you to sort by contention.
-* Query the `crdb_internal.cluster_contention_events` table for your database to find the transactions that are experiencing contention.
+* Create views for the information in the `crdb_internal.cluster_contention_events` table to find the tables and indexes that are experiencing contention.
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    SELECT * FROM movr.crdb_internal.cluster_contention_events ORDER BY num_contention_events DESC;
-    SELECT * FROM movr.crdb_internal.cluster_contention_events ORDER BY cumulative_contention_time DESC;
+    CREATE VIEW contended_tables (database_name, schema_name, name, num_contention_events)
+    AS SELECT DISTINCT database_name, schema_name, name, num_contention_events
+    FROM crdb_internal.cluster_contention_events
+    JOIN crdb_internal.tables
+    ON crdb_internal.cluster_contention_events.table_id = crdb_internal.tables.table_id
+    ORDER BY num_contention_events desc;
+
+    CREATE VIEW contended_indexes (database_name, schema_name, name, index_name, num_contention_events)
+    AS SELECT DISTINCT database_name, schema_name, name, index_name, num_contention_events
+    FROM crdb_internal.cluster_contention_events, crdb_internal.tables, crdb_internal.table_indexes
+    WHERE crdb_internal.cluster_contention_events.index_id = crdb_internal.table_indexes.index_id
+    AND crdb_internal.cluster_contention_events.table_id = crdb_internal.tables.table_id
+    ORDER BY num_contention_events;
+
+    SELECT * FROM contended_tables;
+    SELECT * FROM contended_indexes;
     ~~~
 
-After identifying the transactions or statements that are causing contention, follow the steps [outlined in our best practices recommendations to avoid contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+After identifying the tables and indexes experiencing contention, follow the steps [outlined in our best practices recommendations to avoid contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
