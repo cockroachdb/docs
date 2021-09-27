@@ -65,11 +65,33 @@ See the [Statements page](ui-statements-page.html) for more details on the clust
 
 See the [Statements page](ui-statements-page.html) for more details on the cluster's SQL statements.
 
+## Full Table/Index Scans
+
+- In the node view, the graph shows the total number of full table and index scans on that node.
+
+- In the cluster view, the graph shows the total number of full table and index scans across all nodes in the cluster.
+
+[Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
+
 ## Active Flows for Distributed SQL Statements
 
 - In the node view, the graph shows the number of flows on that node contributing to the currently running [distributed SQL](architecture/sql-layer.html#distsql) statements.
 
 - In the cluster view, the graph shows the number of flows across all nodes in the cluster contributing to the currently running [distributed SQL](architecture/sql-layer.html#distsql) statements.
+
+## Connection Latency: 99th Percentile
+
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
+
+- In the node view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of connection latency for the node. Over the last minute this node established 99% of connections within this time, not including network latency between the node and the client.
+
+- In the cluster view, the graph shows the 99th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster established 99% of connections within this time, not including network latency between the node and the client.
+
+## Connection Latency: 90th Percentile
+
+Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
+
+
 
 ## Service Latency: SQL, 99th percentile
 
@@ -81,7 +103,7 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 - In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 90% of queries within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 90% of queries within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 90% of queries within this time, not including network latency between the node and the client.
 
 ## KV Execution Latency: 99th percentile
 
@@ -115,6 +137,14 @@ KV execution latency is calculated as the time in milliseconds between when the 
 If the graph shows excessive aborts or rollbacks, it might indicate issues with the SQL statements. In that case, re-examine [statements](ui-statements-page.html) to lower contention.
 
 See the [Transactions page](ui-transactions-page.html) for more details on the transactions.
+
+## Transaction Restarts
+
+- In the node view, the graph shows the number of transactions restarted on that node broken down by the errors that caused the restart.
+
+- In the cluster view, the graph shows the number of transactions restarted across the cluster broken down by the errors that caused the restart.
+
+See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaciton to restart.
 
 ## Transaction Latency: 99th percentile
 
