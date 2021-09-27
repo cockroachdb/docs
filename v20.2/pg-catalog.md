@@ -78,7 +78,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_sequences` | None
 `pg_settings` | `pg_settings`
 `pg_shadow` | None
-`pg_shdepend` | `pg_shdepend`
+`pg_shdepend` | `pg_shdepend` (empty)
 `pg_shdescription` | `pg_shdescription`
 `pg_shmem_allocations` | None
 `pg_shseclabel` | `pg_shseclabel`
