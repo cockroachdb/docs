@@ -119,7 +119,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_statio_user_sequences` | `pg_statio_user_sequences` (empty)
 `pg_statio_user_tables` | `pg_statio_user_tables` (empty)
 `pg_statistic` | None
-`pg_statistic_ext` | `pg_statistic_ext`
+`pg_statistic_ext` | `pg_statistic_ext` (empty)
 `pg_statistic_ext_data` | None
 `pg_stats` | None
 `pg_stats_ext` | None
