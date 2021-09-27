@@ -8,7 +8,7 @@ For PostgreSQL compatibility, CockroachDB includes a [system catalog schema](sys
 
 ## Data exposed by `pg_catalog`
 
-The tables in CockroachDB's `pg_catalog` schema correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and some of the `pg_catalog` tables are empty. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
+The tables in CockroachDB's `pg_catalog` schema correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and some of the `pg_catalog` tables are empty. See the following table for a detailed comparison between PostgreSQL 13 system catalogs and `pg_catalog` tables.
 
 PostgreSQL 13 system catalog | `pg_catalog` table  
 -----------------------------|--------------
@@ -78,7 +78,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_sequences` | None
 `pg_settings` | `pg_settings`
 `pg_shadow` | `pg_shadow` (empty)
-`pg_shdepend` | `pg_shdepend`
+`pg_shdepend` | `pg_shdepend` (empty)
 `pg_shdescription` | `pg_shdescription`
 `pg_shmem_allocations` | `pg_shmem_allocations` (empty)
 `pg_shseclabel` | `pg_shseclabel`
@@ -126,7 +126,7 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
 To prohibit queries against empty tables, set the `stub_catalog_tables` [session variable](set-vars.html) to `off`.
 {{site.data.alerts.end}}
 
-## Querying `pg_catalog` tables
+## Query `pg_catalog` tables
 
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.
 
