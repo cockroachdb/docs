@@ -8,7 +8,7 @@ For PostgreSQL compatibility, CockroachDB includes a [system catalog schema](sys
 
 ## Data exposed by `pg_catalog`
 
-The tables in CockroachDB's `pg_catalog` correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
+The tables in CockroachDB's `pg_catalog` correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`. See the following table for a detailed comparison between PostgreSQL 13 system catalogs and `pg_catalog` tables.
 
 PostgreSQL 13 system catalog | `pg_catalog` table  
 -----------------------------|--------------
@@ -123,7 +123,7 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
   ...
 ~~~
 
-## Querying `pg_catalog` tables
+## Query `pg_catalog` tables
 
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.
 
