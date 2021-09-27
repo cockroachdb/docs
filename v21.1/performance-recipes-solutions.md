@@ -18,6 +18,7 @@ This page provides solutions for common performance issues in your clusters. See
 
 * Your application is experiencing degraded performance with serialization errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`.
 * The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
+<img src="{{ 'images/v21.1/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
 * The [KV Transaction Restarts graph](ui-overview.html) graph is showing spikes in retries over time.
 
 ## Fixing contention problems
