@@ -16,7 +16,7 @@ To provide consistency, CockroachDB implements full support for ACID transaction
 
 For code samples of using transactions in CockroachDB, see our documentation on [transactions](../transactions.html#sql-statements).
 
-Because CockroachDB enables transactions that can span your entire cluster (including cross-range and cross-table transactions), it optimizes correctness through a two-phase commit process.
+Because CockroachDB enables transactions that can span your entire cluster (including cross-range and cross-table transactions), it optimizes correctness through a two-phase transaction protocol with asynchronous cleanup.
 
 ### Writes & Reads (Phase 1)
 
