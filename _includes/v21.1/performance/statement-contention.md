@@ -18,7 +18,12 @@ Find the transactions and statements within the transactions that are experienci
     WHERE crdb_internal.cluster_contention_events.index_id = crdb_internal.table_indexes.index_id
     AND crdb_internal.cluster_contention_events.table_id = crdb_internal.tables.table_id
     ORDER BY num_contention_events;
+    ~~~
 
+    Then run a select statement from the `contended_tables` or `contended_indexes` view.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
     SELECT * FROM contended_tables;
     SELECT * FROM contended_indexes;
     ~~~
