@@ -415,6 +415,12 @@
                 "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
                 ]
+              },
+              {
+                "title": "Performance tuning recipes",
+                "urls": [
+                  "/${VERSION}/performance-recipes.html"
+                ]
               }
             ]
           },
