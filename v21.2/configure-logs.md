@@ -53,10 +53,11 @@ For clarity, this article uses the block format to describe the YAML payload, wh
 
 ~~~ yaml
 file-defaults: ...       # defaults inherited by file sinks
-fluent-defaults: ...     # defaults inherited by network sinks
+fluent-defaults: ...     # defaults inherited by Fluentd sinks
+http-defaults: ...       # defaults inherited by HTTP sinks
 sinks:
    file-groups: ...      # file sink definitions
-   fluent-servers: ...   # Fluent sink definitions
+   fluent-servers: ...   # Fluentd sink definitions
    http-servers: ...     # HTTP sink definitions
    stderr: ...           # stderr sink definitions
 capture-stray-errors: ... # parameters for the stray error capture system
@@ -72,13 +73,14 @@ You can view your current settings by running `cockroach debug check-log-config`
 
 ## Configure log sinks
 
-Log *sinks* route events from specified [logging channels](logging-overview.html#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-network), and the [standard error stream (`stderr`)](#output-to-stderr).
+Log *sinks* route events from specified [logging channels](logging-overview.html#logging-channels) to destinations outside CockroachDB. These destinations currently include [log files](#output-to-files), [Fluentd](https://www.fluentd.org/)-compatible [servers](#output-to-fluentd-compatible-network-collectors), [HTTP servers](#output-to-http-network-collectors), and the [standard error stream (`stderr`)](#output-to-stderr).
 
 All supported output destinations are configured under `sinks`:
 
 ~~~ yaml
 file-defaults: ...
 fluent-defaults: ...
+http-defaults: ...
 sinks:
   file-groups:
     {file group name}:
@@ -103,9 +105,9 @@ All supported sink types use the following common sink parameters:
 
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `filter`        | Minimum severity level at which logs enter the channel. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                          |
+| `filter`        | Minimum severity level at which logs enter the channels selected for the sink. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                          |
 | `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats](log-formats.html). For details, see [file logging format](#file-logging-format) and [network logging format](#network-logging-format).                                                                                                                                                                                           |
-| `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or [over a network](#output-to-network). For details, see [Redact logs](#redact-logs).                                                                                                                                           |
+| `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or over a network. For details, see [Redact logs](#redact-logs).                                                                                                                                           |
 | `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats](log-formats.html).             |
 | `exit-on-error` | When `true`, stops the Cockroach node if an error is encountered while writing to the sink. We recommend enabling this option on file sinks in order to avoid losing any log entries. When set to `false`, this can be used to mark certain sinks (such as `stderr`) as non-critical.                                                                                                                                        |
 | `auditable`     | If `true`, enables `exit-on-error` on the sink. Also disables `buffered-writes` if the sink is under `file-groups`. This guarantees [non-repudiability](https://en.wikipedia.org/wiki/Non-repudiation) for any logs in the sink, but can incur a performance overhead and higher disk IOPS consumption. This setting is typically enabled for [security-related logs](logging-use-cases.html#security-and-audit-monitoring). |
@@ -121,6 +123,7 @@ CockroachDB can write messages to one or more log files.
 ~~~ yaml
 file-defaults: ...
 fluent-defaults: ...
+http-defaults: ...
 sinks:
   file-groups:
     default:
@@ -171,13 +174,14 @@ cockroach-health.log
 The files generated for a group named `default` are named after the pattern `cockroach.{metadata}.log`.
 {{site.data.alerts.end}}
 
-### Output to Fluent-compatible network collectors
+### Output to Fluentd-compatible network collectors
 
 CockroachDB can send logs over the network to a [Fluentd](https://www.fluentd.org/)-compatible log collector (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)). `fluent-servers` specifies the channels that output to a server, along with its configuration details. For example:
 
 ~~~ yaml
 file-defaults: ...
 fluent-defaults: ...
+http-defaults: ...
 sinks:
   fluent-servers:
     health:
@@ -187,7 +191,7 @@ sinks:
 ~~~
 
 {{site.data.alerts.callout_info}}
-A network sink can be listed more than once with different `address` values. This routes the same logs to different Fluentd servers.
+A Fluentd sink can be listed more than once with different `address` values. This routes the same logs to different Fluentd servers.
 {{site.data.alerts.end}}
 
 Along with the [common sink parameters](#common-sink-parameters), each Fluentd server accepts the following parameters:
@@ -209,20 +213,21 @@ CockroachDB can send logs over the network to a HTTP server. `http-servers` spec
 ~~~ yaml
 file-defaults: ...
 fluent-defaults: ...
+http-defaults: ...
 sinks:
   http-servers:
     health:
       channels: [HEALTH]
       address: 127.0.0.1:5170
-	  method: POST
-	  unsafe-tls: false
-	  timeout: 2s
-	  disable-keep-alives: false
-    ...
+  	  method: POST
+  	  unsafe-tls: false
+  	  timeout: 2s
+  	  disable-keep-alives: false
+      ...
 ~~~
 
 {{site.data.alerts.callout_info}}
-A network sink can be listed more than once with different `address` values. This routes the same logs to different HTTP servers.
+An HTTP sink can be listed more than once with different `address` values. This routes the same logs to different HTTP servers.
 {{site.data.alerts.end}}
 
 Along with the [common sink parameters](#common-sink-parameters), each HTTP server accepts the following parameters:
@@ -232,9 +237,9 @@ Along with the [common sink parameters](#common-sink-parameters), each HTTP serv
 | `channels`            | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
 | `address`             | Network address and port of the log collector.                                                                                                                                                                                                                                                                                                                     |
 | `method`              | HTTP method to use. Can be `GET` or `POST`.<br><br>**Default:** `POST`                                                                                                                                                                                                                                                                                             |
-| `unsafe-tls`          | Whether to bypass TLS server validation.<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                               |
+| `unsafe-tls`          | When `true`, bypasses TLS server validation.<br><br>**Default:** `false`                                                                                                                                                                                                                                                                                           |
 | `timeout`             | Timeout before requests are abandoned.<br><br>**Default:** `0` (no timeout)                                                                                                                                                                                                                                                                                        |
-| `disable-keep-alives` | Whether to disallow reuse of the server connection across requests.<br><br>**Default:** `false` (reuses connections)                                                                                                                                                                                                                                               |
+| `disable-keep-alives` | When `true`, disallows reuse of the server connection across requests.<br><br>**Default:** `false` (reuses connections)                                                                                                                                                                                                                                            |
 
 A HTTP sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the HTTP collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
 
@@ -247,6 +252,7 @@ CockroachDB can output messages to the [standard error stream (`stderr`)](https:
 ~~~ yaml
 file-defaults: ...
 fluent-defaults: ...
+http-defaults: ...
 sinks:
   stderr:
     channels: [DEV]
@@ -263,7 +269,7 @@ The `format` parameter for `stderr` is set to [`crdb-v2-tty`](log-formats.html#f
 | `channels`      | List of channels that output to this sink. Use a YAML array or string of [channel names](logging-overview.html#logging-channels), `ALL` to include all channels, or `ALL EXCEPT {channels}` to include all channels except the specified channel names.<br><br>For more details on acceptable syntax, see [Logging channel selection](#logging-channel-selection). |
 | `no-color` | When `true`, removes terminal color [escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code) from the output. |
 
-Because server start-up messages are always emitted at the start of the standard error stream, it is generally difficult to automate integration of `stderr` with log analyzers. We recommend using [file logging](#output-to-files) or [network logging](#output-to-network) instead of `stderr` when integrating with automated monitoring software.
+Because server start-up messages are always emitted at the start of the standard error stream, it is generally difficult to automate integration of `stderr` with log analyzers. We recommend using [file logging](#output-to-files) or network logging via [Fluentd](#output-to-fluentd-compatible-network-collectors) or [HTTP](#output-to-http-compatible-network-collectors) instead of `stderr` when integrating with automated monitoring software.
 
 {{site.data.alerts.callout_info}}
 By default, `cockroach start` and `cockroach start-single-node` do not print any messages to `stderr`. However, if the `cockroach` process does not have access to on-disk storage, all messages are printed to `stderr`.
@@ -271,43 +277,43 @@ By default, `cockroach start` and `cockroach start-single-node` do not print any
 
 ### Logging channel selection
 
-Each sink can select multiple channels. The names of selected channels can be specified as a YAML array or as a string.
+For each sink, multiple channels can be selected. Note that:
+
+- Spacing between items will vary according to the syntax used.
+- Channel selection is case-insensitive.
+
+These selections are equivalent:
 
 ~~~ yaml
-# Select just these two channels. Space is important.
-# This uses the severity filter set by the separate 'filter' attribute
-# in the sink configuration.
+# Select OPS and HEALTH.
 channels: [OPS, HEALTH]
-
-# Select PERF at severity INFO, and HEALTH and OPS at severity WARNING.
-# The 'filter' attribute in the sink configuration is ignored.
-channels: {INFO: [PERF], WARNING: [HEALTH, OPS]}
-
-# The brackets are optional when selecting a single channel.
-channels: OPS
-channels: {INFO: PERF}
-
-# The selection is case-insensitive.
-channels: [ops, HeAlTh]
-
-# Same configuration, as a YAML string. Avoid space around comma
-# if using the YAML "inline" format.
-channels: OPS,HEALTH
-
-# Same configuration, as a quoted string.
 channels: 'OPS, HEALTH'
-
-# Same configuration, as a multi-line YAML array.
+channels: OPS,HEALTH
 channels:
 - OPS
 - HEALTH
+~~~
 
+By default, the severity level set by `filter` in the [sink configuration](#common-sink-parameters) is used. However, you can specify a different severity level for each channel. For more information on severity levels, see [Set logging levels](#set-logging-levels).
+
+These selections are equivalent:
+
+~~~ yaml
+# Select PERF at severity INFO, and HEALTH and OPS at severity WARNING.
+channels: {INFO: [PERF], WARNING: [HEALTH, OPS]}
 channels:
   INFO:
   - PERF
   WARNING:
   - OPS
   - HEALTH
+~~~
+
+Brackets are optional when selecting a single channel:
+
+~~~ yaml
+channels: OPS
+channels: {INFO: PERF}
 ~~~
 
 To select all channels, using the `all` keyword:
@@ -330,7 +336,7 @@ channels: 'all except [ops, health]'
 
 ## Configure logging defaults
 
-When setting up a logging configuration, it's simplest to define shared parameters in `file-defaults` and `fluent-defaults` and override specific values as needed in [`file-groups`](#output-to-files), [`fluent-servers`](#output-to-network), and [`stderr`](#output-to-stderr). For a complete example, see the [default configuration](#default-logging-configuration).
+When setting up a logging configuration, it's simplest to define shared parameters in `file-defaults` and `fluent-defaults` and override specific values as needed in [`file-groups`](#output-to-files), [`fluent-servers`](#output-to-fluentd-compatible-network-collectors), [`http-servers`](#output-to-http-network-collectors), and [`stderr`](#output-to-stderr). For a complete example, see the [default configuration](#default-logging-configuration).
 
 {{site.data.alerts.callout_success}}
 You can view your current settings by running `cockroach debug check-log-config`, which returns the YAML definitions and a URL to a visualization of the current logging configuration.
@@ -376,16 +382,16 @@ file-defaults:
 `format` refers to the envelope of the log message, which contains the event metadata. This is separate from the event payload, which corresponds to its [event type](eventlog.html).
 {{site.data.alerts.end}}
 
-### Set Fluent defaults
+### Set Fluentd defaults
 
-Defaults for Fluent-compatible network sinks are set in `fluent-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
+Defaults for Fluentd-compatible network sinks are set in `fluent-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
 
-Note that the [server parameters](#output-to-network) `address` and `net` are *not* specified in `fluent-defaults`:
+Note that the [server parameters](#output-to-fluentd-compatible-network-collectors) `address` and `net` are *not* specified in `fluent-defaults`:
 
 - `address` must be specified for each sink under `fluent-servers`.
 - `net` is not required and defaults to `tcp`.
 
-#### Network logging format
+#### Fluentd logging format
 
 The default message format for network output is [`json-fluent-compact`](log-formats.html#format-json-fluent-compact). Each log message is structured as a JSON payload that can be read programmatically. The `json-fluent-compact` and [`json-fluent`](log-formats.html#format-json-fluent) formats include a `tag` field that is required by the [Fluentd protocol](https://docs.fluentd.org/configuration/config-file). For details, see [Log formats](log-formats.html#format-json-fluent-compact).
 
@@ -400,16 +406,16 @@ fluent-defaults:
 
 ### Set HTTP defaults
 
-Defaults for HTTP  sinks are set in `http-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
+Defaults for HTTP sinks are set in `http-defaults`, which accepts all [common sink parameters](#common-sink-parameters).
 
-Note that the [server parameters](#output-to-network) `address` and `method` are *not* specified in `fluent-defaults`:
+Note that the [server parameters](#output-to-http-network-collectors) `address` and `method` are *not* specified in `fluent-defaults`:
 
 - `address` must be specified for each sink under `http-servers`.
 - `method` is not required and defaults to `POST`.
 
-#### Network logging format
+#### HTTP logging format
 
-The default message format for HTTP output is [`json-compact`](log-formats.html#format-json-compact). Each log message is structured as a JSON payload that can be read programmatically. For details, see [Log formats](log-formats.html#format-json-fluent-compact).
+The default message format for HTTP output is [`json-compact`](log-formats.html#format-json-compact). Each log message is structured as a JSON payload that can be read programmatically. For details, see [Log formats](log-formats.html#format-json-compact).
 
 ~~~ yaml
 http-defaults:
@@ -424,16 +430,15 @@ http-defaults:
 
 Log messages are associated with a [severity level](logging.html#logging-levels-severities) when they are generated.
 
-Each logging sink accepts messages from each logging channel at a minimum severity level.
-This minimum severity level can be specified per channel, or by default using the `filter` attribute.
+Each logging sink accepts messages from each logging channel at a minimum severity level. This minimum severity level can be specified [per sink](#common-sink-parameters) or by default using the `filter` attribute.
 
 Messages with severity levels below the configured threshold do not enter logging channels and are discarded.
 
 The [default configuration](#default-logging-configuration) uses the following severity levels for [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html):
 
-- `file-defaults` and `fluent-defaults` each use `filter: INFO`. Since `INFO` is the lowest severity level, file and network sinks will emit all log messages.
+- `file-defaults`, `fluent-defaults`, and `http-defaults` each use `filter: INFO`. Since `INFO` is the lowest severity level, file and network sinks will emit all log messages.
 - `stderr` uses `filter: NONE` and does not emit log messages.
-- The `default` file sink includes a copy of the events from all the non-`DEV`, non-`OPS` channels at severity `WARNING` or higher.
+- The `default` file group uses `filter: INFO` for events from the `DEV` and `OPS` channels, and `filter: WARNING` for all others.
 
 {{site.data.alerts.callout_info}}
 All other `cockroach` commands use `filter: WARNING` and log to `stderr` by default, with these exceptions:
@@ -442,26 +447,27 @@ All other `cockroach` commands use `filter: WARNING` and log to `stderr` by defa
 - [`cockroach demo`](cockroach-demo.html#logging) uses `filter: NONE` (discards all log messages).
 {{site.data.alerts.end}}
 
-You can also override the `file-defaults` and `fluent-defaults` severity levels on a per-sink basis. 
+You can override the `file-defaults`, `fluent-defaults`, and `http-defaults` severity levels on a per-sink basis.
 
-For example, this includes `DEV` at severity `INFO`, and `OPS` at severity `ERROR`:
-
-~~~ yaml
-sinks:
-  file-groups:
-    dev:
-      channels: {INFO: DEV, ERROR: OPS}
-~~~
-
-The `filter` attribute is used when `channels` does not specify a severity threshold.
-For example, the following includes `DEV` at severity `WARNING`:
+For example, this will include `DEV` events at severity `WARNING`:
 
 ~~~ yaml
 sinks:
   file-groups:
     dev:
       channels: DEV
-	  filter: WARNING
+      filter: WARNING
+~~~
+
+You can also override the `filter` attribute and set severity levels on a [per-channel](#logging-channel-selection) basis.
+
+For example, this will include `DEV` events at severity `INFO`, and `OPS` events at severity `ERROR`:
+
+~~~ yaml
+sinks:
+  file-groups:
+    dev:
+      channels: {INFO: DEV, ERROR: OPS}
 ~~~
 
 ### Redact logs
@@ -477,6 +483,8 @@ When collecting logs centrally (e.g., in data mining scenarios where non-privile
 file-defaults:
   redact: true
 fluent-defaults:
+  redact: true
+http-defaults:
   redact: true
 ~~~
 
@@ -495,7 +503,7 @@ fluent-defaults:
 
 The `DEV` channel is used for debug and uncategorized messages. It can therefore be noisy and contain sensitive (PII) information. 
 
-We recommend configuring `DEV` separately from the other logging channels. When sending logs [over the network](#output-to-network), `DEV` logs should also be excluded from network collection. 
+We recommend configuring `DEV` separately from the other logging channels. When sending logs to a [Fluentd-compatible](#output-to-fluentd-compatible-network-collectors) or [HTTP](output-to-http-network-collectors) network collector, `DEV` logs should also be excluded from network collection. 
 
 In this example, the `dev` file group is reserved for `DEV` logs. These are output to a `cockroach-dev.log` file in a custom disk `dir`:
 
@@ -537,7 +545,7 @@ When `capture-stray-errors` is disabled, [`redactable`](#redact-logs) cannot be 
 
 ## Default logging configuration
 
-The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). To retain backward compatibility with v20.2 and earlier, these settings match the [log filenames used in previous versions](logging-overview.html#changes-to-logging-system).
+The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). 
 
 ~~~ yaml
 file-defaults:
@@ -572,8 +580,8 @@ sinks:
   file-groups:
     default:
       channels:
-          INFO: [DEV, OPS]
-          WARNING: all except [DEV, OPS]
+        INFO: [DEV, OPS]
+        WARNING: all except [DEV, OPS]
     health:
       channels: [HEALTH]
     pebble:
