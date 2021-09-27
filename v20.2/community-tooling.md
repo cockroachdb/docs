@@ -32,6 +32,13 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 - [TablePlus](https://tableplus.com/blog/2018/06/best-cockroachdb-gui-client-tableplus.html)
 - [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb.html)
 
+## Schema migration tools
+
+- [SchemaHero](https://schemahero.io/databases/cockroachdb/connecting/)
+- [DbUp](https://github.com/DbUp/DbUp/issues/464#issuecomment-895503849)
+- [golang-migrate](https://github.com/golang-migrate/migrate/tree/master/database/cockroachdb)
+- [db-migrate](https://db-migrate.readthedocs.io/en/latest/)
+
 ## Connection pooling tools
 
 - [PGBouncer](https://dzone.com/articles/using-pgbouncer-with-cockroachdb)
