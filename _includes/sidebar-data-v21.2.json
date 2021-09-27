@@ -2782,6 +2782,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach debug backup</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-backup.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach debug ballast</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-ballast.html"
