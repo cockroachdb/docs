@@ -108,6 +108,8 @@ If you do not set a home region for a row in a regional by row table, it default
 
 For more information about how this table locality works, see [Regional by row tables](multiregion-overview.html#regional-by-row-tables).
 
+<a name="rename-crdb_region"></a>
+
 Note that you can use a name other than `crdb_region` for the hidden column by using the following statements:
 
 {% include copy-clipboard.html %}
