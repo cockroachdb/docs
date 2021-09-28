@@ -119,7 +119,7 @@ SELECT bar, id FROM foo;
 INSERT INTO foo (bar, ...) VALUES ('us-east-1', ...);
 ~~~
 
-In fact, you can specify any column definition you like for the `REGIONAL BY ROW AS` column, as long as the column is of type `crdb_internal_region`. For example, you could modify the [movr schema](movr.html#the-movr-database) to have a region column generated as:
+In fact, you can specify any column definition you like for the `REGIONAL BY ROW AS` column, as long as the column is of type `crdb_internal_region` and is not nullable. For example, you could modify the [movr schema](movr.html#the-movr-database) to have a region column generated as:
 
 {% include copy-clipboard.html %}
 ~~~ sql
