@@ -14,10 +14,6 @@ Get future release notes emailed to you:
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.9](v21.1.9.html).
 
-### Console changes
-
-- All cluster configuration options are now expanded for users [creating a paid CockroachCloud](../cockroachcloud/create-your-cluster.html) cluster.
-
 ### Bug fixes
 
 - Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-free-cluster.html) clusters.
