@@ -208,7 +208,7 @@ For an example network logging configuration, see [Logging use cases](logging-us
 
 ### Output to HTTP network collectors
 
-CockroachDB can send logs over the network to a HTTP server. `http-servers` specifies the channels that output to a server, along with its configuration details. For example:
+CockroachDB can send logs over the network to an HTTP server. `http-servers` specifies the channels that output to a server, along with its configuration details. For example:
 
 ~~~ yaml
 file-defaults: ...
@@ -241,7 +241,7 @@ Along with the [common sink parameters](#common-sink-parameters), each HTTP serv
 | `timeout`             | Timeout before requests are abandoned.<br><br>**Default:** `0` (no timeout)                                                                                                                                                                                                                                                                                        |
 | `disable-keep-alives` | When `true`, disallows reuse of the server connection across requests.<br><br>**Default:** `false` (reuses connections)                                                                                                                                                                                                                                            |
 
-A HTTP sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the HTTP collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
+An HTTP sink buffers at most one log entry and retries sending the event at most one time if a network error is encountered. This is just sufficient to tolerate a restart of the HTTP collector after a configuration change under light logging activity. If the server is unavailable for too long, or if more than one error is encountered, an error is reported to the process's standard error output with a copy of the logging event, and the logging event is dropped.
 
 For an example network logging configuration, see [Logging use cases](logging-use-cases.html#network-logging).
 
