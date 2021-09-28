@@ -7,7 +7,7 @@ toc: true
 If you need to monitor your cluster, tune performance, or [troubleshoot](troubleshooting-overview.html) issues, you can check the CockroachDB logs, which include details about notable cluster, node, and range-level events.
 
 {{site.data.alerts.callout_info}}
-This logging system has been introduced in v21.1 and is backward-compatible. For a summary of what has changed, see [Changes to logging system](#changes-to-logging-system).
+The default logging configuration has changed in v21.2. For a summary of what has changed, see [Changes to logging system](#changes-to-logging-system).
 {{site.data.alerts.end}}
 
 ## Details
@@ -42,36 +42,26 @@ This allows you to group channels that log related information (e.g., operationa
 | [`SENSITIVE_ACCESS`](logging.html#sensitive_access) | SQL audit events (when enabled via [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)).                                                                                                                                                                                                                       |
 | [`SQL_EXEC`](logging.html#sql_exec)                 | SQL statement executions (when enabled via the `sql.trace.log_statement_execute`) [cluster setting](cluster-settings.html) and uncaught Go panic errors during SQL statement execution.                                                                                                                                    |
 | [`SQL_PERF`](logging.html#sql_perf)                 | SQL executions that impact performance, such as slow queries (when enabled via the `sql.log.slow_query.latency_threshold` and/or `sql.log.slow_query.experimental_full_table_scans.enabled` [cluster settings](cluster-settings.html)).                                                                                    |
-
+| [`TELEMETRY`](logging.html#telemetry)               | <span class="version-tag">New in v21.2:</span> Telemetry events for internal usage.                                                                                                                                                                                                                                        |
 
 Logging channels are analogous to [logging facilities in Syslog](https://en.wikipedia.org/wiki/Syslog) or [logging services in Datadog](https://docs.datadoghq.com/logs/log_collection/?tab=http#reserved-attributes). For more details on the contents of each logging channel, see the [Logging reference](logging.html#logging-channels).
 
 ## Changes to logging system
 
-Prior to v21.1, logs were separated into a general CockroachDB log and secondary SQL and storage logs. These were output to correspondingly named log files.
+When using the [default logging configuration](configure-logs.html#default-logging-configuration), the events collected on each [logging channel](#logging-channels) are split into log files as follows:
 
-The events collected by those logs are now directed into the following [logging channels](#logging-channels):
-
-| Filename (legacy)         | Description             | Channel            |
-|---------------------------|-------------------------|--------------------|
-| `cockroach.log`           | General CockroachDB log | `DEV`              |
-| `cockroach-pebble.log`    | Pebble/RocksDB log      | `STORAGE`          |
-| `cockroach-sql-audit.log` | SQL audit log           | `SENSITIVE_ACCESS` |
-| `cockroach-sql-exec.log`  | SQL execution log       | `SQL_EXEC`         |
-| `cockroach-auth.log`      | SQL authentication log  | `SESSIONS`         |
-| `cockroach-sql-slow.log`  | Slow query log          | `SQL_PERF`         |
-
-{{site.data.alerts.callout_info}}
-In v21.1, the [default logging configuration](configure-logs.html#default-logging-configuration) keeps the legacy filenames for these channels. Starting in v21.2, you will need to explicitly map the channels to the legacy filenames in order to preserve this configuration. For details on this, see [Configure Logs](configure-logs.html#configure-log-sinks).
-{{site.data.alerts.end}}
-
-Notable events that were previously collected in the general CockroachDB log are now directed into several new logging channels:
-
-- `OPS`
-- `HEALTH`
-- `SQL_SCHEMA`
-- `USER_ADMIN`
-- `PRIVILEGES`
+| Filename                                  | Description             | Channels                    |
+|-------------------------------------------|-------------------------|-----------------------------|
+| `cockroach.log`                           | General CockroachDB log | `DEV`                       |
+| `cockroach-health.log`                    | Health log              | `HEALTH`                    |
+| `cockroach-security.log` (New in v21.2)   | SQL security log        | `PRIVILEGES` + `USER_ADMIN` |
+| `cockroach-sql-audit.log`                 | SQL access audit log    | `SENSITIVE_ACCESS`          |
+| `cockroach-sql-auth.log`                  | SQL authentication log  | `SESSIONS`                  |
+| `cockroach-sql-exec.log`                  | SQL execution log       | `SQL_EXEC`                  |
+| `cockroach-sql-slow.log`                  | SQL slow query log      | `SQL_PERF`                  |
+| `cockroach-sql-schema.log` (New in v21.2) | SQL schema change log   | `SQL_SCHEMA`                |
+| `cockroach-pebble.log`                    | Pebble/RocksDB log      | `STORAGE`                   |
+| `cockroach-telemetry.log` (New in v21.2)  | Telemetry log           | `TELEMETRY`                 |
 
  Logging is now configurable via YAML. The YAML configuration allows you to customize which kinds of events are output to different logging destinations, along with many other parameters. As a result, the logging flags previously used with `cockroach` commands are now deprecated in favor of the YAML configuration. For details, see [Configure Logs](configure-logs.html).
 
