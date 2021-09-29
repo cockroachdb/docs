@@ -21,6 +21,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 - [php-pgsql](build-a-php-app-with-cockroachdb.html)
 - [RPostgres](https://blog.ervits.com/2020/02/exploring-cockroachdb-with-r-and.html)
 - [Rust-Postgres](build-a-rust-app-with-cockroachdb.html)
+- [Apache-hop Incubating](https://hop.apache.org)
 
 ## Visualization tools
 
