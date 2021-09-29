@@ -94,12 +94,12 @@ Field | Description
 ~~~
 
 ~~~
-           variable           |     value      | setting_type |                                                   description
-------------------------------+----------------+--------------+-------------------------------------------------------------------------------------------------------------------
-  cloudstorage.gs.default.key |                | s            | if set, JSON key to use during Google Cloud Storage operations
-  cloudstorage.http.custom_ca |                | s            | custom root CA (appended to system's default CAs) for verifying certificates when interacting with HTTPS storage
-  cloudstorage.timeout        | 10m0s          | d            | the timeout for import/export storage operations
-  cluster.organization        | Cockroach Demo | s            | organization name
+                     variable                    | value | setting_type |                                                 description
+-------------------------------------------------+-------+--------------+---------------------------------------------------------------------------------------------------------------
+  admission.kv.enabled                           | false | b            | when true, work performed by the KV layer is subject to admission control
+  admission.sql_kv_response.enabled              | false | b            | when true, work performed by the SQL layer when receiving a KV response is subject to admission control
+  admission.sql_sql_response.enabled             | false | b            | when true, work performed by the SQL layer when receiving a DistSQL response is subject to admission control
+  bulkio.stream_ingestion.minimum_flush_interval | 5s    | d            | the minimum timestamp between flushes; flushes may still occur if internal buffers fill up
   ...
 ~~~
 
@@ -111,12 +111,12 @@ Field | Description
 ~~~
 
 ~~~
-                variable                | value | setting_type | public |                                                   description
-----------------------------------------+-------+--------------+--------+-------------------------------------------------------------------------------------------------------------------
-  changefeed.experimental_poll_interval | 1s    | d            | false  | polling interval for the table descriptors
-  cloudstorage.gs.default.key           |       | s            |  true  | if set, JSON key to use during Google Cloud Storage operations
-  cloudstorage.http.custom_ca           |       | s            |  true  | custom root CA (appended to system's default CAs) for verifying certificates when interacting with HTTPS storage
-  cloudstorage.timeout                  | 10m0s | d            |  true  | the timeout for import/export storage operations
+                     variable                     | value | setting_type | public |                                                             description
+--------------------------------------------------+-------+--------------+--------+--------------------------------------------------------------------------------------------------------------------------------------
+  admission.kv.enabled                            | false | b            |  true  | when true, work performed by the KV layer is subject to admission control
+  admission.kv_slot_adjuster.overload_threshold   | 32    | i            | false  | when the number of runnable goroutines per CPU is greater than this threshold, the slot adjuster considers the cpu to be overloaded
+  admission.l0_file_count_overload_threshold      | 1000  | i            | false  | when the L0 file count exceeds this theshold, the store is considered overloaded
+  admission.l0_sub_level_count_overload_threshold | 20    | i            | false  | when the L0 sub-level count exceeds this threshold, the store is considered overloaded
   ...
 ~~~
 
