@@ -159,14 +159,6 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 ## Unresolved limitations
 
-### HTTP(S) connections
-
-CockroachDB does not support database connections across HTTP(S). All database connections must be made via TCP.
-
-In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
-
 ### Collation names that include upper-case or hyphens may cause errors
 
 Using a [collation](collate.html) name with upper-case letters or hyphens may result in errors.
