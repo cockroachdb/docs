@@ -23,6 +23,9 @@ Table | Description
 -------|-------
 `backward_dependencies` | Contains information about backward dependencies.
 `builtin_functions` | Contains information about supported [functions](functions-and-operators.html).
+`cluster_contended_indexes` | Information about indexes that have experienced contention during transactions.
+`cluster_contended_keys` | Information about primary keys that have experienced contention during transcations.
+`cluster_contended_tables` | Information about tables that have experienced contention during transactions.
 `cluster_contention_events` | Contains information about contention in your cluster.
 `cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.
 `cluster_queries` | Contains information about queries running on your cluster.
@@ -39,6 +42,7 @@ Table | Description
 `gossip_network` | Contains information about your cluster's gossip network.
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.
 `index_columns` | Contains information about indexed columns in your cluster.
+`index_usage_statistics` | Table that contains statistics about the primary and secondary indexes used in statements.
 `invalid_objects` | Contains information about invalid objects in your cluster.
 `jobs` | Contains information about [jobs](show-jobs.html) running on your cluster.
 `kv_node_status` | Contains information about node status at the [key-value layer](architecture/storage-layer.html).
@@ -62,10 +66,12 @@ Table | Description
 `schema_changes` | Contains information about schema changes in your cluster.
 `session_trace` | Contains session trace information for your cluster.
 `session_variables` | Contains information about [session variables](set-vars.html) in your cluster.
+`statement_statistics` | Table that aggregates in-memory and persisted statistics from `system.statement_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. You can manually reset the statistics by calling `SELECT crdb_internal.reset_sql_stats()`.
 `table_columns` | Contains information about table columns in your cluster.
 `table_indexes` | Contains information about table indexes in your cluster.
 `table_row_statistics` | Contains row count statistics for tables in the current database.
 `tables` | Contains information about tables in your cluster.
+`transaction_statistics` | Table that aggregates in-memory and persisted statistics from `system.transaction_statistics` within hourly time intervals based on UTC time, rounded down to the nearest hour. You can manually reset the statistics by calling `SELECT crdb_internal.reset_sql_stats()`.
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.
 
 To list the `crdb_internal` tables for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
