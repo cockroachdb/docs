@@ -31,6 +31,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 - [Postico](https://eggerapps.at/postico/)
 - [TablePlus](https://tableplus.com/blog/2018/06/best-cockroachdb-gui-client-tableplus.html)
 - [Vault](https://www.vaultproject.io/docs/configuration/storage/cockroachdb)
+- [Apache-hop (Incubating)] (https://hop.apache.org)
 
 ## Schema migration tools
 
