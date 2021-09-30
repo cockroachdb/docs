@@ -93,7 +93,7 @@ CockroachDB supports the following conditions to match rows in a join:
   column names that are present in both the left and right table
   expressions.
 
-<div>{{site.data.alerts.callout_danger}}<code>NATURAL</code> is supported for compatibility with PostgreSQL; its use in new applications is discouraged because its results can silently change in unpredictable ways when new columns are added to one of the join operands.{{site.data.alerts.end}}</section>
+<div>{{site.data.alerts.callout_danger}}<code>NATURAL</code> is supported for compatibility with PostgreSQL; its use in new applications is discouraged because its results can silently change in unpredictable ways when new columns are added to one of the join operands.{{site.data.alerts.end}}</div>
 
 ## Join algorithms
 
