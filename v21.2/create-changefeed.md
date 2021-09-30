@@ -228,7 +228,9 @@ The `DECIMAL` type is a union between Avro `STRING` and Avro `DECIMAL` types.
 
 #### Topic Naming
 
-By default, a Kafka topic has the same name as the table that a changefeed was created on. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names. You can specify a [topic prefix](#topic-prefix-param), [an arbitrary topic name](#topic-name-param), or use the [`full_table_name` option](#full-table-option) to modify this.
+By default, a Kafka topic has the same name as the table that a changefeed was created on. If a changefeed was created on multiple tables, the changefeed will write to multiple topics corresponding to those table names.
+
+To modify the default topic naming, you can specify a [topic prefix](#topic-prefix-param), [an arbitrary topic name](#topic-name-param), or use the [`full_table_name` option](#full-table-option). Using the [`topic_name`](#topic-name-param) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
 
 You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
 
