@@ -147,7 +147,7 @@ Use the `export` subcommand to review backup table data from the command line. T
 cockroach debug backup export 's3://cockroach-bucket/2021/09/24-151532.23?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' --table=movr.public.users
 ~~~
 
-Without using the [`--destination`](destination-flag) flag to specify a file for the data, you'll receive the table data on the command line in CSV format:
+Without using the [`--destination`](#destination-flag) flag to specify a file for the data, you'll receive the table data on the command line in CSV format:
 
 ~~~
 '0781e581-40e2-4ae7-b436-0449fdc139fc','amsterdam','Michael Jimenez','13579 Campbell Camp','9453598890'

@@ -146,6 +146,8 @@ You can also visit the [**Jobs** page](ui-jobs-page.html) of the DB Console to v
 The presence of a `BACKUP-CHECKPOINT` file in the backup destination usually means the backup is not complete. This file is created when a backup is initiated, and is replaced with a `BACKUP` file once the backup is finished.
 {{site.data.alerts.end}}
 
+To debug a backup without an active cluster, read the [`cockroach debug backup`](cockroach-debug-backup.html) page for guidance.
+
 ## Examples
 
 Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](as-of-system-time.html). Each example below follows this guidance.
