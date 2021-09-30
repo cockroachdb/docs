@@ -14,7 +14,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/joined_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/joined_table.html %}</div>
 
 <div markdown="1"></div>
 
@@ -111,8 +111,8 @@ To perform a [merge join](https://en.wikipedia.org/wiki/Sort-merge_join) of two 
 Merge joins are performed on the indexed columns of two tables as follows:
 
 1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC`).
-2. CockroachDB takes one row from each table and compares them.
-    - For inner joins:
+2. CockroachDB takes one row from each table and compares them.  
+    - For inner joins:  
         - If the rows are equal, CockroachDB returns the rows.
         - If there are multiple matches, the cartesian product of the matches is returned.
         - If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
