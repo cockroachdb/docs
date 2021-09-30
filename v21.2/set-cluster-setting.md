@@ -62,11 +62,9 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 ~~~
 
 ~~~
-+-------------------------------+
-| diagnostics.reporting.enabled |
-+-------------------------------+
-| false                         |
-+-------------------------------+
+  diagnostics.reporting.enabled
+---------------------------------
+              false
 (1 row)
 ~~~
 
@@ -85,11 +83,9 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| false                                 |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  false
 (1 row)
 ~~~
 
@@ -104,11 +100,9 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| true                                  |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  true
 (1 row)
 ~~~
 

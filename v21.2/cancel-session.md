@@ -54,7 +54,7 @@ You can also cancel a session using a subquery that returns a single session ID:
 {% include copy-clipboard.html %}
 ~~~ sql
 > CANCEL SESSIONS (SELECT session_id FROM [SHOW SESSIONS]
-      WHERE username = 'root');
+      WHERE user_name = 'root');
 ~~~
 
 ### Cancel multiple sessions

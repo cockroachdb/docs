@@ -1,6 +1,6 @@
 ---
-title: Create a {{ site.data.products.db }} account
-summary: Learn how to create and delete a {{ site.data.products.db }} account
+title: Create a CockroachCloud account
+summary: Learn how to create and delete a CockroachCloud account
 toc: true
 ---
 
@@ -145,7 +145,7 @@ If you want to change your login method, you can do so at any time:
 1. Click **Save**.
 
     A confirmation email will be sent.
-  
+
 {{site.data.alerts.callout_info}}
 As a best security practice, you can also [remove {{ site.data.products.db }}'s access to your GitHub account details](https://docs.github.com/en/developers/apps/deleting-an-oauth-app).
 {{site.data.alerts.end}}

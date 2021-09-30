@@ -69,11 +69,11 @@ After loading the snapshot, the node gets up to date by replaying all actions fr
 
 A single node in the Raft group acts as the leaseholder, which is the only node that can serve reads or propose writes to the Raft group leader (both actions are received as `BatchRequests` from [`DistSender`](distribution-layer.html#distsender)).
 
-When serving reads, leaseholders bypass Raft; for the leaseholder's writes to have been committed in the first place, they must have already achieved consensus, so a second consensus on the same data is unnecessary. This has the benefit of not incurring networking round trips required by Raft and greatly increases the speed of reads (without sacrificing consistency).
-
 CockroachDB attempts to elect a leaseholder who is also the Raft group leader, which can also optimize the speed of writes.
 
 If there is no leaseholder, any node receiving a request will attempt to become the leaseholder for the range. To prevent two nodes from acquiring the lease, the requester includes a copy of the last valid lease it had; if another node became the leaseholder, its request is ignored.
+
+When serving [strongly-consistent (aka "non-stale") reads](transaction-layer.html#reading), leaseholders bypass Raft; for the leaseholder's writes to have been committed in the first place, they must have already achieved consensus, so a second consensus on the same data is unnecessary. This has the benefit of not incurring latency from networking round trips required by Raft and greatly increases the speed of reads (without sacrificing consistency).
 
 #### Co-location with Raft leadership
 
