@@ -33,7 +33,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 ### Column level
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/check_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/check_column_level.html %}
 </div>
 
  Parameter | Description
@@ -60,7 +60,7 @@ The `CHECK` [constraint](constraints.html) specifies that values for the column 
 ### Table level
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/check_table_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/check_table_level.html %}
 </div>
 
  Parameter | Description

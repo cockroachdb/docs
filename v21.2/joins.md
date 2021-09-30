@@ -14,7 +14,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/joined_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/joined_table.html %}</div>
 
 <div markdown="1"></div>
 
@@ -93,7 +93,7 @@ CockroachDB supports the following conditions to match rows in a join:
   column names that are present in both the left and right table
   expressions.
 
-<section>{{site.data.alerts.callout_danger}}<code>NATURAL</code> is supported for compatibility with PostgreSQL; its use in new applications is discouraged because its results can silently change in unpredictable ways when new columns are added to one of the join operands.{{site.data.alerts.end}}</section>
+<div>{{site.data.alerts.callout_danger}}<code>NATURAL</code> is supported for compatibility with PostgreSQL; its use in new applications is discouraged because its results can silently change in unpredictable ways when new columns are added to one of the join operands.{{site.data.alerts.end}}</section>
 
 ## Join algorithms
 

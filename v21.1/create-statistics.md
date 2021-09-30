@@ -18,7 +18,7 @@ Once you [create a table](create-table.html) and load data into it (e.g., [`INSE
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/create_stats.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/create_stats.html %}
 </div>
 
 ## Parameters
@@ -41,7 +41,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ### Alias syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/analyze.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/analyze.html %}
 </div>
 
 ### Alias parameters

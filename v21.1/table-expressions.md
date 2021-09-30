@@ -15,7 +15,7 @@ expression.
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/table_ref.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/table_ref.html %}
 </div>
 
 ## Parameters

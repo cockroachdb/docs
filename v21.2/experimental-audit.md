@@ -4,7 +4,7 @@ summary: Use the EXPERIMENTAL_AUDIT subcommand to turn SQL audit logging on or o
 toc: true
 ---
 
-`EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html). When applied to a table, it enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for that table. 
+`EXPERIMENTAL_AUDIT` is a subcommand of [`ALTER TABLE`](alter-table.html). When applied to a table, it enables or disables the recording of SQL audit events to the [`SENSITIVE_ACCESS`](logging.html#sensitive_access) logging channel for that table.
 
 {{site.data.alerts.callout_info}}
 The `SENSITIVE_ACCESS` log output is also called the SQL audit log. See [SQL Audit Logging](sql-audit-logging.html) for a detailed example.
@@ -30,7 +30,7 @@ CockroachDB stores audit log information in a way that ensures durability, but n
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/experimental_audit.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/experimental_audit.html %}
 </div>
 
 ## Required privileges
@@ -39,12 +39,12 @@ Only members of the `admin` role can enable audit logs on a table. By default, t
 
 ## Parameters
 
- Parameter    | Description                                              
+ Parameter    | Description
 --------------+----------------------------------------------------------
  `table_name` | The name of the table you want to create audit logs for.
- `READ`       | Log all table reads to the audit log file.               
- `WRITE`      | Log all table writes to the audit log file.              
- `OFF`        | Turn off audit logging.                                  
+ `READ`       | Log all table reads to the audit log file.
+ `WRITE`      | Log all table writes to the audit log file.
+ `OFF`        | Turn off audit logging.
 
 {{site.data.alerts.callout_info}}
 This command logs all reads and writes, and both the <code>READ</code> and <code>WRITE</code> parameters are required (as shown in the <a href="#examples">examples</a> below). In a future release, this should change to allow logging only reads, only writes, or both.

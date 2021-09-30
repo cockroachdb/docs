@@ -13,7 +13,7 @@ The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/rename_index.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/rename_index.html %}
 </div>
 
 ## Required privileges

@@ -9,7 +9,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/release_savepoint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/release_savepoint.html %}
 </div>
 
 ## Required privileges

@@ -14,7 +14,7 @@ The [cost-based optimizer](cost-based-optimizer.html) supports hint syntax to fo
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/joined_table.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/joined_table.html %}</div>
 
 <div markdown="1"></div>
 

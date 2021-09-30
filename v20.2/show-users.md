@@ -13,7 +13,7 @@ The `SHOW USERS` [statement](sql-statements.html) lists the users for all databa
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_users.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/show_users.html %}
 </div>
 
 ## Required privileges

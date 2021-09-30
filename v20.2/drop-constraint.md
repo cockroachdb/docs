@@ -20,7 +20,7 @@ For information about removing other constraints, see [Constraints: Remove Const
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/drop_constraint.html %} </section>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/drop_constraint.html %}</div>
 
 ## Required privileges
 

@@ -15,7 +15,7 @@ Use the `SHOW PARTITIONS` [statement](sql-statements.html) to view details about
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/show_partitions.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/show_partitions.html %}
 </div>
 
 ## Required privileges

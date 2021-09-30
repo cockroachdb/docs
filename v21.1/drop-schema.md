@@ -13,7 +13,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/drop_schema.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/drop_schema.html %}
 </div>
 
 ### Parameters

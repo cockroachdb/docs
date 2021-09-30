@@ -38,7 +38,7 @@ Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/import_into.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/import_into.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

@@ -11,7 +11,7 @@ The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and a
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/add_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/add_column.html %}
 </div>
 
 ## Required privileges
@@ -23,7 +23,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  Parameter | Description
 -----------|-------------
  `table_name` | The name of the table to which you want to add the column.
- `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.  
+ `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.
  `typename` | The [data type](data-types.html) of the new column.
  `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>If the column family is not specified, the column will be added to the first column family. For more information about how column families are assigned, see [Column Families](column-families.html#assign-column-families-when-adding-columns).
 

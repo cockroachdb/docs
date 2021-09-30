@@ -13,7 +13,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_database_survival_goal.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_database_survival_goal.html %}
 </div>
 
 ## Parameters

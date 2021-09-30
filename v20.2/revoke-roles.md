@@ -13,7 +13,7 @@ The `REVOKE <roles>` [statement](sql-statements.html) lets you revoke a [role](a
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/revoke_roles.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/revoke_roles.html %}
 </div>
 
 ## Required privileges
