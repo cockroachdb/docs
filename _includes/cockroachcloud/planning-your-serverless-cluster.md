@@ -8,4 +8,4 @@ Most resource usage in {{ site.data.products.serverless }} is measured in Reques
 
 You can set your spend limit higher to maintain a high level of performance with larger workloads. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of free clusters.
 
-To see a graph of your monthly resource usage and recommended spend limit, navigate to the [Edit cluster](#edit-your-spend-limit) page.
+To see a graph of your monthly resource usage and recommended spend limit, navigate to the [Edit cluster](serverless-cluster-management.html#edit-your-spend-limit) page.
