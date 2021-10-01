@@ -4,7 +4,9 @@ summary: Manage your account roles and permissions.
 toc: true
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
+The **Access** page displays the people and service accounts with access to your {{ site.data.products.db }} Organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
+
+The **Access** page has tabs for managing [People](#people) and [Service Accounts](#service-accounts).
 
 ## Organization
 
@@ -15,7 +17,7 @@ To switch between the organizations:
 1. [Log in](https://cockroachlabs.cloud/).
 2. From the drop-down box in the top-right corner, select the Organization you want to access.
 
-## SQL users
+## People
 
 [Console Admins](#console-admin) can [create and manage SQL users](user-authorization.html#create-a-sql-user). A SQL user can interact with a CockroachDB database using the built-in SQL shell or through an application.
 
@@ -23,17 +25,17 @@ SQL users created in the Console have admin privileges on the database by defaul
 
 Anyone with database admin privileges can [change a SQL user's databases privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges).
 
-## Roles
+### Roles
 
 Every {{ site.data.products.db }} user is either a Developer or a Console Admin for the Organization.
 
-### Developer
+#### Developer
 
 A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users.
 
 To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who your Console Admin is, check the **Access** page.
 
-### Console Admin
+#### Console Admin
 
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
@@ -45,9 +47,9 @@ A Console Admin is an all-access role. A Console Admin can perform the following
 - [Restore databases and tables from a {{ site.data.products.db }} backup](backups-page.html#ways-to-restore-data)
 - [Delete an Organization](#delete-an-organization)
 
-## Administrative tasks
+### Administrative tasks
 
-### Invite Team Members to {{ site.data.products.db }}
+#### Invite Team Members to {{ site.data.products.db }}
 
 As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. To invite Team Members:
 
@@ -62,7 +64,7 @@ As a Console Admin, you can invite Team Members to {{ site.data.products.db }}. 
 We recommend [creating a SQL user](user-authorization.html) for each Team Member you invite.
 {{site.data.alerts.end}}
 
-### Manage Team Members
+#### Manage Team Members
 
 As a Console Admin, you can change Team Members' roles, delete Team Members, and revoke pending invites.
 
@@ -70,7 +72,7 @@ As a Console Admin, you can change Team Members' roles, delete Team Members, and
 If you are a member of multiple [organizations](console-access-management.html#organization), make sure you are looking at the same Organization as the Team Member you want to manage. You can navigate to the correct Organization by using the drop-down box in the top-right corner.
 {{site.data.alerts.end}}
 
-#### Change a Team Member's role
+##### Change a Team Member's role
 
 1. On the **Access** page, locate the Team Member's details whose role you want to change.
 2. In the **Action** column, click the three dots to view the allowed actions.
@@ -80,22 +82,94 @@ If you are a member of multiple [organizations](console-access-management.html#o
 As a Console Admin, you can change your own access to a Developer role; however, you will not be able to change yourself back to the Admin role. If you are the only Team Member with Console Admin access, you will not be allowed to change your role until you assign another Team Member to be the Console Admin.
 {{site.data.alerts.end}}
 
-#### Delete a Team Member
+##### Delete a Team Member
 
 1. On the **Access** page, locate the Team Member you want to delete.
 2. In the **Action** column, click the three dots to view the allowed actions.
 3. Click **Delete Member**.
 4. On the confirmation window, click **Delete**.
 
-#### Revoke a pending invite
+##### Revoke a pending invite
 
 1. On the **Access** page, locate the Team Member's details whose pending invite you want to revoke.
 2. In the **Action** column, click the three dots to view the allowed actions.
 3. Click **Revoke Invite**.
 
-#### Delete an email address
+##### Delete an email address
 
 This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
+
+## Service accounts
+
+Service accounts are used by applications accessing the [API](cloud-api.html) to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
+
+To create a service account:
+
+1. Click **Create Service Account**.
+1. In the **Creaete service account** dialog:
+    1. Enter the **Account name**.
+    1. (Optional) Enter a **Description** of the service account.
+    1. Set the **Permissions** of the service account.
+
+        Granting `ADMIN` permissions allows the service account full authorization for the organization, where the service account can create, modify, and delete clusters.
+
+        The `CREATE` permission allows the service account to create new clusters within the organization.
+
+        The `DELETE` permission allows the service account to delete clusters within the organization.
+
+        The `EDIT` permission allows the service account to modify clusters within the organization.
+
+        The `READ` permission allows the service account to get details about clusters within the organization.
+
+    1. Click **Create**.
+
+1. [Create an API key](#create-api-keys) for the newly created service account, or click **Skip** to go back to the Service Accounts table.
+
+### Modify a service account
+
+To modify the name, description, or permissions of a service account:
+
+1. Click the **Action** button for the service account name in the **Service Accounts** table.
+1. Select **Edit**.
+1. In the **Edit service account** dialog, modify the name, description, or permissions for the service account.
+1. Click **Save changes**.
+
+### API access
+
+Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
+
+#### Create API keys
+
+To create an API key:
+
+1. Click **Create API Key**.
+1. Enter the **API key name** and click **Create**. The name should identify how the API key will be used. For example, you could name your API key for the application that will use the key.
+1. Copy the **Secret key** and store it in a secure location. There is a **Copy** button to the right of the displayed secret key that will copy the secret key to your OS clipboard.
+
+    The secret key contains the API key and secret. It should never be shared or publicly accessable. Anyone with the secret key can use the API with the permissions of the service account.
+
+    {{site.data.alerts.callout_danger}}
+    The secret key will not be available after closing the **Create API key** dialog. If you have lost your secret key, you should [delete the API key](#delete-api-keys) and create a new one.
+    {{site.data.alerts.end}}
+
+1. Click **Done**.
+
+#### Delete API keys
+
+To delete an API key associated with a service account:
+
+1. Click the **Action** button for the API key ID in the **API Access** table.
+1. Select **Delete**.
+1. In the **Delete API key** dialog enter the name of the service account to confirm the delete operation, then click **Delete**.
+
+#### Edit API key names
+
+To change the API key name for an existing API key:
+
+1. Find the API key ID in the **API Access** table.
+1. Click the **Action** button.
+1. Select **Edit**.
+1. In the **Edit API key name** dialog modify the API key name and click **Save changes**.
 
 ### Delete an Organization
 
