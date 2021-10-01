@@ -27,6 +27,7 @@ For each cluster, the following details display:
 - The cluster's **Plan Type**, either Serverless or Dedicated
 - The date and time the cluster was **Created**
 - The cluster's current **State**
+- The cluster's cloud provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
     - [**Add/remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
