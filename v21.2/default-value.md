@@ -21,7 +21,7 @@ You can also add the `DEFAULT` value constraint to an existing table through [`A
 {{site.data.alerts.end}}
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/default_value_column_level.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/default_value_column_level.html %}
 </div>
 
  Parameter | Description

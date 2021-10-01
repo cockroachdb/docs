@@ -23,7 +23,7 @@ Support for altering column types is [experimental](experimental-features.html),
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/alter_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_column.html %}
 </div>
 
 ## Required privileges

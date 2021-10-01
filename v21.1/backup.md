@@ -58,7 +58,7 @@ To backup interleaved data in v21.1, a `BACKUP` statement must include the [`INC
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/backup.html %}
 </div>
 
 ## Parameters

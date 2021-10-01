@@ -20,7 +20,7 @@ You can only apply the `DEFAULT` value constraint to individual columns.
 You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](alter-column.html#set-or-change-a-default-value).
 {{site.data.alerts.end}}
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/master/grammar_svg/default_value_column_level.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/default_value_column_level.html %}</div>
 
  Parameter | Description
 -----------|-------------
