@@ -77,7 +77,7 @@ The following table summarizes the {{ site.data.products.db }} security features
   <td>VPC Peering for GCP cluster and AWS PrivateLink for AWS clusters </td>
  </tr>
  <tr>
-   <td><a href="../{{site.versions["stable"]}}/cluster-api.htmle">Cluster API</a></td>
+   <td><a href="../{{site.versions["stable"]}}/cluster-api.html">Cluster API</a></td>
    <td>&nbsp;</td>
    <td>✓</td>
    <td>HTTP API access using login tokens</td>
