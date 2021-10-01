@@ -88,6 +88,17 @@ Check if you are using the correct host name.
 
 You can find your host name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
 
+### Connection refused
+
+The following error may be displayed if your cluster connection is dropped:
+
+~~~ shell
+Error: dial tcp 35.240.101.1:26257: connect: connection refused
+~~~ 
+
+**Solution:**
+{{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["stable"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
+
 ## Security errors
 
 ### Incorrect certs path
