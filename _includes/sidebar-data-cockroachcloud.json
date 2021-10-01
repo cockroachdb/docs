@@ -254,6 +254,12 @@
       ]
     },
     {
+      "title": "Manage Billing",
+      "urls": [
+         "/cockroachcloud/billing-management.html"
+      ]
+    },
+    {
       "title": "Architecture",
       "urls": [
          "/cockroachcloud/architecture.html"

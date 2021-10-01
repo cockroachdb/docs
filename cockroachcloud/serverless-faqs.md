@@ -79,7 +79,7 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 ### Can I upgrade my free {{ site.data.products.serverless }} cluster?
 
-Yes, you can upgrade your cluster through the Console by [increasing your spend limit](serverless-cluster-management.html#edit-your-spend-limit) and entering [billing information](console-access-management.html#manage-billing-for-the-organization) if you haven't already.
+Yes, you can upgrade your cluster through the Console by [increasing your spend limit](serverless-cluster-management.html#edit-your-spend-limit) and entering [billing information](billing-management.html) if you haven't already.
 
 ## Product features
 
@@ -97,4 +97,4 @@ Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Chan
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all {{ site.data.products.serverless }} clusters for our own purposes. If you don't have [billing information on file](console-access-management.html#manage-billing-for-the-organization) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+Cockroach Labs takes full cluster backups of all {{ site.data.products.serverless }} clusters for our own purposes. If you don't have [billing information on file](billing-management.html) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).

@@ -85,6 +85,7 @@ homepage: true
         <li><a href="{{ '/cockroachcloud/production-checklist.html' | relative_url }}">Move into Production</a></li>
         <li><a href="{{ '/cockroachcloud/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
+        <li><a href="{{ '/cockroachcloud/billing-management.htm' | relative_url }}l">Manage Billing</a></li>
         </ul>
       </div>
     </div>

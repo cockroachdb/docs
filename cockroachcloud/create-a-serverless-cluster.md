@@ -39,7 +39,7 @@ Paid clusters include additional resources for higher performance. You will only
 For more information on determining your resource usage, see [Planning your cluster](serverless-cluster-management.html#planning-your-cluster).
 
 {{site.data.alerts.callout_info}}
-Regardless of whether you set a spend limit, [adding billing information](console-access-management.html#manage-billing-for-the-organization) for your Organization allows you to create a maximum of 10 Serverless clusters and use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to five Serverless clusters and [using `userfile` storage for bulk operations](run-bulk-operations.html).
+Regardless of whether you set a spend limit, [adding billing information](billing-management.html) for your Organization allows you to create a maximum of 10 Serverless clusters and use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to five Serverless clusters and [using `userfile` storage for bulk operations](run-bulk-operations.html).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -69,7 +69,7 @@ Your cluster will be created in a few seconds.
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
     
-1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
+1. Add your preferred [payment method](billing-management.html).
 
 1. Click **Create cluster**.
 
