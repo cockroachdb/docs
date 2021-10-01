@@ -30,6 +30,12 @@ Upload a file:
 $ cockroach userfile upload <location/of/file> <destination/of/file> [flags]
 ~~~
 
+Upload a directory recursively:
+
+~~~ shell
+cockroach userfile upload --recursive <location/of/dir> <destination/of/file> [flags]
+~~~
+
 {{site.data.alerts.callout_info}}
 You must specify a source path.
 {{site.data.alerts.end}}
@@ -70,6 +76,7 @@ Files are uploaded with a `.tmp` suffix and are renamed once the userfile upload
 `--echo-sql`     | Reveal the SQL statements sent implicitly by the command-line utility.
 `--url`          | A [connection URL](connection-parameters.html#connect-using-a-url) to use instead of the other arguments.<br><br>**Env Variable:** `COCKROACH_URL`<br>**Default:** no URL
 `--user`<br>`-u` | The [SQL user](create-user.html) that will own the client session.<br><br>**Env Variable:** `COCKROACH_USER`<br>**Default:** `root`
+`--recursive`<br>`-r` | <span class="version-tag">New in v21.2:</span> Upload a directory and its contents rooted at a specified directory recursively to user-scoped file storage. For example: `cockroach userfile upload -r path/to/source/dir destination` <br><br> See [File Destination](#file-destination) for detail on forming the destination URI and this [usage example](#upload-a-directory-recursively) for working with the `--recursive` flag.
 
 ## Examples
 
@@ -114,6 +121,36 @@ successfully uploaded to userfile://defaultdb.public.userfiles_root/test-upload/
 
 Then, you can use the file to [`IMPORT`](import.html) or [`IMPORT INTO`](import-into.html) data.
 
+### Upload a directory recursively
+
+<span class="version-tag">New in v21.2:</span> To upload the contents of a directory to userfile storage, specify a source directory and destination. For example, to upload a [backup](backup.html) directory to userfile storage:
+
+~~~ shell
+cockroach userfile upload -r /Users/maxroach/movr-backup userfile:///backup-data --certs-dir=certs
+~~~
+
+It is important to note that userfile is **not** a filesystem and does not support filesystem semantics. The destination file path must be the same after normalization (i.e., if you pass any path that results in a different path after normalization, it will be rejected).
+
+~~~
+uploading: BACKUP-CHECKPOINT-698053706999726081-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/BACKUP-CHECKPOINT-698053706999726081-CHECKSUM
+uploading: BACKUP-CHECKPOINT-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/BACKUP-CHECKPOINT-CHECKSUM
+uploading: BACKUP-STATISTICS
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/BACKUP-STATISTICS
+uploading: BACKUP_MANIFEST
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/BACKUP_MANIFEST
+uploading: BACKUP_MANIFEST-CHECKSUM
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/BACKUP_MANIFEST-CHECKSUM
+uploading: data/698053715875692545.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/data/698053715875692545.sst
+uploading: data/698053717178744833.sst
+successfully uploaded to userfile://defaultdb.public.userfiles_root/backup-data/movr-backup/data/698053717178744833.sst
+. . .
+~~~
+
+See the [file destination](#file-destination) section for more detail on forming userfile URIs.
+
 ### Upload a file to a non-default userfile URI
 
 {% include copy-clipboard.html %}
@@ -124,10 +161,6 @@ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv userfile://testd
 ~~~
 successfully uploaded to userfile://testdb.public.uploads/test-data.csv
 ~~~
-
-## Known limitation
-
-{% include {{ page.version.version }}/known-limitations/userfile-upload-non-recursive.md %}
 
 ## See also
 
