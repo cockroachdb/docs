@@ -21,6 +21,8 @@ This page shows you how to connect to your {{ site.data.products.serverless }} c
 
 ## Step 1. Select a connection method
 
+1. Select your cluster to navigate to the cluster **Overview** page.
+
 1. In the top right corner of the {{ site.data.products.db }} Console, click the **Connect** button.
 
     The **Connect** modal displays on the **Step 2. Connect > Command Line** subtab.
@@ -59,11 +61,11 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
     {% include cockroachcloud/download-the-binary.md %}
 
-1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
+1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future).
+1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
     
     {% include cockroachcloud/sql-connection-string-free.md %}
     
@@ -96,11 +98,11 @@ To connect to your cluster with your application, use the connection string prov
       <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
+1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
 
     {% include cockroachcloud/download-the-cert-free.md %}
 
-1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to {{ site.data.products.serverless }}.
+1. Copy the connection string provided in the **Connect** modal, which will be used to connect your application to {{ site.data.products.serverless }}:
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}

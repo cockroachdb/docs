@@ -12,7 +12,7 @@ toc: true
 This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {{site.data.alerts.callout_success}}
-To create and connect to a 30-day free {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart](quickstart.html).
+To create and connect to a 30-day free {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart](quickstart-trial-cluster.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Start the cluster creation process
@@ -125,10 +125,10 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
     You will be billed monthly.
-1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
+1. Add your preferred [payment method](billing-management.html).
 1. [If applicable](frequently-asked-questions.html#how-do-cockroachdb-dedicated-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
-      Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
+      Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](billing-management.html) page.
       {{site.data.alerts.end}}
 1. Click **Create cluster**.
 

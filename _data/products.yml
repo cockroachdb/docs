@@ -6,6 +6,4 @@ dedicated: CockroachDB Dedicated
 # to be CockroachDB Managed
 core: CockroachDB Self-Hosted
 # tbd
-enterprise: CockroachDB Self-Hosted
-# tbd
 db: CockroachDB Cloud #i.e. "Sign up for a CockroachDB Cloud account", tbd

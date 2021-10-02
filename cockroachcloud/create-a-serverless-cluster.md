@@ -26,20 +26,20 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 2. Select a cloud provider & region
 
-1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud Provider & Region** section.
+1. _(Optional)_ Select a cloud provider (GCP or AWS) in the **Cloud provider** section.
 
-1. _(Optional)_ Select a region in the **Cloud Provider & Region** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
+1. _(Optional)_ Select a region in the **Regions** section. For optimal performance, select the cloud provider region closest to the region in which you are running your application.
 
 ## Step 3. Enter a spend limit
 
 Every cluster includes 250M RUs per month and 5 GiB of storage for free. Every cluster also has a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS.
 
-Paid clusters include additional resources with no throttling. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, you will still have access to the resources included with free clusters.
+Paid clusters include additional resources for higher performance. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of free clusters.
 
 For more information on determining your resource usage, see [Planning your cluster](serverless-cluster-management.html#planning-your-cluster).
 
 {{site.data.alerts.callout_info}}
-Regardless of whether you set a spend limit, [adding billing information](console-access-management.html#manage-billing-for-the-organization) for your Organization allows you to create a maximum of 10 Serverless clusters and use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to five Serverless clusters and [using `userfile` storage for bulk operations](run-bulk-operations.html).
+Regardless of whether you set a spend limit, [adding billing information](billing-management.html) for your Organization allows you to create a maximum of 10 Serverless clusters and use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to five Serverless clusters and [using `userfile` storage for bulk operations](run-bulk-operations.html).
 {{site.data.alerts.end}}
 
 <div class="filters clearfix">
@@ -61,20 +61,19 @@ Your cluster will be created in a few seconds.
 
     This is the maximum amount you could be charged per month. You will be charged only for what you use.
 
-1. Click **Continue to payment details**.
+1. Click **Next: Payment info**.
 
-1. Verify the hourly estimated cost for the cluster.
+1. Verify your cluster configuration and spend limit.
 
     {{site.data.alerts.callout_info}}
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
-    You will be billed monthly.
     
-1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
+1. Add your preferred [payment method](billing-management.html).
 
 1. Click **Create cluster**.
 
-Your cluster will be created in approximately 20-30 minutes.
+Your cluster will be created in a few seconds.
 
 </section>
 
