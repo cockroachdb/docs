@@ -4,7 +4,7 @@ summary: The ALTER ROLE statement can be used to add or change a role's password
 toc: true
 ---
 
- The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or remove a [role's](create-role.html) password and to change the role options for a role.
+The `ALTER ROLE` [statement](sql-statements.html) can be used to add, change, or remove a [role's](create-role.html) password, change the role options for a role, and set default [session variable](set-vars.html) values for a role.
 
 {{site.data.alerts.callout_info}}
 Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility, `ALTER ROLE` is now an alias for [`ALTER USER`](alter-user.html).
@@ -32,18 +32,28 @@ table td:first-child {
 
 Parameter | Description
 ----------|-------------
-`name` | The name of the role whose parameters you want to alter.
-`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` role options. <br><br>By default, the role option is set to `NOCREATELOGIN` for all non-admin roles.
-`LOGIN`/`NOLOGIN` | The `LOGIN` role option allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the role option to `NOLOGIN` prevents the role from logging in using any authentication method.
-`password` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
-`VALID UNTIL` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
+`ROLE string_or_placeholder`/`USER string_or_placeholder` | Specify the name of the role that you want to alter.
+`WITH role_option` | Apply a [role option](#role-options) to the role.
+`SET var_name ... var_value` | <span class="version-tag">New in v21.2</span>: Set default [session variable](set-vars.html) values for a role.
+`RESET session_var`<br>`RESET ALL` | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
+`IN DATABASE database_name` | <span class="version-tag">New in v21.2</span>: Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.
+`ROLE_ALL ALL`/`USER_ALL ALL` | <span class="version-tag">New in v21.2</span>: Apply session variable defaults to all roles.
+
+### Role options
+
+Role option | Description
+----------|-------------
 `CREATEROLE`/`NOCREATEROLE` | Allow or disallow the role to [create](create-role.html), alter, and [drop](drop-role.html) other non-admin roles. <br><br>By default, the role option is set to `NOCREATEROLE` for all non-admin roles.
-`CREATEDB`/`NOCREATEDB` | Allow or disallow the role to [create](create-database.html) or [rename](rename-database.html) a database. The role is assigned as the owner of the database. <br><br>By default, the role option is set to `NOCREATEDB` for all non-admin roles.
+`LOGIN`/`NOLOGIN` | The `LOGIN` role option allows a role to login with one of the [client authentication methods](authentication.html#client-authentication). Setting the role option to `NOLOGIN` prevents the role from logging in using any authentication method.
 `CONTROLJOB`/`NOCONTROLJOB` | Allow or disallow the role to [pause](pause-job.html), [resume](resume-job.html), and [cancel](cancel-job.html) jobs. Non-admin roles cannot control jobs created by admins. <br><br>By default, the role option is set to `NOCONTROLJOB` for all non-admin roles.
-`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with this role option, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the role option is set to `NOCANCELQUERY` for all non-admin roles.
-`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and **Transactions** pages in the DB Console. Without this role option, the `SHOW` commands only show the role's own data and the DB Console pages are unavailable. <br><br>By default, the role option is set to `NOVIEWACTIVITY` for all non-admin roles.
 `CONTROLCHANGEFEED`/`NOCONTROLCHANGEFEED` | Allow or disallow the role to run [`CREATE CHANGEFEED`](create-changefeed.html) on tables they have `SELECT` privileges on. <br><br>By default, the role option is set to `NOCONTROLCHANGEFEED` for all non-admin roles.
+`CREATEDB`/`NOCREATEDB` | Allow or disallow the role to [create](create-database.html) or [rename](rename-database.html) a database. The role is assigned as the owner of the database. <br><br>By default, the role option is set to `NOCREATEDB` for all non-admin roles.
+`CREATELOGIN`/`NOCREATELOGIN` | Allow or disallow the role to manage authentication using the `WITH PASSWORD`, `VALID UNTIL`, and `LOGIN/NOLOGIN` role options. <br><br>By default, the role option is set to `NOCREATELOGIN` for all non-admin roles.
+`VIEWACTIVITY`/`NOVIEWACTIVITY` | Allow or disallow a role to see other roles' [queries](show-statements.html) and [sessions](show-sessions.html) using `SHOW STATEMENTS`, `SHOW SESSIONS`, and the [**Statements**](ui-statements-page.html) and **Transactions** pages in the DB Console. Without this role option, the `SHOW` commands only show the role's own data and the DB Console pages are unavailable. <br><br>By default, the role option is set to `NOVIEWACTIVITY` for all non-admin roles.
+`CANCELQUERY`/`NOCANCELQUERY` | Allow or disallow the role to cancel [queries](cancel-query.html) and [sessions](cancel-session.html) of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with this role option, non-admins cannot cancel admin queries or sessions. This option should usually be combined with `VIEWACTIVITY` so that the role can view other roles' query and session information. <br><br>By default, the role option is set to `NOCANCELQUERY` for all non-admin roles.
 `MODIFYCLUSTERSETTING`/`NOMODIFYCLUSTERSETTING` | Allow or disallow the role to modify the [cluster settings](cluster-settings.html) with the `sql.defaults` prefix. <br><br>By default, the role option is set to `NOMODIFYCLUSTERSETTING` for all non-admin roles.
+`PASSWORD password`/`PASSWORD NULL` | Let the role [authenticate their access to a secure cluster](authentication.html#client-authentication) using this new password. Passwords should be entered as a [string literal](sql-constants.html#string-literals). For compatibility with PostgreSQL, a password can also be entered as an identifier. <br><br>To prevent a role from using [password authentication](authentication.html#client-authentication) and to mandate [certificate-based client authentication](authentication.html#client-authentication), [set the password as `NULL`](#prevent-a-role-from-using-password-authentication).
+`VALID UNTIL timestamp`/`VALID UNTIL NULL` | The date and time (in the [`timestamp`](timestamp.html) format) after which the password is not valid.
 
 ## Examples
 
@@ -114,6 +124,44 @@ The following example allows the role to modify [cluster settings](cluster-setti
 
 ~~~ sql
 root@:26257/defaultdb> ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
+~~~
+
+### Set default session variable values for a role
+
+In the following example, the `root` user creates a role named `max`, and sets the default value of the `timezone` [session variable](set-vars.html#supported-variables) for the `max` role.
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE max WITH LOGIN;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE max SET timezone = 'America/New_York';
+~~~
+
+This statement does not affect the default `timezone` value for any role other than `max`:
+
+~~~ sql
+root@:26257/defaultdb> SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  UTC
+(1 row)
+~~~
+
+To see the default `timezone` value for the `max` role, run the `SHOW` statement as a member of the `max` role:
+
+~~~ sql
+max@:26257/defaultdb> SHOW timezone;
+~~~
+
+~~~
+      timezone
+--------------------
+  America/New_York
+(1 row)
 ~~~
 
 ## See also
