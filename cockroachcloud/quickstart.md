@@ -9,7 +9,7 @@ toc: true
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page guides you through the quickest way to get started with CockroachDB by setting up a {{ site.data.products.serverless }} cluster with the default options and minimal connection security. For information on how to create a {{ site.data.products.db }} cluster with other options, see the [Learn more](#learn-more) section.
+This page shows you the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some sample data, and then read the data from a sample application.
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -21,88 +21,88 @@ This page guides you through the quickest way to get started with CockroachDB by
 1. On the **Create your cluster** page, select **{{ site.data.products.serverless-plan }}**.
 1. Click **Create your free cluster**.
 
-    Your cluster will be created in approximately 20-30 seconds and the **Connect** dialog will display.
+    In approximately 20-30 seconds, your cluster will be ready and the **Connect** dialog will display.
 
-## Step 2. Choose your OS
+## Step 2. Connect to the cluster
 
-Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
+1. Open a terminal on your local machine.
+1. In the **Connect** dialog, select your OS.
+1. Copy the first command from the dialog and run it in your terminal. This installs the CockroachDB binary and copies it into the `PATH`.
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="mac">Mac</button>
-  <button class="filter-button page-level" data-scope="linux">Linux</button>
-  <button class="filter-button page-level" data-scope="windows">Windows</button>
-</div>
+    We've included the command here for convenience:
 
-## Step 3. Install CockroachDB
+    <div class="filters clearfix">
+      <button class="filter-button page-level" data-scope="mac">Mac</button>
+      <button class="filter-button page-level" data-scope="linux">Linux</button>
+      <button class="filter-button page-level" data-scope="windows">Windows</button>
+    </div>
 
-If you have not done so already, run the first command in the dialog to install the CockroachDB binary and copy it into the `PATH`:
+    <section class="filter-content" markdown="1" data-scope="mac">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
+    ~~~
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="mac">
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
-~~~
-</section>
+    <section class="filter-content" markdown="1" data-scope="linux">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
+    ~~~
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="linux">
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-~~~
-</section>
+    <section class="filter-content" markdown="1" data-scope="windows">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; mkdir -p $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip -OutFile cockroach.zip; Expand-Archive -Path cockroach.zip; Copy-Item "cockroach/cockroach-{{ page.release_info.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:appdata/cockroach; $Env:PATH += ";$env:appdata/cockroach"
+    ~~~
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="windows">
-{% include_cached copy-clipboard.html %}
-~~~ shell
-$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; mkdir -p $env:appdata/cockroach; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip -OutFile cockroach.zip; Expand-Archive -Path cockroach.zip; Copy-Item "cockroach/cockroach-{{ page.release_info.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:appdata/cockroach; $Env:PATH += ";$env:appdata/cockroach"
-~~~
-</section>
-    
-## Step 4. Download the CA certificate
+1. Copy the second command from the dialog and run it in your terminal. This creates a new `certs` directory on your local machine and downloads the CA certificate to that directory.
 
-In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+    We've included the command here for convenience but with placeholder text that must be replaced (e.g., `<cluster-id>`):
 
-<section class="filter-content" markdown="1" data-scope="mac">
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-~~~
+    <section class="filter-content" markdown="1" data-scope="mac">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+    ~~~
 
-Your `cert` file will be downloaded to `~/.postgres/root.crt`.
-</section>
+    Your `cert` file will be downloaded to `~/.postgres/root.crt`.
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="linux">    
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-~~~
+    <section class="filter-content" markdown="1" data-scope="linux">    
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
+    ~~~
 
-Your `cert` file will be downloaded to `~/.postgres/root.crt`.
-</section>
+    Your `cert` file will be downloaded to `~/.postgres/root.crt`.
+    </section>
 
-<section class="filter-content" markdown="1" data-scope="windows">
-{% include_cached copy-clipboard.html %}
-~~~ shell
-mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile $env:appdata\.postgresql\root.crt
-~~~
+    <section class="filter-content" markdown="1" data-scope="windows">
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile $env:appdata\.postgresql\root.crt
+    ~~~
 
-Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
-</section>
+    Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
+    </section>
 
-## Step 5. Use the built-in SQL client
+1. Copy the third command from the dialog and run it in your terminal. This connects CockroachDB's built-in SQL client to your cluster.
 
-1. In your terminal, run the connection string provided in the third step of the dialog to connect to CockroachDB's built-in SQL client. Your username and cluster name are pre-populated for you in the dialog.
-
-    {{site.data.alerts.callout_danger}}
-    This connection string contains your password, which will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    {{site.data.alerts.callout_success}}
+    The connection string in the command is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
     {{site.data.alerts.end}}
 
+    We've included the command here for convenience but with placeholder text that must be replaced (e.g., `<user>`, etc.):
+
     {% include cockroachcloud/sql-connection-string-free.md %}
-    
+
 1. Enter the SQL user's password and hit enter.
-    
+
     {% include cockroachcloud/postgresql-special-characters.md %}
-    
+
     A welcome message displays:
 
     ~~~
@@ -112,6 +112,10 @@ Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
     # To exit, type: \q.
     #
     ~~~
+
+## Step 3. Insert data
+
+## Step 4. Run a sample app
 
 1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
