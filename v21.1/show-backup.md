@@ -138,7 +138,7 @@ Field | Description
 
 ### Show a backup with privileges
 
-Use the `WITH privileges` [parameter](#parameters) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
+Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
 
 {% include copy-clipboard.html %}
 ~~~ sql

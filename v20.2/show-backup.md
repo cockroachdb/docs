@@ -136,7 +136,7 @@ Field | Description
 
 ### Show a backup with privileges
 
-To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [parameter](#parameters):
+To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [option](#options):
 
 {% include copy-clipboard.html %}
 ~~~ sql
