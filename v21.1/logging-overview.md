@@ -73,6 +73,7 @@ Notable events that were previously collected in the general CockroachDB log are
 
 ## See also
 
+- [Configure logs](configure-logs.html)
 - [Logging Levels and Channels](logging.html)
 - [Log formats](log-formats.html)
 - [Notable Event Types](eventlog.html)
