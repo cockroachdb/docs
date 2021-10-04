@@ -193,6 +193,11 @@ The above example shows the default [`crdb-v2`](log-formats.html#format-crdb-v2)
 For descriptions of all SQL audit event types and their fields, see [Notable Event Types](eventlog.html#sql-access-audit-events).
 {{site.data.alerts.end}}
 
+## Known limitations
+
+SQL audit logs can only be accessed in the DB Console if they are
+stored in the same directory as the main CockroachDB log files.
+
 ## See also
 
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)
