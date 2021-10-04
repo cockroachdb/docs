@@ -91,4 +91,4 @@ release_info:
     version: v21.2.0-beta.3
 site_title: CockroachDB Docs
 url: https://www.cockroachlabs.com
-operator_version: v2.1.0
+operator_version: v2.2.0
