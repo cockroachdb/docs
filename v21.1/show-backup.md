@@ -87,6 +87,29 @@ Field | Description
 (20 rows)
 ~~~
 
+You will receive an error if there is a collection of backups in the storage location that you pass to `SHOW BACKUP`. It is necessary to run `SHOW BACKUP` with the specific backup directory rather than the backup collection's top-level directory. Use [`SHOW BACKUPS IN`](#show-backups-in) with your storage location to list the backup directories it contains, which can then be run with `SHOW BACKUP` to inspect the metadata.
+
+### View a list of the available full backup subdirectories
+
+<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+          path
+------------------------
+  2020/09/24-204152.88
+  2020/09/24-204623.44
+  2020/09/24-205612.40
+  2020/09/24-207328.36
+(4 rows)
+~~~
+
+The path format is `<year>/<month>/<day>-<timestamp>`.
+
 ### Show a backup with schemas
 
 {% include copy-clipboard.html %}
@@ -170,27 +193,6 @@ Use the `WITH privileges` [option](#options) to view a list of which users and r
   defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
 (20 rows)
 ~~~
-
-### View a list of the available full backup subdirectories
-
-To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
-~~~
-
-~~~
-          path
-------------------------
-  2020/09/24-204152.88
-  2020/09/24-204623.44
-  2020/09/24-205612.40
-  2020/09/24-207328.36
-(4 rows)
-~~~
-
-The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 

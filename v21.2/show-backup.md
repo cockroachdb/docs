@@ -46,7 +46,7 @@ Field | Description
 `parent_schema_name` | The name of the parent schema.
 `object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `object_type` | The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
-`backup_type` | <span class="version-tag">New in v21.2:</span> The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups#incremental-backups).
+`backup_type` | <span class="version-tag">New in v21.2:</span> The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
 `end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup, in bytes.
@@ -90,6 +90,29 @@ See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for 
   defaultdb     | NULL               | org_one                    | schema      | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
 (20 rows)
 ~~~
+
+You will receive an error if there is a collection of backups in the storage location that you pass to `SHOW BACKUP`. It is necessary to run `SHOW BACKUP` with the specific backup directory rather than the backup collection's top-level directory. Use [`SHOW BACKUPS IN`](#show-backups-in) with your storage location to list the backup directories it contains, which can then be run with `SHOW BACKUP` to inspect the metadata.
+
+### View a list of the available full backup subdirectories
+
+<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+          path
+------------------------
+  2020/09/24-204152.88
+  2020/09/24-204623.44
+  2020/09/24-205612.40
+  2020/09/24-207328.36
+(4 rows)
+~~~
+
+The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### Show a backup with schemas
 
@@ -158,27 +181,6 @@ database_name   | parent_schema_name | object_name                | object_type 
   defaultdb     | NULL               | org_one                    | schema      | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
 (20 rows)
 ~~~
-
-### View a list of the available full backup subdirectories
-
-To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUPS IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
-~~~
-
-~~~
-          path
-------------------------
-  2020/09/24-204152.88
-  2020/09/24-204623.44
-  2020/09/24-205612.40
-  2020/09/24-207328.36
-(4 rows)
-~~~
-
-The path format is `<year>/<month>/<day>-<timestamp>`.
 
 ### View a list of the full and incremental backups in a specific full backup subdirectory
 
