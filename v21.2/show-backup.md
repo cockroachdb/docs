@@ -26,7 +26,7 @@ Parameter | Description
 `SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
 `SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
 `SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
-`kv_option_list` | Control the show behavior with a comma-separated list of [these options](#options).
+`kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
 
@@ -34,10 +34,11 @@ Option       | Value | Description
 -------------+-------+-----------------------------------------------------
 `privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
+`debug_ids` |  N/A  | <span class="version-tag">New in v21.2:</span> [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
 
 ## Response
 
-The following fields are returned.
+The following fields are returned:
 
 Field | Description
 ------|------------
@@ -45,12 +46,15 @@ Field | Description
 `parent_schema_name` | The name of the parent schema.
 `object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `object_type` | The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
+`backup_type` | <span class="version-tag">New in v21.2:</span> The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups#incremental-backups).
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
 `end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup, in bytes.
 `create_statement` | The `CREATE` statement used to create [table(s)](create-table.html), [view(s)](create-view.html), or [sequence(s)](create-sequence.html) that are stored within the backup. This displays when `SHOW BACKUP SCHEMAS` is used. Note that tables with references to [foreign keys](foreign-key.html) will only display foreign key constraints if the table to which the constraint relates to is also included in the backup.
 `is_full_cluster` |  Whether the backup is of a full cluster or not.
 `path` |  The list of the [full backup](take-full-and-incremental-backups.html#full-backups)'s subdirectories. This field is returned for `SHOW BACKUPS IN location` only. The path format is `<year>/<month>/<day>-<timestamp>`.
+
+See [Show a backup with descriptor IDs](#show-a-backup-with-descriptor-ids) for the responses displayed when the `WITH debug_ids` option is specified.
 
 ## Example
 
@@ -62,118 +66,34 @@ Field | Description
 ~~~
 
 ~~~
-  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster
-----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+------------------
-  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true
-  system        | public             | zones                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true
-  system        | public             | settings                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true
-  system        | public             | ui                         | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
-  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true
-  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true
-  system        | public             | role_members               | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true
-  system        | public             | comments                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true
-  NULL          | NULL               | defaultdb                  | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-  movr          | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true
-  movr          | public             | vehicles                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true
-  movr          | public             | rides                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true
-  movr          | public             | vehicle_location_histories | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true
-  movr          | public             | promo_codes                | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true
-  movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
-(20 rows)
-~~~
-
-### Show a backup with schemas
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
-~~~
-
-~~~
-  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                        create_statement
-----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+----------------------------------------------------------------------------------------------------------------------------------
-  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | NULL
-  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | CREATE TABLE users (
-                |                    |                            |             |            |                                  |            |      |                 |     username STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     "hashedPassword" BYTES NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     "isRole" BOOL NOT NULL DEFAULT false,
-                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (username ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "primary" (username),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_2_hashedPassword" ("hashedPassword"),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_3_isRole" ("isRole")
-                |                    |                            |             |            |                                  |            |      |                 | )
-...
-  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | CREATE TABLE jobs (
-                |                    |                            |             |            |                                  |            |      |                 |     id INT8 NOT NULL DEFAULT unique_rowid(),
-                |                    |                            |             |            |                                  |            |      |                 |     status STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     created TIMESTAMP NOT NULL DEFAULT now():::TIMESTAMP,
-                |                    |                            |             |            |                                  |            |      |                 |     payload BYTES NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     progress BYTES NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     created_by_type STRING NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     created_by_id INT8 NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     claim_session_id BYTES NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     claim_instance_id INT8 NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     INDEX jobs_status_created_idx (status ASC, created ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     INDEX jobs_created_by_type_created_by_id_idx (created_by_type ASC, created_by_id ASC) STORING (status),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY fam_0_id_status_created_payload (id, status, created, payload, created_by_type, created_by_id),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY progress (progress),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY claim (claim_session_id, claim_instance_id)
-                |                    |                            |             |            |                                  |            |      |                 | )
-  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | CREATE TABLE locations (
-                |                    |                            |             |            |                                  |            |      |                 |     "localityKey" STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     "localityValue" STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     latitude DECIMAL(18,15) NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     longitude DECIMAL(18,15) NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY ("localityKey" ASC, "localityValue" ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_0_localityKey_localityValue_latitude_longitude" ("localityKey", "localityValue", latitude, longitude)
-                |                    |                            |             |            |                                  |            |      |                 | )
-...
-~~~
-
-### Show a backup with privileges
-
-Use the `WITH privileges` [parameter](#parameters) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
-~~~
-
-~~~
-  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                                               privileges                                                                                  | owner
-----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------
-  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT GRANT, SELECT ON system TO admin; GRANT GRANT, SELECT ON system TO root;                                                                                            | root
-  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO root;                                              | root
-  system        | public             | zones                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO root;                                              | root
-  system        | public             | settings                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO root;                                        | root
-  system        | public             | ui                         | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO root;                                                    | root
-  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO root;                                                | root
-  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO root;                                      | root
-  system        | public             | role_members               | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO root;                                | root
-  system        | public             | comments                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO admin; GRANT SELECT ON comments TO public; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO root;    | root
-  system        | public             | scheduled_jobs             | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO root;                            | root
-  NULL          | NULL               | defaultdb                  | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON defaultdb TO admin; GRANT CREATE ON defaultdb TO max; GRANT ALL ON defaultdb TO root;                                                                        | root
-  NULL          | NULL               | postgres                   | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON postgres TO admin; GRANT ALL ON postgres TO root;                                                                                                            | root
-  NULL          | NULL               | movr                       | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON movr TO admin; GRANT ALL ON movr TO root;                                                                                                                    | root
-  movr          | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true       | GRANT ALL ON users TO admin; GRANT ALL ON users TO root;                                                                                                                  | root
-  movr          | public             | vehicles                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true       | GRANT ALL ON vehicles TO admin; GRANT ALL ON vehicles TO root;                                                                                                            | root
-  movr          | public             | rides                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true       | GRANT ALL ON rides TO admin; GRANT ALL ON rides TO root;                                                                                                                  | root
-  movr          | public             | vehicle_location_histories | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true       | GRANT ALL ON vehicle_location_histories TO admin; GRANT ALL ON vehicle_location_histories TO root;                                                                        | root
-  movr          | public             | promo_codes                | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true       | GRANT ALL ON promo_codes TO admin; GRANT ALL ON promo_codes TO root;                                                                                                      | root
-  movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT ALL ON user_promo_codes TO admin; GRANT ALL ON user_promo_codes TO root;                                                                                            | root
-  defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
+  database_name | parent_schema_name |        object_name         | object_type | backup_type | start_time |          end_time                 | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+------------------------------------------------+------------+------+------------------
+  NULL          | NULL               | system                     | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  system        | public             | users                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true
+  system        | public             | zones                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true
+  system        | public             | settings                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true
+  system        | public             | ui                         | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
+  system        | public             | jobs                       | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true
+  system        | public             | locations                  | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true
+  system        | public             | role_members               | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true
+  system        | public             | comments                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
+  system        | public             | scheduled_jobs             | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true
+  NULL          | NULL               | defaultdb                  | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | postgres                   | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | movr                       | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  movr          | public             | users                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true
+  movr          | public             | vehicles                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true
+  movr          | public             | rides                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true
+  movr          | public             | vehicle_location_histories | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true
+  movr          | public             | promo_codes                | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true
+  movr          | public             | user_promo_codes           | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
+  defaultdb     | NULL               | org_one                    | schema      | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
 (20 rows)
 ~~~
 
 ### View a list of the available full backup subdirectories
 
-To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
+<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -202,51 +122,120 @@ To view a list of the [full](take-full-and-incremental-backups.html#full-backups
 ~~~
 
 ~~~
-  database_name | parent_schema_name |        object_name         | object_type |            start_time            |             end_time             | size_bytes | rows | is_full_cluster
-----------------+--------------------+----------------------------+-------------+----------------------------------+----------------------------------+------------+------+------------------
-  NULL          | NULL               | system                     | database    | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  system        | public             | users                      | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        144 |    3 |      true
-  system        | public             | zones                      | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        201 |    7 |      true
-  system        | public             | settings                   | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        875 |    6 |      true
-  system        | public             | ui                         | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
-  system        | public             | jobs                       | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     795117 |   80 |      true
-  system        | public             | locations                  | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        261 |    5 |      true
-  system        | public             | role_members               | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        184 |    2 |      true
-  system        | public             | comments                   | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       1013 |    2 |      true
-  NULL          | NULL               | defaultdb                  | database    | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  movr          | public             | users                      | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       4911 |   50 |      true
-  movr          | public             | vehicles                   | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       3182 |   15 |      true
-  movr          | public             | rides                      | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     156387 |  500 |      true
-  movr          | public             | vehicle_location_histories | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |      73918 | 1000 |      true
-  movr          | public             | promo_codes                | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     216083 | 1000 |      true
-  movr          | public             | user_promo_codes           | table       | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | system                     | database    | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  system        | public             | users                      | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | zones                      | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | settings                   | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | ui                         | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | jobs                       | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |     102381 |    1 |      true
-  system        | public             | locations                  | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | role_members               | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | comments                   | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       1347 |    2 |      true
-  NULL          | NULL               | defaultdb                  | database    | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
-  movr          | public             | users                      | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | vehicles                   | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | rides                      | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | vehicle_location_histories | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | promo_codes                | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  movr          | public             | user_promo_codes           | table       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
+  database_name | parent_schema_name |        object_name         | object_type | backup_type       | start_time                       |          end_time                | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------------+----------------------------------+----------------------------------+-------------------------------------
+  NULL          | NULL               | system                     | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
+  system        | public             | users                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        144 |    3 |      true
+  system        | public             | zones                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        201 |    7 |      true
+  system        | public             | settings                   | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        875 |    6 |      true
+  system        | public             | ui                         | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
+  system        | public             | jobs                       | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     795117 |   80 |      true
+  system        | public             | locations                  | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        261 |    5 |      true
+  system        | public             | role_members               | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |        184 |    2 |      true
+  system        | public             | comments                   | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
+  system        | public             | scheduled_jobs             | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       1013 |    2 |      true
+  NULL          | NULL               | defaultdb                  | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | postgres                   | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | movr                       | database    | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
+  movr          | public             | users                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       4911 |   50 |      true
+  movr          | public             | vehicles                   | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       3182 |   15 |      true
+  movr          | public             | rides                      | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     156387 |  500 |      true
+  movr          | public             | vehicle_location_histories | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |      73918 | 1000 |      true
+  movr          | public             | promo_codes                | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |     216083 | 1000 |      true
+  movr          | public             | user_promo_codes           | table       | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |          0 |    0 |      true
+  defaultdb     | NULL               | org_one                    | schema      | full              | NULL                             | 2020-09-24 20:41:52.880553+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | system                     | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
+  system        | public             | users                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | zones                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | settings                   | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | ui                         | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | jobs                       | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |     102381 |    1 |      true
+  system        | public             | locations                  | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | role_members               | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | comments                   | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  system        | public             | scheduled_jobs             | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       1347 |    2 |      true
+  NULL          | NULL               | defaultdb                  | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
+  NULL          | NULL               | postgres                   | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
+  NULL          | NULL               | movr                       | database    | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
+  movr          | public             | users                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  movr          | public             | vehicles                   | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  movr          | public             | rides                      | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  movr          | public             | vehicle_location_histories | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  movr          | public             | promo_codes                | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  movr          | public             | user_promo_codes           | table       | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |          0 |    0 |      true
+  defaultdb     | NULL               | org_one                    | schema      | incremental       | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
 (40 rows)
+~~~
+
+### Show a backup with schemas
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~  
+database_name | parent_schema_name | object_name | object_type | backup_type |        start_time         |          end_time          | size_bytes | rows | is_full_cluster |                      create_statement
+--------------+--------------------+-------------+-------------+-------------+---------------------------+----------------------------+------------+------+-----------------+--------------------------------------------------------------
+NULL          | NULL               | movr        | database    | full        | NULL                      | 2021-10-04 15:19:18.25435  |       NULL | NULL |      false      | NULL
+movr          | public             | users       | table       | full        | NULL                      | 2021-10-04 15:19:18.25435  |      35876 |  392 |      false      | CREATE TABLE users (
+              |                    |             |             |             |                           |                            |            |      |                 |     id UUID NOT NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     city VARCHAR NOT NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     name VARCHAR NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     address VARCHAR NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     credit_card VARCHAR NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+              |                    |             |             |             |                           |                            |            |      |                 |     FAMILY "primary" (id, city, name, address, credit_card)
+              |                    |             |             |             |                           |                            |            |      |                 | )
+NULL          | NULL               | movr        | database    | incremental | 2021-10-04 15:19:18.25435 | 2021-10-04 15:19:38.005984 |       NULL | NULL |      false      | NULL
+movr          | public             | users       | table       | incremental | 2021-10-04 15:19:18.25435 | 2021-10-04 15:19:38.005984 |          0 |    0 |      false      | CREATE TABLE users (
+              |                    |             |             |             |                           |                            |            |      |                 |     id UUID NOT NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     city VARCHAR NOT NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     name VARCHAR NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     address VARCHAR NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     credit_card VARCHAR NULL,
+              |                    |             |             |             |                           |                            |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+              |                    |             |             |             |                           |                            |            |      |                 |     FAMILY "primary" (id, city, name, address, credit_card)
+              |                    |             |             |             |                           |                            |            |      |                 | )
+. . .
+~~~
+
+### Show a backup with privileges
+
+Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
+~~~
 
 ~~~
+database_name   | parent_schema_name | object_name                | object_type | backup_type | start_time |          end_time                | size_bytes | rows | is_full_cluster |                                                                               privileges                                                                                  | owner
+----------------+--------------------+----------------------------+-------------+-------------+------------+----------------------------------+------------+------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------
+  NULL          | NULL               | system                     | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT GRANT, SELECT ON system TO admin; GRANT GRANT, SELECT ON system TO root;                                                                                            | root
+  system        | public             | users                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO root;                                              | root
+  system        | public             | zones                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO root;                                              | root
+  system        | public             | settings                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO root;                                        | root
+  system        | public             | ui                         | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO root;                                                    | root
+  system        | public             | jobs                       | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO root;                                                | root
+  system        | public             | locations                  | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO root;                                      | root
+  system        | public             | role_members               | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO root;                                | root
+  system        | public             | comments                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO admin; GRANT SELECT ON comments TO public; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO root;    | root
+  system        | public             | scheduled_jobs             | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO root;                            | root
+  NULL          | NULL               | defaultdb                  | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON defaultdb TO admin; GRANT CREATE ON defaultdb TO max; GRANT ALL ON defaultdb TO root;                                                                        | root
+  NULL          | NULL               | postgres                   | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON postgres TO admin; GRANT ALL ON postgres TO root;                                                                                                            | root
+  NULL          | NULL               | movr                       | database    | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON movr TO admin; GRANT ALL ON movr TO root;                                                                                                                    | root
+  movr          | public             | users                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true       | GRANT ALL ON users TO admin; GRANT ALL ON users TO root;                                                                                                                  | root
+  movr          | public             | vehicles                   | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true       | GRANT ALL ON vehicles TO admin; GRANT ALL ON vehicles TO root;                                                                                                            | root
+  movr          | public             | rides                      | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true       | GRANT ALL ON rides TO admin; GRANT ALL ON rides TO root;                                                                                                                  | root
+  movr          | public             | vehicle_location_histories | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true       | GRANT ALL ON vehicle_location_histories TO admin; GRANT ALL ON vehicle_location_histories TO root;                                                                        | root
+  movr          | public             | promo_codes                | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true       | GRANT ALL ON promo_codes TO admin; GRANT ALL ON promo_codes TO root;                                                                                                      | root
+  movr          | public             | user_promo_codes           | table       | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT ALL ON user_promo_codes TO admin; GRANT ALL ON user_promo_codes TO root;                                                                                            | root
+  defaultdb     | NULL               | org_one                    | schema      | full        | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
+(20 rows)
+~~~
+
+You will receive an error if there is a collection of backups in the storage location that you pass to `SHOW BACKUP`. It is necessary to run `SHOW BACKUP` with the specific backup directory rather than the backup collection's top-level directory. Use [`SHOW BACKUPS IN`](#show-backups-in) with your storage location to list the backup directories it contains, which can then be run with `SHOW BACKUP` to inspect the metadata.
 
 ### Show details for scheduled backups
 
@@ -274,29 +263,57 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
 ~~~
 
 ~~~
-  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster
-----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+------------------
-  NULL          | NULL               | system                     | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
-  system        | public             | users                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        144 |    3 |      true
-  system        | public             | zones                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        201 |    7 |      true
-  system        | public             | settings                   | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        431 |    6 |      true
-  system        | public             | ui                         | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
-  system        | public             | jobs                       | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |     962415 |   97 |      true
-  system        | public             | locations                  | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        261 |    5 |      true
-  system        | public             | role_members               | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |        184 |    2 |      true
-  system        | public             | comments                   | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
-  system        | public             | scheduled_jobs             | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |       1991 |    4 |      true
-  NULL          | NULL               | defaultdb                  | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | postgres                   | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
-  NULL          | NULL               | movr                       | database    | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
-  movr          | public             | users                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |       4911 |   50 |      true
-  movr          | public             | vehicles                   | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |       3182 |   15 |      true
-  movr          | public             | rides                      | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |     156387 |  500 |      true
-  movr          | public             | vehicle_location_histories | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |      73918 | 1000 |      true
-  movr          | public             | promo_codes                | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |     216083 | 1000 |      true
-  movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
-  defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
+  database_name | parent_schema_name |        object_name         | object_type | backup_type | start_time |          end_time                 | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+------------------------------------------------+------------+------+------------------
+  NULL          | NULL               | system                     | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  system        | public             | users                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true
+  system        | public             | zones                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true
+  system        | public             | settings                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true
+  system        | public             | ui                         | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
+  system        | public             | jobs                       | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true
+  system        | public             | locations                  | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true
+  system        | public             | role_members               | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true
+  system        | public             | comments                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
+  system        | public             | scheduled_jobs             | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true
+  NULL          | NULL               | defaultdb                  | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | postgres                   | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  NULL          | NULL               | movr                       | database    | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
+  movr          | public             | users                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true
+  movr          | public             | vehicles                   | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true
+  movr          | public             | rides                      | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true
+  movr          | public             | vehicle_location_histories | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true
+  movr          | public             | promo_codes                | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true
+  movr          | public             | user_promo_codes           | table       | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true
+  defaultdb     | NULL               | org_one                    | schema      | full        |  NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true
 (20 rows)
+~~~
+
+### Show a backup with descriptor IDs
+
+<span class="version-tag">New in v21.2:</span> Use `WITH debug_ids` to display the descriptor IDs related to each object in the backup:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH debug_ids;
+~~~
+
+~~~
+database_name | database_id | parent_schema_name | parent_schema_id |        object_name         | object_id | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows  | is_full_cluster
+--------------+-------------+--------------------+------------------+----------------------------+-----------+-------------+-------------+----------------------------+----------------------------+------------+-------+------------------
+NULL          |        NULL | NULL               |             NULL | movr                       |        52 | database    | full        | NULL                       | 2021-10-04 15:18:29.872912 |       NULL |  NULL |      false
+movr          |          52 | public             |               29 | users                      |        53 | table       | full        | NULL                       | 2021-10-04 15:18:29.872912 |      35876 |   392 |      false
+movr          |          52 | public             |               29 | vehicles                   |        54 | table       | full        | NULL                       | 2021-10-04 15:18:29.872912 |      25404 |   129 |      false
+movr          |          52 | public             |               29 | rides                      |        55 | table       | full        | NULL                       | 2021-10-04 15:18:29.872912 |     280020 |   971 |      false
+movr          |          52 | public             |               29 | vehicle_location_histories |        56 | table       | full        | NULL                       | 2021-10-04 15:18:29.872912 |     865205 | 12686 |      false
+movr          |          52 | public             |               29 | promo_codes                |        57 | table       | full        | NULL                       | 2021-10-04 15:18:29.872912 |     229155 |  1043 |      false
+movr          |          52 | public             |               29 | user_promo_codes           |        58 | table       | full        | NULL                       | 2021-10-04 15:18:29.872912 |      10824 |   128 |      false
+NULL          |        NULL | NULL               |             NULL | movr                       |        52 | database    | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |       NULL |  NULL |      false
+movr          |          52 | public             |               29 | users                      |        53 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
+movr          |          52 | public             |               29 | vehicles                   |        54 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
+movr          |          52 | public             |               29 | rides                      |        55 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
+movr          |          52 | public             |               29 | vehicle_location_histories |        56 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
+movr          |          52 | public             |               29 | promo_codes                |        57 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
+movr          |          52 | public             |               29 | user_promo_codes           |        58 | table       | incremental | 2021-10-04 15:18:29.872912 | 2021-10-04 15:18:53.354707 |          0 |     0 |      false
 ~~~
 
 ## See also

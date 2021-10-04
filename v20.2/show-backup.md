@@ -24,7 +24,7 @@ Parameter | Description
 `SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
 `SHOW BACKUPS IN location` | <span class="version-tag">New in v20.2:</span> List the full backup's subdirectories in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
 `SHOW BACKUP subdirectory IN location` | <span class="version-tag">New in v20.2:</span> List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
-`kv_option_list` | Control the show behavior with a comma-separated list of [these options](#options).
+`kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
 
@@ -35,7 +35,7 @@ Option       | Value | Description
 
 ## Response
 
-The following fields are returned.
+The following fields are returned:
 
 Field | Description
 ------|------------
@@ -136,7 +136,7 @@ Field | Description
 
 ### Show a backup with privileges
 
-To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [parameter](#parameters):
+To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [option](#options):
 
 {% include copy-clipboard.html %}
 ~~~ sql
