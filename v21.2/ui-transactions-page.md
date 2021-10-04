@@ -28,9 +28,11 @@ To filter the transactions by [`application_name`](connection-parameters.html#ad
 - CockroachDB's internal transactions are only displayed under the `$ internal` app.
 - Transactions from the SQL shell are displayed under the `$ cockroach sql` app.
 
-You can also search for transactions using the search bar, or by date using the date bar. To search by date pick a date range that is within the time period since the statistics were last cleared, indicated on the upper right of the table. Click **reset time** to reset the date.
+You can search for transactions using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
-Click **Clear SQL Stats** to clear the statistics.
+## Clear transaction statistics
+
+Transaction statistics are aggregated once an hour and organized by start time. Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a transaction execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time. To clear the statistics, click **clear SQL stats**. This resets SQL stats on the [Statements](ui-statements-page.html) and Transactions pages and [`crdb_internal`](crdb-internal.html) tables.
 
 ## Filter by transaction latency
 
@@ -41,12 +43,12 @@ You can filter transactions in which a SQL statement fingerprint exceeds a speci
 Use this page to identify transactions that you may want to [troubleshoot](query-behavior-troubleshooting.html), such as transactions that are experiencing high latencies, multiple [retries](transactions.html#transaction-retries), or execution failures.
 
 {{site.data.alerts.callout_success}}
-If you haven't yet run any transactions in the cluster as a user, this page will display a blank table.
+If you haven't yet executed any transactions in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
 Column | Description
 -----|------------
-Transactions | The [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) that make up the transaction.<br><br>To view the transaction fingerprint and details, click this to open the [**Transaction Details** page](#transaction-details-page).
+Transactions | The [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) that make up the transaction.<br><br>To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).
 Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
 Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing this transaction within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
 Bytes Read | Aggregation of all bytes [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean.
@@ -64,14 +66,14 @@ Significant transactions on your database are likely to have a high execution co
 
 ### Time interval
 
-By default, the Transactions page displays all transactions executed within a one-hour time interval. The display is cleared at the end of each interval. You can change the interval with the [`diagnostics.reporting.interval`](cluster-settings.html#settings) cluster setting.
+The Transactions page aggregates all transactions executed within a configured time interval. The default interval is one hour. You can change the interval with the [`diagnostics.reporting.interval`](cluster-settings.html#settings) [cluster setting](set-cluster-setting.html). The interval start time for each transaction fingerprint is displayed in the Interval Start Time column.
 
 ## Transaction Details page
 
-Click on a transaction fingerprint to open **Transaction Details**.
+Click a transaction fingerprint to open **Transaction Details**.
 
-- The **transaction fingerprint** is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction.
-- The **mean transaction time** is the mean average time it took to execute the transaction within the last hour or specified [time interval](#time-interval).
+- The _transaction fingerprint_ is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction.
+- The **Mean transaction time** is the mean average time it took to execute the transaction within the last hour or specified [time interval](#time-interval).
 - **Transaction resource** usage shows overall statistics about the transaction.
     - **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour or specified [time interval](#time-interval).
     - **Bytes read over network** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the statement was executed on a single node.
