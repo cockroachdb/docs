@@ -46,6 +46,7 @@ Changes that are important to note:
 
 - [Interleaving data](interleave-in-parent.html) was deprecated in v20.2 and is now disabled by default. Interleaving will be permanently removed from CockroachDB in a future release. For migration steps, see the [interleave deprecation](../v21.1/interleave-in-parent.html#deprecation) notice.
     - If your cluster includes interleaved data and you perform backups, first make sure you are running [v20.2.10+](../v20.2/upgrade-cockroach-version.html); then update your `BACKUP` commands to use the [`INCLUDE_DEPRECATED_INTERLEAVES` option](backup.html#include-deprecated-interleaves); and only then return to this page and upgrade to v21.1. Note that the `INCLUDE_DEPRECATED_INTERLEAVES` option is a no-op in v20.2.10, but this sequence is the only way to prevent backups including interleaved data from failing on v21.1.
+- The `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html) was deprecated in v21.1 and has been removed from v21.2. The `default` authentication mode for Google Cloud Storage is no longer supported. It is necessary to use either `specified` or `implicit` as `AUTH` parameters when connecting to Google Cloud Storage. See the [Authentication section — Bulk Operations](use-cloud-storage-for-bulk-operations.html#google-cloud-storage) for details on configuring these parameters. 
 
 ## Step 3. Decide how the upgrade will be finalized
 
