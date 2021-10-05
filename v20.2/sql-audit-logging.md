@@ -188,12 +188,6 @@ For reference documentation of the audit log file format, see [`ALTER TABLE ... 
 {% include {{ page.version.version }}/ui/ui-log-files.md %}
 {{site.data.alerts.end}}
 
-## Known limitations
-
-SQL audit logs can only be accessed in the DB Console if they are stored in the same directory as the main CockroachDB log files.
-
-For more information, see [`EXPERIMENTAL_AUDIT`](experimental-audit.html#audit-log-file-storage-location).
-
 ## See also
 
 - [`ALTER TABLE ... EXPERIMENTAL_AUDIT`](experimental-audit.html)

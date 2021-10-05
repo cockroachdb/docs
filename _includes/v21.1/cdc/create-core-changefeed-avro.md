@@ -16,10 +16,10 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services start
+    $ ./bin/confluent start
     ~~~
 
-    Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
+    Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
 
 4. As the `root` user, open the [built-in SQL client](cockroach-sql.html):
 
@@ -93,12 +93,12 @@ In this example, you'll set up a core changefeed for a single-node cluster that 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local services stop
+    $ ./bin/confluent stop
     ~~~
 
     To terminate all Confluent processes, use:
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent local destroy
+    $ ./bin/confluent destroy
     ~~~

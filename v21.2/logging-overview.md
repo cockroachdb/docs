@@ -67,7 +67,6 @@ When using the [default logging configuration](configure-logs.html#default-loggi
 
 ## See also
 
-- [Configure logs](configure-logs.html)
 - [Logging Levels and Channels](logging.html)
 - [Log formats](log-formats.html)
 - [Notable Event Types](eventlog.html)
