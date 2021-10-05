@@ -68,7 +68,7 @@ Example of a cloud storage sink URI with Amazon S3:
 
 Some considerations when using cloud storage sinks:
 
-- Cloud storage sinks only work with `JSON` and emits newline-delimited `JSON` files.
+- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
 - The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
 - Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
 
