@@ -8,7 +8,7 @@ toc: true
 `CREATE CHANGEFEED` is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature. For the core version, see [`EXPERIMENTAL CHANGEFEED FOR`](changefeed-for.html).
 {{site.data.alerts.end}}
 
-The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/) or a [cloud storage sink](#cloud-storage-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
+The `CREATE CHANGEFEED` [statement](sql-statements.html) creates a new {{ site.data.products.enterprise }} changefeed, which targets an allowlist of tables called "watched rows".  Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), a [cloud storage sink](#cloud-storage-sink), or a [webhook sink](#webhook-sink)). You can [create](#create-a-changefeed-connected-to-kafka), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), or [cancel](#cancel-a-changefeed) an {{ site.data.products.enterprise }} changefeed.
 
 For more information, see [Stream Data Out of CockroachDB Using Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).
 
@@ -60,17 +60,19 @@ Example of a Kafka sink URI:
 
 Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
 
-{{site.data.alerts.callout_info}}
-Currently, cloud storage sinks only work with `JSON` and emits newline-delimited `JSON` files.
-{{site.data.alerts.end}}
-
-Example of a cloud storage sink URI:
+Example of a cloud storage sink URI with Amazon S3:
 
 ~~~
-'experimental-s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456'
+'s3://acme-co/employees?AWS_ACCESS_KEY_ID=123&AWS_SECRET_ACCESS_KEY=456'
 ~~~
 
-Cloud storage sink URIs must be pre-pended with `experimental-` when working with changefeeds. For more information on the sink URI structure, see [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls).
+Some considerations when using cloud storage sinks:
+
+- Cloud storage sinks only work with `JSON` and emit newline-delimited `JSON` files.
+- The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
+- Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
+
+[Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls) provides more detail on sink URI structure and authentication to cloud storage sinks.
 
 #### Webhook sink
 
@@ -349,14 +351,10 @@ For more information on how to create a changefeed that emits an [Avro](https://
 
 ### Create a changefeed connected to a cloud storage sink
 
-{{site.data.alerts.callout_danger}}
-**This is an experimental feature.** The interface and output are subject to change.
-{{site.data.alerts.end}}
-
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE CHANGEFEED FOR TABLE name, name2, name3
-  INTO 'experimental-scheme://host?parameters'
+  INTO 'scheme://host?parameters'
   WITH updated, resolved;
 ~~~
 ~~~
