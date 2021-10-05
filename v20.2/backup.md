@@ -50,7 +50,7 @@ To view the contents of an {{ site.data.products.enterprise }} backup created wi
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/grammar_svg/backup.html %}
 </div>
 
 ## Parameters
