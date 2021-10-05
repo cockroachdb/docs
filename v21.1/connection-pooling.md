@@ -71,7 +71,7 @@ config.setJdbcUrl("jdbc:postgresql://localhost:26257/bank");
 config.setUsername("maxroach");
 config.setPassword("password");
 config.addDataSourceProperty("ssl", "true");
-config.addDataSourceProperty("sslMode", "require")
+config.addDataSourceProperty("sslmode", "require")
 config.addDataSourceProperty("reWriteBatchedInserts", "true");
 config.setAutoCommit(false);
 config.setMaximumPoolSize(40);
