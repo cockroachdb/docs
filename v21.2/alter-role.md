@@ -32,12 +32,12 @@ table td:first-child {
 
 Parameter | Description
 ----------|-------------
-`ROLE string_or_placeholder`/`USER string_or_placeholder` | Specify the name of the role that you want to alter.
+`role_name` | Specify the name of the role that you want to alter.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 `SET var_name ... var_value` | <span class="version-tag">New in v21.2</span>: Set default [session variable](set-vars.html) values for a role.
 `RESET session_var`<br>`RESET ALL` | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
 `IN DATABASE database_name` | <span class="version-tag">New in v21.2</span>: Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
-`ROLE_ALL ALL`/`USER_ALL ALL` | <span class="version-tag">New in v21.2</span>: Apply session variable defaults to all roles.
+`ROLE ALL ...`/`USER ALL ...` | <span class="version-tag">New in v21.2</span>: Apply session variable settings to all roles.
 
 ### Role options
 
@@ -207,6 +207,48 @@ max@:26257/movr> SHOW statement_timeout;
   statement_timeout
 ---------------------
   10000
+(1 row)
+~~~
+
+### Set default session variable values for a specific database
+
+In the following example, the `root` user creates a database named `movr`, and sets the default value of the `timezone` [session variable](set-vars.html#supported-variables) for all roles in that database.
+
+~~~ sql
+root@:26257/defaultdb> CREATE DATABASE movr;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE ALL IN DATABASE movr SET timezone = 'America/New_York';
+~~~
+
+{{site.data.alerts.callout_info}}
+This statement is identical to [`ALTER DATABASE movr SET timezone = 'America/New_York';`](alter-database.html).
+{{site.data.alerts.end}}
+
+This statement does not affect the default `timezone` value for any database other than `movr`:
+
+~~~ sql
+root@:26257/defaultdb> SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  UTC
+(1 row)
+~~~
+
+To see the default `timezone` value for the `max` role, run the `SHOW` statement as a member of the `max` role:
+
+~~~ sql
+root@:26257/movr> SHOW timezone;
+~~~
+
+~~~
+      timezone
+--------------------
+  America/New_York
 (1 row)
 ~~~
 
