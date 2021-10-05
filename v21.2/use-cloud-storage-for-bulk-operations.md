@@ -51,7 +51,7 @@ You can disable the use of implicit credentials when accessing external cloud st
 
 ### Example file URLs
 
-Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), [`EXPORT`](export.html), or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
+Example URLs for [`BACKUP`](backup.html), [`RESTORE`](restore.html), or [`EXPORT`](export.html) given a bucket or container name of `acme-co` and an `employees` subdirectory:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -61,14 +61,10 @@ Google Cloud | `gs://acme-co/employees?AUTH=specified&CREDENTIALS=encoded-123`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
-URLs for [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) should be prepended with `experimental-`.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
 Currently, cloud storage sinks (for changefeeds) only work with `JSON` and emits newline-delimited `JSON` files.
 {{site.data.alerts.end}}
 
-Example URLs for [`IMPORT`](import.html) given a bucket or container name of `acme-co` and a filename of `employees`:
+Example URLs for [`IMPORT`](import.html) or [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) given a bucket or container name of `acme-co` and a filename of `employees`:
 
 Location     | Example                                                                          
 -------------+----------------------------------------------------------------------------------
@@ -79,7 +75,7 @@ HTTP         | `http://localhost:8080/employees.sql`
 NFS/Local    | `nodelocal://1/path/employees`, `nodelocal://self/nfsmount/backups/employees`&nbsp;[<sup>2</sup>](#considerations)
 
 {{site.data.alerts.callout_info}}
-HTTP storage can only be used for [`IMPORT`](import.html).
+HTTP storage can only be used for [`IMPORT`](import.html) and [`CREATE CHANGEFEED`](create-changefeed.html).
 {{site.data.alerts.end}}
 
 ## Encryption

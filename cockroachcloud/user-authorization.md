@@ -4,14 +4,14 @@ summary: Learn about the user authorization features for CockroachCloud Cockroac
 toc: true
 ---
 
-CockroachCloud requires you to create SQL users to access the cluster.
+{{ site.data.products.db }} requires you to create SQL users to access the cluster.
 
 By default, a new SQL user created using a [Console Admin](console-access-management.html#console-admin) is assigned to the `admin` role. An `admin` SQL user has full [privileges](../{{site.versions["stable"]}}/authorization.html#assign-privileges) for all databases and tables in your cluster. This user can also create additional users and grant them appropriate privileges.
 
 ## Create a SQL user
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the CockroachCloud Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -57,7 +57,7 @@ Be sure to create a password for each new user. Without a password, a user canno
 ### View all users in your cluster
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the CockroachCloud Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -87,7 +87,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.versions
 ### Change a user's password
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the CockroachCloud Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -124,7 +124,7 @@ To change a user's password, use the [`ALTER USER`](../{{site.versions["stable"]
 ### Remove a user
 
 <div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="console">Use the CockroachCloud Console</button>
+  <button class="filter-button page-level" data-scope="console">Use the {{ site.data.products.db }} Console</button>
   <button class="filter-button page-level" data-scope="client">Use the SQL client</button>
 </div>
 <p></p>
@@ -261,4 +261,4 @@ Once you have [connected to the cluster](connect-to-your-cluster.html), you can 
 ## See also
 
 - [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
-- [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)
+- [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

@@ -415,6 +415,12 @@
                 "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
                 ]
+              },
+              {
+                "title": "Performance tuning recipes",
+                "urls": [
+                  "/${VERSION}/performance-recipes.html"
+                ]
               }
             ]
           },
@@ -433,7 +439,8 @@
                   {
                     "title": "Go",
                     "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html"
+                      "/${VERSION}/hello-world-go-pgx.html",
+                      "/${VERSION}/hello-world-go-gorm.html"
                     ]
                   },
                   {
@@ -722,6 +729,12 @@
                 ]
               },
               {
+                "title": "Migrate to Multi-region SQL",
+                "urls": [
+                  "/${VERSION}/migrate-to-multiregion-sql.html"
+                ]
+              },
+              {
                 "title": "Topology Patterns",
                 "items": [
                   {
@@ -817,56 +830,72 @@
             ]
           },
           {
-            "title": "Orchestrated Deployment",
+            "title": "Kubernetes Deployment",
             "items": [
               {
                 "title": "Overview",
                 "urls": [
-                  "/${VERSION}/orchestration.html"
+                  "/${VERSION}/kubernetes-overview.html"
                 ]
               },
               {
-                "title": "Kubernetes Single-Cluster Deployment",
+                "title": "Single-Cluster Deployment",
                 "urls": [
                   "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-insecure.html"
+                  "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
                 ]
               },
               {
                 "title": "Operate CockroachDB on Kubernetes",
-                "urls": [
-                  "/${VERSION}/operate-cockroachdb-kubernetes.html"
+                "items": [
+                  {
+                    "title": "Configure the Cluster",
+                    "urls": [
+                      "/${VERSION}/configure-cockroachdb-kubernetes.html"
+                    ]
+                  },
+                  {
+                    "title": "Secure the Cluster",
+                    "urls": [
+                      "/${VERSION}/secure-cockroachdb-kubernetes.html"
+                    ]
+                  },
+                  {
+                    "title": "Scale the Cluster",
+                    "urls": [
+                      "/${VERSION}/scale-cockroachdb-kubernetes.html"
+                    ]
+                  },
+                  {
+                    "title": "Monitor the Cluster",
+                    "urls": [
+                      "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+                    ]
+                  },
+                  {
+                    "title": "Upgrade the Cluster",
+                    "urls": [
+                      "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+                    ]
+                  },
+                  {
+                    "title": "Optimize Performance",
+                    "urls": [
+                      "/${VERSION}/kubernetes-performance.html"
+                    ]
+                  }
                 ]
               },
               {
-                "title": "Monitor CockroachDB on Kubernetes",
-                "urls": [
-                  "/${VERSION}/monitor-cockroachdb-kubernetes.html"
-                ]
-              },
-              {
-                "title": "OpenShift Single-Cluster Deployment",
+                "title": "OpenShift Deployment",
                 "urls": [
                   "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
                 ]
               },
               {
-                "title": "Kubernetes Multi-Cluster Deployment",
+                "title": "Multi-Cluster Deployment",
                 "urls": [
                   "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
-                ]
-              },
-              {
-                "title": "Kubernetes Performance Optimization",
-                "urls": [
-                  "/${VERSION}/kubernetes-performance.html"
-                ]
-              },
-              {
-                "title": "Docker Swarm Deployment",
-                "urls": [
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm.html",
-                  "/${VERSION}/orchestrate-cockroachdb-with-docker-swarm-insecure.html"
                 ]
               }
             ]
@@ -1462,6 +1491,12 @@
                     ]
                   },
                   {
+                    "title": "<code>ALTER VIEW</code>",
+                    "urls": [
+                      "/${VERSION}/alter-view.html"
+                    ]
+                  },
+                  {
                     "title": "<code>AS OF SYSTEM TIME</code>",
                     "urls": [
                       "/${VERSION}/as-of-system-time.html"
@@ -1471,12 +1506,6 @@
                     "title": "<code>EXPERIMENTAL_AUDIT</code>",
                     "urls": [
                       "/${VERSION}/experimental-audit.html"
-                    ]
-                  },
-                  {
-                    "title": "<code>ALTER VIEW</code>",
-                    "urls": [
-                      "/${VERSION}/alter-view.html"
                     ]
                   },
                   {
@@ -2162,6 +2191,12 @@
                     "urls": [
                       "/${VERSION}/validate-constraint.html"
                     ]
+                  },
+                  {
+                    "title": "<code>WITH</code>",
+                    "urls": [
+                      "/${VERSION}/common-table-expressions.html"
+                    ]
                   }
                 ]
               },
@@ -2377,7 +2412,7 @@
                     ]
                   },
                   {
-                    "title": "Common Table Expressions",
+                    "title": "<code>WITH</code> Queries (Common Table Expressions)",
                     "urls": [
                       "/${VERSION}/common-table-expressions.html"
                     ]

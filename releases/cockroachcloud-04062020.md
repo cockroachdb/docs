@@ -22,7 +22,7 @@ CockroachCloud now requires a user to have a CockroachCloud account before accep
 ### General changes
 
 - The hardware options displayed while [creating a cluster](../cockroachcloud/create-your-cluster.html) have been renamed as "Option 1" and "Option 2".
-- CockroachCloud users who are not a member of an existing Organization can now create an Organization when they log into the CockroachCloud Console.
+- CockroachCloud users who are not a member of an existing Organization can now create an Organization when they log into the {{ site.data.products.db }} Console.
 
 ### Doc updates
 

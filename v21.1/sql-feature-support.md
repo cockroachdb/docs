@@ -139,7 +139,7 @@ table tr td:nth-child(2) {
  Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions)
  `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation)
 
-### Scalar expressions and boolean formulas
+### Scalar expressions and Boolean formulas
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
@@ -151,8 +151,8 @@ table tr td:nth-child(2) {
  `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](scalar-expressions.html#string-pattern-matching)
  `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](scalar-expressions.html#string-matching-using-sql-regular-expressions)
  Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](scalar-expressions.html#string-matching-using-posix-regular-expressions)
- `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Currently works only with small data sets.
- Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Currently works only with small data sets.
+ `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Works only with small data sets.
+ Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Works only with small data sets.
  Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](scalar-expressions.html#unary-and-binary-operations)
  Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](scalar-expressions.html#array-constructors) and [Subscripting](scalar-expressions.html#subscripted-expressions)
  `COLLATE`| ✓ | Standard | [Collation expressions documentation](scalar-expressions.html#collation-expressions)

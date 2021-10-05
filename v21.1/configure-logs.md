@@ -102,7 +102,7 @@ All supported sink types use the following common sink parameters:
 
 | Parameter       | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `filter`        | Minimum severity level at which logs enter the channel. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                          |
+| `filter`        | Minimum severity level at which logs enter the channels selected for the sink. Accepts one of the valid [severity levels](logging.html#logging-levels-severities) or `NONE`, which excludes all messages from the sink output. For details, see [Set logging levels](#set-logging-levels).                                                                                                                                                          |
 | `format`        | Log message format to use for file or network sinks. Accepts one of the valid [log formats](log-formats.html). For details, see [file logging format](#file-logging-format) and [network logging format](#network-logging-format).                                                                                                                                                                                           |
 | `redact`        | When `true`, enables automatic redaction of personally identifiable information (PII) from log messages. This ensures that sensitive data is not transmitted when collecting logs centrally or [over a network](#output-to-network). For details, see [Redact logs](#redact-logs).                                                                                                                                           |
 | `redactable`    | When `true`, preserves redaction markers around fields that are considered sensitive in the log messages. The markers are recognized by [`cockroach debug zip`](cockroach-debug-zip.html) and [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) but may not be compatible with external log collectors. For details on how the markers appear in each format, see [Log formats](log-formats.html).             |
@@ -445,11 +445,7 @@ When `capture-stray-errors` is disabled, [`redactable`](#redact-logs) cannot be 
 
 ## Default logging configuration
 
-The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). To retain backward compatibility with v20.2 and earlier, these settings match the [log filenames used in previous versions](logging-overview.html#changes-to-logging-system).
-
-{{site.data.alerts.callout_danger}}
-These `file-groups` defaults will be removed in v21.2.
-{{site.data.alerts.end}}
+The YAML payload below represents the default logging behavior of [`cockroach start`](cockroach-start.html) and [`cockroach start-single-node`](cockroach-start-single-node.html). To retain backward compatibility with v20.2 and earlier, these settings match the [log filenames used in previous versions](logging-overview.html#changes-to-logging-system) (except `sql-auth`, which should be changed to `auth` to match the log filename used in v20.2 and earlier).
 
 ~~~ yaml
 file-defaults:
@@ -477,8 +473,10 @@ sinks:
       channels: [STORAGE]
     sql-audit:
       channels: [SENSITIVE_ACCESS]
+      auditable: true
     sql-auth:
       channels: [SESSIONS]
+      auditable: true
     sql-exec:
       channels: [SQL_EXEC]
     sql-slow:

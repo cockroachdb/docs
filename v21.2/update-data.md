@@ -15,7 +15,7 @@ This page has instructions for updating existing rows of data in CockroachDB, us
 Before reading this page, do the following:
 
 - [Install CockroachDB](install-cockroachdb.html).
-- [Start a local cluster](secure-a-cluster.html), or [create a CockroachCloud cluster](../cockroachcloud/create-your-cluster.html).
+- [Start a local cluster](secure-a-cluster.html), or [create a {{ site.data.products.dedicated }} cluster](../cockroachcloud/create-your-cluster.html).
 - [Install a Postgres client](install-client-drivers.html).
 - [Connect to the database](connect-to-the-database.html).
 - [Create a database schema](schema-design-overview.html).

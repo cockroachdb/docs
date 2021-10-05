@@ -2,7 +2,7 @@ You can expand certain [types of persistent volumes](https://kubernetes.io/docs/
 ) (including GCE Persistent Disk and Amazon Elastic Block Store) by editing their persistent volume claims.
 
 {{site.data.alerts.callout_info}}
-These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html).
+These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](deploy-cockroachdb-with-kubernetes.html?filters=helm).
 {{site.data.alerts.end}}
 
 1. Get the persistent volume claims for the volumes:

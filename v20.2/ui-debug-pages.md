@@ -18,7 +18,7 @@ These pages are experimental and undocumented. If you find an issue, let us know
 
 On the right-side of the page, the following information is displayed:
 
-- CockroachDB license type: Helps determine if you have access to Enterprise features.
+- CockroachDB license type: Helps determine if you have access to {{ site.data.products.enterprise }} features.
 - Current node ID: Helps identify the current node when viewing the DB Console through a load balancer.
 
 ## Reports and Configuration

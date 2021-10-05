@@ -1,5 +1,5 @@
 ---
-title: Database Page
+title: Databases Page
 summary: The Databases page provides details about databases configured, the tables in each database, and the grants assigned to each user.
 toc: true
 ---
