@@ -36,7 +36,7 @@ Parameter | Description
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 `SET var_name ... var_value` | <span class="version-tag">New in v21.2</span>: Set default [session variable](set-vars.html) values for a role.
 `RESET session_var`<br>`RESET ALL` | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
-`IN DATABASE database_name` | <span class="version-tag">New in v21.2</span>: Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.
+`IN DATABASE database_name` | <span class="version-tag">New in v21.2</span>: Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
 `ROLE_ALL ALL`/`USER_ALL ALL` | <span class="version-tag">New in v21.2</span>: Apply session variable defaults to all roles.
 
 ### Role options
@@ -161,6 +161,52 @@ max@:26257/defaultdb> SHOW timezone;
       timezone
 --------------------
   America/New_York
+(1 row)
+~~~
+
+### Set default session variable values for a role in a specific database
+
+In the following example, the `root` user creates a role named `max` and a database named `movr`, and sets the default value of the `statement_timeout` [session variable](set-vars.html#supported-variables) for the `max` role in the `movr` database.
+
+~~~ sql
+root@:26257/defaultdb> CREATE DATABASE movr;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> CREATE ROLE max WITH LOGIN;
+~~~
+
+~~~ sql
+root@:26257/defaultdb> ALTER ROLE max IN DATABASE movr SET statement_timeout = '10s';
+~~~
+
+This statement does not affect the default `statement_timeout` value for any role other than `max`, or in any database other than `movr`.
+
+~~~ sql
+root@:26257/defaultdb> SHOW statement_timeout;
+~~~
+
+~~~
+  statement_timeout
+---------------------
+  0
+(1 row)
+~~~
+
+To see the new default `statement_timeout` value for the `max` role, run the `SHOW` statement as a member of the `max` role that has connected to the cluster, with the database `movr` specified in the connection string.
+
+~~~ shell
+cockroach sql --url 'postgresql://max@localhost:26257/movr?sslmode=disable'
+~~~
+
+~~~ sql
+max@:26257/movr> SHOW statement_timeout;
+~~~
+
+~~~
+  statement_timeout
+---------------------
+  10000
 (1 row)
 ~~~
 
