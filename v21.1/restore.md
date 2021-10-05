@@ -38,7 +38,7 @@ You can restore:
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
