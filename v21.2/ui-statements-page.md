@@ -85,6 +85,8 @@ Click a SQL statement fingerprint to open **Statement Details**. For each statem
 - [Explain plan](#explain-plan)
 - [Execution stats](#execution-stats)
 
+The Statement Details page supports the search param `aggregated_ts`. If set, the page displays the statement statistics aggregated at that interval. If unset, the page displays the statement statistics aggregated over the date range specified on the Statements page.
+
 ### Overview
 
 The **Overview** section displays the SQL statement fingerprint and essential statistics:
@@ -103,9 +105,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 **Statement details** displays information about the execution of the statement.
 
-  - **Interval start time** displays time that the statement execution interval started. By default, statements are configured to aggregate over an hour interval. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-  - **Nodes** contains links to the nodes that executed the statement.
-  - **Regions** lists the regions containing the nodes.
+  - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For details, see [time interval](#time-interval). By default, statistics aggregate over an hour interval. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
   - **Database** displays the database on which the statements executed.
   - **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
   - **Failed?** indicates whether the statement failed to execute.
