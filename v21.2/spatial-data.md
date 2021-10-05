@@ -74,7 +74,9 @@ To use a version of a function from the list above that will explicitly *not* us
 
 You can check which queries are using which indexes using the [`EXPLAIN`](explain.html) statement. For more information about general query tuning (including index usage), see [Make queries fast](make-queries-fast.html).
 
-The syntax for adding an [index](spatial-indexes.html) to a geometry column is. For example, to add an index to the `geom` column of the [sample `tornadoes` database](migrate-from-shapefiles.html):
+The syntax for adding an [index](spatial-indexes.html) to a geometry column is `CREATE INDEX index_name ON table_name USING GIST (column_name)`.
+
+For example, to add an index to the `geom` column of the [sample `tornadoes` table](migrate-from-shapefiles.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql

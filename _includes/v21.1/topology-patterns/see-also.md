@@ -3,6 +3,7 @@
 - [When to use `ZONE` vs. `REGION` survival goals](when-to-use-zone-vs-region-survival-goals.html)
 - [When to use `REGIONAL` vs. `GLOBAL` tables](when-to-use-regional-vs-global-tables.html)
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
+- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)
 - [`ALTER DATABASE ... SURVIVE {ZONE,REGION} FAILURE`](survive-failure.html)
 - [`ALTER TABLE ... SET LOCALITY ...`](set-locality.html)
 - [Topology Patterns Overview](topology-patterns.html)

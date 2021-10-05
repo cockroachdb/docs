@@ -6,14 +6,14 @@ toc: true
 
 This page describes the **Backups** page and how to restore your data.
 
-Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every CockroachCloud cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
+Cockroach Labs runs [full backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#full-backups) daily and [incremental backups](../{{site.versions["stable"]}}/take-full-and-incremental-backups.html#incremental-backups) hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days, while incremental backups are retained for 7 days.
 
 The backups that Cockroach Labs runs for you can be viewed on the [Backups page](#backups-page).
 
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
 
-In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster).
+In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster).
 {{site.data.alerts.end}}
 
 ## Backups page
@@ -78,7 +78,7 @@ For each table in the database, the following details display:
 
 Additional ways to restore data:
 
-- [Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster)
+- [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster)
 - [Back up and restore data manually](run-bulk-operations.html)
 
 ### Restore a database
@@ -137,9 +137,9 @@ To restore a table:
 
    When the restore job has been created successfully, you will be taken to the **Restore Jobs** tab, which will show you the status of your restore.
 
-### Back up a self-hosted CockroachDB cluster and restore into a CockroachCloud cluster
+### Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster
 
-To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
+To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} cluster:
 
 1. While [connected to your self-hosted CockroachDB cluster](../{{site.versions["stable"]}}/connect-to-the-database.html), [back up](../{{site.versions["stable"]}}/backup.html) your databases and/or tables to an [external location](../{{site.versions["stable"]}}/backup.html#backup-file-urls):
 
@@ -149,10 +149,10 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     ~~~
 
     {{site.data.alerts.callout_danger}}
-    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as CockroachCloud will need the `specified` credentials upon [`RESTORE`](../{{site.versions["stable"]}}/restore.html). For more information on authentication parameters to cloud storage providers, see [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html#authentication).
+    If you are backing up the data to AWS or GCP, use the `specified` option for the `AUTH` parameter, as {{ site.data.products.db }} will need the `specified` credentials upon [`RESTORE`](../{{site.versions["stable"]}}/restore.html). For more information on authentication parameters to cloud storage providers, see [Use Cloud Storage for Bulk Operations](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html#authentication).
     {{site.data.alerts.end}}
 
-1. [Connect to your CockroachCloud cluster](connect-to-your-cluster.html):
+1. [Connect to your {{ site.data.products.db }} cluster](connect-to-your-cluster.html):
 
     <div class="filters clearfix">
       <button class="filter-button page-level" data-scope="mac">Mac</button>
@@ -163,7 +163,7 @@ To back up a self-hosted CockroachDB cluster into a CockroachCloud cluster:
     {% include cockroachcloud/sql-connection-string.md %}
 
 
-1. [Restore](../{{site.versions["stable"]}}/restore.html) to your CockroachCloud cluster:
+1. [Restore](../{{site.versions["stable"]}}/restore.html) to your {{ site.data.products.db }} cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql

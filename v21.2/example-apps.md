@@ -24,7 +24,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 |--------------------------------------------------+----------------+--------------------------------------------------------|
 | [pgx](https://github.com/jackc/pgx/releases)     | Full           | [Hello World](hello-world-go-pgx.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb.html)
 | [pq](https://github.com/lib/pq)                  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-pq.html)
-| [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-gorm.html)
+| [GORM](https://github.com/jinzhu/gorm/releases)  | Full           | [Hello World](hello-world-go-gorm.html)<br>[Simple CRUD](build-a-go-app-with-cockroachdb-gorm.html)
 | [upper/db](https://github.com/upper/db)          | Full           | [Simple CRUD](build-a-go-app-with-cockroachdb-upperdb.html)
 
 ## Java
@@ -39,7 +39,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 
 | Driver/ORM Framework                                    | Support level  | Example apps                                            |
 |---------------------------------------------------------+----------------+--------------------------------------------------------|
-| [pg](https://www.npmjs.com/package/pg)                  | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
+| [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Hello World](hello-world-node-postgres.html)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-sequelize.html)
 | [TypeORM](https://www.npmjs.com/package/typeorm)        | Full           | [Simple CRUD](build-a-typescript-app-with-cockroachdb.html)
 

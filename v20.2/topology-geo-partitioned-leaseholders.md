@@ -28,7 +28,7 @@ In a multi-region deployment, the geo-partitioned [leaseholders](architecture/re
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Geo-partitioning requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
+Geo-partitioning requires an [{{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -58,7 +58,7 @@ Assuming you have a [cluster deployed across three regions](#cluster-setup) and 
 > CREATE INDEX users_last_name_index ON users (city, last_name);
 ~~~
 
-1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
+1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. Partition the table by `city`. For example, assuming there are three possible `city` values, `los angeles`, `chicago`, and `new york`:
 

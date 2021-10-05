@@ -35,7 +35,7 @@ TPC-C provides the most realistic and objective measure for OLTP performance at 
 
 Reproducing these TPC-C results involves using CockroachDB's [partitioning](partitioning.html) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
 
-The partitioning feature requires an enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
+The partitioning feature requires an {{ site.data.products.enterprise }} license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
@@ -133,7 +133,7 @@ CockroachDB requires TCP communication on two ports:
 
 ## Step 3. Configure the cluster
 
-You'll be importing a large TPC-C data set. To speed that up, you can temporarily disable replication and tweak some cluster settings. You'll also need to enable the enterprise license you requested earlier.
+You'll be importing a large TPC-C data set. To speed that up, you can temporarily disable replication and tweak some cluster settings. You'll also need to enable the {{ site.data.products.enterprise }} license you requested earlier.
 
 1. SSH to any VM with the `cockroach` binary.
 

@@ -64,7 +64,7 @@ Note the following:
 
 - The CA key should not be uploaded to the nodes and clients, so it should be created in a separate directory.
 
-- Keys (files ending in `.key`) must not have group or world permissions (maximum permissions are 0700, or `rwx------`). This check can be disabled by setting the environment variable `COCKROACH_SKIP_KEY_PERMISSION_CHECK=true`.
+- Keys (files ending in `.key`) must meet the [permission requirements check](cockroach-cert.html#key-file-permissions) on macOS, Linux, and other UNIX-like systems.
 
 ## Examples
 

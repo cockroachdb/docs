@@ -86,7 +86,7 @@ We recommend provisioning volumes with **150 GiB per vCPU**. It's fine to have l
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
-    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (enterprise-only).
+    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) ({{ site.data.products.enterprise }}-only).
 
 {{site.data.alerts.callout_info}}
 Underprovisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a ballast file as described above. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [storage issues](cluster-setup-troubleshooting.html#storage-issues).
@@ -306,8 +306,8 @@ CockroachDB can use a large number of open file descriptors, often more than is 
 
 For each CockroachDB node:
 
-- At a **minimum**, the file descriptors limit must be 1956 (1700 per store plus 256 for networking). If the limit is below this threshold, the node will not start.
-- It is **recommended** to set the file descriptors limit to unlimited; otherwise, the recommended limit is at least 15000 (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth.
+- At a **minimum**, the file descriptors limit must be `1956` (1700 per store plus 256 for networking). If the limit is below this threshold, the node will not start.
+- It is **recommended** to set the file descriptors limit to `unlimited`; otherwise, the recommended limit is at least `15000` (10000 per store plus 5000 for networking). This higher limit ensures performance and accommodates cluster growth.
 - When the file descriptors limit is not high enough to allocate the recommended amounts, CockroachDB allocates 10000 per store and the rest for networking; if this would result in networking getting less than 256, CockroachDB instead allocates 256 for networking and evenly splits the rest across stores.
 
 ### Increase the file descriptors limit
@@ -530,6 +530,10 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     LimitNOFILE=35000
     ~~~
 
+    {{site.data.alerts.callout_success}}
+    To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
+    {{site.data.alerts.end}}
+    
 2.  Reload Systemd for the new limit to take effect:
 
     ~~~ shell

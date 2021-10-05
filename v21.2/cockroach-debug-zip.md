@@ -29,11 +29,13 @@ There are two scenarios in which `debug zip` is useful:
 
 ### Files
 
+`cockroach debug zip` collects log files, heap profiles, CPU profiles, and goroutine dumps from the last 48 hours, by default.
+
 {{site.data.alerts.callout_success}}
-Log files, heap profiles, CPU profiles, and goroutine dumps can greatly increase the size of the `cockroach debug zip` output. If you are collecting data from a large cluster, we recommend first experimenting with [`cockroach debug list-files`](cockroach-debug-list-files.html) and the `--exclude-files`, `--include-files`, `--files-from`, and/or `--files-until` [flags](#flags) to limit the `.zip` file size.
+These files can greatly increase the size of the `cockroach debug zip` output. To limit the `.zip` file size for a large cluster, we recommend first experimenting with [`cockroach debug list-files`](cockroach-debug-list-files.html) and then using [flags](#flags) to filter the files.
 {{site.data.alerts.end}}
 
-These files collected by `cockroach debug zip`, which are found in the individual node directories, can be filtered using the `--exclude-files`, `--include-files`, `--files-from`, and/or `--files-until` [flags](#flags):
+The following files collected by `cockroach debug zip`, which are found in the individual node directories, can be filtered using the `--exclude-files`, `--include-files`, `--files-from`, and/or `--files-until` [flags](#flags):
 
 | Information                                      | Filename                                                                             |
 |--------------------------------------------------|--------------------------------------------------------------------------------------|

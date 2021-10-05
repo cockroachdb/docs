@@ -66,7 +66,7 @@ Copy the code or
 {{site.data.alerts.callout_success}}
 To clone a version of the code below that connects to insecure clusters, run the command below. Note that you will need to edit the connection string to use the certificates that you generated when you set up your secure cluster.
 
-`git clone https://github.com/cockroachlabs/hello-world-go-gorm/`
+`git clone https://github.com/cockroachlabs/hello-world-go-gorm`
 {{site.data.alerts.end}}
 
 {% include copy-clipboard.html %}
@@ -113,7 +113,7 @@ To get the code below, clone the `hello-world-go-gorm` repo to your machine:
 
 {% include copy-clipboard.html %}
 ~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-go-gorm/
+git clone https://github.com/cockroachlabs/hello-world-go-gorm
 ~~~
 
 {% include copy-clipboard.html %}

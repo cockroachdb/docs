@@ -1,5 +1,13 @@
+- advisory: 69874
+  summary: CockroachDB v21.1.8 can not be downgraded
+  versions: 21.1.8
+  date: September 7, 2021
+- advisory: 68005
+  summary: <code>sql.trace.txn.enable_threshold</code> cluster setting causes crash loops
+  versions: 21.1.0-21.1.6
+  date: August 20, 2021
 - advisory: 62842
-  summary: TRUNCATE TABLE during CREATE/ALTER INDEX can cause data corruption
+  summary: <code>TRUNCATE TABLE</code> during <code>CREATE/ALTER INDEX</code> can cause data corruption
   versions: 20.2.0-20.2.8
   date: July 29, 2021
 - advisory: 64325
@@ -19,11 +27,11 @@
   versions: All
   date: October 29, 2020
 - advisory: 54418
-  summary: Incorrect behavior with large batch UPSERTs
+  summary: Incorrect behavior with large batch <code>UPSERT</code>s
   versions: 20.1.4, 20.1.5
   date: September 24, 2020
 - advisory: 50587
-  summary: TRUNCATE prevents table renaming
+  summary: <code>TRUNCATE</code> prevents table renaming
   versions: 19.1.0-19.1.10, 19.2.0-19.2.8
   date: July 6, 2020
 - advisory: 48860

@@ -21,84 +21,82 @@ The most important factor in determining the quality of a plan is cardinality (i
 
 The cost-based optimizer can often find more performant query plans if it has access to statistical data on the contents of your tables. This data needs to be generated from scratch for new tables, and regenerated periodically for existing tables.
 
-By default, CockroachDB automatically generates table statistics when tables are [created](create-table.html), and as they are [updated](update.html). It does this [using a background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
+By default, CockroachDB automatically generates table statistics when tables are [created](create-table.html), and as they are [updated](update.html). It does this using a [background job](create-statistics.html#view-statistics-jobs) that automatically determines which columns to get statistics on &mdash; specifically, it chooses:
 
 - Columns that are part of the primary key or an index (in other words, all indexed columns).
 - Up to 100 non-indexed columns.
 
-<span class="version-tag">New in v20.2:</span> By default, CockroachDB also automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on columns that prefix an index.
+By default, CockroachDB also automatically collects [multi-column statistics](create-statistics.html#create-statistics-on-multiple-columns) on columns that prefix an index.
 
 {{site.data.alerts.callout_info}}
 [Schema changes](online-schema-changes.html) trigger automatic statistics collection for the affected table(s).
 {{site.data.alerts.end}}
 
-### Controlling automatic statistics
+### Control automatic statistics
 
 For best query performance, most users should leave automatic statistics enabled with the default settings. The information provided in this section is useful for troubleshooting or performance tuning by advanced users.
 
-#### Controlling statistics refresh rate
+#### Control statistics refresh rate
 
 Statistics are refreshed in the following cases:
 
-1. When there are no statistics.
-2. When it's been a long time since the last refresh, where "long time" is defined according to a moving average of the time across the last several refreshes.
-3. After each mutation operation ([`INSERT`](insert.html), [`UPDATE`](update.html), or [`DELETE`](delete.html)), the probability of a refresh is calculated using a formula that takes the [cluster settings](cluster-settings.html) shown below as inputs. These settings define the target number of rows in a table that should be stale before statistics on that table are refreshed.  Increasing either setting will reduce the frequency of refreshes.  In particular, `min_stale_rows` impacts the frequency of refreshes for small tables, while `fraction_stale_rows` has more of an impact on larger tables.
+- When there are no statistics.
+- When it's been a long time since the last refresh, where "long time" is defined according to a moving average of the time across the last several refreshes.
+- After a successful [`IMPORT`](import.html) or [`RESTORE`](restore.html) into the table.
+- After any schema change affecting the table.
+- After each mutation operation ([`INSERT`](insert.html), [`UPDATE`](update.html), or [`DELETE`](delete.html)), the probability of a refresh is calculated using a formula that takes the [cluster settings](cluster-settings.html) shown in the following table as inputs. These settings define the target number of rows in a table that should be stale before statistics on that table are refreshed.  Increasing either setting will reduce the frequency of refreshes. In particular, `min_stale_rows` impacts the frequency of refreshes for small tables, while `fraction_stale_rows` has more of an impact on larger tables.
 
-| Setting                                              | Default Value | Details                                                                              |
-|------------------------------------------------------+---------------+--------------------------------------------------------------------------------------|
-| `sql.stats.automatic_collection.fraction_stale_rows` |           0.2 | Target fraction of stale rows per table that will trigger a statistics refresh       |
-| `sql.stats.automatic_collection.min_stale_rows`      |           500 | Target minimum number of stale rows per table that will trigger a statistics refresh |
 
-{{site.data.alerts.callout_info}}
-Because the formula for statistics refreshes is probabilistic, you should not expect to see statistics update immediately after changing these settings, or immediately after exactly 500 rows have been updated.
-{{site.data.alerts.end}}
+    | Setting                                              | Default Value | Details                                                                              |
+    |------------------------------------------------------+---------------+--------------------------------------------------------------------------------------|
+    | `sql.stats.automatic_collection.fraction_stale_rows` |           0.2 | Target fraction of stale rows per table that will trigger a statistics refresh       |
+    | `sql.stats.automatic_collection.min_stale_rows`      |           500 | Target minimum number of stale rows per table that will trigger a statistics refresh |
 
-#### Turning off statistics
+    {{site.data.alerts.callout_info}}
+    Because the formula for statistics refreshes is probabilistic, you will not see statistics update immediately after changing these settings, or immediately after exactly 500 rows have been updated.
+    {{site.data.alerts.end}}
 
-If you need to turn off automatic statistics collection, follow the steps below:
+#### Turn off statistics
+
+To turn off automatic statistics collection, follow these steps:
 
 1. Run the following statement to disable the automatic statistics [cluster setting](cluster-settings.html):
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
     ~~~
 
-2. Use the [`SHOW STATISTICS`](show-statistics.html) statement to view automatically generated statistics.
+1. Use the [`SHOW STATISTICS`](show-statistics.html) statement to view automatically generated statistics.
 
-3. Delete the automatically generated statistics using the following statement:
+1. Delete the automatically generated statistics using the following statement:
 
-    {% include copy-clipboard.html %}
+    {% include_cached copy-clipboard.html %}
     ~~~ sql
     > DELETE FROM system.table_statistics WHERE true;
     ~~~
 
-4. Restart the nodes in your cluster to clear the statistics caches.
+1. Restart the nodes in your cluster to clear the statistics caches.
 
-For instructions showing how to manually generate statistics, see the examples in the [`CREATE STATISTICS` documentation](create-statistics.html).
+To see how to manually generate statistics, see the [`CREATE STATISTICS` examples](create-statistics.html#examples).
 
-#### Controlling histogram collection
+#### Control histogram collection
 
 By default, the optimizer collects histograms for all index columns (specifically the first column in each index) during automatic statistics collection. If a single column statistic is explicitly requested using manual invocation of [`CREATE STATISTICS`](create-statistics.html), a histogram will be collected, regardless of whether or not the column is part of an index.
 
 {{site.data.alerts.callout_info}}
-CockroachDB does not support histograms on [`ARRAY`-typed](array.html) columns. As a result, statistics created on `ARRAY`-typed columns do not include histograms.
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-CockroachDB does not support multi-column histograms yet. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/49698).
+- CockroachDB does not support histograms on [`ARRAY`-typed](array.html) columns. As a result, statistics created on `ARRAY`-typed columns do not include histograms.
+- CockroachDB does not support multi-column histograms.
 {{site.data.alerts.end}}
 
 If you are an advanced user and need to disable histogram collection for troubleshooting or performance tuning reasons, change the [`sql.stats.histogram_collection.enabled` cluster setting](cluster-settings.html) by running [`SET CLUSTER SETTING`](set-cluster-setting.html) as follows:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET CLUSTER SETTING sql.stats.histogram_collection.enabled = false;
 ~~~
 
-{{site.data.alerts.callout_info}}
-When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are never collected, either as part of automatic statistics collection or by manual invocation of [`CREATE STATISTICS`](create-statistics.html).
-{{site.data.alerts.end}}
+When `sql.stats.histogram_collection.enabled` is set to `false`, histograms are never collected, either as part of automatic statistics collection or by manually invoking [`CREATE STATISTICS`](create-statistics.html).
 
 ## Query plan cache
 
@@ -106,12 +104,12 @@ CockroachDB uses a cache for the query plans generated by the optimizer. This ca
 
 The query plan cache is enabled by default. To disable it, execute the following statement:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.query_cache.enabled = false;
 ~~~
 
-Finally, note that only the following statements use the plan cache:
+Only the following statements use the plan cache:
 
 - [`SELECT`](select-clause.html)
 - [`INSERT`](insert.html)
@@ -121,13 +119,13 @@ Finally, note that only the following statements use the plan cache:
 
 ## Join reordering
 
-The cost-based optimizer will explore additional join orderings in an attempt to find the lowest-cost execution plan for a query involving multiple joins, which can lead to significantly better performance in some cases.
+For a query involving multiple joins, the cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan, which can lead to significantly better performance in some cases.
 
 Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
 
-To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the statement shown below. To disable this feature, set the variable to `0`.
+To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement. To disable this feature, set the variable to `0`.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET reorder_joins_limit = 6;
 ~~~
@@ -140,17 +138,19 @@ For more information about the difficulty of selecting an optimal join ordering,
 
 ## Join hints
 
-The optimizer supports hint syntax to force the use of a specific join algorithm. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
+The optimizer supports hint syntax to force the use of a specific join algorithm even if the optimizer determines that a different plan would have a lower cost. The algorithm is specified between the join type (`INNER`, `LEFT`, etc.) and the `JOIN` keyword, for example:
 
 - `INNER HASH JOIN`
 - `OUTER MERGE JOIN`
 - `LEFT LOOKUP JOIN`
 - `CROSS MERGE JOIN`
+- `INNER INVERTED JOIN`
+- `LEFT INVERTED JOIN`
 
-Note that the hint cannot be specified with a bare hint keyword (e.g., `MERGE`) - in that case, the `INNER` keyword must be added. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
+You cannot specify the hint with a bare hint keyword (e.g., `MERGE`) - in that case, you must add the `INNER` keyword. For example, `a INNER MERGE JOIN b` will work, but `a MERGE JOIN b` will not work.
 
 {{site.data.alerts.callout_info}}
-Join hints cannot be specified with a bare hint keyword (e.g., `MERGE`) due to SQL's implicit `AS` syntax. If you're not careful, you can make `MERGE` be an alias for a table; for example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is just a long way of saying `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. In this case, the correct syntax is `a INNER MERGE JOIN b`.
+You cannot specify join hints with a bare hint keyword (e.g., `MERGE`) due to SQL's implicit `AS` syntax. If you're not careful, you can make `MERGE` an alias for a table; for example, `a MERGE JOIN b` will be interpreted as having an implicit `AS` and be executed as `a AS MERGE JOIN b`, which is just a long way of saying `a JOIN b`. Because the resulting query might execute without returning any hint-related error (because it is valid SQL), it will seem like the join hint "worked", but actually it didn't affect which join algorithm was used. In this case, the correct syntax is `a INNER MERGE JOIN b`.
 {{site.data.alerts.end}}
 
 ### Supported join algorithms
@@ -172,24 +172,24 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 
 - This syntax is consistent with the [SQL Server syntax for join hints](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-join?view=sql-server-2017), except that:
 
-   - SQL Server uses `LOOP` instead of `LOOKUP`.
+  - SQL Server uses `LOOP` instead of `LOOKUP`.
 
-   - CockroachDB does not support `LOOP` and instead supports `LOOKUP` for the specific case of nested loop joins with an index.
+  - CockroachDB does not support `LOOP` and instead supports `LOOKUP` for the specific case of nested loop joins with an index.
 
-- When a join hint is specified, the two tables will not be reordered by the optimizer. The reordering behavior has the following characteristics, which can be affected by hints:
+- When you specify a join hint, the two tables will not be reordered by the optimizer. The reordering behavior has the following characteristics, which can be affected by hints:
 
-   - Given `a JOIN b`, CockroachDB will not try to commute to `b JOIN a`. This means that you will need to pay attention to this ordering, which is especially important for lookup joins. Without a hint, `a JOIN b` might be executed as `b INNER LOOKUP JOIN a` using an index into `a`, whereas `a INNER LOOKUP JOIN b` requires an index into `b`.
+  - Given `a JOIN b`, CockroachDB will not try to commute to `b JOIN a`. This means that you will need to pay attention to this ordering, which is especially important for lookup joins. Without a hint, `a JOIN b` might be executed as `b INNER LOOKUP JOIN a` using an index into `a`, whereas `a INNER LOOKUP JOIN b` requires an index into `b`.
 
-   - `(a JOIN b) JOIN c` might be changed to `a JOIN (b JOIN c)`, but this does not happen if `a JOIN b` uses a hint; the hint forces that particular join to happen as written in the query.
+  - `(a JOIN b) JOIN c` might be changed to `a JOIN (b JOIN c)`, but this does not happen if `a JOIN b` uses a hint; the hint forces that particular join to happen as written in the query.
 
-- Hint usage should be reconsidered with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
+- You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
 
 ## Preferring the nearest index
 
 Given multiple identical [indexes](indexes.html) that have different locality constraints using [replication zones](configure-replication-zones.html), the optimizer will prefer the index that is closest to the gateway node that is planning the query. In a properly configured geo-distributed cluster, this can lead to performance improvements due to improved data locality and reduced network traffic.
 
 {{site.data.alerts.callout_info}}
-This feature is only available to users with an [enterprise license](enterprise-licensing.html). For insight into how to use this feature to get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
+This feature is only available to users with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). For insight into how to use this feature to get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
 {{site.data.alerts.end}}
 
 This feature enables scenarios such as:
@@ -199,7 +199,7 @@ This feature enables scenarios such as:
 
 To take advantage of this feature, you need to:
 
-1. Have an [enterprise license](enterprise-licensing.html).
+1. Have an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 2. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
 3. Create multiple [secondary indexes](indexes.html) on the reference tables. **Note that these indexes must include (in key or using [`STORED`](create-index.html#store-columns)) *every* column that you wish to query**. For example, if you run `SELECT * from db.table` and not every column of `db.table` is in the set of secondary indexes you created, the optimizer will have no choice but to fall back to the primary index.
 4. Create [replication zones](configure-replication-zones.html) for each index.
@@ -210,7 +210,7 @@ With the above pieces in place, the optimizer will automatically choose the inde
 The optimizer does not actually understand geographic locations, i.e., the relative closeness of the gateway node to other nodes that are located to its "east" or "west". It is matching against the [node locality constraints](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) you provided when you configured your replication zones.
 {{site.data.alerts.end}}
 
-### Examples
+## Examples
 
 #### Zone constraints
 
@@ -222,59 +222,59 @@ We can demonstrate the necessary configuration steps using a local cluster. The 
 
 First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region as denoted by `region=usa`, `region=eu`, etc.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=usa  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
   --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=eu   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
   --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
   --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=localhost --port=26257
 ~~~
 
-Next, from the SQL client, add your organization name and enterprise license:
+Next, from the SQL client, add your organization name and {{ site.data.products.enterprise }} license:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26257
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING enterprise.license = 'xxxxx';
 ~~~
 
 Create a test database and table. The table will have 3 indexes into the same data. Later, we'll configure the cluster to associate each of these indexes with a different datacenter using replication zones.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE IF NOT EXISTS test;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE test;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 CREATE TABLE postal_codes (
     id INT PRIMARY KEY,
@@ -290,17 +290,17 @@ Next, we modify the replication zone configuration via SQL so that:
 - Nodes in the EU will use the `postal_codes@idx_eu` index (which is identical to the primary key index).
 - Nodes in APAC will use the `postal_codes@idx_apac` index (which is also identical to the primary key index).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER TABLE postal_codes CONFIGURE ZONE USING constraints='["+region=usa"]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER INDEX postal_codes@idx_eu CONFIGURE ZONE USING constraints='["+region=eu"]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ALTER INDEX postal_codes@idx_apac CONFIGURE ZONE USING constraints='["+region=apac"]';
 ~~~
@@ -317,7 +317,7 @@ This behavior may also cause the [Statements page of the Web UI](ui-statements-p
 
 As expected, the node in the USA region uses the primary key index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
@@ -336,7 +336,7 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=test -e 'EXP
 
 As expected, the node in the EU uses the `idx_eu` index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
@@ -355,7 +355,7 @@ $ cockroach sql --insecure --host=localhost --port=26258 --database=test -e 'EXP
 
 As expected, the node in APAC uses the `idx_apac` index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach sql --insecure --host=localhost --port=26259 --database=test -e 'EXPLAIN SELECT * FROM postal_codes WHERE id=1;'
 ~~~
@@ -394,59 +394,59 @@ The instructions below assume that you are already familiar with:
 
 First, start 3 local nodes as shown below. Use the [`--locality`](cockroach-start.html#locality) flag to put them each in a different region.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=us-east  --insecure --store=/tmp/node0 --listen-addr=localhost:26257 \
   --http-port=8888  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=us-central   --insecure --store=/tmp/node1 --listen-addr=localhost:26258 \
   --http-port=8889  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach start --locality=region=us-west --insecure --store=/tmp/node2 --listen-addr=localhost:26259 \
   --http-port=8890  --join=localhost:26257,localhost:26258,localhost:26259 --background
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ cockroach init --insecure --host=localhost --port=26257
 ~~~
 
-From the SQL client, add your organization name and enterprise license:
+From the SQL client, add your organization name and {{ site.data.products.enterprise }} license:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26257
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING cluster.organization = 'FooCorp - Local Testing';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING enterprise.license = 'xxxxx';
 ~~~
 
 Create an authentication database and table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE DATABASE if NOT EXISTS auth;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > USE auth;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE token (
 	token_id VARCHAR(100) NULL,
@@ -457,17 +457,17 @@ Create an authentication database and table:
 
 Create the indexes for each region:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX token_id_west_idx ON token (token_id) STORING (access_token, refresh_token);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX token_id_central_idx ON token (token_id) STORING (access_token, refresh_token);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX token_id_east_idx ON token (token_id) STORING (access_token, refresh_token);
 ~~~
@@ -483,25 +483,25 @@ The idea is that, for example, `token_id_east_idx` will have sufficient replicas
 The `ALTER TABLE` statement below is not required since it's later made redundant by the `token_id_west_idx` index. In production, you might go with the `ALTER TABLE` to put your table's lease preferences in the West, and then create only 2 indexes (for East and Central); however, the use of 3 indexes makes the example easier to understand.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER TABLE token CONFIGURE ZONE USING
         num_replicas = 5, constraints = '{+region=us-east: 1, +region=us-central: 2, +region=us-west: 2}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX token_id_east_idx CONFIGURE ZONE USING num_replicas = 5,
         constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-east], [+region=us-central]]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX token_id_central_idx CONFIGURE ZONE USING num_replicas = 5,
         constraints = '{+region=us-east: 2, +region=us-central: 2, +region=us-west: 1}', lease_preferences = '[[+region=us-central], [+region=us-east]]';
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > ALTER INDEX token_id_west_idx CONFIGURE ZONE USING num_replicas = 5,
         constraints = '{+region=us-west: 2, +region=us-central: 2, +region=us-east: 1}', lease_preferences = '[[+region=us-west], [+region=us-central]]';
@@ -509,7 +509,7 @@ The `ALTER TABLE` statement below is not required since it's later made redundan
 
 Next let's [check our zone configurations](show-zone-configurations.html) to make sure they match our expectation:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ZONE CONFIGURATIONS;
 ~~~
@@ -587,7 +587,7 @@ Now that we've set up our indexes the way we want them, we need to insert some d
 On a freshly created cluster like this one, you may need to wait a moment after adding the data to give [automatic statistics](#table-statistics) time to update. Then, the optimizer can generate a query plan that uses the expected index.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT
   INTO
@@ -600,7 +600,7 @@ On a freshly created cluster like this one, you may need to wait a moment after 
       generate_series(1, 10000);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT
   INTO
@@ -615,12 +615,12 @@ On a freshly created cluster like this one, you may need to wait a moment after 
 
 Finally, we [`EXPLAIN`](explain.html) a [selection query](selection-queries.html) from each node to verify which index is being queried against. For example, when running the query shown below against the `us-west` node, we expect it to use the `token_id_west_idx` index.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West" node
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN
       SELECT
@@ -645,12 +645,12 @@ $ cockroach sql --insecure --host=localhost --port=26259 --database=auth # "West
 
 Similarly, queries from the `us-east` node should use the `token_id_east_idx` index (and the same should be true for `us-central`).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sh
 $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East" node
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN
       SELECT
@@ -675,8 +675,10 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
 
+
 ## See also
 
+- [`JOIN` expressions](joins.html)
 - [`SET (session variable)`](set-vars.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`RESET CLUSTER SETTING`](reset-cluster-setting.html)

@@ -82,9 +82,9 @@ $ python3 example.py \
 {% comment %}
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-- Replace `<username>` and `<password>` with the SQL username and password that you created in the CockroachCloud Console.
-- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the CockroachCloud Console.
-- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the CockroachCloud Console.
+- Replace `<username>` and `<password>` with the SQL username and password that you created in the {{ site.data.products.db }} Console.
+- Replace `<hostname>` and `<port>` with the hostname and port in the connection string you got from the {{ site.data.products.db }} Console.
+- Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded from the {{ site.data.products.db }} Console.
 
 {% include copy-clipboard.html %}
 ~~~ shell

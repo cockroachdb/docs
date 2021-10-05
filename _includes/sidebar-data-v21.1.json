@@ -415,6 +415,12 @@
                 "urls": [
                   "/${VERSION}/sql-tuning-with-explain.html"
                 ]
+              },
+              {
+                "title": "Performance tuning recipes",
+                "urls": [
+                  "/${VERSION}/performance-recipes.html"
+                ]
               }
             ]
           },
@@ -433,7 +439,8 @@
                   {
                     "title": "Go",
                     "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html"
+                      "/${VERSION}/hello-world-go-pgx.html",
+                      "/${VERSION}/hello-world-go-gorm.html"
                     ]
                   },
                   {
@@ -661,6 +668,17 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "title": "Application Deployment Tools",
+                    "items": [
+                      {
+                        "title": "Google Cloud Run",
+                        "urls": [
+                          "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
@@ -708,6 +726,12 @@
                 "title": "Data Domiciling",
                 "urls": [
                   "/${VERSION}/data-domiciling.html"
+                ]
+              },
+              {
+                "title": "Migrate to Multi-region SQL",
+                "urls": [
+                  "/${VERSION}/migrate-to-multiregion-sql.html"
                 ]
               },
               {
@@ -940,6 +964,12 @@
                 "title": "Tuning Best Practices",
                 "urls": [
                   "/${VERSION}/performance-best-practices-overview.html"
+                ]
+              },
+              {
+                "title": "Performance tuning recipes",
+                "urls": [
+                  "/${VERSION}/performance-recipes.html"
                 ]
               },
               {
@@ -2151,6 +2181,12 @@
                     "urls": [
                       "/${VERSION}/validate-constraint.html"
                     ]
+                  },
+                  {
+                    "title": "<code>WITH</code>",
+                    "urls": [
+                      "/${VERSION}/common-table-expressions.html"
+                    ]
                   }
                 ]
               },
@@ -2366,7 +2402,7 @@
                     ]
                   },
                   {
-                    "title": "Common Table Expressions",
+                    "title": "<code>WITH</code> Queries (Common Table Expressions)",
                     "urls": [
                       "/${VERSION}/common-table-expressions.html"
                     ]

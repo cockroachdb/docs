@@ -162,6 +162,20 @@ CREATE TABLE test (
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
+## Multi-column inverted indexes
+
+You can create an inverted index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE TABLE users (
+  profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_type STRING,
+  user_profile JSONB,
+  INVERTED INDEX (user_type, user_profile)
+);
+~~~
+
 ## Examples
 
 ### Create a table with inverted index on a JSONB column

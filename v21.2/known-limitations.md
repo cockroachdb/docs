@@ -1,5 +1,5 @@
 ---
-title: Known Limitations in CockroachDB v21.1
+title: Known Limitations in CockroachDB v21.2
 summary: Learn about newly identified limitations in CockroachDB as well as unresolved limitations identified in earlier releases.
 toc: true
 ---
@@ -204,6 +204,10 @@ To work around this limitation, you will need to take the following steps:
     ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
     ~~~
 
+### `BACKUP` of multi-region tables
+
+{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
+
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.
@@ -304,7 +308,7 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### Enterprise `BACKUP` does not capture database/table/column comments
+### {{ site.data.products.enterprise }} `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
@@ -517,10 +521,6 @@ When a node has both a high number of client connections and running queries, th
 
 To prevent memory exhaustion, monitor each node's memory usage and ensure there is some margin between maximum CockroachDB memory usage and available system RAM. For more details about memory usage in CockroachDB, see [this blog post](https://www.cockroachlabs.com/blog/memory-usage-cockroachdb/).
 
-### Query planning for `OR` expressions
-
-Given a query like `SELECT * FROM foo WHERE a > 1 OR b > 2`, even if there are appropriate indexes to satisfy both `a > 1` and `b > 2`, the query planner performs a full table or index scan because it cannot use both conditions at once.
-
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
@@ -632,18 +632,3 @@ SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
 
-### The optimizer won't plan locality optimized searches using unique indexes on virtual computed columns
-
-CockroachDB will not plan [locality optimized searches](multiregion-overview.html) using unique indexes on [virtual computed columns](computed-columns.html).
-
-A workaround is to use [stored computed columns](computed-columns.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/68129)
-
-### Unique indexes on virtual computed columns can't be used with multi-region clusters
-
-CockroachDB performs a full-table scan on all inserts when using [partitioned unique indexes](add-constraint.html) on [virtual computed columns](computed-columns.html).
-
-A workaround is to use [stored computed columns](computed-columns.html).
-
-[Tracking GitHub Issues](https://github.com/cockroachdb/cockroach/issues/68132)

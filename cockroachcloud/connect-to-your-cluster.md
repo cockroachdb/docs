@@ -5,11 +5,11 @@ toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
+    <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page shows you how to connect to your CockroachCloud cluster.
+This page shows you how to connect to your {{ site.data.products.dedicated }} cluster.
 
 ## Before you start
 
@@ -18,7 +18,7 @@ This page shows you how to connect to your CockroachCloud cluster.
 
 ## Step 1. Authorize your network
 
-CockroachCloud requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
+{{ site.data.products.dedicated }} requires you to authorize the networks that can access the cluster to prevent denial-of-service and brute force password attacks:
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
@@ -160,6 +160,8 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
+
+    {% include cockroachcloud/postgresql-special-characters.md %}
     
     {{site.data.alerts.callout_info}}
     If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
@@ -185,7 +187,7 @@ To connect to your cluster with your application, use the connection string prov
 
     {% include cockroachcloud/download-the-cert.md %}
 
-1. Copy the connection string provided in the Console, which will be used to connect your application to CockroachCloud.
+1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
@@ -209,6 +211,8 @@ To connect to your cluster with your application, use the connection string prov
     </section>
 
 1. Add your copied connection string to your application code.
+
+    {% include cockroachcloud/postgresql-special-characters.md %}
 
     {{site.data.alerts.callout_info}}
     If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
@@ -234,4 +238,4 @@ For most tools, the full name of your database should be in the format `<cluster
 ## What's next
 
 - [Build a "Hello, World" app](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
