@@ -45,7 +45,7 @@ By default, session variables are set for the duration of the current session. A
 {{site.data.alerts.callout_info}}
 `SET LOCAL` is compatible with [savepoints](savepoint.html).
 
-Executing a [`ROLLBACK`](rollback-transaction.html) statement rolls back any variables set by `SET LOCAL`. Executing a `ROLLBACK TO SAVEPOINT` statement **does not** roll back variables set by `SET LOCAL` in the transaction.
+Executing a [`ROLLBACK`](rollback-transaction.html), `ROLLBACK TO SAVEPOINT`, or `RELEASE TO SAVEPOINT` statement rolls back any variables set by `SET LOCAL`.
 {{site.data.alerts.end}}
 
 ## Parameters
@@ -173,7 +173,19 @@ SHOW search_path;
 
 ### Set a variable for the duration of a single transaction
 
-To set a variable for the duration of a single transaction, use the `SET LOCAL` statement:
+<span class="version-tag">New in v21.2</span>: To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW application_name;
+~~~
+
+~~~
+  application_name
+--------------------
+  movr app
+(1 row)
+~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -199,6 +211,76 @@ SHOW application_name;
   application_name
 --------------------
   movr app
+(1 row)
+~~~
+
+### Roll back session variables set for a transaction
+
+<span class="version-tag">New in v21.2</span>: To set a variable for the duration of a single transaction, use the `SET LOCAL` statement:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  UTC
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET timezone = '+3';
+SAVEPOINT s1;
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +3
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+SET LOCAL timezone = '+1';
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +1
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+ROLLBACK TO SAVEPOINT s1;
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +3
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+COMMIT;
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +3
 (1 row)
 ~~~
 
