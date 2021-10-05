@@ -28,7 +28,7 @@ You can search for statements using the search field or using the date field. To
 
 ## Clear statement statistics
 
-Statement statistics are aggregated once an hour and organized by start time. Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time. To clear the statistics, click **clear SQL stats**. This resets SQL stats on the Statements and [Transactions](ui-transactions-page) pages and [`crdb_internal`](crdb-internal.html) tables.
+Statement statistics are aggregated once an hour and organized by start time. Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time. To clear the statistics, click **clear SQL stats**. This resets SQL stats on the Statements and [Transactions](ui-transactions-page.html) pages and [`crdb_internal`](crdb-internal.html) tables.
 
 ## SQL statement fingerprints
 
