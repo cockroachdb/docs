@@ -115,7 +115,6 @@ Parameter          | <div style="width:100px">Sink Type</div>      | <div style=
 `file_size`        | [cloud](#cloud-storage-sink)                  | [`STRING`](string.html)             | The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the [`WITH resolved` option](#options), which flushes on a specified cadence. <br><br>**Default:** `16MB`
 <a name="tls-skip-verify"></a>`insecure_tls_skip_verify` |  [Kafka](#kafka), [webhook](#webhook-sink)                    | [`BOOL`](bool.html)                 | If `true`, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. **Warning:** Use this query parameter with caution, as it creates [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) vulnerabilities unless combined with another method of authentication. <br><br>**Default:** `false`
 
-
 ### Options
 
 Option | Value | Description
