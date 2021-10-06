@@ -21,7 +21,7 @@
 
     Where:
     - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
-    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster. If you forgot your password you can reset it by going to the [**SQL Users** page](user-authorization.html).
+    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
     - `<serverless-host>` is the hostname of the serverless cluster.
     - `<cluster-name>` is the short name of your cluster plus the tenant ID. For example, `funny-skunk-3`. The `<cluster-name>` is used to identify your tenant cluster on a multitenant host.
 
