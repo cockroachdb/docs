@@ -147,14 +147,16 @@ Your application should include client-side retry handling when the statements a
 
 To indicate that a transaction must be retried, CockroachDB signals an error with the code `40001` and an error message that begins with the string `"retry transaction"`.  For a complete list of transaction retry error codes, see [Transaction retry error reference](transaction-retry-error-reference.html).
 
-To handle these types of errors you have the following options:
+To handle these types of errors, you have the following options:
 
-1. If your database library or framework provides a method for retryable transactions (it will often be documented as a tool for handling deadlocks), use it. If you're building an application in the following languages, we have code to make client-side retries simpler:
-   - **Go** developers can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package, which handles retries automatically. For an example, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
-   - **Python** developers can use [SQLAlchemy](https://www.sqlalchemy.org) with the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB](build-a-python-app-with-cockroachdb-sqlalchemy.html).
-   - **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can re-use the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
-2. **Most users, such as application authors**: Abort the transaction using the [`ROLLBACK`](rollback-transaction.html) statement, and then reissue all of the statements in the transaction. For an example, see the [Client-side intervention example](#client-side-intervention-example).
-3. **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
+- If your database library or framework provides a method for retryable transactions (it will often be documented as a tool for handling deadlocks), use it.
+- If you're building an application in the following languages, Cockroach Labs has created adapters that include automatic retry handling:
+   - **Go** developers using [GORM](https://github.com/jinzhu/gorm) or [pgx](https://github.com/jackc/pgx) can use the [`github.com/cockroachdb/cockroach-go/crdb`](https://github.com/cockroachdb/cockroach-go/tree/master/crdb) package. For an example, see [Build a Go App with CockroachDB](build-a-go-app-with-cockroachdb.html).
+   - **Python** developers using [SQLAlchemy](https://www.sqlalchemy.org) can use the [`sqlalchemy-cockroachdb` adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb). For an example, see [Build a Python App with CockroachDB and SQLAlchemy](build-a-python-app-with-cockroachdb-sqlalchemy.html).
+   - **Ruby (ActiveRecord)** developers can use the [`activerecord-cockroachdb-adapter`](https://rubygems.org/gems/activerecord-cockroachdb-adapter). For an example, see [Build a Ruby App with CockroachDB and ActiveRecord](build-a-ruby-app-with-cockroachdb-activerecord.html).
+- If you're building an application with another driver or data access framework that is [supported by CockroachDB](third-party-database-tools.html), we recommend reusing the retry logic in our ["Simple CRUD" Example Apps](example-apps.html). For example, **Java** developers accessing the database with [JDBC](https://jdbc.postgresql.org) can reuse the example code implementing retry logic shown in [Build a Java app with CockroachDB](build-a-java-app-with-cockroachdb.html).
+- If you're building an application with a language and framework for which we do not provide example retry logic, you might need to write your own retry logic. For an example, see the [Client-side intervention example](#client-side-intervention-example).
+- **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
 
 {% include {{page.version.version}}/misc/mitigate-contention-note.md %}
 
@@ -170,7 +172,7 @@ For more details about transaction contention and best practices for avoiding co
 
 ## Nested transactions
 
- CockroachDB supports the nesting of transactions using [savepoints](savepoint.html).  These nested transactions are also known as sub-transactions.  Nested transactions can be rolled back without discarding the state of the entire surrounding transaction.
+CockroachDB supports the nesting of transactions using [savepoints](savepoint.html).  These nested transactions are also known as sub-transactions.  Nested transactions can be rolled back without discarding the state of the entire surrounding transaction.
 
 This can be useful in applications that abstract database access using an application development framework or [ORM](install-client-drivers.html).  Different components of the application can operate on different sub-transactions without having to know about each others' internal operations, while trusting that the database will maintain isolation between sub-transactions and preserve data integrity.
 

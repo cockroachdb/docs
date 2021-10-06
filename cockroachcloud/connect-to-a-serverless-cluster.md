@@ -73,6 +73,8 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
 1. Enter the SQL user's password and hit enter.
 
+    {% include cockroachcloud/postgresql-special-characters.md %}
+
     A welcome message displays:
 
     ~~~
@@ -127,6 +129,8 @@ To connect to your cluster with your application, use the connection string prov
 
 1. Add your copied connection string to your application code.
 
+    {% include cockroachcloud/postgresql-special-characters.md %}
+    
     {{site.data.alerts.callout_info}}
     If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}

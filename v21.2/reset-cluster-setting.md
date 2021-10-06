@@ -38,11 +38,9 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| false                                 |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  false
 (1 row)
 ~~~
 
@@ -57,11 +55,9 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| true                                  |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  true
 (1 row)
 ~~~
 

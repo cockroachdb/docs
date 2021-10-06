@@ -421,7 +421,8 @@
                   {
                     "title": "Go",
                     "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html"
+                      "/${VERSION}/hello-world-go-pgx.html",
+                      "/${VERSION}/hello-world-go-gorm.html"
                     ]
                   },
                   {
@@ -2016,6 +2017,12 @@
                     "urls": [
                       "/${VERSION}/validate-constraint.html"
                     ]
+                  },
+                  {
+                    "title": "<code>WITH</code>",
+                    "urls": [
+                      "/${VERSION}/common-table-expressions.html"
+                    ]
                   }
                 ]
               },
@@ -2231,7 +2238,7 @@
                     ]
                   },
                   {
-                    "title": "Common Table Expressions",
+                    "title": "<code>WITH</code> Queries (Common Table Expressions)",
                     "urls": [
                       "/${VERSION}/common-table-expressions.html"
                     ]

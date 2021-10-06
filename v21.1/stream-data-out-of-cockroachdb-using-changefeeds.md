@@ -320,10 +320,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent start
+    $ ./bin/confluent local services start
     ~~~
 
-    Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
+    Only `zookeeper` and `kafka` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
 
 5. Create two Kafka topics:
 
@@ -491,7 +491,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent stop
+    $ ./bin/confluent local services stop
     ~~~
 
 ### Create a changefeed connected to Kafka using Avro
@@ -517,10 +517,10 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent start
+    $ ./bin/confluent local services start
     ~~~
 
-    Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives).
+    Only `zookeeper`, `kafka`, and `schema-registry` are needed. To troubleshoot Confluent, see [their docs](https://docs.confluent.io/current/installation/installing_cp.html#zip-and-tar-archives) and the [Quick Start Guide](https://docs.confluent.io/platform/current/quickstart/ce-quickstart.html#ce-quickstart).
 
 5. Create two Kafka topics:
 
@@ -688,7 +688,7 @@ In this example, you'll set up a changefeed for a single-node cluster that is co
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ ./bin/confluent stop
+    $ ./bin/confluent local services stop
     ~~~
 
 ### Create a changefeed connected to a cloud storage sink

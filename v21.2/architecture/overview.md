@@ -23,7 +23,7 @@ This guide details how CockroachDB is built, but does not explain how to build a
 
 CockroachDB was designed to meet the following goals:
 
-- Make life easier for humans. This means being low-touch and highly automated for [operators](../operate-cockroachdb-kubernetes.html) and simple to reason about for [developers](../developer-guide-overview.html).
+- Make life easier for humans. This means being low-touch and highly automated for [operators](../recommended-production-settings.html) and simple to reason about for [developers](../developer-guide-overview.html).
 - Offer industry-leading consistency, even on massively scaled deployments. This means enabling distributed transactions, as well as removing the pain of eventual consistency issues and stale reads.
 - Create an always-on database that accepts reads and writes on all nodes without generating conflicts.
 - Allow flexible deployment in any environment, without tying you to any platform or vendor.

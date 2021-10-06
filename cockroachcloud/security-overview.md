@@ -18,7 +18,7 @@ The following table summarizes the {{ site.data.products.db }} security features
     <th>Description</th>
   </tr>
  <tr>
-   <td rowspan="3" ><a href="authentication.html">Authentication</a></td>
+   <td rowspan="3"><a href="authentication.html">Authentication</a></td>
    <td>✓</td>
    <td>✓</td>
    <td>Inter-node and node identity authentication using TLS 1.3</td>
@@ -31,7 +31,13 @@ The following table summarizes the {{ site.data.products.db }} security features
  <tr>
   <td>&nbsp;</td>
   <td>✓</td>
-  <td><a href="https://openid.net/connect/">OIDC</a> and <a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> authentication</td>
+  <td><a href="https://openid.net/connect/">OIDC authentication</a></td>
+ </tr>
+ <tr>
+  <td>Certificate protocol</td>
+  <td>&nbsp;</td>
+  <td>✓</td>
+  <td><a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a> certificate revocation protocol</td>
  </tr>
  <tr>
    <td rowspan="4" >Encryption</a></td>
