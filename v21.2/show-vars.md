@@ -17,14 +17,14 @@ No [privileges](authorization.html#assign-privileges) are required to display th
 </div>
 
 {{site.data.alerts.callout_info}}
-The <code>SHOW</code> statement for session variables is unrelated to the other <code>SHOW</code> statements: <a href="cluster-settings.html#view-current-cluster-settings"><code>SHOW CLUSTER SETTING</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.
+The <code>SHOW</code> statement for session variables is unrelated to the other <code>SHOW</code> statements like <a href="cluster-settings.html#view-current-cluster-settings"><code>SHOW CLUSTER SETTING</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.
 {{site.data.alerts.end}}
 
 ## Parameters
 
-The `SHOW` statement accepts a single parameter: the variable name.
-
-The variable name is case insensitive. It may be enclosed in double quotes; this is useful if the variable name itself contains spaces.
+ Parameter | Description
+-----------|-------------
+`var_name` | The session variable name to show.<br>The variable name is case insensitive and may be enclosed in double quotes.
 
 ### Supported variables
 

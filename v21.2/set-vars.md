@@ -8,6 +8,10 @@ The `SET` [statement](sql-statements.html) can modify one of the session configu
 
 <span class="version-tag">New in v21.2</span>: CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
 
+{{site.data.alerts.callout_info}}
+The <code>SET</code> statement for session variables is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="cluster-settings.html#change-a-cluster-setting"><code>SET CLUSTER SETTING</code></a> statements.
+{{site.data.alerts.end}}
+
 {{site.data.alerts.callout_danger}}
 In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with <code>SET</code> statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the <a href="example-apps.html">Build an App with CockroachDB</a> tutorials.
 {{site.data.alerts.end}}
@@ -19,10 +23,6 @@ No [privileges](authorization.html#assign-privileges) are required to modify the
 ## Synopsis
 
 The `SET` statement can set a session variable for the duration of the current session ([`SET (variable)`/`SET SESSION (variable)`](#set-session)), or for the duration of a single transaction ([`SET LOCAL (variable)`](#set-local)).
-
-{{site.data.alerts.callout_info}}
-The <code>SET</code> statement for session variables is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="cluster-settings.html#change-a-cluster-setting"><code>SET CLUSTER SETTING</code></a> statements.
-{{site.data.alerts.end}}
 
 ### SET SESSION
 
@@ -36,16 +36,12 @@ By default, session variables are set for the duration of the current session. A
 
 ### SET LOCAL
 
-<span class="version-tag">New in v21.2</span>
-
 <div>
   {% include {{ page.version.version }}/sql/generated/diagrams/set_local.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
-`SET LOCAL` is compatible with [savepoints](savepoint.html).
-
-Executing a [`ROLLBACK`](rollback-transaction.html), `ROLLBACK TO SAVEPOINT`, or `RELEASE TO SAVEPOINT` statement rolls back any variables set by `SET LOCAL`.
+`SET LOCAL` is compatible with [savepoints](savepoint.html). Executing a [`ROLLBACK`](rollback-transaction.html), `ROLLBACK TO SAVEPOINT`, or `RELEASE TO SAVEPOINT` statement rolls back any variables set by `SET LOCAL`.
 {{site.data.alerts.end}}
 
 ## Parameters
@@ -216,7 +212,7 @@ SHOW application_name;
 
 ### Roll back session variables set for a transaction
 
-<span class="version-tag">New in v21.2</span>: To set a variable for the duration of a single transaction, use the `SET LOCAL` statement:
+<span class="version-tag">New in v21.2</span>: CockroachDB supports rolling back session variable settings to [savepoints](savepoint.html).
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -359,6 +355,6 @@ When setting a time zone, note the following:
 - [`RESET`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW` (session variable)](show-vars.html)
+- [`SHOW` (session variables)](show-vars.html)
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.](timestamp.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
