@@ -161,16 +161,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ## Unresolved limitations
 
-### HTTP(S) connections
-
-CockroachDB does not support database connections across HTTP(S). All database connections must be made via TCP.
-
-As of v21.1, CockroachDB includes the [Cluster API](cluster-api.html), a REST API that accepts HTTP(S) requests for monitoring data.
-
-In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
-
 ### `IMPORT` into a `REGIONAL BY ROW` table
 
 CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
@@ -642,18 +632,3 @@ SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
 
-### The optimizer won't plan locality optimized searches using unique indexes on virtual computed columns
-
-CockroachDB will not plan [locality optimized searches](multiregion-overview.html) using unique indexes on [virtual computed columns](computed-columns.html).
-
-A workaround is to use [stored computed columns](computed-columns.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/68129)
-
-### Unique indexes on virtual computed columns can't be used with multi-region clusters
-
-CockroachDB performs a full-table scan on all inserts when using [partitioned unique indexes](add-constraint.html) on [virtual computed columns](computed-columns.html).
-
-A workaround is to use [stored computed columns](computed-columns.html).
-
-[Tracking GitHub Issues](https://github.com/cockroachdb/cockroach/issues/68132)

@@ -57,16 +57,14 @@ Option | Value | Description
 
 #### Avro limitations
 
-Currently, support for Avro is limited and experimental. Below is a list of unsupported SQL types and values for Avro changefeeds:
+Currently, support for Avro is limited and experimental.
 
-- [Decimals](decimal.html) must have precision specified.
-- [Decimals](decimal.html) with `NaN` or infinite values cannot be written in Avro.
+Below are clarifications for particular SQL types and values for Avro changefeeds:
 
-    {{site.data.alerts.callout_info}}
-    To avoid `NaN` or infinite values, add a [`CHECK` constraint](check.html) to prevent these values from being inserted into decimal columns.
-    {{site.data.alerts.end}}
+  - [Decimals](decimal.html) must have precision specified.
+  - [`BIT`](bit.html) and [`VARBIT`](bit.html) types are encoded as arrays of 64-bit integers.
 
-- [`time`, `date`, `interval`](https://github.com/cockroachdb/cockroach/issues/32472), [`uuid`, `inet`](https://github.com/cockroachdb/cockroach/issues/34417), [`array`](https://github.com/cockroachdb/cockroach/issues/34420), and [`jsonb`](https://github.com/cockroachdb/cockroach/issues/34421) are not supported in Avro yet.
+  {% include {{ page.version.version }}/cdc/avro-bit-varbit.md %}
 
 ## Examples
 

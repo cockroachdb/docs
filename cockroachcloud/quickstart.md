@@ -103,7 +103,9 @@ Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
     {% include cockroachcloud/sql-connection-string-free.md %}
     
 1. Enter the SQL user's password and hit enter.
-
+    
+    {% include cockroachcloud/postgresql-special-characters.md %}
+    
     A welcome message displays:
 
     ~~~

@@ -8,7 +8,7 @@ For PostgreSQL compatibility, CockroachDB includes a [system catalog schema](sys
 
 ## Data exposed by `pg_catalog`
 
-The tables in CockroachDB's `pg_catalog` schema correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and some of the `pg_catalog` tables are empty. See the table below for a detailed comparison between `pg_catalog` tables and the PostgreSQL 13 system catalogs.
+The tables in CockroachDB's `pg_catalog` schema correspond to a subset of the virtual tables and views that make up the PostgreSQL system catalogs. Not all PostgreSQL system catalogs have a corresponding table in `pg_catalog`, and some of the `pg_catalog` tables are empty. See the following table for a detailed comparison between PostgreSQL 13 system catalogs and `pg_catalog` tables.
 
 PostgreSQL 13 system catalog | `pg_catalog` table  
 -----------------------------|--------------
@@ -30,7 +30,7 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_conversion` | `pg_conversion`
 `pg_cursors` | `pg_cursors` (empty)
 `pg_database` | `pg_database`
-`pg_db_role_setting` | `pg_db_role_setting` (empty)
+`pg_db_role_setting` | `pg_db_role_setting`
 `pg_default_acl` | `pg_default_acl`
 `pg_depend` | `pg_depend`
 `pg_description` | `pg_description`
@@ -46,19 +46,19 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_index` | `pg_index`
 `pg_indexes` | `pg_indexes`
 `pg_inherits` | `pg_inherits`
-`pg_init_privs` | None
+`pg_init_privs` | `pg_init_privs` (empty)
 `pg_language` | `pg_language` (empty)
 `pg_largeobject` | `pg_largeobject` (empty)
-`pg_largeobject_metadata` | None
+`pg_largeobject_metadata` | `pg_largeobject_metadata` (empty)
 `pg_locks` | `pg_locks`
 `pg_matviews` | `pg_matviews`
 `pg_namespace` | `pg_namespace`
 `pg_opclass` | `pg_opclass` (empty)
 `pg_operator` | `pg_operator`
 `pg_opfamily` | `pg_opfamily` (empty)
-`pg_partitioned_table` | None
+`pg_partitioned_table` | `pg_partitioned_table` (empty)
 `pg_policies` | `pg_policies` (empty)
-`pg_policy` | None
+`pg_policy` | `pg_policy` (empty)
 `pg_prepared_statements` | `pg_prepared_statements` (empty)
 `pg_prepared_xacts` | `pg_prepared_xacts` (empty)
 `pg_proc` | `pg_proc`
@@ -67,15 +67,15 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_publication_tables` | `pg_publication_tables` (empty)
 `pg_range` | `pg_range`
 `pg_replication_origin` | `pg_replication_origin` (empty)
-`pg_replication_origin_status` | None
-`pg_replication_slots` | None
+`pg_replication_origin_status` | `pg_replication_origin_status` (empty)
+`pg_replication_slots` | `pg_replication_slots` (empty)
 `pg_rewrite` | `pg_rewrite`
 `pg_roles` | `pg_roles`
 `pg_rules` | `pg_rules` (empty)
 `pg_seclabel` | `pg_seclabel`
 `pg_seclabels` | `pg_seclabels`
 `pg_sequence` | `pg_sequence`
-`pg_sequences` | None
+`pg_sequences` | `pg_sequences`
 `pg_settings` | `pg_settings`
 `pg_shadow` | `pg_shadow` (empty)
 `pg_shdepend` | `pg_shdepend`
@@ -83,13 +83,48 @@ PostgreSQL 13 system catalog | `pg_catalog` table
 `pg_shmem_allocations` | `pg_shmem_allocations` (empty)
 `pg_shseclabel` | `pg_shseclabel`
 `pg_stat_activity` | `pg_stat_activity`
+`pg_stat_all_indexes` | `pg_stat_all_indexes` (empty)
+`pg_stat_all_tables` | `pg_stat_all_tables` (empty)
+`pg_stat_archiver` | `pg_stat_archiver` (empty)
+`pg_stat_bgwriter` | `pg_stat_bgwriter` (empty)
+`pg_stat_database` | `pg_stat_database` (empty)
+`pg_stat_database_conflicts` | `pg_stat_database_conflicts` (empty)
+`pg_stat_gssapi` | `pg_stat_gssapi` (empty)
+`pg_stat_progress_analyze` | `pg_stat_progress_analyze` (empty)
+`pg_stat_progress_basebackup` | `pg_stat_progress_basebackup` (empty)
+`pg_stat_progress_cluster` | `pg_stat_progress_cluster` (empty)
+`pg_stat_progress_create_index` | `pg_stat_progress_create_index` (empty)
+`pg_stat_progress_vacuum` | `pg_stat_progress_vacuum` (empty)
+`pg_stat_replication` | `pg_stat_replication` (empty)
+`pg_stat_slru` | `pg_stat_slru` (empty)
+`pg_stat_ssl` | `pg_stat_ssl` (empty)
+`pg_stat_subscription` | `pg_stat_subscription` (empty)
+`pg_stat_sys_indexes` | `pg_stat_sys_indexes` (empty)
+`pg_stat_sys_tables` | `pg_stat_sys_tables` (empty)
+`pg_stat_user_functions` | `pg_stat_user_functions` (empty)
+`pg_stat_user_indexes` | `pg_stat_user_indexes` (empty)
+`pg_stat_user_tables` | `pg_stat_user_tables` (empty)
+`pg_stat_wal_receiver` | `pg_stat_wal_receiver` (empty)
+`pg_stat_xact_all_tables` | `pg_stat_xact_all_tables` (empty)
+`pg_stat_xact_sys_tables` | `pg_stat_xact_sys_tables` (empty)
+`pg_stat_xact_user_functions` | `pg_stat_xact_user_functions` (empty)
+`pg_stat_xact_user_tables` | `pg_stat_xact_user_tables` (empty)
+`pg_statio_all_indexes` | `pg_statio_all_indexes` (empty)
+`pg_statio_all_sequences` | `pg_statio_all_sequences` (empty)
+`pg_statio_all_tables` | `pg_statio_all_tables` (empty)
+`pg_statio_sys_indexes` | `pg_statio_sys_indexes` (empty)
+`pg_statio_sys_sequences` | `pg_statio_sys_sequences` (empty)
+`pg_statio_sys_tables` | `pg_statio_sys_tables` (empty)
+`pg_statio_user_indexes` | `pg_statio_user_indexes` (empty)
+`pg_statio_user_sequences` | `pg_statio_user_sequences` (empty)
+`pg_statio_user_tables` | `pg_statio_user_tables` (empty)
 `pg_statistic` | None
 `pg_statistic_ext` | `pg_statistic_ext` (empty)
 `pg_statistic_ext_data` | None
 `pg_stats` | None
 `pg_stats_ext` | None
 `pg_subscription` | `pg_subscription` (empty)
-`pg_subscription_rel` | None
+`pg_subscription_rel` | `pg_subscription_rel` (empty)
 `pg_tables` | `pg_tables`
 `pg_tablespace` | `pg_tablespace`
 `pg_timezone_abbrevs` | `pg_timezone_abbrevs` (empty)
@@ -126,7 +161,7 @@ To list the tables in `pg_catalog` for the [current database](sql-name-resolutio
 To prohibit queries against empty tables, set the `stub_catalog_tables` [session variable](set-vars.html) to `off`.
 {{site.data.alerts.end}}
 
-## Querying `pg_catalog` tables
+## Query `pg_catalog` tables
 
 You can run [`SELECT` queries](selection-queries.html) on the tables in `pg_catalog`.
 

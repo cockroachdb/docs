@@ -4,7 +4,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/crds.yaml
     ~~~
 
     ~~~
@@ -14,7 +14,7 @@
 1. Apply the Operator manifest:
 
     {{site.data.alerts.callout_info}}
-    By default, the Operator is configured to install in the `default` namespace. To use the Operator in a custom namespace, download the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/master/manifests/operator.yaml) and edit all instances of `namespace: default` to specify your custom namespace. Then apply this version of the manifest to the cluster with `kubectl apply -f {local-file-path}` instead of using the command below.
+    By default, the Operator is configured to install in the `default` namespace. To use the Operator in a custom namespace, download the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/{{site.operator_version}}/manifests/operator.yaml) and edit all instances of `namespace: default` to specify your custom namespace. Then apply this version of the manifest to the cluster with `kubectl apply -f {local-file-path}` instead of using the command below.
     {{site.data.alerts.end}}
 
     {{site.data.alerts.callout_info}}
@@ -23,7 +23,7 @@
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
     ~~~
 
     ~~~
@@ -60,7 +60,7 @@ By default, the Operator will generate and sign 1 client and 1 node certificate 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/examples/example.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/examples/example.yaml
     ~~~
 
     {{site.data.alerts.callout_info}}

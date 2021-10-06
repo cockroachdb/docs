@@ -687,7 +687,7 @@ The below steps use [`cockroach cert` commands](cockroach-cert.html) to quickly 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/cockroachdb-statefulset-secure-eks.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml
     ~~~
 
     Look for **TODO** comments in the file. These highlight fields you need to define before deploying your StatefulSet.
@@ -1040,17 +1040,17 @@ Each of your Kubernetes clusters contains 3 instances that can run CockroachDB p
 
 ### Upgrade the cluster
 
-As new versions of CockroachDB are released, it's strongly recommended to upgrade to newer versions in order to pick up bug fixes, performance improvements, and new features. The [general CockroachDB upgrade documentation](upgrade-cockroach-version.html) provides best practices for how to prepare for and execute upgrades of CockroachDB clusters, but the mechanism of actually stopping and restarting processes in Kubernetes is somewhat special.
+We strongly recommend that you regularly upgrade your CockroachDB version in order to pick up bug fixes, performance improvements, and new features.
 
-Kubernetes knows how to carry out a safe rolling upgrade process of the CockroachDB nodes. When you tell it to change the Docker image used in the CockroachDB StatefulSet, Kubernetes will go one-by-one, stopping a node, restarting it with the new image, and waiting for it to be ready to receive client requests before moving on to the next one. For more information, see [the Kubernetes documentation](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets).
+The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#staging-an-update) in which the Docker image is applied to the pods one at a time, with each pod being stopped and restarted in turn. This is to ensure that the cluster remains available during the upgrade.
 
 1. Verify that you can upgrade.
 
-    To upgrade to a new version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a [production release](../releases/index.html#production-releases) and not a [testing release](../releases/index.html#testing-releases) (alpha/beta).
 
-    Therefore, if you are upgrading from v20.1 to v20.2, or from a testing release (alpha/beta) of v20.2 to v21.1:
+    Therefore, in order to upgrade to v21.1, you must be on a production release of v20.2.
 
-    1. First [upgrade to a production release of v20.2](../v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster). Be sure to complete all the steps.
+    1. If you are upgrading to v21.1 from a production release earlier than v20.2, or from a testing release (alpha/beta), first [upgrade to a production release of v20.2](../v20.2/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html#upgrade-the-cluster). Be sure to complete all the steps.
 
     1. Then return to this page and perform a second upgrade to v21.1.
 
@@ -1067,11 +1067,11 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
 1. Decide how the upgrade will be finalized.
 
-    {{site.data.alerts.callout_info}}
-    This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades within the v20.2.x series, skip this step.
-    {{site.data.alerts.end}}
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.2](upgrade-cockroach-version.html#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to v21.1. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](take-full-and-incremental-backups.html) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
 
-    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v21.1](upgrade-cockroach-version.html#features-that-require-upgrade-finalization). After finalization, however, it will no longer be possible to perform a downgrade to v20.2. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the old binary and then restore from one of the backups created prior to performing the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+    {{site.data.alerts.callout_info}}
+    Finalization only applies when performing a major version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) can always be downgraded.
+    {{site.data.alerts.end}}
 
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 
@@ -1123,15 +1123,15 @@ Kubernetes knows how to carry out a safe rolling upgrade process of the Cockroac
 
     This will continue until all of the pods have restarted and are running the new image.
 
-4. Finish the upgrade.
+4. If you disabled auto-finalization earlier, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
+
+    If you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
 
     {{site.data.alerts.callout_info}}
-    This step is relevant only when upgrading from v20.2.x to v21.1. For upgrades within the v20.2.x series, skip this step.
+    This is only possible when performing a major version upgrade (for example, from v20.2.x to v21.1). Patch version upgrades (for example, within the v21.1.x series) are auto-finalized.
     {{site.data.alerts.end}}
 
-    If you disabled auto-finalization earlier, monitor the stability and performance of your cluster for as long as you require to feel comfortable with the upgrade (generally at least a day). If during this time you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
-
-    Once you are satisfied with the new version, re-enable auto-finalization:
+    To finalize the upgrade, re-enable auto-finalization:
 
     1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](cockroach-sql.html):
 

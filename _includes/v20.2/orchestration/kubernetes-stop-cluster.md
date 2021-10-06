@@ -12,7 +12,7 @@ To shut down the CockroachDB cluster:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
+    $ kubectl delete -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
     ~~~
 
     This will delete the StatefulSet but will not delete the persistent volumes that were attached to the pods. 

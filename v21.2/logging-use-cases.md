@@ -400,7 +400,7 @@ All possible `SQL_PERF` event types are detailed in the [reference documentation
 
 ## Network logging
 
-A database operator can send logs over the network to a [Fluentd](https://www.fluentd.org/) server.
+A database operator can send logs over the network to a [Fluentd](https://www.fluentd.org/) or HTTP server.
 
 {{site.data.alerts.callout_danger}}
 TLS is not supported yet: the connection to the log collector is neither authenticated nor encrypted. Given that logging events may contain sensitive information, care should be taken to keep the log collector and the CockroachDB node close together on a private network, or connect them using a secure VPN. TLS support may be added at a later date. 

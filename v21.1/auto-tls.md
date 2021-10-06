@@ -123,7 +123,7 @@ cockroach init --certs-dir=certs --host=localhost:26257
 
 ## Step 4: Create additional users to administer the cluster
 
-1. Using the `root` user, log in to the [SQL shell](cockroach-sql.html). [Create additional users](create-role.html#create-a-role-that-can-log-in-to-the-database), specifying privileges as [parameters](create-role.html#parameters), or add the users as members of the `admin` role to confer all privileges, if appropriate.
+1. Using the `root` user, log in to the [SQL shell](cockroach-sql.html). [Create additional users](create-role.html#create-a-role-that-can-log-in-to-the-database), specifying role options as [parameters](create-role.html#parameters), or add the users as members of the `admin` role to confer all role options, if appropriate.
 
 2. Create the certificate and key pair for each of the additional users.
 
