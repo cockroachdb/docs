@@ -135,7 +135,7 @@ SHOW search_path;
 ### Reset a variable to its default value
 
 {{site.data.alerts.callout_success}}
-You can use [`RESET`](reset.html) to reset a session variable as well.
+You can use [`RESET`](reset-vars.html) to reset a session variable as well.
 {{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
