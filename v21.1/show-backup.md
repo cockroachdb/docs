@@ -110,6 +110,13 @@ You will receive an error if there is a collection of backups in the storage loc
 
 The path format is `<year>/<month>/<day>-<timestamp>`.
 
+To inspect one of these backups, run the following:
+
+{% include copy-clipboard.html %}
+~~~sql
+SHOW BACKUP '2020/09/24-204152.88' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
 ### Show a backup with schemas
 
 {% include copy-clipboard.html %}
