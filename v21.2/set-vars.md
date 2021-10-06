@@ -9,11 +9,11 @@ The `SET` [statement](sql-statements.html) can modify one of the session configu
 <span class="version-tag">New in v21.2</span>: CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
 
 {{site.data.alerts.callout_info}}
-The <code>SET</code> statement for session variables is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="cluster-settings.html#change-a-cluster-setting"><code>SET CLUSTER SETTING</code></a> statements.
+The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`](set-transaction.html) and [`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) statements.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
-In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with <code>SET</code> statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the <a href="example-apps.html">Build an App with CockroachDB</a> tutorials.
+In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with `SET` statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the [Build an App with CockroachDB](example-apps.html) tutorials.
 {{site.data.alerts.end}}
 
 ## Required privileges
@@ -71,14 +71,14 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 
 ### Set simple variables
 
-The following demonstrates how `SET` can be used to configure the default database for the current session:
+The following examples demonstrate how to use `SET` to configure the default database for the current session:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = movr_app;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -94,12 +94,12 @@ SHOW application_name;
 
 The following demonstrates how to use quoting to use values containing spaces:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET application_name = "movr app";
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -115,12 +115,12 @@ SHOW application_name;
 
 The following demonstrates how to assign a list of values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET search_path = pg_catalog,public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -135,10 +135,10 @@ SHOW search_path;
 ### Reset a variable to its default value
 
 {{site.data.alerts.callout_success}}
-You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.
+You can use [`RESET`](reset.html) to reset a session variable as well.
 {{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -150,12 +150,12 @@ SHOW search_path;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET search_path = DEFAULT;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW search_path;
 ~~~
@@ -171,7 +171,7 @@ SHOW search_path;
 
 <span class="version-tag">New in v21.2</span>: To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW application_name;
 ~~~
@@ -183,7 +183,7 @@ SHOW application_name;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SET LOCAL application_name = demo;
@@ -197,7 +197,7 @@ SHOW application_name;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 SHOW application_name;
@@ -212,9 +212,9 @@ SHOW application_name;
 
 ### Roll back session variables set for a transaction
 
-<span class="version-tag">New in v21.2</span>: CockroachDB supports rolling back session variable settings to [savepoints](savepoint.html).
+<span class="version-tag">New in v21.2</span>: You can roll back session variable settings to [savepoints](savepoint.html).
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SHOW timezone;
 ~~~
@@ -226,7 +226,7 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 BEGIN;
 SET timezone = '+3';
@@ -241,7 +241,7 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 SET LOCAL timezone = '+1';
 SHOW timezone;
@@ -254,7 +254,7 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 ROLLBACK TO SAVEPOINT s1;
 SHOW timezone;
@@ -267,7 +267,7 @@ SHOW timezone;
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 COMMIT;
 SHOW timezone;
@@ -304,12 +304,12 @@ When setting a time zone, note the following:
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -321,12 +321,12 @@ When setting a time zone, note the following:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~

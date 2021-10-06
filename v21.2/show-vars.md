@@ -4,7 +4,7 @@ summary: The SHOW statement displays the current settings for the client session
 toc: true
 ---
 
-The `SHOW` [statement](sql-statements.html) can display the value of either one or all of the session variables. Some of these can also be configured via [`SET`](set-vars.html).
+Use the `SHOW` [statement](sql-statements.html) to display the value of one or all of the session variables. You configure session variables using [`SET`](set-vars.html).
 
 ## Required privileges
 
@@ -17,14 +17,14 @@ No [privileges](authorization.html#assign-privileges) are required to display th
 </div>
 
 {{site.data.alerts.callout_info}}
-The <code>SHOW</code> statement for session variables is unrelated to the other <code>SHOW</code> statements like <a href="cluster-settings.html#view-current-cluster-settings"><code>SHOW CLUSTER SETTING</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.
+The `SHOW` statement for session variables is unrelated to the other `SHOW` statements like [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW CREATE`](show-create.html), and [`SHOW DATABASES`](show-databases.html).
 {{site.data.alerts.end}}
 
 ## Parameters
 
  Parameter | Description
 -----------|-------------
-`var_name` | The session variable name to show.<br>The variable name is case insensitive and may be enclosed in double quotes.
+`var_name` | The session variable name to show.<br>The variable name is case-insensitive and can be enclosed in double quotes.
 
 ### Supported variables
 
@@ -45,7 +45,7 @@ Special syntax cases supported for compatibility:
 
 ### Showing the value of a single session variable
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASE;
 ~~~
@@ -59,7 +59,7 @@ Special syntax cases supported for compatibility:
 
 ### Showing the value of all session variables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL;
 ~~~
