@@ -12,7 +12,7 @@ toc: true
 The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/for_locking.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/for_locking.html %}
 </div>
 
 For the full `SELECT` statement syntax documentation, see [Selection Queries](selection-queries.html).

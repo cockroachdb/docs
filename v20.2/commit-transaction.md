@@ -13,7 +13,7 @@ For non-retryable transactions, if statements in the transaction [generated any 
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/commit_transaction.html %}</div>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/commit_transaction.html %}</div>
 
 ## Required privileges
 

@@ -18,7 +18,7 @@ To change the ownership of any single object (e.g., a table or a database), use 
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/reassign_owned_by.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/reassign_owned_by.html %}
 </div>
 
 ## Parameters

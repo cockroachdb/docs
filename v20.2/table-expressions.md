@@ -15,7 +15,7 @@ expression.
 ## Synopsis
 
 <div class="horizontal-scroll">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/table_ref.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/table_ref.html %}
 </div>
 
 ## Parameters
