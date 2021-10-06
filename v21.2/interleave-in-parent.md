@@ -6,9 +6,9 @@ toc_not_nested: true
 ---
 
 {{site.data.alerts.callout_danger}}
-`INTERLEAVE IN PARENT` is disabled by default, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
+Interleaving objects is disabled in CockroachDB versions 21.2+.
 
-For details, see [below](#deprecation).
+If you have upgraded to CockroachDB 21.2, and your cluster contains interleaved objects, we recommend that you convert all interleaved objects to non-interleaved objects. Interleaving will be permanently removed from CockroachDB in a future release. For details, see [below](#deprecation).
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
@@ -69,13 +69,13 @@ The entire set of these relationships is referred to as the **interleaved hierar
 
 ## Deprecation
 
+Interleaving is disabled in CockroachDB versions 21.2+.
+
 Interleaving tables and indexes was deprecated in CockroachDB v20.2 for the following reasons:
 
 - Scans over tables or indexes with interleaved, child objects (i.e., interleaved tables or indexes) are much slower than scans over tables and indexes with no child objects, as the scans must traverse the parent object and all of its child objects.
 - Database schema changes are slower for interleaved objects and their parents than they are for non-interleaved objects and objects with no interleaved children. For example, if you add or remove a column to a parent or child table, CockroachDB must rewrite the entire interleaved hierarchy for that table and its parents/children.
 - [Internal benchmarks](https://github.com/cockroachdb/cockroach/issues/53455) have shown the performance benefits of interleaving tables and indexes are limited to a small number of use cases.
-
-Interleaving is disabled with the `sql.defaults.interleaved_tables.enabled` [cluster setting](cluster-settings.html) set to `false` by default. Interleaving will be permanently disabled in a future release.
 
 For more details, see the [GitHub tracking issue](https://github.com/cockroachdb/cockroach/issues/52009).
 
@@ -83,6 +83,8 @@ After [upgrading to v21.2](upgrade-cockroach-version.html), we recommend that yo
 
 - [Convert any existing interleaved tables to non-interleaved tables](#convert-interleaved-tables).
 - [Replace any existing interleaved secondary indexes with non-interleaved indexes](#replace-interleaved-indexes).
+
+To detect interleaved objects in your cluster, query the `crdb_internal.interleaved` table, located in the [`crdb_internal` system catalog](crdb-internal.html).
 
 {{site.data.alerts.callout_success}}
 Test your [schema changes](online-schema-changes.html) in a non-production environment before implementing them in production.
@@ -97,7 +99,7 @@ When converting interleaved tables with `ALTER PRIMARY KEY`, note the following:
 - CockroachDB executes `ALTER PRIMARY KEY` statements as [online schema changes](online-schema-changes.html). This means that you can convert your interleaved tables to non-interleaved tables without experiencing any downtime.
 - `ALTER PRIMARY KEY` statements can only convert a child table if that table is not a parent. If your cluster has child tables that are also parents, you must start from the bottom of the interleaving hierarchy and work your way up (i.e., start with child tables that are not parents).
 
-For example, suppose you created an interleaved hierarchy between the `customers`, `orders`, and `packages` tables, using the following [`CREATE TABLE`](create-table.html) statements:
+For example, suppose you created an interleaved hierarchy between the `customers`, `orders`, and `packages` tables in a previous CockroachDB version, using the following [`CREATE TABLE`](create-table.html) statements:
 
 {% include copy-clipboard.html %}
 ~~~ sql
