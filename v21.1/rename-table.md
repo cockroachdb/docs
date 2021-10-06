@@ -25,7 +25,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/rename_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/rename_table.html %}
 </div>
 
 ## Parameters

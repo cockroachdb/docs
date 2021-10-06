@@ -37,7 +37,7 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 ## Synopsis
 
-<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/create_role.html %}</div>
+<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_role.html %}</div>
 
 ## Parameters
 

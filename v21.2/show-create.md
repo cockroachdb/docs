@@ -13,7 +13,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/show_create.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_create.html %}
 </div>
 
 ## Parameters

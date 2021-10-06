@@ -19,7 +19,7 @@ To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`D
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/alter_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/alter_column.html %}
 </div>
 
 ## Required privileges

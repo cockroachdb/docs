@@ -15,7 +15,7 @@ It is not possible to rename a column referenced by a view. For more details, se
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/rename_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/rename_column.html %}
 </div>
 
 ## Required privileges

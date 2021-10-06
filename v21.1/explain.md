@@ -38,7 +38,7 @@ For more information about indexing and table scans, see [Find the Indexes and K
 
 ## Synopsis
 
-<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/explain.html %}</div>
+<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/explain.html %}</div>
 
 ## Required privileges
 

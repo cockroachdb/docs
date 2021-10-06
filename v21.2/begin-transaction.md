@@ -14,7 +14,7 @@ When using transactions, your application should include logic to [retry transac
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/begin_transaction.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/begin_transaction.html %}
 </div>
 
 ## Required privileges

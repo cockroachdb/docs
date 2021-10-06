@@ -22,7 +22,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
 ## Synopsis
 
-<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/drop_role.html %}</div>
+<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/drop_role.html %}</div>
 
 ## Parameters
 

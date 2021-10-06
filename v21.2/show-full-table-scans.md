@@ -11,7 +11,7 @@ Limiting the number of queries that require full table scans can help you optimi
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/show_full_scans.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_full_scans.html %}
 </div>
 
 ## Required privileges

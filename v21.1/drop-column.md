@@ -14,7 +14,7 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-{{ page.version.version }}/grammar_svg/drop_column.html %} </section>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/drop_column.html %} </section>
 
 ## Required privileges
 
