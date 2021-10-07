@@ -21,12 +21,12 @@ This page shows you the quickest way to get started with CockroachDB. You'll sta
 1. On the **Create your cluster** page, select **{{ site.data.products.serverless-plan }}**.
 1. Click **Create your free cluster**.
 
-    In approximately 20-30 seconds, your cluster will be ready and the **Connect** dialog will display.
+    In approximately 20-30 seconds, your cluster will be ready and the **Connection info** dialog will display.
 
 ## Step 2. Connect to the cluster
 
+1. In the **Connection info** dialog, choose your OS.
 1. Open a terminal on your local machine.
-1. In the **Connect** dialog, select your OS.
 1. Copy the first command from the dialog and run it in your terminal. This installs the CockroachDB binary and copies it into the `PATH`.
 
     We've included the command here for convenience:
@@ -60,7 +60,7 @@ This page shows you the quickest way to get started with CockroachDB. You'll sta
 
 1. Copy the second command from the dialog and run it in your terminal. This creates a new `certs` directory on your local machine and downloads the CA certificate to that directory.
 
-    We've included the command here for convenience but with placeholder text that must be replaced (e.g., `<cluster-id>`):
+    We've included the command here for convenience but with some placeholder values. It's easiest to use the command directly from the **Connection info** dialog.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}
@@ -95,13 +95,9 @@ This page shows you the quickest way to get started with CockroachDB. You'll sta
     The connection string in the command is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (e.g., in a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
     {{site.data.alerts.end}}
 
-    We've included the command here for convenience but with placeholder text that must be replaced (e.g., `<user>`, etc.):
+    Again, we've included the command here for convenience but with some placeholder values. It's easiest to use the command directly from the **Connection info** dialog.
 
     {% include cockroachcloud/sql-connection-string-free.md %}
-
-1. Enter the SQL user's password and hit enter.
-
-    {% include cockroachcloud/postgresql-special-characters.md %}
 
     A welcome message displays:
 
@@ -114,8 +110,6 @@ This page shows you the quickest way to get started with CockroachDB. You'll sta
     ~~~
 
 ## Step 3. Insert data
-
-## Step 4. Run a sample app
 
 1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
