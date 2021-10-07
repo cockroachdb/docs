@@ -22,7 +22,7 @@ To use the other backup features, you need an [{{ site.data.products.enterprise 
 ## Synopsis
 
 ~~~
-CREATE SCHEDULE <label>
+CREATE SCHEDULE [IF NOT EXISTS] <label>
 FOR BACKUP [<targets>] INTO <location>
 [WITH <backup_options>[=<value>] [, ...]]
 RECURRING [crontab] [FULL BACKUP <crontab|ALWAYS>]
@@ -38,7 +38,8 @@ Targets:
 
  Parameter                              | Description
 ----------------------------------------+-------------------------------------------------------------------------------------------------------------------------
-`label`                                 | The name used to identify the backup schedule. This is optional and does not need to be unique. If not provided, the schedule will be assigned the name `BACKUP`.
+`IF NOT EXISTS`                         | <span class="version-tag">New in v21.2:</span> Use to specify that a scheduled backup should not be created if the [`label`](#label) already exists. Produces an error if the schedule label already exists.
+<a name="label"></a>`label`             | The name used to identify the backup schedule. This is optional and does not need to be unique. If not provided, the schedule will be assigned the name `BACKUP`.
 `table_pattern`                         | The [table(s)](create-table.html) or [view(s)](views.html) you want to back up.
 `database_name`                         | The name of the [database(s)](create-database.html) you want to back up (i.e., create backups of all tables and views in the database).
 `location`                              | The URI where you want to store the backup. The backup files will be stored in year > month > day subdirectories. The location can be [cloud storage](use-cloud-storage-for-bulk-operations.html), or `nodelocal`.<br><br><b>Note:</b> If you want to schedule a backup using temporary credentials, we recommend that you use `implicit` authentication; otherwise, you'll need to drop and then recreate schedules each time you need to update the credentials.
