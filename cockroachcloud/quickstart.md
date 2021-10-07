@@ -9,7 +9,7 @@ toc: true
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page shows you the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some sample data, and then read the data from a sample application.
+This page shows you the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some data, and then read the data from a sample application.
 
 {% include cockroachcloud/free-limitations.md %}
 
@@ -115,29 +115,12 @@ This page shows you the quickest way to get started with CockroachDB. You'll sta
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE DATABASE bank;
+    > CREATE TABLE messages (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), message STRING);
     ~~~
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    > CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > INSERT INTO bank.accounts VALUES (1, 1000.50);
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > SELECT * FROM bank.accounts;
-    ~~~
-
-    ~~~
-      id | balance
-    -----+----------
-       1 | 1000.50
-    (1 row)
+    > INSERT INTO messages (message) VALUES ('Hello world!');
     ~~~
 
 1. To exit the SQL shell:
@@ -147,18 +130,122 @@ This page shows you the quickest way to get started with CockroachDB. You'll sta
     > \q
     ~~~
 
-## Learn more
+## Step 4. Run a sample app
 
-This page outlines the quickest way to get started with CockroachDB. For information on other options that are available when creating a {{ site.data.products.serverless }} cluster, see the following:
+<div class="filters clearfix">
+  <button class="filter-button" data-scope="node">Node.js</button>
+  <button class="filter-button" data-scope="go">Go</button>
+  <button class="filter-button" data-scope="java">Java</button>
+  <button class="filter-button" data-scope="python">Python</button>
+</div>
 
-- To create a free cluster with other configurations (e.g., a different cloud provider or region), see [Create a {{ site.data.products.serverless }} Cluster](create-a-free-cluster.html).
-- To connect to a free cluster with other options (e.g., a CA certificate or different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-free-cluster.html).
-- For information about how to connect securely to your cluster (recommended), see [Authentication](authentication.html).
-- To watch a video walkthrough of connecting to a cluster, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
+<section class="filter-content" markdown="1" data-scope="node">
 
-Next steps:
+</section>
 
-- Use the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html) to connect to your cluster and [learn CockroachDB SQL](learn-cockroachdb-sql.html).
-- [Create and manage SQL users](user-authorization.html).
-- Build a ["Hello World" app with the Django framework](../{{site.versions["stable"]}}/build-a-python-app-with-cockroachdb-django.html), or [install a client driver](../{{site.versions["stable"]}}/install-client-drivers.html) for your favorite language.
-- Explore our [sample apps](../{{site.versions["stable"]}}/hello-world-example-apps.html) for examples on how to build simple "Hello World" applications using {{ site.data.products.serverless }}.
+<section class="filter-content" markdown="1" data-scope="go">
+
+1. Create a `main.go` file on your local machine and copy this code into it:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ go
+    package main
+
+    import (
+    	"bufio"
+    	"context"
+    	"log"
+    	"os"
+
+    	"github.com/jackc/pgx/v4"
+    )
+
+    func readRows(conn *pgx.Conn) error {
+        rows, err := conn.Query(context.Background(), "SELECT message FROM messages")
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer rows.Close()
+        for rows.Next() {
+            var message string
+            if err := rows.Scan(&message); err != nil {
+                log.Fatal(err)
+            }
+            log.Printf(message)
+        }
+        return nil
+    }
+
+    func main() {
+    	// Read in connection string
+    	scanner := bufio.NewScanner(os.Stdin)
+    	log.Println("Enter a connection string: ")
+    	scanner.Scan()
+    	connstring := scanner.Text()
+
+    	// Attempt to connect
+    	config, err := pgx.ParseConfig(os.ExpandEnv(connstring))
+    	if err != nil {
+    		log.Fatal("error configuring the database: ", err)
+    	}
+    	conn, err := pgx.ConnectConfig(context.Background(), config)
+    	if err != nil {
+    		log.Fatal("error connecting to the database: ", err)
+    	}
+
+      // Read rows
+      readRows(conn)
+      defer conn.Close(context.Background())
+    }
+    ~~~
+
+    The `main` method of this program does the following:
+
+    1. Attempts to connect to a running cluster, given a connection string.
+    1. Reads the sample data you inserted earlier.
+    1. Prints the data to the terminal.
+
+1. Initialize and run the app:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ go mod init basic-sample && go mod tidy
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ go run main.go
+    ~~~
+
+    The program will prompt you for a connection string to the database:
+
+    ~~~
+    Enter a connection string:
+    ~~~
+
+1. Back in the **Connection info** dialog, click **Connection string**, copy the connection string from step 2, and paste it in your terminal after the "Enter a connection string" prompt.
+
+    {{site.data.alerts.callout_info}}
+    If the connection string does not include your SQL user password, replace `<ENTER-PASSWORD>` with the password.
+    {{site.data.alerts.end}}
+
+    The program will then execute. The output should look like this:
+
+    ~~~
+    Hello world!
+    ~~~
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="java">
+
+</section>
+
+<section class="filter-content" markdown="1" data-scope="python">
+
+</section>
+
+## What's next?
+
+- Check out our full range of [sample applications](../stable/example-apps.html) to test against your {{ site.data.products.serverless }} cluster
+- Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html)
