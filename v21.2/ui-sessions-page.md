@@ -71,7 +71,6 @@ Click the **Session Duration** of any session to display details and possible ac
 	- The SQL statement is shown.
 	- **Execution Start Time** shows the timestamp at which the statement was run.
 	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)](architecture/sql-layer.html#distsql) optimization.
-	- **View Statement Details** opens the [Statement Details](ui-statements-page.html#statement-details-page) page for the statement.
 
 ## See also
 
