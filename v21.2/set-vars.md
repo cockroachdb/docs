@@ -63,6 +63,7 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 --------|---------------|-------
  `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
  `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
+ `SET ROLE <role>` | `SET role = <role>` | <span class="version-tag">New in v21.2</span>: This is provided for compatibility with PostgreSQL clients.
  `SET SCHEMA <name>` | `SET search_path = <name>` | This is provided for better compatibility with PostgreSQL.
  `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
  `SET TIME ZONE ...` | `SET timezone = ...` | This is provided for compatibility with PostgreSQL clients.
@@ -277,6 +278,94 @@ SHOW timezone;
   timezone
 ------------
   +3
+(1 row)
+~~~
+
+### Assume another role
+
+<span class="version-tag">New in v21.2</span>: To assume another [role](authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW role;
+~~~
+
+~~~
+  role
+--------
+  root
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE ROLE new_role;
+SHOW ROLES;
+~~~
+
+~~~
+  username | options | member_of
+-----------+---------+------------
+  admin    |         | {}
+  new_role | NOLOGIN | {}
+  root     |         | {admin}
+(3 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET ROLE new_role;
+SHOW role;
+~~~
+
+~~~
+    role
+------------
+  new_role
+(1 row)
+~~~
+
+To reset the role of the current user, use a [`RESET`](reset-vars.html) statement.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESET ROLE;
+SHOW role;
+~~~
+
+~~~
+  role
+--------
+  root
+(1 row)
+~~~
+
+To assume a role for the duration of a single transaction, use `SET LOCAL ROLE`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET LOCAL ROLE new_role;
+SHOW role;
+~~~
+
+~~~
+    role
+------------
+  new_role
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMIT;
+SHOW role;
+~~~
+
+~~~
+  role
+--------
+  root
 (1 row)
 ~~~
 
