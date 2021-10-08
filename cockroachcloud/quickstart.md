@@ -233,10 +233,11 @@ You will see a welcome message when you've successfully connected to your cluste
       config.database = 'defaultdb';
       const client = new Client(config);
 
-      // Connect to database
       try {
-        const result = await client.query("SELECT message FROM messages");
+        await client.connect();
+        const result = await client.query('SELECT message FROM messages')
         console.log(result.rows[0].message)
+        await client.end()
       } catch (err) {
         console.log(`error connecting: ${err}`)
       }
@@ -487,7 +488,7 @@ You will see a welcome message when you've successfully connected to your cluste
       # Close communication with the database.
       conn.close()
 
-      if __name__ == "__main__":
+    if __name__ == "__main__":
         main()
     ~~~
 
