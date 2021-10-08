@@ -436,6 +436,8 @@ You will see a welcome message when you've successfully connected to your cluste
     ./gradlew run
     ~~~
 
+    The application connects to the cluster using the JDBC parameters specified in the data source, then executes a `SELECT` statement and displays the results.
+
     The output should look like this:
 
     ~~~
@@ -488,6 +490,12 @@ You will see a welcome message when you've successfully connected to your cluste
       if __name__ == "__main__":
         main()
     ~~~
+
+    The application:
+
+    1. Attempts to connect to a running cluster, given a connection string.
+    1. Reads the sample data you inserted earlier.
+    1. Prints the data to the terminal.
 
 1. Run the application:
 
