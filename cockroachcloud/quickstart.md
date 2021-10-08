@@ -9,7 +9,9 @@ toc: true
     <a href="quickstart-trial-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page guides you through the quickest way to get started with CockroachDB by setting up a {{ site.data.products.serverless }} cluster with the default options. For information on how to create a {{ site.data.products.db }} cluster with other options, see the [Learn more](#learn-more) section.
+This page guides you through the quickest way to get started with CockroachDB. You'll start a free {{ site.data.products.serverless }} cluster, connect with the CockroachDB SQL client, insert some data, and then read the data from a sample application.
+
+For information on how to create a {{ site.data.products.db }} cluster with other options, see the [Learn more](#learn-more) section.
 
 Choose the level of detail you want for this page.
 
@@ -29,7 +31,7 @@ Choose the level of detail you want for this page.
 1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_free" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. On the **Clusters** page, click **Create Cluster**.
-1. On the **Create your cluster** page, select **{{ site.data.products.serverless-plan }}**.
+1. On the **Create your cluster** page, select **Serverless**.
 
     Unless you change your monthly budget, this cluster will be free forever.
 
@@ -54,7 +56,7 @@ The **Connection info** dialog shows information about how to connect to your cl
 </div>
 
 <div class="filter-content" markdown="1" data-scope="simple">
-1. In the **Connection info** dialog choose your OS.
+1. In the **Connection info** dialog, choose your OS.
 1. Open a terminal on your local machine.
 1. Run the commands in each step of the **Command Line** tab of the **Connection info** dialog.
    1. Run the command in step 1 to install the CockroachDB binary and add it to your OS's `PATH`.
@@ -169,7 +171,7 @@ You will see a welcome message when you've successfully connected to your cluste
 
 </div>
 
-## Step 3. Insert data.
+## Step 3. Insert data
 
 1. You can now run [CockroachDB SQL statements](learn-cockroachdb-sql.html):
 
@@ -194,9 +196,9 @@ You will see a welcome message when you've successfully connected to your cluste
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="node">Node.js</button>
+  <button class="filter-button" data-scope="python">Python</button>
   <button class="filter-button" data-scope="go">Go</button>
   <button class="filter-button" data-scope="java">Java</button>
-  <button class="filter-button" data-scope="python">Python</button>
 </div>
 
 <section class="filter-content" markdown="1" data-scope="node">
@@ -278,7 +280,7 @@ You will see a welcome message when you've successfully connected to your cluste
     node app.js
     ~~~
 
-    The program will prompt you for the connection string to the database. Copy and paste the connection string from the **Connection info** dialog and hit **Enter**:
+    In the **Connection info** dialog, go to the **Connection string** tab, copy the connection string from step 2, and paste it in your terminal.
 
     ~~~
     prompt: connectionString:
@@ -466,8 +468,8 @@ You will see a welcome message when you've successfully connected to your cluste
     ~~~ python
     import logging
     import os
-
     import psycopg2
+
 
     def print_hello(conn):
       with conn.cursor() as cur:
@@ -487,6 +489,7 @@ You will see a welcome message when you've successfully connected to your cluste
 
       # Close communication with the database.
       conn.close()
+
 
     if __name__ == "__main__":
         main()
