@@ -14,7 +14,7 @@ This page guides you through the quickest way to get started with CockroachDB by
 Choose the level of detail you want for this page.
 
 - Simple: Basic instructions to create a cluster and connect to it using a SQL client.
-- Advanced: More detailed explanations and instructions on creating and connecting to the cluster with a client driver.
+- Advanced: More detailed explanations and examples of the commands you'll use to connect to the cluster.
 
 <div class="filters clearfix">
   <button class="filter-button page-level" data-scope="simple">Simple</button>
