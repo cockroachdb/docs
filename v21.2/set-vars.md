@@ -4,35 +4,60 @@ summary: The SET statement modifies the current configuration variables for the 
 toc: true
 ---
 
-The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html).
+The `SET` [statement](sql-statements.html) can modify one of the session configuration variables. These can also be queried via [`SHOW`](show-vars.html). By default, session variable values are set for the duration of the current session.
 
-{{site.data.alerts.callout_danger}}In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with <code>SET</code> statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the <a href="hello-world-example-apps.html">Build an App with CockroachDB</a> tutorials.{{site.data.alerts.end}}
+<span class="version-tag">New in v21.2</span>: CockroachDB supports setting session variables for the duration of a single transaction, using [the `LOCAL` keyword](#set-local).
 
+{{site.data.alerts.callout_info}}
+The `SET` statement for session variables is unrelated to the other [`SET TRANSACTION`](set-transaction.html) and [`SET CLUSTER SETTING`](cluster-settings.html#change-a-cluster-setting) statements.
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_danger}}
+In some cases, client drivers can drop and restart the connection to the server. When this happens, any session configurations made with `SET` statements are lost. It is therefore more reliable to configure the session in the client's connection string. For examples in different languages, see the [Build an App with CockroachDB](example-apps.html) tutorials.
+{{site.data.alerts.end}}
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to modify the session settings.
+No [privileges](authorization.html#assign-privileges) are required to modify the session variables.
 
 ## Synopsis
+
+The `SET` statement can set a session variable for the duration of the current session ([`SET (variable)`/`SET SESSION (variable)`](#set-session)), or for the duration of a single transaction ([`SET LOCAL (variable)`](#set-local)).
+
+### SET SESSION
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/set_var.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>SET</code> statement for session settings is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="cluster-settings.html#change-a-cluster-setting"><code>SET CLUSTER SETTING</code></a> statements.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+By default, session variables are set for the duration of the current session. As a result, [`SET (variable)` and `SET SESSION (variable)`](#set-session) are equivalent.
+{{site.data.alerts.end}}
+
+### SET LOCAL
+
+<div>
+  {% include {{ page.version.version }}/sql/generated/diagrams/set_local.html %}
+</div>
+
+{{site.data.alerts.callout_info}}
+`SET LOCAL` is compatible with [savepoints](savepoint.html). Executing a [`ROLLBACK`](rollback-transaction.html), `ROLLBACK TO SAVEPOINT`, or `RELEASE TO SAVEPOINT` statement rolls back any variables set by `SET LOCAL`.
+{{site.data.alerts.end}}
 
 ## Parameters
 
-The `SET <session variable>` statement accepts two parameters: the
-variable name and the value to use to modify the variable.
-
-The variable name is case insensitive. The value can be a list of one or more items. For example, the variable `search_path` is multi-valued.
+Parameter   | Description
+------------|------------
+`var_name`  | The name of [the session variable](#supported-variables) to set. The variable name is case-insensitive.
+`var_value` | The value, or list of values, to assign to the session variable.
 
 ### Supported variables
 
 {% include {{ page.version.version }}/misc/session-vars.html %}
 
-Special syntax cases:
+### Special syntax cases
+
+CockroachDB supports the following syntax cases, for compatibility with common SQL syntax patterns:
 
  Syntax | Equivalent to | Notes
 --------|---------------|-------
@@ -46,23 +71,22 @@ Special syntax cases:
 
 ### Set simple variables
 
-The following demonstrates how `SET` can be used to configure the
-default database for the current session:
+The following examples demonstrate how to use `SET` to configure the default database for the current session:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET database = movr;
+SET application_name = movr_app;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW database;
+SHOW application_name;
 ~~~
 
 ~~~
-  database
-+----------+
-  movr
+  application_name
+--------------------
+  movr_app
 (1 row)
 ~~~
 
@@ -70,20 +94,20 @@ default database for the current session:
 
 The following demonstrates how to use quoting to use values containing spaces:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET database = "database name with spaces";
+SET application_name = "movr app";
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW database;
+SHOW application_name;
 ~~~
 
 ~~~
-  database
-+----------+
-  database name with spaces
+  application_name
+--------------------
+  movr app
 (1 row)
 ~~~
 
@@ -91,70 +115,168 @@ The following demonstrates how to use quoting to use values containing spaces:
 
 The following demonstrates how to assign a list of values:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET search_path = pg_catalog,public;
+SET search_path = pg_catalog,public;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW search_path;
+SHOW search_path;
 ~~~
 
 ~~~
      search_path
-+--------------------+
+----------------------
   pg_catalog, public
 (1 row)
 ~~~
 
 ### Reset a variable to its default value
 
-{{site.data.alerts.callout_success}}You can use <a href="reset-vars.html"><code>RESET</code></a> to reset a session variable as well.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+You can use [`RESET`](reset-vars.html) to reset a session variable as well.
+{{site.data.alerts.end}}
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW search_path;
+SHOW search_path;
 ~~~
 
 ~~~
-  search_path
-+-------------+
-  public
+     search_path
+----------------------
+  pg_catalog, public
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET search_path = 'app';
+SET search_path = DEFAULT;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW search_path;
+SHOW search_path;
 ~~~
 
 ~~~
-  search_path
-+-------------+
-  app
+    search_path
+-------------------
+  "$user", public
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+### Set a variable for the duration of a single transaction
+
+<span class="version-tag">New in v21.2</span>: To set a variable for the duration of a single transaction, use the `SET LOCAL` statement.
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET search_path = DEFAULT;
+SHOW application_name;
 ~~~
 
-{% include copy-clipboard.html %}
+~~~
+  application_name
+--------------------
+  movr app
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW search_path;
+BEGIN;
+SET LOCAL application_name = demo;
+SHOW application_name;
 ~~~
 
 ~~~
-  search_path
-+-------------+
-  public
+  application_name
+--------------------
+  demo
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMIT;
+SHOW application_name;
+~~~
+
+~~~
+  application_name
+--------------------
+  movr app
+(1 row)
+~~~
+
+### Roll back session variables set for a transaction
+
+<span class="version-tag">New in v21.2</span>: You can roll back session variable settings to [savepoints](savepoint.html).
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  UTC
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET timezone = '+3';
+SAVEPOINT s1;
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +3
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET LOCAL timezone = '+1';
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +1
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+ROLLBACK TO SAVEPOINT s1;
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +3
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMIT;
+SHOW timezone;
+~~~
+
+~~~
+  timezone
+------------
+  +3
 (1 row)
 ~~~
 
@@ -182,12 +304,12 @@ When setting a time zone, note the following:
 
 ### Example: Set the default time zone via `SET TIME ZONE`
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE 'EST'; -- same as SET "timezone" = 'EST'
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -199,12 +321,12 @@ When setting a time zone, note the following:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET TIME ZONE DEFAULT; -- same as SET "timezone" = DEFAULT
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW TIME ZONE;
 ~~~
@@ -233,6 +355,6 @@ When setting a time zone, note the following:
 - [`RESET`](reset-vars.html)
 - [`SET TRANSACTION`](set-transaction.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
-- [`SHOW` (session variable)](show-vars.html)
+- [`SHOW` (session variables)](show-vars.html)
 - [The `TIMESTAMP` and `TIMESTAMPTZ` data types.](timestamp.html)
 - [`SHOW TRACE FOR SESSION`](show-trace.html)
