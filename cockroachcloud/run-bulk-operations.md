@@ -10,7 +10,8 @@ toc: true
 - [`RESTORE`](../{{site.versions["stable"]}}/restore.html)
 - [`IMPORT`](../{{site.versions["stable"]}}/import.html)
 - [`EXPORT`](../{{site.versions["stable"]}}/export.html)
-- [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html)
+- [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html) (Serverless)
+- [`CREATE CHANGEFEED`](../{{site.versions["stable"]}}/create-changefeed.html) (Dedicated)
 
 {{site.data.alerts.callout_info}}
 For {{ site.data.products.serverless }} clusters, you must have [billing information](billing-management.html) on file for your Organization to have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html). If you don't have billing set up, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is your **only available storage option** for bulk operations. {{ site.data.products.dedicated }} users can run bulk operations with `userfile` or cloud storage.
@@ -128,7 +129,7 @@ To create a core changefeed in {{ site.data.products.serverless }}, use the foll
 
 {% include cockroachcloud/cdc/create-core-changefeed.md %}
 
-For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) and [`CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html).
+For further information on changefeeds, read [Stream Data Out of CockroachDB](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html) and [`EXPERIMENTAL CHANGEFEED FOR`](../{{site.versions["stable"]}}/changefeed-for.html).
 
 </section>
 
