@@ -50,7 +50,7 @@ homepage: true
 </div>
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-12 text-center">
-      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_cc_landing">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
+      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_cc_landing">Start a Free Serverless Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
     </div>
   </div>
 
@@ -68,7 +68,7 @@ homepage: true
       <h3 class="mt-3">Get Started</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
+        <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Serverless Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">Start a Dedicated Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/connect-to-your-cluster.html' | relative_url }}">Connect to Your Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>

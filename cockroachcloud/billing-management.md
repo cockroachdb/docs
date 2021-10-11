@@ -14,17 +14,30 @@ Setting up billing information for your Organization allows you to create a maxi
 
 ## Set up billing for an Organization
 
-1. On the **Billing** page, click the pen icon for the **Payment method** field.
-2. On the **Edit payment method** page, enter the email address at which you want get invoices for the Organization.
-3. Enter the credit or debit card details.
-4. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
-4. Click **Add card**.
+1. On the **Billing** page, click the pencil icon for the **Payment method** field.
+1. In the **Edit payment method** dialog, enter the credit or debit card details.
+1. Click **Save card**.
+1. On the **Billing** page, click the pencil icon for the **Billing email address** field.
+1. Enter the email address at which you want to get invoices for the Organization.
+1. Click **Submit**.
+1. On the **Billing** page, click the pencil icon for the **Billing address** field.
+1. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
+1. Click **Submit**.
 
 ## Change the billing email address
 
 1. On the **Billing** page, click the pen icon for the **Billing email address** field.
-2. On the **Edit payment method** page, enter the new email address at which you want get invoices for the Organization.
-3. Click **Add card**.
+1. In the **Edit payment method** dialog, enter the new email address at which you want get invoices for the Organization.
+1. Click **Add card**.
+
+## Change the payment method
+
+1. On the **Billing** page, click the pencil icon for the **Payment method** field.
+1. In the **Edit payment method** dialog, enter the credit or debit card details.
+1. Click **Save card**.
+1. On the **Billing** page, click the pencil icon for the **Billing address** field.
+1. Enter the address associated with your new payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
+1. Click **Submit**.
 
 ## Delete your credit card information
 
