@@ -12,7 +12,7 @@ This page describes {{ site.data.products.serverless }} performance benchmarking
 
 ### What are RUs?
 
-Most resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
+Most resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
 
 ### What is KV 95?
 
@@ -20,19 +20,11 @@ KV 95 is a simple benchmark that tests linear scaling by [running a workload](..
 
 ## Baseline Performance
 
-### Topology 
-
-Baseline performance was benchmarked for a free {{ site.data.products.serverless-plan }} cluster hosted by an AWS 3-node cluster using `r5.4xlarge` machine type.
-
-The RU usage was determined by monitoring the metrics provided by each of the host cluster nodes, which get updated every 10 seconds.
-
-High vs low trust.
-
-### Results 
-
-Placeholder text
+Baseline performance was benchmarked for a free CockroachDB Serverless cluster running in an Organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of Burst capacity and are throttled.
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
+
+This chart shows the linear consumption of RUs by a CockroachDB Serverless cluster under a constant [KV 95](#kv-95) workload. The total number of RUs consumed over 10 minutes is about 228,655. The cluster is performing about 318 operations per second, and each operation (a point read or write) is consuming about 1.2 RUs. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
 
 ## Learn more
 

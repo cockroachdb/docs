@@ -32,9 +32,9 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 3. Enter a spend limit
 
-Every cluster includes 250M RUs per month and 5 GiB of storage for free. Every cluster also has a guaranteed baseline performance of 100 RUs per second, or up to 100 QPS.
+Every cluster starts with 10M RUs of free [burst capacity](architecture.html#concepts) and accrues 100 RUs per second up to a maximum of 250M free RUs per month. Accrued RUs can be used for burst performance, and once they have been used the cluster will revert to the baseline performance of 100 RUs per second.
 
-Paid clusters include additional resources for higher performance. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of free clusters.
+If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free accrued RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
 For more information on determining your resource usage, see [Planning your cluster](serverless-cluster-management.html#planning-your-cluster).
 

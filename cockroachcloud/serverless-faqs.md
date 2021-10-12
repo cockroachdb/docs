@@ -28,7 +28,7 @@ Free clusters have a limit of 250M Request Units per month and 5GB of storage. P
 
 ### What is a Request Unit?
 
-All resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 1 RU, and a "large read" such as a full table scan with indexes might cost 100 RUs.
+All resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes might cost 100 RUs.
 
 ### Do I have to pay for {{ site.data.products.serverless }}?
 
