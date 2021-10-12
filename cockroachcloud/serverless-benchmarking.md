@@ -24,7 +24,7 @@ Baseline performance was benchmarked for a free CockroachDB Serverless cluster r
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
 
-This chart shows the linear consumption of RUs by a CockroachDB Serverless cluster under a constant [KV 95](#kv-95) workload. The total number of RUs consumed over 10 minutes is about 228,655. The cluster is performing about 318 operations per second, and each operation (a point read or write) is consuming about 1.2 RUs. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
+This chart shows the linear consumption of RUs by a CockroachDB Serverless cluster under a constant [KV 95](#what-is-kv-95) workload. The total number of RUs consumed over 10 minutes is about 228,655. The cluster is performing about 318 operations per second, and each operation (a point read or write) is consuming about 1.2 RUs. These results have been adjusted for a constant overhead of 5 RU/s that is unrelated to the workload.
 
 ## Learn more
 
