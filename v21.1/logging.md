@@ -4,4 +4,4 @@ summary: Reference documentation for logging levels and logging channels.
 toc: true
 ---
 
-{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/release-21.1/docs/generated/logging.md %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/cockroach/master/docs/generated/logging.md %}
