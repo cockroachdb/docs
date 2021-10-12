@@ -120,7 +120,7 @@ You can add or remove up to three regions at a time through the Console. See the
 
 ## Restore data from a backup
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.dedicated }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
 
 {{site.data.alerts.callout_info}}
 All databases are not backed up at the same time. Each database is backed up every hour based on the time of creation. For larger databases, you might see an hourly CPU spike while the database is being backed up.
