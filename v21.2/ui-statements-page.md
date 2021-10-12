@@ -26,9 +26,11 @@ CockroachDB's internal queries are displayed under the `(internal)` app. Queries
 
 You can search for statements using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
-## Clear statement statistics
+## Statement statistics
 
-Statement statistics are aggregated once an hour and organized by start time. Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time. To clear the statistics, click **clear SQL stats**. This resets SQL stats on the Statements and [Transactions](ui-transactions-page.html) pages and [`crdb_internal`](crdb-internal.html) tables.
+Statement statistics are aggregated once an hour and organized by [Interval Start Time](#statements-table). Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time.
+
+To clear the statistics, click **clear SQL stats**. This resets SQL statistics on the Statements and [Transactions](ui-transactions-page.html) pages and [`crdb_internal`](crdb-internal.html) tables.
 
 ## SQL statement fingerprints
 
@@ -67,14 +69,24 @@ Use the Statements page to identify SQL statements that you want to [troubleshoo
 If you haven't yet executed any queries in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
+### Statements table
+
+The Statements table gives details for each SQL statement fingerprint:
+
 Column | Description
 -----|------------
-{% include {{ page.version.version }}/ui/statement_table.md -%}
-Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the [time interval setting](#time-interval). To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page.
-
-### Time interval
-
-The Statements page aggregates the SQL statements executed within a configured time interval. The default interval is one hour. You can change the interval with the [`diagnostics.reporting.interval`](cluster-settings.html#settings) [cluster setting](set-cluster-setting.html). The interval start time for each statement fingerprint is displayed in the Interval Start Time column.
+Statements | SQL statement [fingerprint](ui-statements-page.html#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [Transaction Details page](ui-statements-page.html#transaction-details-page).
+Interval Start Time (UTC) | The start time of the statistics aggregation interval for a statement. <br><br>For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
+Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour. <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing statements with this fingerprint within the last hour).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Bytes Read | Aggregation of all bytes [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for statements with this fingerprint within the last hour. <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Statement Time | Average [planning and execution time](architecture/sql-layer.html#sql-parser-planner-executor) of statements with this statement fingerprint within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Contention | Average time statements with this fingerprint were [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour. <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Max Memory | Maximum memory used by a statement with this fingerprint at any time during its execution within the last hour. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Network | Amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for statements with this fingerprint within the last hour. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
+% of All Runtime  | How much time this statement fingerprint took to execute compared to all other statements that were executed within the time period. It is expressed as a percentage. The runtime is the mean execution latency multiplied by the execution count.
+Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page.
 
 ## Statement Details page
 
@@ -91,21 +103,21 @@ The Statement Details page supports the search param `aggregated_ts`. If set, th
 
 The **Overview** section displays the SQL statement fingerprint and essential statistics:
 
-**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the [specified time interval](#time-interval).
+**Mean statement time** is the cumulative time taken to execute statements with this fingerprint within the last hour.
 
   - **Planning time** is the cumulative time taken by the [planner](architecture/sql-layer.html#sql-parser-planner-executor) to create an execution plan for statements with this fingerprint within the specified time interval.
   - **Execution time** is the cumulative time taken to execute statements with this fingerprint in the specified time interval.
 
 **Resource usage** displays statistics about storage, memory, and network usage for the SQL statement fingerprint.
 
-  - **Mean rows/bytes read** displays the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the last hour or specified [time interval](#time-interval).
+  - **Mean rows/bytes read** displays the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the last hour .
   - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the last hour or specified time interval.
-  - **Network usage** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for statements with this fingerprint within the last hour or specified [time interval](#time-interval). If this value is 0, the statement was executed on a single node.
+  - **Network usage** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for statements with this fingerprint within the last hour. If this value is 0, the statement was executed on a single node.
   - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk](vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the last hour or specified time interval.
 
 **Statement details** displays information about the execution of the statement.
 
-  - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For details, see [time interval](#time-interval). By default, statistics aggregate over an hour interval. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
+  - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
   - **Database** displays the database on which the statements executed.
   - **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
   - **Failed?** indicates whether the statement failed to execute.
@@ -116,10 +128,10 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 **Execution counts** displays execution statistics for the SQL statement fingerprint.
 
-  - **First attempts** is the cumulative number of first attempts at executing statements with this fingerprint within the [specified time interval](#time-interval).
+  - **First attempts** is the cumulative number of first attempts at executing statements with this fingerprint within the last hour.
   - **Total executions** is the total number of executions of statements with this fingerprint. It is calculated as the sum of first attempts and retries.
-  - **Retries** is the cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the [specified time interval](#time-interval).
-  - **Max Retries** is the highest number of retries of a single statement with this fingerprint within the [specified time interval](#time-interval). For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
+  - **Retries** is the cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
+  - **Max Retries** is the highest number of retries of a single statement with this fingerprint within the last hour. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
 
 ### Diagnostics
 
@@ -149,7 +161,7 @@ A row  with the activation time and collection status is added to the **Statemen
 
 #### View and download diagnostic bundles for all statement fingerprints
 
-Although fingerprints are periodically cleared from the Statements page based on your [time interval](#time-interval), all diagnostics bundles are preserved. To view and download diagnostic bundles for all statement fingerprints do one of the following:
+Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. To view and download diagnostic bundles for all statement fingerprints do one of the following:
 
 - On the Diagnostics page for a statement fingerprint, click the **All statement diagnostics** link.
 
@@ -163,7 +175,7 @@ The **Explain Plan** section displays CockroachDB's statement plan for an [expla
 
 By default, the explain plan for each fingerprint is sampled every 5 minutes. You can change the interval with the [`sql.metrics.statement_details.plan_collection.period`](cluster-settings.html#settings) cluster setting. For example, to change the interval to 2 minutes, run the following [`SET CLUSTER SETTING`](set-cluster-setting.html) command:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET CLUSTER SETTING sql.metrics.statement_details.plan_collection.period  = '2m0s';
 ~~~
@@ -194,3 +206,4 @@ The Execution Stats section has three subsections:
 - [Make Queries Fast](make-queries-fast.html)
 - [Support Resources](support-resources.html)
 - [Raw Status Endpoints](monitoring-and-alerting.html#raw-status-endpoints)
+- [Transactions Page](ui-transactions-page.html)

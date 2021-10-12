@@ -30,9 +30,11 @@ To filter the transactions by [`application_name`](connection-parameters.html#ad
 
 You can search for transactions using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
-## Clear transaction statistics
+## Transaction statistics
 
-Transaction statistics are aggregated once an hour and organized by start time. Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a transaction execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time. To clear the statistics, click **clear SQL stats**. This resets SQL stats on the [Statements](ui-statements-page.html) and Transactions pages and [`crdb_internal`](crdb-internal.html) tables.
+Transaction statistics are aggregated once an hour and organized by [Interval Start Time](#transactions-table). Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a transaction execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time.
+
+To clear the statistics, click **clear SQL stats**. This resets SQL statistics on the [Statements](ui-statements-page.html) and Transactions pages and [`crdb_internal`](crdb-internal.html) tables.
 
 ## Filter by transaction latency
 
@@ -46,17 +48,23 @@ Use this page to identify transactions that you may want to [troubleshoot](query
 If you haven't yet executed any transactions in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
+
+### Transactions table
+
+The Transactions table gives details for each SQL statement fingerprint in the transaction:
+
 Column | Description
 -----|------------
 Transactions | The [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) that make up the transaction.<br><br>To view the transaction fingerprint and details, click to open the [Transaction Details page](#transaction-details-page).
-Execution Count | Cumulative number of executions of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
-Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing this transaction within the last hour or specified [time interval](#time-interval).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
-Bytes Read | Aggregation of all bytes [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean.
-Transaction Time | Average [planning and execution time](architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
-Contention | Average time this transaction was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean.
-Max Memory | Maximum memory used by this transaction at any time during its execution within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
-Network | Amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
-Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](#time-interval).
+Interval Start Time (UTC) | The start time of the statistics aggregation interval for a transaction. <br><br>For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.  |
+Execution Count | Cumulative number of executions of this transaction within the last hour. <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the transaction.
+Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing this transaction within the last hour.<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean.
+Bytes Read | Aggregation of all bytes [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for this transaction within the last hour. <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean.
+Transaction Time | Average [planning and execution time](architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
+Contention | Average time this transaction was [in contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour.
+Max Memory | Maximum memory used by this transaction at any time during its execution within the last hour. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
+Network | Amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour. <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
+Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour.
 Regions/Nodes | The region and nodes in which the transaction was executed.
 Statements | Number of SQL statements in the transaction.
 
@@ -64,27 +72,20 @@ Statements | Number of SQL statements in the transaction.
 Significant transactions on your database are likely to have a high execution count or number of rows read.
 {{site.data.alerts.end}}
 
-### Time interval
-
-The Transactions page aggregates all transactions executed within a configured time interval. The default interval is one hour. You can change the interval with the [`diagnostics.reporting.interval`](cluster-settings.html#settings) [cluster setting](set-cluster-setting.html). The interval start time for each transaction fingerprint is displayed in the Interval Start Time column.
-
 ## Transaction Details page
 
 Click a transaction fingerprint to open **Transaction Details**.
 
 - The _transaction fingerprint_ is displayed as a list of the individual [SQL statement fingerprints](ui-statements-page.html#sql-statement-fingerprints) in the transaction.
-- The **Mean transaction time** is the mean average time it took to execute the transaction within the last hour or specified [time interval](#time-interval).
+- The **Mean transaction time** is the mean average time it took to execute the transaction within the last hour.
 - **Transaction resource** usage shows overall statistics about the transaction.
-    - **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour or specified [time interval](#time-interval).
-    - **Bytes read over network** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the statement was executed on a single node.
+    - **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour.
+    - **Bytes read over network** displays the amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour. <br><br>If this value is 0, the statement was executed on a single node.
     - **Max memory usage** is the maximum memory used by this transaction at any time during its execution within the last hour or specified time interval.
     - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk](vectorized-execution.html#disk-spilling-operations) while executing this transaction within the last hour or specified time interval.
 
-The statement table gives details for each SQL statement in the transaction:
 
-Column | Description
--------|------------
-{% include {{ page.version.version }}/ui/statement_table.md %}
+The Statements table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement](ui-statements-page.md#statement-details-page), click a statement fingerprint.
 
 ## See also
 
@@ -93,4 +94,4 @@ Column | Description
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Transaction latency graphs](ui-sql-dashboard.html#transactions)
 - [Transaction retries](transactions.html#transaction-retries)
-- [DB Console Statements Page](ui-statements-page.html)
+- [Statements Page](ui-statements-page.html)
