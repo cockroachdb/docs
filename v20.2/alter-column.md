@@ -59,6 +59,8 @@ For an example of `ALTER COLUMN TYPE`, see [Increase a column type's precision](
 
 ## Examples
 
+>ALTER TABLE student ALTER clg_fee type DECIMAL (12,2);
+
 ### Set or change a `DEFAULT` value
 
 Setting the [`DEFAULT` value constraint](default-value.html) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a `DEFAULT` value set, you can use this statement to change it.
