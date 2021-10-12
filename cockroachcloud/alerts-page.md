@@ -6,6 +6,10 @@ toc: true
 
 The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} Organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
 
+{{site.data.alerts.callout_info}}
+The Alerts page is accessible on {{ site.data.products.dedicated }} clusters.
+{{site.data.alerts.end}}
+
 If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email receipients](#configure-alerts) when the following usage metrics are detected:
 
 **Storage Utilization:**
