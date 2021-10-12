@@ -229,7 +229,7 @@ Column | Description
 
 ### referential_constraints
 
-`referential_constraints` identifies all referential ([Foreign Key](foreign-key.html)) constraints.
+`referential_constraints` identifies all referential ([foreign key](foreign-key.html)) constraints.
 
 Column | Description
 -------|-----------
