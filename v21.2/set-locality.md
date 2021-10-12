@@ -36,6 +36,10 @@ The user must be a member of the [`admin`](authorization.html#roles) or [owner](
 
 ## Examples
 
+{{site.data.alerts.callout_info}}
+[`RESTORE`](restore.html) on [`REGIONAL BY TABLE`](#regional-by-table) and [`GLOBAL`](#global) tables is supported with some limitations — see [Restoring to multi-region databases](restore.html#restoring-to-multi-region-databases) for more detail. Tables set to a [`REGIONAL BY ROW`](#regional-by-row) table locality cannot be restored.
+{{site.data.alerts.end}}
+
 <a name="regional-by-table"></a>
 
 ### Set the table locality to `REGIONAL BY TABLE`
