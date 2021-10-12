@@ -14,7 +14,8 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) running on the targeted table to fail.
-- {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
+
+<span class="version-tag">New in v21.2:</span> `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
 
 ## Required privileges
 
@@ -107,7 +108,9 @@ Before using `IMPORT INTO`, you should have:
 
 #### Supported `DEFAULT` expressions
 
- `IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
+`IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
+
+- `DEFAULT` expressions with [user-defined types](enum.html).
 
 - Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
 
