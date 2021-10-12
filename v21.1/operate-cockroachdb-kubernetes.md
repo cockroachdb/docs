@@ -542,6 +542,42 @@ If you previously [authenticated with `cockroach cert`](#example-authenticating-
     cockroachdb-1                         1/1     Terminating   0          4h16m
     cockroachdb-2                         1/1     Running       0          43s
     ~~~
+
+## Securing the webhooks
+
+The Cockroach operator ships with both
+[Mutating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) and
+[Validating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook)
+webhooks. Communication between the K8s API server and the webhook service must be secured with TLS.
+
+At startup, the manager pod will search for the TLS secret `cockroach-operator-webhook-ca`. If the secret is not found,
+a new CA certificate will be created and stored in the secret for future runs. Next the manager will generate a
+one-time server certificate for the webhook server which is signed with the aforementioned CA. Finally, the CABundle for
+both mutating and validating webhook configurations are patched with the CA's certificate.
+
+### Using your own CA for securing the webhooks
+
+If you'd prefer to use your own CA certificate rather than the generated one, you can generate your own and then create
+the secret before (re)starting the manager. The important thing is that both the certificate and key files need to be
+PEM-encoded.
+
+Here's an example of how to create your own CA using openssl:
+
+{% include_cached copy-clipboard.html %}
+~~~ shell
+# Generate a 4096-bit RSA private key
+$ openssl genrsa -out tls.key 4096
+# Generate an x509 certificate, valid for 10 years (you'll be prompted about locale, org, etc.)
+$ openssl req -x509 -new -nodes -key tls.key -sha256 -days 3650 -out tls.crt
+# Generate YAML definition for the secret
+$ kubectl create secret tls cockroach-operator-webhook-ca --cert=tls.crt --key=tls.key --dry-run=client -oyaml
+# or create it directly (be sure to be in the correct namespace)
+$ kubectl create secret tls cockroach-operator-webhook-ca --cert=tls.crt --key=tls.key
+# don't leave the crt/key around
+$ rm tls.crt tls.key
+~~~
+
+After changing the CA, you'll need to roll the manager deployment to ensure a new server certificate is generated.
 </section>
 
 <section class="filter-content" markdown="1" data-scope="helm">
