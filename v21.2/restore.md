@@ -63,6 +63,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 <a name="skip_missing_sequences"></a>`skip_missing_sequences`       | N/A                                         | Use to ignore [sequence](show-sequences.html) dependencies (i.e., the `DEFAULT` expression that uses the sequence).<br><br>Example: `WITH skip_missing_sequences`
 `skip_missing_sequence_owners`                                      | N/A                                         | Must be used when restoring either a table that was previously a [sequence owner](create-sequence.html#owned-by) or a sequence that was previously owned by a table.<br><br>Example: `WITH skip_missing_sequence_owners`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
+<a name="skip-localities-check"></a>`skip_localities_check`         | N/A                                         | <span class="version-tag">New in v21.2:</span> Use to skip checking localities of a cluster before a restore when there are mismatched regions between the backup's cluster and the target cluster. <br><br>Example: `WITH skip_localities_check`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
 `DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
 `debug_pause_on`                                                    | `"error" `                                    | <span class="version-tag">New in v21.2:</span> Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
@@ -168,6 +169,28 @@ The `RESTORE` process minimizes its impact to the cluster's performance by distr
 When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
 {{site.data.alerts.end}}
 
+## Restoring to multi-region databases
+
+<span class="version-tag">New in v21.2:</span> Restoring to a multi-region database is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases.
+
+* A cluster's regions will be checked before a restore. Mismatched regions between [backup](known-limitations.html#backup-of-multi-region-tables) and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
+
+* A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the `PRIMARY REGION` from this cluster setting assigned to the target database.
+
+{{site.data.alerts.callout_info}}
+Tables with a [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) locality cannot be restored.
+{{site.data.alerts.end}}
+
+* `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) to the primary region of the target database.
+
+* Restoring tables from multi-region databases with table localities set to `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](set-locality.html#regional-by-table), and [`GLOBAL`](set-locality.html#global) to another multi-region database is supported. Note that when restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the target database this will be implicitly changed on restore.
+
+* {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
+
+The ordering of regions and how region matching is determined is a known limitation. For more detail on this issue, see its [known limitation](#known-limitations) and tracking issue.
+
+For more on multi-region databases, see the [Multi-Region Capabilities Overview](multi-region-capabilities-overview.html).
+
 ## Viewing and controlling restore jobs
 
 After CockroachDB successfully initiates a restore, it registers the restore as a job, which you can view with [`SHOW JOBS`](show-jobs.html).
@@ -177,10 +200,6 @@ After the restore has been initiated, you can control it with [`PAUSE JOB`](paus
 {{site.data.alerts.callout_info}}
 If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
 {{site.data.alerts.end}}
-
-## Known limitations
-
-{% include {{ page.version.version }}/known-limitations/restore-aost.md %}
 
 ## Examples
 
@@ -727,6 +746,12 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 ~~~
 
 </section>
+
+## Known limitations
+
+* {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
+* To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+* Restoring [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables is currently not supported. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/pull/71178)
 
 ## See also
 
