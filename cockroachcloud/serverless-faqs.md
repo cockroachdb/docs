@@ -24,7 +24,11 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 ### What are the usage limits of {{ site.data.products.serverless }}?
 
-Free clusters have a limit of 250M Request Units per month and 5GB of storage. Paid clusters have access to the same resources with no limitations in addition to the amount you pay for.
+Clusters start with 10M RUs of free burst capacity and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity and earned RUs, your cluster will revert to baseline performance.
+
+If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
+
+You can create a maximum of five Serverless clusters per Organization.
 
 ### What is a Request Unit?
 
@@ -44,7 +48,7 @@ For examples of applications that use free clusters, check out the following [Ha
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-Paid Serverless clusters include additional resources with no throttling. They can be used for all kinds of production applications.
+Paid Serverless clusters include additional resources to maintain higher performance. They can be used for all kinds of production applications.
 
 ### How do I connect to my cluster?
 
@@ -60,7 +64,7 @@ You can submit feedback or log any bugs you find through [this survey](https://f
 
 ### Is my cluster secure?
 
-Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.2.
+Yes, we use separate certificate authorities for each cluster, and all connections to the cluster over the internet use TLS 1.3.
 
 ### Is encryption-at-rest enabled on {{ site.data.products.serverless }}?
 
@@ -73,7 +77,7 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 ### Is my cluster isolated? Does it share resources with any other clusters?
 
-{{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters.
+{{ site.data.products.serverless }} is a multi-tenant offering and resources are shared between clusters. For more information, see [CockroachDB Serverless Architecture](architecture.html).
 
 ## Cluster maintenance
 

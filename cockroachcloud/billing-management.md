@@ -9,7 +9,7 @@ The **Billing** page displays the current charges, next scheduled payment date, 
 [Console Admins](console-access-management.html#console-admin) can set up and manage billing for the Organization.
 
 {{site.data.alerts.callout_info}}
-Setting up billing information for your Organization allows you to create a maximum of 10 Serverless clusters and use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to five Serverless clusters and [using `userfile` storage for bulk operations](run-bulk-operations.html).
+Setting up billing information for your Organization allows you to use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](run-bulk-operations.html).
 {{site.data.alerts.end}}
 
 ## Set up billing for an Organization
