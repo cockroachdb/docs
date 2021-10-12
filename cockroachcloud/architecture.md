@@ -47,7 +47,7 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 #### Baseline
 
-Serverless clusters scale based on your workload. Clusters start with 10M RUs of free [burst capacity](#concepts) and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used for burst performance, and once they have been used the cluster will revert to the baseline performance of 100 RUs per second.
+Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#concepts). Serverless clusters scale based on your workload. Clusters start with 10M RUs of free burst capacity and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used for burst performance, and once they have been used the cluster will revert to the baseline performance of 100 RUs per second.
 
 #### Paid
 
