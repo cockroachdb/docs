@@ -18,7 +18,9 @@ In some cases, client drivers can drop and restart the connection to the server.
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to modify the session variables.
+To set the `role` session variable, the current user must be a member of the `admin` role, or a member of the target role.
+
+All other session variables do not require [privileges](authorization.html#assign-privileges) to modify.
 
 ## Synopsis
 
@@ -284,6 +286,10 @@ SHOW timezone;
 ### Assume another role
 
 <span class="version-tag">New in v21.2</span>: To assume another [role](authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
+
+{{site.data.alerts.callout_info}}
+To assume a new role, the current user must be a member of the `admin` role, or a member of the target role.
+{{site.data.alerts.end}}
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
