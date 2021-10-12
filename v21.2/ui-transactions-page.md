@@ -85,7 +85,7 @@ Click a transaction fingerprint to open **Transaction Details**.
     - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk](vectorized-execution.html#disk-spilling-operations) while executing this transaction within the last hour or specified time interval.
 
 
-The Statements table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement](ui-statements-page.md#statement-details-page), click a statement fingerprint.
+The Statements table displays the statement fingerprints of all the statements in the transaction. To display the [details of a statement](ui-statements-page.html#statement-details-page), click a statement fingerprint.
 
 ## See also
 

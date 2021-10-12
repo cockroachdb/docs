@@ -75,7 +75,7 @@ The Statements table gives details for each SQL statement fingerprint:
 
 Column | Description
 -----|------------
-Statements | SQL statement [fingerprint](ui-statements-page.html#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [Transaction Details page](ui-statements-page.html#transaction-details-page).
+Statements | SQL statement [fingerprint](ui-statements-page.html#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [Transaction Details page](ui-transactions-page.html#transaction-details-page).
 Interval Start Time (UTC) | The start time of the statistics aggregation interval for a statement. <br><br>For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour. <br><br>The bar indicates the ratio of runtime success (gray) to [retries](transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
 Rows Read | Average number of rows [read from disk](architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing statements with this fingerprint within the last hour).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
