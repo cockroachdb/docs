@@ -346,6 +346,10 @@ SHOW role;
 (1 row)
 ~~~
 
+{{site.data.alerts.callout_info}}
+You can also reset the role of the current user by setting `role` to `none`.
+{{site.data.alerts.end}}
+
 To assume a role for the duration of a single transaction, use `SET LOCAL ROLE`.
 
 {% include_cached copy-clipboard.html %}
