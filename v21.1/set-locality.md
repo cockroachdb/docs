@@ -65,7 +65,7 @@ For more information about how table localities work, see [Regional tables](mult
 ### Set the table locality to `REGIONAL BY ROW`
 
 {{site.data.alerts.callout_info}}
-Changefeeds are supported on regional by row tables from v21.1 onward. Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](stream-data-out-of-cockroachdb-using-changefeeds.html#changefeeds-on-regional-by-row-tables).
+Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](stream-data-out-of-cockroachdb-using-changefeeds.html#changefeeds-on-regional-by-row-tables).
 {{site.data.alerts.end}}
 
 To make an existing table a _regional by row_ table, use the following statement:
