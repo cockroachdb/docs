@@ -16,7 +16,7 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 ### What is {{ site.data.products.serverless }}?
 
-{{ site.data.products.serverless }} delivers free and paid CockroachDB clusters for you and your organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
+{{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
 ### How do I start using {{ site.data.products.serverless }}?
 
@@ -26,7 +26,7 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 Clusters start with 10M RUs of free burst capacity and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity and earned RUs, your cluster will revert to baseline performance.
 
-If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
+If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
 You can create a maximum of five Serverless clusters per Organization.
 
@@ -48,15 +48,19 @@ For examples of applications that use free clusters, check out the following [Ha
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-Paid Serverless clusters include additional resources to maintain higher performance. They can be used for all kinds of production applications.
+Paid Serverless clusters include additional resources to maintain higher performance. They are ideal for applications with varying workloads and spikes in traffic. We do not recommend using {{ site.data.products.serverless-plan }} in production while it is still in beta.
 
 ### How do I connect to my cluster?
 
 To connect to a cluster, download the CA certificate, and then generate a connection string or parameters. You can use this information to connect to your cluster through the CockroachDB SQL client or a Postgres-compatible driver or ORM. For more details, see [Connect to Your {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
 
+### I created a CockroachCloud Free (beta) cluster before {{ site.data.products.serverless }} was available. Can I still use my cluster?
+
+Yes, your free cluster has been automatically migrated to {{ site.data.products.serverless }}. Your ability to use your cluster should not be affected, and you will now have the option to [add a spend limit](serverless-cluster-management.html#edit-your-spend-limit) for your cluster with no downtime.
+
 ## Beta release
 
-### What does it mean for {{ site.data.products.serverless }} to be in beta?
+### What does it mean for {{ site.data.products.serverless-plan }} to be in beta?
 
 {{ site.data.products.serverless }} is in beta while we continue to add new features and improve our own testing for existing features. We don’t provide a Support Policy or Service Level Agreement (SLA) for beta products.
 
@@ -85,9 +89,13 @@ Because we are relying on the cloud provider's encryption implementation (as not
 
 ## Cluster maintenance
 
-### Can I upgrade my free {{ site.data.products.serverless }} cluster?
+### Can I upgrade my free {{ site.data.products.serverless }} cluster's performance?
 
 Yes, you can upgrade your cluster through the Console by [increasing your spend limit](serverless-cluster-management.html#edit-your-spend-limit) and entering [billing information](billing-management.html) if you haven't already.
+
+### Can I upgrade the version of CockroachDB my {{ site.data.products.serverless }} cluster is running on?
+
+No, {{ site.data.products.serverless }} clusters are upgraded automatically for you. You can see what version of CockroachDB your cluster is running in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud/) or in the [latest release notes](../releases/index-cockroachcloud.html).
 
 ## Product features
 
@@ -105,4 +113,4 @@ Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Chan
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-Cockroach Labs takes full cluster backups of all {{ site.data.products.serverless }} clusters for our own purposes. If you don't have [billing information on file](billing-management.html) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+{{ site.data.products.db }} does not take incremental backups of Serverless clusters, and you cannot restore backups from the Console. However, you can backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
