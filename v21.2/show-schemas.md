@@ -8,7 +8,7 @@ The `SHOW SCHEMAS` [statement](sql-statements.html) lists all [schemas](sql-name
 
 ## Required privileges
 
-The `SELECT` [privilege](authorization.html#assign-privileges) on the database is required to list the schemas in a database.
+The `CONNECT` [privilege](authorization.html#assign-privileges) on the database is required to list the schemas in a database.
 
 ## Synopsis
 
