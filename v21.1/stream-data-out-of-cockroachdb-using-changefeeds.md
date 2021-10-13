@@ -154,15 +154,15 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 
 Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
 
-- Setting a table's locality to [`REGIONAL BY ROW`](set-locality.html#regional-by-row) is equivalent to a schema change as the [`crdb_region` column](set-locality.html#crdb_region) becomes a hidden column for each of the rows in the table and is part of the primary key. Therefore, when existing tables targeted by changefeeds are made regional by row, it will trigger a backfill of the table through the changefeed. (See [Schema changes with a column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) for more details on the effects of schema changes on changefeeds.)
+- Setting a table's locality to [`REGIONAL BY ROW`](set-locality.html#regional-by-row) is equivalent to a [schema change](online-schema-changes.html) as the [`crdb_region` column](set-locality.html#crdb_region) becomes a hidden column for each of the rows in the table and is part of the [primary key](primary-key.html). Therefore, when existing tables targeted by changefeeds are made regional by row, it will trigger a backfill of the table through the changefeed. (See [Schema changes with a column backfill](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill) for more details on the effects of schema changes on changefeeds.)
 
 {{site.data.alerts.callout_info}}
 If the [`schema_change_policy`](create-changefeed.html#options) changefeed option is configured to `stop`, the backfill will cause the changefeed to fail.
 {{site.data.alerts.end}}
 
-- Setting a table to `REGIONAL BY ROW` will have an impact on the changefeed's output as a result of the schema change. The backfill and future updated or inserted rows will emit output that includes the `crdb_region` column as part of the schema. Therefore, it is necessary to ensure that programs consuming the changefeed can manage the new format of the primary keys.
+- Setting a table to `REGIONAL BY ROW` will have an impact on the changefeed's output as a result of the schema change. The backfill and future updated or inserted rows will emit output that includes the newly added `crdb_region` column as part of the schema. Therefore, it is necessary to ensure that programs consuming the changefeed can manage the new format of the primary keys.
 
-- Changing a row's region will appear as an insert and delete in the emitted changefeed output. For example, in the following output in which the region has been updated to `us-east1`, the insert messages are emitted followed by the [delete messages](#delete-messages):
+- [Changing a row's region](set-locality.html#update-a-rows-home-region) will appear as an insert and delete in the emitted changefeed output. For example, in the following output in which the region has been updated to `us-east1`, the insert messages are emitted followed by the [delete messages](#delete-messages):
 
     ~~~
     . . .

@@ -84,7 +84,7 @@ Every row in a regional by row table has a hidden `crdb_region` column that repr
 SELECT crdb_region, id FROM {table};
 ~~~
 
-To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
+<a name="update-a-rows-home-region"></a> To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
