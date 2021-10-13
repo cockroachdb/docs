@@ -20,7 +20,7 @@ KV 95 is a simple benchmark that tests linear scaling by [running a workload](..
 
 ## Baseline performance
 
-Baseline performance was benchmarked for a free CockroachDB Serverless cluster running in an Organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of Burst capacity and are throttled.
+Baseline performance was benchmarked for a free CockroachDB Serverless cluster running in an Organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
 
