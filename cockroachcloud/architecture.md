@@ -39,7 +39,7 @@ The following diagram is a high-level representation of what a typical Serverles
 
 Proxy pods allow many tenants to share the same IP address, balance loads across a tenant’s available SQL pods, and automatically resume tenant clusters that have been paused due to inactivity. They also detect and respond to suspected abuse of the service.
 
-After the cloud load balancer routes a new connection to one of the proxy pods, the proxy pod will in turn forward that connection to a SQL pod owned by the connecting tenant. Each SQL pod is dedicated to just one tenant, and multiple SQL pods can be owned by the same tenant. Network security rules prevent SQL pods from talking to one another unless they are owned by the same tenant. 
+After the cloud load balancer routes a new connection to one of the proxy pods, the proxy pod will in turn forward that connection to a SQL pod owned by the connecting tenant. Each SQL pod is dedicated to just one tenant, and multiple SQL pods can be owned by the same tenant. Network security rules prevent SQL pods from communicating with one another unless they are owned by the same tenant. 
 
 Finally, the SQL pods communicate with the KV layer to access data managed by the shared storage pods, each of which stores that data in an [AWS](https://aws.amazon.com/ebs/features/) or [GCP](https://cloud.google.com/compute/docs/disks#pdspecs) block storage system.
 
@@ -47,15 +47,15 @@ Finally, the SQL pods communicate with the KV layer to access data managed by th
 
 #### Baseline
 
-Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#concepts). Serverless clusters scale based on your workload. Clusters start with 10M RUs of free burst capacity and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used for burst performance, and once they have been used the cluster will revert to the baseline performance of 100 RUs per second.
+Baseline performance for a Serverless cluster is 100 RUs per second, and any usage above that is called [burst performance](#concepts). Clusters start with 10M RUs of free burst capacity and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 #### Paid
 
-If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach the spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second. All [Console Admins](console-access-management.html#console-admin) will receive email alerts when your cluster reaches 50%, 75%, and 100% of its spend limit, burst capacity, or storage limit.
+You can set your spend limit higher to maintain a high level of performance with larger workloads. If you have a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
 Depending on your workload, your budget will be used differently. For example, a cluster using very little storage space will have more of its budget available for burst performance, and vice versa. If you hit your spend limit, your cluster will be throttled down to baseline performance levels. If this occurs, you can opt to increase your spend limit, adjust your workload to stay within the current spend limit, or stay at the baseline performance level until the next month.
 
-Storage always gets first priority in the budget since you need to be able to store the data first and foremost. The remainder of the budget is allocated to burst performance. You can theoretically reach your spend limit for burst performance in the first few minutes of a cluster being created. If this happens, the cluster will be throttled back to the baseline performance and can reaccumulate burst capacity by using fewer RUs.
+Storage always gets first priority in the budget since you need to be able to store your data first and foremost. The remainder of the budget is allocated to burst performance. You can theoretically reach your spend limit on burst performance in the first few minutes of a cluster being created. If this happens, the cluster will be throttled back to the baseline performance and can reaccumulate burst capacity by using fewer RUs.
 
 #### Autoscaling
 
@@ -75,7 +75,7 @@ If you need a single-tenant cluster with no shared resources, we recommend {{ si
 
 ### Hardware
 
-We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run {{ site.data.products.db }} offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
+We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run {{ site.data.products.db }} offerings. GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). Each single-region cluster has a minimum of three nodes spread across three availability zones (AZ) in a cloud provider region. Multi-region clusters are similar to single-region clusters, with nodes spread across three or more AZs in each region.
 
 ### Security and Connection
 
