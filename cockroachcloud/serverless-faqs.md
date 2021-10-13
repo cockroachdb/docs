@@ -56,6 +56,10 @@ To connect to a cluster, download the CA certificate, and then generate a connec
 
 ## Beta release
 
+### What does it mean for {{ site.data.products.serverless }} to be in beta?
+
+{{ site.data.products.serverless }} is in beta while we continue to add new features and improve our own testing for existing features. We don’t provide a Support Policy or Service Level Agreement (SLA) for beta products.
+
 ### Where can I submit feedback or bugs on the beta?
 
 You can submit feedback or log any bugs you find through [this survey](https://forms.gle/jWNgmCFtF4y15ePw5).
