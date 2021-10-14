@@ -76,12 +76,12 @@ Table | Description
 `schema_changes` | Contains information about schema changes in your cluster.
 `session_trace` | Contains session trace information for your cluster.
 `session_variables` | Contains information about [session variables](set-vars.html) in your cluster.
-`statement_statistics` | Contains information about statement statistics.
+`statement_statistics` | Contains information about [statement statistics](ui-statements-page.html).
 `table_columns` | Contains information about table columns in your cluster.
 `table_indexes` | Contains information about table indexes in your cluster.
 `table_row_statistics` | Contains row count statistics for tables in the current database.
 `tables` | Contains information about tables in your cluster.
-`transaction_statistics` | Contains information about transaction statistics.
+`transaction_statistics` | Contains information about [transaction statistics](ui-transactions-page.html).
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.
 
 To list the `crdb_internal` tables for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:
