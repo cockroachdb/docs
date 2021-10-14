@@ -8,7 +8,7 @@ toc: true
 
 ## Required privileges
 
-The user must have `SELECT` [privileges](authorization.html#assign-privileges) on the target database.
+The user must have `CONNECT` [privileges](authorization.html#assign-privileges) on the target database.
 
 A user can only fetch files from their own user-scoped storage, which is accessed through the [userfile URI](cockroach-userfile-upload.html#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role and users explicitly granted access.
 

@@ -5,7 +5,7 @@ Privilege | Levels
 `DROP` | Database, Table
 `GRANT` | Database, Schema, Table, Type
 `CONNECT` | Database
-`SELECT` | Table, Database
+`SELECT` | Table
 `INSERT` | Table
 `DELETE` | Table
 `UPDATE` | Table

@@ -1,8 +1,10 @@
 - title: Production releases
   releases:
+    - date: Oct 7, 2021
+      version: v21.1.10
+      latest: true
     - date: Sep 20, 2021
       version: v21.1.9
-      latest: true
     - date: Aug 30, 2021
       version: v21.1.8
       withdrawn: true
@@ -22,6 +24,8 @@
       version: v21.1.1
     - date: May 18, 2021
       version: v21.1.0
+    - date: Oct 11, 2021
+      version: v20.2.17
     - date: Sep 13, 2021
       version: v20.2.16
     - date: Aug 23, 2021
@@ -270,6 +274,8 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Oct 11, 2021
+      version: v21.2.0-beta.4
     - date: Oct 4, 2021
       version: v21.2.0-beta.3
     - date: Sep 27, 2021
