@@ -112,7 +112,7 @@ Finally, note that the process described above is lazily initiated: it only occu
 
 #### Leaseholder rebalancing
 
-Because CockroachDB serves reads from a range's leaseholder, it benefits your cluster's performance if the replica closest to the primary geographic source of traffic holds the lease. However, as traffic to your cluster shifts throughout the course of the day, you might want to dynamically shift which nodes hold leases.
+Because CockroachDB serves [strongly consistent (non-stale) reads](transaction-layer.html#reading) from a range's leaseholder, it benefits your cluster's performance if the replica closest to the primary geographic source of traffic holds the lease. However, as traffic to your cluster shifts throughout the course of the day, you might want to dynamically shift which nodes hold leases.
 
 {{site.data.alerts.callout_info}}
 
@@ -126,11 +126,7 @@ Periodically (every 10 minutes by default in large clusters, but more frequently
 - Number of leases on each node
 - Latency between localities
 
-##### Intra-locality
-
 If all the replicas are in the same locality, the decision is made entirely on the basis of the number of leases on each node that contains a replica, trying to achieve a roughly equitable distribution of leases across all of them. This means the distribution isn't perfectly equal; it intentionally tolerates small deviations between nodes to prevent thrashing (i.e., excessive adjustments trying to reach an equilibrium).
-
-##### Inter-locality
 
 If replicas are in different localities, CockroachDB attempts to calculate which replica would make the best leaseholder, i.e., provide the lowest latency.
 
@@ -165,6 +161,10 @@ Rebalancing is achieved by using a snapshot of a replica from the leaseholder, a
 #### Load-based replica rebalancing
 
 In addition to the rebalancing that occurs when nodes join or leave a cluster, replicas are also rebalanced automatically based on the relative load across the nodes within a cluster. For more information, see the `kv.allocator.load_based_rebalancing` and `kv.allocator.qps_rebalance_threshold` [cluster settings](../cluster-settings.html). Note that depending on the needs of your deployment, you can exercise additional control over the location of leases and replicas by [configuring replication zones](../configure-replication-zones.html).
+
+<span class="version-tag">New in v21.2</span>: CockroachDB's replica rebalancing logic also takes into account the [replication zone constraints](../configure-replication-zones.html) that determine the set of [stores](../cockroach-start.html#store) that can receive replicas for their respective ranges. These constraints power the [multi-region SQL abstractions](../multiregion-overview.html) that operate on higher level concepts such as [database regions](../multiregion-overview.html#database-regions). This locality-aware replica rebalancing logic is useful for rebalancing replicas across stores inside heavily loaded replication zones; in practice, it means that CockroachDB is less prone to overloading one node's store in a heavily trafficked region where multiple nodes are deployed.
+
+<span class="version-tag">New in v21.2</span>: For better performance, in cases where the rebalancing logic encounters an overfull store, it will move as large a subset of replicas off of the store as possible, even if it cannot move the entire range's worth of replicas. This avoids situations where decreased performance can occur due to overfull stores on hot nodes, especially in [multiregion clusters](../multiregion-overview.html).
 
 ## Interactions with other layers
 
