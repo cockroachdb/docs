@@ -113,9 +113,9 @@ If you stop Kubernetes without first deleting the persistent volumes, they will 
 
 ## See also
 
-- [Configure CockroachDB on Kubernetes](configure-cockroachdb-kubernetes.html)
-- [Secure CockroachDB on Kubernetes](secure-cockroachdb-kubernetes.html)
-- [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
+- [Resource management](configure-cockroachdb-kubernetes.html)
+- [Certificate management](secure-cockroachdb-kubernetes.html)
+- [Cluster monitoring](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Optimize Performance on Kubernetes](kubernetes-performance.html)
 - [Production Checklist](recommended-production-settings.html)
