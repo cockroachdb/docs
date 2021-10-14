@@ -1,4 +1,4 @@
-[`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) tables can be restored **only** if the [table locality](multiregion-overview#table-locality) matches that of the target database.
+[`REGIONAL BY TABLE`](multiregion-overview.html#regional-tables) tables can be restored **only** if the [table locality](multiregion-overview.html#table-locality) matches that of the target database.
 
     The following must also be true for `RESTORE` to be successful:
 

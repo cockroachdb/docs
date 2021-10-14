@@ -22,7 +22,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
-- {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
+- `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). Instead, use [`IMPORT INTO`](import-into.html) which now supports importing into `REGIONAL BY ROW` tables.
 
 ## Required privileges
 
