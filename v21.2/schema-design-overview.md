@@ -57,6 +57,7 @@ CockroachDB supports some specialized types of indexes, designed to improve quer
 - [Index a Subset of Rows](partial-indexes.html)
 - [Index Sequential Keys](hash-sharded-indexes.html)
 - [Index JSON and Array Data](inverted-indexes.html)
+- [Index Expressions](jsonb.html#index-an-expression-on-a-jsonb-column)
 - [Index Spatial Data](spatial-indexes.html)
 
 ### Other objects
@@ -113,7 +114,7 @@ The following table lists specific limits imposed by CockroachDB.
 | ------ | ----- | -------- |
 | Role names | 63 bytes | Other [restrictions](create-role.html#considerations) apply. |
 | User names | 63 bytes | These are [equivalent](create-user.html) to role names. |
-| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not currently enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. | 
+| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. |
 
 ### Quantity of tables and other schema objects
 

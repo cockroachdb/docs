@@ -17,17 +17,14 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 ## Considerations
 
-- The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
-- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
-- CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
+- You cannot use [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) on `JSONB` values.
+- To [index](indexes.html) a `JSONB` column you must either use an [inverted index](inverted-indexes.html) or [index an expression on the column](#index-an-expression-on-a-jsonb-column).
+- CockroachDB does not key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns.
 
 ## Syntax
 
-The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). A constant value of type `JSONB` can be expressed using an
-[interpreted literal](sql-constants.html#interpreted-literals) or a
-string literal
-[annotated with](scalar-expressions.html#explicitly-typed-expressions)
-type `JSONB`.
+The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](sql-constants.html#interpreted-literals) or a
+string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `JSONB`.
 
 There are six types of `JSONB` values:
 
@@ -47,7 +44,7 @@ Examples:
 
 ## Size
 
-The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Functions
 
@@ -75,11 +72,9 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
-For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
-
 ## Examples
 
-### Create a Table with a `JSONB` Column
+### Create a table with a `JSONB` column
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -203,6 +198,7 @@ You can use the `@>` operator to filter the values in key-value pairs to return 
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
+
 ### Group and order `JSONB` values
 
 To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses with the `->>` operator. For example, organize the `first_name` values from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
@@ -230,7 +226,7 @@ For this example, we will add a few more records to the existing table. This wil
   Lola       | Seoul
 ~~~
 
-Now let’s group and order the data.
+Now let's group and order the data.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -249,7 +245,6 @@ The `->>` operator returns `STRING` and uses string comparison rules to order th
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
-
 ### Create a table with a `JSONB` column and a computed column
 
 {% include {{ page.version.version }}/computed-columns/jsonb.md %}
@@ -257,6 +252,82 @@ For the full list of functions and operators we support, see [Functions and Oper
 ### Create a table with a `JSONB` column and a virtual computed column
 
 {% include {{ page.version.version }}/computed-columns/virtual.md %}
+
+
+### Use an expression to index a `JSONB` column
+
+<span class="version-tag">New in v21.2</span>
+
+You can use an expression to index a field in a JSON column. The other way to index a field in a JSON column requires you to create a [inverted index](inverted-indexes.html), which consumes more resources as it requires the data to be stored three times.
+
+To create an index, use the syntax
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE INDEX index_name ON table_name (function_name(json_type_name->>'column_name'));
+~~~
+
+where `function_name` is a supported [function](functions-and-operators.html#built-in-functions).
+
+An expression-based index is a virtual column, and thus not stored in the primary family or index. When you display the table columns using `SHOW COLUMNS`, the `crdb_internal_idx_expr` row contains the index name and the expression used to generate the index.
+
+The following example creates a table of users with an index on the `birthdate` field in the `user_profile` JSON object:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+CREATE TABLE users (
+  profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  last_updated TIMESTAMP DEFAULT now(),
+  user_profile JSONB
+);
+
+INSERT INTO users (user_profile) VALUES
+  ('{"id": "d78236", "firstName": "Arthur", "lastName": "Read", "birthdate": "2010-01-25", "school": "PVPHS", "credits": 120, "sports": "none", "clubs": "Robotics"}'),
+  ('{"id": "f98112", "firstName": "Buster", "lastName": "Bunny", "birthdate": "2011-11-07",  "school": "THS", "credits": 67, "sports": "Gymnastics", "clubs": "Theater"}'),
+  ('{"id": "t63512", "firstName": "Jane", "lastName": "Narayan", "birthdate": "2012-12-12", "school" : "Brooklyn Tech", "credits": 98, "sports": "Track and Field", "clubs": "Chess"}');
+
+CREATE INDEX timestamp_idx ON users (parse_timestamp(user_profile->>'birthdate'));
+~~~
+
+When you run `SHOW COLUMNS`, `timestamp_idx` appears as follows:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+> SHOW COLUMNS FROM users;
+~~~
+
+~~~
+        column_name        | data_type | is_nullable |  column_default   |            generation_expression            |                     indices                      | is_hidden
+---------------------------+-----------+-------------+-------------------+---------------------------------------------+--------------------------------------------------+------------
+  profile_id               | UUID      |    false    | gen_random_uuid() |                                             | {primary,timestamp_idx}                          |   false
+  last_updated             | TIMESTAMP |    true     | now():::TIMESTAMP |                                             | {primary}                                        |   false
+  crdb_internal_idx_expr   | TIMESTAMP |    true     | NULL              | parse_timestamp(user_profile->>'birthdate') | {timestamp_idx}                                  |   false
+(5 rows)
+~~~
+
+You can use the index to query for a specific birthdate as follows:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+> SELECT jsonb_pretty(user_profile) FROM users@timestamp_idx WHERE user_profile->'birthdate' = '"2011-11-07"';
+~~~
+
+~~~
+           jsonb_pretty
+----------------------------------
+  {
+      "birthdate": "2011-11-07",
+      "clubs": "Theater",
+      "credits": 67,
+      "firstName": "Buster",
+      "id": "f98112",
+      "lastName": "Bunny",
+      "school": "THS",
+      "sports": "Gymnastics"
+  }
+(1 row)
+~~~
+
 
 ## Supported casting and conversion
 
@@ -353,6 +424,7 @@ Time: 9ms total (execution 9ms / network 0ms)
 
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
+
 
 ## See also
 
