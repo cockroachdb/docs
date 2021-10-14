@@ -16,7 +16,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Required privileges
 
- To alter other roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
+To alter other roles, the user must be a member of the `admin` role.
 
 ## Synopsis
 
