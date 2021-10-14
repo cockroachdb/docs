@@ -24,10 +24,10 @@ Table | Description
 `active_range_feeds` | Contains information about [range feeds](architecture/distribution-layer.html) on nodes in your cluster.
 `backward_dependencies` | Contains information about backward dependencies.
 `builtin_functions` | Contains information about supported [functions](functions-and-operators.html).
-`cluster_contended_indexes` | Contains information about contended indexes in your cluster.
-`cluster_contended_keys` | Contains information about contended keys in your cluster.
-`cluster_contended_tables` | Contains information about contended tables in your cluster.
-`cluster_contention_events` | Contains information about contention in your cluster.
+`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) indexes in your cluster.
+`cluster_contended_keys` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) keys in your cluster.
+`cluster_contended_tables` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) tables in your cluster.
+`cluster_contention_events` | Contains information about [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) in your cluster.
 `cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.
@@ -37,7 +37,7 @@ Table | Description
 `cluster_transactions` | Contains information about transactions running on your cluster.
 `create_statements` | Contains information about tables and indexes in your database.
 `create_type_statements` | Contains information about [user-defined types](enum.html) in your database.
-`cross_db_references` | Contains information about objects that reference other objects across databases in your cluster.
+`cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.
 `databases` | Contains information about the databases in your cluster.
 `default_privileges` | Contains information about per-database default [privileges](authorization.html#privileges).
 `feature_usage` | Contains information about feature usage on your cluster.
@@ -46,7 +46,7 @@ Table | Description
 `gossip_liveness` | Contains information about your cluster's gossip liveness.
 `gossip_network` | Contains information about your cluster's gossip network.
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.
-`index_columns` | Contains information about indexed columns in your cluster.
+`index_columns` | Contains information about [indexed](indexes.html) columns in your cluster.
 `index_usage_statistics` | Contains index usage statistics.
 `interleaved` | Contains information about [interleaved objects](interleave-in-parent.html) in your cluster.
 `invalid_objects` | Contains information about invalid objects in your cluster.
@@ -72,7 +72,7 @@ Table | Description
 `predefined_comments` | Contains predefined comments about your cluster.
 `ranges` | Contains information about ranges in your cluster.
 `ranges_no_leases` | Contains information about ranges in your cluster, without leases.
-`regions` | Contains information about cluster [regions](multiregion-overview.html).
+`regions` | Contains information about [cluster regions](multiregion-overview.html#cluster-regions).
 `schema_changes` | Contains information about schema changes in your cluster.
 `session_trace` | Contains session trace information for your cluster.
 `session_variables` | Contains information about [session variables](set-vars.html) in your cluster.
