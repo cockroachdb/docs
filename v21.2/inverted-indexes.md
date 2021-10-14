@@ -364,7 +364,7 @@ Time: 2ms total (execution 2ms / network 0ms)
 
 ## See also
 
-- [Index an expression on a `JSONB` column](jsonb.html#index-an-expression-on-a-jsonb-column)
+- [Index an expression on a `JSONB` column](jsonb.html#use-an-expression-to-index-a-jsonb-column)
 - [`ARRAY`](array.html)
 - [JSON tutorial](demo-json-support.html)
 - [Computed Columns](computed-columns.html)

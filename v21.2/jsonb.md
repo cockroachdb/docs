@@ -18,7 +18,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - You cannot use [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) on `JSONB` values.
-- To [index](indexes.html) a `JSONB` column you must either use an [inverted index](inverted-indexes.html) or [index an expression on the column](#index-an-expression-on-a-jsonb-column).
+- To [index](indexes.html) a `JSONB` column you must either use an [inverted index](inverted-indexes.html) or [index an expression on the column](#use-an-expression-to-index-a-jsonb-column).
 - CockroachDB does not key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns.
 
 ## Syntax

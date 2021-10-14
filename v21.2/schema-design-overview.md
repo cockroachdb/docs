@@ -57,7 +57,7 @@ CockroachDB supports some specialized types of indexes, designed to improve quer
 - [Index a Subset of Rows](partial-indexes.html)
 - [Index Sequential Keys](hash-sharded-indexes.html)
 - [Index JSON and Array Data](inverted-indexes.html)
-- [Index Expressions](jsonb.html#index-an-expression-on-a-jsonb-column)
+- [Index Expressions](jsonb.html#use-an-expression-to-index-a-jsonb-column)
 - [Index Spatial Data](spatial-indexes.html)
 
 ### Other objects
@@ -82,7 +82,7 @@ A temporary object is an object, such as a table, view, or sequence, that is not
 
 For guidance on using temporary objects, see [Temporary Tables](temporary-tables.html).
 
-## Controlling access to objects
+## Control access to objects
 
 CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](authorization.html#sql-users) the [privileges](authorization.html#privileges) required to view, modify, and delete database schema objects.
 
