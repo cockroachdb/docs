@@ -189,7 +189,7 @@ Tables with a [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tabl
 
 The ordering of regions and how region matching is determined is a known limitation. For more detail on this issue, see its [known limitation](#known-limitations) and tracking issue.
 
-For more on multi-region databases, see the [Multi-Region Capabilities Overview](multi-region-capabilities-overview.html).
+For more on multi-region databases, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
 ## Viewing and controlling restore jobs
 
