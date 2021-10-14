@@ -32,7 +32,7 @@ If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=d
 
 ## Step 3. Enter a spend limit
 
-Every cluster starts with 10M RUs of free [burst capacity](architecture.html#concepts) and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity, your cluster will revert to baseline performance.
+Every cluster starts with 10M RUs of free [burst capacity](architecture.html#concepts) and earns 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated as burst capacity. If you use all of your burst capacity, your cluster will revert to baseline performance.
 
 If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. You will only be charged for the resources you use up to your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
