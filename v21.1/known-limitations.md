@@ -525,6 +525,12 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
 
+### Correlated common table expressions
+
+{% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42540)
+
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 
 Transactions with [priority `HIGH`](transactions.html#transaction-priorities) that contain DDL and `ROLLBACK TO SAVEPOINT` are not supported, as they could result in a deadlock. For example:
