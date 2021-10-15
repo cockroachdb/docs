@@ -12,7 +12,7 @@ This page describes {{ site.data.products.serverless }} performance benchmarking
 
 ### What are RUs?
 
-Most resource usage in {{ site.data.products.serverless }} is measured in Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
+{{ site.data.products.serverless }} cluster resource usage is measured by two metrics: storage and Request Units, or RUs. RUs represent the compute and I/O resources used by a query. All database operations cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many request units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
 
 ### What is KV 95?
 
@@ -20,7 +20,7 @@ KV 95 is a simple benchmark that tests linear scaling by [running a workload](..
 
 ## Baseline performance
 
-Baseline performance was benchmarked for a free CockroachDB Serverless cluster running in an Organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
+Baseline performance was benchmarked for a free CockroachDB Serverless cluster running in an organization without billing information on file. This is the level of performance guaranteed for all clusters that have run out of burst capacity and are throttled.
 
 <img src="{{ 'images/cockroachcloud/serverless-performance.png' | relative_url }}" alt="Serverless performance" style="max-width:100%" />
 

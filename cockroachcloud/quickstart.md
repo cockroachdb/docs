@@ -37,7 +37,7 @@ Choose the level of detail you want for this page.
 
 1. Click **Create cluster**.
 
-    Your cluster will be created in approximately 20-30 seconds and the **Connection info** dialog will display.
+    Your cluster will be created in a few seconds and the **Connection info** dialog will display.
 
 1. Click the **Connection string** tab in the **Connection info** dialog and copy the connection string in step 2 to a secure location.
 

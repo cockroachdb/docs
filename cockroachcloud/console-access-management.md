@@ -31,7 +31,7 @@ Every {{ site.data.products.db }} user is either a Developer or a Console Admin 
 
 A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users.
 
-To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who's your Console Admin, check the **Access** page.
+To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who your Console Admin is, check the **Access** page.
 
 ### Console Admin
 

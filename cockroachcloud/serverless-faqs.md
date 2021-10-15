@@ -24,11 +24,11 @@ To get started with {{ site.data.products.serverless }}, <a href="https://cockro
 
 ### What are the usage limits of {{ site.data.products.serverless }}?
 
-Clusters start with 10M RUs of free burst capacity and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity and earned RUs, your cluster will revert to baseline performance.
+Clusters start with 10M RUs of free burst capacity each month and earn 100 RUs per second up to a maximum of 250M free RUs per month. Earned RUs can be used immediately or accumulated. If you use all of your burst capacity and earned RUs, your cluster will revert to baseline performance.
 
 If you set a spend limit, your cluster will not be throttled to baseline performance once you use all of your free earned RUs. Instead, it will continue to use burst performance as needed until you reach your spend limit. If you reach your spend limit, your cluster will revert to the baseline performance of 100 RUs per second.
 
-You can create a maximum of five Serverless clusters per Organization.
+You can create a maximum of five Serverless clusters per organization.
 
 ### What is a Request Unit?
 
@@ -48,7 +48,7 @@ For examples of applications that use free clusters, check out the following [Ha
 - [mntr.tech](https://devpost.com/software/mntr-tech)
 - [curbshop.online](https://devpost.com/software/curbshop-online)
 
-Paid Serverless clusters include additional resources to maintain higher performance. They are ideal for applications with varying workloads and spikes in traffic. We do not recommend using {{ site.data.products.serverless-plan }} in production while it is still in beta.
+Paid Serverless clusters include additional resources to maintain higher performance. They are ideal for applications with varying workloads and spikes in traffic. We do not recommend using {{ site.data.products.serverless-plan }} for production applications that need an SLA while it is still in beta.
 
 ### How do I connect to my cluster?
 
@@ -109,7 +109,6 @@ Yes, you can view and your clusters in the [{{ site.data.products.db }} Console]
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, see [Run Bulk Operations](run-bulk-operations.html) for more information. If you don't have billing information on file for your Organization, [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) is the only available storage options for bulk operations. Once you enter billing information, even if you don't set a spend limit, you will have access to [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html).
 
 ### Is change data capture available to me?
 
@@ -117,4 +116,4 @@ Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Chan
 
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
-{{ site.data.products.db }} does not take incremental backups of Serverless clusters, and you cannot restore backups from the Console. However, you can backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your Organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+{{ site.data.products.db }} does not take incremental backups of Serverless clusters, and you cannot restore backups from the Console. However, you can backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
