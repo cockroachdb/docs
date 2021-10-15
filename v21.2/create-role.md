@@ -19,6 +19,8 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
     - Must start with either a letter or underscore
     - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
+    - <span class="version-tag">New in v21.2</span>: Cannot be `none`.
+    - <span class="version-tag">New in v21.2</span>: Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
 - After creating roles, you must [grant them privileges to databases and tables](grant.html).
 - Roles and users can be members of roles.
 - Roles and users share the same namespace and must be unique.
