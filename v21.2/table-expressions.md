@@ -151,8 +151,7 @@ For example:
 #### Table generator functions
 
 Some functions directly generate tabular data with multiple rows from
-a single function application. This is also called a "set-returning
-function".
+a single function application. This is also called a "set-returning function".
 
 For example:
 
@@ -170,12 +169,12 @@ For example:
 +-----------------+
 ~~~
 
-Set-returning functions (SRFs) can now be accessed using `(SRF).x` where `x` is one of the following:
+You access set-returning functions (SRFs) using `(SRF).x` where `x` is one of the following:
 
-- The name of a column returned from the function
-- `*` to denote all columns.
+- The name of a column returned from the function.
+- `*`, to denote all columns.
 
-For example (note that the output of queries against [`information_schema`](information-schema.html) will vary per database):
+For example (the output of queries against [`information_schema`](information-schema.html) will vary per database):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -191,8 +190,8 @@ For example (note that the output of queries against [`information_schema`](info
 ~~~
 
 {{site.data.alerts.callout_info}}
-Currently CockroachDB only supports a small set of generator functions compatible with [the PostgreSQL set-generating functions with the same
-names](https://www.postgresql.org/docs/9.6/static/functions-srf.html).
+CockroachDB supports the generator functions compatible with
+[the PostgreSQL set-generating functions with the same names](https://www.postgresql.org/docs/9.6/static/functions-srf.html).
 {{site.data.alerts.end}}
 
 ## Operators that extend a table expression
@@ -239,7 +238,7 @@ Syntax:
 ~~~
 
 Designates a data source equivalent to the table expression operand with
-an extra "Ordinality" column that enumerates every row in the data source.
+an extra `ordinality` column that enumerates every row in the data source.
 
 For example:
 
@@ -289,11 +288,9 @@ another SQL query or statement as a table expression.
 
 ### Subqueries as table expressions
 
-Any [selection
-query](selection-queries.html) enclosed
-between parentheses can be used as a table expression, including
-[simple `SELECT` clauses](select-clause.html). This is called a
-"[subquery](subqueries.html)".
+You can use a [selection query](selection-queries.html) enclosed
+between parentheses as a table expression, including
+[simple `SELECT` clauses](select-clause.html). This is called a _[subquery](subqueries.html)_.
 
 Syntax:
 
@@ -319,7 +316,7 @@ For example:
 ~~~
 
 {{site.data.alerts.callout_info}}
-- See also [Subqueries](subqueries.html) for more details and performance best practices.
+- See [Subqueries](subqueries.html) for more details and performance best practices.
 - To use other statements that produce data in a table expression, for example `SHOW`, use the [square bracket notation](#using-the-output-of-other-statements).
 {{site.data.alerts.end}}
 
@@ -346,7 +343,7 @@ A [statement](sql-grammar.html#row_source_extension_stmt) between square bracket
  `SELECT .. FROM [ <stmt> ]` is equivalent to `WITH table_expr AS ( <stmt> ) SELECT .. FROM table_expr`
 
 {{site.data.alerts.callout_info}}
-This CockroachDB extension syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable the use of [statements](sql-grammar.html#row_source_extension_stmt) as [subqueries](subqueries.html).
+This CockroachDB extension syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It enables you use [statements](sql-grammar.html#row_source_extension_stmt) as [subqueries](subqueries.html).
 {{site.data.alerts.end}}
 
 For example:
@@ -367,7 +364,7 @@ For example:
 (3 rows)
 ~~~
 
-The following statement inserts Albert in the `employee` table and
+The following statement inserts `Albert` in the `employee` table and
 immediately creates a matching entry in the `management` table with the
 auto-generated employee ID, without requiring a round trip with the SQL
 client:
@@ -381,9 +378,9 @@ client:
 
 ## Composability
 
-Table expressions are used in the [`SELECT`](select-clause.html) and
+You can use table expressions in the [`SELECT`](select-clause.html) and
 [`TABLE`](selection-queries.html#table-clause) variants of [selection
-clauses](selection-queries.html#selection-clauses), and thus can appear everywhere where
+clauses](selection-queries.html#selection-clauses). Thus they can appear everywhere where
 a selection clause is possible. For example:
 
 {% include copy-clipboard.html %}
