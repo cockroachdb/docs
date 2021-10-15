@@ -159,6 +159,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59649)
 
+### `cockroach debug backup` inspection tool
+
+{% include {{ page.version.version }}/backups/cockroach-debug-backup.md %}
+
 ## Unresolved limitations
 
 ### `IMPORT` into a `REGIONAL BY ROW` table
@@ -631,4 +635,3 @@ SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
-

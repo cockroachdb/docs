@@ -31,6 +31,10 @@ cockroach debug backup {command} {location} {flag}
 
 See [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html#example-file-urls) for example file URLs.
 
+{{site.data.alerts.callout_info}}
+`cockroach debug backup` does not support access to [encrypted backups](take-and-restore-encrypted-backups.html). See [Known Limitations](#known-limitations) for more details.
+{{site.data.alerts.end}}
+
 ## Subcommands
 
 The `cockroach debug backup` command uses the following subcommands to inspect backups offline:
@@ -40,7 +44,7 @@ Flag | Description
 `show` | Show a backup summary. See the [Show a backup summary](#show-a-backup-summary) example for more detail on the output provided with `show`.
 `list-backups` | List the backups in a collection in your storage location. See [List a backup collection](#list-a-backup-collection) for usage.
 `list-incremental` | List the [incremental backups](take-full-and-incremental-backups.html#incremental-backups) in your storage location.
-<a name="export-sub"></a>`export` | Export table data from a backup. See [Export backup table data](#export-backup-table-data) for usage.
+<a name="export-sub"></a>`export` | Export table data from a backup. See [Export backup table data](#export-backup-table-data) for usage. **Note**: CSV data is the only exportable format.
 
 ## Flags
 
@@ -49,7 +53,6 @@ Flag | Description
 `--as-of` | Use with the [`export`](#export-sub) subcommand to read the data as of the specified timestamp, for example `--as-of='2021-09-24T15:15:32Z'`. See the [`TIMESTAMP`](timestamp.html) type for supported formats.
 <a name="destination-flag"></a>`--destination` | Use with the [`export`](#export-sub) subcommand to specify a destination to export data to. Note that if the `export` format is readable and the `--desination` flag is not specified, `export` defaults to display the data in the terminal output.
 `--external-io-dir` | Specify the file path of the external IO directory to which the `nodelocal` file paths resolve. The `external-io-dir` is the path that remotely initiated operations such as `BACKUP`, `RESTORE`, or `IMPORT` can access. <br></br>For example, to view data outputted to the `external-io-dir`, you could use: <br>`cockroach debug backup export {backup_location} --destination="nodelocal://{node_id}/backup_inspect" --external-io-dir="{location for nodelocal to write}"`. <br>Here, `--external-io-dir` will configure which [directory or NFS drive](use-cloud-storage-for-bulk-operations.html#nfs-local) the data will be written to, and `--destination` determines where in the external IO directory the data will be written. <br></br> See the [`external-io-dir` option at cluster startup](cockroach-start.html#flags-external-io-dir) for further detail on setup.
-`--format` | Use with the [`export`](#export-sub) subcommand to select the format in which to export table rows from backups. **Note**: Currently only CSV is supported. Default: CSV <!--TODO Do we want to include this while this is the only format available? -->
 `-h`, `--help` | Display help text for the `debug backup {command}`.
 `--max-rows` | Use with the [`export`](#export-sub) subcommand to set the maximum number of rows to return. Default: `0` (unlimited rows)
 `--nullas` | Use with the [`export`](#export-sub) subcommand to set the string that should be used to represent `NULL` values. Default: `NULL`
@@ -168,8 +171,7 @@ Without using the [`--destination`](#destination-flag) flag to specify a file fo
 
 ## Known limitations
 
-- `cockroach debug backup` does not support access to [encrypted backups](take-and-restore-encrypted-backups.html). [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/68283).
-- When using the `--start-key` flag with `cockroach debug backup`, it is necessary to pass the accepted formats (`raw`, `hex`, and `bytekey`). [Tracking GitHub issue](https://github.com/cockroachdb/cockroach/issues/70178).
+{% include {{ page.version.version }}/backups/cockroach-debug-backup.md %}
 
 ## See also
 
