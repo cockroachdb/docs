@@ -13,17 +13,6 @@ This page guides you through the quickest way to get started with CockroachDB. Y
 
 For information on how to create a {{ site.data.products.db }} cluster with other options, see the [Learn more](#learn-more) section.
 
-Choose the level of detail you want for this page.
-
-- Simple: Basic instructions to create a cluster and connect to it using a SQL client.
-- Advanced: More detailed explanations and examples of the commands you'll use to connect to the cluster.
-
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="simple">Simple</button>
-  <button class="filter-button page-level" data-scope="advanced">Advanced</button>
-</div>
-
-
 {% include cockroachcloud/free-limitations.md %}
 
 ## Step 1. Create a free cluster
@@ -55,7 +44,6 @@ The **Connection info** dialog shows information about how to connect to your cl
   <button class="filter-button page-level" data-scope="windows">Windows</button>
 </div>
 
-<div class="filter-content" markdown="1" data-scope="simple">
 1. In the **Connection info** dialog, choose your OS.
 1. Open a terminal on your local machine.
 1. Run the commands in each step of the **Command Line** tab of the **Connection info** dialog.
@@ -72,104 +60,6 @@ You will see a welcome message when you've successfully connected to your cluste
 # To exit, type: \q.
 #
 ~~~
-
-</div>
-<br/>{% comment %}Need to add this manual break to force Jekyll to render the next section correctly {% endcomment %}
-<div class="filter-content" markdown="1" data-scope="advanced">
-
-1. In the **Connection info** dialog choose your OS.
-
-1. Open a terminal on your local machine.
-
-1. Run the command in step 1 of the **Command Line** tab of the **Connection info** dialog to install the CockroachDB binary and add it to your OS's `PATH`.
-
-    We've included the command here for convenience:
-
-    <div class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.darwin-10.9-amd64.tgz | tar -xJ && cp -i cockroach-{{ page.release_info.version }}.darwin-10.9-amd64/cockroach /usr/local/bin/
-    ~~~
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-{{ page.release_info.version }}.linux-amd64/cockroach /usr/local/bin/
-    ~~~
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
-    $ProgressPreference = 'SilentlyContinue';
-    # Use Windows New-Item with Force
-    $null = New-Item -Type Directory -Force $env:appdata/cockroach;
-    Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-{{ page.release_info.version }}.windows-6.2-amd64.zip -OutFile cockroach.zip;
-    Expand-Archive -Path cockroach.zip;
-    # Add force if the cockroach binary is already there
-    Copy-Item -Force "cockroach/cockroach-{{ page.release_info.version }}.windows-6.2-amd64/cockroach.exe" -Destination $env:appdata/cockroach;
-    $Env:PATH += ";$env:appdata/cockroach";
-    # Add command to append the cockroach binary path on every shell. Powershell equivalent of `.bashrc`
-    Add-Content -Path C:\Users\$env:UserName\Documents\WindowsPowerShell\profile.ps1 -Value '$Env:PATH += ";$env:appdata/cockroach"'
-    ~~~
-    </div>
-
-1. Run the command in step 2 of the **Command Line** tab of the **Connection info** dialog to download the CA certificate to your local machine.
-
-    We've included the command here for convenience but with some placeholder values. It's easiest to use the command directly from the **Connection info** dialog.
-
-    <div class="filter-content" markdown="1" data-scope="mac">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-    ~~~
-
-    Your `cert` file will be downloaded to `~/.postgres/root.crt`.
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="linux">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    curl --create-dirs -o ~/.postgresql/root.crt -O https://cockroachlabs.cloud/clusters/<cluster-id>/cert
-    ~~~
-
-    Your `cert` file will be downloaded to `~/.postgres/root.crt`.
-    </div>
-
-    <div class="filter-content" markdown="1" data-scope="windows">
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    mkdir -p $env:appdata\.postgresql\; Invoke-WebRequest -Uri https://cockroachlabs.cloud/clusters/<cluster-id>/cert -OutFile $env:appdata\.postgresql\root.crt
-    ~~~
-
-    Your `cert` file will be downloaded to `%APPDATA%/.postgres/root.crt`.
-    </div>
-
-    Where `<cluster-id>` is the ID of the cluster. You can find the cluster ID in step 2 of the **Command Line** tab in the **Connect** dialog.
-
-    {{site.data.alerts.callout_info}}
-    The `~/.postgres/root.crt` (Mac and Linux) or `%APPDATA%/.postgres/root.crt` is the [default location for CA certificates](https://www.postgresql.org/docs/current/libpq-ssl.html) when using PostgreSQL drivers and ORMs.
-    {{site.data.alerts.end}}
-
-1. Run the command in step 3 of the **Command Line** tab in the **Connection info** dialog. Your username, password, host, and cluster name are pre-populated for you in the dialog.
-
-    We've included the command here for convenience but with some placeholder values. It's easiest to use the command directly from the **Connection info** dialog.
-
-    {% include cockroachcloud/sql-connection-string-free.md %}
-
-    A welcome message displays:
-
-    ~~~
-    #
-    # Welcome to the CockroachDB SQL shell.
-    # All statements must be terminated by a semicolon.
-    # To exit, type: \q.
-    #
-    ~~~
-
-</div>
 
 ## Step 3. Insert data
 
