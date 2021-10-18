@@ -65,7 +65,7 @@ For more information about how table localities work, see [Regional tables](mult
 ### Set the table locality to `REGIONAL BY ROW`
 
 {{site.data.alerts.callout_info}}
-[Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) are not currently supported on regional by row tables. When a table's locality is set to `REGIONAL BY ROW`, any changefeed jobs targeting that that table will fail.
+Before setting the locality to `REGIONAL BY ROW` on a table targeted by a changefeed, read the considerations in [Changefeeds on regional by row tables](stream-data-out-of-cockroachdb-using-changefeeds.html#changefeeds-on-regional-by-row-tables).
 {{site.data.alerts.end}}
 
 To make an existing table a _regional by row_ table, use the following statement:
@@ -84,7 +84,7 @@ Every row in a regional by row table has a hidden `crdb_region` column that repr
 SELECT crdb_region, id FROM {table};
 ~~~
 
-To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
+<a name="update-a-rows-home-region"></a> To update an existing row's home region, use an [`UPDATE`](update.html) statement like the following:
 
 {% include copy-clipboard.html %}
 ~~~ sql
