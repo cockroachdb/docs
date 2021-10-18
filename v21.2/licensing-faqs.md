@@ -60,6 +60,7 @@ Feature          | BSL | CCL (free)      | CCL (paid)
 **[Table-level zone configuration](configure-replication-zones.html#replication-zone-levels)** | ✓ | |
 **[Multi-Region Capabilities](multiregion-overview.html)** | | | ✓
 **[Follower reads](follower-reads.html)** | | | ✓
+**[Bounded staleness reads](follower-reads.html#bounded-staleness-reads)** | | | ✓
 **[Node map](enable-node-map.html)** | | | ✓
 **[Encryption at rest](encryption.html#encryption-at-rest-enterprise)** | | | ✓
 **[Role-based access management](authorization.html#roles)** | ✓ | |
