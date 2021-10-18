@@ -9,7 +9,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 ## Synopsis
 
 <div>
-{{% include {{ page.version.version }}/sql/generated/diagrams/show_zone.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_zone.html %}
 </div>
 
 ## Required privileges
