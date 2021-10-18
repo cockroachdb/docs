@@ -52,16 +52,16 @@ The following configuration requires that CockroachDB pods are scheduled onto wo
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
 spec:
-	affinity:
-		nodeAffinity:
-			requiredDuringSchedulingIgnoredDuringExecution:
-			  nodeSelectorTerms:
-			  -	matchExpressions:
-			  	- key: kubernetes.io/arch
-			  	  operator: In
-			  	  values: 
-			  	  - intel
-			  	  - amd64
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        -	matchExpressions:
+          - key: kubernetes.io/arch
+            operator: In
+            values: 
+            - intel
+            - amd64
       preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100
         preference:
