@@ -46,7 +46,7 @@ module Jekyll
       # but a custom hook like this one can allow more fine-grained
       # customisation.
       def self.should_be_excluded?(filepath)
-        # We want to include release files and CockroachCloud docs
+        # We want to include release files and CockroachDB Cloud docs
         return false if filepath.start_with?('release')
         return false if filepath.start_with?('cockroachcloud')
 

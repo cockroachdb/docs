@@ -8,7 +8,7 @@ The **Access** page displays the name, email address, role, and invite acceptanc
 
 ## Organization
 
-An **Organization** allows you to manage your clusters under a shared [billing](#manage-billing-for-the-organization) account and collaborate with team members. You can belong to multiple organizations.
+An **Organization** allows you to manage your clusters under a shared [billing](billing-management.html) account and collaborate with team members. You can belong to multiple organizations.
 
 To switch between the organizations:
 
@@ -31,17 +31,17 @@ Every {{ site.data.products.db }} user is either a Developer or a Console Admin 
 
 A Developer is a limited-access role. A Developer cannot invite Team Members to the Console or create new SQL users.
 
-To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who's your Console Admin, check the **Access** page.
+To access a cluster, you need to ask a Console Admin for the username and password of a SQL user. To find out who your Console Admin is, check the **Access** page.
 
 ### Console Admin
 
 A Console Admin is an all-access role. A Console Admin can perform the following tasks:
 
 - [Create a cluster](create-your-cluster.html)
-- [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachcloud)
+- [Invite Team Members to {{ site.data.products.db }}](#invite-team-members-to-cockroachdb-cloud)
 - [Manage Team Members](#manage-team-members)
 - [Create and manage SQL users](user-authorization.html#create-a-sql-user)
-- [Manage billing for the Organization](#manage-billing-for-the-organization)
+- [Manage billing for the Organization](billing-management.html)
 - [Restore databases and tables from a {{ site.data.products.db }} backup](backups-page.html#ways-to-restore-data)
 - [Delete an Organization](#delete-an-organization)
 
@@ -96,36 +96,6 @@ As a Console Admin, you can change your own access to a Developer role; however,
 #### Delete an email address
 
 This is not currently available through the Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com).
-
-### Manage billing for the Organization
-
-As a Console Admin, you can set up and manage billing for the Organization.
-
-#### Set up billing for an Organization
-
-1. On the **Billing** page, click the pen icon for the **Payment method** field.
-2. On the **Edit payment method** page, enter the email address at which you want get invoices for the Organization.
-3. Enter the credit or debit card details.
-4. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
-4. Click **Add card**.
-
-#### Change the billing email address
-
-1. On the **Billing** page, click the pen icon for the **Billing email address** field.
-2. On the **Edit payment method** page, enter the new email address at which you want get invoices for the Organization.
-3. Click **Add card**.
-
-#### Delete your credit card information
-
-We keep a card on file after the associated Organization is deleted so we can process pending charges. You can [contact Support](https://support.cockroachlabs.com) to remove your card once your charges are settled.
-
-#### Check trial code details
-
-If you had used a {{ site.data.products.dedicated }} trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Billing page**.
-
-{{site.data.alerts.callout_info}}
-Your credit card will be charged after the trial ends. You can check the expiration date of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
-{{site.data.alerts.end}}
 
 ### Delete an Organization
 

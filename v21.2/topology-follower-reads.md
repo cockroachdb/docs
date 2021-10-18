@@ -28,7 +28,7 @@ If reads from a table must be exactly up-to-date, use [Global Tables](global-tab
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Follower reads requires an [{{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -56,7 +56,7 @@ Insert some data:
 > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
 ~~~
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. <span class="version-tag">New in v21.2:</span> Decide which type of follower read you would like to perform: _exact staleness_ reads, or _bounded staleness_ reads. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
 

@@ -24,7 +24,7 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 Parameter          | Description
 -------------------|-----------
-`PLAN`             |  <br /> _(Default)_ Executes the statement and returns CockroachDB's statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
+`PLAN`             |  _(Default)_ Executes the statement and returns CockroachDB's statement plan with planning and execution time for an [explainable statement](sql-grammar.html#preparable_stmt). For more information, see [Default option](#default-option).
 `DISTSQL`          | Return the statement plan and performance statistics as well as a generated link to a graphical distributed SQL physical statement plan tree.
 `DEBUG`            |  Generate a ZIP file containing files with detailed information about the query and the database objects referenced in the query. For more information, see [`DEBUG` option](#debug-option).
 `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want to execute and analyze. All preparable statements are explainable.
@@ -64,16 +64,16 @@ network usage | The amount of data transferred over the network while the statem
 
 ### Statement plan tree properties
 
-The statement plan tree shows
-
 Statement plan tree properties | Description
 -------------------------------|------------
 processor | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
 cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
 actual row count | The actual number of rows affected by this processor during execution.
-estimated row count | The estimated number of rows affected by this processor according to the statement planner.
+KV time | The total time this phase of the statement was in the [Storage layer](architecture/storage-layer.html).
+KV contention time | The time the [Storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
 KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the statement.
 KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the statement.
+estimated row count | The estimated number of rows affected by this processor according to the statement planner.
 table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]` only the key with value `1` is read by the processor.
 
@@ -91,7 +91,7 @@ spans | The interval of the key space read by the processor. If `spans` is `FULL
 
 ## `DEBUG` option
 
- `EXPLAIN ANALYZE (DEBUG)` executes a query and generates a link to a ZIP file that contains the [physical statement plan](#distsql-plan-viewer), execution statistics, statement tracing, and other information about the query.
+`EXPLAIN ANALYZE (DEBUG)` executes a query and generates a link to a ZIP file that contains the [physical statement plan](#distsql-plan-viewer), execution statistics, statement tracing, and other information about the query.
 
         File        | Description
 --------------------+-------------------
@@ -192,6 +192,8 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
   └── • scan
         cluster nodes: n1, n2, n3
         actual row count: 125,000
+        KV time: 2ms
+        KV contention time: 0µs
         KV rows read: 125,000
         KV bytes read: 21 MiB
         estimated row count: 125,000 (100% of the table; stats collected 2 minutes ago)
@@ -232,6 +234,8 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
   └── • scan
         cluster nodes: n1, n2, n3
         actual row count: 125,000
+        KV time: 2ms
+        KV contention time: 0µs
         KV rows read: 125,000
         KV bytes read: 21 MiB
         estimated row count: 125,000 (100% of the table; stats collected 15 minutes ago)
