@@ -211,6 +211,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER VIEW</code>",
+                "urls": [
+                  "/${VERSION}/alter-view.html"
+                ]
+              },
+              {
                 "title": "<code>AS OF SYSTEM TIME</code>",
                 "urls": [
                   "/${VERSION}/as-of-system-time.html"
@@ -220,12 +226,6 @@
                 "title": "<code>EXPERIMENTAL_AUDIT</code>",
                 "urls": [
                   "/${VERSION}/experimental-audit.html"
-                ]
-              },
-              {
-                "title": "<code>ALTER VIEW</code>",
-                "urls": [
-                  "/${VERSION}/alter-view.html"
                 ]
               },
               {
@@ -469,7 +469,7 @@
                 ]
               },
               {
-                "title": "<code>EXPORT</code> (Enterprise)",
+                "title": "<code>EXPORT</code>",
                 "urls": [
                   "/${VERSION}/export.html"
                 ]
@@ -538,6 +538,12 @@
                 "title": "<code>PAUSE SCHEDULES</code>",
                 "urls": [
                   "/${VERSION}/pause-schedules.html"
+                ]
+              },
+              {
+                "title": "<code>REASSIGN OWNED</code>",
+                "urls": [
+                  "/${VERSION}/reassign-owned.html"
                 ]
               },
               {
@@ -905,11 +911,17 @@
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
                 ]
+              },
+              {
+                "title": "<code>WITH</code>",
+                "urls": [
+                  "/${VERSION}/common-table-expressions.html"
+                ]
               }
             ]
           },
           {
-            "title": "SQL Data Types",
+            "title": "Data Types",
             "items": [
               {
                 "title": "Overview",
