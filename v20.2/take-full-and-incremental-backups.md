@@ -21,7 +21,7 @@ You can use the [`BACKUP`](backup.html) statement to efficiently back up your cl
 
 ### Full backups
 
-<span class="version-tag">New in v20.2:</span> Full backups are now available to both core and Enterprise users.
+<span class="version-tag">New in v20.2:</span> Full backups are now available to both core and {{ site.data.products.enterprise }} users.
 
 In most cases, **it's recommended to take full nightly backups of your cluster**. A cluster backup allows you to do the following:
 
@@ -66,7 +66,7 @@ A full cluster restore can only be run on a target cluster that has _never_ had 
 If your cluster grows too large for nightly full backups, you can take less frequent full backups (e.g., weekly) with nightly incremental backups. Incremental backups are storage efficient and faster than full backups for larger clusters.
 
 {{site.data.alerts.callout_info}}
-To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
+To take incremental backups, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 Periodically run the [`BACKUP`][backup] command to take a full backup of your cluster:
@@ -113,14 +113,14 @@ INCREMENTAL FROM 'gs://acme-co-backup/database-bank-2017-03-27-weekly', 'gs://ac
 ~~~
 
 {{site.data.alerts.callout_info}}
-To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
+To take incremental backups, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ### Examples
 
 #### Automated full backups
 
-Both core and Enterprise users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, included the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
+Both core and {{ site.data.products.enterprise }} users can use backup scheduling for full backups of clusters, databases, or tables. To create schedules that only take full backups, included the `FULL BACKUP ALWAYS` clause. For example, to create a schedule for taking full cluster backups:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -144,7 +144,7 @@ For more examples on how to schedule backups that take full and incremental back
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
 {{site.data.alerts.callout_info}}
-To take incremental backups, backups with revision history, locality-aware backups, and encrypted backups, you need an [Enterprise license](enterprise-licensing.html).
+To take incremental backups, backups with revision history, locality-aware backups, and encrypted backups, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## See also

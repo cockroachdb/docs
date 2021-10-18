@@ -402,7 +402,7 @@ For a simple but complete example app, see [Build a C# App with CockroachDB and 
 
 Install the Clojure `lein` utility as described in its [official documentation](https://leiningen.org/).
 
-For a simple but complete example app, see [Build a Clojure App with CockroachDB and java.jdbc](build-a-clojure-app-with-cockroachdb.html).
+For a simple but complete example app, see [Build a Closure App with CockroachDB and java.jdbc](build-a-clojure-app-with-cockroachdb.html).
 
 </section>
 

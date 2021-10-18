@@ -1,10 +1,10 @@
 ---
 title: Authentication
-summary: Learn about the authentication features for CockroachDB Cloud clusters.
+summary: Learn about the authentication features for {{ site.data.products.db }} clusters.
 toc: true
 ---
 
-{{ site.data.products.db }} uses TLS 1.3 for inter-node and client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
+{{ site.data.products.db }} uses TLS 1.2 for inter-node and client-node communication, digital certificates for inter-node authentication, [SSL modes](#ssl-mode-settings) for node identity verification, and password authentication for client identity verification.
 
 ## Node identity verification
 

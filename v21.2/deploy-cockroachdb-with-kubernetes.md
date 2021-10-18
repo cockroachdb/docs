@@ -41,7 +41,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {{site.data.alerts.callout_info}}
 The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases CockroachDB cluster creation and management on a single Kubernetes cluster.
 
-Note that the Operator does not provision or apply an Enterprise license key. To use [Enterprise features](enterprise-licensing.html) with the Operator, [set a license](licensing-faqs.html#set-a-license) in the SQL shell.
+Note that the Operator does not provision or apply an {{ site.data.products.enterprise }} license key. To use [{{ site.data.products.enterprise }} features](enterprise-licensing.html) with the Operator, [set a license](licensing-faqs.html#set-a-license) in the SQL shell.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">

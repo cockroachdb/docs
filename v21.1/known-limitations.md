@@ -308,7 +308,7 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### Enterprise `BACKUP` does not capture database/table/column comments
+### {{ site.data.products.enterprise }} `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
@@ -524,12 +524,6 @@ To prevent memory exhaustion, monitor each node's memory usage and ensure there 
 ### Privileges for `DELETE` and `UPDATE`
 
 Every [`DELETE`](delete.html) or [`UPDATE`](update.html) statement constructs a `SELECT` statement, even when no `WHERE` clause is involved. As a result, the user executing `DELETE` or `UPDATE` requires both the `DELETE` and `SELECT` or `UPDATE` and `SELECT` [privileges](authorization.html#assign-privileges) on the table.
-
-### Correlated common table expressions
-
-{% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42540)
 
 ### `ROLLBACK TO SAVEPOINT` in high-priority transactions containing DDL
 

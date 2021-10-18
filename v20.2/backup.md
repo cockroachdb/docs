@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
@@ -34,7 +34,7 @@ Because CockroachDB is designed with high fault tolerance, these backups are des
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_success}}
-To view the contents of an Enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+To view the contents of an {{ site.data.products.enterprise }} backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
 ## Required privileges

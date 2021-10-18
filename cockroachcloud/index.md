@@ -1,6 +1,6 @@
 ---
-title: CockroachDB Cloud Docs
-summary: CockroachDB Cloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
+title: CockroachCloud Docs
+summary: CockroachCloud is a fully hosted and fully managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effortless.
 toc: false
 contribute: false
 cta: false
@@ -9,14 +9,14 @@ homepage: true
 
 <div class="home-header mb-xl-5 bg-cover bg-cover__bg-gradient-purple-blue">
   <div class="p-2 p-md-5">
-  <h1 class="m-0 text-white">CockroachDB Cloud Docs</h1>
+  <h1 class="m-0 text-white">CockroachCloud Docs</h1>
   <p class="mt-0 pb-4 text-white">Get your applications to market faster with a fully managed CockroachDB instance.</p>
     <div class="row d-lg-flex mx-0 pt-lg-5">
       <div class="col-lg-4 mb-3 mb-lg-0 pb-5">
         <div class="card card-link h-100 d-flex ">
         <a href="quickstart.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">            
-            <h6 class="mt-2 mt-0 text-black">Quickstart with<br>CockroachDB Cloud</h6>
+            <h6 class="mt-2 mt-0 text-black">Quickstart with<br>CockroachCloud</h6>
             <p class="text-black">Learn how to create and use your {{ site.data.products.db }} cluster</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="mt-2 mt-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
@@ -38,7 +38,7 @@ homepage: true
         <div class="card card-link h-100 d-flex ">
         <a href="frequently-asked-questions.html" class="h-100">
           <div class="card-body p-4 d-flex flex-column h-100 card-header-overlap-text">
-            <h6 class="mt-2 mt-0 text-black">CockroachDB Cloud <br>FAQS</h6>
+            <h6 class="mt-2 mt-0 text-black">CockroachCloud <br>FAQS</h6>
             <p class="text-black">Answers to frequently asked questions</p>
             <h4 class="mt-auto mb-0 text-electric-purple font-poppins-sb text-center">Learn more <img class="m-0 ml-2" src="{{ 'images/icon-arrow-right-purple.svg' | relative_url }}" alt="arrow right" /></h4>
           </div>
@@ -50,7 +50,7 @@ homepage: true
 </div>
   <div class="row pt-5 mt-5 pb-5 mb-5">
     <div class="col-lg-12 text-center">
-      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_cc_landing">Start a Free Serverless Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
+      <a class="btn btn-redirect mt-3" href="https://cockroachlabs.cloud/signup?referralId=docs_cc_landing">Start a Free Cluster <img class="m-0" src="{{ 'images/arrow-left.svg' | relative_url }}" alt="arrow left" /></a>
     </div>
   </div>
 
@@ -58,7 +58,7 @@ homepage: true
 
   <div class="row">
     <div class="col-12">
-      <p class="overline">CockroachDB Cloud</p>
+      <p class="overline">CockroachCloud</p>
       <h2 class="mt-2">Recommended articles</h2>
     </div>
   </div>
@@ -68,7 +68,7 @@ homepage: true
       <h3 class="mt-3">Get Started</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Serverless Cluster</a></li>
+        <li><a href="{{ '/cockroachcloud/quickstart.html' | relative_url }}">Start a Free Cloud Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/create-your-cluster.html' | relative_url }}">Start a Dedicated Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/connect-to-your-cluster.html' | relative_url }}">Connect to Your Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/learn-cockroachdb-sql.html' | relative_url }}">Learn CockroachDB SQL</a></li>
@@ -85,7 +85,6 @@ homepage: true
         <li><a href="{{ '/cockroachcloud/production-checklist.html' | relative_url }}">Move into Production</a></li>
         <li><a href="{{ '/cockroachcloud/cluster-management.html' | relative_url }}">Manage Your Cluster</a></li>
         <li><a href="{{ '/cockroachcloud/console-access-management.htm' | relative_url }}l">Manage Console Access</a></li>
-        <li><a href="{{ '/cockroachcloud/billing-management.htm' | relative_url }}l">Manage Billing</a></li>
         </ul>
       </div>
     </div>
@@ -105,7 +104,7 @@ homepage: true
       <h3 class="mt-3">Learn More</h3>
       <div class="landing-column-content">
       <ul>
-        <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachDB Cloud FAQs</a></li>
+        <li><a href="{{ '/cockroachcloud/frequently-asked-questions.html' | relative_url }}">CockroachCloud FAQs</a></li>
         <li><a href="../{{site.versions["stable"]}}/frequently-asked-questions.html">CockroachDB FAQs</a></li>
         <li><a href="{{ '/cockroachcloud/upgrade-policy.html' | relative_url }}">Upgrade Policy</a></li>
         <li><a href="{{ '/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html' | relative_url }}">Deploy a Python App</a></li>
@@ -149,10 +148,10 @@ homepage: true
               <p
                 class="d-inline-block caption-sm rounded py-1 px-3 bg-purple-transparent font-weight-bold text-purple-300 m-0"
               >
-                CockroachDB Cloud
+                CockroachCloud
               </p>
               <h6 class="card-title font-weight-bold mt-3">
-                Connecting to Your CockroachDB Cloud Cluster
+                Connecting to Your CockroachCloud Cluster
               </h6>
             </div>
           </div>

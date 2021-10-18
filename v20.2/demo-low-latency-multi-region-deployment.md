@@ -33,7 +33,7 @@ Read about how an [electronic lock manufacturer](https://www.cockroachlabs.com/c
 
 ### Request a trial license
 
-Some CockroachDB features used in this tutorial require an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
+Some CockroachDB features used in this tutorial require an {{ site.data.products.enterprise }} license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/) before you get started.
 
 You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
 
@@ -332,7 +332,7 @@ Next, install Docker and HAProxy on each client VM. Docker is required so you ca
 
 ### Configure the cluster for MovR
 
-Before you can run MovR against the cluster, you must create a `movr` database and enable an Enterprise license.
+Before you can run MovR against the cluster, you must create a `movr` database and enable an {{ site.data.products.enterprise }} license.
 
 1. SSH to the client VM in the US East region.
 

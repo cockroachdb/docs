@@ -1,13 +1,13 @@
 {
-  "title": "Self-Hosted releases",
+  "title": "Releases",
   "items": [
     {
-      "title": "Production releases",
+      "title": "Production Releases",
       "items": [
         {
           "title": "Latest v21.1",
           "urls": [
-            "/releases/v21.1.11.html"
+            "/releases/v21.1.10.html"
           ]
         },
         {
@@ -23,10 +23,9 @@
           ]
         },
         {
-          "title": "All production releases",
+          "title": "All Production Releases",
           "urls": [
             "/releases/index.html#production-releases",
-            "/releases/v21.1.11.html",
             "/releases/v21.1.10.html",
             "/releases/v21.1.9.html",
             "/releases/v21.1.8.html",
@@ -90,7 +89,7 @@
       ]
     },
     {
-      "title": "Testing releases",
+      "title": "Testing Releases",
       "urls": [
         "/releases/index.html#testing-releases",
         "/releases/v21.1.0-alpha.1.html",
@@ -106,24 +105,23 @@
         "/releases/v21.2.0-beta.1.html",
         "/releases/v21.2.0-beta.2.html",
         "/releases/v21.2.0-beta.3.html",
-        "/releases/v21.2.0-beta.4.html",
-        "/releases/v21.2.0-rc.1.html"
+        "/releases/v21.2.0-beta.4.html"
       ]
     },
     {
-      "title": "Release support policy",
+      "title": "Release Support Policy",
       "urls": [
         "/releases/release-support-policy.html"
       ]
     },
     {
-      "title": "Known limitations",
+      "title": "Known Limitations",
       "urls": [
         "/${VERSION}/known-limitations.html"
       ]
     },
     {
-      "title": "Technical advisories",
+      "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
         "/advisories/a30821.html",

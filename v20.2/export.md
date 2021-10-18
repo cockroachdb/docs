@@ -10,7 +10,7 @@ Using the [CockroachDB distributed execution engine](architecture/sql-layer.html
 
 {{site.data.alerts.callout_info}}
 <span class="version-tag">New in v20.2:</span>
-`EXPORT` no longer requires an Enterprise license.
+`EXPORT` no longer requires an {{ site.data.products.enterprise }} license.
 {{site.data.alerts.end}}
 
 ## Cancelling export

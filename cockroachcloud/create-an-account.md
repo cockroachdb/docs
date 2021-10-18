@@ -1,6 +1,6 @@
 ---
-title: Create a CockroachDB Cloud account
-summary: Learn how to create and delete a CockroachDB Cloud account
+title: Create a CockroachCloud account
+summary: Learn how to create and delete a CockroachCloud account
 toc: true
 ---
 

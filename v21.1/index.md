@@ -89,7 +89,7 @@ cta: false
       <p class="landing-column-title">Deploy</p>
       <ul>
         <li><a href="recommended-production-settings.html">Production Checklist</a></li>
-        <li><a href="../cockroachcloud/create-your-cluster.html">CockroachDB Cloud Deployment</a></li>
+        <li><a href="../cockroachcloud/create-your-cluster.html">CockroachCloud Deployment</a></li>
         <li><a href="orchestration.html">Self-Managed Deployment</a></li>
         <li><a href="performance.html">Performance Profiles</a></li>
         <li><a href="upgrade-cockroach-version.html">Cluster Maintenance</a></li>

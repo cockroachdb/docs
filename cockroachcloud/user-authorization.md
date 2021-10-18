@@ -1,6 +1,6 @@
 ---
 title: User Authorization
-summary: Learn about the user authorization features for CockroachDB Cloud clusters.
+summary: Learn about the user authorization features for CockroachCloud CockroachDB clusters.
 toc: true
 ---
 
@@ -94,7 +94,7 @@ To list all the users in your cluster, use the [`SHOW USERS`](../{{site.versions
 
 <section class="filter-content" markdown="1" data-scope="console">
 {{site.data.alerts.callout_info}}
-Only [Console Admins](console-access-management.html#console-admin) can change a user's password. If you are a [Developer](console-access-management.html#developer), you need to ask your Console Admin to change the password. To find out who your Console Admin is, [log in](https://cockroachlabs.cloud/) and navigate to **Cluster Overview** > **Access**.
+Only [Console Admins](console-access-management.html#console-admin) can change a user's password. If you are a [Developer](console-access-management.html#developer), you need to ask your Console Admin to change the password. To find out who's your Console Admin, [log in](https://cockroachlabs.cloud/) and navigate to **Cluster Overview** > **Access**.
 {{site.data.alerts.end}}
 
 To change a user's password:

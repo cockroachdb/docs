@@ -1,11 +1,11 @@
 ---
-title: Connect to Your CockroachDB Cloud Cluster
+title: Connect to Your CockroachCloud Cluster
 summary: Learn how to connect and start interacting with your cluster.
 toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
+    <a href="connect-to-a-free-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
     <a href="connect-to-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
@@ -149,11 +149,11 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
 
     {% include cockroachcloud/download-the-binary.md %}
 
-1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+1. In your terminal, run the second command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
     
     {% include cockroachcloud/download-the-cert.md %}
 
-1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future):
+1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the Console, which will be used in the next step (and to connect to your cluster in the future).
 
     {% include cockroachcloud/sql-connection-string.md %}
     
@@ -183,11 +183,11 @@ To connect to your cluster with your application, use the connection string prov
         <button class="filter-button page-level" data-scope="windows">Windows</button>
     </div>
 
-1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory:
+1. In your terminal, run the first command from the dialog to create a new `certs` directory on your local machine and download the CA certificate to that directory.
 
     {% include cockroachcloud/download-the-cert.md %}
 
-1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}:
+1. Copy the connection string provided in the Console, which will be used to connect your application to {{ site.data.products.db }}.
 
     <section class="filter-content" markdown="1" data-scope="mac">
     {% include_cached copy-clipboard.html %}

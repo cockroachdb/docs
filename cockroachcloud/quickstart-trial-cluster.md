@@ -1,6 +1,6 @@
 ---
-title: Quickstart with CockroachDB Cloud
-summary: Learn how to create and use your CockroachDB Cloud cluster.
+title: Quickstart with CockroachCloud
+summary: Learn how to create and use your {{ site.data.products.db }} cluster.
 toc: true
 ---
 

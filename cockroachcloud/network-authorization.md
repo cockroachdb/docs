@@ -25,8 +25,8 @@ If you select GCP as your cloud provider while [creating your {{ site.data.produ
 
 Setting up a VPC peering connection between your {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
-1. [Configure the IP range and size while creating the {{ site.data.products.dedicated }} cluster](#configure-the-ip-range-and-size-while-creating-your-cockroachdb-dedicated-cluster)
-1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachdb-dedicated-cluster)
+1. [Configure the IP range and size while creating the {{ site.data.products.dedicated }} cluster](#configure-the-ip-range-and-size-while-creating-your-cockroachcloud-cluster)
+1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachcloud-cluster)
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.

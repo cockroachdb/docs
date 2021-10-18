@@ -21,7 +21,7 @@ Get future release notes emailed to you:
 
 - New users can now [sign up](../cockroachcloud/create-an-account.html) for CockroachCloud with Github Authorization. Logging in with GitHub allows users to enforce [GitHub's two-factor authentication (2FA)](https://docs.github.com/en/github/authenticating-to-github/securing-your-account-with-two-factor-authentication-2fa) on their CockroachCloud account. Current users can [switch their login method](../cockroachcloud/create-an-account.html#change-your-login-method) between email and GitHub.
 - When logging in fails due to user input, the error message now includes [login method](../cockroachcloud/create-an-account.html#change-your-login-method) as a potential reason for failure.
-- Previously, selecting a new cloud provider while [creating a cluster](../cockroachcloud/create-a-serverless-cluster.html) would reset the **Region** and **Hardware per node** options to default. Now, equivalent region and hardware options are preselected, and the number of nodes per region is preserved when a new cloud provider is selected.
+- Previously, selecting a new cloud provider while [creating a cluster](../cockroachcloud/create-a-free-cluster.html) would reset the **Region** and **Hardware per node** options to default. Now, equivalent region and hardware options are preselected, and the number of nodes per region is preserved when a new cloud provider is selected.
 
 ### Bug fixes
 

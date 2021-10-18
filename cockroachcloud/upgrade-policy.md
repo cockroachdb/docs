@@ -1,6 +1,6 @@
 ---
 title: Upgrade Policy
-summary: Learn about the CockroachDB Cloud upgrade policy.
+summary: Learn about the CockroachCloud upgrade policy.
 toc: true
 ---
 

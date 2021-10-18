@@ -82,7 +82,7 @@ table tr td:nth-child(2) {
  Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)
  Partial indexes | ✓ | Common Extension |  [Partial indexes documentation](partial-indexes.html)
  Spatial indexes | ✓ | Common Extension |  [Spatial indexes documentation](spatial-indexes.html)
- Multiple indexes per query | Partial | Common Extension | [Index selection](indexes.html#selection)
+ Multiple indexes per query | Partial | Common Extension | [Use multiple indexes for a single query](https://github.com/cockroachdb/cockroach/issues/2142)
  Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
  Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them
  Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values

@@ -1,6 +1,6 @@
 ---
 title: Restore Data from a Backup
-summary: Restore a table or database from a backup in CockroachDB Cloud.
+summary: Restore a table or database from a backup in CockroachCloud.
 toc: true
 ---
 
@@ -13,7 +13,7 @@ The backups that Cockroach Labs runs for you can be viewed on the [Backups page]
 {{site.data.alerts.callout_info}}
 Currently, you can only restore [databases](#restore-a-database) and [tables](#restore-a-table) to the same cluster that the backup was taken from.
 
-In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster).
+In the meantime, you can [back up and restore data manually](run-bulk-operations.html) or [back up from a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster).
 {{site.data.alerts.end}}
 
 ## Backups page
@@ -78,7 +78,7 @@ For each table in the database, the following details display:
 
 Additional ways to restore data:
 
-- [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachdb-cloud-cluster)
+- [Back up a self-hosted CockroachDB cluster and restore into a {{ site.data.products.db }} cluster](#back-up-a-self-hosted-cockroachdb-cluster-and-restore-into-a-cockroachcloud-cluster)
 - [Back up and restore data manually](run-bulk-operations.html)
 
 ### Restore a database

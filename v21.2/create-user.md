@@ -17,8 +17,6 @@ The `CREATE USER` [statement](sql-statements.html) creates SQL users, which let 
     - Must start with a letter, number, or underscore
     - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
-    - <span class="version-tag">New in v21.2</span>: Cannot be `none`.
-    - <span class="version-tag">New in v21.2</span>: Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
 - After creating users, you must [grant them privileges to databases and tables](grant.html).
 - All users belong to the `public` role, to which you can [grant](grant.html) and [revoke](revoke.html) privileges.
 - On secure clusters, you must [create client certificates for users](cockroach-cert.html#create-the-certificate-and-key-pair-for-a-client) and users must [authenticate their access to the cluster](#user-authentication).
@@ -66,7 +64,7 @@ Secure clusters require users to authenticate their access to databases and tabl
 
     Password creation is supported only in secure clusters.
 
-- [GSSAPI authentication](gssapi_authentication.html), which is available to [Enterprise users](enterprise-licensing.html).
+- [GSSAPI authentication](gssapi_authentication.html), which is available to [{{ site.data.products.enterprise }} users](enterprise-licensing.html).
 
 ## Examples
 

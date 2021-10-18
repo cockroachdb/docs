@@ -8,7 +8,7 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}
 - [`IMPORT`](import.html)
-- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
+- {{ site.data.products.enterprise }} [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html)
 - The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`
 - <span class="version-tag">New in v20.2:</span> [Scheduled backups](manage-a-backup-schedule.html)
