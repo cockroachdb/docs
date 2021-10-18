@@ -52,7 +52,7 @@ The entire set of these relationships is referred to as the **interleaved hierar
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/interleave.html %}
 </div>
 
 ## Parameters

@@ -38,7 +38,7 @@ For more information about indexing and table scans, see [Find the Indexes and K
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/explain.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/explain.html %}</div>
 
 ## Required privileges
 

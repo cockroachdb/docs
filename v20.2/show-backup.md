@@ -13,7 +13,7 @@ Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` u
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_backup.html %}
 </div>
 
 ## Parameters
@@ -92,7 +92,7 @@ Field | Description
 > SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
-~~~  
+~~~
   database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                        create_statement
 ----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+----------------------------------------------------------------------------------------------------------------------------------
   NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | NULL

@@ -11,7 +11,7 @@ The `TRUNCATE` [statement](sql-statements.html) removes all rows from a table. A
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/truncate.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/truncate.html %}
 </div>
 
 ## Required privileges

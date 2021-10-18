@@ -34,7 +34,7 @@ You can restore:
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/restore.html %}
+{% include {{ page.version.version }}/sql/diagrams/restore.html %}
 </div>
 
 ## Parameters

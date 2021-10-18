@@ -9,7 +9,7 @@ toc: true
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/alter_schema.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_schema.html %}
 </div>
 
 ### Parameters

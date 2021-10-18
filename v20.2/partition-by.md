@@ -22,17 +22,15 @@ If the primary key in your existing table does not meet the requirements, you ca
 
 **alter_table_partition_by_stmt ::=**
 
-<section>
+<div>
 {% include {{ page.version.version }}/sql/diagrams/alter_table_partition_by.html %}
-</section>
+</div>
 
 **alter_index_partition_by_stmt ::=**
 
-<section>
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_index_partition_by.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_index_partition_by.html %}
 </div>
-</section>
 
 ## Parameters
 

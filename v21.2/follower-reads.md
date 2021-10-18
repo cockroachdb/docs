@@ -13,7 +13,7 @@ A follower read is a read taken from the closest [replica](architecture/overview
 For instructions showing how to use follower reads to get low latency, historical reads in a multi-region deployment, see the [Follower Reads Pattern](topology-follower-reads.html).
 
 {{site.data.alerts.callout_info}}
-This feature is available to users with the [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+This is an [Enterprise feature](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## How follower reads work
@@ -256,5 +256,5 @@ For an example showing how to successfully perform a bounded staleness read, see
 - [Cluster Settings Overview](cluster-settings.html)
 - [Load-Based Splitting](load-based-splitting.html)
 - [Network Latency Page](ui-network-latency-page.html)
-- [{{ site.data.products.enterprise }} Features](enterprise-licensing.html)
+- [Enterprise Features](enterprise-licensing.html)
 - [Follower Reads Topology Pattern](topology-follower-reads.html)

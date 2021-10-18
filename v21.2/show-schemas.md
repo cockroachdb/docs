@@ -13,7 +13,7 @@ The `CONNECT` [privilege](authorization.html#assign-privileges) on the database 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_schemas.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_schemas.html %}
 </div>
 
 ## Parameters

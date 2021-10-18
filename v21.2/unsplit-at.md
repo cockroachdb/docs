@@ -11,11 +11,11 @@ Removing a split enforcement from a table or index ("unsplitting") allows Cockro
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/unsplit_table_at.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/unsplit_table_at.html %}
 </div>
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/unsplit_index_at.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/unsplit_index_at.html %}
 </div>
 
 ## Required privileges

@@ -14,7 +14,9 @@ The `DROP COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and 
 
 ## Synopsis
 
-<section> {% include {{ page.version.version }}/sql/generated/diagrams/drop_column.html %} </section>
+<div>
+{% include {{ page.version.version }}/sql/generated/diagrams/drop_column.html %}
+</div>
 
 ## Required privileges
 
