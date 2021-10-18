@@ -13,7 +13,9 @@ For non-retryable transactions, if statements in the transaction [generated any 
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/commit_transaction.html %} </section>
+<div>
+{% include {{ page.version.version }}/sql/generated/diagrams/commit_transaction.html %}
+</div>
 
 ## Required privileges
 
