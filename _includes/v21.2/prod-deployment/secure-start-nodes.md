@@ -175,7 +175,7 @@ After completing these steps, nodes will not yet be live. They will complete the
 
     {% include {{ page.version.version }}/prod-deployment/advertise-addr-join.md %}
 
-    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain enterprise features. For more details, see [Locality](cockroach-start.html#locality).
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. It is also required to use certain [Enterprise features](enterprise-licensing.html). For more details, see [Locality](cockroach-start.html#locality).
 
  	  For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](cockroach-start.html).
 
