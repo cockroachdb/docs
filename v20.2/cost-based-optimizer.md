@@ -189,7 +189,7 @@ If it is not possible to use the algorithm specified in the hint, an error is si
 Given multiple identical [indexes](indexes.html) that have different locality constraints using [replication zones](configure-replication-zones.html), the optimizer will prefer the index that is closest to the gateway node that is planning the query. In a properly configured geo-distributed cluster, this can lead to performance improvements due to improved data locality and reduced network traffic.
 
 {{site.data.alerts.callout_info}}
-This feature is only available to users with an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). For insight into how to use this feature to get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
+This feature is only available to users with an [Enterprise license](enterprise-licensing.html). For insight into how to use this feature to get low latency, consistent reads in multi-region deployments, see the [Duplicate Indexes](topology-follower-reads.html) topology pattern.
 {{site.data.alerts.end}}
 
 This feature enables scenarios such as:
@@ -199,7 +199,7 @@ This feature enables scenarios such as:
 
 To take advantage of this feature, you need to:
 
-1. Have an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+1. Have an [Enterprise license](enterprise-licensing.html).
 2. Determine which data consists of reference tables that are rarely updated (such as postal codes) and can therefore be easily replicated to different regions.
 3. Create multiple [secondary indexes](indexes.html) on the reference tables. **Note that these indexes must include (in key or using [`STORED`](create-index.html#store-columns)) *every* column that you wish to query**. For example, if you run `SELECT * from db.table` and not every column of `db.table` is in the set of secondary indexes you created, the optimizer will have no choice but to fall back to the primary index.
 4. Create [replication zones](configure-replication-zones.html) for each index.
@@ -245,7 +245,7 @@ $ cockroach start --locality=region=apac --insecure --store=/tmp/node2 --listen-
 $ cockroach init --insecure --host=localhost --port=26257
 ~~~
 
-Next, from the SQL client, add your organization name and {{ site.data.products.enterprise }} license:
+Next, from the SQL client, add your organization name and Enterprise license:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sh
@@ -417,7 +417,7 @@ $ cockroach start --locality=region=us-west --insecure --store=/tmp/node2 --list
 $ cockroach init --insecure --host=localhost --port=26257
 ~~~
 
-From the SQL client, add your organization name and {{ site.data.products.enterprise }} license:
+From the SQL client, add your organization name and Enterprise license:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sh

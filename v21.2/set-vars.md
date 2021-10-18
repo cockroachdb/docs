@@ -18,7 +18,9 @@ In some cases, client drivers can drop and restart the connection to the server.
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to modify the session variables.
+To set the `role` session variable, the current user must be a member of the `admin` role, or a member of the target role.
+
+All other session variables do not require [privileges](authorization.html#assign-privileges) to modify.
 
 ## Synopsis
 
@@ -63,6 +65,8 @@ CockroachDB supports the following syntax cases, for compatibility with common S
 --------|---------------|-------
  `USE ...` | `SET database = ...` | This is provided as convenience for users with a MySQL/MSSQL background.
  `SET NAMES ...` | `SET client_encoding = ...` | This is provided for compatibility with PostgreSQL clients.
+ `SET ROLE <role>` | `SET role = <role>` | <span class="version-tag">New in v21.2</span>: This is provided for compatibility with PostgreSQL clients.
+ `RESET ROLE` | `SET role = 'none'`/`SET role = current_user()` | <span class="version-tag">New in v21.2</span>: This is provided for compatibility with PostgreSQL clients.
  `SET SCHEMA <name>` | `SET search_path = <name>` | This is provided for better compatibility with PostgreSQL.
  `SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL ...` | `SET default_transaction_isolation = ...` | This is provided for compatibility with standard SQL.
  `SET TIME ZONE ...` | `SET timezone = ...` | This is provided for compatibility with PostgreSQL clients.
@@ -277,6 +281,98 @@ SHOW timezone;
   timezone
 ------------
   +3
+(1 row)
+~~~
+
+### Assume another role
+
+<span class="version-tag">New in v21.2</span>: To assume another [role](authorization.html#roles) for the duration of a session, use `SET ROLE <role>`. `SET ROLE <role>` is equivalent to `SET role = <role>`.
+
+{{site.data.alerts.callout_info}}
+To assume a new role, the current user must be a member of the `admin` role, or a member of the target role.
+{{site.data.alerts.end}}
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW role;
+~~~
+
+~~~
+  role
+--------
+  root
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE ROLE new_role;
+SHOW ROLES;
+~~~
+
+~~~
+  username | options | member_of
+-----------+---------+------------
+  admin    |         | {}
+  new_role | NOLOGIN | {}
+  root     |         | {admin}
+(3 rows)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET ROLE new_role;
+SHOW role;
+~~~
+
+~~~
+    role
+------------
+  new_role
+(1 row)
+~~~
+
+To reset the role of the current user, use a [`RESET`](reset-vars.html) statement. `RESET ROLE` is equivalent to `SET role = 'none'` and `SET role = current_user()`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+RESET ROLE;
+SHOW role;
+~~~
+
+~~~
+  role
+--------
+  root
+(1 row)
+~~~
+
+To assume a role for the duration of a single transaction, use `SET LOCAL ROLE`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+BEGIN;
+SET LOCAL ROLE new_role;
+SHOW role;
+~~~
+
+~~~
+    role
+------------
+  new_role
+(1 row)
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+COMMIT;
+SHOW role;
+~~~
+
+~~~
+  role
+--------
+  root
 (1 row)
 ~~~
 
