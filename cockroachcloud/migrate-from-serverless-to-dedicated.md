@@ -1,13 +1,11 @@
 ---
-title: Migrate from a CockroachCloud Free (beta) to CockroachCloud Cluster
-summary: Learn how to migrate data from a CockroachCloud Free (beta) cluster into a paid {{ site.data.products.db }} cluster.
+title: Migrate from a CockroachDB Serverless (beta) to CockroachDB Dedicated Cluster
+summary: Learn how to migrate data from a CockroachDB Serverless (beta) cluster into a CockroachDB Dedicated cluster.
 toc: true
+redirect_from: migrate-from-free-to-dedicated.html
 ---
 
-This page has instructions for migrating data from a {{ site.data.products.serverless }} cluster to a paid {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to the paid version of {{ site.data.products.dedicated }} if:
-
-- You reach (or get close to reaching) the upper limit of usage of up to 1 vCPU and 5GB storage per {{ site.data.products.serverless }} cluster.
-- You want to use any of the capabilities that are not yet available in {{ site.data.products.serverless }} clusters, like the ability to enable backups or to upload data with the `IMPORT` command.
+This page has instructions for migrating data from a {{ site.data.products.serverless }} cluster to a {{ site.data.products.dedicated }} cluster, by exporting to CSV and using [`IMPORT`](../{{site.versions["stable"]}}/import.html). You may want to migrate to {{ site.data.products.dedicated }} if you want a single-tenant cluster with no shared resources.
 
 The steps below use sample data from the [`tpcc` workload](../{{site.versions["stable"]}}/cockroach-workload.html#workloads).
 
@@ -67,7 +65,7 @@ d_id,d_w_id,d_name,d_street_1,d_street_2,d_city,d_state,d_zip,d_tax,d_ytd,d_next
 
 ## Step 2. Host the files where the {{ site.data.products.dedicated }} cluster can access them
 
-After you've exported your Cockroach Free (beta) cluster data to your local machine, you now need to upload the files to a storage location where the paid {{ site.data.products.dedicated }} cluster can access them. **We recommend using [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) or [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html).**
+After you've exported your {{ site.data.products.serverless }} cluster data to your local machine, you now need to upload the files to a storage location where the {{ site.data.products.dedicated }} cluster can access them. **We recommend using [cloud storage](../{{site.versions["stable"]}}/use-cloud-storage-for-bulk-operations.html) or [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html).**
 
 In this example, we'll use Amazon S3 to host the two files (`warehouse.csv` and `district.csv`) created in [Step 1](#step-1-export-data-to-a-local-csv-file).
 
