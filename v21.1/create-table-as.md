@@ -38,31 +38,31 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_table_as.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_table_as.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_table_as.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_table_as.html %}
 </div>
 
 **create_as_col_qual_list ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_as_col_qual_list.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_as_col_qual_list.html %}
 </div>
 
 **create_as_constraint_def ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_as_constraint_def.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_as_constraint_def.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/opt_with_storage_parameter_list.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/opt_with_storage_parameter_list.html %}
 </div>
 
 </div>

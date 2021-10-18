@@ -26,7 +26,7 @@ All users can see their own currently active queries. All users belonging to the
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/show_queries.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_queries.html %}
 </div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW QUERIES` or `SHOW CLUSTER QUERIES`.

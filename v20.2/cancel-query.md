@@ -19,7 +19,7 @@ Members of the `admin` role (include `root`, which belongs to `admin` by default
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/cancel_query.html %}
+{% include {{ page.version.version }}/sql/diagrams/cancel_query.html %}
 </div>
 
 ## Parameters

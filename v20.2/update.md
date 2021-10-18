@@ -18,7 +18,7 @@ The user must have the `SELECT` and `UPDATE` [privileges](authorization.html#ass
 ## Synopsis
 
 <div class="horizontal-scroll">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/update.html %}
+{% include {{ page.version.version }}/sql/diagrams/update.html %}
 </div>
 
 ## Parameters

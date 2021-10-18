@@ -14,7 +14,7 @@ The `SHOW STATISTICS` [statement](sql-statements.html) lists [table statistics](
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/show_stats.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_stats.html %}
 </div>
 
 ## Required Privileges

@@ -15,7 +15,7 @@ statements.
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/sort_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/sort_clause.html %}
 </div>
 
 ## Parameters

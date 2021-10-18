@@ -28,11 +28,11 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 **Standard index:**
 
-<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_index.html %}</div>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</div>
 
 **Inverted index:**
 
-<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_inverted_index.html %}</div>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</div>
 
 ## Parameters
 

@@ -9,7 +9,7 @@ toc: true
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/show_enums.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_enums.html %}
 </div>
 
 ## Parameters

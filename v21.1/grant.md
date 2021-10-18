@@ -11,7 +11,7 @@ You can use `GRANT` to directly grant privileges to a role or user, or you can g
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/grant.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/grant.html %}
 </div>
 
 ### Parameters

@@ -10,7 +10,7 @@ The `DROP INDEX` [statement](sql-statements.html) removes indexes from tables.
 
 ## Synopsis
 
-<section>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/drop_index.html %}</div>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/drop_index.html %}</div>
 
 ## Required privileges
 

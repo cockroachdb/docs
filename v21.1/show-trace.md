@@ -30,7 +30,7 @@ For `SHOW TRACE FOR SESSION`, no privileges are required.
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/show_trace.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_trace.html %}
 </div>
 
 ## Parameters

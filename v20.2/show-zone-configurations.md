@@ -9,7 +9,7 @@ Use the `SHOW ZONE CONFIGURATIONS` [statement](sql-statements.html) to view deta
 ## Synopsis
 
 <div class="horizontal-scroll">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/show_zone.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_zone.html %}
 </div>
 
 ## Required privileges

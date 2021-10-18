@@ -17,31 +17,31 @@ Adding replication zones for secondary indexes and partitions is an [{{ site.dat
 **alter_zone_database_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_zone_database.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_zone_database.html %}
 </div>
 
 **alter_zone_table_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_zone_table.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_zone_table.html %}
 </div>
 
 **alter_zone_index_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_zone_index.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_zone_index.html %}
 </div>
 
 **alter_zone_partition_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_zone_partition.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_zone_partition.html %}
 </div>
 
 **alter_zone_range_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_zone_range.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_zone_range.html %}
 </div>
 
 ## Required privileges

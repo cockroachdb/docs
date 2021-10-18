@@ -18,7 +18,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_view.html %} </section>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/create_view.html %} </section>
 
 ## Parameters
 

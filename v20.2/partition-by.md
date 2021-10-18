@@ -23,13 +23,13 @@ If the primary key in your existing table does not meet the requirements, you ca
 **alter_table_partition_by_stmt ::=**
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/alter_table_partition_by.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_table_partition_by.html %}
 </div>
 
 **alter_index_partition_by_stmt ::=**
 
 <div class="horizontal-scroll">
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/alter_index_partition_by.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_index_partition_by.html %}
 </div>
 
 ## Parameters

@@ -25,7 +25,7 @@ To cancel a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/cancel_job.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/cancel_job.html %}
 </div>
 
 ## Parameters

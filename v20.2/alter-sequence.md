@@ -19,7 +19,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/alter_sequence_options.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/alter_sequence_options.html %}</div>
 
 ## Parameters
 

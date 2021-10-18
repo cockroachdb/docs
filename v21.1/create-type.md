@@ -13,7 +13,7 @@ CockroachDB currently only supports [enumerated user-defined types](enum.html).
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/create_type.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_type.html %}
 </div>
 
 ## Parameters

@@ -16,7 +16,7 @@ No [privileges](authorization.html#assign-privileges) are required to modify the
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/set_var.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/set_var.html %}
 </div>
 
 {{site.data.alerts.callout_info}}The <code>SET</code> statement for session settings is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="cluster-settings.html#change-a-cluster-setting"><code>SET CLUSTER SETTING</code></a> statements.{{site.data.alerts.end}}

@@ -18,7 +18,7 @@ While a table or view is being [dropped](drop-table.html), `SHOW TABLES` will li
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/show_tables.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_tables.html %}
 </div>
 
 ## Required privileges

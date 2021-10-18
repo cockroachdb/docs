@@ -15,7 +15,7 @@ No [privileges](authorization.html#assign-privileges) are required to list the l
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/show_locality.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_locality.html %}
 </div>
 
 ## Example

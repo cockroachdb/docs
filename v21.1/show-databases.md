@@ -10,7 +10,7 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/show_databases.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_databases.html %}
 </div>
 
 ## Required privileges

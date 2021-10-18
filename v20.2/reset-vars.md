@@ -13,7 +13,7 @@ No [privileges](authorization.html#assign-privileges) are required to reset a se
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/reset_session.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/reset_session.html %}</div>
 
 ## Parameters
 

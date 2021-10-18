@@ -17,7 +17,7 @@ The user must have the `DELETE` and `SELECT` [privileges](authorization.html#ass
 ## Synopsis
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/delete.html %}
+{% include {{ page.version.version }}/sql/diagrams/delete.html %}
 </div>
 
 ## Parameters

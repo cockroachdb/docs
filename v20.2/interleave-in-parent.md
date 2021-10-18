@@ -52,7 +52,7 @@ The entire set of these relationships is referred to as the **interleaved hierar
 ## Syntax
 
 <div>
-{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/interleave.html %}
+{% include {{ page.version.version }}/sql/diagrams/interleave.html %}
 </div>
 
 ## Parameters

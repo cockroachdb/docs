@@ -12,7 +12,7 @@ The `GRANT <roles>` [statement](sql-statements.html) lets you add a [role](autho
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-20.2/grammar_svg/grant_roles.html %}</div>
+<div>{% include {{ page.version.version }}/sql/diagrams/grant_roles.html %}</div>
 
 ## Required privileges
 

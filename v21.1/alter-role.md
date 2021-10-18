@@ -20,7 +20,7 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Synopsis
 
-<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.1/grammar_svg/alter_role.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/alter_role.html %}</div>
 
 ## Parameters
 
