@@ -42,7 +42,7 @@ The **Overview** page displays details about the selected {{ site.data.products.
 - The cluster's **Current activity**
 - Time-series graphs of the cluster's **Storage usage**, **Request Units**, and **SQL statements**
 
-For more information, see the Cluster Overview page.
+For more information, see [Cluster Overview Page](cluster-overview-page.html).
 
 ## Edit your spend limit  
 
