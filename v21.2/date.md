@@ -8,23 +8,19 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 
 ## Syntax
 
-A constant value of type `DATE` can be expressed using an
-[interpreted literal](sql-constants.html#interpreted-literals), or a
-string literal
-[annotated with](scalar-expressions.html#explicitly-typed-expressions)
-type `DATE` or
-[coerced to](scalar-expressions.html#explicit-type-coercions) type
-`DATE`.
+A constant value of type `DATE` can be expressed using an [interpreted literal](sql-constants.html#interpreted-literals), or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `DATE` or [coerced to](scalar-expressions.html#explicit-type-coercions) type `DATE`.
 
-The string format for dates is `YYYY-MM-DD`. For example: `DATE '2016-12-23'`.
+CockroachDB also supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where a `DATE` value is otherwise expected. By default, CockroachDB parses the following string formats for dates:
 
-CockroachDB also supports using uninterpreted
-[string literals](sql-constants.html#string-literals) in contexts
-where a `DATE` value is otherwise expected.
+- `YYYY-MM-DD`
+- `MM-DD-YYYY`
+- `DD-MM-YY` (default)/`YY-MM-DD`/`DD-MM-YY`
 
-{{site.data.alerts.callout_info}}
+To change the input format of truncated dates (e.g., `16-10-06`) from `DD-MM-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). Note that, in order to set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
+
+## PostgreSQL compatibility
+
 `DATE` values in CockroachDB are fully [PostgreSQL-compatible](https://www.postgresql.org/docs/current/datatype-datetime.html), including support for special values (e.g., `+/- infinity`). Existing dates outside of the PostgreSQL date range (`4714-11-24 BC` to `5874897-12-31`) are converted to `+/- infinity` dates.
-{{site.data.alerts.end}}
 
 ## Size
 
@@ -43,25 +39,25 @@ A `DATE` column supports values up to 16 bytes in width, but the total storage s
 ~~~
 
 ~~~
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| column_name | data_type | is_nullable | column_default | generation_expression |   indices   |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
-| a           | DATE      |    false    | NULL           |                       | {"primary"} |
-| b           | INT       |    true     | NULL           |                       | {}          |
-+-------------+-----------+-------------+----------------+-----------------------+-------------+
+  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  a           | DATE      |    false    | NULL           |                       | {primary} |   false
+  b           | INT8      |    true     | NULL           |                       | {primary} |   false
 (2 rows)
 ~~~
 
 Explicitly typed `DATE` literal:
+
 {% include copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO dates VALUES (DATE '2016-03-26', 12345);
 ~~~
 
 String literal implicitly typed as `DATE`:
+
 {% include copy-clipboard.html %}
 ~~~ sql
-> INSERT INTO dates VALUES ('2016-03-27', 12345);
+> INSERT INTO dates VALUES ('03-27-16', 12345);
 ~~~
 
 {% include copy-clipboard.html %}
@@ -70,12 +66,11 @@ String literal implicitly typed as `DATE`:
 ~~~
 
 ~~~
-+---------------------------+-------+
-|             a             |   b   |
-+---------------------------+-------+
-| 2016-03-26 00:00:00+00:00 | 12345 |
-| 2016-03-27 00:00:00+00:00 | 12345 |
-+---------------------------+-------+
+      a      |   b
+-------------+--------
+  2016-03-26 | 12345
+  2016-03-27 | 12345
+(2 rows)
 ~~~
 
 ## Supported casting and conversion

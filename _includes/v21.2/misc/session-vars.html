@@ -71,6 +71,28 @@
 
   <tr>
    <td>
+    <code>datestyle</code>
+   </td>
+   <td><span class="version-tag">New in v21.2</span>: The input string format for <a href="date.html"><code>DATE</code></a> and <a href="timestamp.html"><code>TIMESTAMP</code></a> values.
+     <br>Accepted values include <code>ISO,MDY</code>, <code>ISO,DMY</code>, and <code>ISO,YMD</code>.
+     <br>To set <code>datestyle</code> to a value other than the default (<code>ISO,MDY</code>), you must first set the <code>datestyle_enabled</code> session variable to <code>true</code>.</td>
+   <td>The value set by the <code>sql.defaults.datestyle</code> <a href="cluster-settings.html">cluster setting</a> (<code>ISO,MDY</code>, by default).</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>datestyle_enabled</code>
+   </td>
+   <td><span class="version-tag">New in v21.2</span>: Enables setting the <code>datestyle</code> session variable to a supported format.</td>
+   <td>The value set by the <code>sql.defaults.datestyle_enabled</code> <a href="cluster-settings.html">cluster setting</a> (<code>false</code>, by default).</td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>default_int_size</code>
    </td>
    <td>The size, in bytes, of an <a href="int.html"><code>INT</code></a> type.</td>
@@ -576,18 +598,6 @@
    <td>(Reserved; exposed only for ORM compatibility.)</td>
    <td>
     <code>UTF8</code>
-   </td>
-   <td>No</td>
-   <td>Yes</td>
-  </tr>
-
-  <tr>
-   <td>
-    <code>datestyle</code>
-   </td>
-   <td>(Reserved; exposed only for ORM compatibility.)</td>
-   <td>
-    <code>ISO</code>
    </td>
    <td>No</td>
    <td>Yes</td>
