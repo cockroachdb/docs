@@ -18,7 +18,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<section> {% include {{ page.version.version }}/sql/diagrams/create_view.html %} </section>
+<div>{% include {{ page.version.version }}/sql/diagrams/create_view.html %}</div>
 
 ## Parameters
 

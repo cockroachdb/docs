@@ -16,7 +16,7 @@ The `ALTER VIEW` [statement](sql-statements.html) applies a schema change to a [
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_view.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_view.html %}
 </div>
 
 ## Parameters

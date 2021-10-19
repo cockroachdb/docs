@@ -13,7 +13,7 @@ CockroachDB currently only supports [enumerated user-defined types](enum.html).
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/create_type.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_type.html %}
 </div>
 
 ## Parameters

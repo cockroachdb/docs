@@ -7,7 +7,7 @@ toc: true
 In a multi-region deployment, [Follower Reads](follower-reads.html) are a good choice for tables with the following requirements:
 
 - Read latency must be low, but write latency can be higher.
-- Reads can be historical (4.8 seconds or more in the past).
+- Reads can be historical.
 - Rows in the table, and all latency-sensitive queries, **cannot** be tied to specific geographies (e.g., a reference table).
 - Table data must remain available during a region failure.
 
@@ -28,7 +28,7 @@ If reads from a table must be exactly up-to-date, use [Global Tables](global-tab
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Follower reads requires an [{{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -56,41 +56,46 @@ Insert some data:
 > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
 ~~~
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
-2. Configure your app to use `AS OF SYSTEM TIME follower_read_timestamp()` whenever reading from the table:
+2. <span class="version-tag">New in v21.2:</span> Decide which type of follower read you would like to perform: _exact staleness_ reads, or _bounded staleness_ reads. For more information about when to use each type of read, see [when to use exact staleness reads](follower-reads.html#when-to-use-exact-staleness-reads) and [when to use bounded staleness reads](follower-reads.html#when-to-use-bounded-staleness-reads).
 
-    {{site.data.alerts.callout_info}}
-    The `follower_read_timestamp()` [function](functions-and-operators.html) returns the [`TIMESTAMP`](timestamp.html) `statement_timestamp() - 4.8s`.
-    {{site.data.alerts.end}}
-
+   - To use [_exact staleness_ follower reads](follower-reads.html#exact-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`follower_read_timestamp()` function](functions-and-operators.html) whenever reading from the table:
+    
     {% include copy-clipboard.html %}
     ~~~ sql
     > SELECT code FROM postal_codes
         AS OF SYSTEM TIME follower_read_timestamp()
                 WHERE id = 5;
     ~~~
-
-    Alternately, instead of modifying individual read queries on the table, you can set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
-
+    
+    You can also set the `AS OF SYSTEM TIME` value for all operations in a read-only transaction:
+    
     {% include copy-clipboard.html %}
     ~~~ sql
     > BEGIN;
-
+    
     SET TRANSACTION AS OF SYSTEM TIME follower_read_timestamp();
-
+    
       SELECT code FROM postal_codes
         WHERE id = 5;
-
+    
       SELECT code FROM postal_codes
         WHERE id = 6;
-
-      COMMIT;
+    
+    COMMIT;
     ~~~
-
-{{site.data.alerts.callout_success}}
-Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use the follower reads feature from [drivers and ORMs](install-client-drivers.html).
-{{site.data.alerts.end}}
+    
+    {{site.data.alerts.callout_success}}
+    Using the [`SET TRANSACTION`](set-transaction.html#use-the-as-of-system-time-option) statement as shown in the example above will make it easier to use exact staleness follower reads from [drivers and ORMs](install-client-drivers.html).
+    {{site.data.alerts.end}}
+    
+   - <span class="version-tag">New in v21.2:</span> To use [_bounded staleness_ follower reads](follower-reads.html#bounded-staleness-reads), configure your app to use [`AS OF SYSTEM TIME`](as-of-system-time.html) with the [`with_min_timestamp()` or `with_max_staleness()` functions](functions-and-operators.html) whenever reading from the table. Note that only single-row point reads in single-statement (implicit) transactions are supported.
+    
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT code FROM postal_codes AS OF SYSTEM TIME with_max_staleness('10s') where id = 5;
+    ~~~
 
 ## Characteristics
 
@@ -105,7 +110,7 @@ For example, in the animation below:
 1. The read request in `us-central` reaches the regional load balancer.
 2. The load balancer routes the request to a gateway node.
 3. The gateway node routes the request to the closest replica for the table. In this case, the replica is *not* the leaseholder.
-4. The replica retrieves the results as of 4.8 seconds in the past and returns to the gateway node.
+4. The replica retrieves the results as of your preferred staleness interval in the past and returns to the gateway node.
 5. The gateway node returns the results to the client.
 
 <img src="{{ 'images/v21.2/topology-patterns/topology_follower_reads_reads.png' | relative_url }}" alt="Follower reads topology" style="max-width:100%" />
@@ -131,10 +136,6 @@ For example, in the animation below:
 Because this pattern balances the replicas for the table across regions, one entire region can fail without interrupting access to the table:
 
 <img src="{{ 'images/v21.2/topology-patterns/topology_follower_reads_resiliency.png' | relative_url }}" alt="Follower reads topology" style="max-width:100%" />
-
-<!-- However, if an additional machine holding a replica for the table fails at the same time as the region failure, the range to which the replica belongs becomes unavailable for reads and writes:
-
-<img src="{{ 'images/v21.2/topology-patterns/topology_follower_reads3.png' | relative_url }}" alt="Follower reads topology" style="max-width:100%" /> -->
 
 ## See also
 

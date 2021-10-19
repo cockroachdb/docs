@@ -9,7 +9,7 @@ toc: true
 In CockroachDB, you can use **replication zones** to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
 
 {{site.data.alerts.callout_info}}
-Adding replication zones for secondary indexes and partitions is an [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) feature.
+Adding replication zones for secondary indexes and partitions is an [Enterprise-only](enterprise-licensing.html) feature.
 {{site.data.alerts.end}}
 
 ## Synopsis
@@ -17,31 +17,31 @@ Adding replication zones for secondary indexes and partitions is an [{{ site.dat
 **alter_zone_database_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_database.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_database.html %}
 </div>
 
 **alter_zone_table_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_table.html %}
 </div>
 
 **alter_zone_index_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
 </div>
 
 **alter_zone_partition_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_partition.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_partition.html %}
 </div>
 
 **alter_zone_range_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_range.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_range.html %}
 </div>
 
 ## Required privileges

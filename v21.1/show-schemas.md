@@ -13,7 +13,7 @@ The `SELECT` [privilege](authorization.html#assign-privileges) on the database i
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_schemas.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_schemas.html %}
 </div>
 
 ## Parameters

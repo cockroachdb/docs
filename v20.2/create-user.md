@@ -7,7 +7,7 @@ toc: true
 The `CREATE USER` [statement](sql-statements.html) creates a SQL role that can be used to log in to a database.
 
  There is no distinct "user" entity in CockroachDB. A role with the [`LOGIN`](#parameters) option enabled can log in to the SQL shell and is often called a user.
- 
+
  You can [assign privileges](authorization.html#assign-privileges) to the user and [set it as a member](grant-roles.html) of other roles, inheriting their privileges.
 
 {{site.data.alerts.callout_info}}
@@ -25,8 +25,9 @@ See [Authorization](authorization.html) for more information on privilege manage
 Unless a role is a member of the admin role, additional [privileges](#parameters) are required to manage other roles.
 
 - To create other roles, a role must have the [`CREATEROLE`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
-- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set. 
+- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
 - To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
+
 ## Synopsis
 
 <section>{% include {{ page.version.version }}/sql/diagrams/create_user.html %}</section>

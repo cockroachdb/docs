@@ -38,7 +38,7 @@ Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/import_into.html %}
+{% include {{ page.version.version }}/sql/diagrams/import_into.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

@@ -13,7 +13,7 @@ A savepoint is a marker that defines the beginning of a [nested transaction](tra
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/savepoint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/savepoint.html %}
 </div>
 
 ## Required privileges

@@ -1,6 +1,6 @@
 ---
-title: Connect to the Database (CockroachCloud)
-summary: How to connect to a CockroachCloud cluster from your application
+title: Connect to the Database (CockroachDB Cloud)
+summary: How to connect to a CockroachDB Cloud cluster from your application
 toc: true
 ---
 

@@ -9,7 +9,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/drop_type.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/drop_type.html %}
 </div>
 
 ## Parameters
