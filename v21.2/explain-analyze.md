@@ -73,7 +73,7 @@ KV time | The total time this phase of the statement was in the [Storage layer](
 KV contention time | The time the [Storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
 KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the statement.
 KV bytes read | During scans, the amount of data read from the [Storage layer](architecture/storage-layer.html) during this phase of the statement.
-estimated row count | The estimated number of rows affected by this processor according to the statement planner.
+estimated row count | The estimated number of rows affected by this processor according to the statement planner, the percentage of the table the query spans, and when the statistics for the table were last collected.
 table | The table and index used in a scan operation in a statement, in the form `{table name}@{index name}`.
 spans | The interval of the key space read by the processor. If `spans` is `FULL SCAN` the table is scanned on all key ranges of the index. If `spans` is `[/1 - /1]` only the key with value `1` is read by the processor.
 
