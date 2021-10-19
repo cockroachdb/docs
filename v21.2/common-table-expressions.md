@@ -326,6 +326,8 @@ FROM
 (2 rows)
 ~~~
 
+CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify data can appear only at the outer level, so they _cannot_ be correlated.
+
 ## See also
 
 - [Subqueries](subqueries.html)
