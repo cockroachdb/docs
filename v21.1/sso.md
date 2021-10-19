@@ -12,8 +12,6 @@ CockroachDB supports SSO via [OpenID Connect (OIDC)](https://openid.net/connect/
 SSO authentication is an [Enterprise-only](enterprise-licensing.html) feature.
 {{site.data.alerts.end}}
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
-
 ## Requirements
 
 - An external OAuth 2.0 identity provider
