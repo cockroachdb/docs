@@ -104,7 +104,7 @@ Whenever a write occurs, its timestamp is checked against the timestamp cache. I
 
 ### Closed timestamps
 
-Each CockroachDB range tracks a property called its _closed timestamp_, which means that no new writes can ever be introduced below that timestamp. The closed timestamp advances continuously, and lags the current time by some target interval. If the range receives a write at a timestamp less than its closed timestamp, the write is forced to change its timestamp, which might result in a transaction retry error (see [read refreshing](#read-refreshing)).
+Each CockroachDB range tracks a property called its _closed timestamp_, which means that no new writes can ever be introduced at or below that timestamp. The closed timestamp is advanced continuously on the leaseholder, and lags the current time by some target interval. As the closed timestamp is advanced, notifications are sent to each follower. If a range receives a write at a timestamp less than or equal to its closed timestamp, the write is forced to change its timestamp, which might result in a transaction retry error (see [read refreshing](#read-refreshing)).
 
 In other words, a closed timestamp is a promise by the range's [leaseholder](replication-layer.html#leases) to its follower replicas that it will not accept writes below that timestamp. Generally speaking, the leaseholder continuously closes timestamps a few seconds in the past.
 

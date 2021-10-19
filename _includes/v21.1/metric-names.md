@@ -180,14 +180,14 @@ Name | Help
 `sql.conns` | Number of active sql connections
 `sql.ddl.count` | Number of SQL DDL statements
 `sql.delete.count` | Number of SQL DELETE statements
-`sql.distsql.exec.latency` | Latency in nanoseconds of DistSQL statement execution
+`sql.distsql.exec.latency` | Latency in nanoseconds of SQL statement executions running on the distributed execution engine. This metric does not include the time to parse and plan the statement.
 `sql.distsql.flows.active` | Number of distributed SQL flows currently active
 `sql.distsql.flows.total` | Number of distributed SQL flows executed
 `sql.distsql.queries.active` | Number of distributed SQL queries currently active
 `sql.distsql.queries.total` | Number of distributed SQL queries executed
 `sql.distsql.select.count` | Number of DistSQL SELECT statements
-`sql.distsql.service.latency` | Latency in nanoseconds of DistSQL request execution
-`sql.exec.latency` | Latency in nanoseconds of SQL statement execution
+`sql.distsql.service.latency` | Latency in nanoseconds of SQL statement executions running on the distributed execution engine, including the time to parse and plan the statement.
+`sql.exec.latency` | Latency in nanoseconds of all SQL statement executions. This metric does not include the time to parse and plan the statement.
 `sql.insert.count` | Number of SQL INSERT statements
 `sql.mem.current` | Current sql statement memory usage
 `sql.mem.distsql.current` | Current sql statement memory usage for distsql
@@ -200,7 +200,7 @@ Name | Help
 `sql.misc.count` | Number of other SQL statements
 `sql.query.count` | Number of SQL queries
 `sql.select.count` | Number of SQL SELECT statements
-`sql.service.latency` | Latency in nanoseconds of SQL request execution
+`sql.service.latency` | Latency in nanoseconds of SQL request execution, including the time to parse and plan the statement.
 `sql.txn.abort.count` | Number of SQL transaction ABORT statements
 `sql.txn.begin.count` | Number of SQL transaction BEGIN statements
 `sql.txn.commit.count` | Number of SQL transaction COMMIT statements

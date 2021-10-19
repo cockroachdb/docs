@@ -15,7 +15,7 @@ It is not possible to rename a column referenced by a view. For more details, se
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/rename_column.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_column.html %}
 </div>
 
 ## Required privileges

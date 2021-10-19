@@ -15,7 +15,7 @@ expression.
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/table_ref.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/table_ref.html %}
 </div>
 
 ## Parameters

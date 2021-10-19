@@ -11,7 +11,7 @@ The **Cluster Overview** page of the DB Console displays key metrics about your 
 - Uptime
 - Hardware usage
 
-If you have an [{{ site.data.products.enterprise }} license](enterprise-licensing.html), you can enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
+If you have an [Enterprise license](enterprise-licensing.html), you can enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
 
 {{site.data.alerts.callout_success}}
 Enter your email in the banner at the top to receive updates on CockroachDB [releases](../releases/).
@@ -98,7 +98,7 @@ Nodes that have been [decommissioned](remove-nodes.html#how-it-works) will be li
 When you initiate the [decommissioning process](remove-nodes.html#how-it-works) on a node, CockroachDB transfers all range replicas and range leases off the node so that it can be safely shut down.
 {{site.data.alerts.end}}
 
-## Node Map ({{ site.data.products.enterprise }})
+## Node Map (Enterprise)
 
 The **Node Map** is an [enterprise](enterprise-licensing.html) feature that visualizes the geographical configuration of your cluster. It requires that [`--locality` flags have been defined](cockroach-start.html#locality) for your nodes.
 

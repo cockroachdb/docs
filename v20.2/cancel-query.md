@@ -19,7 +19,7 @@ Members of the `admin` role (include `root`, which belongs to `admin` by default
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/cancel_query.html %}
+{% include {{ page.version.version }}/sql/diagrams/cancel_query.html %}
 </div>
 
 ## Parameters
