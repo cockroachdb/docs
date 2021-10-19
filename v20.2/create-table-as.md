@@ -44,25 +44,25 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table_as.html %}
 </div>
 
 **create_as_col_qual_list ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/create_as_col_qual_list.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_as_col_qual_list.html %}
 </div>
 
 **create_as_constraint_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/create_as_constraint_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_as_constraint_def.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
 </div>
 
 </div>

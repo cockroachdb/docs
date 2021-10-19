@@ -15,7 +15,7 @@ It is not possible to rename a constraint for a column referenced by a view. For
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/rename_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_constraint.html %}
 </div>
 
 ## Required privileges

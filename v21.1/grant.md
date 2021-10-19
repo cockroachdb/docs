@@ -11,7 +11,7 @@ You can use `GRANT` to directly grant privileges to a role or user, or you can g
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/grant.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/grant.html %}
 </div>
 
 ### Parameters

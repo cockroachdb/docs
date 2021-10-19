@@ -9,7 +9,7 @@ toc: true
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_schema.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_schema.html %}
 </div>
 
 ### Parameters

@@ -35,10 +35,10 @@ Special syntax cases supported for compatibility:
 
  Syntax | Equivalent to
 --------|---------------
- `SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"`
- `SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"`
- `SHOW TIME ZONE` | `SHOW "timezone"`
- `SHOW TRANSACTION STATUS` | `SHOW "transaction status"`
+`SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"`
+`SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"`
+`SHOW TIME ZONE` | `SHOW "timezone"`
+`SHOW TRANSACTION STATUS` | `SHOW "transaction status"`
 
 ## Examples
 
