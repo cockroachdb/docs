@@ -49,7 +49,7 @@ Note the following:
 
 - To express a `TIMESTAMPTZ` value (with time zone offset from UTC), use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`. The fractional portion is optional and is rounded to microseconds (6 digits after decimal) for compatibility with the PostgreSQL wire protocol.
 - When it is unambiguous, a simple unannotated [string literal](sql-constants.html#string-literals) can also be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
-  - By default, CockroachDB interprets truncated dates (e.g., `16-10-06`) as `DD-MM-YY`. To change the input string format of truncated dates, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). Note that, in order to set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
+  - By default, CockroachDB interprets truncated dates (e.g., `12-10-06`) as `MM-DD-YY`. To change the input string format of truncated dates, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). Note that, in order to set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
 - For PostgreSQL compatibility, CockroachDB bounds `TIMESTAMP` values by the lowest and highest `TIMESTAMP` values supported by PostgreSQL. The minimum allowable `TIMESTAMP` value is `4714-11-24 00:00:00+00 BC`, and the highest allowable `TIMESTAMP` value is `294276-12-31 23:59:59.999999`.
 - A time zone offset of `+00:00` is displayed for all [`TIME`](time.html) and `TIMESTAMP` values, but is not stored in the database.
 

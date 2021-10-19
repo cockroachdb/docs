@@ -14,9 +14,9 @@ CockroachDB also supports using uninterpreted [string literals](sql-constants.ht
 
 - `YYYY-MM-DD`
 - `MM-DD-YYYY`
-- `DD-MM-YY` (default)/`YY-MM-DD`/`DD-MM-YY`
+- `MM-DD-YY` (default)/`YY-MM-DD`/`DD-MM-YY`
 
-To change the input format of truncated dates (e.g., `16-10-06`) from `DD-MM-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). Note that, in order to set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
+To change the input format of truncated dates (e.g., `12-10-06`) from `MM-DD-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). Note that, in order to set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
 
 ## PostgreSQL compatibility
 
