@@ -13,7 +13,7 @@ A savepoint is a marker that defines the beginning of a [nested transaction](tra
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/savepoint.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/savepoint.html %}
 </div>
 
 ## Required privileges

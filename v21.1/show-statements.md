@@ -32,7 +32,7 @@ All users can see their own currently active queries. All users belonging to the
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_statements.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_statements.html %}
 </div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW STATEMENTS` or `SHOW CLUSTER STATEMENTS`.

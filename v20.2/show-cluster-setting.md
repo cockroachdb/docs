@@ -47,7 +47,7 @@ Only members of the `admin` role can display cluster settings. By default, the `
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_cluster_setting.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_cluster_setting.html %}
 </div>
 
 ## Parameters

@@ -23,7 +23,7 @@ The user must have the `INSERT`, `SELECT` and `UPDATE` [privileges](authorizatio
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/upsert.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/upsert.html %}
 </div>
 
 ## Parameters

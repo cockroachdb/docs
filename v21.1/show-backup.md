@@ -15,7 +15,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
 </div>
 
 ## Parameters
@@ -94,7 +94,7 @@ Field | Description
 > SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
-~~~  
+~~~
   database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                        create_statement
 ----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+----------------------------------------------------------------------------------------------------------------------------------
   NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | NULL

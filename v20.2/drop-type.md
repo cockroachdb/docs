@@ -9,7 +9,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/drop_type.html %}
+{% include {{ page.version.version }}/sql/diagrams/drop_type.html %}
 </div>
 
 ## Parameters

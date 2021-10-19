@@ -28,7 +28,7 @@ Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [
 <div class="filter-content" markdown="1" data-scope="basic">
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/window_definition.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/window_definition.html %}
 </div>
 
 ### Parameters
@@ -46,13 +46,13 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/window_definition.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/window_definition.html %}
 </div>
 
 **opt_frame_clause ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_frame_clause.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/opt_frame_clause.html %}
 </div>
 
 ### Parameters
