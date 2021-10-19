@@ -9,7 +9,7 @@ The ability to [backup a full cluster](backup.html#backup-a-cluster) has been ad
 This doc provides information about how to take backups with revision history and restore from a point-in-time.
 
 {{site.data.alerts.callout_info}}
-[`BACKUP`](backup.html) with revision history is an [{{ site.data.products.enterprise }}-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an {{ site.data.products.enterprise }} license.
+[`BACKUP`](backup.html) with revision history is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
 
 You can create full or incremental backups [with revision history](backup.html#with-revision-history):

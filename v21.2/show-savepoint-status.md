@@ -13,7 +13,7 @@ No [privileges](authorization.html#assign-privileges) are required to create or 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_savepoint_status.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_savepoint_status.html %}
 </div>
 
 ## Response

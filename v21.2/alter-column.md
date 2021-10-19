@@ -6,13 +6,9 @@ toc: true
 
 The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and can be used to:
 
-- Set, change, or drop a column's [`DEFAULT` constraint](default-value.html)
-- Set or drop a column's [`NOT NULL` constraint](not-null.html)
-- Change a column's [data type](data-types.html)
-
-{{site.data.alerts.callout_info}}
-To manage other constraints, see [`ADD CONSTRAINT`](add-constraint.html) and [`DROP CONSTRAINT`](drop-constraint.html).
-{{site.data.alerts.end}}
+- Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
+- Set or drop a column's [`NOT NULL` constraint](not-null.html).
+- Change a column's [data type](data-types.html).
 
 {{site.data.alerts.callout_info}}
 Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types).
@@ -23,7 +19,7 @@ Support for altering column types is [experimental](experimental-features.html),
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/alter_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_column.html %}
 </div>
 
 ## Required privileges
@@ -34,13 +30,13 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 | Parameter | Description |
 |-----------|-------------|
-| `table_name` | The name of the table with the column you want to modify. |
-| `column_name` | The name of the column you want to modify. |
-| `SET DEFAULT a_expr` | The new [Default Value](default-value.html) you want to use. |
+| `table_name` | The name of the table with the column to modify. |
+| `column_name` | The name of the column to modify. |
+| `SET DEFAULT a_expr` | The new [default value](default-value.html). |
 | `typename` | The new [data type](data-types.html) you want to use.<br> Support for altering column types is [experimental](experimental-features.html), with certain limitations. For details, see [Altering column data types](#altering-column-data-types). |
-| `USING a_expr` |  Specifies how to compute a new column value from the old column value. |
+| `USING a_expr` |  How to compute a new column value from the old column value. |
 
-## Viewing schema changes
+## View schema changes
 
 {% include {{ page.version.version }}/misc/schema-change-view-job.md %}
 
@@ -76,7 +72,7 @@ Most `ALTER COLUMN TYPE` changes are finalized asynchronously. Schema changes on
 
 Setting the [`DEFAULT` value constraint](default-value.html) inserts the value when data's written to the table without explicitly defining the value for the column. If the column already has a `DEFAULT` value set, you can use this statement to change it.
 
-The below example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
+The following example inserts the Boolean value `true` whenever you inserted data to the `subscriptions` table without defining a value for the `newsletter` column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -114,10 +110,9 @@ If the column has the [`NOT NULL` constraint](not-null.html) applied to it, you 
 
 {% include {{ page.version.version }}/computed-columns/convert-computed-column.md %}
 
-
 ### Convert to a different data type
 
-The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `customer` table with a column `c_credit_lim` of type [`DECIMAL(10,2)`](decimal.html):
+The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `customer` table with a column `c_credit_lim` of type `DECIMAL(10,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -131,42 +126,44 @@ The [TPC-C](performance-benchmarking-with-tpcc-small.html) database has a `custo
 (1 row)
 ~~~
 
-Suppose you want to change the data type from `DECIMAL` to [`STRING`](string.html).
+To change the data type from `DECIMAL` to `STRING`:
 
-First, set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`:
+1. Set the `enable_experimental_alter_column_type_general` [session variable](set-vars.html) to `true`:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SET enable_experimental_alter_column_type_general = true;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SET enable_experimental_alter_column_type_general = true;
+    ~~~
 
-Then, alter the column type:
+1. Alter the column type:
 
-{% include copy-clipboard.html %}
-~~~ sql
-> ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > ALTER TABLE customer ALTER c_credit_lim TYPE STRING;
+    ~~~
 
-~~~
-NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
-~~~
+    ~~~
+    NOTICE: ALTER COLUMN TYPE changes are finalized asynchronously; further schema changes on this table may be restricted until the job completes; some writes to the altered column may be rejected until the schema change is finalized
+    ~~~
 
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_credit_lim';
-~~~
+1. Verify the type:
 
-~~~
-  column_name  | data_type
----------------+------------
-  c_credit_lim | STRING
-(1 row)
-~~~
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    > SELECT column_name, data_type FROM [SHOW COLUMNS FROM customer] WHERE column_name='c_credit_lim';
+    ~~~
+
+    ~~~
+      column_name  | data_type
+    ---------------+------------
+      c_credit_lim | STRING
+    (1 row)
+    ~~~
 
 
 ### Change a column type's precision
 
-The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table contains a column `c_balance` of type [`DECIMAL(12,2)`](decimal.html):
+The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table contains a column `c_balance` of type `DECIMAL(12,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -180,7 +177,7 @@ The [TPC-C](performance-benchmarking-with-tpcc-small.html) `customer` table cont
 (1 row)
 ~~~
 
-Suppose you want to increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DECIMAL(14,2)`:
+To increase the precision of the `c_balance` column from `DECIMAL(12,2)` to `DECIMAL(14,2)`:
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -18,7 +18,7 @@ Once you [create a table](create-table.html) and load data into it (e.g., [`INSE
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/create_stats.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_stats.html %}
 </div>
 
 ## Parameters
@@ -41,7 +41,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 ### Alias syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/analyze.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/analyze.html %}
 </div>
 
 ### Alias parameters

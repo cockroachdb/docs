@@ -29,7 +29,7 @@ The `SET` statement can set a session variable for the duration of the current s
 ### SET SESSION
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/set_session.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/set_var.html %}
 </div>
 
 {{site.data.alerts.callout_info}}

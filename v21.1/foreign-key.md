@@ -131,7 +131,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Column level
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/foreign_key_column_level.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/foreign_key_column_level.html %}</div>
 
 | Parameter | Description |
 |-----------|-------------|
@@ -161,7 +161,7 @@ You can also add the `FOREIGN KEY` constraint to existing tables through [`ADD C
 
 ### Table level
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/foreign_key_table_level.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/foreign_key_table_level.html %}</div>
 
 | Parameter | Description |
 |-----------|-------------|

@@ -9,7 +9,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_enums.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_enums.html %}
 </div>
 
 ## Examples

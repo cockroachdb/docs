@@ -117,8 +117,8 @@ For more information about Caddy, see [its documentation](https://caddyserver.co
 ## See also
 
 - [`IMPORT`][import]
-- [`BACKUP`](backup.html) (*{{ site.data.products.enterprise }} only*)
-- [`RESTORE`](restore.html) (*{{ site.data.products.enterprise }} only*)
+- [`BACKUP`](backup.html) (*Enterprise only*)
+- [`RESTORE`](restore.html) (*Enterprise only*)
 
 <!-- Reference Links -->
 

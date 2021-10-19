@@ -11,7 +11,9 @@ You can use CTEs in combination with [`SELECT` clauses](select-clause.html) and 
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/with_clause.html %}</div>
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/with_clause.html %}
+</div>
 
 <div markdown="1"></div>
 

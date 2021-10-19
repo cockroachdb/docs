@@ -13,7 +13,9 @@ To view and cancel a session, the user must be a member of the `admin` role or m
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/cancel_session.html %}</section>
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/cancel_session.html %}
+</div>
 
 ## Parameters
 

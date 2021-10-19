@@ -11,7 +11,7 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [fu
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). You can also use [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.db }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 {{site.data.alerts.end}}
 
 You can [backup a full cluster](#backup-a-cluster), which includes:
@@ -32,7 +32,7 @@ You can also back up:
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 {{site.data.alerts.callout_success}}
-To view the contents of an {{ site.data.products.enterprise }} backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+To view the contents of an Enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
