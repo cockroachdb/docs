@@ -4,9 +4,7 @@ summary: The Statements page helps you identify frequently executed or high late
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/ui/admin-access.md %}
 
 The **Statements** page helps you:
 
@@ -28,9 +26,32 @@ You can search for statements using the search field or using the date field. To
 
 ## Statement statistics
 
-Statement statistics are aggregated once an hour and organized by [Interval Start Time](#statements-table). Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a statement execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time.
+{% include {{ page.version.version }}/ui/statistics.md %}
 
-To clear the statistics, click **clear SQL stats**. This resets SQL statistics on the Statements and [Transactions](ui-transactions-page.html) pages and [`crdb_internal`](crdb-internal.html) tables.
+### Example
+
+This example command shows how to query the two most important JSON columns: metadata and statistics:
+
+~~~sql
+SELECT
+  aggregated_ts,
+  fingerprint_id,
+  app_name,
+  metadata -> 'query' AS statement_text,
+  metadata -> 'stmtTyp' AS statement_type,
+  metadata -> 'db' AS database_name,
+  metadata -> 'distsql' AS is_distsql,
+  metadata -> 'fullScan' AS has_full_scan,
+  metadata -> 'vec' AS used_vec,
+  statistics -> 'execution_statistics' -> 'contentionTime' -> 'mean' AS contention_time_mean,
+  statistics -> 'statistics' -> 'cnt' AS execution_count,
+  statistics -> 'statistics' -> 'firstAttemptCnt' AS number_first_attempts,
+  statistics -> 'statistics' -> 'numRows' -> 'mean' AS number_rows_returned_mean,
+  statistics -> 'statistics' -> 'rowsRead' -> 'mean' AS number_rows_read_mean,
+  statistics -> 'statistics' -> 'runLat' -> 'mean' AS runtime_latecy_mean,
+  sampled_plan
+FROM crdb_internal.statement_statistics;
+~~~
 
 ## SQL statement fingerprints
 
@@ -68,6 +89,8 @@ Use the Statements page to identify SQL statements that you want to [troubleshoo
 {{site.data.alerts.callout_success}}
 If you haven't yet executed any queries in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
+
+<a id="statement-fingerprint-properties"></a>
 
 ### Statements table
 

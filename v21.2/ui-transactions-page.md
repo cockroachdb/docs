@@ -4,9 +4,7 @@ summary: The Transactions page helps you identify frequently retried or high lat
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/ui/admin-access.md %}
 
  The **Transactions** page helps you:
 
@@ -32,9 +30,9 @@ You can search for transactions using the search field or using the date field. 
 
 ## Transaction statistics
 
-Transaction statistics are aggregated once an hour and organized by [Interval Start Time](#transactions-table). Statistics between two hourly intervals belong to the nearest hour rounded down. For example, a transaction execution ending at 1:50 would have its statistics aggregated in the 1:00 interval start time.
+{% include {{ page.version.version }}/ui/statistics.md %}
 
-To clear the statistics, click **clear SQL stats**. This resets SQL statistics on the [Statements](ui-statements-page.html) and Transactions pages and [`crdb_internal`](crdb-internal.html) tables.
+For an example of querying the statistics table, see [Example](ui-statements-page.html#example).
 
 ## Filter by transaction latency
 
@@ -48,6 +46,7 @@ Use this page to identify transactions that you may want to [troubleshoot](query
 If you haven't yet executed any transactions in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
+<a id="statement-fingerprint-properties"></a>
 
 ### Transactions table
 
