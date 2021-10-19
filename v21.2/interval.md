@@ -6,32 +6,26 @@ toc: true
 
 The `INTERVAL` [data type](data-types.html) stores a value that represents a span of time.
 
-## Aliases
-
-CockroachDB supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
-
 ## Syntax
 
-A constant value of type `INTERVAL` can be expressed using an
-[interpreted literal](sql-constants.html#interpreted-literals), or a
-string literal
-[annotated with](scalar-expressions.html#explicitly-typed-expressions)
-type `INTERVAL` or
-[coerced to](scalar-expressions.html#explicit-type-coercions) type
-`INTERVAL`.
+You can express a constant value of type `INTERVAL` using an [interpreted literal](sql-constants.html#interpreted-literals), or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `INTERVAL` or [coerced to](scalar-expressions.html#explicit-type-coercions) type `INTERVAL`. CockroachDB also supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where an `INTERVAL` value is otherwise expected.
 
 `INTERVAL` constants can be expressed using the following formats:
 
 Format | Description
 -------|--------
-SQL Standard | `INTERVAL 'Y-M D H:M:S'`<br><br>Seconds and days can be expressed as integers or floats. All other input values must be expressed as integers.<br><br>For more details, see [Details on SQL Standard input](#details-on-sql-standard-input).
+SQL Standard | `INTERVAL 'Y-M D H:M:S'`<br><br>You can express seconds and days as integers or floats. All other input values must be expressed as integers.<br><br>For more details, see [Details on SQL Standard input](#details-on-sql-standard-input).
 ISO 8601 | `INTERVAL 'P1Y2M3DT4H5M6S'`
 Traditional PostgreSQL | `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`
 Abbreviated PostgreSQL | `INTERVAL '1 yr 2 mons 3 d 4 hrs 5 mins 6 secs'`
 
-CockroachDB also supports using uninterpreted
-[string literals](sql-constants.html#string-literals) in contexts
-where an `INTERVAL` value is otherwise expected.
+<span class="version-tag">New in v21.2</span>: By default, CockroachDB displays `INTERVAL` values in the traditional PostgreSQL format (e.g., `INTERVAL '1 year 2 months 3 days 4 hours 5 minutes 6 seconds'`). To change the display format of `INTERVAL` values, set the `intervalstyle` [session variable](set-vars.html) or the `sql.defaults.intervalstyle` [cluster setting](cluster-settings.html) to a supported format (`iso_8601` for the ISO 8601 format; `sql_standard` for the SQL Standard format).
+
+Before setting `intervalstyle`, note the following:
+
+- To set the `intervalstyle` session variable, the `intervalstyle_enabled` session variable must be set to `true`.
+- At the beginning of each session, the `intervalstyle_enabled` variable is set to the value of the `sql.defaults.intervalstyle.enabled` cluster setting (`false`, by default).
+- The value of `intervalstyle` affects how CockroachDB parses certain `INTERVAL` values. In specific, when `intervalstyle = 'sql_standard'`, and when the `INTERVAL` value begins with a negative symbol, CockroachDB parses all fields as negative values (e.g., `-3 years 1 day` is parsed as `-(3 years 1 day)`, or `-3 years, -1 day`). When `intervalstyle = 'postgres'` (the default format), and when the `INTERVAL` value begins with a negative symbol, CockroachDB only applies the negative symbol to the field that it directly precedes (e.g., `-3 years 1 day` is parsed as `-3 years, +1 day`).
 
 ### Details on SQL Standard input
 
@@ -115,7 +109,7 @@ If the interval input is ambiguous, specifying two duration fields stores the in
 
 ## Supported casting and conversion
 
-`INTERVAL` values can be [cast](data-types.html#data-type-conversions-and-casts) to any of the following data types:
+You can [cast](data-types.html#data-type-conversions-and-casts) `INTERVAL` values to any of the following data types:
 
 Type | Details
 -----|--------
@@ -124,6 +118,10 @@ Type | Details
 `FLOAT` | Converts to number of picoseconds
 `STRING` | Converts to `h-m-s` format (microsecond precision)
 `TIME` | Converts to `HH:MM:SS.SSSSSS`, the time equivalent to the interval after midnight (microsecond precision)
+
+{{site.data.alerts.callout_info}}
+When the `intervalstyle_enabled` [session variable](set-vars.html) is set to `true`, you cannot cast values from `INTERVAL` to `STRING` or from `STRING` to `INTERVAL` if the value belongs to a [computed column](computed-columns.html), a [partially-indexed column](partial-indexes.html), or a [geo-partitioned column](partitioning.html). To work around this limitation, use the `to_char_with_style(interval, style)` or `parse_interval(interval, intervalstyle)` [built-in functions](functions-and-operators.html).
+{{site.data.alerts.end}}
 
 ## See also
 
