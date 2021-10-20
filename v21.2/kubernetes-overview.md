@@ -24,7 +24,7 @@ CockroachDB can be deployed and managed on Kubernetes using the following method
 This guide describes how to handle the following tasks when running CockroachDB on Kubernetes:
 
 - [Deploying CockroachDB on a single Kubernetes cluster](deploy-cockroachdb-with-kubernetes.html)
-- [Scheduling CockroachDB pods onto worker nodes](scheduling-cockroachdb-kubernetes.html)
+- [Scheduling CockroachDB pods onto worker nodes](schedule-cockroachdb-kubernetes.html)
 - [Managing CockroachDB resources on Kubernetes](configure-cockroachdb-kubernetes.html)
 - [Managing certificates on Kubernetes](secure-cockroachdb-kubernetes.html)
 - [Scaling CockroachDB on Kubernetes](scale-cockroachdb-kubernetes.html)

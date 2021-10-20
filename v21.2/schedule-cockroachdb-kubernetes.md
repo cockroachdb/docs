@@ -41,7 +41,7 @@ Affinities and anti-affinities can be used together with `operator` fields to:
 - Prevent CockroachDB pods from being scheduled onto a labeled worker node.
 - Prevent CockroachDB pods from being co-located with labeled pods (e.g., on a node or region).
 
-For an example, see [Scheduling CockroachDB onto labeled nodes](#scheduling-cockroachdb-onto-labeled-nodes).
+For an example, see [Scheduling CockroachDB onto labeled nodes](#example-scheduling-cockroachdb-onto-labeled-nodes).
 
 ### Add a node affinity
 
