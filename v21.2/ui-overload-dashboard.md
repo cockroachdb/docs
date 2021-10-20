@@ -1,6 +1,6 @@
 ---
 title: Overload Dashboard
-summary: The Overload dashboard lets you monitor CPU usage, the runnable goroutines waiting per CPU, the files and subfiles in memory, and the performance of the admission control system.
+summary: The Overload dashboard lets you monitor the performance of the admission control system.
 toc: true
 ---
 
