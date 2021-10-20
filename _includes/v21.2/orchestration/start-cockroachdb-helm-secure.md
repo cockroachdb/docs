@@ -1,7 +1,7 @@
 {{site.data.alerts.callout_danger}}
 The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earlier (the latest version as of this writing). However, no new feature development is currently planned. If you are experiencing issues with a Helm deployment on production, contact our [Support team](https://support.cockroachlabs.com/).
 
-If you are already running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Secure CockroachDB on Kubernetes](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
+If you are already running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Certificate management](secure-cockroachdb-kubernetes.html?filters=helm#migration-to-self-signer).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
