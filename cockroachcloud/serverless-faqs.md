@@ -109,6 +109,11 @@ Yes, you can view and your clusters in the [{{ site.data.products.db }} Console]
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
+Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). If you [add billing information to your organization](billing-management.html) you can run bulk operations using cloud storage providers. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.
+
+{{site.data.alerts.callout_danger}}
+We don't recommend `userfile` for `EXPORT` operations. You can either add billing information to your organization to enable access to cloud storage, or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
+{{site.data.alerts.end}}
 
 ### Is change data capture available to me?
 
