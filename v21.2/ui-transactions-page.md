@@ -55,7 +55,7 @@ Contention | Average time this transaction was [in contention](performance-best-
 Max Memory | Maximum memory used by this transaction at any time during its execution within the last hour or specified [time interval](#time-interval). <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
 Network | Amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour or specified [time interval](#time-interval). <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of this transaction within the last hour or specified [time interval](#time-interval).
-Regions/Nodes | The region and nodes in which the transaction was executed.
+Regions/Nodes | The regions and nodes in which the transaction was executed.
 Statements | Number of SQL statements in the transaction.
 
 {{site.data.alerts.callout_info}}

@@ -39,6 +39,7 @@ If you haven't yet executed any queries in the cluster as a user, this page will
 Columns | Description
 -----|------------
 {% include {{ page.version.version }}/ui/statement_table.md %}
+Regions/Nodes | The regions and nodes on which statements with this fingerprint executed.
 Diagnostics | Option to activate [diagnostics](#diagnostics) for this fingerprint. If activated, this displays the status of diagnostics collection (`WAITING FOR QUERY`, `READY`, OR `ERROR`). When `READY`, the most recent diagnostics bundle can be downloaded here. Access the full history of diagnostics for the fingerprint in the [**Statement Details**](#statement-details-page) page.
 
 ### Time interval
@@ -100,6 +101,10 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 **Statement details** displays information about the execution of the statement.
 
+- **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
+- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics.
+- **Regions** displays the regions on which the statements executed.
+- **Database** displays the database on which the statements executed.
 - **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
 - **Failed?** indicates whether the statement failed to execute.
 - **Used cost-based optimizer?** indicates whether the execution used the [cost-based optimizer](cost-based-optimizer.html).

@@ -16,43 +16,66 @@ The **Databases** page of the DB Console provides details of the following:
 
 To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Databases** in the left-hand navigation.
 
+## Databases list
+
+The **Databases** list shows the databases on the cluster.
+
+The following information is displayed for each database:
+
+| Parameter     | Description                                                                                                             |
+|---------------|-------------------------------------------------------------------------------------------------------------------------|
+| Database Name | The name of the database.                                                                                               |
+| Size          | Approximate disk size across all table replicas in the database.                                                        |
+| Tables        | The number of tables in this database.                                                                                  |
+| Range count   | The number of ranges across all tables in this database.                                                                |
+| Regions/nodes | The regions and nodes on which the tables in this database are located. This is not displayed on a single-node cluster. |
+
+Click any database name to open the [Tables page](#tables-view).
+
 ## Tables view
 
-The **Tables** view shows details of the system table as well as the tables in your databases.
+The **Tables** view shows details of the system table as well as the tables in your databases. On the Tables page, make sure that **View: Tables** is selected in the pulldown menu.
 
-To view [table details](#table-details), click on a table name.
+The following information is displayed for each table:
 
-<img src="{{ 'images/v21.2/ui_database_tables_view.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+| Parameter        | Description                                                                                              |
+|------------------|----------------------------------------------------------------------------------------------------------|
+| Table Name       | The name of the table.                                                                                   |
+| Replication Size | The approximate disk size of all replicas of this table on the cluster.                                  |
+| Ranges           | The number of ranges in the table.                                                                       |
+| Columns          | The number of columns in the table.                                                                      |
+| Indexes          | The number of indexes in the table.                                                                      |
+| Regions          | The regions and nodes on which the table data is stored. This is not displayed on a single-node cluster. |
 
-The following are displayed for each table:
-
-Parameter | Description
---------|----
-Table Name | The name of the table.
-Size | Approximate disk size of all replicas of this table on the cluster.
-Ranges | The number of ranges in the table.
-\# of Columns | The number of columns in the table.
-\# of Indices | The number of indices for the table.
+Click any table name to view [table details](#table-details).
 
 ### Table details
 
 Click any table name in [Tables](#tables-view) view to display details for that table.
 
-<img src="{{ 'images/v21.2/ui_database_tables_details.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
-
 - **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info, [zone configurations](configure-replication-zones.html), constraints, and lease preferences. In addition, the following metrics are displayed:
-	- **Size** is the approximate disk size of all replicas of this table on the cluster.
-	- **Ranges** is the number of [ranges](architecture/overview.html#terms) in this table.
-	- **Replicas** is the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
+	- **Size** displays the approximate disk size of all replicas of this table on the cluster.
+	- **Ranges** displays the number of [ranges](architecture/overview.html#terms) in this table.
+	- **Replicas** displays the number of [replicas](architecture/replication-layer.html) of this table on the cluster.
+	- **Regions/nodes** displays the regions and nodes on which the table data is stored. This is not displayed on a single-node cluster.
+	- **Database** displays the database on which the table is found.
+	- **Indexes** displays the names of the indexes in the table.
 - **Grants** displays the [grants](#grants-view) associated with the table.
 
 ## Grants view
 
-The **Grants** view shows the [privileges](authorization.html#assign-privileges) granted to users for each database.
+The **Grants** view shows the [privileges](authorization.html#assign-privileges) granted to users for each database. On the [Tables page](#tables-view), make sure that **View: Grants** is selected in the pulldown menu.
+
+The following information is displayed for each table:
+
+| Parameter  | Description                       |
+|------------|-----------------------------------|
+| Table Name | The name of the table.            |
+| Users      | The number of users of the table. |
+| Roles      | The list of roles on the table.   |
+| Grants     | The list of grants of the table.  |
 
 For more details about grants and privileges, see [`GRANT`](grant.html).
-
-<img src="{{ 'images/v21.2/ui_database_grants_view.png' | relative_url }}" alt="DB Console Database Grants View" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 
