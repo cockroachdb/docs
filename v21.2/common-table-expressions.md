@@ -326,7 +326,7 @@ FROM
 (2 rows)
 ~~~
 
-CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify data can appear only at the outer level, so they _cannot_ be correlated.
+CTEs containing statements (`INSERT`, `UPSERT`, `UPDATE`, `DELETE`) that modify data can appear only at the upper level, so they _cannot_ be correlated.
 
 ## See also
 
