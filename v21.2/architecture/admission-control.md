@@ -34,4 +34,4 @@ Admission control works on the node level, not the cluster. The admission contro
 
 ## Observing admission control performance
 
-The [DB Console Overload dashboard](ui-overload-dashboard.html) shows metrics related to the peformance of the admission control system.
+The [DB Console Overload dashboard](../ui-overload-dashboard.html) shows metrics related to the peformance of the admission control system.
