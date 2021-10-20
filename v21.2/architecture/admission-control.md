@@ -8,8 +8,8 @@ toc: true
 
 Admission control is disabled by default. To enable admission control:
 
-- Set the [`admission.kv.enabled`](../cluster-setings.html) cluster setting to `true` for work performed by the [KV layer](distribution-layer.html).
-- Set the [`admission.sql_kv_response.enabled`](../cluster-setings.html) cluster setting to `true` for work performed in the SQL layer when receiving [KV responses](distribution-layer.html).
+- Set the [`admission.kv.enabled`](../cluster-settings.html) cluster setting to `true` for work performed by the [KV layer](distribution-layer.html).
+- Set the [`admission.sql_kv_response.enabled`](../cluster-settings.html) cluster setting to `true` for work performed in the SQL layer when receiving [KV responses](distribution-layer.html).
 - Set the [`admission.sql_sql_response.enabled`](../cluster-settings.html) cluster setting to `true` for work performed in the SQL layer when receiving [DistSQL responses](sql-layer.html#distsql).
 
 ## Use cases for admission control
@@ -34,4 +34,4 @@ Admission control works on the node level, not the cluster. The admission contro
 
 ## Observing admission control performance
 
-The [DB Console Overload dashboard](../ui-overload-dashboard.html) shows metrics related to the peformance of the admission control system.
+The [DB Console Overload dashboard](ui-overload-dashboard.html) shows metrics related to the peformance of the admission control system.
