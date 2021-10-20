@@ -8,7 +8,7 @@ The `DATE` [data type](data-types.html) stores a year, month, and day.
 
 ## Syntax
 
-A constant value of type `DATE` can be expressed using an [interpreted literal](sql-constants.html#interpreted-literals), or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `DATE` or [coerced to](scalar-expressions.html#explicit-type-coercions) type `DATE`.
+You can express a constant value of type `DATE` using an [interpreted literal](sql-constants.html#interpreted-literals), or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `DATE` or [coerced to](scalar-expressions.html#explicit-type-coercions) type `DATE`.
 
 CockroachDB also supports using uninterpreted [string literals](sql-constants.html#string-literals) in contexts where a `DATE` value is otherwise expected. By default, CockroachDB parses the following string formats for dates:
 
@@ -16,7 +16,7 @@ CockroachDB also supports using uninterpreted [string literals](sql-constants.ht
 - `MM-DD-YYYY`
 - `MM-DD-YY` (default)/`YY-MM-DD`/`DD-MM-YY`
 
-To change the input format of truncated dates (e.g., `12-16-06`) from `MM-DD-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). Note that, in order to set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
+To change the input format of truncated dates (e.g., `12-16-06`) from `MM-DD-YY` to `YY-MM-DD` or `DD-MM-YY`, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). To set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
 
 ## PostgreSQL compatibility
 
