@@ -1396,7 +1396,7 @@
               {
                 "title": "Overload Dashboard",
                 "urls": [
-                  "/{VERSION}/ui-overload-dashboard.html"
+                  "/${VERSION}/ui-overload-dashboard.html"
                 ]
               },
               {
