@@ -129,6 +129,8 @@ This improves performance by decreasing the likelihood that the `BACKUP` will be
 
 `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to _not_ skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
 
+{% include {{ page.version.version }}/backups/file-size-setting.md %}
+
 ## Viewing and controlling backups jobs
 
 After CockroachDB successfully initiates a backup, it registers the backup as a job, and you can do the following:
