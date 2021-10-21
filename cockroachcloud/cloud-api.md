@@ -1,4 +1,4 @@
----
+spend limit---
 title: Use the Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
@@ -66,7 +66,7 @@ curl --request POST \
   "provider": "{cloud provider}",
   "serverless": {
     "regionName": "{region name}",
-    "spendLimit": {maximum spend}
+    "spendLimit": {spend limit}
   }
 }
 ~~~
@@ -76,7 +76,7 @@ Where:
 
   - `{cluster name}` is the name of the cluster. This should be a short string with no whitespace.
   - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
-  - `{maximum spend}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
 For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
 
@@ -173,7 +173,7 @@ If the request was successful, the API will return detailed information about th
     "longRunningOperationStatus": "NOT_SET",
     "serverless": {
       "regionName": "{region name}",
-      "spendLimit": {maximum spend}
+      "spendLimit": {spend limit}
     },
     "createdAt": "2021-09-24T14:15:22Z",
     "updatedAt": "2021-09-24T14:15:22Z",
@@ -197,7 +197,7 @@ Where:
   - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region name}` is the cloud infrastructure provider region where the cluster is located.
-  - `{maximum spend}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
   - `{node name}` is the name of the node in the cluster.
   - `{node status}` is the status of the node. Possible values are: `LIVE` and `NOT_READY`
 
@@ -216,7 +216,7 @@ To set the maximum spend limit for a Serverless cluster, send a `PUT` request to
 curl --request PUT \
   --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters/{clusterId}/spend-limit \
   --header 'Authorization: Bearer {secret key}' \
-  --data '{"spendLimit": {maximum spend}}'
+  --data '{"spendLimit": {spend limit}}'
 ~~~
 </section>
 
@@ -224,7 +224,7 @@ curl --request PUT \
 {% include_cached copy-clipboard.html %}
 ~~~ json
 {
-  "spendLimit": {maximum spend}
+  "spendLimit": {spend limit}
 }
 ~~~
 </section>
@@ -234,7 +234,7 @@ Where:
   - `{organizationId}` is the organization service ID.
   - `{clusterId}` is the unique ID of this cluster.
   - `{secret key}` is the secret key for the service account.
-  - `{maximum spend}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
 If the request was successful, the client will not receive a response payload.
 
@@ -292,7 +292,7 @@ If the request was successful, the client will receive a list of all clusters wi
       "longRunningOperationStatus": "NOT_SET",
       "serverless": {
         "regionName": "{region name}",
-        "spendLimit": {maximum spend}
+        "spendLimit": {spend limit}
       },
       "createdAt": "2021-09-24T14:15:22Z",
       "updatedAt": "2021-09-24T14:15:22Z",
@@ -311,7 +311,7 @@ Where:
   - `{cloud provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
   - `{region name}` is the cloud infrastructure provider region where the cluster is located.
-  - `{maximum spend}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
+  - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
 ## List the available regions for a cloud infrastructure provider
 
