@@ -201,6 +201,47 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 - You should reconsider hint usage with each new release of CockroachDB. Due to improvements in the optimizer, hints specified to work with an older version may cause decreased performance in a newer version.
 
+## Zigzag joins
+
+The optimizer may plan a zigzag join when there are at least **two secondary indexes on the same table** and the table is filtered in a query with at least two filters constraining different attributes to a constant. A zigzag join works by "zigzagging" back and forth between two indexes and returning only rows with matching primary keys within a specified range. For example:
+
+~~~sql
+CREATE TABLE abc (
+  a INT,
+  b INT,
+  INDEX (a),
+  INDEX (b)
+);
+
+EXPLAIN SELECT * FROM abc WHERE a = 10 AND b = 20;
+~~~
+~~~
+               info
+----------------------------------
+  distribution: local
+  vectorized: true
+
+  • zigzag join
+    pred: (a = 10) AND (b = 20)
+    left table: abc@abc_a_idx
+    left columns: (a)
+    left fixed values: 1 column
+    right table: abc@abc_b_idx
+    right columns: (b)
+    right fixed values: 1 column
+(11 rows)
+~~~
+
+### Prevent zigzag joins
+
+<span class="version-tag">New in v21.2</span>
+
+The join hint `NO_ZIGZAG_JOIN` prevents the optimizer from planning a zigzag join for the specified table. Apply the hint in the same way as other existing [index hints](table-expressions.html#force-index-selection). For example:
+
+~~~sql
+SELECT * FROM abc@{NO_ZIGZAG_JOIN};
+~~~
+
 ## Examples
 
 ### Inverted join examples
