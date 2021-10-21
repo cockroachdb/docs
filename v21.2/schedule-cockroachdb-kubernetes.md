@@ -12,7 +12,7 @@ This page describes how to configure, using the [Operator](https://github.com/co
 - [Node affinities](#add-a-node-affinity)
 - [Pod affinities and anti-affinities](#add-a-pod-affinity-or-anti-affinity)
 - [Taints and tolerations](#taints-and-tolerations)
-- [Pod labels and annotations](#pod-labels-and-annotations)
+- [Resource labels and annotations](#resource-labels-and-annotations)
 
 These settings control how CockroachDB pods can be identified or scheduled onto worker nodes.
 
@@ -30,17 +30,18 @@ spec:
 
 ## Node selectors
 
-A pod with a *node selector* will be scheduled onto a worker node with the matching [label](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).
+A pod with a *node selector* will be scheduled onto a worker node that has matching [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/), or key-value pairs.
 
-Specify a node selector in `nodeSelector` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster).
+Specify the labels in `nodeSelector` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `nodeSelector` labels, the node must match all of them.
 
-The following configuration causes CockroachDB pods to be scheduled onto worker nodes with the label `worker-pool-name=crdb-workers`:
+The following configuration causes CockroachDB pods to be scheduled onto worker nodes that have *both* the labels `worker-pool-name=crdb-workers` and `kubernetes.io/arch=amd64`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
 spec:
   nodeSelector:
     worker-pool-name: crdb-workers
+    kubernetes.io/arch: amd64
 ~~~
 
 For an example of labeling nodes, see [Scheduling CockroachDB onto labeled nodes](#example-scheduling-cockroachdb-onto-labeled-nodes).
@@ -64,7 +65,7 @@ For an example, see [Scheduling CockroachDB onto labeled nodes](#example-schedul
 
 ### Add a node affinity
 
-Specify node affinities in `affinity.nodeAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster).
+Specify node affinities in `affinity.nodeAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
 The following configuration requires that CockroachDB pods are scheduled onto worker nodes running either an `intel` or `amd64` CPU, with a preference against worker nodes in the `us-east4-b` availability zone.
 
@@ -99,7 +100,7 @@ For more context on how these rules work, see the [Kubernetes documentation](htt
 
 ### Add a pod affinity or anti-affinity
 
-Specify pod affinities and anti-affinities in `affinity.podAffinity` and `affinity.podAntiAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster).
+Specify pod affinities and anti-affinities in `affinity.podAffinity` and `affinity.podAntiAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
 The following configuration attempts to schedule CockroachDB pods in the same zones as the pods that run our example [load generator](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/example-app.yaml) app. It disallows CockroachDB pods from being co-located on the same worker node.
 
@@ -345,9 +346,9 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 
 	`cockroachdb-2` is now scheduled onto the `gke-cockroachdb-default-pool-4e5ce539-68p5` node.
 
-## Pod labels and annotations
+## Resource labels and annotations
 
-To assist in working with your cluster, you can add labels and annotations to your pods.
+To assist in working with your cluster, you can add labels and annotations to your resources.
 
 Specify labels in `additionalLabels` and annotations in `additionalAnnotations` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
@@ -357,9 +358,9 @@ spec:
   additionalLabels:
     app.kubernetes.io/version: {{page.release_info.version}}
   additionalAnnotations:
-  	operator: https://github.com/cockroachdb/cockroach-operator/blob/master/install/operator.yaml
+    operator: https://github.com/cockroachdb/cockroach-operator/blob/master/install/operator.yaml
 ~~~
 
-To verify that the labels and annotations were applied to a pod, run `kubectl describe pod {pod-name}`.
+To verify that the labels and annotations were applied to a pod, for example, run `kubectl describe pod {pod-name}`.
 
 For more information about [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) and [annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/), see the Kubernetes documentation.
