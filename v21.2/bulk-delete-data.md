@@ -129,11 +129,11 @@ conn.close()
 At each iteration, the selection query returns the primary key values of up to 20,000 rows of matching historical data from 5 seconds in the past, in a read-only transaction. Then, a nested loop iterates over the returned primary key values in smaller batches of 5,000 rows. At each iteration of the nested `DELETE` loop, a batch of rows is deleted. After the nested `DELETE` loop deletes all of the rows from the initial selection query, a time delay ensures that the next selection query reads historical data from the table after the last iteration's `DELETE` final delete.
 
 {{site.data.alerts.callout_info}}
-CockroachDB records the timestamp of each row created in the database with the `crdb_internal_mvcc_timestamp` metadata column. In the absence of an explicit timestamp column in your table, you can use `crdb_internal_mvcc_timestamp` to filter expired data.
+CockroachDB records the timestamp of each row created in a table in the `crdb_internal_mvcc_timestamp` metadata column. In the absence of an explicit timestamp column in your table, you can use `crdb_internal_mvcc_timestamp` to filter expired data.
 
-`crdb_internal_mvcc_timestamp` cannot be indexed. As a result, we recommend following the non-indexed column pattern shown above if you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes.
+`crdb_internal_mvcc_timestamp` cannot be indexed. As a result, we recommend following the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column) if you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes.
 
-**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change in new releases of CockroachDB, without prior notice.**
+**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB.**
 {{site.data.alerts.end}}
 
 ## Batch-delete "expired" data
