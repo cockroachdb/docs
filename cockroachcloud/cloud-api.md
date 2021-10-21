@@ -21,15 +21,15 @@ To send the secret key when making an API call, add the secret key to the `Autho
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://api.cockroachlabs.cloud/v1/organizations' \
-  --header 'Authorization: {secret key}'
+  --url 'https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters' \
+  --header 'Authorization: Bearer {secret key}'
 ~~~
 </section>
 
 <section class="filter-content" markdown="1" data-scope="raw">
 {% include_cached copy-clipboard.html %}
 ~~~ text
-Authorization: {secret key}
+Authorization: Bearer {secret key}
 ~~~
 </section>
 
@@ -52,8 +52,8 @@ The `{organizationId}` for an organization can be found in the **Settings** page
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters \
-  --header 'Authorization: {secret key}' \
+  --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters \
+  --header 'Authorization: Bearer {secret key}' \
   --header 'content-type: application/json' \
   --data '{"name":"{cluster name}","provider":"{cloud provider}","serverless":{"regionName":"{region name}","spendLimit":0}}'
 ~~~
@@ -90,8 +90,8 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters \
-  --header 'Authorization: {secret key}' \
+  --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters \
+  --header 'Authorization: Bearer {secret key}' \
   --header 'content-type: application/json' \
   --data '{"name":"notorious-moose","serverless":{"spendLimit":0}}'
 ~~~
@@ -149,8 +149,8 @@ To retrieve detailed information about a specific cluster, make a `GET` request 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/%7BclusterId%7D \
-  --header 'Authorization: {secret key}'
+  --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters/{clusterId} \
+  --header 'Authorization: Bearer {secret key}'
 ~~~
 
 Where:
@@ -216,8 +216,8 @@ To set the maximum spend limit for a Serverless cluster, send a `PUT` request to
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request PUT \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/%7BclusterId%7D/spend-limit \
-  --header 'Authorization: {secret key}' \
+  --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters/{clusterId}/spend-limit \
+  --header 'Authorization: Bearer {secret key}' \
   --header 'content-type: application/json' \
   --data '{"spendLimit": {maximum spend}}'
 ~~~
@@ -250,8 +250,8 @@ Deleting a cluster will permanently delete the cluster and all the data within t
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request DELETE \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/%7BclusterId%7D \
-  --header 'Authorization: {secret key}'
+  --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters/{clusterId} \
+  --header 'Authorization: Bearer {secret key}'
 ~~~
 
 Where:
@@ -269,8 +269,8 @@ To list all clusters within an organization, send a `GET` request to the `/v1/or
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters' \
-  --header 'Authorization: {secret key}'
+  --url 'https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters' \
+  --header 'Authorization: Bearer {secret key}'
 ~~~
 
 Where:
@@ -323,8 +323,8 @@ To list the available regions for creating new clusters, send a `GET` request to
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/available-regions?provider={cloud provider}' \
-  --header 'Authorization: {secret key}'
+  --url 'https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters/available-regions?provider={cloud provider}' \
+  --header 'Authorization: Bearer {secret key}'
 ~~~
 
 Where:
