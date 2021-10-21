@@ -35,6 +35,8 @@ Authorization: {secret key}
 
 Where `{secret key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
 
+You will also need your **Organization ID**, located in the **Settings** page of the Console. Replace `{organizationId}` with your ID in the endpoint URIs.
+
 ## Create a new cluster
 
 To create a cluster, send a `POST` request to the `/v1/orgs/{organizationId}/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` permissions to create new clusters.
