@@ -1,4 +1,4 @@
-spend limit---
+---
 title: Use the Cloud API
 summary: The Cloud API is used to manage clusters within an organization
 toc: true
