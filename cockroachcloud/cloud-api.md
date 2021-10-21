@@ -54,7 +54,6 @@ The `{organizationId}` for an organization can be found in the **Settings** page
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters \
   --header 'Authorization: Bearer {secret key}' \
-  --header 'content-type: application/json' \
   --data '{"name":"{cluster name}","provider":"{cloud provider}","serverless":{"regionName":"{region name}","spendLimit":0}}'
 ~~~
 </section>
@@ -92,7 +91,6 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters \
   --header 'Authorization: Bearer {secret key}' \
-  --header 'content-type: application/json' \
   --data '{"name":"notorious-moose","serverless":{"spendLimit":0}}'
 ~~~
 </section>
@@ -218,7 +216,6 @@ To set the maximum spend limit for a Serverless cluster, send a `PUT` request to
 curl --request PUT \
   --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters/{clusterId}/spend-limit \
   --header 'Authorization: Bearer {secret key}' \
-  --header 'content-type: application/json' \
   --data '{"spendLimit": {maximum spend}}'
 ~~~
 </section>
