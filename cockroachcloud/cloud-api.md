@@ -37,9 +37,9 @@ Where `{secret key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-To create a cluster, send a `POST` request to the `/v1/orgs/{serviceId}/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` permissions to create new clusters.
+To create a cluster, send a `POST` request to the `/v1/orgs/{organizationId}/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` permissions to create new clusters.
 
-The `{serviceId}` for an organization can be found in the **Settings** page of the Console.
+The `{organizationId}` for an organization can be found in the **Settings** page of the Console under **Organization ID**.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -50,7 +50,7 @@ The `{serviceId}` for an organization can be found in the **Settings** page of t
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters \
+  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters \
   --header 'Authorization: {secret key}' \
   --header 'content-type: application/json' \
   --data '{"name":"{cluster name}","provider":"{cloud provider}","serverless":{"regionName":"{region name}","spendLimit":0}}'
@@ -88,7 +88,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request POST \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters \
+  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters \
   --header 'Authorization: {secret key}' \
   --header 'content-type: application/json' \
   --data '{"name":"notorious-moose","serverless":{"spendLimit":0}}'
@@ -142,18 +142,18 @@ Where:
 
 ## Retrieve information about a specific cluster
 
-To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/orgs/{serviceId}/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to retrieve information about an organization's clusters.
+To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/orgs/{organizationId}/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to retrieve information about an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters/%7BclusterId%7D \
+  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/%7BclusterId%7D \
   --header 'Authorization: {secret key}'
 ~~~
 
 Where:
 
-  - `{serviceId}` is the organization service ID.
+  - `{organizationId}` is the organization service ID.
   - `{clusterId}` is the cluster ID returned after creating the cluster.
   - `{secret key}` is the secret key for the service account.
 
@@ -203,7 +203,7 @@ Where:
 
 ## Set the maximum spend limit of a Serverless cluster
 
-To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/orgs/{serviceId}/clusters/{clusterId}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` permissions to retrieve information about an organization's clusters.
+To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/orgs/{organizationId}/clusters/{clusterId}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` permissions to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -214,7 +214,7 @@ To set the maximum spend limit for a Serverless cluster, send a `PUT` request to
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request PUT \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters/%7BclusterId%7D/spend-limit \
+  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/%7BclusterId%7D/spend-limit \
   --header 'Authorization: {secret key}' \
   --header 'content-type: application/json' \
   --data '{"spendLimit": {maximum spend}}'
@@ -232,7 +232,7 @@ curl --request PUT \
 
 Where:
 
-  - `{serviceId}` is the organization service ID.
+  - `{organizationId}` is the organization service ID.
   - `{clusterId}` is the unique ID of this cluster.
   - `{secret key}` is the secret key for the service account.
   - `{maximum spend}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
@@ -241,20 +241,20 @@ If the request was successful, the client will not receive a response payload.
 
 ## Delete a cluster
 
-To delete a cluster, send a `DELETE` request to the `/v1/orgs/{serviceId}/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` permissions to delete an organization's clusters.
+To delete a cluster, send a `DELETE` request to the `/v1/orgs/{organizationId}/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` permissions to delete an organization's clusters.
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request DELETE \
-  --url https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters/%7BclusterId%7D \
+  --url https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/%7BclusterId%7D \
   --header 'Authorization: {secret key}'
 ~~~
 
 Where:
 
-  - `{serviceId}` is the organization service ID.
+  - `{organizationId}` is the organization service ID.
   - `{clusterId}` is the cluster ID.
   - `{secret key}` is the secret key for the service account.
 
@@ -262,18 +262,18 @@ If the `DELETE` request was successful the client will not receive a response pa
 
 ## List all clusters in an organization
 
-To list all clusters within an organization, send a `GET` request to the `/v1/orgs/{serviceId}/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to list an organization's clusters.
+To list all clusters within an organization, send a `GET` request to the `/v1/orgs/{organizationId}/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to list an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters' \
+  --url 'https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters' \
   --header 'Authorization: {secret key}'
 ~~~
 
 Where:
 
-  - `{serviceId}` is the organization service ID.
+  - `{organizationId}` is the organization service ID.
   - `{secret key}` is the secret key for the service account.
 
 If the request was successful, the client will receive a list of all clusters within the organization.
@@ -316,18 +316,18 @@ Where:
 
 ## List the available regions for a cloud infrastructure provider
 
-To list the available regions for creating new clusters, send a `GET` request to the `/v1/orgs/{serviceId}/clusters/available-regions?provider={cloud provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to list the available regions.
+To list the available regions for creating new clusters, send a `GET` request to the `/v1/orgs/{organizationId}/clusters/available-regions?provider={cloud provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to list the available regions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
 curl --request GET \
-  --url 'https://api.cockroachlabs.cloud/v1/orgs/%7BserviceId%7D/clusters/available-regions?provider={cloud provider}' \
+  --url 'https://api.cockroachlabs.cloud/v1/orgs/%7BorganizationId%7D/clusters/available-regions?provider={cloud provider}' \
   --header 'Authorization: {secret key}'
 ~~~
 
 Where:
 
-  - `{serviceId}` is the organization service ID.
+  - `{organizationId}` is the organization service ID.
   - `{cloud provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{secret key}` is the secret key for the service account.
 
