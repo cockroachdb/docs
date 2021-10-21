@@ -54,7 +54,7 @@ The `{organizationId}` for an organization can be found in the **Settings** page
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters \
   --header 'Authorization: Bearer {secret key}' \
-  --data '{"name":"{cluster name}","provider":"{cloud provider}","serverless":{"regionName":"{region name}","spendLimit":0}}'
+  --data '{"name":"{cluster name}","provider":"{cloud provider}","serverless":{"regions":["{region name}"],"spendLimit":{spend limit}}}'
 ~~~
 </section>
 
@@ -65,7 +65,9 @@ curl --request POST \
   "name": "{cluster name}",
   "provider": "{cloud provider}",
   "serverless": {
-    "regionName": "{region name}",
+    "regions": [
+      "{region name}"
+    ],
     "spendLimit": {spend limit}
   }
 }
@@ -76,6 +78,7 @@ Where:
 
   - `{cluster name}` is the name of the cluster. This should be a short string with no whitespace.
   - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
+  - `{region name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
   - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
 For example, to create a new free Serverless cluster named "notorious-moose" using the default values for the cloud infrastructure provider and region:
@@ -122,7 +125,9 @@ If the request was successful, the API will return information about the newly c
     "creatorId": "{account ID}",
     "longRunningOperationStatus": "NOT_SET",
     "serverless": {
-      "regionName": "{region name}",
+      "regions": [
+        "{region name}"
+      ],
       "spendLimit": 0
     },
     "createdAt": "2021-09-24T14:15:22Z",
@@ -138,7 +143,7 @@ Where:
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{region name}` is the cloud infrastructure provider region where the cluster is located.
+  - `{region name}` is the zone code of the cloud infrastructure provider where the cluster is located.
 
 ## Retrieve information about a specific cluster
 
@@ -172,19 +177,26 @@ If the request was successful, the API will return detailed information about th
     "creatorId": "{account ID}",
     "longRunningOperationStatus": "NOT_SET",
     "serverless": {
-      "regionName": "{region name}",
+      "regions": [
+        "{region name}"
+      ],
       "spendLimit": {spend limit}
     },
     "createdAt": "2021-09-24T14:15:22Z",
     "updatedAt": "2021-09-24T14:15:22Z",
     "deletedAt": "2021-09-24T14:15:22Z"
   },
-  "nodes": [
-    {
-      "name": "{node name}",
-      "regionName": "{region name}",
-      "status": "{node status}"
-    }
+  "regions": [
+    "name": "string",
+    "sqlDns": "string",
+    "uiDns": "string",
+    "nodes": [
+      {
+        "name": "{node name}",
+        "regionName": "{region name}",
+        "status": "{node status}"
+      }
+    ]
   ]
 }
 ~~~
@@ -291,7 +303,9 @@ If the request was successful, the client will receive a list of all clusters wi
       "creatorId": "{account ID}",
       "longRunningOperationStatus": "NOT_SET",
       "serverless": {
-        "regionName": "{region name}",
+        "regions": [
+          "{region name}"
+        ],
         "spendLimit": {spend limit}
       },
       "createdAt": "2021-09-24T14:15:22Z",
@@ -310,7 +324,7 @@ Where:
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{cloud provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
-  - `{region name}` is the cloud infrastructure provider region where the cluster is located.
+  - `{region name}` is the zone code of the cloud infrastructure provider where the cluster is located.
   - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
 ## List the available regions for a cloud infrastructure provider
