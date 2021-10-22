@@ -20,6 +20,10 @@ The `TIMESTAMP` and `TIMESTAMPTZ` [data types](data-types.html) store a date and
 
 The difference between these two variants is that `TIMESTAMPTZ` uses the client's session [time zone](set-vars.html#set-time-zone), while the other simply does not. This behavior extends to functions like `now()` and `extract()` on `TIMESTAMPTZ` values.
 
+{{site.data.alerts.callout_info}}
+A time zone offset of `+00:00` is displayed for all [`TIME`](time.html) and `TIMESTAMP` values, but is not stored in the database.
+{{site.data.alerts.end}}
+
 You can use the [`timezone()`](functions-and-operators.html#date-and-time-functions) and [`AT TIME ZONE`](functions-and-operators.html#special-syntax-forms) functions to convert a `TIMESTAMPTZ` into a `TIMESTAMP` at a specified timezone, or to convert a `TIMESTAMP` into a `TIMESTAMPTZ` at a specified timezone.
 
 ## Best practices
@@ -35,16 +39,9 @@ In CockroachDB, the following are aliases:
 
 ## Syntax
 
-A constant value of type `TIMESTAMP`/`TIMESTAMPTZ` can be expressed using an
-[interpreted literal](sql-constants.html#interpreted-literals), or a
-string literal
-[annotated with](scalar-expressions.html#explicitly-typed-expressions)
-type `TIMESTAMP`/`TIMESTAMPTZ` or
-[coerced to](scalar-expressions.html#explicit-type-coercions) type
-`TIMESTAMP`/`TIMESTAMPTZ`.
+You can express a constant value of type `TIMESTAMP`/`TIMESTAMPTZ` using an [interpreted literal](sql-constants.html#interpreted-literals), or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `TIMESTAMP`/`TIMESTAMPTZ` or [coerced to](scalar-expressions.html#explicit-type-coercions) type `TIMESTAMP`/`TIMESTAMPTZ`. When it is unambiguous, a simple unannotated [string literal](sql-constants.html#string-literals) is automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
 
-`TIMESTAMP` constants can be expressed using the
-following string literal formats:
+You can express `TIMESTAMP` constants using the following string literal formats:
 
 Format | Example
 -------|--------
@@ -52,21 +49,9 @@ Date only | `TIMESTAMP '2016-01-25'`
 Date and Time | `TIMESTAMP '2016-01-25 10:10:10.555555'`
 ISO 8601 | `TIMESTAMP '2016-01-25T10:10:10.555555'`
 
-To express a `TIMESTAMPTZ` value (with time zone offset from UTC), use
-the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`
+To express a `TIMESTAMPTZ` value with time zone offset from UTC, use the following format: `TIMESTAMPTZ '2016-01-25 10:10:10.555555-05:00'`. The fractional portion is optional and is rounded to microseconds (6 digits after decimal) for compatibility with the PostgreSQL wire protocol.
 
-When it is unambiguous, a simple unannotated [string literal](sql-constants.html#string-literals) can also
-be automatically interpreted as type `TIMESTAMP` or `TIMESTAMPTZ`.
-
-Note that the fractional portion is optional and is rounded to
-microseconds (6 digits after decimal) for compatibility with the
-PostgreSQL wire protocol.
-
- For PostgreSQL compatibility, CockroachDB bounds `TIMESTAMP` values by the lowest and highest `TIMESTAMP` values supported by PostgreSQL. The minimum allowable `TIMESTAMP` value is `4714-11-24 00:00:00+00 BC`, and the highest allowable `TIMESTAMP` value is `294276-12-31 23:59:59.999999`.
-
-{{site.data.alerts.callout_info}}
-A time zone offset of `+00:00` is displayed for all [`TIME`](time.html) and `TIMESTAMP` values, but is not stored in the database.
-{{site.data.alerts.end}}
+By default, CockroachDB interprets truncated dates (e.g., `12-16-06`) as `MM-DD-YY`. To change the input string format of truncated dates, set the `datestyle` [session variable](set-vars.html) or the `sql.defaults.datestyle ` [cluster setting](cluster-settings.html). To set the `datestyle` session variable, the `datestyle_enabled` session variable must be set to `true`.
 
 ## Size
 
@@ -74,7 +59,7 @@ A `TIMESTAMP`/`TIMESTAMPTZ` column supports values up to 12 bytes in width, but 
 
 ## Precision
 
- CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. For example, specifying a `TIMESTAMPTZ` value as `TIMESTAMPTZ(3)` truncates the time component to milliseconds. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
+CockroachDB supports precision levels from 0 (seconds) to 6 (microseconds) for `TIMESTAMP`/`TIMESTAMPTZ` values. Precision in time values specifies the number of fractional digits retained in the seconds field. For example, specifying a `TIMESTAMPTZ` value as `TIMESTAMPTZ(3)` truncates the time component to milliseconds. By default, `TIMESTAMP`/`TIMESTAMPTZ` values have a precision of 6 (microseconds).
 
 You can use an [`ALTER COLUMN ... SET DATA TYPE`](alter-column.html) statement to change the precision level of a `TIMESTAMP`/`TIMESTAMPTZ`-typed column. If there is already a non-default precision level specified for the column, the precision level can only be changed to an equal or greater precision level. For an example, see [Create a table with a `TIMESTAMP`-typed column, with precision](#create-a-table-with-a-timestamp-typed-column-with-precision).
 

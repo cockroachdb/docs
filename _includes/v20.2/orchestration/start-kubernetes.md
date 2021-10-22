@@ -8,7 +8,7 @@ GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AW
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is currently supported for GKE. You can also use the Operator on platforms such as [Red Hat OpenShift](../{{site.versions["stable"]}}/deploy-cockroachdb-with-kubernetes-openshift.html) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
+You can also use the CockroachDB Kubernetes Operator on platforms such as [Red Hat OpenShift](../{{site.versions["stable"]}}/deploy-cockroachdb-with-kubernetes-openshift.html) and [IBM Cloud Pak for Data](https://www.ibm.com/products/cloud-pak-for-data).
 {{site.data.alerts.end}}
 
 ### Hosted GKE

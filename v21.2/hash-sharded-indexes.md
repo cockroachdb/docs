@@ -18,10 +18,6 @@ To create a hash-sharded index, set the `experimental_enable_hash_sharded_indexe
 
 To change the bucket size of an existing hash-sharded primary key index, use an [`ALTER PRIMARY KEY`](alter-primary-key.html) statement with a [`USING HASH WITH BUCKET_COUNT = n_buckets` clause](sql-grammar.html#opt_hash_sharded) that specifies the new bucket size and the existing primary key columns.
 
-{{site.data.alerts.callout_info}}
-Hash-sharded indexes cannot be [interleaved](interleave-in-parent.html).
-{{site.data.alerts.end}}
-
 ## Examples
 
 For an example of a hash-sharded index, see [Create a hash-sharded secondary index](create-index.html#create-a-hash-sharded-secondary-index).

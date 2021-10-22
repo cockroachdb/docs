@@ -318,20 +318,18 @@ To find out the total number of riders and total revenue generated thus far by t
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT
-    COUNT("name") AS "total # of riders",
+    COUNT("id") AS "total # of riders",
     SUM("total rider revenue") AS "total revenue" FROM (
-      SELECT name,
-             SUM(revenue) OVER (PARTITION BY name) AS "total rider revenue"
+      SELECT DISTINCT users.id,
+             SUM(revenue) OVER (PARTITION BY users.id) AS "total rider revenue"
         FROM users JOIN rides ON users.id = rides.rider_id
-        ORDER BY "total rider revenue" DESC
-        LIMIT (SELECT count(distinct(rider_id)) FROM rides)
-  );
+        ORDER BY "total rider revenue" DESC);
 ~~~
 
 ~~~
   total # of riders | total revenue
 +-------------------+---------------+
-                 50 |      46523.00
+                 50 |      25628.00
 (1 row)
 ~~~
 
