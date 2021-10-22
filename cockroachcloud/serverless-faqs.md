@@ -64,7 +64,9 @@ Some pages on the Console runs background queries against your cluster, which me
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
-CockroachDB will [automatically collect statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) as a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). When automatic statistics collection is started your cluster may consume RUs above the 100 Request Units per second baseline. The statistics are used by the [cost-based optimizer](../{{site.versions["stable"]}}/cost-based-optimizer.html) to tune statements for higher performance. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#turn-off-statistics) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
+CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance. 
+
+When automatic statistics collection starts your cluster may consume RUs above the 100 RUs/sec baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#turn-off-statistics) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
 
 ## Beta release
 
