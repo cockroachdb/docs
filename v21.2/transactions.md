@@ -189,7 +189,7 @@ For more information, including examples showing how to use savepoints to create
 
 ## Transaction priorities
 
-Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
+Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) or for [admission control](architecture/admission-control.html), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
