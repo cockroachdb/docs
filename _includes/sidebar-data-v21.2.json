@@ -419,7 +419,8 @@
               {
                 "title": "Performance tuning recipes",
                 "urls": [
-                  "/${VERSION}/performance-recipes.html"
+                  "/${VERSION}/performance-recipes.html",
+                  "/${VERSION}/performance-recipes-solutions.html"
                 ]
               }
             ]
