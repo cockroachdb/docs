@@ -12,7 +12,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/comment.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/comment.html %}</div>
 
 ## Parameters
 

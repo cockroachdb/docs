@@ -8,7 +8,7 @@
     ~~~
 
     {{site.data.alerts.callout_info}}
-    By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure CockroachDB on Kubernetes](configure-cockroachdb-kubernetes.html?filters=manual).
+    By default, this manifest specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Resource management](configure-cockroachdb-kubernetes.html?filters=manual).
     {{site.data.alerts.end}}
     
     Use the file to create the StatefulSet and start the cluster:

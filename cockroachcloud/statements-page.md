@@ -1,6 +1,6 @@
 ---
 title: Statements Page
-summary: How to use the Statements page to view and manage SQL statements on CockroachCloud.
+summary: How to use the Statements page to view and manage SQL statements on CockroachDB Cloud.
 toc: true
 ---
 
@@ -84,7 +84,7 @@ Click on a SQL statement fingerprint to open **Statement Details**. For each sta
 - [Logical plan](#logical-plan)
 - [Statistics](#execution-stats)
 
-<img src="{{ 'images/cockroachcloud/statements_details_page.png' | relative_url }}" alt="CockroachCloud Statements Page" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/cockroachcloud/statements_details_page.png' | relative_url }}" alt="CockroachDB Cloud Statements Page" style="border:1px solid #eee;max-width:100%" />
 
 ### Overview
 

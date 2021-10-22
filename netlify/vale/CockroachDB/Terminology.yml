@@ -7,7 +7,7 @@ swap:
   CockroachCloud: {{ site.data.products.db }}
   CockroachCloud Serverless: {{ site.data.products.serverless }}
   CockroachCloud Dedicated: {{ site.data.products.dedicated }}
-  Enterprise: {{ site.data.products.enterprise }}
+  Enterprise: Enterprise
   raft: Raft
   Raft Group: Raft group
   Admin UI: DB Console

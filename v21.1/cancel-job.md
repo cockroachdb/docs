@@ -16,7 +16,7 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 
 ## Limitations
 
-- When an {{ site.data.products.enterprise }} [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- When an Enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
 
 ## Required privileges
 
@@ -25,7 +25,7 @@ To cancel a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/cancel_job.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/cancel_job.html %}
 </div>
 
 ## Parameters

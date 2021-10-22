@@ -1,6 +1,6 @@
 ---
 title: Deploy a Global, Serverless Application
-summary: This page includes instructions for deploying a multi-region web application using CockroachCloud and Google Cloud services.
+summary: This page includes instructions for deploying a multi-region web application using CockroachDB Cloud and Google Cloud services.
 toc: true
 redirect_from: multi-region-deployment.html
 ---
@@ -29,7 +29,7 @@ You can also deploy CockroachDB manually. For instructions, see the [Manual Depl
 
 ### Create a multi-region {{ site.data.products.dedicated }} cluster
 
-1. <a href="https://cockroachlabs.cloud/signup?referralId=docs_quickstart_trial" rel="noopener" target="_blank">Sign up for a {{ site.data.products.db }} account</a>.
+1. <a href="https://cockroachlabs.cloud/signup?referralId=docs_movr_global" rel="noopener" target="_blank">Sign up for a {{ site.data.products.db }} account</a>.
 
 1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 

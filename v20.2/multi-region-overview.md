@@ -1,6 +1,6 @@
 ---
 title: Develop and Deploy a Multi-Region Web Application
-summary: Learn how to build and deploy a multi-region web application on CockroachDB, using Flask, SQLAlchemy, CockroachCloud, and Google Cloud services.
+summary: Learn how to build and deploy a multi-region web application on CockroachDB, using Flask, SQLAlchemy, CockroachDB Cloud, and Google Cloud services.
 toc: true
 ---
 

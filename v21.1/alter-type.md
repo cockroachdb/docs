@@ -13,7 +13,7 @@ You can only [cancel](cancel-job.html) `ALTER TYPE` [schema change jobs](online-
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_type.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_type.html %}
 </div>
 
 ## Parameters

@@ -1,5 +1,5 @@
 ---
-title: Secure CockroachDB on Kubernetes
+title: Certificate management
 summary: How to authenticate a secure 3-node CockroachDB cluster with Kubernetes.
 toc: true
 toc_not_nested: true
@@ -31,7 +31,7 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
 <section class="filter-content" markdown="1" data-scope="operator">
 By default, the Operator will generate and sign 1 client and 1 node certificate to secure the cluster. 
 
-To use your own certificate authority instead, add the following to the Operator's custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+To use your own certificate authority instead, add the following to the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:

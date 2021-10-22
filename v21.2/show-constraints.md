@@ -17,7 +17,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_constraints.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_constraints.html %}
 </div>
 
 ## Parameters

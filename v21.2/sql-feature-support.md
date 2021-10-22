@@ -82,7 +82,7 @@ table tr td:nth-child(2) {
  Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)
  Partial indexes | ✓ | Common Extension |  [Partial indexes documentation](partial-indexes.html)
  Spatial indexes | ✓ | Common Extension |  [Spatial indexes documentation](spatial-indexes.html)
- Multiple indexes per query | Partial | Common Extension | [Use multiple indexes for a single query](https://github.com/cockroachdb/cockroach/issues/2142)
+ Multiple indexes per query | Partial | Common Extension | [Index selection](indexes.html#selection)
  Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
  Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them
  Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values
@@ -174,7 +174,6 @@ table tr td:nth-child(2) {
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
  Computed columns (stored and virtual) | ✓ | Common Extension | [Computed Columns documentation](computed-columns.html)
- Interleaved tables | ✓ | CockroachDB Extension | [Interleaved Tables documentation](interleave-in-parent.html)<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md -%}
  Multi-region capabilities | ✓ | CockroachDB Extension | [Multi-region documentation](multiregion-overview.html)
  System catalog schemas | ✓ | Standard, PostgreSQL/CockroachDB Extension | [`crdb_internal`](crdb-internal.html) (CockroachDB Extension)<br>[`information_schema`](information-schema.html) (Standard)<br>[`pg_catalog`](pg-catalog.html) (PostgreSQL Extension)<br>[`pg_extension`](pg-extension.html) (PostgreSQL Extension)
  Sequences |  ✓ | Common Extension | [`CREATE SEQUENCE` documentation](create-sequence.html)

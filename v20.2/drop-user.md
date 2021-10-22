@@ -20,7 +20,7 @@ Non-admin users cannot drop admin users. To drop non-admin users, the user must 
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/drop_user.html %}</section>
+<div>{% include {{ page.version.version }}/sql/diagrams/drop_user.html %}</div>
 
 ## Parameters
 

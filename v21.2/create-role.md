@@ -7,7 +7,7 @@ toc: true
 The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authorization.html#create-and-manage-roles), which are groups containing any number of roles and users as members. You can assign [privileges](authorization.html#privileges) to roles, and all members of the role (regardless of whether if they are direct or indirect members) will inherit the role's privileges.
 
 {{site.data.alerts.callout_info}}
- <code>CREATE ROLE</code> is no longer an {{ site.data.products.enterprise }} feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility.
+ <code>CREATE ROLE</code> is no longer an Enterprise feature and is now freely available in the core version of CockroachDB. Also, since the keywords `ROLE` and `USER` can now be used interchangeably in SQL statements for enhanced Postgres compatibility.
 
  `CREATE USER` is equivalent to the statement `CREATE ROLE`, with one exception: `CREATE ROLE` sets the [`NOLOGIN`](#parameters) option by default, preventing the new role from being used to log in to the database. You can use `CREATE ROLE` and specify the [`LOGIN`](#parameters) option to achieve the same result as `CREATE USER`.
 {{site.data.alerts.end}}
@@ -19,6 +19,8 @@ The `CREATE ROLE` [statement](sql-statements.html) creates SQL [roles](authoriza
     - Must start with either a letter or underscore
     - Must contain only letters, numbers, periods, or underscores
     - Must be between 1 and 63 characters.
+    - <span class="version-tag">New in v21.2</span>: Cannot be `none`.
+    - <span class="version-tag">New in v21.2</span>: Cannot start with `pg_` or `crdb_internal`. Object names with these prefixes are reserved for [system catalogs](system-catalogs.html).
 - After creating roles, you must [grant them privileges to databases and tables](grant.html).
 - Roles and users can be members of roles.
 - Roles and users share the same namespace and must be unique.
@@ -37,7 +39,9 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_role.html %}</section>
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_role.html %}
+</div>
 
 ## Parameters
 
@@ -142,7 +146,7 @@ root@:26257/defaultdb> SHOW ROLES;
 admin      |                                       | {}
 can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 no_options | NOLOGIN                               | {}
-no_password| NOLOGIN                               | {}  
+no_password| NOLOGIN                               | {}
 root       |                                       | {admin}
 (5 rows)
 ~~~
@@ -218,7 +222,7 @@ can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
 no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}  
+no_password           | NOLOGIN                               | {}
 root                  |                                       | {admin}
 (8 rows)
 ~~~

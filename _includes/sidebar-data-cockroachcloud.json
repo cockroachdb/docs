@@ -1,5 +1,5 @@
 {
-  "title": "CockroachCloud",
+  "title": "CockroachDB Cloud",
   "is_top_level": true,
   "urls": [
     "/cockroachcloud/index.html"
@@ -15,16 +15,16 @@
       	  ]
       	},
       	{
-      	  "title": "Create a CockroachCloud Cluster",
+      	  "title": "Create a CockroachDB Cloud Cluster",
       	  "urls": [
-      	    "/cockroachcloud/create-a-free-cluster.html",
+      	    "/cockroachcloud/create-a-serverless-cluster.html",
             "/cockroachcloud/create-your-cluster.html"
       	  ]
       	},
         {
       	  "title": "Connect to Your Cluster",
       	  "urls": [
-      	    "/cockroachcloud/connect-to-a-free-cluster.html",
+      	    "/cockroachcloud/connect-to-a-serverless-cluster.html",
             "/cockroachcloud/connect-to-your-cluster.html"
       	  ]
       	},
@@ -45,6 +45,13 @@
     {
       "title": "Use Your Cluster",
       "items": [
+        {
+          "title": "Manage Your Cluster",
+          "urls": [
+            "/cockroachcloud/serverless-cluster-management.html",
+            "/cockroachcloud/cluster-management.html"
+          ]
+        },
       	{
       	  "title": "Secure Your Cluster",
       	  "items": [
@@ -90,11 +97,11 @@
       	      ]
       	    },
             {
-      	      "title": "Migrate from a Free to Paid Cluster",
-      	      "urls": [
-      		      "/cockroachcloud/migrate-from-free-to-dedicated.html"
-      	      ]
-      	    },
+              "title": "Migrate from Serverless to Dedicated",
+              "urls": [
+                "/cockroachcloud/migrate-from-serverless-to-dedicated.html"
+              ]
+            },
             {
       	      "title": "Migrate from Oracle",
       	      "urls": [
@@ -133,12 +140,23 @@
             }
       	  ]
       	},
-      	{
-      	  "title": "Tune Performance",
-      	  "urls": [
-      	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
-      	  ]
-      	},
+        {
+          "title": "Perfomance",
+          "items": [
+          	{
+          	  "title": "Tune Performance",
+          	  "urls": [
+          	    "/{{site.versions["stable"]}}/performance-best-practices-overview.html"
+          	  ]
+          	},
+            {
+              "title": "Serverless Performance Benchmarking",
+              "urls": [
+                "/cockroachcloud/serverless-benchmarking.html"
+              ]
+            }
+          ]
+        },
       	{
       	  "title": "Move into Production",
       	  "urls": [
@@ -148,6 +166,12 @@
         {
           "title": "Monitor Your Cluster",
           "items": [
+            {
+              "title": "Cluster Overview Page",
+              "urls": [
+                "/cockroachcloud/cluster-overview-page.html"
+              ]
+            },
             {
               "title": "Alerts Page",
               "urls": [
@@ -184,12 +208,6 @@
       	  "title": "Troubleshoot Your Cluster",
       	  "urls": [
       	    "/cockroachcloud/troubleshooting-page.html"
-      	  ]
-      	},
-      	{
-      	  "title": "Manage Your Cluster",
-      	  "urls": [
-      	    "/cockroachcloud/cluster-management.html"
       	  ]
       	},
         {
@@ -242,10 +260,22 @@
       ]
     },
     {
+      "title": "Manage Billing",
+      "urls": [
+         "/cockroachcloud/billing-management.html"
+      ]
+    },
+    {
+      "title": "Architecture",
+      "urls": [
+         "/cockroachcloud/architecture.html"
+      ]
+    },
+    {
       "title": "Tutorials",
       "items": [
       	{
-      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud",
+      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
       	  "urls": [
       	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
       	  ]
@@ -261,42 +291,10 @@
     {
       "title": "FAQs",
       "urls": [
-        "/cockroachcloud/free-faqs.html",
+        "/cockroachcloud/serverless-faqs.html",
         "/cockroachcloud/frequently-asked-questions.html"
       ]
     },
-    {
-      "title": "Release Notes",
-      "items": [
-        {
-          "title": "Latest Release Notes",
-          "urls": [
-            "/releases/cockroachcloud-10042021.html"
-          ]
-        },
-        {
-          "title": "All Release Notes",
-          "urls": [
-            "/releases/index-cockroachcloud.html",
-            "/releases/cockroachcloud-09072021.html",
-            "/releases/cockroachcloud-08092021.html",
-            "/releases/cockroachcloud-07062021.html",
-            "/releases/cockroachcloud-06072021.html",
-            "/releases/cockroachcloud-05032021.html",
-            "/releases/cockroachcloud-04052021.html",
-            "/releases/cockroachcloud-03082021.html",
-            "/releases/cockroachcloud-02092021.html",
-            "/releases/cockroachcloud-01222021.html",
-            "/releases/cockroachcloud-12112020.html",
-            "/releases/cockroachcloud-11192020.html",
-            "/releases/cockroachcloud-07062020.html",
-            "/releases/cockroachcloud-06112020.html",
-            "/releases/cockroachcloud-05042020.html",
-            "/releases/cockroachcloud-04062020.html",
-            "/releases/cockroachcloud-03022020.html"
-          ]
-        }
-      ]
-    }
+    {% include_cached cockroachcloud/sidebar-release-notes.json %}
   ]
 }
