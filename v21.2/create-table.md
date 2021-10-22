@@ -24,67 +24,67 @@ To create a table, the user must have one of the following:
 </div><p></p>
 
 <div class="filter-content" markdown="1" data-scope="basic">
-{% include {{ page.version.version }}/sql/generated/diagrams/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_table.html %}
 </div>
 
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/create_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_table.html %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_persistence_temp_table.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/column_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/col_qualification.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/index_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/family_def.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/table_constraint.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/table_constraint.html %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/like_table_option_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/like_table_option_list.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_with_storage_parameter_list.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_with_storage_parameter_list.html %}
 </div>
 
 **opt_locality ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_locality.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_locality.html %}
 </div>
 
 </div>
@@ -104,12 +104,12 @@ Parameter | Description
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
 `LIKE table_name like_table_option_list` |  Create a new table based on the schema of an existing table, using supported specifiers. For details, see [Create a table like an existing table](#create-a-table-like-an-existing-table). For examples, see [Create a new table from an existing one](#create-a-new-table-from-an-existing-one).
-`opt_partition_by` | An [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
-`opt_locality` |  Specify a [locality](multiregion-overview.html#table-locality) for the table. In order to set a locality, the table must belong to a [multi-region database](multiregion-overview.html).<br><br>Note that multi-region features require an [{{ site.data.products.enterprise }} license](enterprise-licensing.html).
+`opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you define table partitions at the row level. You can define table partitions by list or by range. See [Define Table Partitions](partitioning.html) for more information.
+`opt_locality` |  Specify a [locality](multiregion-overview.html#table-locality) for the table. In order to set a locality, the table must belong to a [multi-region database](multiregion-overview.html).<br><br>Note that multi-region features require an [Enterprise license](enterprise-licensing.html).
 `opt_where_clause` |  An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 `opt_with_storage_parameter_list` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
-`opt_interleave` | [Interleave table into parent object](interleave-in-parent.html).<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
+`opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
 
 ## Create a table like an existing table

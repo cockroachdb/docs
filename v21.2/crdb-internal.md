@@ -21,31 +21,44 @@ In CockroachDB {{ page.version.version }}, `crdb_internal` includes the followin
 
 Table | Description
 -------|-------
+`active_range_feeds` | Contains information about [range feeds](architecture/distribution-layer.html) on nodes in your cluster.
 `backward_dependencies` | Contains information about backward dependencies.
 `builtin_functions` | Contains information about supported [functions](functions-and-operators.html).
-`cluster_contention_events` | Contains information about contention in your cluster.
+`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) indexes in your cluster.
+`cluster_contended_keys` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) keys in your cluster.
+`cluster_contended_tables` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) tables in your cluster.
+`cluster_contention_events` | Contains information about [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) in your cluster.
 `cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.
+`cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.
+`cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.
 `cluster_queries` | Contains information about queries running on your cluster.
 `cluster_sessions` | Contains information about cluster sessions, including current and past queries.
 `cluster_settings` | Contains information about [cluster settings](cluster-settings.html).
 `cluster_transactions` | Contains information about transactions running on your cluster.
 `create_statements` | Contains information about tables and indexes in your database.
 `create_type_statements` | Contains information about [user-defined types](enum.html) in your database.
+`cross_db_references` | Contains information about objects that reference other objects, such as [foreign keys](foreign-key.html) or [views](views.html), across databases in your cluster.
 `databases` | Contains information about the databases in your cluster.
+`default_privileges` | Contains information about per-database default [privileges](authorization.html#privileges).
 `feature_usage` | Contains information about feature usage on your cluster.
 `forward_dependencies` | Contains information about forward dependencies.
 `gossip_alerts` | Contains information about gossip alerts.
 `gossip_liveness` | Contains information about your cluster's gossip liveness.
 `gossip_network` | Contains information about your cluster's gossip network.
 `gossip_nodes` | Contains information about nodes in your cluster's gossip network.
-`index_columns` | Contains information about indexed columns in your cluster.
+`index_columns` | Contains information about [indexed](indexes.html) columns in your cluster.
+`index_usage_statistics` | Contains index usage statistics.
+`interleaved` | Contains information about [interleaved objects](interleave-in-parent.html) in your cluster.
 `invalid_objects` | Contains information about invalid objects in your cluster.
 `jobs` | Contains information about [jobs](show-jobs.html) running on your cluster.
+`kv_node_liveness` | Contains information about [node liveness](cluster-setup-troubleshooting.html#node-liveness-issues).
 `kv_node_status` | Contains information about node status at the [key-value layer](architecture/storage-layer.html).
 `kv_store_status` | Contains information about the key-value store for your cluster.
 `leases` | Contains information about [leases](architecture/replication-layer.html#leases) in your cluster.
+`lost_descriptors_with_data` | Contains information about table descriptors that have been deleted but still have data left over in storage.
 `node_build_info` | Contains information about nodes in your cluster.
 `node_contention_events` | Contains information about contention on the gateway node of your cluster.
+`node_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled on nodes in your cluster.
 `node_inflight_trace_spans` | Contains information about currently in-flight spans in the current node.
 `node_metrics` | Contains metrics for nodes in your cluster.
 `node_queries` | Contains information about queries running on nodes in your cluster.
@@ -59,13 +72,16 @@ Table | Description
 `predefined_comments` | Contains predefined comments about your cluster.
 `ranges` | Contains information about ranges in your cluster.
 `ranges_no_leases` | Contains information about ranges in your cluster, without leases.
+`regions` | Contains information about [cluster regions](multiregion-overview.html#cluster-regions).
 `schema_changes` | Contains information about schema changes in your cluster.
 `session_trace` | Contains session trace information for your cluster.
 `session_variables` | Contains information about [session variables](set-vars.html) in your cluster.
+`statement_statistics` | Contains information about [statement statistics](ui-statements-page.html).
 `table_columns` | Contains information about table columns in your cluster.
 `table_indexes` | Contains information about table indexes in your cluster.
 `table_row_statistics` | Contains row count statistics for tables in the current database.
 `tables` | Contains information about tables in your cluster.
+`transaction_statistics` | Contains information about [transaction statistics](ui-transactions-page.html).
 `zones` | Contains information about [zone configurations](configure-replication-zones.html) in your cluster.
 
 To list the `crdb_internal` tables for the [current database](sql-name-resolution.html#current-database), use the following [`SHOW TABLES`](show-tables.html) statement:

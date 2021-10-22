@@ -19,7 +19,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/alter_sequence_options.html %}</section>
+<div>{% include {{ page.version.version }}/sql/diagrams/alter_sequence_options.html %}</div>
 
 ## Parameters
 

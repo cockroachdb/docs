@@ -21,7 +21,7 @@ To resume a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/resume_job.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/resume_job.html %}
 </div>
 
 ## Parameters

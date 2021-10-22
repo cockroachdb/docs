@@ -16,7 +16,7 @@ Tables with the Regional Table Locality Pattern can survive zone or region failu
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Regional tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [{{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+Regional tables (and the other [multi-region capabilities](multiregion-overview.html)) require an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ## Prerequisites
@@ -133,7 +133,7 @@ For more information about how to choose a database survival goal, see [When to 
 ## Alternatives
 
 - If rows in the table **cannot** be tied to specific geographies, reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](foreign-key.html), and the table is rarely modified, consider the [`GLOBAL` Table Locality Pattern](global-tables.html).
-- If your application can tolerate historical reads in some cases, consider the [Follower Reads](topology-follower-reads.html) pattern.
+- If your application can tolerate historical reads in some cases, consider the [Follower Reads pattern](topology-follower-reads.html).
 
 ## Tutorial
 

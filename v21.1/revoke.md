@@ -11,7 +11,7 @@ You can use `REVOKE` to directly revoke privileges from a role or user, or you c
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/revoke.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/revoke.html %}
 </div>
 
 ### Parameters

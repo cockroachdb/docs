@@ -4,7 +4,7 @@ The following requirements apply to all role names (also known as usernames).
 
 - Role names are case-insensitive and must be unique.
 - When surrounded by quotes in SQL statements (always recommended)—single or double quotes, depending on the statement—role names:
-    - Can contain letters, underscores, digits, periods, and dashes. Letters may include `a`-`z`, those with diacritical marks, and non-Latin letters*.
+    - Can contain letters, underscores, digits, periods, and dashes. Letters include `a`-`z`, those with diacritical marks, and non-Latin letters.
     - Can begin with a letter, underscore, or digit.
 - When referenced in SQL without quotes, role names:
     - Cannot contain periods or dashes.

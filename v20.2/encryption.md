@@ -10,7 +10,7 @@ Data encryption and decryption is the process of transforming plaintext data to 
 
 CockroachDB uses TLS 1.2 for inter-node and client-node [authentication](authentication.html) as well as setting up a secure communication channel. Once the secure channel is set up, all inter-node and client-node network communication is encrypted using a [shared encryption key](https://en.wikipedia.org/wiki/Transport_Layer_Security) as per the TLS 1.2 protocol. This feature is enabled by default for all secure clusters and needs no additional configuration.
 
-## Encryption at Rest ({{ site.data.products.enterprise }})
+## Encryption at Rest (Enterprise)
 
 Encryption at Rest provides transparent encryption of a node's data on the local disk. It allows encryption of all files on disk using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) in [counter mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)), with all key
 sizes allowed.
@@ -203,7 +203,7 @@ To disable encryption, specify `key=plain`. The data keys will be stored in plai
 To rotate keys, specify `key=/path/to/my/new-aes-128.key` and `old-key=/path/to/my/old-aes-128.key`. The data keys
 will be decrypted using the old key and then encrypted using the new key. A new data key will also be generated.
 
-## Encrypted backups ({{ site.data.products.enterprise }})
+## Encrypted backups (Enterprise)
 
 {% include {{ page.version.version }}/backups/encrypted-backup-description.md %}
 

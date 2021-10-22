@@ -28,7 +28,7 @@ This pattern is compatible with all of the other multi-region patterns except [G
 ## Configuration
 
 {{site.data.alerts.callout_info}}
-Follower reads requires an [{{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+Follower reads requires an [Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 {{site.data.alerts.end}}
 
 ### Summary
@@ -56,7 +56,7 @@ Insert some data:
 > INSERT INTO postal_codes (ID, code) VALUES (1, '10001'), (2, '10002'), (3, '10003'), (4,'60601'), (5,'60602'), (6,'60603'), (7,'90001'), (8,'90002'), (9,'90003');
 ~~~
 
-1. If you do not already have one, [request a trial {{ site.data.products.enterprise }} license](https://www.cockroachlabs.com/get-cockroachdb).
+1. If you do not already have one, [request a trial Enterprise license](https://www.cockroachlabs.com/get-cockroachdb).
 
 2. Configure your app to use `AS OF SYSTEM TIME follower_read_timestamp()` whenever reading from the table:
 

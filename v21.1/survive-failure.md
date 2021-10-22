@@ -13,7 +13,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_database_survival_goal.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_database_survival_goal.html %}
 </div>
 
 ## Parameters

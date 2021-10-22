@@ -1,13 +1,13 @@
 ---
-title: CockroachCloud FAQs
-summary: Get answers to frequently asked questions about CockroachCloud
+title: CockroachDB Cloud FAQs
+summary: Get answers to frequently asked questions about CockroachDB Cloud
 toc: true
 ---
 
-This page answers the frequently asked questions about {{ site.data.products.serverless }} and the paid version of {{ site.data.products.dedicated }}.
+This page answers the frequently asked questions about {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}.
 
 <div class="filters clearfix">
-    <a href="free-faqs.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
+    <a href="serverless-faqs.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
     <a href="frequently-asked-questions.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
@@ -84,7 +84,7 @@ Today, we do not automatically scale nodes based on your capacity usage. To add 
 
 ### Who is responsible for backup?
 
-Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days.
+Cockroach Labs runs full backups daily and incremental backups hourly for every {{ site.data.products.db }} cluster. The full backups are retained for 30 days and incremental backups for 7 days. Only {{ site.data.products.dedicated }} cluster backups are available to users at this time.
 
 The backups for AWS clusters are encrypted using [AWS S3’s server-side encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html) and the backups for GCP clusters are encrypted using [Google-managed server-side encryption keys](https://cloud.google.com/storage/docs/encryption/default-keys).
 

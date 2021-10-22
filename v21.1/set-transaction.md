@@ -9,7 +9,7 @@ The `SET TRANSACTION` [statement](sql-statements.html) sets the transaction prio
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/set_transaction.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/set_transaction.html %}
 </div>
 
 ## Required privileges

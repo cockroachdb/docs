@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
- `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
+ `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
 {{site.data.alerts.end}}
 
 The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
@@ -38,7 +38,7 @@ You can restore:
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -92,7 +92,7 @@ You can restore:
 - All [views](views.html)
 
 {{site.data.alerts.callout_info}}
-When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
+When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
 {{site.data.alerts.end}}
 
 #### Databases
@@ -143,7 +143,6 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
 Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
-[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
 ### Users and privileges
 

@@ -25,12 +25,14 @@ See [Authorization](authorization.html) for more information on privilege manage
 Unless a role is a member of the admin role, additional [privileges](#parameters) are required to manage other roles.
 
 - To create other roles, a role must have the [`CREATEROLE`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
-- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set. 
-- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role. 
+- To add the `LOGIN` capability for other roles so that they may log in as users, a role must also have the [`CREATELOGIN`](#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
+- To be able to grant or revoke membership to a role for additional roles, a member of the role must be set as a [role admin](authorization.html#role-admin) for that role.
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/create_role.html %}</section>
+<div>
+{% include {{ page.version.version }}/sql/diagrams/create_role.html %}
+</div>
 
 ## Parameters
 
@@ -141,7 +143,7 @@ root@:26257/defaultdb> SHOW ROLES;
 admin      |                                       | {}
 can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 no_options | NOLOGIN                               | {}
-no_password| NOLOGIN                               | {}  
+no_password| NOLOGIN                               | {}
 root       |                                       | {admin}
 (5 rows)
 ~~~
@@ -217,7 +219,7 @@ can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
 no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}  
+no_password           | NOLOGIN                               | {}
 root                  |                                       | {admin}
 (8 rows)
 ~~~

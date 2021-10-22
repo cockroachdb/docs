@@ -15,7 +15,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/alter_database_drop_region.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/alter_database_drop_region.html %}
 </div>
 
 ## Parameters
