@@ -94,7 +94,7 @@ For example, to create a new free Serverless cluster named "notorious-moose" usi
 curl --request POST \
   --url https://cockroachlabs.cloud/api/v1/orgs/{organizationId}/clusters \
   --header 'Authorization: Bearer {secret key}' \
-  --data '{"name":"notorious-moose","serverless":{"spendLimit":0}}'
+  --data '{"name":"notorious-moose","serverless":{"regions":["us-central1"],"spendLimit":0}}'
 ~~~
 </section>
 
