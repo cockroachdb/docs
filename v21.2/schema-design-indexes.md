@@ -62,7 +62,7 @@ For an example, see [Example](#example).
 - The notation for referring to an index is `{table_name}@{index_name}`.
 {{site.data.alerts.end}}
 
-### Best practices
+## Best practices
 
 Here are some best practices for creating and using indexes:
 
@@ -96,7 +96,7 @@ Here are some best practices for creating and using indexes:
 
 - {% include {{page.version.version}}/sql/dev-schema-change-limits.md %}
 
-### Example
+## Example
 
 Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.
 
