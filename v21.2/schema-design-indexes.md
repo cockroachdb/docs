@@ -1,14 +1,15 @@
 ---
-title: Add Secondary Indexes
-summary: Best practices for working with secondary indexes in CockroachDB.
+title: Secondary Indexes
+summary: How and when to create secondary indexes in CockroachDB.
 toc: true
 ---
 
-This page provides best-practice guidance on creating indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
+CockroachDB automatically creates an index on the table's [primary key](primary-key.html) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
 
-{{site.data.alerts.callout_success}}
-For detailed reference documentation on the `CREATE INDEX` statement, including additional examples, see the [`CREATE INDEX` syntax page](create-index.html).
-{{site.data.alerts.end}}
+*Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
+
+This page provides best-practice guidance on creating secondary indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
 
 ## Before you begin
 
@@ -20,16 +21,11 @@ Before reading this page, do the following:
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).
 - [Create a table](schema-design-table.html).
+- Review the [best practices](#best-practices).
 
-## Create a secondary index
+## Add a secondary index
 
-Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
-
-CockroachDB automatically creates an index on the table's [primary key](primary-key.html) key columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
-
-*Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
-
-To add a secondary index to a table, do one of the following, following the [best practices listed below](#best-practices):
+To add a secondary index to a table do one of the following:
 
 - Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
 
@@ -58,12 +54,11 @@ To add a secondary index to a table, do one of the following, following the [bes
     `{table_name}` | The name of the table.
     `{column_names}` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
-For an example, see [below](#example).
+For an example, see [Example](#example).
 
 {{site.data.alerts.callout_info}}
-If you do not specify a name for an index, CockroachDB will generate a name.
-
-After creation, the notation for referring to indexes in CockroachDB is `{table_name}@{index_name}`.
+- If you do not specify a name for an index, CockroachDB will generate a name.
+- The notation for referring to an index is `{table_name}@{index_name}`.
 {{site.data.alerts.end}}
 
 ### Best practices
