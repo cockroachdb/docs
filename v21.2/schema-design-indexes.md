@@ -86,7 +86,7 @@ Here are some best practices for creating and using indexes:
 
 - [Drop unused indexes](drop-index.html) whenever possible.
 
-    To understand usage statistics for the index, query the `crdb_internal.index_usage_statistics` table. See <a href="performance-recipes-solutions.html?filters=indexusage">Index usage</a>.
+    To understand usage statistics for an index, query the <a href="performance-recipes-solutions.html?filters=indexusage"><code>crdb_internal.index_usage_statistics</code> table</a>.
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 

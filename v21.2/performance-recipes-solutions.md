@@ -82,7 +82,7 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 ## Fix slow writes
 
-Secondary indexes can improve read workload performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether the index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, query the `crdb_internal.index_usage_statistics` table :
+Secondary indexes can improve read workload performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, query the `crdb_internal.index_usage_statistics` table :
 
 ~~~sql
 SELECT
