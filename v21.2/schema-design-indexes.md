@@ -23,7 +23,7 @@ Before reading this page, do the following:
 - [Create a table](schema-design-table.html).
 - Review the [best practices](#best-practices).
 
-## Add a secondary index
+## Create a secondary index
 
 To add a secondary index to a table do one of the following:
 
