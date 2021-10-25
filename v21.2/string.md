@@ -123,7 +123,7 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 Type | Details
 -----|--------
 `ARRAY` | Requires supported [`ARRAY`](array.html) string format, e.g., `'{1,2,3}'`.<br>Note that string literals can be implicitly cast to any supported `ARRAY` data type except [`BYTES`](bytes.html), [`ENUM`](enum.html), [`JSONB`](jsonb.html), [`SERIAL`](serial.html), and the [spatial data types](spatial-glossary.html#data-types) `Box2D`, `GEOGRAPHY`, and `GEOMETRY`.
-`BIT` | Requires supported [`BIT`](bit.html) string format, e.g., `'101001'`.
+`BIT` | Requires supported [`BIT`](bit.html) string format, e.g., `'101001'` or `'xAB'`.
 `BOOL` | Requires supported [`BOOL`](bool.html) string format, e.g., `'true'`.
 `BYTES` | For more details, [see here](bytes.html#supported-conversions).
 `DATE` | Requires supported [`DATE`](date.html) string format, e.g., `'2016-01-25'`.
@@ -169,6 +169,24 @@ A literal entered through a SQL client will be translated into a different value
 
 + `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
+
+### Casting hexadecimal digits to `BIT`
+
+<span class="version-tag">New in v21.2</span>: You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT 'XAB'::BIT(8)
+~~~
+
+~~~
+    bit
+------------
+  10101011
+(1 row)
+~~~
 
 ### Concatenating `STRING` values with values of other types
 
