@@ -23,8 +23,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 ## Syntax
 
-The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](sql-constants.html#interpreted-literals) or a
-string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `JSONB`.
+The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](sql-constants.html#interpreted-literals) or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `JSONB`.
 
 There are six types of `JSONB` values:
 
@@ -44,7 +43,7 @@ Examples:
 
 ## Size
 
-The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Functions
 
@@ -253,25 +252,16 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 {% include {{ page.version.version }}/computed-columns/virtual.md %}
 
-
-### Use an expression to index a `JSONB` column
+### Use an expression to index a field in a `JSONB` column
 
 <span class="version-tag">New in v21.2</span>
 
-You can use an expression to index a field in a JSON column. The other way to index a field in a JSON column requires you to create a [inverted index](inverted-indexes.html), which consumes more resources as it requires the data to be stored three times.
+You can use an [expression](expression-indexes.html) in an index definition to index a field in a JSON column. You can also use an expression to create an [inverted index](inverted-indexes.html) on a subset of the JSON column.
 
-To create an index, use the syntax
+If you need to do [comparisons](inverted-indexes.html#comparisons) on a field in a JSON column you need to use a [computed column](computed-columns.html).
 
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE INDEX index_name ON table_name (function_name(json_type_name->>'column_name'));
-~~~
 
-where `function_name` is a supported [function](functions-and-operators.html#built-in-functions).
-
-An expression-based index is a virtual column, and thus not stored in the primary family or index. When you display the table columns using `SHOW COLUMNS`, the `crdb_internal_idx_expr` row contains the index name and the expression used to generate the index.
-
-The following example creates a table of users with an index on the `birthdate` field in the `user_profile` JSON object:
+The following example creates a table of users with a JSON object in `user_profile` column and then an index on the `birthdate` field in that column:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -286,26 +276,10 @@ INSERT INTO users (user_profile) VALUES
   ('{"id": "f98112", "firstName": "Buster", "lastName": "Bunny", "birthdate": "2011-11-07",  "school": "THS", "credits": 67, "sports": "Gymnastics", "clubs": "Theater"}'),
   ('{"id": "t63512", "firstName": "Jane", "lastName": "Narayan", "birthdate": "2012-12-12", "school" : "Brooklyn Tech", "credits": 98, "sports": "Track and Field", "clubs": "Chess"}');
 
-CREATE INDEX timestamp_idx ON users (parse_timestamp(user_profile->>'birthdate'));
+CREATE INDEX timestamp_idx ON users parse_timestamp(user_profile->>'birthdate');
 ~~~
 
-When you run `SHOW COLUMNS`, `timestamp_idx` appears as follows:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-> SHOW COLUMNS FROM users;
-~~~
-
-~~~
-        column_name        | data_type | is_nullable |  column_default   |            generation_expression            |                     indices                      | is_hidden
----------------------------+-----------+-------------+-------------------+---------------------------------------------+--------------------------------------------------+------------
-  profile_id               | UUID      |    false    | gen_random_uuid() |                                             | {primary,timestamp_idx}                          |   false
-  last_updated             | TIMESTAMP |    true     | now():::TIMESTAMP |                                             | {primary}                                        |   false
-  crdb_internal_idx_expr   | TIMESTAMP |    true     | NULL              | parse_timestamp(user_profile->>'birthdate') | {timestamp_idx}                                  |   false
-(5 rows)
-~~~
-
-You can use the index to query for a specific birthdate as follows:
+To query for a specific birthdate, run the following:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -331,11 +305,13 @@ You can use the index to query for a specific birthdate as follows:
 
 ## Supported casting and conversion
 
-All `JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
+This section describes how to cast and convert `JSONB` values.
+
+You can [cast](data-types.html#data-type-conversions-and-casts) all `JSONB` values to the following data type:
 
 - [`STRING`](string.html)
 
- Numeric `JSONB` values can be cast to the following numeric data types:
+You can cast numeric `JSONB` values to the following numeric data types:
 
 - [`DECIMAL`](decimal.html)
 - [`FLOAT`](float.html)
@@ -379,7 +355,7 @@ For example:
 (1 row)
 ~~~
 
-The [`parse_timestamp` function](functions-and-operators.html) is used to parse strings in `TIMESTAMP` format.
+You use the [`parse_timestamp` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -393,7 +369,7 @@ SELECT parse_timestamp ('2021-09-28T10:53:25.160Z');
 (1 row)
 ~~~
 
-The `parse_timestamp` function can be used to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
+You can use the `parse_timestamp` function to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

@@ -57,7 +57,7 @@ CockroachDB supports some specialized types of indexes, designed to improve quer
 - [Index a Subset of Rows](partial-indexes.html)
 - [Index Sequential Keys](hash-sharded-indexes.html)
 - [Index JSON and Array Data](inverted-indexes.html)
-- [Index Expressions](jsonb.html#use-an-expression-to-index-a-jsonb-column)
+- [Index Expressions](expression-indexes.html)
 - [Index Spatial Data](spatial-indexes.html)
 
 ### Other objects

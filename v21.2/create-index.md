@@ -6,17 +6,15 @@ toc: true
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
+Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html) and [`UNIQUE`](unique.html) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+
 The following types cannot be included in an index key, but can be stored (and used in a covered query) using the [`STORING` or `COVERING`](create-index.html#store-columns) clause:
 
 - [`JSONB`](jsonb.html)
 - [`ARRAY`](array.html)
 - The computed [`TUPLE`](scalar-expressions.html#tuple-constructor) type, even if it is constructed from indexed fields
 
-To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
-
-{{site.data.alerts.callout_info}}
-Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html) and [`UNIQUE`](unique.html) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
-{{site.data.alerts.end}}
+To create an index on the schemaless data in a [`JSONB`](jsonb.html) column or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
 
 {% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -26,13 +24,13 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-**Standard index:**
+### Standard index
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_index.html %}
 </div>
 
-**Inverted index:**
+### Inverted index
 
 <div>
 {% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_inverted_index.html %}
@@ -104,7 +102,7 @@ Unique indexes do not allow duplicate values among their columns.
 > CREATE UNIQUE INDEX ON users (name, id);
 ~~~
 
-This also applies the [`UNIQUE` constraint](unique.html) at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is equivalent to:
+This also applies the [`UNIQUE` constraint](unique.html) at the table level, similar to [`ALTER TABLE`](alter-table.html). The preceding example is equivalent to:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -113,14 +111,14 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 
 ### Create inverted indexes
 
-[Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
+You can create [inverted indexes](inverted-indexes.html) on schemaless data in a [`JSONB`](jsonb.html) column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
 
-The above example is equivalent to the following PostgreSQL-compatible syntax:
+The preceding example is equivalent to the following PostgreSQL-compatible syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -129,7 +127,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 ### Create spatial indexes
 
-[Spatial indexes](spatial-indexes.html) can be created on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [inverted index](inverted-indexes.html).
+You can create [spatial indexes](spatial-indexes.html) on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [inverted index](inverted-indexes.html).
 
 To create a spatial index on a `GEOMETRY` column:
 
