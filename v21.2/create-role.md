@@ -39,7 +39,9 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_role.html %}</section>
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_role.html %}
+</div>
 
 ## Parameters
 
@@ -144,7 +146,7 @@ root@:26257/defaultdb> SHOW ROLES;
 admin      |                                       | {}
 can_login  | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 no_options | NOLOGIN                               | {}
-no_password| NOLOGIN                               | {}  
+no_password| NOLOGIN                               | {}
 root       |                                       | {admin}
 (5 rows)
 ~~~
@@ -220,7 +222,7 @@ can_create_role       | CREATELOGIN, CREATEROLE, NOLOGIN      | {}
 can_login             | VALID UNTIL=2021-10-10 00:00:00+00:00 | {}
 manage_auth_for_roles | CREATELOGIN, NOLOGIN                  | {}
 no_options            | NOLOGIN                               | {}
-no_password           | NOLOGIN                               | {}  
+no_password           | NOLOGIN                               | {}
 root                  |                                       | {admin}
 (8 rows)
 ~~~

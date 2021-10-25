@@ -22,7 +22,7 @@ Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must 
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/drop_role.html %}</section>
+<div>{% include {{ page.version.version }}/sql/diagrams/drop_role.html %}</div>
 
 ## Parameters
 

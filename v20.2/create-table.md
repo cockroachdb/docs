@@ -26,56 +26,56 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/create_table.html %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_persistence_temp_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/column_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
+{% include {{ page.version.version }}/sql/diagrams/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/index_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/family_def.html %}
+{% include {{ page.version.version }}/sql/diagrams/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
+{% include {{ page.version.version }}/sql/diagrams/table_constraint.html %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/like_table_option_list.html %}
+{% include {{ page.version.version }}/sql/diagrams/like_table_option_list.html %}
 </div>
 
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
+{% include {{ page.version.version }}/sql/diagrams/opt_with_storage_parameter_list.html %}
 </div>
 
 </div>

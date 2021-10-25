@@ -15,7 +15,7 @@ toc: true
 
 ## {{ site.data.products.serverless-plan }}
 
-{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand what our Serverless architecture achieves.
+{{ site.data.products.serverless }} is a fully-managed, auto-scaling deployment of CockroachDB. Being familiar with the following concepts will help you understand our Serverless architecture.
 
 ### Concepts
 
@@ -23,8 +23,8 @@ Term | Definition
 -----|-----------
 **Serverless cluster** | A cluster that’s automatically billed and scaled in response to the resources it consumes (as opposed to a Dedicated cluster, which is billed for resources provisioned).
 **Request Unit (RU)** | Request Units represent the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless-plan }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
-**Spend limit** | The maximum amount of money you indicate you want to be billed in a particular billing period for a cluster. The actual amount you are billed is based on the resources used during that billing period. A cluster's budget is allocated across storage and burst performance.
-**Baseline performance** | The minimum compute and I/O performance that you can expect from your cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RU/s at all times. 
+**Spend limit** | The maximum amount of money you want to spend on a cluster in a particular billing period. The actual amount you are billed is based on the resources the cluster used during that billing period. A cluster's budget is allocated across storage and burst performance.
+**Baseline performance** | The minimum compute and I/O performance that you can expect from your cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RUs per second at all times. When the cluster's usage is lower than the baseline, the cluster accumulates the unused RUs until the load on the cluster increases above the baseline.
 **Burst performance** | Burst performance is the ability of the Serverless cluster to perform above the baseline. Supporting application traffic that “bursts,” i.e., can fluctuate above baseline traffic, is a key feature of Serverless clusters. Every Serverless cluster starts with a certain amount of burst performance capacity. If the actual usage of a cluster is lower than the baseline performance, the cluster can earn Request Units that can be used for burst performance for the rest of the month. 
 **Storage** | Disk space for permanently storing data over time. All data in {{ site.data.products.serverless }} is automatically replicated three times and distributed across Availability Zones to survive outages. Storage is measured in units of GiB-months, which is the amount of data stored multiplied by how long it was stored. Storing 10 GiB for a month and storing 1 GiB for 10 months are both 10 GiB-months. The storage you see in the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page is the amount of data before considering the replication multiplier.
 {% comment %} 
@@ -32,6 +32,8 @@ Term | Definition
 {% endcomment %}
 
 ### Architecture
+
+{{ site.data.products.serverless }} is a managed multi-tenant deployment of CockroachDB. A Serverless cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
 
 {{ site.data.products.serverless }} has separate compute and storage layers. The storage pods (KV pods) can be shared across users, and the compute pods (SQL pods) are unique to each user. These shared resources make {{ site.data.products.serverless }} architecture "multi-tenant," in contrast to the single-tenant architecture of [{{ site.data.products.dedicated }}](?filters=dedicated#security-and-connection).
 
@@ -43,11 +45,11 @@ The following diagram is a high-level representation of what a typical Serverles
 
 Proxy pods allow many users to share the same IP address, balance loads across a user's available SQL pods, and automatically resume clusters that have been paused due to inactivity. They also detect and respond to suspected abuse of the service.
 
-After the cloud load balancer routes a new connection to one of the proxy pods, the proxy pod will in turn forward that connection to a SQL pod owned by the connecting user. Each SQL pod is dedicated to just one user, and multiple SQL pods can be owned by the same user. Network security rules prevent SQL pods from communicating with one another unless they are owned by the same user. 
+After the cloud load balancer routes a new connection to one of the proxy pods, the proxy pod will in turn forward that connection to a SQL pod owned by the connecting user. Each SQL pod is dedicated to just one user, and multiple SQL pods can be owned by the same user. Network security rules prevent SQL pods from communicating with one another unless they are owned by the same user.
 
 Finally, the SQL pods communicate with the KV layer to access data managed by the shared storage pods, each of which stores that data in an [AWS](https://aws.amazon.com/ebs/features/) or [GCP](https://cloud.google.com/compute/docs/disks#pdspecs) block storage system.
 
-### Performance 
+### Performance
 
 #### Baseline
 
@@ -89,7 +91,7 @@ We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run
 
 {{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
 
-[Backups](backups-page.html) are encrypted in S3 and GCS buckets using the cloud provider keys. 
+[Backups](backups-page.html) are encrypted in S3 and GCS buckets using the cloud provider keys.
 
 ### Multi-region architecture
 

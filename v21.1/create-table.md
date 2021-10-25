@@ -30,61 +30,61 @@ To create a table, the user must have one of the following:
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/create_table.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_table.html %}
 </div>
 
 **opt_persistence_temp_table ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_persistence_temp_table.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/opt_persistence_temp_table.html %}
 </div>
 
 **column_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/column_def.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/column_def.html %}
 </div>
 
 **col_qualification ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/col_qualification.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/col_qualification.html %}
 </div>
 
 **index_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/index_def.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/index_def.html %}
 </div>
 
 **family_def ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/family_def.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/family_def.html %}
 </div>
 
 **table_constraint ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/table_constraint.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/table_constraint.html %}
 </div>
 
 **like_table_option_list::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/like_table_option_list.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/like_table_option_list.html %}
 </div>
 
 **opt_with_storage_parameter_list ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_with_storage_parameter_list.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/opt_with_storage_parameter_list.html %}
 </div>
 
 **opt_locality ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_locality.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/opt_locality.html %}
 </div>
 
 </div>

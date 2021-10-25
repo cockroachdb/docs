@@ -38,7 +38,7 @@ You can restore:
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/restore.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/restore.html %}
 </div>
 
 ## Parameters
@@ -143,7 +143,7 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
 Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
-[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
+[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html).
 
 ### Users and privileges
 

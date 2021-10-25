@@ -17,31 +17,31 @@ Adding replication zones for secondary indexes and partitions is an [Enterprise-
 **alter_zone_database_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_database.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_database.html %}
 </div>
 
 **alter_zone_table_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_table.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_table.html %}
 </div>
 
 **alter_zone_index_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_index.html %}
 </div>
 
 **alter_zone_partition_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_partition.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_partition.html %}
 </div>
 
 **alter_zone_range_stmt ::=**
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/alter_zone_range.html %}
+{% include {{ page.version.version }}/sql/diagrams/alter_zone_range.html %}
 </div>
 
 ## Required privileges

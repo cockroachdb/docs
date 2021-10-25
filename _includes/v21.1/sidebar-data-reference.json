@@ -475,7 +475,7 @@
                 ]
               },
               {
-                "title": "<code>EXPORT</code> (Enterprise)",
+                "title": "<code>EXPORT</code>",
                 "urls": [
                   "/${VERSION}/export.html"
                 ]
@@ -544,6 +544,12 @@
                 "title": "<code>PAUSE SCHEDULES</code>",
                 "urls": [
                   "/${VERSION}/pause-schedules.html"
+                ]
+              },
+              {
+                "title": "<code>REASSIGN OWNED</code>",
+                "urls": [
+                  "/${VERSION}/reassign-owned.html"
                 ]
               },
               {
@@ -910,6 +916,12 @@
                 "title": "<code>VALIDATE CONSTRAINT</code>",
                 "urls": [
                   "/${VERSION}/validate-constraint.html"
+                ]
+              },
+              {
+                "title": "<code>WITH</code>",
+                "urls": [
+                  "/${VERSION}/common-table-expressions.html"
                 ]
               }
             ]

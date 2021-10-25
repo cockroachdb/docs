@@ -9,11 +9,11 @@ The `SPLIT AT` [statement](sql-statements.html) forces a range split at the spec
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/split_table_at.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/split_table_at.html %}
 </div>
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/split_index_at.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/split_index_at.html %}
 </div>
 
 ## Required privileges

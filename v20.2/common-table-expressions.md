@@ -12,7 +12,7 @@ CTEs can be used in combination with [`SELECT` clauses](select-clause.html) and 
 ## Synopsis
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/with_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/with_clause.html %}
 </div>
 <div markdown="1"></div>
 

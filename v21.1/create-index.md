@@ -28,11 +28,11 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 **Standard index:**
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</div>
 
 **Inverted index:**
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</div>
 
 ## Parameters
 

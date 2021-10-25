@@ -9,7 +9,7 @@ toc: true
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_enums.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_enums.html %}
 </div>
 
 ## Parameters

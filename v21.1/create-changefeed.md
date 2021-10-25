@@ -19,7 +19,7 @@ To create a changefeed, the user must be a member of the `admin` role or have th
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/create_changefeed.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/create_changefeed.html %}
 </div>
 
 ## Parameters
