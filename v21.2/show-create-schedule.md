@@ -8,7 +8,7 @@ The `SHOW CREATE SCHEDULE` [statement](sql-statements.html) displays the `CREATE
 
 ## Required privileges
 
-Only members of the [`admin` role](authorization.html#admin-role) can show a `CREATE SCHEDULE` statement. By default, the `root` user belongs to the `admin` role.
+Only members of the [`admin` role](authorization.html#admin-role) can show a [`CREATE SCHEDULE`](create-schedule-for-backup.html) statement. By default, the [`root`](authorization.html#root-user) user belongs to the `admin` role.
 
 ## Synopsis
 
@@ -20,7 +20,7 @@ Only members of the [`admin` role](authorization.html#admin-role) can show a `CR
 
 Parameter | Description
 ----------|------------
-`schedule_id` | Use the schedule `id` to show the `CREATE SCHEDULE` statement for a particular schedule.
+`schedule_id` | Use the schedule `id` to show the [`CREATE SCHEDULE`](create-schedule-for-backup.html) for a particular schedule.
 `ALL` |  Use to show the `CREATE SCHEDULE` statements for all _existing_ schedules. This includes [paused](pause-schedules.html) schedules.
 
 ## Response
