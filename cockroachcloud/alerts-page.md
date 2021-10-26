@@ -7,7 +7,7 @@ toc: true
 The **Alerts** page allows you to toggle {{ site.data.products.db }} alerts, send test alerts, and view the email recipients and alert history for your {{ site.data.products.db }} Organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
 
 {{site.data.alerts.callout_info}}
-The Alerts page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} cluters, all [Console Admins](console-access-management.html#console-admin) will automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of its spend limit, burst capacity, or storage limit.
+The Alerts page is accessible on {{ site.data.products.dedicated }} clusters. For {{ site.data.products.serverless }} cluters, all [Console Admins](console-access-management.html#console-admin) will automatically receive email alerts when your cluster reaches 75% and 100% of its burst capacity or storage limit. If you set a spend limit, you will also receive alerts at 50%, 75%, and 100% of your spend limit.
 {{site.data.alerts.end}}
 
 If alerts are enabled, {{ site.data.products.db }} will send alerts to [specified email receipients](#configure-alerts) when the following usage metrics are detected:
