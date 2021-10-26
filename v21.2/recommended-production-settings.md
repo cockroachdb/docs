@@ -82,7 +82,7 @@ We recommend provisioning volumes with **150 GiB per vCPU**. It's fine to have l
 
     We strongly recommend [monitoring](monitoring-and-alerting.html#node-is-running-low-on-disk-space) your storage utilization and rate of growth, and taking action to add capacity well before you hit the limit.
 
-- Place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+- <span class="version-tag">New in v21.2</span>: CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 

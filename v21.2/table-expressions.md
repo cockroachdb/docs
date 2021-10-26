@@ -73,12 +73,12 @@ If the name is composed of two or more identifiers, [name resolution](sql-name-r
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM users; -- uses table `users` in the current database
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM mydb.users; -- uses table `users` in database `mydb`
 ~~~
@@ -99,7 +99,7 @@ earlier.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > WITH a AS (SELECT * FROM users)
   SELECT * FROM a; -- "a" refers to "WITH a AS .."
@@ -133,7 +133,7 @@ single column and single row containing the function results.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM sin(3.2)
 ~~~
@@ -151,12 +151,11 @@ For example:
 #### Table generator functions
 
 Some functions directly generate tabular data with multiple rows from
-a single function application. This is also called a "set-returning
-function".
+a single function application. This is also called a "set-returning function".
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM generate_series(1, 3);
 ~~~
@@ -170,14 +169,14 @@ For example:
 +-----------------+
 ~~~
 
-Set-returning functions (SRFs) can now be accessed using `(SRF).x` where `x` is one of the following:
+You access set-returning functions (SRFs) using `(SRF).x` where `x` is one of the following:
 
-- The name of a column returned from the function
-- `*` to denote all columns.
+- The name of a column returned from the function.
+- `*`, to denote all columns.
 
-For example (note that the output of queries against [`information_schema`](information-schema.html) will vary per database):
+For example (the output of queries against [`information_schema`](information-schema.html) will vary per database):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT (i.keys).* FROM (SELECT information_schema._pg_expandarray(indkey) AS keys FROM pg_index) AS i;
 ~~~
@@ -191,8 +190,8 @@ For example (note that the output of queries against [`information_schema`](info
 ~~~
 
 {{site.data.alerts.callout_info}}
-Currently CockroachDB only supports a small set of generator functions compatible with [the PostgreSQL set-generating functions with the same
-names](https://www.postgresql.org/docs/9.6/static/functions-srf.html).
+CockroachDB supports the generator functions compatible with
+[the PostgreSQL set-generating functions with the same names](https://www.postgresql.org/docs/9.6/static/functions-srf.html).
 {{site.data.alerts.end}}
 
 ## Operators that extend a table expression
@@ -220,12 +219,12 @@ In the second form, the columns are also renamed.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT c.x FROM (SELECT COUNT(*) AS x FROM users) AS c;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT c.x FROM (SELECT COUNT(*) FROM users) AS c(x);
 ~~~
@@ -239,11 +238,11 @@ Syntax:
 ~~~
 
 Designates a data source equivalent to the table expression operand with
-an extra "Ordinality" column that enumerates every row in the data source.
+an extra `ordinality` column that enumerates every row in the data source.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (VALUES('a'),('b'),('c'));
 ~~~
@@ -257,7 +256,7 @@ For example:
 +---------+
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM (VALUES ('a'), ('b'), ('c')) WITH ORDINALITY;
 ~~~
@@ -289,11 +288,9 @@ another SQL query or statement as a table expression.
 
 ### Subqueries as table expressions
 
-Any [selection
-query](selection-queries.html) enclosed
-between parentheses can be used as a table expression, including
-[simple `SELECT` clauses](select-clause.html). This is called a
-"[subquery](subqueries.html)".
+You can use a [selection query](selection-queries.html) enclosed
+between parentheses as a table expression, including
+[simple `SELECT` clauses](select-clause.html). This is called a _[subquery](subqueries.html)_.
 
 Syntax:
 
@@ -303,23 +300,23 @@ Syntax:
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT * FROM (VALUES(1), (2), (3));
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT firstname || ' ' || lastname FROM (TABLE employees);
 ~~~
 
 {{site.data.alerts.callout_info}}
-- See also [Subqueries](subqueries.html) for more details and performance best practices.
+- See [Subqueries](subqueries.html) for more details and performance best practices.
 - To use other statements that produce data in a table expression, for example `SHOW`, use the [square bracket notation](#using-the-output-of-other-statements).
 {{site.data.alerts.end}}
 
@@ -346,12 +343,12 @@ A [statement](sql-grammar.html#row_source_extension_stmt) between square bracket
  `SELECT .. FROM [ <stmt> ]` is equivalent to `WITH table_expr AS ( <stmt> ) SELECT .. FROM table_expr`
 
 {{site.data.alerts.callout_info}}
-This CockroachDB extension syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It was introduced to enable the use of [statements](sql-grammar.html#row_source_extension_stmt) as [subqueries](subqueries.html).
+This CockroachDB extension syntax complements the [subquery syntax using parentheses](#subqueries-as-table-expressions), which is restricted to [selection queries](selection-queries.html). It enables you use [statements](sql-grammar.html#row_source_extension_stmt) as [subqueries](subqueries.html).
 {{site.data.alerts.end}}
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT "column_name" FROM [SHOW COLUMNS FROM customer];
 ~~~
@@ -367,12 +364,12 @@ For example:
 (3 rows)
 ~~~
 
-The following statement inserts Albert in the `employee` table and
+The following statement inserts `Albert` in the `employee` table and
 immediately creates a matching entry in the `management` table with the
 auto-generated employee ID, without requiring a round trip with the SQL
 client:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO management(manager, reportee)
     VALUES ((SELECT id FROM employee WHERE name = 'Diana'),
@@ -381,12 +378,12 @@ client:
 
 ## Composability
 
-Table expressions are used in the [`SELECT`](select-clause.html) and
+You can use table expressions in the [`SELECT`](select-clause.html) and
 [`TABLE`](selection-queries.html#table-clause) variants of [selection
-clauses](selection-queries.html#selection-clauses), and thus can appear everywhere where
+clauses](selection-queries.html#selection-clauses). Thus they can appear everywhere where
 a selection clause is possible. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT ... FROM <table expr>, <table expr>, ...
 > TABLE <table expr>

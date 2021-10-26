@@ -109,6 +109,7 @@ Max Memory | Maximum memory used by a statement with this fingerprint at any tim
 Network | Amount of [data transferred over the network](architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for statements with this fingerprint within the last hour. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Retries | Cumulative number of [retries](transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
 % of All Runtime  | How much time this statement fingerprint took to execute compared to all other statements that were executed within the time period. It is expressed as a percentage. The runtime is the mean execution latency multiplied by the execution count.
+Regions/Nodes | The regions and nodes on which statements with this fingerprint executed.
 Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page.
 
 ## Statement Details page
@@ -140,14 +141,18 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
 **Statement details** displays information about the execution of the statement.
 
-  - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-  - **Database** displays the database on which the statements executed.
-  - **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
-  - **Failed?** indicates whether the statement failed to execute.
-  - **Distributed execution?** indicates whether the execution was distributed.
-  - **Vectorized execution?** indicates whether the execution used the [vectorized execution engine](vectorized-execution.html).
-  - **Transaction type** displays the type of transaction (implicit or explicit).
-  - **Last execution time** shows when the statement was last executed.
+
+- **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
+- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics.
+- **Regions** displays the regions on which the statements executed.
+- **Database** displays the database on which the statements executed.
+- **App** displays the name specified by the [`application_name`](show-vars.html#supported-variables) session setting.
+- **Failed?** indicates whether the statement failed to execute.
+- **Used cost-based optimizer?** indicates whether the execution used the [cost-based optimizer](cost-based-optimizer.html).
+- **Distributed execution?** indicates whether the execution was distributed.
+- **Vectorized execution?** indicates whether the execution used the [vectorized execution engine](vectorized-execution.html).
+- **Transaction type** displays the type of transaction (implicit or explicit).
+- **Last execution time** shows when the statement was last executed.
 
 **Execution counts** displays execution statistics for the SQL statement fingerprint.
 

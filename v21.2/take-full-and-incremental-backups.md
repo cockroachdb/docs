@@ -29,6 +29,8 @@ In most cases, **it's recommended to take nightly full backups of your cluster**
 - Restore database(s) from the cluster
 - Restore a full cluster
 
+{% include {{ page.version.version }}/backups/file-size-setting.md %}
+
 ### Take a full backup
 
 To do a cluster backup, use the [`BACKUP`](backup.html) statement:

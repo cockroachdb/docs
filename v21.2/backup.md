@@ -39,12 +39,6 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-[Interleaving data](interleave-in-parent.html) is disabled by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
-
-To backup interleaved data, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
@@ -107,7 +101,6 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
 Table with a [sequence](create-sequence.html) | The sequence it uses; however, this dependency can be [removed during the restore](restore.html#skip_missing_sequences).
 [Views](views.html) | The tables used in the view's `SELECT` statement.
-[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
 ### Users and privileges
 
@@ -128,6 +121,8 @@ We recommend always starting backups with a specific [timestamp](timestamp.html)
 This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, since the backup will take priority and will force still-running transactions to restart after the backup is finished.
 
 `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to _not_ skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
+
+{% include {{ page.version.version }}/backups/file-size-setting.md %}
 
 ## Viewing and controlling backups jobs
 
@@ -471,10 +466,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
 ## Known limitations
-
-### Using interleaved tables in backups
-
-{% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
 
 ### Slow (or hung) backups and queries due to write intent buildup
 

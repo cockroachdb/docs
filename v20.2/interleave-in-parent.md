@@ -6,9 +6,9 @@ toc_not_nested: true
 ---
 
 {{site.data.alerts.callout_danger}}
-`INTERLEAVE IN PARENT` is deprecated in CockroachDB v20.2, and will be permanently removed from CockroachDB in a future release. We do not recommend interleaving tables or indexes in new clusters.
+`INTERLEAVE IN PARENT` was deprecated in CockroachDB v20.2, disabled by default in v21.1, and permanently removed in v21.2. We do not recommend interleaving tables or indexes in new clusters.
 
-For details, see [below](#deprecation).
+For details, see [Deprecation](#deprecation).
 {{site.data.alerts.end}}
 
 ## How interleaved tables work
@@ -69,7 +69,7 @@ The entire set of these relationships is referred to as the **interleaved hierar
 
 ## Deprecation
 
-Interleaving tables and indexes is deprecated in CockroachDB v20.2, and will be permanently disabled in a future release, for the following reasons:
+Interleaving tables and indexes is deprecated in CockroachDB v20.2 for the following reasons:
 
 - Scans over tables or indexes with interleaved, child objects (i.e., interleaved tables or indexes) are much slower than scans over tables and indexes with no child objects, as the scans must traverse the parent object and all of its child objects.
 - Database schema changes are slower for interleaved objects and their parents than they are for non-interleaved objects and objects with no interleaved children. For example, if you add or remove a column to a parent or child table, CockroachDB must rewrite the entire interleaved hierarchy for that table and its parents/children.

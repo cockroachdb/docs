@@ -183,6 +183,80 @@ You will see a welcome message when you've successfully connected to your cluste
     ~~~
 </section>
 
+<section class="filter-content" markdown="1" data-scope="python">
+
+1. Install SQLAlchemy.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    pip install psycopg2-binary
+    ~~~
+
+1. Create a `main.py` file and copy in the following code:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ python
+    import logging
+    import os
+    import psycopg2
+
+
+    def print_hello(conn):
+      with conn.cursor() as cur:
+          cur.execute("SELECT message FROM messages")
+          logging.debug("print_hello(): status message: %s", cur.statusmessage)
+          rows = cur.fetchall()
+          conn.commit()
+          for row in rows:
+              print(row[0])
+
+
+    def main():
+      conn_string = input('Enter a connection string:\n')
+
+      conn = psycopg2.connect(os.path.expandvars(conn_string))
+      print_hello(conn)
+
+      # Close communication with the database.
+      conn.close()
+
+
+    if __name__ == "__main__":
+        main()
+    ~~~
+
+    The application:
+
+    1. Attempts to connect to a running cluster, given a connection string.
+    1. Reads the sample data you inserted earlier.
+    1. Prints the data to the terminal.
+
+1. Run the application:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    python3 main.py
+    ~~~
+
+    The program will prompt you for a connection string to the database:
+
+    ~~~
+    Enter a connection string:
+    ~~~
+
+1. Back in the **Connection info** dialog, click **Connection string**, copy the connection string from step 2, and paste it in your terminal after the "Enter a connection string" prompt.
+
+    {{site.data.alerts.callout_info}}
+    If the connection string does not include your SQL user password, replace `<ENTER-PASSWORD>` with the password.
+    {{site.data.alerts.end}}
+
+    The program will then execute. The output should look like this:
+
+    ~~~
+    Hello world!
+    ~~~
+</section>
+
 <section class="filter-content" markdown="1" data-scope="go">
 
 1. Create a `main.go` file on your local machine and copy the following code into it:
@@ -343,80 +417,6 @@ You will see a welcome message when you've successfully connected to your cluste
 
 </section>
 
-<section class="filter-content" markdown="1" data-scope="python">
-
-1. Install SQLAlchemy.
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    pip install psycopg2-binary
-    ~~~
-
-1. Create a `main.py` file and copy in the following code:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ python
-    import logging
-    import os
-    import psycopg2
-
-
-    def print_hello(conn):
-      with conn.cursor() as cur:
-          cur.execute("SELECT message FROM messages")
-          logging.debug("print_hello(): status message: %s", cur.statusmessage)
-          rows = cur.fetchall()
-          conn.commit()
-          for row in rows:
-              print(row[0])
-
-
-    def main():
-      conn_string = input('Enter a connection string:\n')
-
-      conn = psycopg2.connect(os.path.expandvars(conn_string))
-      print_hello(conn)
-
-      # Close communication with the database.
-      conn.close()
-
-
-    if __name__ == "__main__":
-        main()
-    ~~~
-
-    The application:
-
-    1. Attempts to connect to a running cluster, given a connection string.
-    1. Reads the sample data you inserted earlier.
-    1. Prints the data to the terminal.
-
-1. Run the application:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    python3 main.py
-    ~~~
-
-    The program will prompt you for a connection string to the database:
-
-    ~~~
-    Enter a connection string:
-    ~~~
-
-1. Back in the **Connection info** dialog, click **Connection string**, copy the connection string from step 2, and paste it in your terminal after the "Enter a connection string" prompt.
-
-    {{site.data.alerts.callout_info}}
-    If the connection string does not include your SQL user password, replace `<ENTER-PASSWORD>` with the password.
-    {{site.data.alerts.end}}
-
-    The program will then execute. The output should look like this:
-
-    ~~~
-    Hello world!
-    ~~~
-</section>
-
 ## Next steps
 
 You've successfully created your {{ site.data.products.serverless }} cluster, connected to it using the SQL client, and run some basic SQL statements.
@@ -433,4 +433,3 @@ This page outlines the quickest way to get started with CockroachDB. For informa
 - To create a free cluster with other configurations (e.g., a different cloud provider, region, or monthly budget), see [Create a {{ site.data.products.serverless }} Cluster](create-a-serverless-cluster.html).
 - To connect to a free cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](../stable/third-party-database-tools.html)), see [Connect to a {{ site.data.products.serverless }} Cluster](connect-to-a-serverless-cluster.html).
 - To watch a video walkthrough of connecting to a cluster, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
-
