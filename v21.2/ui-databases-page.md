@@ -51,7 +51,7 @@ Click any table name to view [table details](#table-details).
 
 ### Table details
 
-Click any table name in [Tables](#tables-view) view to display details for that table.
+Click any table name in [**Tables**](#tables-view) view to display details for that table.
 
 - **Overview** displays the SQL statements used to [create and define the table](create-table.html), as well as [partitioning](partitioning.html) info, [zone configurations](configure-replication-zones.html), constraints, and lease preferences. In addition, the following metrics are displayed:
 	- **Size** displays the approximate disk size of all replicas of this table on the cluster.
