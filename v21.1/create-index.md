@@ -28,7 +28,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 **Standard index:**
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</div>
 
 **Inverted index:**
 
