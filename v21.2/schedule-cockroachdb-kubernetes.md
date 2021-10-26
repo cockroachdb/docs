@@ -6,7 +6,7 @@ toc_not_nested: true
 secure: true
 ---
 
-This page describes how to configure, using the [Operator](https://github.com/cockroachdb/cockroach-operator):
+This page describes how to configure the following, using the [Operator](https://github.com/cockroachdb/cockroach-operator):
 
 - [Node selectors](#node-selectors)
 - [Node affinities](#add-a-node-affinity)
@@ -49,7 +49,7 @@ For an example of labeling nodes, see [Scheduling CockroachDB onto labeled nodes
 ## Affinities and anti-affinities
 
 {{site.data.alerts.callout_info}}
-The affinity rules are not yet fully supported. To use them, first [enable the feature gates](#enable-feature-gates).
+To use the affinity rules, first [enable the feature gates](#enable-feature-gates).
 {{site.data.alerts.end}}
 
 A pod with a *node affinity* seeks out worker nodes that have matching [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). A pod with a *pod affinity* seeks out pods that have matching labels. A pod with a *pod anti-affinity* avoids pods that have matching labels.
@@ -228,7 +228,7 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 ## Taints and tolerations
 
 {{site.data.alerts.callout_info}}
-The toleration rules are not yet fully supported. To use them, first [enable the feature gates](#enable-feature-gates).
+To use the toleration rules, first [enable the feature gates](#enable-feature-gates).
 {{site.data.alerts.end}}
 
 When a *taint* is added to a Kubernetes worker node, pods are prevented from being scheduled onto that node. This effect is ignored by adding a *toleration* to a pod that specifies a matching taint.
