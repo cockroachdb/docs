@@ -134,6 +134,36 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+### Turn on auto-rehoming for `REGIONAL BY ROW` tables
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+When auto-rehoming is enabled, the [home region](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the home region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](add-column.html#on-update-expressions) to the [home region column](#crdb_region).
+
+This feature is off by default.
+
+To set the [session setting](set-vars.html), issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET experimental_enable_auto_rehoming = true;
+~~~
+
+~~~
+SET
+~~~
+
+To set the [cluster setting](cluster-settings.html), issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
+~~~
+
+~~~
+SET CLUSTER SETTING
+~~~
+
 <a name="global"></a>
 
 ### Set the table locality to `GLOBAL`
