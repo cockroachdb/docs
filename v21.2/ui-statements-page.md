@@ -30,7 +30,7 @@ You can search for statements using the search field or using the date field. To
 
 ### Example
 
-This example command shows how to query the two most important JSON columns: metadata and statistics:
+This example command shows how to query the two most important JSON columns: `metadata` and `statistics`:
 
 ~~~sql
 SELECT
