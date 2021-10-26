@@ -40,7 +40,7 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 #### CPU and memory
 
-Each node should have **at least 2 vCPUs**. For best performance, we recommend at least 4 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
+Each node should have **at least 4 vCPUs**. For best performance, we recommend at least 8 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size.
 
