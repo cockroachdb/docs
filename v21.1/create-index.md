@@ -32,7 +32,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 **Inverted index:**
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</div>
 
 ## Parameters
 
