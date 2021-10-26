@@ -47,7 +47,7 @@ CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2
   - [Virtual private gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
   - [Elastic Load Balancing](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html)
 
-- All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html).
+- All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html). For an example, see [AWS architecture](#aws-architecture).
 
 - Follow the [AWS IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) to harden the AWS environment. Use [roles](authorization.html#roles) to grant access to the deployment, following a [policy of least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege).
 
