@@ -6,6 +6,6 @@
 	- `26257` for intra-cluster and client-cluster communication
 	- `8080` to expose your DB Console
 
-- Carefully review the [Production Checklist](recommended-production-settings.html) and recommended [Topology Patterns](topology-patterns.html).
+- Carefully review the [Production Checklist](recommended-production-settings.html), including supported hardware and software, and the recommended [Topology Patterns](topology-patterns.html).
 
 {% include {{ page.version.version }}/prod-deployment/topology-recommendations.md %}
