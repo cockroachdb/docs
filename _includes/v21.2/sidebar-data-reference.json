@@ -727,6 +727,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW CREATE SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/show-create-schedule.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW DATABASES</code>",
                 "urls": [
                   "/${VERSION}/show-databases.html"
