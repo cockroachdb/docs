@@ -18,7 +18,7 @@ Service accounts are used by applications accessing the [API](cloud-api.html) to
 To create a service account:
 
 1. Click **Create Service Account**.
-1. In the **Creaete service account** dialog:
+1. In the **Creaet service account** dialog:
     1. Enter the **Account name**.
     1. (Optional) Enter a **Description** of the service account.
     1. Set the **Permissions** of the service account.
