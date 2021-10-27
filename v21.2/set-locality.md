@@ -138,7 +138,7 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 {% include {{ page.version.version }}/misc/experimental-warning.md %}
 
-When auto-rehoming is enabled, the [home region](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the home region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](add-column.html#on-update-expressions) to the [home region column](#crdb_region).
+When auto-rehoming is enabled, the [home region](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](add-column.html#on-update-expressions) to the [home region column](#crdb_region).
 
 This feature is off by default.
 
@@ -163,6 +163,124 @@ SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
 ~~~
 SET CLUSTER SETTING
 ~~~
+
+#### Example
+
+In this example we assume you are running the [MovR application](movr.html) in a [`cockroach demo`](cockroach-demo.html) cluster in a Terminal window (call it Terminal 1).  The setup is as described in [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html).
+
+1. From the [SQL client](cockroach-sql.html) running in Terminal 1, set the cluster setting that enables auto-rehoming:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
+    ~~~
+
+2. Check the gateway region of the node you are currently connected to:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT gateway_region();
+    ~~~
+
+    ~~~
+      gateway_region
+    ------------------
+      us-east1
+    (1 row)
+    ~~~
+    
+3. Open another Terminal (call it Terminal 2), and use [`cockroach sql`](cockroach-sql.html) to connect to a node in a different region in the demo cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ cockroach sql --insecure --host localhost --port 26262
+    ~~~
+
+    ~~~
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    # Server version: CockroachDB CCL v21.2.0-rc.2 (x86_64-apple-darwin19, built 2021/10/25 20:36:07, go1.16.6) (same version as client)
+    # Cluster ID: 87b22d9b-b9ce-4f3a-8635-acad89c5981f
+    # Organization: Cockroach Demo
+    #
+    # Enter \? for a brief introduction.
+    #
+    root@localhost:26262/defaultdb>
+    ~~~
+
+4. From the SQL shell prompt that appears in Terminal 2, switch to the `movr` database, and verify that the current gateway node is in a different region (`us-west1`):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    USE movr;
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT gateway_region();
+    ~~~
+
+    ~~~
+      gateway_region
+    ------------------
+      us-west1
+    (1 row)
+    ~~~
+
+5. Still in Terminal 2, update a row in the `vehicles` table that is homed in the `us-east1` region.  After the update, it should be homed in the current gateway node's home region, `us-west1`.
+
+   1. First, let's pick a row at random from the `us-east1` region:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       select *, crdb_region from vehicles where crdb_region = 'us-east1' limit 1;
+       ~~~
+
+       ~~~
+                          id                  |   city   |  type   |               owner_id               |       creation_time        |  status   |       current_location        |       ext        | crdb_region
+       ---------------------------------------+----------+---------+--------------------------------------+----------------------------+-----------+-------------------------------+------------------+--------------
+         415a602a-3dc0-437a-85a3-ce4c7eae2a8d | new york | scooter | c7c3eda7-42b5-42e2-acf2-48603c99ad10 | 2021-10-27 19:57:21.586895 | available | 28970 Jeffrey Lakes Suite 550 | {"color": "red"} | us-east1
+                                              |          |         |                                      |                            |           | Carrollton, GA 51667          |                  |
+       (1 row)
+       ~~~
+
+   2. Next, let's update that row's `city` and `current_location` to addresses in Seattle, WA (USA).
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       UPDATE vehicles set (city, current_location) = ('seattle', '2604 1st Ave, Seattle, WA 98121-1305') WHERE id = '415a602a-3dc0-437a-85a3-ce4c7eae2a8d';
+       ~~~
+
+   3. The previous query should have automatically update thed row's home region (the hidden `crdb_region` column) to be the region we ran the query from: `us-west1`. Verify this by running the following statement:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SELECT *, crdb_region FROM vehicles WHERE id = '415a602a-3dc0-437a-85a3-ce4c7eae2a8d';
+       ~~~
+
+       ~~~
+                          id                  |  city   |  type   |               owner_id               |       creation_time        |  status   |           current_location           |       ext        | crdb_region
+       ---------------------------------------+---------+---------+--------------------------------------+----------------------------+-----------+--------------------------------------+------------------+--------------
+         415a602a-3dc0-437a-85a3-ce4c7eae2a8d | seattle | scooter | c7c3eda7-42b5-42e2-acf2-48603c99ad10 | 2021-10-27 19:57:21.586895 | available | 2604 1st Ave, Seattle, WA 98121-1305 | {"color": "red"} | us-east1
+       (1 row)
+       ~~~
+
+       **XXX**: This does not seem to work (see region column above not getting updated)  Am I holding it wrong? The CRDB version I'm using is:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SELECT version();
+       ~~~
+
+       ~~~
+                                                  version
+       ---------------------------------------------------------------------------------------------
+         CockroachDB CCL v21.2.0-rc.2 (x86_64-apple-darwin19, built 2021/10/25 20:36:07, go1.16.6)
+       (1 row)
+       ~~~
 
 <a name="global"></a>
 
