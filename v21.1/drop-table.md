@@ -14,7 +14,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/drop_table.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/drop_table.html %}</div>
 
 ## Parameters
 
