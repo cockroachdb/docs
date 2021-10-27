@@ -11,7 +11,7 @@ The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representation
 Refer to the [full API reference documentation](../api/cloud/v1.html) for detailed descriptions of the API endpoints and options.
 
 {%comment %} START of temporary content while API is still behind a feature-flag{% endcomment %}
-## Service accounts and API keys
+## Service accounts
 
 Service accounts are used by applications accessing the [API](cloud-api.html) to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
 
