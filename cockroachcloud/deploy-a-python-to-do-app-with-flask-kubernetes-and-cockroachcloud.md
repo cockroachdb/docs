@@ -1,6 +1,6 @@
 ---
-title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud
-summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachCloud
+title: Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud
+summary: Learn how to deploy a sample Python web app with Flask, Kubernetes, and CockroachDB Cloud
 toc: true
 toc_not_nested: true
 ---
@@ -26,7 +26,7 @@ This tutorial shows you how to run a sample To-Do app in [Kubernetes](https://ku
 - [Step 1. Authorize your local workstation's network](#step-1-authorize-your-local-workstations-network)
 - [Step 2. Create a SQL user](#step-2-create-a-sql-user)
 - [Step 3. Generate the CockroachDB client connection string](#step-3-generate-the-cockroachdb-client-connection-string)
-- [Step 4. Create the {{ site.data.products.dedicated }} database](#step-4-create-the-cockroachcloud-database)
+- [Step 4. Create the {{ site.data.products.dedicated }} database](#step-4-create-the-cockroachdb-cloud-database)
 - [Step 5. Generate the application connection string](#step-5-generate-the-application-connection-string)
 
 ### Step 1. Authorize your local workstation's network
@@ -74,7 +74,7 @@ Once you are [logged in](https://cockroachlabs.cloud/), you can use the Console 
 
     Edit the connection string to include your SQL user's password, then save the string in an accessible location since you'll need it to use the built-in SQL client later.
 
-### Step 4. Create the {{ site.data.products.dedicated }} database
+### Step 4. Create the {{ site.data.products.db }} database
 
 On your local workstation's terminal:
 

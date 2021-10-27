@@ -97,8 +97,8 @@ Type | Details
 `FLOAT` | Loses precision if the `INT` value is larger than 2^53 in magnitude.
 `BIT` | Converts to the binary representation of the integer value. If the value is negative, the sign bit is replicated on the left to fill the entire bit array.
 `BOOL` | **0** converts to `false`; all other values convert to `true`.
-`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
-`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DATE` | Converts to days since the Unix epoch (Jan. 1, 1970).
+`TIMESTAMP` | Converts to seconds since the Unix epoch (Jan. 1, 1970).
 `INTERVAL` | Converts to seconds.
 `STRING` | ––
 

@@ -14,7 +14,7 @@ The CockroachDB Helm chart is compatible with Kubernetes versions 1.22 and earli
 
 #### Resources
 
-When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Configure CockroachDB on Kubernetes](configure-cockroachdb-kubernetes.html#memory-and-cpu).
+When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Resource management](configure-cockroachdb-kubernetes.html#memory-and-cpu).
 
 #### Storage
 

@@ -687,7 +687,7 @@ Amazon EKS does not support certificates signed by Kubernetes' built-in CA. The 
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/cockroachdb-statefulset-secure-eks.yaml
+    $ curl -O https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/multiregion/eks/cockroachdb-statefulset-secure-eks.yaml
     ~~~
 
     Look for **TODO** comments in the file. These highlight fields you need to define before deploying your StatefulSet.

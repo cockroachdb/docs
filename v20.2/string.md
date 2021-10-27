@@ -163,7 +163,7 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
-#### Translating literals to `STRING` vs. `BYTES`
+#### Translate literals to `STRING` vs. `BYTES`
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 

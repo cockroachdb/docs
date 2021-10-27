@@ -8,7 +8,7 @@ The **Jobs** page of the DB Console provides details about long-running tasks pe
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}.
 - [`IMPORT`](import.html).
-- {{ site.data.products.enterprise }} [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
+- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html).
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics).
 - [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html).

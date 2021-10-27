@@ -12,16 +12,16 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/comment.html %}</section>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/comment.html %}</div>
 
 ## Parameters
 
  Parameter | Description
 ------------|--------------
-`database_name` | The name of the database you are commenting on.
-`table_name` | The name of the  table you are commenting on.
-`column_name` | The name of the column you are commenting on.
-`table_index_name` | The name of the index you are commenting on.
+`database_name` | The name of the [database](create-database.html) on which you are commenting.
+`table_name` | The name of the [table](create-table.html) on which you are commenting.
+`column_name` | The name of the [column](add-column.html) on which you are commenting.
+`table_index_name` | The name of the [index](indexes.html) on which you are commenting.
 `comment_text` | The comment ([`STRING`](string.html)) you are associating to the object.
 
 ## Examples

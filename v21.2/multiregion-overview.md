@@ -170,3 +170,4 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 - [Disaster Recovery](disaster-recovery.html)
 - [Develop and Deploy a Global Application](movr-flask-overview.html)
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
+- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)

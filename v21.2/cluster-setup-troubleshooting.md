@@ -314,11 +314,63 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 ### Disks filling up
 
-Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
+Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GiBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
+- [What happens when a node runs out of disk space?](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
--  [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
+
+#### Automatic ballast files
+
+<span class="version-tag">New in v21.2</span> CockroachDB automatically creates an emergency ballast file at [node startup](cockroach-start.html). This feature is **on** by default. Note that the [`cockroach debug ballast`](cockroach-debug-ballast.html) command is still available but deprecated.
+
+The ballast file defaults to 1% of total disk capacity or 1 GiB, whichever is smaller. The size of the ballast file may be configured using [the `--store` flag to `cockroach start`](cockroach-start.html#flags-store) with a [`ballast-size` field](cockroach-start.html#fields-ballast-size); this field accepts the same value formats as the `size` field.
+
+In order for the ballast file to be automatically created, the following conditions must be met:
+
+- Available disk space is at least four times the configured ballast file size.
+- Available disk space on the store after creating the ballast file is at least 10 GiB.
+
+During node startup, if available disk space on at least one store is less than or equal to half the ballast file size, the process will exit immediately with the exit code 10, signifying 'Disk Full'.
+
+To allow the node to start, you can manually remove the `EMERGENCY_BALLAST` file, which is located in the store's `cockroach-data/auxiliary` directory as shown below:
+
+~~~
+cockroach-data
+├── ...
+├── auxiliary
+│   └── EMERGENCY_BALLAST
+...
+~~~
+
+Removing the ballast file will give you a chance to remedy the disk space exhaustion; it will automatically be recreated when there is sufficient disk space.
+
+### Disk stalls
+
+A _disk stall_ is any disk operation that does not terminate in a reasonable amount of time. This usually manifests as write-related system calls such as [`fsync(2)`](https://man7.org/linux/man-pages/man2/fdatasync.2.html) (aka `fdatasync`) taking a lot longer than expected (e.g., more than 60 seconds). The mitigation in almost all cases is to [restart the node](cockroach-start.html) with the stalled disk. CockroachDB's internal disk stall monitoring will attempt to shut down a node when it sees a disk stall that lasts longer than 60 seconds. At that point the node should be restarted by your [orchestration system](recommended-production-settings.html#orchestration-kubernetes).
+
+Symptoms of disk stalls include:
+
+- Bad cluster write performance, usually in the form of a substantial drop in QPS for a given workload.
+- [Node liveness issues](#node-liveness-issues).
+- Writes on one node come to a halt. This can happen because in rare cases, a node may be able to perform liveness checks (which involve writing to disk) even though it cannot write other data to disk due to one or more slow/stalled calls to `fsync`. Because the node is passing its liveness checks, it is able to hang onto its leases even though it cannot make progress on the ranges for which it is the leaseholder. This wedged node has a ripple effect on the rest of the cluster such that all processing of the ranges whose leaseholders are on that node basically grinds to a halt. As mentioned above, CockroachDB's disk stall detection will attempt to shut down the node when it detects this state.
+
+Causes of disk stalls include:
+
+- Disk operations have backed up due to underprovisioned IOPS. Make sure you are deploying with our [recommended production settings for storage](recommended-production-settings.html#storage).
+- Actual hardware-level storage issues that result in slow `fsync` performance.
+- In rare cases, operating-system-level configuration of subsystems such as SELinux can slow down system calls such as `fsync` enough to affect storage engine performance.
+
+CockroachDB's built-in disk stall detection works as follows:
+
+- Every 10 seconds, the CockroachDB storage engine checks the [_write-ahead log_](https://en.wikipedia.org/wiki/Write-ahead_logging), or _WAL_. If data has not been synced to disk (via `fsync`) within that interval, the log message `disk stall detected: unable to write to %s within %s %s warning log entry` is written to the [`STORAGE` logging channel](logging.html#storage). If this state continues for 60 seconds or more (configurable with the `COCKROACH_ENGINE_MAX_SYNC_DURATION` environment variable), the `cockroach` process is killed.
+
+- Every time the storage engine writes to the main [`cockroach.log` file](logging.html#dev), the engine waits 30 seconds for the write to succeed (configurable with the `COCKROACH_LOG_MAX_SYNC_DURATION` environment variable). If the write to the log fails, the `cockroach` process is killed and the following message is written to stderr / `cockroach.log`:
+
+    - `disk stall detected: unable to sync log files within %s`
+
+- During [node liveness heartbeats](#node-liveness-issues), the [storage engine](architecture/storage-layer.html) writes to disk as part of the node liveness heartbeat process.
 
 ## Memory issues
 
@@ -428,7 +480,7 @@ If you still see under-replicated/unavailable ranges on the Cluster Overview pag
 Common reasons for node liveness issues include:
 
 - Heavy I/O load on the node. Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed. See also: [Capacity planning issues](#capacity-planning-issues).
-- Outright I/O failure due to a disk stall. This will cause node liveness issues for the same reasons as listed above.
+- Outright I/O failure due to a [disk stall](#disk-stalls). This will cause node liveness issues for the same reasons as listed above.
 - Any [Networking issues](#networking-issues) with the node.
 
 The [DB Console][db_console] provides several ways to check for node liveness issues in your cluster:

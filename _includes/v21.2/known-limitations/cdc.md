@@ -1,4 +1,3 @@
-- When a table's locality is set to [`REGIONAL BY ROW`](set-locality.html), changefeed jobs targeting that table will fail.
 - Changefeeds only work on tables with a single [column family](column-families.html) (which is the default for new tables).
 - Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
 - Many DDL queries (including [`TRUNCATE`](truncate.html) and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
@@ -11,5 +10,4 @@
 - Webhook sinks only support HTTPS. Use the [`insecure_tls_skip_verify`](create-changefeed.html#tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
 - Currently, webhook sinks only have support for emitting `JSON`.
 - There is no concurrency configurability for [webhook sinks](create-changefeed.html#webhook-sink).
-- Currently, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) connected to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) are not supported.
 - {{ site.data.products.enterprise }} changefeeds are currently disabled for [{{ site.data.products.serverless }} clusters](https://www.cockroachlabs.com/docs/cockroachcloud/quickstart). Core changefeeds are enabled.    

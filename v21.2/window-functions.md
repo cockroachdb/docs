@@ -28,7 +28,7 @@ Window frames are defined in [`OVER` clauses](sql-grammar.html#over_clause) or [
 <div class="filter-content" markdown="1" data-scope="basic">
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/window_definition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/window_definition.html %}
 </div>
 
 ### Parameters
@@ -46,13 +46,13 @@ Parameter | Description
 <div class="filter-content" markdown="1" data-scope="expanded">
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/window_definition.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/window_definition.html %}
 </div>
 
 **opt_frame_clause ::=**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/opt_frame_clause.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/opt_frame_clause.html %}
 </div>
 
 ### Parameters
@@ -318,20 +318,18 @@ To find out the total number of riders and total revenue generated thus far by t
 {% include copy-clipboard.html %}
 ~~~ sql
 > SELECT
-    COUNT("name") AS "total # of riders",
+    COUNT("id") AS "total # of riders",
     SUM("total rider revenue") AS "total revenue" FROM (
-      SELECT name,
-             SUM(revenue) OVER (PARTITION BY name) AS "total rider revenue"
+      SELECT DISTINCT users.id,
+             SUM(revenue) OVER (PARTITION BY users.id) AS "total rider revenue"
         FROM users JOIN rides ON users.id = rides.rider_id
-        ORDER BY "total rider revenue" DESC
-        LIMIT (SELECT count(distinct(rider_id)) FROM rides)
-  );
+        ORDER BY "total rider revenue" DESC);
 ~~~
 
 ~~~
   total # of riders | total revenue
-+-------------------+---------------+
-                 50 |      46523.00
+--------------------+----------------
+                 50 |      25628.00
 (1 row)
 ~~~
 

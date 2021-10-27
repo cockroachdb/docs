@@ -1,24 +1,18 @@
 ---
-title: Common Table Expressions
-summary: Common Table Expressions (CTEs) simplify the definition and use of subqueries
+title: WITH Queries (Common Table Expressions)
+summary: Common table expressions (CTEs) simplify the definition and use of subqueries
 toc: true
-toc_not_nested: true
 ---
 
-Common Table Expressions, or CTEs, provide a shorthand name to a
-possibly complex [subquery](subqueries.html) before it is used in a
-larger query context. This improves readability of the SQL code.
+`WITH` queries, also called *common table expressions* or CTEs, provide a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
 
-CTEs can be used in combination with [`SELECT`
-clauses](select-clause.html) and [`INSERT`](insert.html),
-[`DELETE`](delete.html), [`UPDATE`](update.html) and
-[`UPSERT`](upsert.html) statements.
+CTEs can be used in combination with [`SELECT` clauses](select-clause.html) and [`INSERT`](insert.html), [`DELETE`](delete.html), [`UPDATE`](update.html) and [`UPSERT`](upsert.html) statements.
 
 
 ## Synopsis
 
 <div class="horizontal-scroll">
-  {% include {{ page.version.version }}/sql/diagrams/with_clause.html %}
+{% include {{ page.version.version }}/sql/diagrams/with_clause.html %}
 </div>
 <div markdown="1"></div>
 

@@ -10,12 +10,12 @@ The `SHOW DATABASES` [statement](sql-statements.html) lists all databases in the
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/show_databases.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_databases.html %}
 </div>
 
 ## Required privileges
 
-The user must be granted the `SELECT` [privilege](authorization.html#assign-privileges) to specific databases in order to list those databases in the CockroachDB cluster.
+The user must be granted the `CONNECT` [privilege](authorization.html#assign-privileges) to specific databases in order to list those databases in the CockroachDB cluster.
 
 ## Example
 

@@ -77,4 +77,4 @@ For more information, see [`ADD COLUMN`](add-column.html).
 - [Information Schema](information-schema.html)
 - [`CREATE TABLE`](create-table.html)
 - [`JSONB`](jsonb.html)
-- [Define Table Partitions ({{ site.data.products.enterprise }})](partitioning.html)
+- [Define Table Partitions (Enterprise)](partitioning.html)

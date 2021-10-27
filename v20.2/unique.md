@@ -28,7 +28,7 @@ The `UNIQUE` [constraint](constraints.html) specifies that each non-`NULL` value
 ### Column level
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/unique_column_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/unique_column_level.html %}
 </div>
 
 Parameter | Description
@@ -54,7 +54,7 @@ Parameter | Description
 ### Table level
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/unique_table_level.html %}
+{% include {{ page.version.version }}/sql/diagrams/unique_table_level.html %}
 </div>
 
 Parameter | Description

@@ -81,7 +81,7 @@ Service latency is calculated as the time in nanoseconds between when the cluste
 
 - In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 90% of queries within this time, not including network latency between the node and the client.
 
-- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 90% of queries within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the cluster executed 90% of queries within this time, not including network latency between the node and the client.
 
 ## KV Execution Latency: 99th percentile
 
@@ -98,13 +98,6 @@ KV execution latency is calculated as the time in milliseconds between when the 
 - In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 90% of requests within this time.
 
 - In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for each node in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 90% of requests within this time.
-
-## Transactions
-
-- In the node view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second on this node.
-
-- In the cluster view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second across all nodes in the cluster.
-
 
 ## Transactions
 
