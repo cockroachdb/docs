@@ -39,12 +39,6 @@
       	  "urls": [
             "/cockroachcloud/hello-world-example-apps.html"
         	  ]
-        },
-        {
-          "title": "Use the Cloud API",
-          "urls": [
-            "/cockroachcloud/cloud-api.html"
-          ]
         }
       ]
     },
