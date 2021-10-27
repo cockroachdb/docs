@@ -61,12 +61,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 
 ## Examples
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE strings (a STRING PRIMARY KEY, b STRING(4), c TEXT);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM strings;
 ~~~
@@ -80,12 +80,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 (3 rows)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > INSERT INTO strings VALUES ('a1b2c3d4', 'e5f6', 'g7h8i9');
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM strings;
 ~~~
@@ -97,12 +97,12 @@ The size of a `STRING` value is variable, but it's recommended to keep values un
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE aliases (a STRING PRIMARY KEY, b VARCHAR, c CHAR);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW COLUMNS FROM aliases;
 ~~~
@@ -141,7 +141,7 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 `STRING` treats all of its data as characters, or more specifically, Unicode code points. `BYTES` treats all of its data as a byte string. This difference in implementation can lead to dramatically different behavior. For example, let's take a complex Unicode character such as ☃ ([the snowman emoji](https://emojipedia.org/snowman/)):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT length('☃'::string);
 ~~~
@@ -163,20 +163,20 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
-#### Translating literals to `STRING` vs. `BYTES`
+#### Translate literals to `STRING` vs. `BYTES`
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 
 + `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
-### Casting hexadecimal digits to `BIT`
+### Cast hexadecimal digits to `BIT`
 
 <span class="version-tag">New in v21.2</span>: You can cast a `STRING` value of hexadecimal digits prefixed by `x` or `X` to a `BIT` value.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 'XAB'::BIT(8)
 ~~~
@@ -188,13 +188,13 @@ For example:
 (1 row)
 ~~~
 
-### Concatenating `STRING` values with values of other types
+### Concatenate `STRING` values with values of other types
 
  `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT 1 || 'item';
 ~~~
@@ -206,7 +206,7 @@ For example:
 (1 row)
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT true || 'item';
 ~~~
@@ -222,7 +222,7 @@ Concatenating a `STRING` value with a [`NULL` value](null-handling.html) results
 
 For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT NULL || 'item';
 ~~~
