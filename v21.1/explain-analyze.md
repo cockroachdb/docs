@@ -18,7 +18,7 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/explain_analyze.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/explain_analyze.html %}</div>
 
 ## Parameters
 
