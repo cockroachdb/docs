@@ -18,7 +18,7 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 ## Considerations
 
 - You cannot use [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) on `JSONB` values.
-- To [index](indexes.html) a `JSONB` column you must either use an [inverted index](inverted-indexes.html) or [index an expression on the column](#use-an-expression-to-index-a-field-in-a-jsonb-column).
+- To [index](indexes.html) a `JSONB` column you can use an [inverted index](inverted-indexes.html) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
 - CockroachDB does not key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns.
 
 ## Syntax
@@ -252,57 +252,6 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 {% include {{ page.version.version }}/computed-columns/virtual.md %}
 
-### Use an expression to index a field in a `JSONB` column
-
-<span class="version-tag">New in v21.2</span>
-
-You can use an [expression](expression-indexes.html) in an index definition to index a field in a JSON column. You can also use an expression to create an [inverted index](inverted-indexes.html) on a subset of the JSON column.
-
-If you need to do [comparisons](inverted-indexes.html#comparisons) on a field in a JSON column you need to use a [computed column](computed-columns.html).
-
-
-The following example creates a table of users with a JSON object in `user_profile` column and then an index on the `birthdate` field in that column:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-CREATE TABLE users (
-  profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  last_updated TIMESTAMP DEFAULT now(),
-  user_profile JSONB
-);
-
-INSERT INTO users (user_profile) VALUES
-  ('{"id": "d78236", "firstName": "Arthur", "lastName": "Read", "birthdate": "2010-01-25", "school": "PVPHS", "credits": 120, "sports": "none", "clubs": "Robotics"}'),
-  ('{"id": "f98112", "firstName": "Buster", "lastName": "Bunny", "birthdate": "2011-11-07",  "school": "THS", "credits": 67, "sports": "Gymnastics", "clubs": "Theater"}'),
-  ('{"id": "t63512", "firstName": "Jane", "lastName": "Narayan", "birthdate": "2012-12-12", "school" : "Brooklyn Tech", "credits": 98, "sports": "Track and Field", "clubs": "Chess"}');
-
-CREATE INDEX timestamp_idx ON users parse_timestamp(user_profile->>'birthdate');
-~~~
-
-To query for a specific birthdate, run the following:
-
-{% include_cached copy-clipboard.html %}
-~~~sql
-> SELECT jsonb_pretty(user_profile) FROM users@timestamp_idx WHERE user_profile->'birthdate' = '"2011-11-07"';
-~~~
-
-~~~
-           jsonb_pretty
-----------------------------------
-  {
-      "birthdate": "2011-11-07",
-      "clubs": "Theater",
-      "credits": 67,
-      "firstName": "Buster",
-      "id": "f98112",
-      "lastName": "Bunny",
-      "school": "THS",
-      "sports": "Gymnastics"
-  }
-(1 row)
-~~~
-
-
 ## Supported casting and conversion
 
 This section describes how to cast and convert `JSONB` values.
@@ -406,6 +355,7 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 - [JSON tutorial](demo-json-support.html)
 - [Inverted Indexes](inverted-indexes.html)
+- [Expression Indexes](expression-indexes.html)
 - [Computed Columns](computed-columns.html)
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)

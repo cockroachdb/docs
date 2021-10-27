@@ -260,7 +260,6 @@ You might also be interested in the following pages:
 - [Index a Subset of Rows](partial-indexes.html)
 - [Index Sequential Keys](hash-sharded-indexes.html)
 - [Index JSON and Array Data](inverted-indexes.html)
-- [Index Expressions](jsonb.html#use-an-expression-to-index-a-field-in-a-jsonb-column)
 - [Index Spatial Data](spatial-indexes.html)
 - [Cockroach Commands](cockroach-commands.html)
 - [Create a User-defined Schema](schema-design-schema.html)

@@ -368,6 +368,5 @@ Time: 2ms total (execution 2ms / network 0ms)
 
 - [Indexes](indexes.html)
 - [`CREATE INDEX`](create-index.html)
-- [Use an expression to index a field in a `JSONB` column](jsonb.html#use-an-expression-to-index-a-field-in-a-jsonb-column)
 - [Computed Columns](computed-columns.html)
 - [SQL Statements](sql-statements.html)
