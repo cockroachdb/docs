@@ -158,7 +158,7 @@ curl --request GET \
 
 Where:
 
-  - `{organizationId}` is the organization service ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
   - `{clusterId}` is the cluster ID returned after creating the cluster.
   - `{secret key}` is the secret key for the service account.
 
@@ -243,7 +243,7 @@ curl --request PUT \
 
 Where:
 
-  - `{organizationId}` is the organization service ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
   - `{clusterId}` is the unique ID of this cluster.
   - `{secret key}` is the secret key for the service account.
   - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
@@ -265,7 +265,7 @@ curl --request DELETE \
 
 Where:
 
-  - `{organizationId}` is the organization service ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
   - `{clusterId}` is the cluster ID.
   - `{secret key}` is the secret key for the service account.
 
@@ -284,7 +284,7 @@ curl --request GET \
 
 Where:
 
-  - `{organizationId}` is the organization service ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
   - `{secret key}` is the secret key for the service account.
 
 If the request was successful, the client will receive a list of all clusters within the organization.
@@ -340,7 +340,7 @@ curl --request GET \
 
 Where:
 
-  - `{organizationId}` is the organization service ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
   - `{cloud provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
   - `{secret key}` is the secret key for the service account.
 
