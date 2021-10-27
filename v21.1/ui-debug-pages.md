@@ -42,7 +42,7 @@ The **Even More Advanced Debugging** section of the page lists additional report
 
 Depending on your [access level](ui-overview.html#db-console-access), the endpoints listed here provide access to:
 
-- [Log files](logging-overview.html)
+- [Log files](logging-system.html)
 - Node status
 - Hot ranges
 - Node-specific metrics

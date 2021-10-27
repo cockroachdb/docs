@@ -279,7 +279,7 @@ You can use the high-water timestamp to [start a new changefeed where another en
 
 ### Using logs
 
-For Enterprise changefeeds, [use log information](logging-overview.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
+For Enterprise changefeeds, [use log information](logging-system.html) to debug connection issues (i.e., `kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`). Debug by looking for lines in the logs with `[kafka-producer]` in them:
 
 ~~~
 I190312 18:56:53.535646 585 vendor/github.com/Shopify/sarama/client.go:123  [kafka-producer] Initializing new client

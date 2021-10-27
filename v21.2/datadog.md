@@ -64,7 +64,7 @@ tls_ca_cert: /custom/dir/path/ca.crt
 
 ### Enable log collection
 
-Optionally enable Datadog to collect [CockroachDB logs](logging-overview.html) by adding the following block to `cockroachdb.d/conf.yaml`:
+Optionally enable Datadog to collect [CockroachDB logs](logging-system.html) by adding the following block to `cockroachdb.d/conf.yaml`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
@@ -171,4 +171,4 @@ The timeseries graph at the top of the page indicates the configured metric and 
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)
-- [Logging Overview](logging-overview.html)
+- [Logging Overview](logging-system.html)

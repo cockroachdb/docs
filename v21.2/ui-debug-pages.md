@@ -53,7 +53,7 @@ These endpoints are deprecated in favor of the [Cluster API](monitoring-and-aler
 
 Depending on your [access level](ui-overview.html#db-console-access), the endpoints listed here provide access to:
 
-- [Log files](logging-overview.html)
+- [Log files](logging-system.html)
 - Metrics
 - Node status
 - Hot ranges

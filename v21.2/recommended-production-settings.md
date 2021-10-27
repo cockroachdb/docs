@@ -74,7 +74,7 @@ We recommend provisioning volumes with **150 GiB per vCPU**. It's fine to have l
 
 - Use dedicated volumes for the CockroachDB [store](architecture/storage-layer.html). Do not share the store volume with any other I/O activity.
 
-    We suggest storing CockroachDB [log files](logging-overview.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling.
+    We suggest storing CockroachDB [log files](logging-system.html) in a separate volume from CockroachDB data so that logging is not impacted by I/O throttling.
 
 - The recommended Linux filesystems are [ext4](https://ext4.wiki.kernel.org/index.php/Main_Page) and [XFS](https://xfs.wiki.kernel.org/).
 

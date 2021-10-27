@@ -52,7 +52,7 @@ This command logs all reads and writes, and both the <code>READ</code> and <code
 
 ## Audit log file format
 
-Audit log messages, like all [log messages](logging-overview.html), consist of two sections:
+Audit log messages, like all [log messages](logging-system.html), consist of two sections:
 
 - A payload that contains notable events structured in JSON. These can include information such as the application name, full text of the query (which may contain PII), user account that triggered the event, number of rows produced (e.g., for `SELECT`) or processed (e.g., for `INSERT` or `UPDATE`), status of the query, and more. For more information on the possible event types logged to the `SENSITIVE_ACCESS` channel, see [Notable Event Types](eventlog.html#sql-access-audit-events).
 - An envelope that contains event metadata (e.g., severity, date, timestamp, channel). Depending on the log format you specify when [configuring logs](configure-logs.html), the envelope can be formatted either as JSON or as a flat prefix to the message.
@@ -120,6 +120,6 @@ ALTER TABLE customers EXPERIMENTAL_AUDIT SET OFF;
 ## See also
 
 - [SQL Audit Logging](sql-audit-logging.html)
-- [Logging Overview](logging-overview.html)
+- [Logging Overview](logging-system.html)
 - [`ALTER TABLE`](alter-table.html)
 - [`SHOW JOBS`](show-jobs.html)

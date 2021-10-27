@@ -15,4 +15,4 @@ CockroachDB is officially integrated with the following third-party monitoring p
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)
-- [Logging Overview](logging-overview.html)
+- [Logging Overview](logging-system.html)

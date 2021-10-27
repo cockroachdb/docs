@@ -6,7 +6,7 @@ toc: false
 
 If you run into issues with CockroachDB, there are a few initial steps you can always take:
 
-1. Check your [logs](logging-overview.html) for errors related to your issue.
+1. Check your [logs](logging-system.html) for errors related to your issue.
     - Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster](cockroach-debug-zip.html).
 
 2. Check our list of [common errors](common-errors.html) for a solution.  If you are getting transaction retry errors, see [client-side retry handling](transactions.html#client-side-intervention) and the [Transaction Retry Error Reference](transaction-retry-error-reference.html).

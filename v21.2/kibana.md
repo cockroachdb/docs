@@ -110,4 +110,4 @@ Click **Refresh**. The query metrics will appear on the dashboard:
 
 - [Monitoring and Alerting](monitoring-and-alerting.html)
 - [DB Console Overview](ui-overview.html)
-- [Logging Overview](logging-overview.html)
+- [Logging Overview](logging-system.html)

@@ -19,7 +19,7 @@ The files produced by `cockroach debug zip` can contain highly [sensitive, ident
 
 There are two scenarios in which `debug zip` is useful:
 
-- To collect all of your nodes' logs, which you can then parse to locate issues. You can optionally use the [flags](#flags) to [retrieve only the log files](#generate-a-debug-zip-file-with-logs-only). For more information about logs, see [Logging](logging-overview.html). Also note:
+- To collect all of your nodes' logs, which you can then parse to locate issues. You can optionally use the [flags](#flags) to [retrieve only the log files](#generate-a-debug-zip-file-with-logs-only). For more information about logs, see [Logging](logging-system.html). Also note:
 
     - Nodes that are currently [down](cluster-setup-troubleshooting.html#node-liveness-issues) cannot deliver their logs over the network. For these nodes, you must log on to the machine where the `cockroach` process would otherwise be running, and gather the files manually.
 

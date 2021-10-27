@@ -4,7 +4,7 @@ summary: Examples of common logging use cases and possible CockroachDB logging s
 toc: true
 ---
 
-This page describes some common logging use cases, their relevant [logging channels](logging-overview.html#logging-channels), and examples of notable events to be found in the logs:
+This page describes some common logging use cases, their relevant [logging channels](logging-system.html#logging-channels), and examples of notable events to be found in the logs:
 
 - [Operational monitoring](#operational-monitoring) (for operators)
 - [Security and audit monitoring](#security-and-audit-monitoring) (for security engineers)
