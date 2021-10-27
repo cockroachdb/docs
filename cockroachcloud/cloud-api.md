@@ -85,9 +85,9 @@ To change the API key name for an existing API key:
 
 {%comment %} END of temporary content while API is still behind a feature-flag{% endcomment %}
 
-## API access
+## Call the API
 
-The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key](console-access-management.html#api-access). The secret key is associated with a service account, and inherits the [permissions of the account](console-access-management.html#service-accounts).
+The API uses [bearer token authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/), and each request requires a [secret key](#api-access). The secret key is associated with a service account, and inherits the [permissions of the account](#service-accounts).
 
 To send the secret key when making an API call, add the secret key to the `Authorization` HTTP header sent with the request.
 
@@ -112,7 +112,7 @@ Authorization: Bearer {secret key}
 ~~~
 </section>
 
-Where `{secret key}` is the [secret key string you stored when you created the API key in the Console](console-access-management.html#create-api-keys).
+Where `{secret key}` is the [secret key string you stored when you created the API key in the Console](#create-api-keys).
 
 You will also need your **Organization ID**, located in the **Settings** page of the Console. Replace `{organizationId}` with your ID in the endpoint URIs.
 
