@@ -37,7 +37,7 @@ Unless a role is a member of the admin role, additional [privileges](#parameters
 
 ## Synopsis
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/create_role.html %}</div>
+<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_role.html %}</section>
 
 ## Parameters
 
