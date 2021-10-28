@@ -20,7 +20,9 @@ You can only apply the `DEFAULT` value constraint to individual columns.
 You can also add the `DEFAULT` value constraint to an existing table through [`ALTER COLUMN`](alter-column.html#set-or-change-a-default-value).
 {{site.data.alerts.end}}
 
-<div>{% include {{ page.version.version }}/sql/generated/diagrams/default_value_column_level.html %} </section>
+<div>
+{% include {{ page.version.version }}/sql/generated/diagrams/default_value_column_level.html %}
+</div>
 
  Parameter | Description
 -----------|-------------

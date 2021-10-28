@@ -35,6 +35,7 @@ CockroachDB supports the following column qualifications:
 - [Column-level constraints](constraints.html)
 - [Collations](collate.html)
 - [Column family assignments](column-families.html)
+- [`DEFAULT` expressions](default-value.html)
 - <span class="version-tag">New in v21.2</span>: [`ON UPDATE` expressions](#on-update-expressions)
 
 ### ON UPDATE expressions
@@ -44,7 +45,7 @@ CockroachDB supports the following column qualifications:
 Note the following limitations of `ON UPDATE` expressions:
 
 - You cannot add a [foreign key constraint](foreign-key.html) and an `ON UPDATE` expression to the same column.
-- Values populated by [`DEFAULT` constraints](default-value.html) do not trigger an `ON UPDATE` change.
+- Values populated by [`DEFAULT` expressions](default-value.html) do not trigger an `ON UPDATE` change.
 
 For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](#add-a-column-with-an-on-update-expression).
 
