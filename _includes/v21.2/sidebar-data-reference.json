@@ -55,6 +55,12 @@
             "urls": [
               "/${VERSION}/architecture/admission-control.html"
             ]
+          },
+          {
+            "title": "CockroachDB Cloud Architecture",
+            "urls": [
+              "/cockroachcloud/architecture.html"
+            ]
           }
         ]
       },
@@ -727,6 +733,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW CREATE SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/show-create-schedule.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW DATABASES</code>",
                 "urls": [
                   "/${VERSION}/show-databases.html"
@@ -1151,12 +1163,27 @@
         "title": "Cluster settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
-        ],
+        ]
+      },
+      {
+        "title": "Performance Optimization",
         "items": [
+          {
+            "title": "Indexes",
+            "urls": [
+              "/${VERSION}/indexes.html"
+            ]
+          },
           {
             "title": "Cost-Based Optimizer",
             "urls": [
               "/${VERSION}/cost-based-optimizer.html"
+            ]
+          },
+          {
+            "title": "Vectorized Execution Engine",
+            "urls": [
+              "/${VERSION}/vectorized-execution.html"
             ]
           },
           {

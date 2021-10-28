@@ -302,12 +302,12 @@ For example:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
 ~~~
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT * FROM (VALUES(1), (2), (3));
 ~~~
 
 {% include_cached copy-clipboard.html %}

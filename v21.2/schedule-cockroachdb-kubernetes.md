@@ -6,21 +6,19 @@ toc_not_nested: true
 secure: true
 ---
 
-This page describes how to configure, using the [Operator](https://github.com/cockroachdb/cockroach-operator):
+This page describes how to configure the following, using the [Operator](https://github.com/cockroachdb/cockroach-operator):
 
+- [Node selectors](#node-selectors)
 - [Node affinities](#add-a-node-affinity)
 - [Pod affinities and anti-affinities](#add-a-pod-affinity-or-anti-affinity)
 - [Taints and tolerations](#taints-and-tolerations)
+- [Resource labels and annotations](#resource-labels-and-annotations)
 
-These settings control how Kubernetes schedules CockroachDB pods onto worker nodes.
-
-{{site.data.alerts.callout_info}}
-These Operator features are not yet fully supported. To use the affinity and toleration rules, first [enable the respective feature gates](#enable-feature-gates).
-{{site.data.alerts.end}}
+These settings control how CockroachDB pods can be identified or scheduled onto worker nodes.
 
 ## Enable feature gates
 
-To enable the affinity and toleration rules, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
+The [affinity](#affinities-and-anti-affinities) and [toleration](#taints-and-tolerations) rules are not yet fully supported. To enable them, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
 
 {% include_cached copy-clipboard.html %}
 ~~~ yaml
@@ -30,9 +28,31 @@ spec:
     - -feature-gates=TolerationRules=true,AffinityRules=true
 ~~~
 
+## Node selectors
+
+A pod with a *node selector* will be scheduled onto a worker node that has matching [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/), or key-value pairs.
+
+Specify the labels in `nodeSelector` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `nodeSelector` labels, the node must match all of them.
+
+The following configuration causes CockroachDB pods to be scheduled onto worker nodes that have *both* the labels `worker-pool-name=crdb-workers` and `kubernetes.io/arch=amd64`:
+
+{% include_cached copy-clipboard.html %}
+~~~ yaml
+spec:
+  nodeSelector:
+    worker-pool-name: crdb-workers
+    kubernetes.io/arch: amd64
+~~~
+
+For an example of labeling nodes, see [Scheduling CockroachDB onto labeled nodes](#example-scheduling-cockroachdb-onto-labeled-nodes).
+
 ## Affinities and anti-affinities
 
-A pod with a *node affinity* seeks out worker nodes that have matching labels. A pod with a *pod affinity* seeks out pods that have matching labels. A pod with a *pod anti-affinity* avoids pods that have matching labels.
+{{site.data.alerts.callout_info}}
+To use the affinity rules, first [enable the feature gates](#enable-feature-gates).
+{{site.data.alerts.end}}
+
+A pod with a *node affinity* seeks out worker nodes that have matching [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). A pod with a *pod affinity* seeks out pods that have matching labels. A pod with a *pod anti-affinity* avoids pods that have matching labels.
 
 Affinities and anti-affinities can be used together with `operator` fields to:
 
@@ -45,7 +65,7 @@ For an example, see [Scheduling CockroachDB onto labeled nodes](#example-schedul
 
 ### Add a node affinity
 
-Specify node affinities in `affinity.nodeAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster).
+Specify node affinities in `affinity.nodeAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
 The following configuration requires that CockroachDB pods are scheduled onto worker nodes running either an `intel` or `amd64` CPU, with a preference against worker nodes in the `us-east4-b` availability zone.
 
@@ -80,7 +100,7 @@ For more context on how these rules work, see the [Kubernetes documentation](htt
 
 ### Add a pod affinity or anti-affinity
 
-Specify pod affinities and anti-affinities in `affinity.podAffinity` and `affinity.podAntiAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster).
+Specify pod affinities and anti-affinities in `affinity.podAffinity` and `affinity.podAntiAffinity` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster). If you specify multiple `matchExpressions` labels, the node must match all of them. If you specify multiple `values` for a label, the node can match any of the values.
 
 The following configuration attempts to schedule CockroachDB pods in the same zones as the pods that run our example [load generator](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/example-app.yaml) app. It disallows CockroachDB pods from being co-located on the same worker node.
 
@@ -120,7 +140,7 @@ For more context on how these rules work, see the [Kubernetes documentation](htt
 
 In this example, CockroachDB has not yet been deployed to a running Kubernetes cluster. We use a combination of node affinity and pod anti-affinity rules to schedule 3 CockroachDB pods onto 3 labeled worker nodes.
 
-1. List the worker nodes on the running Kubernetes cluster: 
+1. List the worker nodes on the running Kubernetes cluster:
 
 	{% include_cached copy-clipboard.html %}
 	~~~ shell
@@ -206,6 +226,10 @@ In this example, CockroachDB has not yet been deployed to a running Kubernetes c
 	~~~
 
 ## Taints and tolerations
+
+{{site.data.alerts.callout_info}}
+To use the toleration rules, first [enable the feature gates](#enable-feature-gates).
+{{site.data.alerts.end}}
 
 When a *taint* is added to a Kubernetes worker node, pods are prevented from being scheduled onto that node. This effect is ignored by adding a *toleration* to a pod that specifies a matching taint.
 
@@ -321,3 +345,22 @@ In this example, CockroachDB has already been deployed on a Kubernetes cluster. 
 	~~~
 
 	`cockroachdb-2` is now scheduled onto the `gke-cockroachdb-default-pool-4e5ce539-68p5` node.
+
+## Resource labels and annotations
+
+To assist in working with your cluster, you can add labels and annotations to your resources.
+
+Specify labels in `additionalLabels` and annotations in `additionalAnnotations` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+
+{% include_cached copy-clipboard.html %}
+~~~ yaml
+spec:
+  additionalLabels:
+    app.kubernetes.io/version: {{page.release_info.version}}
+  additionalAnnotations:
+    operator: https://github.com/cockroachdb/cockroach-operator/blob/master/install/operator.yaml
+~~~
+
+To verify that the labels and annotations were applied to a pod, for example, run `kubectl describe pod {pod-name}`.
+
+For more information about [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) and [annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/), see the Kubernetes documentation.

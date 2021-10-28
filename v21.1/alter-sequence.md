@@ -15,7 +15,7 @@ The `ALTER SEQUENCE` [statement](sql-statements.html) applies a [schema change](
 
 ## Syntax
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/alter_sequence.html %}</div>
+<div>{% include {{ page.version.version }}/sql/generated/diagrams/alter_sequence.html %}</div>
 
 ## Parameters
 

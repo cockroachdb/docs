@@ -610,10 +610,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
 
-### Using interleaved tables in backups
-
-{% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
-
 ### Inverted index scans can't be generated for some statement filters
 
 CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
