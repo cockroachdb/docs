@@ -18,7 +18,7 @@ SHOW TYPES
 
 ## Required privileges
 
-The `SELECT` [privilege](authorization.html#assign-privileges) on the database is required to list any user-defined types in the database.
+The `CONNECT` [privilege](authorization.html#assign-privileges) on the database is required to list any user-defined types in the database.
 
 ## Examples
 

@@ -1,3 +1,7 @@
+- advisory: 71002
+  summary: CockroachDB v21.1.9 drops `WHERE` predicates from prepared statements in specific circumstances
+  versions: v21.1.9
+  date: October 7, 2021
 - advisory: 69874
   summary: CockroachDB v21.1.8 can not be downgraded
   versions: 21.1.8

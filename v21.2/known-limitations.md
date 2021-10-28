@@ -308,7 +308,7 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### {{ site.data.products.enterprise }} `BACKUP` does not capture database/table/column comments
+### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
@@ -609,10 +609,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Using interleaved tables in backups
-
-{% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
 
 ### Inverted index scans can't be generated for some statement filters
 

@@ -13,7 +13,7 @@ The `RENAME INDEX` [statement](sql-statements.html) changes the name of an index
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/rename_index.html %}
+{% include {{ page.version.version }}/sql/diagrams/rename_index.html %}
 </div>
 
 ## Required privileges
@@ -24,7 +24,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
  Parameter | Description
 -----------|-------------
- `IF EXISTS` | Rename the column only if a column of `current_name` exists; if one does not exist, do not return an error.
+ `IF EXISTS` | Rename the index only if an index `current_name` exists; if one does not exist, do not return an error.
  `table_name` | The name of the table with the index you want to use
  `index_name` | The current name of the index
  `name` | The [`name`](sql-grammar.html#name) you want to use for the index, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).

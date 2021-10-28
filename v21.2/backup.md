@@ -11,7 +11,7 @@ CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [fu
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [{{ site.data.products.enterprise }} license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
+Core users can only take [full backups](take-full-and-incremental-backups.html#full-backups). To use the other backup features, you need an [Enterprise license](enterprise-licensing.html). You can also use [{{ site.data.products.dedicated }}](https://cockroachlabs.cloud/signup?referralId=docs-crdb-backup), which runs [full backups daily and incremental backups hourly](../cockroachcloud/backups-page.html).
 {{site.data.alerts.end}}
 
 You can [backup a full cluster](#backup-a-cluster), which includes:
@@ -32,23 +32,17 @@ You can also back up:
 Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](restore.html). Isolated issues (such as small-scale node outages) do not require any intervention.
 
 {{site.data.alerts.callout_success}}
-To view the contents of an {{ site.data.products.enterprise }} backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
+To view the contents of an Enterprise backup created with the `BACKUP` statement, use [`SHOW BACKUP`](show-backup.html).
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
 `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-[Interleaving data](interleave-in-parent.html) is disabled by default, and will be permanently removed from CockroachDB in a future release. CockroachDB versions v21.2 and later will not be able to read or restore backups that include interleaved data.
-
-To backup interleaved data, a `BACKUP` statement must include the [`INCLUDE_DEPRECATED_INTERLEAVES` option](#include-deprecated-interleaves).
-{{site.data.alerts.end}}
-
 ## Required privileges
 
 - [Full cluster backups](take-full-and-incremental-backups.html#full-backups) can only be run by members of the [`admin` role](authorization.html#admin-role). By default, the `root` user belongs to the `admin` role.
-- For all other backups, the user must have [read access](authorization.html#assign-privileges) on all objects being backed up. Database and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
+- For all other backups, the user must have [read access](authorization.html#assign-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
 - `BACKUP` requires full read and write (including delete and overwrite) permissions to its target destination.
 
 ### Destination privileges
@@ -58,7 +52,7 @@ To backup interleaved data, a `BACKUP` statement must include the [`INCLUDE_DEPR
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/backup.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/backup.html %}
 </div>
 
 ## Parameters
@@ -107,7 +101,6 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES`; however, this dependency can be [removed during the restore](restore.html#skip_missing_foreign_keys).
 Table with a [sequence](create-sequence.html) | The sequence it uses; however, this dependency can be [removed during the restore](restore.html#skip_missing_sequences).
 [Views](views.html) | The tables used in the view's `SELECT` statement.
-[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
 ### Users and privileges
 
@@ -128,6 +121,8 @@ We recommend always starting backups with a specific [timestamp](timestamp.html)
 This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](transactions.html#transaction-retries). However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, since the backup will take priority and will force still-running transactions to restart after the backup is finished.
 
 `BACKUP` will initially ask individual ranges to backup but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When `BACKUP` has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to _not_ skip. Additionally, the backup's transaction priority is then set to `high`, which causes other transactions to abort until the intents are resolved and the backup is finished.
+
+{% include {{ page.version.version }}/backups/file-size-setting.md %}
 
 ## Viewing and controlling backups jobs
 
@@ -471,10 +466,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
 ## Known limitations
-
-### Using interleaved tables in backups
-
-{% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
 
 ### Slow (or hung) backups and queries due to write intent buildup
 

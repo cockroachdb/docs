@@ -13,7 +13,7 @@ The user must have the `DROP` [privilege](authorization.html#assign-privileges) 
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/drop_schema.html %}
+{% include {{ page.version.version }}/sql/diagrams/drop_schema.html %}
 </div>
 
 ### Parameters

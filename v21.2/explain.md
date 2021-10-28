@@ -4,41 +4,37 @@ summary: The EXPLAIN statement provides information you can use to optimize SQL 
 toc: true
 ---
 
-The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's statement plan for an [explainable statement](sql-grammar.html#preparable_stmt). You can then use this information to optimize the query.
+The `EXPLAIN` [statement](sql-statements.html) returns CockroachDB's statement plan for a [preparable statement](sql-grammar.html#preparable_stmt). You can use this information to optimize the query.
 
 {{site.data.alerts.callout_success}}
-To actually execute a statement and return a physical statement plan with execution statistics, use [`EXPLAIN ANALYZE`](explain-analyze.html).
+To execute a statement and return a physical statement plan with execution statistics, use [`EXPLAIN ANALYZE`](explain-analyze.html).
 {{site.data.alerts.end}}
 
 ## Query optimization
 
-Using `EXPLAIN`'s output, you can optimize your queries by taking the following points into consideration:
+Using `EXPLAIN` output, you can optimize your queries as follows:
 
-- Queries with fewer levels execute more quickly. Restructuring queries to require fewer levels of processing will generally improve performance.
-
-- Avoid scanning an entire table, which is the slowest way to access data. You can avoid this by [creating indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
+- Restructure queries to require fewer levels of processing. Queries with fewer levels execute more quickly.
+- Avoid scanning an entire table, which is the slowest way to access data. [Create indexes](indexes.html) that contain at least one of the columns that the query is filtering in its `WHERE` clause.
 
      You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html). When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error.
 
-     The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster.
+     The statement planner uses the [cost-based optimizer](cost-based-optimizer.html) to create statement plans. Even after adding secondary indexes, the optimizer may decide that a full table scan will be faster. For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html).
 
-     For example, if you add a secondary index to a table with a large number of rows and see that a statement plan isn't using the secondary index, it is likely that performing a full table scan using the primary key is faster than doing a secondary index scan plus an [index join](indexes.html).
-
-- By default, the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations). If you are querying a table with a small number of rows, it might be more efficient to use row-oriented execution. The `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) specifies the minimum number of rows required to use the vectorized engine to execute a statement plan.
+- Enable row-oriented execution if you are querying a table with a small number of rows. Since the [vectorized execution](vectorized-execution.html) engine is enabled for all [supported operations](vectorized-execution.html#disk-spilling-operations) you can use the `vectorize_row_count_threshold` [cluster setting](cluster-settings.html) to specify the minimum number of rows required to use the vectorized engine to execute a statement plan.
 
 You can find out if your queries are performing entire table scans by using `EXPLAIN` to see which:
 
-- Indexes the query uses; shown as the value of `table` property.
-
+- Indexes the query uses; shown as the value of the `table` property.
 - Key values in the index are being scanned; shown as the value of the `spans` property.
 
- You can also see the estimated number of rows that a scan will perform in the `estimated row count` property.
+You can also see the estimated number of rows that a scan will perform in the `estimated row count` property.
 
 For more information about indexing and table scans, see [Find the Indexes and Key Ranges a Query Uses](#find-the-indexes-and-key-ranges-a-query-uses).
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/explain.html %}</section>
+<div>{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/explain.html %}</div>
 
 ## Required privileges
 
@@ -46,24 +42,20 @@ The user requires the appropriate [privileges](authorization.html#assign-privile
 
 ## Parameters
 
- Parameter          | Description
---------------------+------------
- `VERBOSE`          | Show as much information as possible about the statement plan.
- `TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions.
- `OPT`              | Display the statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html).<br/><br/>To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`. To include cost and type details, use `OPT, TYPES`. To include all details used by the optimizer, including statistics, use `OPT, ENV`.
- `VEC`              | Show detailed information about the [vectorized execution](vectorized-execution.html) plan for a query.
- `preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
- `DISTSQL`          | Generate a URL to a [distributed SQL physical statement plan tree](explain-analyze.html#distsql-plan-viewer).<br><br>{% include {{ page.version.version }}/sql/physical-plan-url.md %}
-
-{{site.data.alerts.callout_danger}}
-`EXPLAIN` also includes other modes besides statement plans that are useful only to CockroachDB developers, which are not documented here.
-{{site.data.alerts.end}}
+ Parameter         | Description
+-------------------+------------
+`VERBOSE`          | Show as much information as possible about the statement plan. See [`VERBOSE` option](#verbose-option).
+`TYPES`            | Include the intermediate [data types](data-types.html) CockroachDB chooses to evaluate intermediate SQL expressions. See [`TYPES` option](#types-option)
+`OPT`              | Display the statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html). See [`OPT` option](#opt-option).
+`VEC`              | Show detailed information about the [vectorized execution](vectorized-execution.html) plan for a query. See [`VEC` option](#vec-option).
+`DISTSQL`          | Generate a URL to a [distributed SQL physical statement plan diagram](explain-analyze.html#distsql-plan-diagram). See [`DISTSQL` option](#distsql-option).
+`preparable_stmt`  | The [statement](sql-grammar.html#preparable_stmt) you want details about. All preparable statements are explainable.
 
 ## Success responses
 
 Successful `EXPLAIN` statements return tables with the following details in the `info` column:
 
- Detail | Description
+Detail | Description
 -----------|-------------
 Global properties | Properties that apply to the entire query plan. Global properties include `distribution` and `vectorized`.
 Statement plan tree | A tree representation of the hierarchy of the statement plan.
@@ -81,7 +73,7 @@ The following examples use the [`movr` example dataset](cockroach-demo.html#data
 
 By default, `EXPLAIN` includes the least detail about the statement plan but can be useful to find out which indexes and index key ranges are used by a query. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -109,29 +101,35 @@ By default, `EXPLAIN` includes the least detail about the statement plan but can
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The output shows the tree structure of the statement plan, in this case a `sort`, a `filter`, and then a `scan`.
+The output shows the tree structure of the statement plan, in this case a `sort`, a `filter`, and a `scan`.
 
 The output also describes a set of properties, some global to the query, and some specific to an operation listed in the true structure (in this case, `sort`, `filter`, or `scan`):
 
 - `distribution`:`full`
-  <br>The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes.
-  <br>An execution plan with `local` distribution, on the other hand, is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
+
+    The planner chose a distributed execution plan, where execution of the query is performed by multiple nodes in parallel, then the final results are returned by the gateway node. An execution plan with `full` distribution doesn't process on all nodes in the cluster. It is executed simultaneously on multiple nodes. An execution plan with `local` distribution is performed only on the gateway node. Even if the execution plan is `local`, row data may be fetched from remote nodes, but the processing of the data is performed by the local node.
 - `vectorized`:`true`
-  <br>The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
+
+    The plan will be executed with the [vectorized execution engine](vectorized-execution.html).
 - `order`:`+revenue`
-  <br>The sort will be ordered ascending on the `revenue` column.
+
+    The sort will be ordered ascending on the `revenue` column.
 - `filter`: `revenue > 90`
-  <br>The scan filters on the `revenue` column.
--  `estimated row count`:`125,000 (100% of the table; stats collected 19 minutes ago)`
-  <br>The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago.
+
+    The scan filters on the `revenue` column.
+- `estimated row count`:`125,000 (100% of the table; stats collected 19 minutes ago)`
+
+    The estimated number of rows scanned by the query, in this case, `125,000` rows of data; the percentage of the table the query spans, in this case 100%; and when the statistics for the table were last collected, in this case 19 minutes ago.
 - `table`:`rides@primary`
-  <br>The table is scanned on the `primary` index.
+
+    The table is scanned on the `primary` index.
 - `spans`:`FULL SCAN`
-  <br>The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
+
+    The table is scanned on all key ranges of the `primary` index (i.e., a full table scan). For more information on indexes and key ranges, see the [example](#find-the-indexes-and-key-ranges-a-query-uses) below.
 
 If you run `EXPLAIN` on a [join](joins.html) query, the output will display which type of join will be executed. For example, the following `EXPLAIN` output shows that the query will perform a [hash join](joins.html#hash-joins):
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides AS r
 JOIN users AS u ON r.rider_id = u.id;
@@ -161,9 +159,9 @@ JOIN users AS u ON r.rider_id = u.id;
 Time: 1ms total (execution 1ms / network 0ms
 ~~~
 
-And the following output shows that the query will perform a cross join:
+The following output shows that the query will perform a cross join:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM rides AS r
 JOIN users AS u ON r.city = 'new york';
@@ -194,7 +192,7 @@ Time: 3ms total (execution 1ms / network 2ms)
 
 `EXPLAIN` output for [`INSERT`](insert.html) queries is similar to the output for standard `SELECT` queries. For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN INSERT INTO users(id, city, name) VALUES ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee');
 ~~~
@@ -218,16 +216,18 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 The output for this `INSERT` lists the primary operation (in this case, `insert`), and the table and columns affected by the operation in the `into` field (in this case, the `id`, `city`, `name`, `address`, and `credit_card` columns of the `users` table). The output also includes the size of the `INSERT` in the `size` field (in this case, 4 columns in a single row).
 
-`EXPLAIN` output can include more information, for more complex types of `INSERT` queries. For example, suppose that you create a `UNIQUE` index on the `users` table:
+`EXPLAIN` output can include more information, for more complex types of `INSERT` queries.
 
-{% include copy-clipboard.html %}
+For example, suppose that you create a `UNIQUE` index on the `users` table:
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE UNIQUE INDEX ON users(city, id, name);
 ~~~
 
-And then you want the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](insert.html#on-conflict-clause) that inserts some data that might conflict with the `UNIQUE` constraint imposed on the `name`, `city`, and `id` columns:
+To display the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statement](insert.html#on-conflict-clause) that inserts some data that might conflict with the `UNIQUE` constraint imposed on the `name`, `city`, and `id` columns:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN INSERT INTO users(id, city, name) VALUES ('c28f5c28-f5c2-4000-8000-000000000026', 'new york', 'Petee') ON CONFLICT DO NOTHING;
 ~~~
@@ -264,16 +264,16 @@ And then you want the `EXPLAIN` output for an [`INSERT ... ON CONFLICT` statemen
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more than a simple `insert` operation. CockroachDB must check the provided values against the values in the database, to ensure that the `UNIQUE` constraint on `name`, `city`, and `id` is not violated. Note that the output also lists the indexes available to detect conflicts (the `arbiter indexes`), including the `users_city_id_name_key` index.
+Because the `INSERT` includes an `ON CONFLICT` clause, the query requires more than a simple `insert` operation. CockroachDB must check the provided values against the values in the database, to ensure that the `UNIQUE` constraint on `name`, `city`, and `id` is not violated. The output also lists the indexes available to detect conflicts (the `arbiter indexes`), including the `users_city_id_name_key` index.
 
 ### `VERBOSE` option
 
-The `VERBOSE` option:
+The `VERBOSE` option includes:
 
-- Includes SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
-- Includes detail about which columns are being used by each level, as well as properties of the result set on that level.
+- SQL expressions that are involved in each processing stage, providing more granular detail about which portion of your query is represented at each level.
+- Detail about which columns are being used by each level, as well as properties of the result set on that level.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VERBOSE) SELECT * FROM rides AS r
 JOIN users AS u ON r.rider_id = u.id
@@ -316,16 +316,20 @@ Time: 2ms total (execution 2ms / network 0ms)
 
 ### `TYPES` option
 
-The `TYPES` mode includes the types of the values used in the statement plan. It also includes the SQL expressions that were involved in each processing stage, and includes the columns used by each level.
+The `TYPES` option includes
 
-{% include copy-clipboard.html %}
+- The types of the values used in the statement plan.
+- The SQL expressions that were involved in each processing stage, and includes the columns used by each level.
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (TYPES) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
                    info
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
   distribution: full
   vectorized: true
 
@@ -352,9 +356,9 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 ### `OPT` option
 
-The `OPT` option displays the statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html). For example:
+To display the statement plan tree generated by the [cost-based optimizer](cost-based-optimizer.html), use the `OPT` option . For example:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
@@ -372,18 +376,20 @@ The `OPT` option displays the statement plan tree generated by the [cost-based o
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-<a name="opt-verbose-option"></a>
+`OPT` has four suboptions: [`VERBOSE`](#opt-verbose-option), [`TYPES`](#opt-types-option), [`ENV`](#opt-env-option), [`MEMO`](#opt-memo-option).
 
-To include cost details used by the optimizer in planning the query, use `OPT, VERBOSE`:
+#### `OPT, VERBOSE` option
 
-{% include copy-clipboard.html %}
+To include cost details used by the optimizer in planning the query, use the `OPT, VERBOSE` option:
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT, VERBOSE) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
                                  info
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- ...
   sort
    ├── columns: id:1 city:2 vehicle_city:3 rider_id:4 vehicle_id:5 start_address:6 end_address:7 start_time:8 end_time:9 revenue:10
    ├── immutable
@@ -410,12 +416,12 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
         ├── scan rides
         │    ├── columns: id:1 city:2 vehicle_city:3 rider_id:4 vehicle_id:5 start_address:6 end_address:7 start_time:8 end_time:9 revenue:10
         │    ├── stats: [rows=125000, distinct(1)=125000, null(1)=0, distinct(2)=9, null(2)=0, distinct(10)=100, null(10)=0]
-        │    │   histogram(1)=  0                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12
-        │    │                <--- '00064a9c-dc44-4915-8000-00000000000c' ----- '0162f166-e008-49b0-8000-0000000002a5' ----- '02834d26-fa3f-4ca0-8000-0000000004cb' ----- '03c85c24-c404-4720-8000-000000000737' ----- '052263d8-16ac-4ac0-8000-0000000009cb' ----- '0647778d-d616-4880-8000-000000000bfa' ----- '07c0f451-7614-4940-8000-000000000eca' ----- '09235f80-9917-4380-8000-00000000116e' ----- '0ac29bf1-62ae-4b00-8000-000000001486' ----- '0c1a048e-043a-4180-8000-000000001715' ----- '0d2d44dc-a8e2-4280-8000-000000001922' ----- '0e536501-e258-4f80-8000-000000001b53' ----- '0fb8f57f-737d-4600-8000-000000001dfd' ----- '10ecb74d-df86-4400-8000-000000002048' ----- '121f6cac-d184-4200-8000-000000002291' ----- '1376d549-7310-4900-8000-000000002520' ----- '14da4ce8-101f-4200-8000-0000000027c6' ----- '15fc3b4f-6167-4300-8000-0000000029ef' ----- '17281fd9-ba1b-4900-8000-000000002c2b' ----- '184449db-ec24-4100-8000-000000002e49' ----- '1996744b-2b77-4d00-8000-0000000030ce' ----- '1a8bd230-b9dc-4f00-8000-0000000032a2' ----- '1bbc6eb0-b7c3-4000-8000-0000000034e7' ----- '1d230b9d-c2f4-4600-8000-000000003793' ----- '1ea57214-f052-4d00-8000-000000003a74' ----- '1ff3f0fe-047d-4d00-8000-000000003cf2' ----- '21040bfe-3b03-4200-8000-000000003ef9' ----- '225b749a-dc8f-4800-8000-000000004188' ----- '2383ad9f-0a1b-4200-8000-0000000043bd' ----- '24dd2f1a-9fbe-4600-8000-000000004650' ----- '2624dd2f-1a9f-4e00-8000-0000000048c1' ----- '2784230f-cf80-4c00-8000-000000004b5f' ----- '288e79aa-e6c8-4800-8000-000000004d5b' ----- '29be8ff3-27aa-4800-8000-000000004f9f' ----- '2b09e98d-cdb3-4c00-8000-000000005217' ----- '2c700043-1bde-4200-8000-0000000054c2' ----- '2e29f9ce-8d97-4c00-8000-00000000580d' ----- '2f6f8f04-1461-4600-8000-000000005a7a' ----- '30bc7b45-f17b-4800-8000-000000005cf5' ----- '31ec0b56-7557-4a00-8000-000000005f38' ----- '3335d249-e44f-4000-8000-0000000061ad' ----- '34738a3b-57c4-4200-8000-00000000640b' ----- '35e17e34-b945-4000-8000-0000000066c5' ----- '36f0068d-b8ba-4800-8000-0000000068c9' ----- '385b5b70-691e-4800-8000-000000006b7e' ----- '39c94f69-ca9e-4600-8000-000000006e38' ----- '3af20ea5-b530-4e00-8000-00000000706e' ----- '3c4fc1df-3300-4e00-8000-000000007309' ----- '3d9d3458-cd20-4000-8000-000000007585' ----- '3edbf8b9-baa1-4200-8000-0000000077e5' ----- '40589acb-c8c0-4000-8000-000000007abb' ----- '41bd1ed9-dfda-4800-8000-000000007d63' ----- '42ff8ec0-f883-4400-8000-000000007fca' ----- '445f5ad9-6a6a-4000-8000-000000008269' ----- '458255b0-35bd-4000-8000-000000008494' ----- '4704bc27-631b-4800-8000-000000008775' ----- '482be8bc-169c-4400-8000-0000000089a8' ----- '4956c0d6-f544-4c00-8000-000000008be2' ----- '4a57214f-0520-4000-8000-000000008dcb' ----- '4bb6672f-ba01-4000-8000-000000009069' ----- '4d1fa333-764f-4000-8000-00000000931a' ----- '4e50c5eb-313b-4400-8000-000000009560' ----- '4fdb09a6-71ef-4000-8000-000000009850' ----- '5137b070-75b3-4000-8000-000000009ae9' ----- '52a51e32-1a2e-4000-8000-000000009da2' ----- '5397dd00-f776-4400-8000-000000009f71' ----- '54c1a8ac-5c13-4c00-8000-00000000a1a9' ----- '5616f86a-0989-4400-8000-00000000a434' ----- '57308355-8a76-4000-8000-00000000a64d' ----- '5858bc59-b802-4c00-8000-00000000a882' ----- '59c6b053-1982-4800-8000-00000000ab3c' ----- '5b8d3f18-43c3-4400-8000-00000000ae9f' ----- '5cb2d905-c033-4000-8000-00000000b0cf' ----- '5dbdb5d8-9481-4c00-8000-00000000b2cc' ----- '5f173754-2a23-4000-8000-00000000b55f' ----- '6080f98f-a376-4400-8000-00000000b811' ----- '6195cc85-7f30-4000-8000-00000000ba21' ----- '62de8709-741d-4800-8000-00000000bc94' ----- '642f1ed1-7c5e-4800-8000-00000000bf16' ----- '65881a15-54fb-4c00-8000-00000000c1a8' ----- '66c11a11-233d-4400-8000-00000000c3fd' ----- '6806af46-aa08-4c00-8000-00000000c66a' ----- '699ae924-f227-4000-8000-00000000c96d' ----- '6b05b7cf-e586-4000-8000-00000000cc21' ----- '6c6b484d-76ab-4800-8000-00000000cecb' ----- '6da6e75f-f609-4c00-8000-00000000d125' ----- '6f4c6e6d-9be4-4c00-8000-00000000d449' ----- '70c80410-2ff8-4c00-8000-00000000d71d' ----- '7235f809-9179-4800-8000-00000000d9d7' ----- '73ba775f-b2ee-4000-8000-00000000dcbc' ----- '74f26aec-0724-4800-8000-00000000df0f' ----- '76544fe3-6d22-4400-8000-00000000e1b2' ----- '77da61e0-c5a8-4400-8000-00000000e49a' ----- '79220ff5-4089-4c00-8000-00000000e70b' ----- '7a82e87d-2c7b-4800-8000-00000000e9ac' ----- '7bfc6540-cc78-4800-8000-00000000ec7c' ----- '7d3cbc48-f10a-4800-8000-00000000eedf' ----- '7e225fa6-58c4-4c00-8000-00000000f095' ----- '7fc08fa7-a850-4400-8000-00000000f3ab' ----- '80e5a35d-67ba-4000-8000-00000000f5da' ----- '821858bc-59b8-4000-8000-00000000f823' ----- '837585be-1a82-4000-8000-00000000fabd' ----- '84ccee5a-bc0e-4800-8000-00000000fd4c' ----- '86162f16-6e00-4000-8000-00000000ffc0' ----- '8773e24f-ebd0-4000-8000-00000001025b' ----- '889b951c-5c57-4800-8000-00000001048f' ----- '89b62c77-574f-4000-8000-0000000106aa' ----- '8ac6cdaf-4adb-4800-8000-0000000108b2' ----- '8c46950f-c71d-4000-8000-000000010b8e' ----- '8dad31fc-d24e-4800-8000-000000010e3a' ----- '8ebc408d-8ec9-4800-8000-00000001103f' ----- '8fe47991-bc55-4800-8000-000000011274' ----- '90fe047d-3d42-4000-8000-00000001148d' ----- '9224aada-33bd-4000-8000-0000000116bf' ----- '9340d4dc-65c7-4800-8000-0000000118dd' ----- '947496aa-d1d0-4000-8000-000000011b28' ----- '95aaf78f-eef5-4000-8000-000000011d78' ----- '96b54e2b-063e-4800-8000-000000011f74' ----- '97ed41b7-5a74-4000-8000-0000000121c7' ----- '99192641-b328-4800-8000-000000012403' ----- '9a3ec02f-2f98-4000-8000-000000012633' ----- '9b9ae0c1-7657-4800-8000-0000000128cb' ----- '9d3e4ef0-281b-4800-8000-000000012beb' ----- '9eb399f5-dfeb-4000-8000-000000012eb3' ----- '9ff79c84-2fa5-4800-8000-00000001311d' ----- 'a15ca6ca-03c4-4000-8000-0000000133c6' ----- 'a276b7ed-41b7-4800-8000-0000000135e0' ----- 'a389f83b-e660-4800-8000-0000000137ed' ----- 'a49906cc-a2db-4000-8000-0000000139f2' ----- 'a5cee17a-02fb-4000-8000-000000013c41' ----- 'a708ede5-4b48-4000-8000-000000013e98' ----- 'a8366516-db0d-4800-8000-0000000140d7' ----- 'a9cc319c-5a3e-4800-8000-0000000143dd' ----- 'ab11c6d1-e108-4000-8000-00000001464a' ----- 'ac814d72-799a-4000-8000-000000014907' ----- 'ade8f6ce-fed6-4800-8000-000000014bb5' ----- 'af4b61fe-21d9-4000-8000-000000014e59' ----- 'b0870110-a137-4000-8000-0000000150b3' ----- 'b1ab0856-e696-4000-8000-0000000152e0' ----- 'b2ad81ad-ea89-4800-8000-0000000154cd' ----- 'b401c4fc-1df3-4000-8000-000000015756' ----- 'b57cd466-f501-4000-8000-000000015a29' ----- 'b691a75c-d0bb-4000-8000-000000015c39' ----- 'b7a67a52-ac75-4000-8000-000000015e49' ----- 'b9567dbb-16c1-4000-8000-000000016181' ----- 'ba98676a-7264-4000-8000-0000000163e7' ----- 'bbdd7668-3c29-4800-8000-000000016653' ----- 'bd13d74d-594f-4800-8000-0000000168a3' ----- 'be5eaab0-4252-4800-8000-000000016b1a' ----- 'bfb1e18e-fbb0-4800-8000-000000016da1' ----- 'c0de4c51-116a-4800-8000-000000016fde' ----- 'c202d9cf-13ce-4800-8000-00000001720c' ----- 'c3315d70-1d9f-4000-8000-00000001744d' ----- 'c42d05f2-8848-4800-8000-00000001762d' ----- 'c52502ee-c7c9-4800-8000-000000017806' ----- 'c65492ff-4ba5-4800-8000-000000017a49' ----- 'c75ff609-dcf8-4000-8000-000000017c47' ----- 'c8ccdd93-c46d-4000-8000-000000017eff' ----- 'ca044ae8-5b9e-4000-8000-000000018151' ----- 'cb48d3ae-685d-4800-8000-0000000183bc' ----- 'cc8abd5d-c400-4800-8000-000000018622' ----- 'ce1a3f46-66ec-4000-8000-00000001891c' ----- 'cf33ca31-e7d9-4800-8000-000000018b35' ----- 'd05186db-50f4-4000-8000-000000018d56' ----- 'd1e18efb-b0e5-4800-8000-000000019051' ----- 'd31fcd24-e160-4800-8000-0000000192b0' ----- 'd440af1c-b89d-4800-8000-0000000194d7' ----- 'd55a3a08-398a-4800-8000-0000000196f0' ----- 'd6cbd987-c632-4000-8000-0000000199b1' ----- 'd84a9478-c868-4800-8000-000000019c8b' ----- 'd9a415f4-5e0b-4000-8000-000000019f1e' ----- 'db163bab-a7b9-4800-8000-00000001a1e0' ----- 'dc5479d4-d834-4800-8000-00000001a43f' ----- 'ddf3b645-a1ca-4000-8000-00000001a757' ----- 'df46ed24-5b29-4800-8000-00000001a9de' ----- 'e089e343-30d7-4800-8000-00000001ac46' ----- 'e17dae81-882a-4000-8000-00000001ae17' ----- 'e2eec7c9-57cd-4800-8000-00000001b0d7' ----- 'e4430b17-8b37-4000-8000-00000001b360' ----- 'e5d744f5-d356-4000-8000-00000001b663' ----- 'e6fd651b-0ccb-4000-8000-00000001b894' ----- 'e84c6a3b-ddfc-4000-8000-00000001bb13' ----- 'e99c7bcc-2938-4000-8000-00000001bd94' ----- 'eac215b9-a5a8-4800-8000-00000001bfc4' ----- 'ec16df3f-9618-4800-8000-00000001c24e' ----- 'ed49949e-8815-4000-8000-00000001c497' ----- 'eead0c3d-2524-4000-8000-00000001c73d' ----- 'eff327aa-68f4-4800-8000-00000001c9ab' ----- 'f109070f-beb9-4800-8000-00000001cbbd' ----- 'f25a250f-8401-4000-8000-00000001ce40' ----- 'f38ac18f-81e8-4000-8000-00000001d085' ----- 'f4e6e221-c8a7-4800-8000-00000001d31d' ----- 'f63baba7-b917-4000-8000-00000001d5a7' ----- 'f7d9dba9-08a2-4800-8000-00000001d8bd' ----- 'f954eb13-dfb0-4800-8000-00000001db90' ----- 'face67d7-7fae-4800-8000-00000001de60' ----- 'fc0d2c38-6d2e-4800-8000-00000001e0c0' ----- 'fd61f5be-5d9e-4000-8000-00000001e34a' ----- 'fe81cb46-bacf-4800-8000-00000001e56f' ----- 'fffc5479-d4d8-4800-8000-00000001e841'
+        │    │   histogram(1)=  0                    12                    612                    12                    612                    12                 612
+                              <--- '00064a9c-dc44-4915-8000-00000000000c' ----- '0162f166-e008-49b0-8000-0000000002a5' ----- '02834d26-fa3f-4ca0-8000-0000000004cb' ----- '03c85c24-c404-4720-
         │    │   histogram(2)=  0     14512     0   13637    0      14512      0    14087     0   13837   0  13737   0       13550       0    13412    0       13712
         │    │                <--- 'amsterdam' --- 'boston' --- 'los angeles' --- 'new york' --- 'paris' --- 'rome' --- 'san francisco' --- 'seattle' --- 'washington dc'
         │    │   histogram(10)=  0 1387 1.2242e+05 1187
-        │    │                 <--- 0 ------------- 99
+        │    │                <--- 0 ------------- 99
         │    ├── cost: 150016.01
         │    ├── key: (1,2)
         │    ├── fd: (1,2)-->(3-10)
@@ -428,18 +434,18 @@ To include cost details used by the optimizer in planning the query, use `OPT, V
 Time: 4ms total (execution 3ms / network 1ms)
 ~~~
 
-<a name="opt-types-option"></a>
+#### `OPT, TYPES` option
 
-To include cost and type details, use `OPT, TYPES`:
+To include cost and type details, use the `OPT, TYPES` option:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT, TYPES) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
 ~~~
                                  info
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- ...
   sort
    ├── columns: id:1(uuid!null) city:2(varchar!null) vehicle_city:3(varchar) rider_id:4(uuid) vehicle_id:5(uuid) start_address:6(varchar) end_address:7(varchar) start_time:8(timestamp) end_time:9(timestamp) revenue:10(decimal!null)
    ├── immutable
@@ -466,12 +472,12 @@ To include cost and type details, use `OPT, TYPES`:
         ├── scan rides
         │    ├── columns: id:1(uuid!null) city:2(varchar!null) vehicle_city:3(varchar) rider_id:4(uuid) vehicle_id:5(uuid) start_address:6(varchar) end_address:7(varchar) start_time:8(timestamp) end_time:9(timestamp) revenue:10(decimal)
         │    ├── stats: [rows=125000, distinct(1)=125000, null(1)=0, distinct(2)=9, null(2)=0, distinct(10)=100, null(10)=0]
-        │    │   histogram(1)=  0                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    612                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12                    625                    12
-        │    │                <--- '00064a9c-dc44-4915-8000-00000000000c' ----- '0162f166-e008-49b0-8000-0000000002a5' ----- '02834d26-fa3f-4ca0-8000-0000000004cb' ----- '03c85c24-c404-4720-8000-000000000737' ----- '052263d8-16ac-4ac0-8000-0000000009cb' ----- '0647778d-d616-4880-8000-000000000bfa' ----- '07c0f451-7614-4940-8000-000000000eca' ----- '09235f80-9917-4380-8000-00000000116e' ----- '0ac29bf1-62ae-4b00-8000-000000001486' ----- '0c1a048e-043a-4180-8000-000000001715' ----- '0d2d44dc-a8e2-4280-8000-000000001922' ----- '0e536501-e258-4f80-8000-000000001b53' ----- '0fb8f57f-737d-4600-8000-000000001dfd' ----- '10ecb74d-df86-4400-8000-000000002048' ----- '121f6cac-d184-4200-8000-000000002291' ----- '1376d549-7310-4900-8000-000000002520' ----- '14da4ce8-101f-4200-8000-0000000027c6' ----- '15fc3b4f-6167-4300-8000-0000000029ef' ----- '17281fd9-ba1b-4900-8000-000000002c2b' ----- '184449db-ec24-4100-8000-000000002e49' ----- '1996744b-2b77-4d00-8000-0000000030ce' ----- '1a8bd230-b9dc-4f00-8000-0000000032a2' ----- '1bbc6eb0-b7c3-4000-8000-0000000034e7' ----- '1d230b9d-c2f4-4600-8000-000000003793' ----- '1ea57214-f052-4d00-8000-000000003a74' ----- '1ff3f0fe-047d-4d00-8000-000000003cf2' ----- '21040bfe-3b03-4200-8000-000000003ef9' ----- '225b749a-dc8f-4800-8000-000000004188' ----- '2383ad9f-0a1b-4200-8000-0000000043bd' ----- '24dd2f1a-9fbe-4600-8000-000000004650' ----- '2624dd2f-1a9f-4e00-8000-0000000048c1' ----- '2784230f-cf80-4c00-8000-000000004b5f' ----- '288e79aa-e6c8-4800-8000-000000004d5b' ----- '29be8ff3-27aa-4800-8000-000000004f9f' ----- '2b09e98d-cdb3-4c00-8000-000000005217' ----- '2c700043-1bde-4200-8000-0000000054c2' ----- '2e29f9ce-8d97-4c00-8000-00000000580d' ----- '2f6f8f04-1461-4600-8000-000000005a7a' ----- '30bc7b45-f17b-4800-8000-000000005cf5' ----- '31ec0b56-7557-4a00-8000-000000005f38' ----- '3335d249-e44f-4000-8000-0000000061ad' ----- '34738a3b-57c4-4200-8000-00000000640b' ----- '35e17e34-b945-4000-8000-0000000066c5' ----- '36f0068d-b8ba-4800-8000-0000000068c9' ----- '385b5b70-691e-4800-8000-000000006b7e' ----- '39c94f69-ca9e-4600-8000-000000006e38' ----- '3af20ea5-b530-4e00-8000-00000000706e' ----- '3c4fc1df-3300-4e00-8000-000000007309' ----- '3d9d3458-cd20-4000-8000-000000007585' ----- '3edbf8b9-baa1-4200-8000-0000000077e5' ----- '40589acb-c8c0-4000-8000-000000007abb' ----- '41bd1ed9-dfda-4800-8000-000000007d63' ----- '42ff8ec0-f883-4400-8000-000000007fca' ----- '445f5ad9-6a6a-4000-8000-000000008269' ----- '458255b0-35bd-4000-8000-000000008494' ----- '4704bc27-631b-4800-8000-000000008775' ----- '482be8bc-169c-4400-8000-0000000089a8' ----- '4956c0d6-f544-4c00-8000-000000008be2' ----- '4a57214f-0520-4000-8000-000000008dcb' ----- '4bb6672f-ba01-4000-8000-000000009069' ----- '4d1fa333-764f-4000-8000-00000000931a' ----- '4e50c5eb-313b-4400-8000-000000009560' ----- '4fdb09a6-71ef-4000-8000-000000009850' ----- '5137b070-75b3-4000-8000-000000009ae9' ----- '52a51e32-1a2e-4000-8000-000000009da2' ----- '5397dd00-f776-4400-8000-000000009f71' ----- '54c1a8ac-5c13-4c00-8000-00000000a1a9' ----- '5616f86a-0989-4400-8000-00000000a434' ----- '57308355-8a76-4000-8000-00000000a64d' ----- '5858bc59-b802-4c00-8000-00000000a882' ----- '59c6b053-1982-4800-8000-00000000ab3c' ----- '5b8d3f18-43c3-4400-8000-00000000ae9f' ----- '5cb2d905-c033-4000-8000-00000000b0cf' ----- '5dbdb5d8-9481-4c00-8000-00000000b2cc' ----- '5f173754-2a23-4000-8000-00000000b55f' ----- '6080f98f-a376-4400-8000-00000000b811' ----- '6195cc85-7f30-4000-8000-00000000ba21' ----- '62de8709-741d-4800-8000-00000000bc94' ----- '642f1ed1-7c5e-4800-8000-00000000bf16' ----- '65881a15-54fb-4c00-8000-00000000c1a8' ----- '66c11a11-233d-4400-8000-00000000c3fd' ----- '6806af46-aa08-4c00-8000-00000000c66a' ----- '699ae924-f227-4000-8000-00000000c96d' ----- '6b05b7cf-e586-4000-8000-00000000cc21' ----- '6c6b484d-76ab-4800-8000-00000000cecb' ----- '6da6e75f-f609-4c00-8000-00000000d125' ----- '6f4c6e6d-9be4-4c00-8000-00000000d449' ----- '70c80410-2ff8-4c00-8000-00000000d71d' ----- '7235f809-9179-4800-8000-00000000d9d7' ----- '73ba775f-b2ee-4000-8000-00000000dcbc' ----- '74f26aec-0724-4800-8000-00000000df0f' ----- '76544fe3-6d22-4400-8000-00000000e1b2' ----- '77da61e0-c5a8-4400-8000-00000000e49a' ----- '79220ff5-4089-4c00-8000-00000000e70b' ----- '7a82e87d-2c7b-4800-8000-00000000e9ac' ----- '7bfc6540-cc78-4800-8000-00000000ec7c' ----- '7d3cbc48-f10a-4800-8000-00000000eedf' ----- '7e225fa6-58c4-4c00-8000-00000000f095' ----- '7fc08fa7-a850-4400-8000-00000000f3ab' ----- '80e5a35d-67ba-4000-8000-00000000f5da' ----- '821858bc-59b8-4000-8000-00000000f823' ----- '837585be-1a82-4000-8000-00000000fabd' ----- '84ccee5a-bc0e-4800-8000-00000000fd4c' ----- '86162f16-6e00-4000-8000-00000000ffc0' ----- '8773e24f-ebd0-4000-8000-00000001025b' ----- '889b951c-5c57-4800-8000-00000001048f' ----- '89b62c77-574f-4000-8000-0000000106aa' ----- '8ac6cdaf-4adb-4800-8000-0000000108b2' ----- '8c46950f-c71d-4000-8000-000000010b8e' ----- '8dad31fc-d24e-4800-8000-000000010e3a' ----- '8ebc408d-8ec9-4800-8000-00000001103f' ----- '8fe47991-bc55-4800-8000-000000011274' ----- '90fe047d-3d42-4000-8000-00000001148d' ----- '9224aada-33bd-4000-8000-0000000116bf' ----- '9340d4dc-65c7-4800-8000-0000000118dd' ----- '947496aa-d1d0-4000-8000-000000011b28' ----- '95aaf78f-eef5-4000-8000-000000011d78' ----- '96b54e2b-063e-4800-8000-000000011f74' ----- '97ed41b7-5a74-4000-8000-0000000121c7' ----- '99192641-b328-4800-8000-000000012403' ----- '9a3ec02f-2f98-4000-8000-000000012633' ----- '9b9ae0c1-7657-4800-8000-0000000128cb' ----- '9d3e4ef0-281b-4800-8000-000000012beb' ----- '9eb399f5-dfeb-4000-8000-000000012eb3' ----- '9ff79c84-2fa5-4800-8000-00000001311d' ----- 'a15ca6ca-03c4-4000-8000-0000000133c6' ----- 'a276b7ed-41b7-4800-8000-0000000135e0' ----- 'a389f83b-e660-4800-8000-0000000137ed' ----- 'a49906cc-a2db-4000-8000-0000000139f2' ----- 'a5cee17a-02fb-4000-8000-000000013c41' ----- 'a708ede5-4b48-4000-8000-000000013e98' ----- 'a8366516-db0d-4800-8000-0000000140d7' ----- 'a9cc319c-5a3e-4800-8000-0000000143dd' ----- 'ab11c6d1-e108-4000-8000-00000001464a' ----- 'ac814d72-799a-4000-8000-000000014907' ----- 'ade8f6ce-fed6-4800-8000-000000014bb5' ----- 'af4b61fe-21d9-4000-8000-000000014e59' ----- 'b0870110-a137-4000-8000-0000000150b3' ----- 'b1ab0856-e696-4000-8000-0000000152e0' ----- 'b2ad81ad-ea89-4800-8000-0000000154cd' ----- 'b401c4fc-1df3-4000-8000-000000015756' ----- 'b57cd466-f501-4000-8000-000000015a29' ----- 'b691a75c-d0bb-4000-8000-000000015c39' ----- 'b7a67a52-ac75-4000-8000-000000015e49' ----- 'b9567dbb-16c1-4000-8000-000000016181' ----- 'ba98676a-7264-4000-8000-0000000163e7' ----- 'bbdd7668-3c29-4800-8000-000000016653' ----- 'bd13d74d-594f-4800-8000-0000000168a3' ----- 'be5eaab0-4252-4800-8000-000000016b1a' ----- 'bfb1e18e-fbb0-4800-8000-000000016da1' ----- 'c0de4c51-116a-4800-8000-000000016fde' ----- 'c202d9cf-13ce-4800-8000-00000001720c' ----- 'c3315d70-1d9f-4000-8000-00000001744d' ----- 'c42d05f2-8848-4800-8000-00000001762d' ----- 'c52502ee-c7c9-4800-8000-000000017806' ----- 'c65492ff-4ba5-4800-8000-000000017a49' ----- 'c75ff609-dcf8-4000-8000-000000017c47' ----- 'c8ccdd93-c46d-4000-8000-000000017eff' ----- 'ca044ae8-5b9e-4000-8000-000000018151' ----- 'cb48d3ae-685d-4800-8000-0000000183bc' ----- 'cc8abd5d-c400-4800-8000-000000018622' ----- 'ce1a3f46-66ec-4000-8000-00000001891c' ----- 'cf33ca31-e7d9-4800-8000-000000018b35' ----- 'd05186db-50f4-4000-8000-000000018d56' ----- 'd1e18efb-b0e5-4800-8000-000000019051' ----- 'd31fcd24-e160-4800-8000-0000000192b0' ----- 'd440af1c-b89d-4800-8000-0000000194d7' ----- 'd55a3a08-398a-4800-8000-0000000196f0' ----- 'd6cbd987-c632-4000-8000-0000000199b1' ----- 'd84a9478-c868-4800-8000-000000019c8b' ----- 'd9a415f4-5e0b-4000-8000-000000019f1e' ----- 'db163bab-a7b9-4800-8000-00000001a1e0' ----- 'dc5479d4-d834-4800-8000-00000001a43f' ----- 'ddf3b645-a1ca-4000-8000-00000001a757' ----- 'df46ed24-5b29-4800-8000-00000001a9de' ----- 'e089e343-30d7-4800-8000-00000001ac46' ----- 'e17dae81-882a-4000-8000-00000001ae17' ----- 'e2eec7c9-57cd-4800-8000-00000001b0d7' ----- 'e4430b17-8b37-4000-8000-00000001b360' ----- 'e5d744f5-d356-4000-8000-00000001b663' ----- 'e6fd651b-0ccb-4000-8000-00000001b894' ----- 'e84c6a3b-ddfc-4000-8000-00000001bb13' ----- 'e99c7bcc-2938-4000-8000-00000001bd94' ----- 'eac215b9-a5a8-4800-8000-00000001bfc4' ----- 'ec16df3f-9618-4800-8000-00000001c24e' ----- 'ed49949e-8815-4000-8000-00000001c497' ----- 'eead0c3d-2524-4000-8000-00000001c73d' ----- 'eff327aa-68f4-4800-8000-00000001c9ab' ----- 'f109070f-beb9-4800-8000-00000001cbbd' ----- 'f25a250f-8401-4000-8000-00000001ce40' ----- 'f38ac18f-81e8-4000-8000-00000001d085' ----- 'f4e6e221-c8a7-4800-8000-00000001d31d' ----- 'f63baba7-b917-4000-8000-00000001d5a7' ----- 'f7d9dba9-08a2-4800-8000-00000001d8bd' ----- 'f954eb13-dfb0-4800-8000-00000001db90' ----- 'face67d7-7fae-4800-8000-00000001de60' ----- 'fc0d2c38-6d2e-4800-8000-00000001e0c0' ----- 'fd61f5be-5d9e-4000-8000-00000001e34a' ----- 'fe81cb46-bacf-4800-8000-00000001e56f' ----- 'fffc5479-d4d8-4800-8000-00000001e841'
+        │    │   histogram(1)=  0                    12                    612                    12                    612                    12                    612
+        │    │                <--- '00064a9c-dc44-4915-8000-00000000000c' ----- '0162f166-e008-49b0-8000-0000000002a5' ----- '02834d26-fa3f-4ca0-8000-0000000004cb' ----- '03c85c24-c404-4720-
         │    │   histogram(2)=  0     14512     0   13637    0      14512      0    14087     0   13837   0  13737   0       13550       0    13412    0       13712
         │    │                <--- 'amsterdam' --- 'boston' --- 'los angeles' --- 'new york' --- 'paris' --- 'rome' --- 'san francisco' --- 'seattle' --- 'washington dc'
         │    │   histogram(10)=  0 1387 1.2242e+05 1187
-        │    │                 <--- 0 ------------- 99
+        │    │                <--- 0 ------------- 99
         │    ├── cost: 150016.01
         │    ├── key: (1,2)
         │    ├── fd: (1,2)-->(3-10)
@@ -486,32 +492,30 @@ To include cost and type details, use `OPT, TYPES`:
 Time: 4ms total (execution 3ms / network 1ms)
 ~~~
 
-<a name="opt-env-option"></a>
+#### `OPT, ENV` option
 
-To include all details used by the optimizer, including statistics, use `OPT, ENV`.
+To include all details used by the optimizer, including statistics, use the `OPT, ENV` option.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (OPT, ENV) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
 
+The output of `EXPLAIN (OPT, ENV)` is a URL with the data encoded in the fragment portion. Encoding the data makes it easier to share debugging information across different systems without encountering formatting issues. Opening the URL shows a page with the decoded data. The data is processed in the local browser session and is never sent out over the network. Keep in mind that if you are using any browser extensions, they may be able to access the data locally.
+
 ~~~
                              info
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  https://cockroachdb.github.io/text/decode.html#eJzsm9Fum0gXx6_LUxz5pvYncMHY2HH1rUQJadk6doRpt1FVoSlM4tli8A7jtMlqpT5ELvfp8iQrsHHAbRJw5NaG9qKJ5sw5DD_-c5h_LAsCvMU0JIHfBy1wPtEAOZPDF6BpA7hoSU2pKQrIm01QUxakdq8jnPcUV0HtDpIx1L_0FFtpC2g287DgIvqZ-NJBU2mKPHycE49BS2xJz0T5maSApPQ73b7U4eE8kJqS0uA4QQCKA-piav8ZED-0PTIlDCYoBDbB4OIzNPcYXCBvjvvQi-ZjH330sH1Fzq_QeZx11_TAj-YHM0am5ApTex5ie0JCFpxTNA2LZE3nHiNO4NkhQ-yBTC9wkEfYpZ2UcO0ZoowwEvjYtYnv4i926KAHlu2SkIV_eXdNQnMWRNMusMMCSq7wPdU4zdRVSwdLfTHQYTb_6BGnSYmLQ6hzT4gLb94YhzAcWTB8Mxjw3BOHsEt4q5raK9VMj1_gCXE8bGfji1hUj9qrYtmEteGQIcps5LoUh-F6Iey7d4UWeYxMMVjGsT621OOTdNr3IxRfYH-O4VDXjGN1UJdEvtVIgtpoOLZM1RhaUJtRMkX0sgYnpnGsmqfwWj-Fenyz6ljjgbjRz0Y26-xTjMOm-CySCg3haGTqxsvhbTYPCZwGmPqRbupDTR8nDyJOWs4j7rfV09DjqywH1i6UnsbDLfjvXTKpkLmqMTzU38UrDe1IXUulfnt_KSKrh77kcneNu-8is_JF2ZRsvlP4VgU2cb9APaWKaDaMrZFpDF9CfUV9rUAyvkhfv4cj9dgYnKbUUCcuD1ms2aeaXjAPGXHzkJJzEouWuggsflsKdO3ROxPsrHGLCWmvdO31GrX_x-trcI3nHKcOLN1c7vVpcEGbmQ1vDH_XNQvGlmoZY8vQxvD0PQcA8Hf8f_Sv5gTefOqHtT68Xw0uAoRd1lZDH_hUCsWIYddGrNaHWtTzBVEWop7f7be6fVFqyqJ0IMq1VE7U4YjvMNsJ5n6Ud5AKxn3ajlouu5zhqOjYip5quoCPpnHEXmjNzsTmnrcqLKYCNPi8GpdaHVEU49g_fG4KxN0iA6nVUaTuvSCiTroDGGIx8D8UTftAvh_NDmBJmsJ2NdJp7atEfgifdru96zpJ9-9fPfX2BbpFFnJXuV8WO7JtMtLgfwqoB15BOwApc8zabjNRur392EWps-ZWiSjyA-_hnSFye-De5nYR74WxMqQ7wCMxHVuk0e0oe4Nj6by2uVnE-8Wx_KPEDrDY8CDS64vdZksUFblVhoPIRu_VvAwqaO7yoym5uSugkUqauwJCKb25K1lPfZRnycui8uYuP6jym7sCzaQi5i4_kYqYu9zbpRLmLi-Napi73Jtlb8zdxizkTl-Smkq30-t1S8Jik7drfgyVs3gF0JTb4hXRSBUtXhGhlN3i5WZRAYuXm0XVLV4BUPti8TY7ruYHsT-H90da3iLNtRqWtwCR_bG8m1u83Dj2yeL9evk-gkKvL8lNSWlLklIGChu9UfMyqKCty4-m5LaugEYqaesKCKX0tq5kPfVRbiUvi8rbuvygSm7rcoOojq0r0FwrYuvyE6mErcuLY59s3eafVuUWx0_-tIr78PQ5x-nvTgaqMYT66MTiQR--bcBYH-iaBf-DI3N0vPi-IvzxSjf15FuC8BsciDAyD3UTXpyuRtWx9pwTBEHgwoAyDm6ur2-uv95cf4UQe9hhyyXdXP-bDDvIX9RfhZKMM-IxTMP0M7kNppfB_RcAAP__BAhDRg==
+----------------------------------------------------------------- ...
+  https://cockroachdb.github.io/text/decode.html#eJzsm9Fum0gXx6_L ...
 (1 row)
 
 Time: 32ms total (execution 32ms / network 0ms)
 ~~~
 
-The output of `EXPLAIN (OPT, ENV)` is now a URL with the data encoded in the fragment portion. Opening the URL shows a page with the decoded data. This change makes it easier to share debugging information across different systems without encountering formatting issues.
-
-Note that the data is processed in the local browser session and is never sent out over the network. Keep in mind that if you are using any browser extensions, they may be able to access the data locally.
-
-When you visit the URL above you should see the following output in your browser.
+When you open the URL you should see the following output in your browser.
 
 ~~~
--- Version: CockroachDB CCL v21.1.0 (x86_64-apple-darwin19.6.0, built 2021/03/16 16:57:15, go1.16)
+-- Version: CockroachDB CCL <version and build info>
 
 -- reorder_joins_limit has the default value: 8
 -- enable_zigzag_join has the default value: on
@@ -578,556 +582,7 @@ ALTER TABLE movr.public.rides INJECT STATISTICS '[
         "null_count": 0,
         "row_count": 125000
     },
-    {
-        "columns": [
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 12552,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 12444,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 3764,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city",
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 3717,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_address"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 124678,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_address"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 126337,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_time"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 30,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_time"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 756,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "revenue"
-        ],
-        "created_at": "2021-03-16 17:27:01.301903",
-        "distinct_count": 100,
-        "histo_col_type": "DECIMAL",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "id"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 125617,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "id"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 124937,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 12552,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 12444,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 3764,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city",
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 3717,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_address"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 124678,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_address"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 126337,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_time"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 30,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_time"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 756,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "revenue"
-        ],
-        "created_at": "2021-03-16 17:28:07.200632",
-        "distinct_count": 100,
-        "histo_col_type": "DECIMAL",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "revenue"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 100,
-        "histo_col_type": "DECIMAL",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "id"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 125617,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "id"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 124937,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 12552,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 12444,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 3764,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city",
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 3717,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_time"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 30,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_address"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 124678,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_address"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 126337,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_time"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 756,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city"
-        ],
-        "created_at": "2021-03-16 17:35:11.675887",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "id"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 125617,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "id"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 124937,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 12552,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "city",
-            "rider_id"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 12444,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 9,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 3764,
-        "histo_col_type": "UUID",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "vehicle_city",
-            "vehicle_id"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 3717,
-        "histo_col_type": "",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_time"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 30,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "start_address"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 124678,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_address"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 126337,
-        "histo_col_type": "STRING",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "end_time"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 756,
-        "histo_col_type": "TIMESTAMP",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    },
-    {
-        "columns": [
-            "revenue"
-        ],
-        "created_at": "2021-03-16 17:38:13.164116",
-        "distinct_count": 100,
-        "histo_col_type": "DECIMAL",
-        "name": "__auto__",
-        "null_count": 0,
-        "row_count": 125000
-    }
+  ...
 ]';
 
 EXPLAIN (OPT, ENV) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
@@ -1139,14 +594,63 @@ sort
            └── revenue > 90
 ~~~
 
+#### `OPT, MEMO` option
+
+The `MEMO` suboption prints a representation of the optimizer memo with the best plan. You can use the `MEMO` flag in combination with other flags. For example, `EXPLAIN (OPT, MEMO, VERBOSE)` prints the memo along with verbose output for the best plan.
+
+
+~~~sql
+EXPLAIN (OPT, MEMO) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
+~~~
+
+~~~
+                                  info
+---------------------------------------------------------------------------------------------------- ...
+  memo (optimized, ~5KB, required=[presentation: info:13])
+   ├── G1: (explain G2 [presentation: id:1,city:2,vehicle_city:3,rider_id:4,vehicle_id:5,start_address:6,end_address:7,start_time:8,end_time:9,revenue:10] [ordering: +10])
+   │    └── [presentation: info:13]
+   │         ├── best: (explain G2="[presentation: id:1,city:2,vehicle_city:3,rider_id:4,vehicle_id:5,start_address:6,end_address:7,start_time:8,end_time:9,revenue:10] [ordering: +10]" [presentation: id:1,city:2,vehicle_city:3,rider_id:4,vehicle_id:5,start_address:6,end_address:7,start_time:8,end_time:9,revenue:10] [ordering: +10])
+   │         └── cost: 2939.68
+   ├── G2: (select G3 G4)
+   │    ├── [presentation: id:1,city:2,vehicle_city:3,rider_id:4,vehicle_id:5,start_address:6,end_address:7,start_time:8,end_time:9,revenue:10] [ordering: +10]
+   │    │    ├── best: (sort G2)
+   │    │    └── cost: 2939.66
+   │    └── []
+   │         ├── best: (select G3 G4)
+   │         └── cost: 2883.30
+   ├── G3: (scan rides,cols=(1-10))
+   │    ├── [ordering: +10]
+   │    │    ├── best: (sort G3)
+   │    │    └── cost: 3551.50
+   │    └── []
+   │         ├── best: (scan rides,cols=(1-10))
+   │         └── cost: 2863.02
+   ├── G4: (filters G5)
+   ├── G5: (gt G6 G7)
+   ├── G6: (variable revenue)
+   └── G7: (const 90)
+  sort
+   └── select
+        ├── scan rides
+        └── filters
+             └── revenue > 90
+(28 rows)
+
+
+Time: 2ms total (execution 2ms / network 1ms)
+~~~
+
+
 ### `VEC` option
 
-The `VEC` option shows details about the [vectorized execution plan](vectorized-execution.html#how-vectorized-execution-works) for the query.
+To view details about the [vectorized execution plan](vectorized-execution.html#how-vectorized-execution-works) for the query, use the `VEC` option.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (VEC) SELECT * FROM rides WHERE revenue > 90 ORDER BY revenue ASC;
 ~~~
+
+The output shows the different internal functions that will be used to process each batch of column-oriented data.
 
 ~~~
                       info
@@ -1161,36 +665,34 @@ The `VEC` option shows details about the [vectorized execution plan](vectorized-
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-The output shows the different internal functions that will be used to process each batch of column-oriented data.
-
 ### `DISTSQL` option
 
-The `DISTSQL` option generates a URL for a physical statement plan that provides high level information about how a query will be executed. For details about reading the physical statement plan, see [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer). For more information about distributed SQL queries, see the [DistSQL section of our SQL Layer Architecture docs](architecture/sql-layer.html#distsql).
+To view a physical statement plan that provides high level information about how a query will be executed, use the `DISTSQL` option. For more information about distributed SQL queries, see the [DistSQL section of our SQL layer architecture](architecture/sql-layer.html#distsql).
 
-{{site.data.alerts.callout_info}}
 {% include {{ page.version.version }}/sql/physical-plan-url.md %}
-{{site.data.alerts.end}}
 
-For example, the following `EXPLAIN(DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
+For example, the following `EXPLAIN (DISTSQL)` statement generates a physical plan for a simple query against the [TPC-H database](http://www.tpc.org/tpch/) loaded to a 3-node CockroachDB cluster:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
 
+The output of `EXPLAIN (DISTSQL)` is a URL for a graphical diagram that displays the processors and operations that make up the physical statement plan. For details about the physical statement plan, see [DistSQL plan diagram](explain-analyze.html#distsql-plan-diagram).
+
 ~~~
  automatic |                      url
 -----------+----------------------------------------------
-   true    | https://cockroachdb.github.io/distsqlplan...
+   true    | https://cockroachdb.github.io/distsqlplan ...
 ~~~
 
-To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
+To view the [DistSQL plan diagram](explain-analyze.html#distsql-plan-diagram), open the URL. You should see the following:
 
 <img src="{{ 'images/v21.2/explain-distsql-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
- To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
+To include the data types of the input columns in the physical plan, use `EXPLAIN(DISTSQL, TYPES)`:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN (DISTSQL, TYPES) SELECT l_shipmode, AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode;
 ~~~
@@ -1198,10 +700,10 @@ To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), poi
 ~~~
  automatic |                      url
 -----------+----------------------------------------------
-   true    | https://cockroachdb.github.io/distsqlplan...
+   true    | https://cockroachdb.github.io/distsqlplan ...
 ~~~
 
-To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), point your browser to the URL provided:
+Open the URL. You should see the following:
 
 <img src="{{ 'images/v21.2/explain-distsql-types-plan.png' | relative_url }}" alt="EXPLAIN (DISTSQL)" style="border:1px solid #eee;max-width:100%" />
 
@@ -1210,14 +712,14 @@ To view the [DistSQL Plan Viewer](explain-analyze.html#distsql-plan-viewer), poi
 
 You can use `EXPLAIN` to understand which indexes and key ranges queries use, which can help you ensure a query isn't performing a full table scan.
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE kv (k INT PRIMARY KEY, v INT);
 ~~~
 
 Because column `v` is not indexed, queries filtering on it alone scan the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -1240,16 +742,16 @@ Because column `v` is not indexed, queries filtering on it alone scan the entire
 Time: 50ms total (execution 50ms / network 0ms)
 ~~~
 
- You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
+You can disable statement plans that perform full table scans with the `disallow_full_table_scans` [session variable](set-vars.html).
 
 When `disallow_full_table_scans=on`, attempting to execute a query with a plan that includes a full table scan will return an error:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SET disallow_full_table_scans=on;
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -1262,12 +764,12 @@ HINT: try overriding the `disallow_full_table_scans` cluster/session setting
 
 If there were an index on `v`, CockroachDB would be able to avoid scanning the entire table:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE INDEX v ON kv (v);
 ~~~
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN SELECT * FROM kv WHERE v BETWEEN 4 AND 5;
 ~~~
@@ -1287,27 +789,31 @@ If there were an index on `v`, CockroachDB would be able to avoid scanning the e
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-Now, only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6. Also note that this statement plan is not distributed across nodes on the cluster.
+Now only part of the index `v` is getting scanned, specifically the key range starting at (and including) 4 and stopping before 6. This statement plan is not distributed across nodes on the cluster.
 
 ### Find out if a statement is using `SELECT FOR UPDATE` locking
 
- CockroachDB has support for ordering transactions by controlling concurrent access to one or more rows of a table using locks. This "`SELECT FOR UPDATE` locking" can result in improved performance for contended operations. It applies to the following statements:
+CockroachDB has support for ordering transactions by controlling concurrent access to one or more rows of a table using locks. `SELECT FOR UPDATE` locking can result in improved performance for contended operations. It applies to the following statements:
 
 - [`SELECT FOR UPDATE`](select-for-update.html)
 - [`UPDATE`](update.html)
 
-To see whether a SQL query using one of these statements is using this feature, check the output of `EXPLAIN` for a `locking strength` field as shown below. If the `locking strength` field does not appear, then the statement is not using this feature.
+Suppose you have a table of key-value pairs:
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > CREATE TABLE IF NOT EXISTS kv (k INT PRIMARY KEY, v INT);
 UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 ~~~
 
-{% include copy-clipboard.html %}
+You can use `EXPLAIN` to determine whether the following `UPDATE` is using `SELECT FOR UPDATE` locking.
+
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > EXPLAIN UPDATE kv SET v = 100 WHERE k = 1;
 ~~~
+
+The following output contains a `locking strength` field, which means that `SELECT FOR UPDATE` locking is being used. If the `locking strength` field does not appear, the statement is not using `SELECT FOR UPDATE` locking.
 
 ~~~
                    info
@@ -1332,7 +838,7 @@ UPSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` and `UPSERT` statements.  To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
+By default, `SELECT FOR UPDATE` locking is enabled for the initial row scan of `UPDATE` and `UPSERT` statements. To disable it, toggle the [`enable_implicit_select_for_update` session setting](show-vars.html#enable-implicit-select-for-update).
 
 ## See also
 

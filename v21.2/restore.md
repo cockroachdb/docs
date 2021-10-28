@@ -5,7 +5,7 @@ toc: true
 ---
 
 {{site.data.alerts.callout_info}}
- `RESTORE` no longer requires an {{ site.data.products.enterprise }} license, regardless of the options passed to it or to the backup it is restoring.
+ `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
 {{site.data.alerts.end}}
 
 The `RESTORE` [statement](sql-statements.html) restores your cluster's schemas and data from [a `BACKUP`](backup.html) stored on a services such as AWS S3, Google Cloud Storage, NFS, or HTTP storage.
@@ -38,7 +38,7 @@ You can restore:
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/restore.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/restore.html %}
 </div>
 
 ## Parameters
@@ -65,6 +65,7 @@ You can include the following options as key-value pairs in the `kv_option_list`
 `skip_missing_views`                                                | N/A                                         | Use to skip restoring [views](views.html) that cannot be restored because their dependencies are not being restored at the same time.<br><br>Example: `WITH skip_missing_views`
 `encryption_passphrase`                                             | Passphrase used to create the [encrypted backup](take-and-restore-encrypted-backups.html) |  The passphrase used to decrypt the file(s) that were encrypted by the [`BACKUP`](take-and-restore-encrypted-backups.html) statement.
 `DETACHED`                                                          | N/A                                         |  When `RESTORE` runs with `DETACHED`, the job will execute asynchronously and the job ID will be returned immediately without waiting for the job to finish. Note that with `DETACHED` specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the [example](restore.html#restore-a-backup-asynchronously) below. To check on the job status, use the [`SHOW JOBS`](show-jobs.html) statement. <br><br>To run a restore within a [transaction](transactions.html), use the `DETACHED` option.
+`debug_pause_on`                                                    | `"error" `                                    | <span class="version-tag">New in v21.2:</span> Use to have a `RESTORE` [job](show-jobs.html) self pause when it encounters an error. The `RESTORE` job can then be [resumed](resume-job.html) after the error has been fixed or [canceled](cancel-job.html) to rollback the job. <br><br>Example: `WITH debug_pause_on='error'`
 
 ### Backup file URLs
 
@@ -92,7 +93,7 @@ You can restore:
 - All [views](views.html)
 
 {{site.data.alerts.callout_info}}
-When you restore a full cluster with an {{ site.data.products.enterprise }} license, it will restore the [{{ site.data.products.enterprise }} license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
+When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](enterprise-licensing.html) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](licensing-faqs.html#set-a-license) _after_ the restore is complete.
 {{site.data.alerts.end}}
 
 #### Databases
@@ -143,7 +144,6 @@ Object | Depends On
 Table with [foreign key](foreign-key.html) constraints | The table it `REFERENCES` (however, this dependency can be [removed during the restore](#skip_missing_foreign_keys)).
 Table with a [sequence](create-sequence.html) | The sequence.
 [Views](views.html) | The tables used in the view's `SELECT` statement.
-[Interleaved tables](interleave-in-parent.html) | The parent table in the [interleaved hierarchy](interleave-in-parent.html#interleaved-hierarchy).
 
 ### Users and privileges
 

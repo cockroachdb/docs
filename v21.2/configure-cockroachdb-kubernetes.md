@@ -1,5 +1,5 @@
 ---
-title: Configure CockroachDB on Kubernetes
+title: Resource management
 summary: Allocate CPU, memory, and storage resources for a secure 3-node CockroachDB cluster on Kubernetes.
 toc: true
 toc_not_nested: true
@@ -37,7 +37,7 @@ You can set the CPU and memory resources allocated to the CockroachDB container 
 {{site.data.alerts.end}}
 
 <section class="filter-content" markdown="1" data-scope="operator">
-Specify CPU and memory values in `resources.requests` and `resources.limits` in the Operator's custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+Specify CPU and memory values in `resources.requests` and `resources.limits` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -105,7 +105,7 @@ Each CockroachDB node reserves a portion of its available memory for its cache a
 
 Our Kubernetes manifests dynamically set cache size and SQL memory size each to 1/4 (the recommended fraction) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. If you want to customize these values, set them explicitly.
 
-Specify `cache` and `maxSQLMemory` in the Operator's custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+Specify `cache` and `maxSQLMemory` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -143,7 +143,7 @@ conf:
 When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
 <section class="filter-content" markdown="1" data-scope="operator">
-The storage capacity of each volume is set in `pvc.spec.resources` in the Operator's custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+The storage capacity of each volume is set in `pvc.spec.resources` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:
@@ -186,7 +186,7 @@ You should provision an appropriate amount of disk storage for your workload. Fo
 If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance](kubernetes-performance.html#disk-size).
 
 <section class="filter-content" markdown="1" data-scope="operator">
-Specify a new volume size in `resources.requests` and `resources.limits` in the Operator's custom resource, which you downloaded when [deploying the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
+Specify a new volume size in `resources.requests` and `resources.limits` in the Operator's custom resource, which is used to [deploy the cluster](deploy-cockroachdb-with-kubernetes.html#initialize-the-cluster):
 
 ~~~ yaml
 spec:

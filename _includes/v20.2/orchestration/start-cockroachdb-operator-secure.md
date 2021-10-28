@@ -8,7 +8,7 @@ The Operator is currently supported for GKE only.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/crds.yaml
     ~~~
 
     ~~~
@@ -19,7 +19,7 @@ The Operator is currently supported for GKE only.
 
     {% include copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/manifests/operator.yaml
+    $ kubectl apply -f https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
     ~~~
 
     ~~~

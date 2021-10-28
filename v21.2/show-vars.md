@@ -1,29 +1,30 @@
 ---
-title: SHOW (session settings)
+title: SHOW (session variables)
 summary: The SHOW statement displays the current settings for the client session.
 toc: true
 ---
 
-The `SHOW` [statement](sql-statements.html) can display the value of either one or all of
-the session setting variables. Some of these can also be configured via [`SET`](set-vars.html).
+Use the `SHOW` [statement](sql-statements.html) to display the value of one or all of the session variables. You configure session variables using [`SET`](set-vars.html).
 
 ## Required privileges
 
-No [privileges](authorization.html#assign-privileges) are required to display the session settings.
+No [privileges](authorization.html#assign-privileges) are required to display the session variables.
 
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/show_var.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/show_session.html %}
 </div>
 
-{{site.data.alerts.callout_info}}The <code>SHOW</code> statement for session settings is unrelated to the other <code>SHOW</code> statements: <a href="cluster-settings.html#view-current-cluster-settings"><code>SHOW CLUSTER SETTING</code></a>, <a href="show-create.html"><code>SHOW CREATE</code></a>, <a href="show-users.html"><code>SHOW USERS</code></a>, <a href="show-databases.html"><code>SHOW DATABASES</code></a>, <a href="show-columns.html"><code>SHOW COLUMNS</code></a>, <a href="show-grants.html"><code>SHOW GRANTS</code></a>, and <a href="show-constraints.html"><code>SHOW CONSTRAINTS</code></a>.{{site.data.alerts.end}}
+{{site.data.alerts.callout_info}}
+The `SHOW` statement for session variables is unrelated to the other `SHOW` statements like [`SHOW CLUSTER SETTING`](show-cluster-setting.html), [`SHOW CREATE`](show-create.html), and [`SHOW DATABASES`](show-databases.html).
+{{site.data.alerts.end}}
 
 ## Parameters
 
-The `SHOW <session variable>` statement accepts a single parameter: the variable name.
-
-The variable name is case insensitive. It may be enclosed in double quotes; this is useful if the variable name itself contains spaces.
+ Parameter | Description
+-----------|-------------
+`var_name` | The session variable name to show.<br>The variable name is case-insensitive and can be enclosed in double quotes.
 
 ### Supported variables
 
@@ -35,16 +36,16 @@ Special syntax cases supported for compatibility:
 
  Syntax | Equivalent to
 --------|---------------
- `SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"`
- `SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"`
- `SHOW TIME ZONE` | `SHOW "timezone"`
- `SHOW TRANSACTION STATUS` | `SHOW "transaction status"`
+`SHOW TRANSACTION PRIORITY` | `SHOW "transaction priority"`
+`SHOW TRANSACTION ISOLATION LEVEL` | `SHOW "transaction isolation level"`
+`SHOW TIME ZONE` | `SHOW "timezone"`
+`SHOW TRANSACTION STATUS` | `SHOW "transaction status"`
 
 ## Examples
 
 ### Showing the value of a single session variable
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW DATABASE;
 ~~~
@@ -58,7 +59,7 @@ Special syntax cases supported for compatibility:
 
 ### Showing the value of all session variables
 
-{% include copy-clipboard.html %}
+{% include_cached copy-clipboard.html %}
 ~~~ sql
 > SHOW ALL;
 ~~~

@@ -106,7 +106,11 @@ If you want all existing time-series data to be deleted, also change both the `t
 
 ## What happens when a node runs out of disk space?
 
-When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up. To prepare for this case, place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory that can be deleted to free up enough space to be able to restart the node. If you did not create a ballast file, look for other files that can be deleted, such as [log files](configure-logs.html#logging-directory).
+When a node runs out of disk space, it shuts down and cannot be restarted until space is freed up.
+
+<span class="version-tag">New in v21.2</span> To prepare for this case, CockroachDB [automatically creates an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) in each node's storage directory that can be deleted to free up enough space to be able to restart the node.
+
+For more information about troubleshooting disk usage issues, see [storage issues](cluster-setup-troubleshooting.html#disks-filling-up).
 
 {{site.data.alerts.callout_info}}
 In addition to using ballast files, it is important to actively [monitor remaining disk space](monitoring-and-alerting.html#events-to-alert-on).

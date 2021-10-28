@@ -314,11 +314,37 @@ Network capacity | Network Bytes Received<br/>Network Bytes Sent | Consistently 
 
 ### Disks filling up
 
-Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
+Like any database system, if you run out of disk space the system will no longer be able to accept writes. Additionally, a CockroachDB node needs a small amount of disk space (a few GiBs to be safe) to perform basic maintenance functionality. For more information about this issue, see:
 
+- [What happens when a node runs out of disk space?](operational-faqs.html#what-happens-when-a-node-runs-out-of-disk-space)
 - [Why is memory usage increasing despite lack of traffic?](operational-faqs.html#why-is-memory-usage-increasing-despite-lack-of-traffic)
 - [Why is disk usage increasing despite lack of writes?](operational-faqs.html#why-is-disk-usage-increasing-despite-lack-of-writes)
--  [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
+- [Can I reduce or disable the storage of timeseries data?](operational-faqs.html#can-i-reduce-or-disable-the-storage-of-time-series-data)
+
+#### Automatic ballast files
+
+<span class="version-tag">New in v21.2</span> CockroachDB automatically creates an emergency ballast file at [node startup](cockroach-start.html). This feature is **on** by default. Note that the [`cockroach debug ballast`](cockroach-debug-ballast.html) command is still available but deprecated.
+
+The ballast file defaults to 1% of total disk capacity or 1 GiB, whichever is smaller. The size of the ballast file may be configured using [the `--store` flag to `cockroach start`](cockroach-start.html#flags-store) with a [`ballast-size` field](cockroach-start.html#fields-ballast-size); this field accepts the same value formats as the `size` field.
+
+In order for the ballast file to be automatically created, the following conditions must be met:
+
+- Available disk space is at least four times the configured ballast file size.
+- Available disk space on the store after creating the ballast file is at least 10 GiB.
+
+During node startup, if available disk space on at least one store is less than or equal to half the ballast file size, the process will exit immediately with the exit code 10, signifying 'Disk Full'.
+
+To allow the node to start, you can manually remove the `EMERGENCY_BALLAST` file, which is located in the store's `cockroach-data/auxiliary` directory as shown below:
+
+~~~
+cockroach-data
+├── ...
+├── auxiliary
+│   └── EMERGENCY_BALLAST
+...
+~~~
+
+Removing the ballast file will give you a chance to remedy the disk space exhaustion; it will automatically be recreated when there is sufficient disk space.
 
 ### Disk stalls
 
