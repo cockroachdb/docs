@@ -37,7 +37,7 @@ Parameter | Description
 `role_name` | Specify the name of the role that you want to alter.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 `SET var_name ... var_value` | <span class="version-tag">New in v21.2</span>: Set default [session variable](set-vars.html) values for a role.
-`RESET session_var`<br>`RESET ALL` | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
+`RESET session_var`<br>`RESET ALL` <a name="parameters-reset"></a> | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
 `IN DATABASE database_name` | <span class="version-tag">New in v21.2</span>: Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
 `ROLE ALL ...`/`USER ALL ...` | <span class="version-tag">New in v21.2</span>: Apply session variable settings to all roles.
 

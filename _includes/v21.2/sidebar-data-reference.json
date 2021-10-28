@@ -547,6 +547,12 @@
                 ]
               },
               {
+                "title": "<code>PLACEMENT (RESTRICTED | DEFAULT)</code>",
+                "urls": [
+                  "/${VERSION}/placement-restricted.html"
+                ]
+              },
+              {
                 "title": "<code>REASSIGN OWNED</code>",
                 "urls": [
                   "/${VERSION}/reassign-owned.html"
