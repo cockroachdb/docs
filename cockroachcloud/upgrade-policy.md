@@ -24,7 +24,7 @@ Single-node clusters will experience some downtime during cluster maintenance.
 
 [Major version releases](../releases/) contain new functionality and potentially backward-incompatible changes to CockroachDB (for example, v20.2.x → v21.1.x).
 
-[Console Admins](console-access-management.html#console-admin) must initiate major version upgrades. When a new major version is available, Admins will be able to [start an upgrade directly from the {{ site.data.products.db }} Console](upgrade-to-v21.1.html) for clusters using the paid version of {{ site.data.products.dedicated }}. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
+[Console Admins](console-access-management.html#console-admin) must initiate major version upgrades. When a new major version is available, Admins will be able to [start an upgrade directly from the {{ site.data.products.db }} Console](upgrade-to-v21.1.html) for clusters using the paid version of {{ site.data.products.dedicated }}. When you initiate a major version upgrade for your cluster, it will upgrade to the latest minor version as well. {{ site.data.products.serverless }} clusters are subject to automatic upgrades to the latest supported major version.
 
 ### Support downgrade for older CockroachDB versions
 
