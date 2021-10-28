@@ -371,6 +371,12 @@
             ]
           },
           {
+            "title": "Test Your Application",
+            "urls": [
+              "/${VERSION}/local-testing.html"
+            ]
+          },
+          {
             "title": "Debug Your Application",
             "items":
             [
