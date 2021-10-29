@@ -240,6 +240,7 @@ When designing a system that needs to emit a lot of changefeed messages, whether
 * Set the [`changefeed.memory.per_changefeed_limit`](cluster-settings.html) cluster setting to a higher limit to give more memory for buffering for a changefeed. This is useful in situations of heavy traffic to avoid an error due to the memory buffer overfilling.
 * Use `avro` as the emitted message [format](#format) option with Kafka sinks; JSON encoding can potentially create a slowdown.
 * Increase the `changefeed.backfill.concurrent_scan_requests` setting, which controls the number of concurrent scan requests per node issued during a [backfill event]. The default behavior, when this setting is at `0`, is that each node will issue 3 scan requests per node in a cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase CPU usage overall**.
+* Use `kv.rangefeed.catchup_scan_iterator_optimization.enabled` (tracking issue for `WITH diff` support https://github.com/cockroachdb/cockroach/pull/69191 right now this setting can't be used with diff option)
 
 ### Kafka sink configuration
 
