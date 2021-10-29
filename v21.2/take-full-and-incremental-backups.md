@@ -97,9 +97,7 @@ Then, create nightly incremental backups based off of the full backups you've al
 > BACKUP INTO LATEST IN '{destination}';
 ~~~
 
-{{site.data.alerts.callout_info}}
-For an example on how to specify the destination of an incremental backup, see [Incremental backups with explicitly specified destinations](#incremental-backups-with-explicitly-specified-destinations)
-{{site.data.alerts.end}}
+For an example on how to specify the destination of an incremental backup, see [Incremental backups with explicitly specified destinations](#incremental-backups-with-explicitly-specified-destinations).
 
 If it's ever necessary, you can then use the [`RESTORE`][restore] command to restore your cluster, database(s), and/or table(s). Restoring from incremental backups requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the appended incremental backups:
 
@@ -114,7 +112,7 @@ If it's ever necessary, you can then use the [`RESTORE`][restore] command to res
 
 ## Incremental backups with explicitly specified destinations
 
-To explicitly control where your incremental backups go, use the [`INCREMENTAL FROM`](backup.html#synopsis) syntax:
+To explicitly control where your incremental backups go, use the [`INTO {subdirectory} IN (destination)`](backup.html#synopsis) syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -122,6 +120,8 @@ To explicitly control where your incremental backups go, use the [`INCREMENTAL F
     AS OF SYSTEM TIME '-10s' \
     WITH revision_history;
 ~~~
+
+A full backup must be present in the `destination` for an incremental backup to be stored in a `subdirectory`. If there isn't a full backup present in the `destination` when taking an incremental backup, one will be taken and stored in the `destination`.
 
 {{site.data.alerts.callout_info}}
 To take incremental backups, you need an [Enterprise license](enterprise-licensing.html).
