@@ -42,6 +42,7 @@ Here is a sample directory structure for the Hello World app:
 #### Examples
 
 - [hello-world-go-pgx](https://github.com/cockroachlabs/hello-world-go-pgx)
+- [hello-world-go-gorm](https://github.com/cockroachlabs/hello-world-go-gorm)
 - [hello-world-python-sqlalchemy](https://github.com/cockroachlabs/hello-world-python-sqlalchemy)
 - [hello-world-node-postgres](https://github.com/cockroachlabs/hello-world-node-postgres)
 - [hello-world-java-jdbc](https://github.com/cockroachlabs/hello-world-java-jdbc)
@@ -102,6 +103,7 @@ CREATE TABLE accounts (
 #### Examples
 
 - [example-app-go-pgx](https://github.com/cockroachlabs/example-app-go-pgx)
+- [example-app-go-gorm](https://github.com/cockroachlabs/example-app-go-gorm)
 - [example-app-python-sqlalchemy](https://github.com/cockroachlabs/example-app-python-sqlalchemy)
 - [example-app-node-postgres](https://github.com/cockroachlabs/example-app-node-postgres)
 - [example-app-java-jdbc](https://github.com/cockroachlabs/example-app-java-jdbc)
