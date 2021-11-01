@@ -14,7 +14,7 @@ This page describes the upgrade policy for {{ site.data.products.db }}.
 
 ## Minor version upgrades
 
-[Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. All clusters, including both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters, are subject to automatic upgrades to the latest supported minor version (for example, v21.1.0 → v21.1.1). Because these upgrades can cause nodes to restart, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.
+[Minor versions](https://www.cockroachlabs.com/docs/releases/) (or "point" releases) are stable, backward-compatible improvements to the major versions of CockroachDB. All clusters, including both {{ site.data.products.serverless }} and {{ site.data.products.dedicated }} clusters, are subject to automatic upgrades to the latest supported minor version (for example, v21.1.0 → v21.1.1). Because these upgrades cause nodes to restart, it's important to use [connection retry logic](production-checklist.html#keeping-connections-current) in your application.
 
 {{site.data.alerts.callout_danger}}
 Single-node clusters will experience some downtime during cluster maintenance.
