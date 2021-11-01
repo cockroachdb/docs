@@ -46,7 +46,7 @@ Field | Description
 `parent_schema_name` | The name of the parent schema.
 `object_name` | The name of the [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
 `object_type` | The type of object: [database](create-database.html), [table](create-table.html), [type](create-type.html), or schema.
-`backup_type` | <span class="version-tag">New in v21.2:</span> The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups#incremental-backups).
+`backup_type` | <span class="version-tag">New in v21.2:</span> The type of backup: [full](take-full-and-incremental-backups.html#full-backups) or [incremental](take-full-and-incremental-backups.html#incremental-backups).
 `start_time` | The time of the earliest data encapsulated in the backup. Note that this only displays for incremental backups. For a full backup, this is `NULL`.
 `end_time` | The time to which data can be restored. This is equivalent to the [`AS OF SYSTEM TIME`](as-of-system-time.html) of the backup. If the backup was _not_ taken with [revision history](take-backups-with-revision-history-and-restore-from-a-point-in-time.html), the `end_time` is the _only_ time the data can be restored to. If the backup was taken with revision history, the `end_time` is the latest time the data can be restored to.
 `size_bytes` | The size of the backup, in bytes.
