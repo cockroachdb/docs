@@ -161,7 +161,9 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ### Using `RESTORE` with multi-region table localities
 
-* Restoring [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables is currently not supported. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/pull/71178)
+* {% include {{ page.version.version }}/known-limitations/rbr-restore-no-support.md %}
+
+* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
 * {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 

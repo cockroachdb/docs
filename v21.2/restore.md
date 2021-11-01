@@ -187,7 +187,7 @@ Tables with a [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tabl
 
 * {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
 
-The ordering of regions and how region matching is determined is a known limitation. For more detail on this issue, see its [known limitation](#known-limitations) and tracking issue.
+The ordering of regions and how region matching is determined is a known limitation. See the [Known Limitations](#known-limitations) section for the tracking issues on limitations around `RESTORE` and multi-region support.
 
 For more on multi-region databases, see the [Multi-Region Capabilities Overview](multiregion-overview.html).
 
@@ -751,7 +751,8 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 * {% include {{ page.version.version }}/known-limitations/restore-aost.md %} [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/53044)
 * To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
-* Restoring [`REGIONAL BY ROW`](multiregion-overview.html#regional-by-row-tables) tables is currently not supported. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/pull/71178)
+* {% include {{ page.version.version }}/known-limitations/rbr-restore-no-support.md %}
+* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
 
 ## See also
 
