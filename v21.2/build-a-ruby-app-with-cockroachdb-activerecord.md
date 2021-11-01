@@ -32,11 +32,11 @@ For a more realistic use of ActiveRecord with CockroachDB in a Rails app, see ou
   <button class="filter-button page-level" data-scope="ar52">Active Record 5.2</button>
 </div>
 
-Clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-ruby-activerecord).
+Clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-ruby-activerecord).
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-ruby-activerecord
+git clone https://github.com/cockroachlabs/example-app-ruby-activerecord
 ~~~
 
 <div class="filter-content" markdown="1" data-scope="local">
@@ -102,7 +102,7 @@ Update the connection parameters to connect to your cluster.
 
 {% include_cached copy-clipboard.html %}
 ~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-activerecord/main/main.rb|# BEGIN connect|# END connect %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-ruby-activerecord/main/main.rb|# BEGIN connect|# END connect %}
 ~~~
 
 Where `{port}` is the port number from the connection string you noted earlier, `{username}` is the database username you created, and `{password}` is the database user's password.
@@ -112,7 +112,7 @@ Where `{port}` is the port number from the connection string you noted earlier, 
 
 {% include_cached copy-clipboard.html %}
 ~~~ ruby
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-ruby-activerecord/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-ruby-activerecord/cockroachcloud/main.rb|# BEGIN connect|# END connect %}
 ~~~
 
 {% include {{page.version.version}}/app/cc-free-tier-params.md %}
