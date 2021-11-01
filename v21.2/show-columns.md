@@ -48,13 +48,13 @@ Field | Description
 ~~~
 
 ~~~
-  column_name | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
-+-------------+-----------+-------------+----------------+-----------------------+-----------+-----------+
-  id          | UUID      |    false    | NULL           |                       | {primary} |   false
-  city        | VARCHAR   |    false    | NULL           |                       | {primary} |   false
-  name        | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  address     | VARCHAR   |    true     | NULL           |                       | {}        |   false
-  credit_card | VARCHAR   |    true     | NULL           |                       | {}        |   false
+  column_name | data_type | is_nullable | column_default | generation_expression |         indices          | is_hidden
+--------------+-----------+-------------+----------------+-----------------------+--------------------------+------------
+  id          | UUID      |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  city        | VARCHAR   |    false    | NULL           |                       | {primary,users_name_idx} |   false
+  name        | VARCHAR   |    true     | NULL           |                       | {primary,users_name_idx} |   false
+  address     | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
+  credit_card | VARCHAR   |    true     | NULL           |                       | {primary}                |   false
 (5 rows)
 ~~~
 

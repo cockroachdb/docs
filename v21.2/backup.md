@@ -7,7 +7,7 @@ toc: true
 CockroachDB's `BACKUP` [statement](sql-statements.html) allows you to create [full or incremental backups](take-full-and-incremental-backups.html) of your cluster's schema and data that are consistent as of a given timestamp.
 
 {{site.data.alerts.callout_info}}
- The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to back up directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be deprecated in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
+ The syntax `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. Versions of CockroachDB prior to v21.1 used the syntax `BACKUP ... TO` to backup directly to a specific operator-chosen destination, rather than picking a date-based path. The `BACKUP ... TO` syntax will be deprecated in future releases. For more information on this soon-to-be deprecated syntax, [see the docs for v20.2](../v20.2/backup.html) or earlier.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -22,7 +22,7 @@ You can [backup a full cluster](#backup-a-cluster), which includes:
 - All [views](views.html)
 - All [scheduled jobs](manage-a-backup-schedule.html#view-and-control-a-backup-initiated-by-a-schedule)
 
-You can also back up:
+You can also backup:
 
 - [An individual database](#backup-a-database), which includes all of its tables and views
 - [An individual table](#backup-a-table-or-view), which includes its indexes and views
@@ -71,8 +71,8 @@ To view the contents of an Enterprise backup created with the `BACKUP` statement
 Target                             | Description
 -----------------------------------+-------------------------------------------------------------------------
 N/A                                | Backup the cluster. For an example of a full cluster backup, [see Backup a cluster](#backup-a-cluster).
-`DATABASE {database_name} [, ...]` | The name of the database(s) you want to back up (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#backup-a-database).
-`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to back up. For an example of backing up a table or view, see [Backup a table or view](#backup-a-table-or-view).
+`DATABASE {database_name} [, ...]` | The name of the database(s) you want to backup (i.e., create backups of all tables and views in the database). For an example of backing up a database, see [Backup a database](#backup-a-database).
+`TABLE {table_name} [, ...]`       | The name of the table(s) or [view(s)](views.html) you want to backup. For an example of backing up a table or view, see [Backup a table or view](#backup-a-table-or-view).
 
 ### Options
 
@@ -214,6 +214,25 @@ AS OF SYSTEM TIME '-10s';
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 {{site.data.alerts.end}}
 
+### Backup all tables in a schema
+
+<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP test_schema.*
+INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
+
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
+
+If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
+
+See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
+
 ### Create incremental backups
 
 If you backup to a destination already containing a [full backup](take-full-and-incremental-backups.html#full-backups), an [incremental backup](take-full-and-incremental-backups.html#incremental-backups) will be appended to the full backup's path with a date-based name (e.g., `20210324`):
@@ -313,6 +332,25 @@ AS OF SYSTEM TIME '-10s';
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 {{site.data.alerts.end}}
+
+### Backup all tables in a schema
+
+<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP test_schema.*
+INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
+
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
+
+If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
+
+See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
 
@@ -417,6 +455,25 @@ AS OF SYSTEM TIME '-10s';
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 {{site.data.alerts.end}}
+
+### Backup all tables in a schema
+
+<span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> BACKUP test_schema.*
+INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
+Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
+
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
+
+If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
+
+See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
 
