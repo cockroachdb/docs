@@ -232,11 +232,11 @@ AS OF SYSTEM TIME '-10s';
 
 Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
 
-With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of that name within the set current database before matching to a database of that name.
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
 
 If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
 
-See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution works in CockroachDB.
+See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
 
@@ -351,11 +351,11 @@ AS OF SYSTEM TIME '-10s';
 
 Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
 
-With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of that name within the set current database before matching to a database of that name.
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
 
 If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
 
-See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution works in CockroachDB.
+See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
 
@@ -474,11 +474,11 @@ AS OF SYSTEM TIME '-10s';
 
 Alternatively, use a [fully qualified name](sql-name-resolution.html#lookup-with-fully-qualified-names): `database.schema.*`.
 
-With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of that name within the set current database before matching to a database of that name.
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
 
 If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
 
-See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution works in CockroachDB.
+See [Name Resolution](sql-name-resolution.html) for more details on how naming hierarchy and name resolution work in CockroachDB.
 
 ### Create incremental backups
 
