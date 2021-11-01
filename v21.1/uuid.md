@@ -19,7 +19,7 @@ Format | Description
 Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format | Hyphen-separated groups of 8, 4, 4, 4, and 12 hexadecimal digits.<br><br>Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
 `BYTES` | `UUID` value specified as a [`BYTES`](bytes.html) value.<br><br>Example: `b'kafef00ddeadbeed'`
 Uniform Resource Name | A [Uniform Resource Name (URN)](https://www.ietf.org/rfc/rfc2141.txt) specified as "urn:uuid:" followed by the [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`
-Alternate PostgreSQL-supported formats | Most [alternate `UUID` formats supported by PostgreSQL](https://www.postgresql.org/docs/current/datatype-uuid.html), including the [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format surrounded by braces, any supported format with upper-case digits, and any supported format with some or all hyphens omitted.<br><br>Examples: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`, `ACDE070D-8C4C-4f0D-9d8A-162843c10333`, `acde070d8c4c4f0d9d8a162843c10333`
+Alternate RFC4122 formats | The [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format, surrounded by braces, expressed with upper-case digits, or with hyphens omitted.<br><br>Examples: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`, `ACDE070D-8C4C-4f0D-9d8A-162843c10333`, `acde070d8c4c4f0d9d8a162843c10333`
 
 CockroachDB displays all `UUID` values in the standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format.
 
