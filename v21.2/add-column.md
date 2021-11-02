@@ -40,12 +40,21 @@ CockroachDB supports the following column qualifications:
 
 ### ON UPDATE expressions
 
-<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions set a row value for a particular column when any other value in the row is updated.
+<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions update column values in the following cases:
+
+- An [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row.
+- An `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
+
+`ON UPDATE` expressions **do not** update column values in the following cases:
+
+- An `UPDATE` or `UPSERT` statement directly modifies the value of a column with an `ON UPDATE` expression.
+- An `UPSERT` statement creates a new row.
+- A new column is backfilled with values (e.g., by a `DEFAULT` expression).
 
 Note the following limitations of `ON UPDATE` expressions:
 
+- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function](functions-and-operators.html) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
 - You cannot add a [foreign key constraint](foreign-key.html) and an `ON UPDATE` expression to the same column.
-- Values populated by [`DEFAULT` expressions](default-value.html) do not trigger an `ON UPDATE` change.
 
 For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](#add-a-column-with-an-on-update-expression).
 
