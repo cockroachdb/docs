@@ -140,9 +140,9 @@ CockroachDB records the timestamp of each row created in a table in the `crdb_in
 
 CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process using a job scheduler like `cron`.
 
-For example, suppose that every morning you want to delete all rows in the [`rides` table](movr.html#the-movr-database) in the [`movr` database](movr.html) that are older than a month. To do this, you could write a Python script that batch-deletes rows based on the values of an indexed [`TIMESTAMP`](timestamp.html) column, and then run the script with a daily `cron` job.
+For example, suppose that every morning you want to delete all rows in the [`rides` table](movr.html#the-movr-database) in the [`movr` database](movr.html) that are older than a month. To do this, you could write a Python script that batch-deletes rows based on the values of an indexed [`TIMESTAMPTZ`](timestamp.html) column, and then run the script with a daily `cron` job.
 
-1. To record the last day and time a row was updated, create a `TIMESTAMP` column with an [`ON UPDATE` expression](add-column.html):
+1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](add-column.html):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -150,7 +150,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
     ALTER TABLE rides ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
     ~~~
 
-1. To improve `DELETE` performance, index the `TIMESTAMP` column. We recommend using a [hash-sharded index](hash-sharded-indexes.html) to reduce bottlenecks, as `TIMESTAMP` values are [sequentially stored in ranges](architecture/distribution-layer.html#range-splits):
+1. To improve `DELETE` performance, index the `TIMESTAMPTZ` column. We recommend using a [hash-sharded index](hash-sharded-indexes.html) to reduce bottlenecks, as `TIMESTAMPTZ` values are [sequentially stored in ranges](architecture/distribution-layer.html#range-splits):
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -178,8 +178,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
         with conn.cursor() as cur:
             if lastrow:
                 filter = lastrow[0]
-            query = psycopg2.sql.SQL("DELETE FROM rides WHERE last_updated < %s ORDER BY last_updated DESC LIMIT 5000 RETURNING last_updated")
-            cur.execute(query, (filter,))
+            cur.execute("DELETE FROM rides WHERE last_updated < %s ORDER BY last_updated DESC LIMIT 5000 RETURNING last_updated", [filter])
             print(cur.statusmessage)
             if cur.rowcount == 0:
                 break
