@@ -25,6 +25,8 @@ For PostgreSQL compatibility, CockroachDB supports the following `STRING`-relate
 
 These types are functionality identical to `STRING`.
 
+CockroachDB also supports the single-byte `"char"` special character type. As in PostgreSQL, this special type is intended for internal use in [system catalogs](system-catalogs.html), and has a storage size of 1 byte. CockroachDB truncates all values of type `"char"` to a single character.
+
 ## Length
 
 To limit the length of a string column, use `STRING(n)`, where `n` is the maximum number of Unicode code points (normally thought of as "characters") allowed. This applies to all related types as well (e.g., to limit the length of a `VARCHAR` type, use `VARCHAR(n)`).
@@ -41,6 +43,7 @@ When inserting a `STRING` value or a `STRING`-related-type value:
 `CHARACTER`, `CHARACTER(n)`, `CHAR`, `CHAR(n)`    | Fixed-length                
 `CHARACTER VARYING(n)`, `VARCHAR(n)`, `STRING(n)` | Variable-length, with a limit  
 `TEXT`, `VARCHAR`, `CHARACTER VARYING`, `STRING`  | Variable-length, with no limit
+`"char"` (special type)                           | 1 byte
 
 ## Syntax
 
