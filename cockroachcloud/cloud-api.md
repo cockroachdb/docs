@@ -13,7 +13,7 @@ Refer to the [full API reference documentation](../api/cloud/v1.html) for detail
 {%comment %} START of temporary content while API is still behind a feature-flag{% endcomment %}
 ## Service accounts
 
-Service accounts are used by applications accessing the [API](cloud-api.html) to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
+Service accounts are used by applications accessing the API to manage {{ site.data.products.db }} clusters within the organization. Service accounts are not for human users.
 
 To create a service account:
 
@@ -49,6 +49,8 @@ To modify the name, description, or permissions of a service account:
 ### API access
 
 Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
+
+We recommend creating service accounts with the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own API key. This allows fine-grained permission and API key access to the cluster.
 
 #### Create API keys
 
@@ -156,7 +158,7 @@ curl --request POST \
 Where:
 
   - `{cluster name}` is the name of the cluster. This should be a short string with no whitespace.
-  - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
+  - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`.
   - `{region name}` is the zone code of the cloud infrastructure provider. For example, on GCP you can set the "us-west2" zone code.
   - `{spend limit}` is the [maximum amount of US dollars you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
