@@ -8,6 +8,10 @@ This page describes newly identified limitations in the CockroachDB {{page.relea
 
 ## New limitations
 
+TBD
+
+## Unresolved limitations
+
 ### CockroachDB does not properly optimize some left and anti joins with inverted indexes
 
 [Left joins](joins.html#left-outer-joins) and anti joins involving [`JSONB`](jsonb.html), [`ARRAY`](array.html), or [spatial-typed](spatial-data.html) columns with a multi-column or [partitioned](partition-by.html) [inverted index](inverted-indexes.html) will not take advantage of the index if the prefix columns of the index are unconstrained, or if they are constrained to multiple, constant values.
@@ -159,51 +163,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59649)
 
-## Unresolved limitations
-
-### `IMPORT` into a `REGIONAL BY ROW` table
-
-CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/61133)
-
-To work around this limitation, you will need to take the following steps:
-
-1. In the source database, export the [`crdb_region` column](set-locality.html#crdb_region) separately when exporting your data.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    EXPORT INTO CSV 'nodelocal://0/src_rbr' FROM SELECT crdb_region, i from src_rbr;
-    ~~~
-
-    For more information about the syntax, see [`EXPORT`](export.html).
-
-1. In the destination database, create a table that has a `crdb_region` column of the right type as shown below.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    CREATE TABLE dest_rbr (crdb_region public.crdb_internal_region NOT NULL, i INT);
-    ~~~
-
-1. Import the data (including the `crdb_region` column explicitly) using [`IMPORT INTO`](import-into.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    IMPORT INTO dest_rbr (crdb_region, i) CSV DATA ('nodelocal://0/src_rbr/export*.csv')
-    ~~~
-
-1. Convert the destination table to `REGIONAL BY ROW` using [`ALTER TABLE ... ALTER COLUMN`](alter-column.html) and [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    ALTER TABLE dest_rbr ALTER COLUMN crdb_region SET DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
-    ~~~
-
 ### `BACKUP` of multi-region tables
 
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
@@ -315,12 +274,6 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Slow (or hung) backups and queries due to write intent buildup
-
-{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
 
 ### Change data capture
 
@@ -560,12 +513,6 @@ $ export COCKROACH_SQL_CLI_HISTORY=.cockroachsql_history_shell_2
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42027)
 
-### Passwords with special characters cannot be passed in connection parameter
-
-CockroachDB does not allow passwords with special characters to be passed as a [connection parameter](connection-parameters.html) to [`cockroach` commands](cockroach-commands.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/35998)
-
 ### CockroachDB does not test for all connection failure scenarios
 
 CockroachDB servers rely on the network to report when a TCP connection fails. In most scenarios when a connection fails, the network immediately reports a connection failure, resulting in a `Connection refused` error.
@@ -609,22 +556,3 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Inverted index scans can't be generated for some statement filters
-
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
-
-~~~ sql
-SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';
-~~~
-
-CockroachDB v20.1 and earlier would generate index scans for these filters, though it is not recommended as the normalization rules used to convert the filters into JSON containment expressions would sometimes produce inequivalent expressions.
-
-The workaround is to rewrite the statement filters to avoid using both JSON fetch values and containment operators. The following statement is index-accelerated and equivalent to the non-accelerated statement above:
-
-~~~ sql
-SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
-
