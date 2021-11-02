@@ -3,7 +3,7 @@
   versions: 19.2, 20.1, 20.2, 21.1
   date: November 2, 2021
 - advisory: 71002
-  summary: CockroachDB 21.1.9 drops WHERE predicates from prepared statements in specific circumstances
+  summary: CockroachDB 21.1.9 drops <code>WHERE</code> predicates from prepared statements in specific circumstances
   versions: 21.1.9
   date: October 7, 2021
 - advisory: 69874
