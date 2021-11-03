@@ -38,7 +38,7 @@ CockroachDB supports the following column qualifications:
 - [`DEFAULT` expressions](default-value.html)
 - <span class="version-tag">New in v21.2</span>: [`ON UPDATE` expressions](#on-update-expressions)
 
-### ON UPDATE expressions
+### `ON UPDATE` expressions
 
 <span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions update column values in the following cases:
 
