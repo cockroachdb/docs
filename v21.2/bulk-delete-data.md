@@ -142,7 +142,7 @@ CockroachDB does not support Time to Live (TTL) on table rows. To delete "expire
 
 For example, suppose that every morning you want to delete all rows in the [`rides` table](movr.html#the-movr-database) in the [`movr` database](movr.html) that are older than a month. To do this, you could write a Python script that batch-deletes rows based on the values of an indexed [`TIMESTAMPTZ`](timestamp.html) column, and then run the script with a daily `cron` job.
 
-1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](add-column.html):
+1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](add-column.html#on-update-expressions):
 
     {% include copy-clipboard.html %}
     ~~~ sql
