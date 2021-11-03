@@ -251,6 +251,12 @@
                     ]
                   },
                   {
+                    "title": "Index Expressions",
+                    "urls": [
+                      "/${VERSION}/expression-indexes.html"
+                    ]
+                  },
+                  {
                     "title": "Index Spatial Data",
                     "urls": [
                       "/${VERSION}/spatial-indexes.html"

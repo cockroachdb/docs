@@ -125,7 +125,7 @@ For best practices, see [Add a Secondary Index: Best Practices](schema-design-in
 
 {% include {{page.version.version}}/sql/indexes-regional-by-row.md %}
 
-Note that the behavior described above also applies to [inverted indexes](inverted-indexes.html).
+This behavior also applies to [inverted indexes](inverted-indexes.html).
 
 For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](add-constraint.html#add-a-unique-index-to-a-regional-by-row-table).
 
@@ -134,9 +134,10 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 - [`CREATE INDEX`](create-index.html)
 - [Schema Design: Add Secondary Indexes](schema-design-indexes.html)
 - [Inverted Indexes](inverted-indexes.html)
-- [Partial indexes](partial-indexes.html)
+- [Partial Indexes](partial-indexes.html)
 - [Spatial Indexes](spatial-indexes.html)
 - [Hash-sharded Indexes](hash-sharded-indexes.html)
+- [Expression Indexes](expression-indexes.html)
 - [Select from a specific index](select-clause.html#select-from-a-specific-index)
 - [`DROP INDEX`](drop-index.html)
 - [`RENAME INDEX`](rename-index.html)
