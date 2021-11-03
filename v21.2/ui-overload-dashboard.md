@@ -4,7 +4,7 @@ summary: The Overload dashboard lets you monitor the performance of the admissio
 toc: true
 ---
 
-<span class="version-tag">New in v21.2:</span> The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the files and subfiles in memory, and the performance of admission control system when it is enabled.
+<span class="version-tag">New in v21.2:</span> The **Overload dashboard** lets you monitor the performance of the parts of your cluster relevant to the cluster's [admission control system](architecture/admission-control.html). This includes CPU usage, the runnable goroutines waiting per CPU, the health of the persistent stores, and the performance of admission control system when it is enabled.
 
 To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** > **Overload**.
 
@@ -26,8 +26,8 @@ This graph shows the health of the [persistent stores](architecture/storage-laye
 
 Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). High values indicate heavy write load that is causing accumulation of files in level 0. These files are not being compacted fast enough to lower levels.
 
-- In the node view, the graph shows the health of the persitent store on the selected node.
-- In the cluster view, the graph shows the health of the persitent stores across all nodes in the cluster.
+- In the node view, the graph shows the health of the persistent store on the selected node.
+- In the cluster view, the graph shows the health of the persistent stores across all nodes in the cluster.
 
 ## KV Admission Slots
 
@@ -40,16 +40,14 @@ KV admission slots are an internal aspect of the admission control system, and a
 
 ## KV Admission IO Tokens Exhausted Duration Per Second
 
-This graph indicates write I/O overload, which affects KV write operations to storage. This happens during transactions that have writes mutations. The admission control system dynamically calculates write tokens (similar to a [token bucket](https://en.wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
+This graph indicates write I/O overload, which affects KV write operations to storage. The admission control system dynamically calculates write tokens (similar to a [token bucket](https://en.wikipedia.org/wiki/Token_bucket)) to allow for high write throughput without severely overloading each store. This graph displays the microseconds per second that there were no write tokens left for arriving write requests. When there are no write tokens, these write requests are queued.
 
-- In the node view, the graph shows the number of microseconds that there were no write tokens on the selected node.
-- In the cluster view, the graph shows the number of microseconds that there were no write tokens across all nodes in the cluster.
+- In the node view, the graph shows the number of microseconds per second that there were no write tokens on the selected node.
+- In the cluster view, the graph shows the number of microseconds per second that there were no write tokens across all nodes in the cluster.
 
 ## Admission Work Rate
 
 This graph shows the rate that operations within the admission control system are processed. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
-
-This sums up the delay experienced by operations of each kind, and takes the rate per second. Dividing this rate by the rate observed in the admission work rate graph gives the mean delay experienced per operation.
 
 - In the node view, the graph shows the rate of operations within the work queues on the selected node.
 - In the cluster view, the graph shows the rate of operations within the work queues across all nodes in the cluster.
@@ -57,6 +55,8 @@ This sums up the delay experienced by operations of each kind, and takes the rat
 ## Admission Delay Rate
 
 This graph shows the latency when admitting operations to the work queues within the admission control system. There are lines for requests within the KV layer, write requests within the KV layer, responses between the KV and SQL layer, and responses within the SQL layer when receiving DistSQL responses.
+
+This sums up the delay experienced by operations of each kind, and takes the rate per second. Dividing this rate by the rate observed in the Admission Work Rate graph gives the mean delay experienced per operation.
 
 - In the node view, the graph shows the rate of latency within the work queues on the selected node.
 - In the cluster view, the graph shows the rate of latency within the work queues across all nodes in the cluster.
