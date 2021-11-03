@@ -25,8 +25,7 @@ Get future release notes emailed to you:
 - There is now a more clear error message for users attempting to log into {{ site.data.products.db }} using GitHub when they have email and password authentication configured.
 - Average RU usage is now shown in the **Request Units** chart for the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#request-units) page.
 - The PowerShell command to [download the CockroachDB binary](../cockroachcloud/connect-to-your-cluster.html?filters=windows#step-3-connect-to-your-cluster) is now improved for Windows users.
-- Storage is now show in MiB instead of GiB in the **Storage used** graph on the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#storage-used) page.
-- AWS will now be the pre-selected cloud provider on the **Create your cluster** page for most organizations.
+- When under 1 GiB of storage has been used, storage is now shown in MiB instead of GiB in the **Storage used** graph on the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#storage-used) page.
 - A more descriptive error message is now displayed when attempting to create or edit a [SQL user](../cockroachcloud/user-authorization.html#manage-sql-users) with an invalid username.
 - Previously, clicking **cancel** while editing a cluster would take users back to the **Clusters** page. Now, users are taken back to the cluster's **Overview** page.
 
@@ -35,3 +34,4 @@ Get future release notes emailed to you:
 - Fixed a bug where, if a user had reached the maximum number of {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the {{ site.data.products.serverless-plan }} plan was auto-selected even though it is disabled.
 - Fixed a bug where clicking **Cancel** while logging in with GitHub would report and internal error.
 - Fixed a bug where organization deletion was temporarily broken.
+- Fixed a bug that was preventing the **Request Units** and **SQL Statements** graphs on the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#cluster-overview-metrics) page from updating after a certain amount of time.
