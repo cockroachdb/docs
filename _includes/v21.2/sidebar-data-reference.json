@@ -1288,6 +1288,12 @@
                 ]
               },
               {
+                "title": "<code>cockroach debug job-trace</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-job-trace.html"
+                ]
+              },
+              {
                 "title": "<code>cockroach debug list-files</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-list-files.html"
