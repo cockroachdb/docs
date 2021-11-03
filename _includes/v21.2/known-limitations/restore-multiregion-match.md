@@ -2,9 +2,9 @@
 
     The following must also be true for `RESTORE` to be successful:
 
-    * The regions of the source database and the regions of the destination database have the same set of regions.
+    * The [regions](multiregion-overview.html#database-regions) of the source database and the regions of the destination database have the same set of regions.
     * The regions were added to each of the databases in the same order.
-    * The databases have the same primary region.
+    * The databases have the same [primary region](set-primary-region.html).
 
     The following example would be considered as having **mismatched** regions because the database regions were not added in the same order and the primary regions do not match.
 
@@ -26,7 +26,7 @@
     > ALTER DATABASE destination_database ADD region "us-east1";  
     ~~~
 
-    Furthermore, this scenario has mismatched regions between the databases since the regions were not added to the database in the same order.
+    In addition, the following scenario has mismatched regions between the databases since the regions were not added to the database in the same order.
 
     Running on the source database:
 
