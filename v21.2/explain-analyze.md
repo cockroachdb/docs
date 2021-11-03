@@ -67,7 +67,8 @@ max sql temp disk usage | <span class="version-tag">New in v21.2:</span> <br /> 
 Statement plan tree properties | Description
 -------------------------------|------------
 processor | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
-cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
+nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
+regions | The [regions](show-regions.html) where the affected nodes were located.
 actual row count | The actual number of rows affected by this processor during execution.
 KV time | The total time this phase of the statement was in the [Storage layer](architecture/storage-layer.html).
 KV contention time | The time the [Storage layer](architecture/storage-layer.html) was in contention during this phase of the statement.
@@ -208,44 +209,49 @@ Time: 694ms total (execution 694ms / network 0ms)
 
 Use `EXPLAIN ANALYZE (DISTSQL)` to execute a query, display the physical statement plan with execution statistics, and generate a link to a graphical DistSQL statement plan.
 
+{% include_cached copy-clipboard.html %}
 ~~~ sql
-> EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
+EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                                                   info
---------------------------------------------------------------------------------------------------- ...
-
-  planning time: 510µs
-  execution time: 58ms
+                                             info
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  planning time: 2ms
+  execution time: 782ms
   distribution: full
   vectorized: true
   rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 146ms
-  maximum memory usage: 1.1 MiB
-  network usage: 2.9 KiB (25 messages)
+  cumulative time spent in KV: 1.4s
+  maximum memory usage: 953 KiB
+  network usage: 2.6 KiB (24 messages)
+  regions: us-east1
 
   • group
-  │ cluster nodes: n1, n2, n3
+  │ nodes: n1, n2, n3
+  │ regions: us-east1
   │ actual row count: 9
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        cluster nodes: n1, n2, n3
+        nodes: n1, n2, n3
+        regions: us-east1
         actual row count: 125,000
-        KV time: 2ms
+        KV time: 1.4s
         KV contention time: 0µs
         KV rows read: 125,000
         KV bytes read: 21 MiB
-        estimated row count: 125,000 (100% of the table; stats collected 15 minutes ago)
+        estimated row count: 125,000 (100% of the table; stats collected 45 seconds ago)
         table: rides@primary
         spans: FULL SCAN
 
-  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJy8V81u4zYQvvcpCJ6yqDYWKVmSdfLuIm ...
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzMV-9u2zYQ_76nIPgpxdRZJGVL1ic3RbsFTewifwYUUxDQ0sURaosuSSfOguxJBuwp9gJ7lD3JQMlebFmmZcdp-8UQeeLx7nf3-_n0gNWXIQ7x2bvjd2_PUZzqewfx28GBhFvIJvAKvT_tnSCZJqDQz6e9i4_o8FP-GnZwJhLo8hEoHP6GCXYwxQ5m-NLBYyliUEpIY3rIXzxKpjh0HZxm44k225cOjoUEHD5gneoh4BCf8_4QToEnIBsudnACmqfD3H0eQWcs0xGX5u6zMc9UiF43ItwXSosswo0IB__-9WcUTSGIomnSPoyiqetG0TRw508rP8PCjLGDexMdog51OsTc_eFXpNMRhIgxMlLFRiwyDZlORTazuf_8PTNJcaeQBJ6EiPqO77eK7f69hvm-91MLnaSH2MEjPkUjGAl5j_hwKGKuwdibLvqQ2_tcxzegkJjosQmKBtjB-Q3_7xR3XD46uNiaIao0HwAOyaNTH_U3g4GEAddCNtgy6B1T1J5MQJr48tWb7qerbu_8qntxfHzQIa9MKS5ODjrUPL3tXXTPZ88whXiyABXNQSxnRlYSK-X0FGb_Ht1wdbMS4eXjU950bd5PfkSRT9nPj4UjCzit54FzdnFydWTgYWZ1ClkC0pxzUIc2OqwCMi8o2msjaGxtI7AagEyyKkgq0eiK12LcaC8DsVLp6qi9ctTttVF7S1GT-qJBaonGvjTDiM-Yy1TlfowPZiz8DxVFU87gl82-SBRN-7RYYsSzBBEk9A3I9Xrk-952etRqO57nreoRoTvKUWtFjmZX1JOjDfVcYJz3cnLk1ZMjf49yRPYrR_7XlqO2W01sWgatWVOOaH1i07rE3icfDb8Vz9C15FmcqljM_QbQMr_XUdR_H0VTct2p59m97tgnjfb2k0bgVk0a_l4njcCtSe0NFV3o3uY3nzTKf5rPoTbdL7WDr01tWnfSIDtMGhW5noIai0xBaeKo9uwatCAZQIGuEhMZw0cp4vyaYtnLz-UbCShdWEmxOMoKkwlw8TApHyaLh-nSYZJHoyvnHcZY3nHVXCNzqhmz-jJEGkZjlKTqM5ooPjDURlVMdMvQ5xzcJoPW2gwy0HdCfkZDriGL70NUfOHMt-94qku5JaBApnyY_s4X24YVbTM_OJOmGNJbkzpdMM3laW5jTZqnPbePQBk0ll6p_b2wDSrtF0elaQXFtYDiboKE7tgo1MoTtgxJ-TCzk8y1s8yznm7aDzd3pGj9UnqetcFday2ZrcEDby8NzlaraUdlPe1XZmCPWoSL7Shcz89gHxS115UE1roSW13pRpbWqitZRaW1DUt3QsX3fQsqvl3OmxZUWl6wCRWv9qfDMiq-FZXALiDBiwsI8wrQ1kD6PfaZHZQtxga6DpRW0wYKJbuPDaz1UmODHZX1mlRW1Vly1aJKX3AabH9j-aDezs1O_f1Mg_k32uMP_wUAAP__K-8jbQ==
+(31 rows)
 
-Time: 62ms total (execution 61ms / network 0ms)
+
+Time: 841ms total (execution 840ms / network 0ms)
 ~~~
 
 To view the [DistSQL plan diagram](#distsql-plan-diagram), open the URL following **Diagram**. For an example, see [`DISTSQL` option](explain.html#distsql-option).

@@ -69,7 +69,8 @@ The statement plan tree shows
 Statement plan tree properties | Description
 -------------------------------|------------
 processor | Each processor in the statement plan hierarchy has a node with details about that phase of the statement. For example, a statement with a `GROUP BY` clause has a `group` processor with details about the cluster nodes, rows, and operations related to the `GROUP BY` operation.
-cluster nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
+nodes | The names of the CockroachDB cluster nodes affected by this phase of the statement.
+regions | The [regions](show-regions.html) where the affected nodes were located.
 actual row count | The actual number of rows affected by this processor during execution.
 estimated row count | The estimated number of rows affected by this processor according to the statement planner.
 KV rows read | During scans, the number of rows in the [Storage layer](architecture/storage-layer.html) read by this phase of the statement.
@@ -170,35 +171,38 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
 ~~~
 
 ~~~
-                                          info
------------------------------------------------------------------------------------------
-  planning time: 475µs
-  execution time: 53ms
+                                           info
+------------------------------------------------------------------------------------------
+  planning time: 527µs
+  execution time: 66ms
   distribution: full
   vectorized: true
   rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 132ms
-  maximum memory usage: 1.1 MiB
-  network usage: 2.9 KiB (25 messages)
+  cumulative time spent in KV: 142ms
+  maximum memory usage: 963 KiB
+  network usage: 2.5 KiB (24 messages)
+  regions: us-east1
 
   • group
-  │ cluster nodes: n1, n2, n3
+  │ nodes: n1, n2, n3
+  │ regions: us-east1
   │ actual row count: 9
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        cluster nodes: n1, n2, n3
+        nodes: n1, n2, n3
+        regions: us-east1
         actual row count: 125,000
         KV rows read: 125,000
         KV bytes read: 21 MiB
-        estimated row count: 125,000 (100% of the table; stats collected 2 minutes ago)
+        estimated row count: 125,000 (100% of the table; stats collected 11 minutes ago)
         table: rides@primary
         spans: FULL SCAN
-(24 rows)
+(27 rows)
 
-Time: 54ms total (execution 54ms / network 0ms)
+Time: 68ms total (execution 67ms / network 1ms)
 ~~~
 
 ### `EXPLAIN ANALYZE (DISTSQL)`
@@ -210,37 +214,40 @@ EXPLAIN ANALYZE (DISTSQL) SELECT city, AVG(revenue) FROM rides GROUP BY city;
 ~~~
 
 ~~~
-                          info
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  planning time: 510µs
-  execution time: 58ms
+                                                   info
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  planning time: 476µs
+  execution time: 107ms
   distribution: full
   vectorized: true
   rows read from KV: 125,000 (21 MiB)
-  cumulative time spent in KV: 146ms
-  maximum memory usage: 1.1 MiB
-  network usage: 2.9 KiB (25 messages)
+  cumulative time spent in KV: 214ms
+  maximum memory usage: 963 KiB
+  network usage: 2.5 KiB (24 messages)
+  regions: us-east1
 
   • group
-  │ cluster nodes: n1, n2, n3
+  │ nodes: n1, n2, n3
+  │ regions: us-east1
   │ actual row count: 9
   │ estimated row count: 9
   │ group by: city
   │ ordered: +city
   │
   └── • scan
-        cluster nodes: n1, n2, n3
+        nodes: n1, n2, n3
+        regions: us-east1
         actual row count: 125,000
         KV rows read: 125,000
         KV bytes read: 21 MiB
-        estimated row count: 125,000 (100% of the table; stats collected 15 minutes ago)
+        estimated row count: 125,000 (100% of the table; stats collected 12 minutes ago)
         table: rides@primary
         spans: FULL SCAN
 
-  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJy8V81u4zYQvvcpCJ6yqDYWKVmSdfLuIm2DTexFfgosqiBgpKkjRJa8JJ3YDfJYvfTYh-jzFJTsja0fWnbsvQgiRzOa-Wa-T9QzFt8S7OPLk7OTT1cojOXcQOxxdMThEdIpvEO_XAzPEY8jEOjXi-H1F_Txa_4YNnCaRTBgYxDY_wMTbGCKDWzhGwNPeBaCEBlXpuf8wdNohn3TwHE6mUq1fWPgMOOA_WcsY5kA9vEVu0vgAlgEvGNiA0cgWZzk4fMM-hMejxlX776csFT46H0nwGwsJPCIjQPcCXAQzEI3CGakdxwEM9ZV1z97_SCYmWYQzDxzeVe-kGflagYYG3g4lT7qU6NPVBqff0cyHoOPiD0WxTrMUgmpjLN0YTL__Xth4tmTQBxY5CNiGZ5Hi-27uYTlPj220Hn8ERv4jsnwHgTKpnKi3klsbOA8wvedIsbNi4GLrQV2QrIRYJ-8GO3x_TAacRgxmfGOtQ5vX7VvyCPgEPkoX30YfL0dDK9uB9dnZ0d98k6Bfn1-1Kfq7tPwenC1uIcZhNMVKEgOUqWySmGlml7TvJujeybuKxnevLzWTRvrfo2TFfWU4_xcBNKA47wNnMvr89tTBY-lVheQRsCVn4H6tNO3aiBzSDE-G0GzGgfBagHINK2DpBaNQfY-m3R660BUOl2fdWWGe41Z22tZk_byQFrJwwHUQSlOkgnE0hEkIJZRGVMXFTqC__5RocLfWkQ9KcwYsTRCFGXyHrhoFiCXbidATs-wbbsqQIQ26I_jlXu3CNFOfzY0cIVi9uH0p9tOf7w96g_Zr_64P1p_CO3WU5mWUeu2FCDansq0LZX3TztF5hSe0DzjD8uQJPw2VFwHmZxuDmU6_QV7ScHeZvLa1nbktYnhuDXkdY9JA3vtypAvYrRj74aerQxo93DstdqxtzyHb2Ev3S97vR_NXstteXooH7nanB5qar0AMclSAaVTRH1kU6EF0QgKdEU25SF84VmYv6ZYDnO_fCMCIQsrKRanaWFSCa46k7IzWXWma84kz0bWn2GKz8WYzdAYxhmfI5YkWcik6hYx0eecacosQq4ARlEsHlYfMlEdF80y-KYCf5sanMYaUpBPGX9ACZOQhnMfdR1ajMDS8sRiuSzQyQuMQACPWRL_xVaqp-a630J-Qogf8_pXTEsJWtosWhS-tI9BCDZaf6T1UG6DS28LXNzebrhYWlhMDSwbQaE7DgvVssVaB6XsbOmpZuq5Zmu9u3rn7o5ErTbTdhqb6VBNM4mn7SbVDbmznyGn1X7qcWkmf_XfUSNg1u4CVv_J3aaGLYjqWt6OvSW7CxihhxIwZxuu7jrzrqfBxdELe1eDi9N1NuFit_5VWMfF1eLi6YXE25uQdJuHjZAF4A3fBaqF1dKNm2fvZdysKqx6ZLY4R7hm8_fSpTpg3sLDwx0k9MA061NZYxelH15ja2ro7U1LNGOv1RLL3rm31N2fxt68_PR_AAAA___8Kx2h
-(26 rows)
+  Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzEV11u4zYQfu8pCD5lUSUWqT9LT94stkWwib3IT4FFFQSMNHWE2KKXpBO5QW5SoKfoBXqUnqSQZG9sWaLlrJ19MUyOZjTzDb9vqCcsv45wgC8-nn78cImiRM0MxB6GBwIeIJ3CO_TL-eAMiSQGiX49H1x9RsdfisewgVMeQ5-NQeLgd0ywgSk2sIWvDTwRPAIpuchNT8WDJ3GGA9PASTqZqnz72sARF4CDJ6wSNQIc4Et2O4JzYDGIjokNHINiyagIX2TQm4hkzET-7osJS2WADjshZmOpQMRsHOJOiMMwi7wwzIh_FIYZc_LfP_xeGGamGYZZ11z8q_6Qp9zVDDFiaYwI4uoOBDbwYKoC1KNGj-QpffoNqWQMAfKdsSzXEU8VpCrh6dxk_vvP3CT4o0QCWBwgxzEc2y63b2cKFvv-EUVnyTE28C1T0R1IxKdqkr_TcbCBiwgvO0WM62cDl1tzHKViQ8ABeTbaY_1-OBQwZIqLjrUKdS9v5UDEICAOULF63_9y0x9c3vSvTk8PeuRd3oCrs4Mezf99GFz1L-f_IYNougSFV4BUrYysFVap6SXN2xm6Y_JuLcPr55e6aWPdL3F4WU81zs9lIA047veBc3F1dnOSw2Plq3NIYxC5n4F6tNOzaiDz7fL4bATNajwIVgtApmkdJLVo9Pkhn3T8VSCqadP6rO1q1n5j1vZK1qS9VNBWUtEJ8S2XiqeFTHT_-_uvMMygG4ZZ7B9vlgdzVJpxLjkpPKIZF_cLxSHR10GuHqBGJy1Cub0QNyuLQ7dTFuoZnuevK4t95DUoC-1WuzKP0U5ZNrRmiTzO_pTFaqcsVZJ8j7KQ3SpL962VxTFbKgtpqSy0PUdJW47uepof7or37a4FrrsdeW1iuJ63Tl7vyGwgr73WrnmMduTd0LOl82nvj7z2218L6G7J6701ebsNA5ZuAq3NtaCm1nOQE55KqFwP6iObOVoQD6FEV_KpiOCz4FHxmnI5KPyKjRikKq2kXJykpSlPcNmZVJ3JsjNdcSZFNqr2ckLMcqaOWYbGMOZihthoxCOm8nZZJvpUUC03y0jkCKM4kffLD5mojoz10rlNEX5jESmoRy7u0YgpSKNZgDzHK8_AwvLIEvWtwnIgxiBBJGyU_MmWL2f-quNcgCJIHgoAlkwLEfpm89yi8oV9DFKyIVTd2w3ibYBx2wPTdZzXAmNpgSE6YAjdCTA1J4ZqOWOtAlN1tvSEM_WMs7Xejt7ZeSVd1xrqu1ZjQ905Ceobqj_o2n5Sc1_91OOyhQL4HmnExXb2hMv-zrkel2YBaPj2_CHq7m7D1dee-Q0i5r26udTbW3M9LTBdvZJ0d6YkdvPM7Po6xlBHiyrVUcbZDap0HVU9MM1Ssvb5rKMM3SFlaua-voYt5r7vNVPGcnXN1Y99U9PbjUOC1qBiVlEx11HxdyYkmiOvFxLP1sLiaGBxnY3XRLvt18v180__BwAA__92ERda
+(29 rows)
 
-Time: 62ms total (execution 61ms / network 0ms)
+Time: 110ms total (execution 109ms / network 1ms)
 ~~~
 
 To view the [DistSQL Plan Viewer](#distsql-plan-viewer), point your browser to the URL provided.
