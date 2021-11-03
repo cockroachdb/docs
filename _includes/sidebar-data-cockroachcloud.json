@@ -232,6 +232,12 @@
       	      ]
       	    },
             {
+              "title": "Upgrade to v21.2",
+              "urls": [
+                 "/cockroachcloud/upgrade-to-v21.2.html"
+              ]
+            },
+            {
       	      "title": "Upgrade to v21.1",
       	      "urls": [
       		       "/cockroachcloud/upgrade-to-v21.1.html"
