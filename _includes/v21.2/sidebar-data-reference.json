@@ -49,6 +49,12 @@
             "urls": [
               "/${VERSION}/architecture/reads-and-writes-overview.html"
             ]
+          },
+          {
+            "title": "CockroachDB Cloud Architecture",
+            "urls": [
+              "/cockroachcloud/architecture.html"
+            ]
           }
         ]
       },
@@ -541,6 +547,12 @@
                 ]
               },
               {
+                "title": "<code>PLACEMENT (RESTRICTED | DEFAULT)</code>",
+                "urls": [
+                  "/${VERSION}/placement-restricted.html"
+                ]
+              },
+              {
                 "title": "<code>REASSIGN OWNED</code>",
                 "urls": [
                   "/${VERSION}/reassign-owned.html"
@@ -718,6 +730,12 @@
                 "title": "<code>SHOW CREATE</code>",
                 "urls": [
                   "/${VERSION}/show-create.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CREATE SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/show-create-schedule.html"
                 ]
               },
               {
@@ -1145,12 +1163,27 @@
         "title": "Cluster settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
-        ],
+        ]
+      },
+      {
+        "title": "Performance Optimization",
         "items": [
+          {
+            "title": "Indexes",
+            "urls": [
+              "/${VERSION}/indexes.html"
+            ]
+          },
           {
             "title": "Cost-Based Optimizer",
             "urls": [
               "/${VERSION}/cost-based-optimizer.html"
+            ]
+          },
+          {
+            "title": "Vectorized Execution Engine",
+            "urls": [
+              "/${VERSION}/vectorized-execution.html"
             ]
           },
           {

@@ -4,7 +4,9 @@ summary: Create a large, unused file in a node's storage directory that you can 
 toc: true
 ---
 
-The `cockroach debug ballast` [command](cockroach-commands.html) creates a large, unused file that you can place in a node's storage directory. In the case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.  
+<span class="version-tag">New in v21.2</span>: CockroachDB automatically creates an emergency ballast file at startup time.  The `cockroach debug ballast` command is still available but deprecated.  For more information about how automatic ballast file creation works, see [automatic ballast files](cluster-setup-troubleshooting.html#automatic-ballast-files).
+
+The `cockroach debug ballast` [command](cockroach-commands.html) creates a large, unused file that you can place in a node's storage directory. In the case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Do not run `cockroach debug ballast` with a unix `root` user. Doing so brings the risk of mistakenly affecting system directories or files.
 -  `cockroach debug ballast` now refuses to overwrite the target ballast file if it already exists. This change is intended to prevent mistaken uses of the `ballast` command. Consider adding an `rm` command to scripts that integrate `cockroach debug ballast`, or provide a new file name every time and then remove the old file.

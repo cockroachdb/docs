@@ -4,10 +4,11 @@ summary: Use the ALTER COLUMN statement to set, change, or drop a column's DEFAU
 toc: true
 ---
 
-The `ALTER COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and can be used to:
+`ALTER COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). You can use `ALTER COLUMN` to do the following:
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
 - Set or drop a column's [`NOT NULL` constraint](not-null.html).
+- <span class="version-tag">New in v21.2</span>: Set, change, or drop an [`ON UPDATE` expression](add-column.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
 
 {{site.data.alerts.callout_info}}

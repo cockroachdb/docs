@@ -63,6 +63,8 @@ Field | Description
 (8 rows)
 ~~~
 
+To view the `CREATE SCHEDULE` statements for scheduled jobs, use [`SHOW CREATE SCHEDULE`](show-create-schedule.html).
+
 ### Show running schedules
 
 {% include copy-clipboard.html %}

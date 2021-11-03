@@ -19,8 +19,8 @@ If you aren't sure whether SQL query performance needs to be improved on your cl
   </tr>
   <tr>
     <tr>
-      <td>Your application is experiencing high latency.</td>
-      <td>Use the correct <a href="topology-patterns.html">topology pattern</a> for your cluster to minimize network latency.</td>
+      <td><ul><li>Your application is experiencing high latency.</li></ul></td>
+      <td><ul><li>Use the correct <a href="topology-patterns.html">topology pattern</a> for your cluster to minimize network latency.</li></ul></td>
     </tr>
     <td><ul>
       <li>Your application is experiencing degraded performance with the following serialization errors:
@@ -33,7 +33,7 @@ If you aren't sure whether SQL query performance needs to be improved on your cl
       <li>The <a href="ui-sql-dashboard.html#sql-statement-errors">SQL Statement Errors graph</a> in the DB Console is showing spikes in retries over time.</li>
     </ul>
     </td>
-    <td><a href="performance-recipes-solutions.html?filters=contention">Your workload is experiencing contention</a></td>
+    <td><ul><li><a href="performance-recipes-solutions.html?filters=contention">Your workload is experiencing contention.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul>
@@ -44,7 +44,7 @@ If you aren't sure whether SQL query performance needs to be improved on your cl
       <li>The <a href="ui-sql-dashboard.html#full-table-index-scans">Full Table/Index Scans graph</a> in the DB Console is showing spikes over time.</li>
     </ul>
     </td>
-    <td><a href="performance-recipes-solutions.html?filters=fullscans">Poor quality statement plans retrieve more rows than are required, leading to longer execution times</a></td>
+    <td><ul><li><a href="performance-recipes-solutions.html?filters=fullscans">Poor quality statement plans retrieve more rows than are required, leading to longer execution times.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul>
@@ -52,6 +52,10 @@ If you aren't sure whether SQL query performance needs to be improved on your cl
       <li>The Problem Ranges report on the <a href="ui-debug-pages.html">Advanced Debug page</a> of the DB Console indicates a high number of queries per second on a subset of ranges or nodes.</li>
     </ul>
     </td>
-    <td><a href="performance-recipes-solutions.html?filters=primarykey">Your tables may be using a suboptimal primary key, causing resource contention</a></td>
+    <td><ul><li><a href="performance-recipes-solutions.html?filters=primarykey">Your tables may be using a suboptimal primary key, causing resource contention.</a></li></ul></td>
+  </tr>
+  <tr>
+    <td><ul><li>The <a href="ui-overview-dashboard.html#">Overview dashboard</a> in the DB Console shows high service latency and QPS for <code>INSERT</code> and <code>UPDATE</code> statements.</li></ul></td>
+    <td><ul><li><a href="performance-recipes-solutions.html?filters=indexusage">Your tables may have unnecessary indexes causing long write times.</a></li></ul></td>
   </tr>
 </table>

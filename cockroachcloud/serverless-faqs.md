@@ -60,7 +60,13 @@ Yes, your free cluster has been automatically migrated to {{ site.data.products.
 
 ### My cluster doesn't have any current connections, but I'm seeing my RU usage go up while observing the cluster. Why is the cluster using RUs when there are no connections?
 
-The Console runs queries against your cluster, which means it consumes a small number of RUs, up to 8 RUs per second. The baseline performance of 100 RUs per second includes the RUs used while observing an idle cluster.
+Some pages on the Console runs background queries against your cluster, which means they consume a small number of RUs, up to 8 RUs per second. The baseline performance of 100 RUs per second includes the RUs used while observing an idle cluster.
+
+### Why does my RU usage briefly spike when I'm running a steady workload?
+
+CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance. 
+
+When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#turn-off-statistics) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
 
 ## Beta release
 

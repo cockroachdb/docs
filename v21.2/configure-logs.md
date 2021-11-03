@@ -99,7 +99,7 @@ sinks:
       ...
 ~~~
 
-<a name="common-sink-parameters">
+<a name="common-sink-parameters"></a>
 
 All supported sink types use the following common sink parameters:
 

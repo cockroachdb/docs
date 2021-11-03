@@ -42,9 +42,7 @@ Key rotation is necessary for Encryption at Rest for multiple reasons:
 - To prevent key reuse with the same encryption parameters (after encrypting many files).
 - To reduce the risk of key exposure.
 
-Store keys are specified by the user and must be rotated by specifying different keys.
-This is done by setting the `key` parameter of the `--enterprise-encryption` flag to the path to the new key,
-and `old-key` to the previously-used key.
+Store keys are specified by the user and must be rotated by specifying different keys. This is done by restarting each node and setting the `key` parameter of the `--enterprise-encryption` flag to the path to the new key, and `old-key` to the previously used key. For an example, see [Changing encryption algorithm or keys](#changing-encryption-algorithm-or-keys).
 
 Data keys will automatically be rotated at startup if any of the following conditions are met:
 

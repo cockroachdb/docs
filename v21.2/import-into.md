@@ -457,7 +457,7 @@ For more information about importing data from Avro, including examples, see [Mi
 - While importing into an existing table, the table is taken offline.
 - After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
 - Imported rows must not conflict with existing rows in the table or any unique secondary indexes.
-- `IMPORT INTO` works for only a single existing table, and the table must not be [interleaved](interleave-in-parent.html).
+- `IMPORT INTO` works for only a single existing table.
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html).
 - `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
     {% include copy-clipboard.html %}
