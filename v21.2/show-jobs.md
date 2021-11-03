@@ -7,16 +7,15 @@ toc: true
 The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-running tasks your cluster has performed in the last 12 hours, including:
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}
-- [`IMPORT`](import.html)
-- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
-- [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html)
-- [Scheduled backups](manage-a-backup-schedule.html)
+- [`IMPORT`](import.html).
+- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html).
+- [Scheduled backups](manage-a-backup-schedule.html).
+- [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html). To view [automatic table statistics](cost-based-optimizer.html#table-statistics), use [`SHOW AUTOMATIC JOBS`](#show-automatic-jobs).
+- <span class="version-tag">New in v21.2:</span> `SHOW JOBS` now displays newly added columns from `crdb_internal.jobs` (`last_run`, `next_run`, `num_runs`, and `execution_errors`). The columns capture state related to retries, failures, and exponential backoff.
 
-These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
+    These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
-<span class="version-tag">New in v21.2:</span> For details about [enterprise changefeeds](create-changefeed.html), including the [sink URI](create-changefeed.html#sink-uri) and the full table name, use [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
-
-To view the [automatic table statistics](cost-based-optimizer.html#table-statistics), use [`SHOW AUTOMATIC JOBS`](#show-automatic-jobs).
+<span class="version-tag">New in v21.2:</span> Details for [enterprise changefeeds](create-changefeed.html), including the [sink URI](create-changefeed.html#sink-uri) and full table name, are not displayed on running the `SHOW JOBS` statement. For details about [enterprise changefeeds](create-changefeed.html), including the [sink URI](create-changefeed.html#sink-uri) and the full table name, use [`SHOW CHANGEFEED JOBS`](#show-changefeed-jobs).
 
 To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use [`SHOW JOBS WHEN COMPLETE`](#show-job-when-complete). The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
 
@@ -46,8 +45,8 @@ By default, only the `root` user can execute `SHOW JOBS`.
 `SHOW AUTOMATIC JOBS` | Show [automatic table statistics](cost-based-optimizer.html#table-statistics). For an example, see [Show automatic jobs](#show-automatic-jobs).
 `SHOW JOBS WHEN COMPLETE` | Block `SHOW JOB` until the provided job ID reaches a terminal state. For an example, see [Show job when complete](#show-job-when-complete).
 `select_stmt` | A [selection query](selection-queries.html) that specifies the `job_id`(s) to view.
-`job_id` | The ID of the job you want to view.
-`for_schedules_clause` |  The schedule you want to view jobs for. You can view jobs for a specific schedule (`FOR SCHEDULE id`) or view jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#show-jobs-for-a-schedule) below.
+`job_id` | The ID of the job to view.
+`for_schedules_clause` |  The schedule you want to view jobs for. You can view jobs for a specific schedule (`FOR SCHEDULE id`) or view jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). For an example, see [Show jobs for a schedule](#show-jobs-for-a-schedule).
 `SHOW CHANGEFEED JOBS` | <span class="version-tag">New in v21.2:</span> Show details about [enterprise changefeeds](create-changefeed.html), including the [sink URI](create-changefeed.html#sink-uri) and the full table name. For an example, see [Show changefeed jobs](#show-changefeed-jobs).
 
 ## Response
@@ -90,7 +89,7 @@ For details of changefeed-specific responses, see [`SHOW CHANGEFEED JOBS`](#show
 ~~~
 
 ~~~
-     job_id     | job_type  |               description                 |...
+    job_id      | job_type  |               description                 |...
 +---------------+-----------+-------------------------------------------+...
  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 ~~~
@@ -105,7 +104,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 ~~~
 
 ~~~
-     job_id     | job_type  |              description                  |...
+    job_id      | job_type  |              description                  |...
 +---------------+-----------+-------------------------------------------+...
  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 
@@ -119,7 +118,7 @@ You can filter jobs by using `SHOW JOBS` as the data source for a [`SELECT`](sel
 ~~~
 
 ~~~
-        job_id       |       job_type      |                    description                      |...
+    job_id           |       job_type      |                    description                      |...
 +--------------------+---------------------+-----------------------------------------------------+...
   438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users |...
 (1 row)
@@ -135,7 +134,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 ~~~
 
 ~~~
-        job_id       |       job_type      |                    description                      | ...
+    job_id           |       job_type      |                    description                      | ...
 +--------------------+---------------------+-----------------------------------------------------+ ...
   438235476849557505 | AUTO CREATE STATS   | Table statistics refresh for defaultdb.public.users | ...
 (1 row)
@@ -147,7 +146,7 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 
 * [`high_water_timestamp`](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed): Guarantees all changes before or at this time have been emitted.
 * [`sink_uri`](create-changefeed.html#sink-uri): The destination URI of the configured sink for a changefeed.
-* `full_table_names`: Provides the full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
+* `full_table_names`: The full [name resolution](sql-name-resolution.html) for a table. For example, `defaultdb.public.mytable` refers to the `defaultdb` database, the `public` schema, and the table `mytable` table.
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -155,10 +154,9 @@ You can filter jobs by using `SHOW AUTOMATIC JOBS` as the data source for a [`SE
 ~~~
 
 ~~~
-job_id               |                                                                                   description                                                                  | user_name | status  |              running_status              |          created           |          started           | finished |          modified          |      high_water_timestamp      | error |         sink_uri       |      full_table_names      | format
----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+---------+------------------------------------------+----------------------------+----------------------------+----------+----------------------------+--------------------------------+-------+------------------------+----------------------------+---------
-685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | running | running: resolved=1629336943.183631090,0 | 2021-08-19 01:35:43.19592  | 2021-08-19 01:35:43.225445 | NULL     | 2021-08-19 01:35:43.252318 | 1629336943183631090.0000000000 |       | kafka://localhost:9092 | {defaultdb.public.mytable} | avro
-685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | paused  | NULL                                     | 2021-08-19 01:32:33.609989 | 2021-08-19 01:32:33.64293  | NULL     | 2021-08-19 01:35:44.224961 | NULL                           |       | kafka://localhost:9092 | {defaultdb.public.mytable} | avro
+    job_id             |                                                                                   description                                                                  | ...
+  685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
+  685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
 (2 rows)
 ~~~
 
@@ -174,9 +172,8 @@ SELECT * FROM [SHOW CHANGEFEED JOBS] WHERE status = ('paused');
 ~~~
 
 ~~~
-job_id             |                                                              description                                                                                       | user_name | status | running_status |          created           |          started           | finished |          modified          | high_water_timestamp | error |      sink_uri             |    full_table_names        | format
--------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+--------+----------------+----------------------------+----------------------------+----------+----------------------------+----------------------+-------+---------------------------+----------------------------+---------
-685723987509116929 | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | root      | paused | NULL           | 2021-08-19 01:32:33.609989 | 2021-08-19 01:32:33.64293  | NULL     | 2021-08-19 01:35:44.224961 | NULL                 |       | kafka://localhost:9092    | {defaultdb.public.mytable} | avro
+    job_id           |                                                              description         | ...
+  685723987509116929 | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent | ...
 (1 row)
 ~~~
 
@@ -190,9 +187,9 @@ You can show just schema change jobs by using `SHOW JOBS` as the data source for
 ~~~
 
 ~~~
-     job_id     | job_type        |              description                           |...
-+---------------+-----------------+----------------------------------------------------+...
- 27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
+    job_id       | job_type        |              description                           |...
++----------------+-----------------+----------------------------------------------------+...
+  27536791415282 |  SCHEMA CHANGE  | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR |...
 ~~~
 
  [Scheme change](online-schema-changes.html) jobs can be [paused](pause-job.html), [resumed](resume-job.html), and [canceled](cancel-job.html).
@@ -206,9 +203,9 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 > SHOW JOB WHEN COMPLETE 27536791415282;
 ~~~
 ~~~
-     job_id     | job_type  |               description                 |...
-+---------------+-----------+-------------------------------------------+...
- 27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
+    job_id       | job_type  |               description                 |...
++----------------+-----------+-------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure://backup/db/tbl' |...
 ~~~
 
 ### Show jobs for a schedule
@@ -220,9 +217,9 @@ To block `SHOW JOB` until the provided job ID reaches a terminal state, use `SHO
 > SHOW JOBS FOR SCHEDULE 590204387299262465;
 ~~~
 ~~~
-        job_id       | job_type |                                                                                                             description                                                                                   | statement | user_name | status  | running_status |             created              | started | finished |             modified             | fraction_completed | error | coordinator_id
----------------------+----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+-----------+---------+----------------+----------------------------------+---------+----------+----------------------------------+--------------------+-------+-----------------
-  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:20:00+00:00' WITH revision_history, detached |           | root      | running | NULL           | 2020-09-15 16:20:18.347383+00:00 | NULL    | NULL     | 2020-09-15 16:20:18.347383+00:00 |                  0 |       |              0
+    job_id           | job_type |              description                                          |...
++--------------------+----------+-------------------------------------------------------------------+...
+  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup| ...
 (1 row)
 ~~~
 
@@ -234,10 +231,9 @@ You can also view multiple schedules by nesting a [`SELECT` clause](select-claus
 ~~~
 
 ~~~
-        job_id       | job_type |                                                                                                                 description                                                                                      | statement | user_name |  status   | running_status |             created              | started |             finished             |             modified             | fraction_completed | error | coordinator_id
----------------------+----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------+-----------+-----------+----------------+----------------------------------+---------+----------------------------------+----------------------------------+--------------------+-------+-----------------
-  590204496007299074 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:14:44.991631+00:00' WITH revision_history, detached |           | root      | succeeded | NULL           | 2020-09-15 16:15:17.720725+00:00 | NULL    | 2020-09-15 16:15:20.913789+00:00 | 2020-09-15 16:15:20.910594+00:00 |                  1 |       |              0
-  590205481558802434 | BACKUP   | BACKUP INTO '/2020/09/15-161444.99' IN 's3://test/scheduled-backup-0915?AWS_ACCESS_KEY_ID=x&AWS_SECRET_ACCESS_KEY=redacted' AS OF SYSTEM TIME '2020-09-15 16:20:00+00:00' WITH revision_history, detached        |           | root      | succeeded | NULL           | 2020-09-15 16:20:18.347383+00:00 | NULL    | 2020-09-15 16:20:48.37873+00:00  | 2020-09-15 16:20:48.374256+00:00 |                  1 |       |              0
+    job_id           | job_type  |              description                  |...
++--------------------+-----------+-------------------------------------------+...
+  590204496007299074 | BACKUP    | BACKUP INTO '/2020/09/15-161444.99' IN'   |...
 (2 rows)
 ~~~
 
