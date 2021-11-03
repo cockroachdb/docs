@@ -8,15 +8,15 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
+To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a [testing release (alpha/beta)](../releases/#testing-releases).
 
-Therefore, if you are upgrading from v20.2 to v21.1, or from a testing release (alpha/beta) of v21.1 to v21.2:
+Therefore, to upgrade to v21.2:
 
-1. First [upgrade to a production release of v21.1](../v21.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
+- If your current CockroachDB version is a v20.2 (or earlier) release, or a v21.1 testing release (alpha/beta):
+    1. First [upgrade to a production release of v21.1](../v21.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
+    1. Return to this page and perform a second rolling upgrade to v21.2, starting from [step 2](#step-2-prepare-to-upgrade).
 
-2. Then return to this page and perform a second rolling upgrade to v21.2.
-
-If you are upgrading from any production release of v21.1, or from any earlier v21.2 release, you do not have to go through intermediate releases; continue to step 2.
+- If your current CockroachDB version is any v21.1 production release, or any earlier v21.2 release, you do not have to go through intermediate releases; continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -72,13 +72,12 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v21.1 to v21.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
-
-- **Empty arrays in inverted indexes:** After finalization, newly created [inverted indexes](inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in inverted indexes.
-
-- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](computed-columns.html).
-
-- **Changefeed support for primary key changes:** After finalization, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) will detect primary key changes.
+- Expression indexes
+- Default privileges on database objects
+- Bounded staleness reads
+- Database placement using the `ALTER DATABASE ... PLACEMENT RESTRICTED` syntax
+- `GENERATED {ALWAYS | BY DEFAULT} AS IDENTITY` syntax in column definitions
+- `ON UPDATE` column expressions
 
 ## Step 4. Perform the rolling upgrade
 
