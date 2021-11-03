@@ -2,4 +2,4 @@ CockroachDB does not currently support [`BACKUP`s](backup.html) of individual ta
 
 To work around this limitation, you must [back up the database](backup.html#backup-a-database) or [the entire cluster](backup.html#backup-a-cluster).
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/61133)
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71180)
