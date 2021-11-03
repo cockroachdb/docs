@@ -178,35 +178,30 @@ The configurations and settings explained in these sections will have significan
 
 The following sections describe settings, configurations, and details to tune changefeeds for particular use cases:
 
-* [High consistency](#tuning-for-high-consistency)
+* [High durability delivery](#tuning-for-high-durability-delivery)
 * [High throughput](#tuning-for-high-throughput)
 * [Kafka sinks](#kafka-sink-configuration)
 
-Before tuning these settings, we recommend reading the following reference sections:
+### Tuning for high durability delivery
 
-* Information on a [changefeeds' at-least-once-delivery guarantee](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
-* [Monitoring a changefeed](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed).
-
-### Tuning for high consistency
-
-When designing a system that relies on high consistency — that is, not missing any messages coming through a changefeed — consider the following settings and configuration:
+When designing a system that relies on high durability of message delivery — that is, not missing any message acknowledgement at the downstream sink — consider the following settings and configuration. Before tuning these settings we recommend reading details on our [changefeed at-least-once-delivery guarantee](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees).
 
 * Increase the number of seconds before [garbage collection](architecture/storage-layer.html#garbage-collection) with the [`gc.ttlseconds`](configure-replication-zones.html#gc-ttlseconds) setting to provide a higher recoverability window for data if a changefeed fails. For example, if a sink is unavailable, changes are queued until the sink is available again. While the sink is unavailable, changes will be retried until the garbage collection window is reached and then the data is removed.
   * You can also use the [`protect_data_from_gc_on_pause`](#protect-pause) option to protect the changes from garbage collection.
 * Determine what a successful write to Kafka is with the [`kafka_sink_config: {"RequiredAcks": "ALL"}`](#kafka-required-acks) option, which provides the highest consistency level.
 * Set the [`changefeed.memory.per_changefeed_limit`](cluster-settings.html) cluster setting to a higher limit to give more memory for buffering per single changefeed. Increasing this limit is useful to avoid errors in situations where the sink is unreachable and the memory buffer fills up.
-* Use [Kafka](#kafka) or [cloud storage](#cloud-storage-sink) sinks when tuning for high consistency in changefeeds.
+* Use [Kafka](#kafka) or [cloud storage](#cloud-storage-sink) sinks when tuning for high durability in changefeeds.
 * Ensure data accuracy downstream by using the [`schema_change_events`](#schema-events) and [`schema_schange_policy`](#schema-policy) options. For example, setting `schema_change_events=column_changes` and `schema_change_policy=stop` will trigger an error to the `cockroach.log` file on a [schema change](stream-data-out-of-cockroachdb-using-changefeeds.html#schema-changes-with-column-backfill).
 
 ### Tuning for high throughput
 
 When designing a system that needs to emit a lot of changefeed messages, whether it be steady traffic or a burst in traffic, consider the following settings and configuration:
 
-* Avoid using the [`resolved`](#resolved-option) option or set this to a higher duration. This will help to reduce emitted messages.
+* Set the [`resolved`](#resolved-option) option to a higher duration (e.g. 10 minutes or more) to reduce emitted messages.
 * Batch messages to your sink. See the [`Flush`](#kafka-flush) parameter for the `kafka_sink_config` option. When using cloud storage sinks, use the [`file_size`](#file-size) parameter to flush a file when it exceeds the specified size.
 * Set the [`changefeed.memory.per_changefeed_limit`](cluster-settings.html) cluster setting to a higher limit to give more memory for buffering for a changefeed. This is useful in situations of heavy traffic to avoid an error due to the memory buffer overfilling.
 * Use `avro` as the emitted message [format](#format) option with Kafka sinks; JSON encoding can potentially create a slowdown.
-* Increase the `changefeed.backfill.concurrent_scan_requests` setting, which controls the number of concurrent scan requests per node issued during a [backfill event]. The default behavior, when this setting is at `0`, is that each node will issue 3 scan requests per node in a cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase CPU usage overall**.
+* Increase the `changefeed.backfill.concurrent_scan_requests` setting, which controls the number of concurrent scan requests per node issued during a backfill event. The default behavior, when this setting is at `0`, is that each node will issue 3 scan requests per node in a cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase the cluster load overall**, including CPU and IO usage.
 
 ### Kafka Sink Configuration
 
