@@ -131,9 +131,9 @@ At each iteration, the selection query returns the primary key values of up to 2
 {{site.data.alerts.callout_info}}
 CockroachDB records the timestamp of each row created in a table in the `crdb_internal_mvcc_timestamp` metadata column. In the absence of an explicit timestamp column in your table, you can use `crdb_internal_mvcc_timestamp` to filter expired data.
 
-`crdb_internal_mvcc_timestamp` cannot be indexed. As a result, we recommend following the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column) if you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes.
+`crdb_internal_mvcc_timestamp` cannot be indexed. If you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes, you must follow the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column).
 
-**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB.**
+**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression](add-column.html#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
 {{site.data.alerts.end}}
 
 ## Batch-delete "expired" data
@@ -158,7 +158,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
     CREATE INDEX ON rides(last_updated) USING HASH WITH BUCKET_COUNT=8;
     ~~~
 
-1. Write a script with a batch-delete loop, following the [Batch delete on an indexed column pattern](#batch-delete-on-an-indexed-column):
+1. Write a script with a batch-delete loop, following the [batch delete on an indexed column pattern](#batch-delete-on-an-indexed-column):
 
     {% include copy-clipboard.html %}
     ~~~ python
@@ -194,7 +194,7 @@ For example, suppose that every morning you want to delete all rows in the [`rid
     $ chmod +x cleanup.py
     ~~~
 
-2. Create a new `cron` job:
+1. Create a new `cron` job:
 
     {% include copy-clipboard.html %}
     ~~~ shell
