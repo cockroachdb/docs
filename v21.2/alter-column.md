@@ -8,7 +8,7 @@ toc: true
 
 - Set, change, or drop a column's [`DEFAULT` constraint](default-value.html).
 - Set or drop a column's [`NOT NULL` constraint](not-null.html).
-- <span class="version-tag">New in v21.2</span>: Set, change, or drop an [`ON UPDATE` expression](add-column.html#on-update-expressions).
+- <span class="version-tag">New in v21.2</span>: Set, change, or drop an [`ON UPDATE` expression](create-table.html#on-update-expressions).
 - Change a column's [data type](data-types.html).
 
 {{site.data.alerts.callout_info}}
