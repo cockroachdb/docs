@@ -187,7 +187,7 @@ Log files can only be accessed in the DB Console if they are stored in the same 
 
 ### Output to Fluentd-compatible network collectors
 
-CockroachDB can send logs over the network to a [Fluentd](https://www.fluentd.org/)-compatible log collector (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)). `fluent-servers` specifies the channels that output to a server, along with its configuration details. For example:
+CockroachDB can send logs over the network to a [Fluentd](https://www.fluentd.org/)-compatible log collector (e.g., [Elasticsearch](https://www.elastic.co/elastic-stack), [Splunk](https://www.splunk.com/)). `fluent-servers` specifies the channels that output to a server, along with the server configuration details. For example:
 
 ~~~ yaml
 file-defaults: ...
@@ -219,7 +219,7 @@ For an example network logging configuration, see [Logging use cases](logging-us
 
 ### Output to HTTP network collectors
 
-<span class="version-tag">New in v21.2</span>: CockroachDB can send logs over the network to an HTTP server. `http-servers` specifies the channels that output to a server, along with its configuration details. For example:
+<span class="version-tag">New in v21.2</span>: CockroachDB can send logs over the network to an HTTP server. `http-servers` specifies the channels that output to a server, along with the server configuration details. For example:
 
 ~~~ yaml
 file-defaults: ...
