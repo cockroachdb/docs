@@ -1485,19 +1485,19 @@
         ]
       },
       {
-        "title": "Logging reference",
+        "title": "Logging Reference",
         "urls": [
           "/${VERSION}/logging.html"
         ],
         "items": [
           {
-            "title": "Log formats",
+            "title": "Log Formats",
             "urls": [
               "/${VERSION}/log-formats.html"
             ]
           },
           {
-            "title": "Notable event types",
+            "title": "Notable Event Types",
             "urls": [
               "/${VERSION}/eventlog.html"
             ]
