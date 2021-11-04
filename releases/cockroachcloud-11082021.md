@@ -1,7 +1,7 @@
 ---
 title: What's New in CockroachDB Cloud
 toc: true
-summary: Additions and changes in CockroachDB Cloud since October 3, 2021 .
+summary: Additions and changes in CockroachDB Cloud since October 3, 2021.
 ---
 
 ## November 8, 2021
@@ -19,6 +19,8 @@ Get future release notes emailed to you:
 
 ### Console changes
 
+- The [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html) pages are now available for {{ site.data.products.serverless }} clusters on the **SQL Activity** page. 
+- Statements and transaction statistics are now retained longer for all clusters.
 - Legends are now displayed by default for time-series graphs on the [Cluster Overview](../cockroachcloud/cluster-overview-page.html#cluster-overview-metrics) page. 
 - The **Transaction retries** metric is no longer part of the **Current activity** panel on the {{ site.data.products.serverless }} [Cluster Overview](../cockroachcloud/cluster-overview-page.html#cluster-statistics-panel) page.
 - Deleting an organization with outstanding charges that have not been billed is now prohibited.
