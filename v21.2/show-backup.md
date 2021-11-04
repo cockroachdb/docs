@@ -35,6 +35,7 @@ Option       | Value | Description
 `privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
 `debug_ids` |  N/A  | <span class="version-tag">New in v21.2:</span> [Display descriptor IDs](#show-a-backup-with-descriptor-ids) of every object in the backup, including the object's database and parent schema.
+`as_json`   |  N/A  | <span class="version-tag">New in v21.2:</span> Display the backup's manifest as JSON in the response.
 
 ## Response
 
