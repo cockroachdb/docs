@@ -14,15 +14,22 @@ The **Statements** page helps you:
 
 To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** in the left-hand navigation.
 
-## Search and filter by application
+## Search and filter
 
-By default, the Statements page shows SQL statements from all applications running on the cluster, including internal CockroachDB queries.
+By default, the Statements page shows SQL statements from all applications and databases running on the cluster, including internal CockroachDB queries.
 
-To filter the statements by [`application_name`](connection-parameters.html#additional-connection-parameters), use the **App** field. If you haven't set `application_name` in the client connection string, it appears as `unset`.
+You can search for statements using the date field or the search field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
-CockroachDB's internal queries are displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
+To filter the statements, click the **Filters** field.
 
-You can search for statements using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
+To filter by [application](connection-parameters.html#additional-connection-parameters), select **App** and choose an application.
+
+{{site.data.alerts.callout_info}}
+- If you haven't set `application_name` in the client connection string, it appears as `unset`.
+- CockroachDB's internal queries are displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
+{{site.data.alerts.end}}
+
+You can also filter by database (**Database**), SQL statement type (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
 ## Statement statistics
 
