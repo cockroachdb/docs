@@ -374,7 +374,7 @@ To avoid contention, you can apply multiple strategies:
 
 - If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
 
-It is always best to avoid contention as much as possible via the design of the schema and application. However, sometimes contention is unavoidable. To maximize performance in the presence of contention, you'll need to maximize the performance of a single range. To achieve this, multiple strategies can be applied:
+It is always best to avoid contention as much as possible via the design of the schema and application. However, sometimes contention is unavoidable. To maximize performance in the presence of contention, you'll need to maximize the performance of a single range. To achieve this, you can apply multiple strategies:
 
 - Minimize the network distance between the replicas of a range, possibly using zone configs and partitioning.
 - Use the fastest storage devices available.
