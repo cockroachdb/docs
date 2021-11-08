@@ -337,7 +337,7 @@ Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
 - They operate on the same data, specifically over table rows with the same index key values (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)) or using index key values that are close to each other, and thus place the indexed data on the same [data ranges](architecture/overview.html).
-- At least some of the transactions write or modify the data.
+- At least one of the transactions modify the data.
 
 A set of transactions that all contend on the same keys will be limited in performance to the maximum processing speed of a single node (limited horizontal scalability). Non-contended transactions are not affected in this way.
 
@@ -370,7 +370,7 @@ To avoid contention, you can apply multiple strategies:
 
 - When replacing values in a row, use [`UPSERT`](upsert.html) and specify values for all columns in the inserted rows. This will usually have the best performance under contention, compared to combinations of [`SELECT`](select-clause.html), [`INSERT`](insert.html), and [`UPDATE`](update.html).
 
-- Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Increasing normalization has drawbacks as well as benefits, because denormalization can also increase performance by creating multiple copies of often-referenced data in separate ranges.
+- Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Fully normalized data allows separate transactions to modify related underlying data without causing contention. Increasing normalization has drawbacks as well as benefits, however. Denormalizing data can increase performance for certain queries by creating multiple copies of often-referenced data in separate ranges, so read-heavy workloads may have higher performance. However, denormalization adds complexity the data model, increases the chance of data inconsistency, increases data redundancy, and can have poor performance when running write-heavy workloads.
 
 - If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
 
