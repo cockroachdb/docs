@@ -355,7 +355,7 @@ Transaction contention can also increase the rate of transaction restarts, and t
 
 ### Avoid contention
 
-To avoid contention, multiple strategies can be applied:
+To avoid contention, you can apply multiple strategies:
 
 - Use index key values with a more random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
 
