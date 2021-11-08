@@ -316,8 +316,8 @@
    <td>
     <code>lock_timeout</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The amount of time a query can spend acquiring a single <a href="architecture/transaction-layer.html#concurrency-control">row-level lock</a>.<br>
-    In CockroachDB, unlike in PostgreSQL, non-locking reads wait for conflicting locks to be released. As a result, the <code>lock_timeout</code> configuration applies to non-locking reads in read-write and read-only transactions.<br>
+   <td><span class="version-tag">New in v21.2</span>: The amount of time a query can spend acquiring or waiting for a single <a href="architecture/transaction-layer.html#concurrency-control">row-level lock</a>.<br>
+    In CockroachDB, unlike in PostgreSQL, non-locking reads wait for conflicting locks to be released. As a result, the <code>lock_timeout</code> configuration applies to writes, and to locking and non-locking reads in read-write and read-only transactions.<br>
     If <code>lock_timeout = 0</code>, queries do not timeout due to lock acquisitions.
    </td>
    <td>
