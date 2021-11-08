@@ -378,4 +378,4 @@ It is always best to avoid contention as much as possible via the design of the 
 
 - Minimize the network distance between the replicas of a range, possibly using zone configs and partitioning.
 - Use the fastest storage devices available.
-- If the contending transactions operate on different keys within the same range, add more CPU power (more cores) per node. Note however that this is less likely to provide an improvement if the transactions all operate on the same key.
+- If the contending transactions operate on different keys within the same range, add more CPU power (more cores) per node. However, if the transactions all operate on the same key, this may not provide an improvement .
