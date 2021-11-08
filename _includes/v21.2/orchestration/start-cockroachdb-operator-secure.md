@@ -14,11 +14,21 @@
 1. Apply the Operator manifest:
 
     {{site.data.alerts.callout_info}}
-    By default, the Operator is configured to install in the `default` namespace. To use the Operator in a custom namespace, download the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/{{site.operator_version}}/manifests/operator.yaml) and edit all instances of `namespace: default` to specify your custom namespace. Then apply this version of the manifest to the cluster with `kubectl apply -f {local-file-path}` instead of using the command below.
-    {{site.data.alerts.end}}
+    By default, the Operator is configured to install in the `cockroach-operator-system` namespace and to manage
+    CockroachDB instances for all namespaces on the cluster.
 
-    {{site.data.alerts.callout_info}}
-    The Operator can only install CockroachDB into its own namespace.
+    If you'd like to change either of these defaults, you'll need to download the [Operator
+    manifest](https://github.com/cockroachdb/cockroach-operator/blob/{{site.operator_version}}/manifests/operator.yaml).
+
+    To use a custom namespace replace all instances of `namespace: cockroach-operator-system` with your desired
+    namespace.
+
+    To limit the namespaces that will be monitored, set the `WATCH_NAMESPACE` environment variable for the manager
+    deployment's pod spec. This can be set to a single namespace, or a comma-delimited set of namespaces. When set, only
+    those `CrdbCluster` resources in the supplied namespaces will be reconciled.
+
+    Finally, if you've made any changes, apply your local version of the manifest to the cluster with `kubectl apply -f
+    {local-file-path}` instead of using the command below.
     {{site.data.alerts.end}}
 
     {% include_cached copy-clipboard.html %}
