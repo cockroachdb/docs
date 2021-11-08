@@ -51,6 +51,12 @@
             ]
           },
           {
+            "title": "Admission control",
+            "urls": [
+              "/${VERSION}/architecture/admission-control.html"
+            ]
+          },
+          {
             "title": "CockroachDB Cloud Architecture",
             "urls": [
               "/cockroachcloud/architecture.html"
@@ -1424,6 +1430,12 @@
                 "title": "Changefeeds Dashboard",
                 "urls": [
                   "/${VERSION}/ui-cdc-dashboard.html"
+                ]
+              },
+              {
+                "title": "Overload Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-overload-dashboard.html"
                 ]
               },
               {

@@ -38,6 +38,10 @@ CGo Total | Total memory managed by the C layer.
 
 {{site.data.alerts.callout_info}}If Go Total or CGO Total fluctuates or grows steadily over time, <a href="https://forum.cockroachlabs.com/">contact us</a>.{{site.data.alerts.end}}
 
+## Runnable Goroutines per CPU
+
+{% include {{ page.version.version }}/ui/runnable-goroutines-graph.md %}
+
 ## CPU Time
 
 <img src="{{ 'images/v21.2/ui_cpu_time.png' | relative_url }}" alt="DB Console CPU Time" style="border:1px solid #eee;max-width:100%" />
@@ -65,7 +69,6 @@ Sys CPU Time | Total CPU seconds per second used for CockroachDB system-level op
 The **Runtime** dashboard shows other time series graphs that are important for CockroachDB developers:
 
 - Goroutine Count
-- Runnable Goroutines per CPU
 - GC Runs
 - GC Pause Time
 
