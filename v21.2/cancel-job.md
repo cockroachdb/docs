@@ -12,11 +12,12 @@ The `CANCEL JOB` [statement](sql-statements.html) lets you stop long-running job
 - [Automatic table statistics](cost-based-optimizer.html#table-statistics) jobs
 - [Changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html)
 - [Scheduled backup](manage-a-backup-schedule.html) jobs
-- [Schema change](online-schema-changes.html) jobs
+- [Schema change](online-schema-changes.html) jobs (see [Limitations](#limitations) for exceptions)
 
 ## Limitations
 
-- When an {{ site.data.products.enterprise }} [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- When an Enterprise [`RESTORE`](restore.html) is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- <span class="version-tag">New in v21.2:</span> To avoid transaction states that cannot properly [roll back](rollback-transaction.html), `DROP` statements (e.g., [`DROP TABLE`](drop-table.html)), `ALTER ... RENAME` statements (e.g., [`ALTER TABLE ... RENAME TO`](rename-table.html)), and [`CREATE TABLE ... AS`](create-table-as.html) statements are no longer cancellable.
 
 ## Required privileges
 
@@ -25,7 +26,7 @@ To cancel a job, the user must be a member of the `admin` role or must have the 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/cancel_job.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/cancel_job.html %}
 </div>
 
 ## Parameters

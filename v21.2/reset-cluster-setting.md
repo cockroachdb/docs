@@ -14,7 +14,7 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/reset_csetting.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/reset_csetting.html %}
 </div>
 
 ## Parameters
@@ -38,11 +38,9 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| false                                 |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  false
 (1 row)
 ~~~
 
@@ -57,11 +55,9 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| true                                  |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  true
 (1 row)
 ~~~
 

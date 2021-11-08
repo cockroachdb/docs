@@ -159,60 +159,17 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59649)
 
+### Using `RESTORE` with multi-region table localities
+
+* {% include {{ page.version.version }}/known-limitations/rbr-restore-no-support.md %}
+
+* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
+
+* {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+
 ## Unresolved limitations
-
-### HTTP(S) connections
-
-CockroachDB does not support database connections across HTTP(S). All database connections must be made via TCP.
-
-As of v21.1, CockroachDB includes the [Cluster API](cluster-api.html), a REST API that accepts HTTP(S) requests for monitoring data.
-
-In a future release, we may add support for HTTP(S) proxies, such as [PostgREST](https://postgrest.org/en/v8.0/).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/69146)
-
-### `IMPORT` into a `REGIONAL BY ROW` table
-
-CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/61133)
-
-To work around this limitation, you will need to take the following steps:
-
-1. In the source database, export the [`crdb_region` column](set-locality.html#crdb_region) separately when exporting your data.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    EXPORT INTO CSV 'nodelocal://0/src_rbr' FROM SELECT crdb_region, i from src_rbr;
-    ~~~
-
-    For more information about the syntax, see [`EXPORT`](export.html).
-
-1. In the destination database, create a table that has a `crdb_region` column of the right type as shown below.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    CREATE TABLE dest_rbr (crdb_region public.crdb_internal_region NOT NULL, i INT);
-    ~~~
-
-1. Import the data (including the `crdb_region` column explicitly) using [`IMPORT INTO`](import-into.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    IMPORT INTO dest_rbr (crdb_region, i) CSV DATA ('nodelocal://0/src_rbr/export*.csv')
-    ~~~
-
-1. Convert the destination table to `REGIONAL BY ROW` using [`ALTER TABLE ... ALTER COLUMN`](alter-column.html) and [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    ALTER TABLE dest_rbr ALTER COLUMN crdb_region SET DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
-    ~~~
 
 ### `BACKUP` of multi-region tables
 
@@ -318,7 +275,7 @@ DETAIL: subqueries are not allowed in SET
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42896)
 
-### {{ site.data.products.enterprise }} `BACKUP` does not capture database/table/column comments
+### Enterprise `BACKUP` does not capture database/table/column comments
 
 The [`COMMENT ON`](comment-on.html) statement associates comments to databases, tables, or columns. However, the internal table (`system.comments`) in which these comments are stored is not captured by a [`BACKUP`](backup.html) of a table or database.
 
@@ -620,10 +577,6 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
 
-### Using interleaved tables in backups
-
-{% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
-
 ### Inverted index scans can't be generated for some statement filters
 
 CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
@@ -641,4 +594,3 @@ SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
 ~~~
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
-

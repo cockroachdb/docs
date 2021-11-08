@@ -14,7 +14,8 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 - `IMPORT INTO` is an insert-only statement; it cannot be used to update existing rows—see [`UPDATE`](update.html). Imported rows cannot conflict with primary keys in the existing table, or any other [`UNIQUE`](unique.html) constraint on the table.
 - `IMPORT INTO` does not offer `SELECT` or `WHERE` clauses to specify subsets of rows. To do this, use [`INSERT`](insert.html#insert-from-a-select-statement).
 - `IMPORT INTO` will cause any [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) running on the targeted table to fail.
-- {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
+
+<span class="version-tag">New in v21.2:</span> `IMPORT INTO` now supports importing into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables.
 
 ## Required privileges
 
@@ -40,7 +41,7 @@ Learn more about [cloud storage for bulk operations](use-cloud-storage-for-bulk-
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/import_into.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/import_into.html %}
 </div>
 
 {{site.data.alerts.callout_info}}
@@ -107,7 +108,9 @@ Before using `IMPORT INTO`, you should have:
 
 #### Supported `DEFAULT` expressions
 
- `IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
+`IMPORT INTO` supports [computed columns](computed-columns.html) and the following [`DEFAULT`](default-value.html) expressions:
+
+- `DEFAULT` expressions with [user-defined types](enum.html).
 
 - Constant `DEFAULT` expressions, which are expressions that return the same value in different statements. Examples include:
 
@@ -457,7 +460,7 @@ For more information about importing data from Avro, including examples, see [Mi
 - While importing into an existing table, the table is taken offline.
 - After importing into an existing table, [constraints](constraints.html) will be un-validated and need to be [re-validated](validate-constraint.html).
 - Imported rows must not conflict with existing rows in the table or any unique secondary indexes.
-- `IMPORT INTO` works for only a single existing table, and the table must not be [interleaved](interleave-in-parent.html).
+- `IMPORT INTO` works for only a single existing table.
 - `IMPORT INTO` cannot be used within a [transaction](transactions.html).
 - `IMPORT INTO` can sometimes fail with a "context canceled" error, or can restart itself many times without ever finishing. If this is happening, it is likely due to a high amount of disk contention. This can be mitigated by setting the `kv.bulk_io_write.max_rate` [cluster setting](cluster-settings.html) to a value below your max disk write speed. For example, to set it to 10MB/s, execute:
     {% include copy-clipboard.html %}

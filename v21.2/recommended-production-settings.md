@@ -40,7 +40,7 @@ Before deploying to production, test and tune your hardware setup for your appli
 
 #### CPU and memory
 
-Each node should have **at least 2 vCPUs**. For best performance, we recommend at least 4 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
+Each node should have **at least 4 vCPUs**. For best performance, we recommend at least 8 vCPUs per node. Provision **4 GiB of RAM per vCPU**.
 
 - To optimize for throughput, use larger nodes with up to 32 vCPUs. To further increase throughput, add more nodes to the cluster instead of increasing node size.
 
@@ -82,11 +82,11 @@ We recommend provisioning volumes with **150 GiB per vCPU**. It's fine to have l
 
     We strongly recommend [monitoring](monitoring-and-alerting.html#node-is-running-low-on-disk-space) your storage utilization and rate of growth, and taking action to add capacity well before you hit the limit.
 
-- Place a [ballast file](cockroach-debug-ballast.html) in each node's storage directory. In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
+- <span class="version-tag">New in v21.2</span>: CockroachDB will [automatically provision an emergency ballast file](cluster-setup-troubleshooting.html#automatic-ballast-files) at [node startup](cockroach-start.html). In the unlikely case that a node runs out of disk space and shuts down, you can delete the ballast file to free up enough space to be able to restart the node.
 
 - Use [zone configs](configure-replication-zones.html) to increase the replication factor from 3 (the default) to 5 (across at least 5 nodes).
 
-    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) ({{ site.data.products.enterprise }}-only).
+    This is especially recommended if you are using local disks with no RAID protection rather than a cloud provider's network-attached disks that are often replicated under the hood, because local disks have a greater risk of failure. You can do this for the [entire cluster](configure-replication-zones.html#edit-the-default-replication-zone) or for specific [databases](configure-replication-zones.html#create-a-replication-zone-for-a-database), [tables](configure-replication-zones.html#create-a-replication-zone-for-a-table), or [rows](configure-replication-zones.html#create-a-replication-zone-for-a-partition) (Enterprise-only).
 
 {{site.data.alerts.callout_info}}
 Underprovisioning storage leads to node crashes when the disks fill up. Once this has happened, it is difficult to recover from. To prevent your disks from filling up, provision enough storage for your workload, monitor your disk usage, and use a ballast file as described above. For more information, see [capacity planning issues](cluster-setup-troubleshooting.html#capacity-planning-issues) and [storage issues](cluster-setup-troubleshooting.html#storage-issues).
@@ -139,6 +139,8 @@ Cockroach Labs recommends the following cloud-specific configurations based on o
 - Use `c5` instances with EBS as a primary AWS configuration. To simulate bare-metal deployments, use `c5d` with [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html).
 
     [Provisioned IOPS SSD-backed (`io1`) EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html#EBSVolumeTypes_piops) need to have IOPS provisioned, which can be very expensive. Cheaper `gp2` volumes can be used instead, if your performance needs are less demanding. Allocating more disk space than you will use can improve performance of `gp2` volumes.
+
+- A typical deployment will use [EC2](https://aws.amazon.com/ec2/) together with [key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html), [load balancers](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html), and [security groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html). For an example, see [Deploy CockroachDB on AWS EC2](deploy-cockroachdb-on-aws.html).
 
 #### Azure
 
@@ -533,7 +535,7 @@ Alternately, if you're using [Systemd](https://en.wikipedia.org/wiki/Systemd):
     {{site.data.alerts.callout_success}}
     To set the file descriptor limit to "unlimited" in the Systemd service definition file, use `LimitNOFILE=infinity`.
     {{site.data.alerts.end}}
-    
+
 2.  Reload Systemd for the new limit to take effect:
 
     ~~~ shell

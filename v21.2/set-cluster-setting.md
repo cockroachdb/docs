@@ -16,7 +16,7 @@ Only members of the `admin` role can modify cluster settings. By default, the `r
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/set_cluster_setting.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/set_cluster_setting.html %}
 </div>
 
 {{site.data.alerts.callout_info}}The <code>SET CLUSTER SETTING</code> statement is unrelated to the other <a href="set-transaction.html"><code>SET TRANSACTION</code></a> and <a href="set-vars.html"><code>SET (session variable)</code></a> statements.{{site.data.alerts.end}}
@@ -62,11 +62,9 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 ~~~
 
 ~~~
-+-------------------------------+
-| diagnostics.reporting.enabled |
-+-------------------------------+
-| false                         |
-+-------------------------------+
+  diagnostics.reporting.enabled
+---------------------------------
+              false
 (1 row)
 ~~~
 
@@ -85,11 +83,9 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| false                                 |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  false
 (1 row)
 ~~~
 
@@ -104,11 +100,9 @@ To opt out of [automatic diagnostic reporting](diagnostics-reporting.html) of us
 ~~~
 
 ~~~
-+---------------------------------------+
-| sql.metrics.statement_details.enabled |
-+---------------------------------------+
-| true                                  |
-+---------------------------------------+
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  true
 (1 row)
 ~~~
 

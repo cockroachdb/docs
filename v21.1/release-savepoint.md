@@ -9,7 +9,7 @@ toc: true
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/release_savepoint.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/release_savepoint.html %}
 </div>
 
 ## Required privileges

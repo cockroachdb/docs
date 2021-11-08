@@ -4,15 +4,16 @@ summary: Use the ADD COLUMN statement to add columns to tables.
 toc: true
 ---
 
-The `ADD COLUMN` [statement](sql-statements.html) is part of `ALTER TABLE` and adds columns to tables.
+`ADD COLUMN` is a subcommand of [`ALTER TABLE`](alter-table.html). Use `ADD COLUMN` to add columns to existing tables.
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/add_column.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/add_column.html %}
 </div>
+
 
 ## Required privileges
 
@@ -23,9 +24,39 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  Parameter | Description
 -----------|-------------
  `table_name` | The name of the table to which you want to add the column.
- `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.  
+ `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.
  `typename` | The [data type](data-types.html) of the new column.
- `col_qualification` | An optional list of column definitions, which may include [column-level constraints](constraints.html), [collation](collate.html), or [column family assignments](column-families.html).<br><br>If the column family is not specified, the column will be added to the first column family. For more information about how column families are assigned, see [Column Families](column-families.html#assign-column-families-when-adding-columns).
+ `col_qualification` | An optional list of [column qualifications](#column-qualifications).
+
+## Column qualifications
+
+CockroachDB supports the following column qualifications:
+
+- [Column-level constraints](constraints.html)
+- [Collations](collate.html)
+- [Column family assignments](column-families.html)
+- [`DEFAULT` expressions](default-value.html)
+- <span class="version-tag">New in v21.2</span>: [`ON UPDATE` expressions](#on-update-expressions)
+
+### `ON UPDATE` expressions
+
+<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions update column values in the following cases:
+
+- An [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row.
+- An `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
+
+`ON UPDATE` expressions **do not** update column values in the following cases:
+
+- An `UPDATE` or `UPSERT` statement directly modifies the value of a column with an `ON UPDATE` expression.
+- An `UPSERT` statement creates a new row.
+- A new column is backfilled with values (e.g., by a `DEFAULT` expression).
+
+Note the following limitations of `ON UPDATE` expressions:
+
+- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function](functions-and-operators.html) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
+- You cannot add a [foreign key constraint](foreign-key.html) and an `ON UPDATE` expression to the same column.
+
+For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](#add-a-column-with-an-on-update-expression).
 
 ## Viewing schema changes
 
@@ -224,7 +255,7 @@ $ cockroach demo bank
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE FROM bank;
+> SHOW CREATE TABLE bank;
 ~~~
 ~~~
   table_name |                                                          create_statement
@@ -259,7 +290,7 @@ $ cockroach demo bank
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE FROM bank;
+> SHOW CREATE TABLE bank;
 ~~~
 ~~~
   table_name |                                                          create_statement
@@ -295,7 +326,7 @@ $ cockroach demo bank
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE FROM bank;
+> SHOW CREATE TABLE bank;
 ~~~
 ~~~
   table_name |                                                          create_statement
@@ -322,6 +353,56 @@ $ cockroach demo bank
              |     FAMILY f2 (new_name)
              | )
 (1 row)
+~~~
+
+### Add a column with an `ON UPDATE` expression
+
+<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions set the value for a column when other values in a row are updated.
+
+For example, suppose you add a new column to the `bank` table:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER TABLE bank ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, balance, last_updated FROM bank LIMIT 5;
+~~~
+
+~~~
+  id | balance |         last_updated
+-----+---------+--------------------------------
+   0 |       0 | 2021-10-21 17:03:41.213557+00
+   1 |       0 | 2021-10-21 17:03:41.213557+00
+   2 |       0 | 2021-10-21 17:03:41.213557+00
+   3 |       0 | 2021-10-21 17:03:41.213557+00
+   4 |       0 | 2021-10-21 17:03:41.213557+00
+(5 rows)
+~~~
+
+When any value in any row of the `bank` table is updated, CockroachDB re-evaluates the `ON UPDATE` expression and updates the `last_updated` column with the result.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE bank SET balance = 500 WHERE id = 0;
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, balance, last_updated FROM bank LIMIT 5;
+~~~
+
+~~~
+  id | balance |         last_updated
+-----+---------+--------------------------------
+   0 |     500 | 2021-10-21 17:06:42.211261+00
+   1 |       0 | 2021-10-21 17:03:41.213557+00
+   2 |       0 | 2021-10-21 17:03:41.213557+00
+   3 |       0 | 2021-10-21 17:03:41.213557+00
+   4 |       0 | 2021-10-21 17:03:41.213557+00
+(5 rows)
 ~~~
 
 ## See also

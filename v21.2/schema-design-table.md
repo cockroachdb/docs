@@ -215,6 +215,8 @@ Here are some best practices to follow when selecting primary key columns:
 
     If you create a table without defining a primary key, CockroachDB will automatically create a primary key over a hidden, [`INT`](int.html)-typed column named `rowid`. By default, sequential, unique identifiers are generated for each row in the `rowid` column with the [`unique_rowid()` function](functions-and-operators.html#built-in-functions). The sequential nature of the `rowid` values can lead to a poor distribution of the data across a cluster, which can negatively affect performance. Furthermore, because you cannot meaningfully use the `rowid` column to filter table data, the primary key index on `rowid` does not offer any performance optimization. This means you will always have improved performance by defining a primary key for a table.
 
+    <span class="version-tag">New in v21.2</span>: To require an explicitly defined primary key for all tables created in your cluster, set the `sql.defaults.require_explicit_primary_keys.enabled` [cluster setting](cluster-settings.html) to `true`.
+
 - When possible, define primary key constraints over multiple columns (i.e., use [composite primary keys](https://en.wikipedia.org/wiki/Composite_key)).
 
     When defining composite primary keys, make sure the data in the first column of the primary key prefix is well-distributed across the nodes in the cluster. To improve the performance of [ordered queries](order-by.html), you can add monotonically increasing primary key columns after the first column of the primary key prefix. For an example, see [below](#primary-key-examples).
@@ -414,7 +416,7 @@ After you have defined `CREATE TABLE` statements for your tables, you can execut
 
 Here are some general best practices to follow when executing `CREATE TABLE` statements:
 
-- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](authorization.html#object-ownership).
+- Do not create tables as the `root` user. Instead, create tables as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). The user that creates an object becomes that [object's owner](authorization.html#object-ownership).
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 

@@ -8,14 +8,15 @@ The `SHOW JOBS` [statement](sql-statements.html) lists all of the types of long-
 
 {% include {{ page.version.version }}/sql/schema-changes.md %}
 - [`IMPORT`](import.html)
-- {{ site.data.products.enterprise }} [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
+- Enterprise [`BACKUP`](backup.html) and [`RESTORE`](restore.html)
 - [User-created table statistics](create-statistics.html) created for use by the [cost-based optimizer](cost-based-optimizer.html)
-- The [automatic table statistics](cost-based-optimizer.html#table-statistics) are not displayed on running the `SHOW JOBS` statement. To view the automatic table statistics, use `SHOW AUTOMATIC JOBS`
 - <span class="version-tag">New in v20.2:</span> [Scheduled backups](manage-a-backup-schedule.html)
 
 These details can help you understand the status of crucial tasks that can impact the performance of your cluster, as well as help you control them.
 
-To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use `SHOW JOBS WHEN COMPLETE`. The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
+To view the [automatic table statistics](cost-based-optimizer.html#table-statistics), use [`SHOW AUTOMATIC JOBS`](#show-automatic-jobs).
+
+To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a terminal state, use [`SHOW JOBS WHEN COMPLETE`](#show-job-when-complete). The statement will return a row per job ID, which provides details of the job execution. Note that while this statement is blocking, it will time out after 24 hours.
 
 ## Considerations
 
@@ -23,7 +24,7 @@ To block a call to `SHOW JOBS` that returns after all specified job ID(s) have a
 - For jobs older than 12 hours, query the `crdb_internal.jobs` table.
 - Jobs are deleted after 14 days. This interval can be changed via the `jobs.retention_time` [cluster setting](cluster-settings.html).
 - While the `SHOW JOBS WHEN COMPLETE` statement is blocking, it will time out after 24 hours.
--  Garbage collection jobs are created for [dropped tables](drop-table.html) and [dropped indexes](drop-index.html), and will execute after the [GC TTL](configure-replication-zones.html#replication-zone-variables) has elapsed (default is 25 hours). These jobs cannot be canceled.
+- Garbage collection jobs are created for [dropped tables](drop-table.html) and [dropped indexes](drop-index.html), and will execute after the [GC TTL](configure-replication-zones.html#replication-zone-variables) has elapsed (default is 25 hours). These jobs cannot be canceled.
 
 ## Required privileges
 
@@ -39,6 +40,8 @@ By default, only the `root` user can execute `SHOW JOBS`.
 
  Parameter | Description
 -----------|-------------
+`SHOW AUTOMATIC JOBS` | Show [automatic table statistics](cost-based-optimizer.html#table-statistics). For an example, see [Show automatic jobs](#show-automatic-jobs).
+`SHOW JOBS WHEN COMPLETE` | Block `SHOW JOB` until the provided job ID reaches a terminal state. For an example, see [Show job when complete](#show-job-when-complete).
 `select_stmt` | A [selection query](selection-queries.html) that specifies the `job_id`(s) to view.
 `job_id` | The ID of the job you want to view.
 `for_schedules_clause` | <span class="version-tag">New in v20.2:</span> The schedule you want to view jobs for. You can view jobs for a specific schedule (`FOR SCHEDULE id`) or view jobs for multiple schedules by nesting a [`SELECT` clause](select-clause.html) in the statement (`FOR SCHEDULES <select_clause>`). See the [examples](#show-jobs-for-a-schedule) below.

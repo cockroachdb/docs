@@ -22,7 +22,7 @@ The `IMPORT` [statement](sql-statements.html) imports the following types of dat
 - `IMPORT` cannot be used with [user-defined types](create-type.html). Use [`IMPORT INTO`](import-into.html) instead.
 - `IMPORT` is a blocking statement. To run an import job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT` cannot be used within a [rolling upgrade](upgrade-cockroach-version.html).
-- {% include {{page.version.version}}/sql/import-into-regional-by-row-table.md %}
+- `IMPORT` cannot directly import data to `REGIONAL BY ROW` tables that are part of [multi-region databases](multiregion-overview.html). <span class="version-tag">New in v21.2:</span> Instead, use [`IMPORT INTO`](import-into.html) which supports importing into `REGIONAL BY ROW` tables.
 
 ## Required privileges
 
@@ -39,13 +39,13 @@ The user must have the `CREATE` [privileges](authorization.html#assign-privilege
 **Import a table from CSV or Avro**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/import_csv.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/import_csv.html %}
 </div>
 
 **Import a database or table from dump file**
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/import_dump.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/import_dump.html %}
 </div>
 
 ## Parameters

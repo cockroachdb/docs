@@ -96,7 +96,7 @@ sinks:
       ...
 ~~~
 
-<a name="common-sink-parameters">
+<a name="common-sink-parameters"></a>
 
 All supported sink types use the following common sink parameters:
 
@@ -169,6 +169,16 @@ cockroach-health.log
 {{site.data.alerts.callout_info}}
 The files generated for a group named `default` are named after the pattern `cockroach.{metadata}.log`.
 {{site.data.alerts.end}}
+
+#### Access in DB Console
+
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/ui/ui-log-files.md %}
+{{site.data.alerts.end}}
+
+#### Known limitations
+
+Log files can only be accessed in the DB Console if they are stored in the same directory as the file sink for the `DEV` channel.
 
 ### Output to network
 

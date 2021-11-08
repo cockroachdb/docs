@@ -1,18 +1,12 @@
 ---
-title: Common Table Expressions
-summary: Common Table Expressions (CTEs) simplify the definition and use of subqueries
+title: WITH Queries (Common Table Expressions)
+summary: Common table expressions (CTEs) simplify the definition and use of subqueries
 toc: true
-toc_not_nested: true
 ---
 
-Common Table Expressions, or CTEs, provide a shorthand name to a
-possibly complex [subquery](subqueries.html) before it is used in a
-larger query context. This improves readability of the SQL code.
+`WITH` queries, also called *common table expressions* or CTEs, provide a shorthand name to a possibly complex [subquery](subqueries.html) before it is used in a larger query context. This improves the readability of SQL code.
 
-CTEs can be used in combination with [`SELECT`
-clauses](select-clause.html) and [`INSERT`](insert.html),
-[`DELETE`](delete.html), [`UPDATE`](update.html) and
-[`UPSERT`](upsert.html) statements.
+CTEs can be used in combination with [`SELECT` clauses](select-clause.html) and [`INSERT`](insert.html), [`DELETE`](delete.html), [`UPDATE`](update.html) and [`UPSERT`](upsert.html) statements.
 
 
 ## Synopsis
@@ -308,6 +302,14 @@ While this practice works for testing and debugging, we do not recommend it in p
 {{site.data.alerts.callout_info}}
 CockroachDB does not currently support the [Postgres recursive CTE variant](https://www.postgresql.org/docs/10/queries-with.html) with the keyword `UNION`.
 {{site.data.alerts.end}}
+
+## Known limitations
+
+### Correlated common table expressions
+
+{% include {{ page.version.version }}/known-limitations/correlated-ctes.md %}
+
+For details, see the [tracking issue](https://github.com/cockroachdb/cockroach/issues/42540).
 
 ## See also
 

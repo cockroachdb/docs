@@ -19,8 +19,9 @@ You'll get generally poor performance when retrieving a single row based on a co
 > SELECT * FROM users WHERE name = 'Cheyenne Smith';
 ~~~
 
-id                  |   city   |      name      |      address      | credit_card
----------------------------------------+----------+----------------+-------------------+--------------
+~~~
+                   id                |   city   |      name      |      address      | credit_card
+-------------------------------------+----------+----------------+-------------------+--------------
 00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
 (1 row)
 

@@ -13,7 +13,7 @@ No [privileges](authorization.html#assign-privileges) are required to list the s
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_sequences.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_sequences.html %}
 </div>
 
 ## Parameters

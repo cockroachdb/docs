@@ -4,10 +4,6 @@ You can use the hosted [Google Kubernetes Engine (GKE)](#hosted-gke) service or 
 GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AWS cluster with the [minimum recommended Kubernetes version](#kubernetes-version) and at least 3 pods, each presenting [sufficient resources](#resources) to start a CockroachDB node, can also be used.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is currently supported for GKE.
-{{site.data.alerts.end}}
-
 ### Hosted GKE
 
 1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.

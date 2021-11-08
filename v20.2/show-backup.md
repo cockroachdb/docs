@@ -13,7 +13,7 @@ Only members of the `admin` role can run `SHOW BACKUP`. By default, the `root` u
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_backup.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_backup.html %}
 </div>
 
 ## Parameters
@@ -24,7 +24,7 @@ Parameter | Description
 `SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
 `SHOW BACKUPS IN location` | <span class="version-tag">New in v20.2:</span> List the full backup's subdirectories in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
 `SHOW BACKUP subdirectory IN location` | <span class="version-tag">New in v20.2:</span> List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
-`kv_option_list` | Control the show behavior with a comma-separated list of [these options](#options).
+`kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
 
@@ -35,7 +35,7 @@ Option       | Value | Description
 
 ## Response
 
-The following fields are returned.
+The following fields are returned:
 
 Field | Description
 ------|------------
@@ -92,7 +92,7 @@ Field | Description
 > SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
 ~~~
 
-~~~  
+~~~
   database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                        create_statement
 ----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+----------------------------------------------------------------------------------------------------------------------------------
   NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | NULL
@@ -136,7 +136,7 @@ Field | Description
 
 ### Show a backup with privileges
 
-To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [parameter](#parameters):
+To view a list of which users and roles had which privileges on each database and table in the backup, use the `WITH privileges` [option](#options):
 
 {% include copy-clipboard.html %}
 ~~~ sql

@@ -20,7 +20,7 @@ There are two ways to use `ROLLBACK`:
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/rollback_transaction.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/rollback_transaction.html %}
 </div>
 
 ## Required privileges

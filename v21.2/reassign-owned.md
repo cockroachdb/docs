@@ -12,13 +12,13 @@ To change the ownership of any single object (e.g., a table or a database), use 
 
 ## Required privileges
 
-- The user executing the `REASSIGN OWNED` statement must be a member of the [`admin` role](authorization.html#admin-role), or must be a member of the target role and have the `CREATE` [privilege](authorization.html#assign-privileges) on the current database.
-- The target role (i.e., the desired role of the objects) must have the `CREATE` privilege on the current database.
+- To reassign ownership with `REASSIGN OWNED`, the user must be a member of the current owner's role and a member of the target owner's role.
+- Members of the [`admin` role](authorization.html#admin-role) can always use `REASSIGN OWNED BY`.
 
 ## Syntax
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/reassign_owned_by.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/reassign_owned_by.html %}
 </div>
 
 ## Parameters

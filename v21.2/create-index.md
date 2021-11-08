@@ -6,17 +6,15 @@ toc: true
 
 The `CREATE INDEX` [statement](sql-statements.html) creates an index for a table. [Indexes](indexes.html) improve your database's performance by helping SQL locate data without having to look through every row of a table.
 
+Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html) and [`UNIQUE`](unique.html) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+
 The following types cannot be included in an index key, but can be stored (and used in a covered query) using the [`STORING` or `COVERING`](create-index.html#store-columns) clause:
 
 - [`JSONB`](jsonb.html)
 - [`ARRAY`](array.html)
-- The computed [`TUPLE`](scalar-expressions.html#tuple-constructor) type, even if it is constructed from indexed fields
+- The computed [`TUPLE`](scalar-expressions.html#tuple-constructors) type, even if it is constructed from indexed fields
 
-To create an index on the schemaless data in a [`JSONB`](jsonb.html) column, or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
-
-{{site.data.alerts.callout_info}}
-Indexes are automatically created for a table's [`PRIMARY KEY`](primary-key.html) and [`UNIQUE`](unique.html) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
-{{site.data.alerts.end}}
+To create an index on the schemaless data in a [`JSONB`](jsonb.html) column or on the data in an [`ARRAY`](array.html), use an [inverted index](inverted-indexes.html).
 
 {% include {{{ page.version.version }}/misc/schema-change-stmt-note.md %}
 
@@ -26,13 +24,17 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
 
 ## Synopsis
 
-**Standard index:**
+### Standard index
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_index.html %}</section>
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_index.html %}
+</div>
 
-**Inverted index:**
+### Inverted index
 
-<section>{% include {{ page.version.version }}/sql/generated/diagrams/create_inverted_index.html %}</section>
+<div>
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/create_inverted_index.html %}
+</div>
 
 ## Parameters
 
@@ -44,15 +46,15 @@ Parameter | Description
 `opt_index_name`<br>`index_name` | The name of the index to create, which must be unique to its table and follow these [identifier rules](keywords-and-identifiers.html#identifiers).<br><br>If you do not specify a name, CockroachDB uses the format `<table>_<columns>_key/idx`. `key` indicates the index applies the `UNIQUE` constraint; `idx` indicates it does not. Example: `accounts_balance_idx`
 `table_name` | The name of the table you want to create the index on.
 `USING name` | An optional clause for compatibility with third-party tools. Accepted values for `name` are `btree`, `gin`, and `gist`, with `btree` for a standard secondary index, `gin` as the PostgreSQL-compatible syntax for an [inverted index](#create-inverted-indexes), and `gist` for a [spatial index](spatial-indexes.html).
-`column_name` | The name of the column you want to index.
+`name` | The name of the column you want to index.
 `ASC` or `DESC`| Sort the column in ascending (`ASC`) or descending (`DESC`) order in the index. How columns are sorted affects query results, particularly when using `LIMIT`.<br><br>__Default:__ `ASC`
 `STORING ...`| Store (but do not sort) each column whose name you include.<br><br>For information on when to use `STORING`, see  [Store Columns](#store-columns).  Note that columns that are part of a table's [`PRIMARY KEY`](primary-key.html) cannot be specified as `STORING` columns in secondary indexes on the table.<br><br>`COVERING` and `INCLUDE` are aliases for `STORING` and work identically.
-`opt_partition_by` | An [{{ site.data.products.enterprise }}-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html). As of CockroachDB v21.1 and later, most users should use [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables). Indexes against regional by row tables are automatically partitioned, so explicit index partitioning is not required.
+`opt_partition_by` | An [Enterprise-only](enterprise-licensing.html) option that lets you [define index partitions at the row level](partitioning.html). As of CockroachDB v21.1 and later, most users should use [`REGIONAL BY ROW` tables](multiregion-overview.html#regional-by-row-tables). Indexes against regional by row tables are automatically partitioned, so explicit index partitioning is not required.
 `opt_where_clause` |  An optional `WHERE` clause that defines the predicate boolean expression of a [partial index](partial-indexes.html).
 `USING HASH WITH BUCKET COUNT` |  Creates a [hash-sharded index](hash-sharded-indexes.html) with `n_buckets` number of buckets.<br>{{site.data.alerts.callout_info}}To enable hash-sharded indexes, set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`.{{site.data.alerts.end}}
 `WITH storage_parameter` |  A comma-separated list of [spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). Supported parameters include `fillfactor`, `s2_max_level`, `s2_level_mod`, `s2_max_cells`, `geometry_min_x`, `geometry_max_x`, `geometry_min_y`, and `geometry_max_y`. The `fillfactor` parameter is a no-op, allowed for PostgreSQL-compatibility.<br><br>For details, see [Spatial index tuning parameters](spatial-indexes.html#index-tuning-parameters). For an example, see [Create a spatial index that uses all of the tuning parameters](spatial-indexes.html#create-a-spatial-index-that-uses-all-of-the-tuning-parameters).
 `CONCURRENTLY` |  Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.
-`opt_interleave` | [Interleave index into parent object](interleave-in-parent.html).<br>{% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
+`opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
 ## Viewing schema changes
 
@@ -100,7 +102,7 @@ Unique indexes do not allow duplicate values among their columns.
 > CREATE UNIQUE INDEX ON users (name, id);
 ~~~
 
-This also applies the [`UNIQUE` constraint](unique.html) at the table level, similarly to [`ALTER TABLE`](alter-table.html). The above example is equivalent to:
+This also applies the [`UNIQUE` constraint](unique.html) at the table level, similar to [`ALTER TABLE`](alter-table.html). The preceding example is equivalent to:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -109,14 +111,14 @@ This also applies the [`UNIQUE` constraint](unique.html) at the table level, sim
 
 ### Create inverted indexes
 
-[Inverted indexes](inverted-indexes.html) can be created on schemaless data in a [`JSONB`](jsonb.html) column.
+You can create [inverted indexes](inverted-indexes.html) on schemaless data in a [`JSONB`](jsonb.html) column.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 > CREATE INVERTED INDEX ON promo_codes (rules);
 ~~~
 
-The above example is equivalent to the following PostgreSQL-compatible syntax:
+The preceding example is equivalent to the following PostgreSQL-compatible syntax:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -125,7 +127,7 @@ The above example is equivalent to the following PostgreSQL-compatible syntax:
 
 ### Create spatial indexes
 
-[Spatial indexes](spatial-indexes.html) can be created on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [inverted index](inverted-indexes.html).
+You can create [spatial indexes](spatial-indexes.html) on `GEOMETRY` and `GEOGRAPHY` columns.  Spatial indexes are a special type of [inverted index](inverted-indexes.html).
 
 To create a spatial index on a `GEOMETRY` column:
 

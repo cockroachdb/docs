@@ -15,7 +15,7 @@ expression.
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/table_ref.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/table_ref.html %}
 </div>
 
 ## Parameters
@@ -305,12 +305,12 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT c+2                          FROM (SELECT COUNT(*) AS c FROM users);
+> SELECT c+2 FROM (SELECT COUNT(*) AS c FROM users);
 ~~~
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SELECT *                            FROM (VALUES(1), (2), (3));
+> SELECT * FROM (VALUES(1), (2), (3));
 ~~~
 
 {% include copy-clipboard.html %}

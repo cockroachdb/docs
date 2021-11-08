@@ -41,7 +41,7 @@ Choose how you want to deploy and maintain the CockroachDB cluster.
 {{site.data.alerts.callout_info}}
 The [CockroachDB Kubernetes Operator](https://github.com/cockroachdb/cockroach-operator) eases CockroachDB cluster creation and management on a single Kubernetes cluster.
 
-Note that the Operator does not provision or apply an {{ site.data.products.enterprise }} license key. To use [{{ site.data.products.enterprise }} features](enterprise-licensing.html) with the Operator, [set a license](licensing-faqs.html#set-a-license) in the SQL shell.
+Note that the Operator does not provision or apply an Enterprise license key. To use [Enterprise features](enterprise-licensing.html) with the Operator, [set a license](licensing-faqs.html#set-a-license) in the SQL shell.
 {{site.data.alerts.end}}
 
 <div class="filters filters-big clearfix">
@@ -113,9 +113,9 @@ If you stop Kubernetes without first deleting the persistent volumes, they will 
 
 ## See also
 
-- [Configure CockroachDB on Kubernetes](configure-cockroachdb-kubernetes.html)
-- [Secure CockroachDB on Kubernetes](secure-cockroachdb-kubernetes.html)
-- [Monitor CockroachDB on Kubernetes](monitor-cockroachdb-kubernetes.html)
+- [Resource management](configure-cockroachdb-kubernetes.html)
+- [Certificate management](secure-cockroachdb-kubernetes.html)
+- [Cluster monitoring](monitor-cockroachdb-kubernetes.html)
 - [Kubernetes Multi-Cluster Deployment](orchestrate-cockroachdb-with-kubernetes-multi-cluster.html)
 - [Optimize Performance on Kubernetes](kubernetes-performance.html)
 - [Production Checklist](recommended-production-settings.html)
