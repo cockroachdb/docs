@@ -15,7 +15,7 @@ The `SHOW BACKUP` [statement](sql-statements.html) lists the contents of a backu
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_backup.html %}
 </div>
 
 ## Parameters
@@ -26,7 +26,7 @@ Parameter | Description
 `SHOW BACKUP location` | Show the details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup).
 `SHOW BACKUP SCHEMAS location` | Show the schema details of the backup in the given [`location`](backup.html#backup-file-urls). [See the example below](#show-a-backup-with-schemas).
 `SHOW BACKUP subdirectory IN location` |  List the full and incremental backups that are stored in the given full backup's `subdirectory` within a [`location`](backup.html#backup-file-urls). [See the example below](#show-details-for-scheduled-backups).
-`kv_option_list` | Control the show behavior with a comma-separated list of [these options](#options).
+`kv_option_list` | Control the behavior of `SHOW BACKUP` with a comma-separated list of [these options](#options).
 
 ### Options
 
@@ -37,7 +37,7 @@ Option       | Value | Description
 
 ## Response
 
-The following fields are returned.
+The following fields are returned:
 
 Field | Description
 ------|------------
@@ -87,93 +87,11 @@ Field | Description
 (20 rows)
 ~~~
 
-### Show a backup with schemas
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
-~~~
-
-~~~  
-  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                        create_statement
-----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+----------------------------------------------------------------------------------------------------------------------------------
-  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | NULL
-  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | CREATE TABLE users (
-                |                    |                            |             |            |                                  |            |      |                 |     username STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     "hashedPassword" BYTES NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     "isRole" BOOL NOT NULL DEFAULT false,
-                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (username ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "primary" (username),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_2_hashedPassword" ("hashedPassword"),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_3_isRole" ("isRole")
-                |                    |                            |             |            |                                  |            |      |                 | )
-...
-  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | CREATE TABLE jobs (
-                |                    |                            |             |            |                                  |            |      |                 |     id INT8 NOT NULL DEFAULT unique_rowid(),
-                |                    |                            |             |            |                                  |            |      |                 |     status STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     created TIMESTAMP NOT NULL DEFAULT now():::TIMESTAMP,
-                |                    |                            |             |            |                                  |            |      |                 |     payload BYTES NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     progress BYTES NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     created_by_type STRING NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     created_by_id INT8 NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     claim_session_id BYTES NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     claim_instance_id INT8 NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     INDEX jobs_status_created_idx (status ASC, created ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     INDEX jobs_created_by_type_created_by_id_idx (created_by_type ASC, created_by_id ASC) STORING (status),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY fam_0_id_status_created_payload (id, status, created, payload, created_by_type, created_by_id),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY progress (progress),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY claim (claim_session_id, claim_instance_id)
-                |                    |                            |             |            |                                  |            |      |                 | )
-  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | CREATE TABLE locations (
-                |                    |                            |             |            |                                  |            |      |                 |     "localityKey" STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     "localityValue" STRING NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     latitude DECIMAL(18,15) NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     longitude DECIMAL(18,15) NOT NULL,
-                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY ("localityKey" ASC, "localityValue" ASC),
-                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_0_localityKey_localityValue_latitude_longitude" ("localityKey", "localityValue", latitude, longitude)
-                |                    |                            |             |            |                                  |            |      |                 | )
-...
-~~~
-
-### Show a backup with privileges
-
-Use the `WITH privileges` [parameter](#parameters) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
-~~~
-
-~~~
-  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                                               privileges                                                                                  | owner
-----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------
-  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT GRANT, SELECT ON system TO admin; GRANT GRANT, SELECT ON system TO root;                                                                                            | root
-  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO root;                                              | root
-  system        | public             | zones                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO root;                                              | root
-  system        | public             | settings                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO root;                                        | root
-  system        | public             | ui                         | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO root;                                                    | root
-  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO root;                                                | root
-  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO root;                                      | root
-  system        | public             | role_members               | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO root;                                | root
-  system        | public             | comments                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO admin; GRANT SELECT ON comments TO public; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO root;    | root
-  system        | public             | scheduled_jobs             | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO root;                            | root
-  NULL          | NULL               | defaultdb                  | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON defaultdb TO admin; GRANT CREATE ON defaultdb TO max; GRANT ALL ON defaultdb TO root;                                                                        | root
-  NULL          | NULL               | postgres                   | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON postgres TO admin; GRANT ALL ON postgres TO root;                                                                                                            | root
-  NULL          | NULL               | movr                       | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON movr TO admin; GRANT ALL ON movr TO root;                                                                                                                    | root
-  movr          | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true       | GRANT ALL ON users TO admin; GRANT ALL ON users TO root;                                                                                                                  | root
-  movr          | public             | vehicles                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true       | GRANT ALL ON vehicles TO admin; GRANT ALL ON vehicles TO root;                                                                                                            | root
-  movr          | public             | rides                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true       | GRANT ALL ON rides TO admin; GRANT ALL ON rides TO root;                                                                                                                  | root
-  movr          | public             | vehicle_location_histories | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true       | GRANT ALL ON vehicle_location_histories TO admin; GRANT ALL ON vehicle_location_histories TO root;                                                                        | root
-  movr          | public             | promo_codes                | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true       | GRANT ALL ON promo_codes TO admin; GRANT ALL ON promo_codes TO root;                                                                                                      | root
-  movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT ALL ON user_promo_codes TO admin; GRANT ALL ON user_promo_codes TO root;                                                                                            | root
-  defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
-(20 rows)
-~~~
+You will receive an error if there is a collection of backups in the storage location that you pass to `SHOW BACKUP`. It is necessary to run `SHOW BACKUP` with the specific backup directory rather than the backup collection's top-level directory. Use [`SHOW BACKUPS IN`](#show-backups-in) with your storage location to list the backup directories it contains, which can then be run with `SHOW BACKUP` to inspect the metadata.
 
 ### View a list of the available full backup subdirectories
 
-To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
+<a name="show-backups-in"></a>To view a list of the available [full backups](take-full-and-incremental-backups.html#full-backups) subdirectories, use the following command:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -246,6 +164,90 @@ To view a list of the [full](take-full-and-incremental-backups.html#full-backups
   defaultdb     | NULL               | org_one                    | schema      | 2020-09-24 20:41:52.880553+00:00 | 2020-09-24 20:50:00+00:00        |       NULL | NULL |      true
 (40 rows)
 
+~~~
+
+### Show a backup with schemas
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP SCHEMAS 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]';
+~~~
+
+~~~
+  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                        create_statement
+----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+----------------------------------------------------------------------------------------------------------------------------------
+  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | NULL
+  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | CREATE TABLE users (
+                |                    |                            |             |            |                                  |            |      |                 |     username STRING NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     "hashedPassword" BYTES NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     "isRole" BOOL NOT NULL DEFAULT false,
+                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (username ASC),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "primary" (username),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_2_hashedPassword" ("hashedPassword"),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_3_isRole" ("isRole")
+                |                    |                            |             |            |                                  |            |      |                 | )
+...
+  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | CREATE TABLE jobs (
+                |                    |                            |             |            |                                  |            |      |                 |     id INT8 NOT NULL DEFAULT unique_rowid(),
+                |                    |                            |             |            |                                  |            |      |                 |     status STRING NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     created TIMESTAMP NOT NULL DEFAULT now():::TIMESTAMP,
+                |                    |                            |             |            |                                  |            |      |                 |     payload BYTES NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     progress BYTES NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     created_by_type STRING NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     created_by_id INT8 NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     claim_session_id BYTES NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     claim_instance_id INT8 NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+                |                    |                            |             |            |                                  |            |      |                 |     INDEX jobs_status_created_idx (status ASC, created ASC),
+                |                    |                            |             |            |                                  |            |      |                 |     INDEX jobs_created_by_type_created_by_id_idx (created_by_type ASC, created_by_id ASC) STORING (status),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY fam_0_id_status_created_payload (id, status, created, payload, created_by_type, created_by_id),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY progress (progress),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY claim (claim_session_id, claim_instance_id)
+                |                    |                            |             |            |                                  |            |      |                 | )
+  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | CREATE TABLE locations (
+                |                    |                            |             |            |                                  |            |      |                 |     "localityKey" STRING NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     "localityValue" STRING NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     latitude DECIMAL(18,15) NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     longitude DECIMAL(18,15) NOT NULL,
+                |                    |                            |             |            |                                  |            |      |                 |     CONSTRAINT "primary" PRIMARY KEY ("localityKey" ASC, "localityValue" ASC),
+                |                    |                            |             |            |                                  |            |      |                 |     FAMILY "fam_0_localityKey_localityValue_latitude_longitude" ("localityKey", "localityValue", latitude, longitude)
+                |                    |                            |             |            |                                  |            |      |                 | )
+...
+~~~
+
+### Show a backup with privileges
+
+Use the `WITH privileges` [option](#options) to view a list of which users and roles had which privileges on each database and table in the backup. This parameter also displays the original owner of objects in the backup:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW BACKUP 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH privileges;
+~~~
+
+~~~
+  database_name | parent_schema_name |        object_name         | object_type | start_time |             end_time             | size_bytes | rows | is_full_cluster |                                                                               privileges                                                                                  | owner
+----------------+--------------------+----------------------------+-------------+------------+----------------------------------+------------+------+-----------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------
+  NULL          | NULL               | system                     | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT GRANT, SELECT ON system TO admin; GRANT GRANT, SELECT ON system TO root;                                                                                            | root
+  system        | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        144 |    3 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON users TO root;                                              | root
+  system        | public             | zones                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        201 |    7 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON zones TO root;                                              | root
+  system        | public             | settings                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        431 |    6 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON settings TO root;                                        | root
+  system        | public             | ui                         | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON ui TO root;                                                    | root
+  system        | public             | jobs                       | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     434302 |   62 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON jobs TO root;                                                | root
+  system        | public             | locations                  | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        261 |    5 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON locations TO root;                                      | root
+  system        | public             | role_members               | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        184 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON role_members TO root;                                | root
+  system        | public             | comments                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO admin; GRANT SELECT ON comments TO public; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON comments TO root;    | root
+  system        | public             | scheduled_jobs             | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |        875 |    2 |      true       | GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO admin; GRANT DELETE, GRANT, INSERT, SELECT, UPDATE ON scheduled_jobs TO root;                            | root
+  NULL          | NULL               | defaultdb                  | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON defaultdb TO admin; GRANT CREATE ON defaultdb TO max; GRANT ALL ON defaultdb TO root;                                                                        | root
+  NULL          | NULL               | postgres                   | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON postgres TO admin; GRANT ALL ON postgres TO root;                                                                                                            | root
+  NULL          | NULL               | movr                       | database    | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       | GRANT ALL ON movr TO admin; GRANT ALL ON movr TO root;                                                                                                                    | root
+  movr          | public             | users                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       4911 |   50 |      true       | GRANT ALL ON users TO admin; GRANT ALL ON users TO root;                                                                                                                  | root
+  movr          | public             | vehicles                   | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |       3182 |   15 |      true       | GRANT ALL ON vehicles TO admin; GRANT ALL ON vehicles TO root;                                                                                                            | root
+  movr          | public             | rides                      | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     156387 |  500 |      true       | GRANT ALL ON rides TO admin; GRANT ALL ON rides TO root;                                                                                                                  | root
+  movr          | public             | vehicle_location_histories | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |      73918 | 1000 |      true       | GRANT ALL ON vehicle_location_histories TO admin; GRANT ALL ON vehicle_location_histories TO root;                                                                        | root
+  movr          | public             | promo_codes                | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |     216083 | 1000 |      true       | GRANT ALL ON promo_codes TO admin; GRANT ALL ON promo_codes TO root;                                                                                                      | root
+  movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-24 19:05:40.542168+00:00 |          0 |    0 |      true       | GRANT ALL ON user_promo_codes TO admin; GRANT ALL ON user_promo_codes TO root;                                                                                            | root
+  defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-24 19:05:40.542168+00:00 |       NULL | NULL |      true       |                                                                                                                                                                           | root
+(20 rows)
 ~~~
 
 ### Show details for scheduled backups

@@ -131,8 +131,8 @@ Copy the resulting keytab to the database nodes. If clients are connecting to mu
     $ cockroach sql --certs-dir=certs
     ~~~
 
-6. [Enable an enterprise license](licensing-faqs.html#obtain-a-license).
-    {{site.data.alerts.callout_info}} You need the enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you do not need to enable an enterprise license. {{site.data.alerts.end}}
+6. [Enable an Enterprise license](licensing-faqs.html#obtain-a-license).
+    {{site.data.alerts.callout_info}} You need the Enterprise license if you want to use the GSSAPI feature. However, if you only want to test that the GSSAPI setup is working, you do not need to enable an Enterprise license. {{site.data.alerts.end}}
 
 7. Enable GSSAPI authentication:
 
@@ -236,7 +236,7 @@ The `cockroach sql` shell does not yet support GSSAPI authentication. You need t
     $ psql "postgresql://localhost:26257/defaultdb?sslmode=verify-full&sslrootcert=/certs/ca.crt" -U carl
     ~~~
 
-4. If you specified an enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
+4. If you specified an Enterprise license earlier, you should now have a Postgres shell in CockroachDB, indicating that the GSSAPI authentication was successful. If you did not specify an Enterprise license, you'll see a message like this: `psql: ERROR:  use of GSS authentication requires an Enterprise license.` If you see this message, GSSAPI authentication is set up correctly.
 
 ## See also
 

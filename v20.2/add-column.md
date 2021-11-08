@@ -224,7 +224,7 @@ $ cockroach demo bank
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE FROM bank;
+> SHOW CREATE TABLE bank;
 ~~~
 ~~~
   table_name |                                                          create_statement
@@ -259,7 +259,7 @@ $ cockroach demo bank
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE FROM bank;
+> SHOW CREATE TABLE bank;
 ~~~
 ~~~
   table_name |                                                          create_statement
@@ -295,7 +295,7 @@ $ cockroach demo bank
 
 {% include copy-clipboard.html %}
 ~~~ sql
-> SHOW CREATE TABLE FROM bank;
+> SHOW CREATE TABLE bank;
 ~~~
 ~~~
   table_name |                                                          create_statement

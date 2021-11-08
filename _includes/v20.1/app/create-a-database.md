@@ -37,7 +37,7 @@
     --url='postgres://<username>:<password>@<global host>:26257?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>'
     ~~~
 
-    For the `--url` flag, use the connection string you got from the CockroachCloud Console [earlier](#get-the-connection-string):
+    For the `--url` flag, use the connection string you got from the {{ site.data.products.db }} Console [earlier](#get-the-connection-string):
        - Replace `<username>` and `<password>` with the SQL user and password that you created.
        - Replace `<certs_dir>/<ca.crt>` with the path to the CA certificate that you downloaded.
 

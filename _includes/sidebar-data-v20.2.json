@@ -421,13 +421,20 @@
                   {
                     "title": "Go",
                     "urls": [
-                      "/${VERSION}/hello-world-go-pgx.html"
+                      "/${VERSION}/hello-world-go-pgx.html",
+                      "/${VERSION}/hello-world-go-gorm.html"
                     ]
                   },
                   {
                     "title": "Java",
                     "urls": [
                       "/${VERSION}/hello-world-java-jdbc.html"
+                    ]
+                  },
+                  {
+                    "title": "JavaScript (Node.js)",
+                    "urls": [
+                      "/${VERSION}/hello-world-node-postgres.html"
                     ]
                   },
                   {
@@ -640,6 +647,17 @@
                         "title": "IntelliJ IDEA",
                         "urls": [
                           "/${VERSION}/intellij-idea.html"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Application Deployment Tools",
+                    "items": [
+                      {
+                        "title": "Google Cloud Run",
+                        "urls": [
+                          "/${VERSION}/deploy-app-gcr.html"
                         ]
                       }
                     ]
@@ -1999,6 +2017,12 @@
                     "urls": [
                       "/${VERSION}/validate-constraint.html"
                     ]
+                  },
+                  {
+                    "title": "<code>WITH</code>",
+                    "urls": [
+                      "/${VERSION}/common-table-expressions.html"
+                    ]
                   }
                 ]
               },
@@ -2214,7 +2238,7 @@
                     ]
                   },
                   {
-                    "title": "Common Table Expressions",
+                    "title": "<code>WITH</code> Queries (Common Table Expressions)",
                     "urls": [
                       "/${VERSION}/common-table-expressions.html"
                     ]
@@ -2748,15 +2772,15 @@
                 ]
               },
               {
-                "title": "Statements Page",
-                "urls": [
-                  "/${VERSION}/ui-statements-page.html"
-                ]
-              },
-              {
                 "title": "Transactions Page",
                 "urls": [
                   "/${VERSION}/ui-transactions-page.html"
+                ]
+              },
+              {
+                "title": "Statements Page",
+                "urls": [
+                  "/${VERSION}/ui-statements-page.html"
                 ]
               },
               {

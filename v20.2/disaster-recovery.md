@@ -303,14 +303,14 @@ If you are outside of the garbage collection window, you will need to use a [bac
 ### Restore to a point in time
 
 - If you are a core user, use a [backup](backup.html) that was taken with [`AS OF SYSTEM TIME`](as-of-system-time.html) to restore to a specific point.
-- If you are an enterprise user, use your [backup](backup.html) file to [restore to a point in time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) where you are certain there was no corruption. Note that the backup must have been taken with [revision history](backup.html#with-revision-history).
+- If you are an Enterprise user, use your [backup](backup.html) file to [restore to a point in time](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) where you are certain there was no corruption. Note that the backup must have been taken with [revision history](backup.html#with-revision-history).
 
 ### Create a new backup
 
 If your cluster is running, you do not have a backup that encapsulates the time you want to [restore](restore.html) to, and the data you want to recover is still in the [garbage collection window](configure-replication-zones.html#replication-zone-variables), there are two actions you can take:
 
 - If you are a core user, trigger a [backup](backup.html) using [`AS OF SYSTEM TIME`](as-of-system-time.html) to create a new backup that encapsulates the specific time. The `AS OF SYSTEM TIME` must be within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
-- If you are an enterprise user, trigger a new [backup `with_revision_history`](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
+- If you are an Enterprise user, trigger a new [backup `with_revision_history`](take-backups-with-revision-history-and-restore-from-a-point-in-time.html) and you will have a backup you can use to restore to the desired point in time within the [garbage collection window](configure-replication-zones.html#replication-zone-variables) (default is 25 hours).
 
 ### Recover from corrupted data in a database or table
 

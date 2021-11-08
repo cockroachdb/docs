@@ -1,38 +1,39 @@
 ---
-title: Create a CockroachCloud Cluster
-summary: Learn how to create your CockroachCloud cluster.
+title: Create a CockroachDB Dedicated Cluster
+summary: Learn how to create your CockroachDB Dedicated cluster.
 toc: true
 ---
 
 <div class="filters clearfix">
-    <a href="create-a-free-cluster.html"><button class="filter-button page-level">CockroachCloud Free (beta)</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level current">CockroachCloud</button></a>
+    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
+    <a href="create-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page walks you through the process of creating a CockroachCloud cluster. Note that only [CockroachCloud Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your CockroachCloud Administrator.
+This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
 {{site.data.alerts.callout_success}}
-To create and connect to a 30-day free CockroachCloud cluster and run your first query, see the [Quickstart](quickstart.html).
+To create and connect to a 30-day free {{ site.data.products.dedicated }} cluster and run your first query, see the [Quickstart](quickstart-trial-cluster.html).
 {{site.data.alerts.end}}
 
 ## Step 1. Start the cluster creation process
 
-1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a CockroachCloud account</a>.
-1. [Log in](https://cockroachlabs.cloud/) to your CockroachCloud account.
+1. If you haven't already, <a href="https://cockroachlabs.cloud/signup?referralId=docs_create_dedicated_cluster" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>.
+1. [Log in](https://cockroachlabs.cloud/) to your {{ site.data.products.db }} account.
 1. If there are multiple [organizations](console-access-management.html#organization) in your account, select the correct organization in the top right corner.
 1. On the **Overview** page, click **Create Cluster**.
+1. Selected the **Dedicated** plan.
 
 ## Step 2. Select the cloud provider
 
-On the **Create new cluster** page, select either **Google Cloud** or **AWS** as your preferred cloud provider.
+In the **Cloud provider** section, select either **Google Cloud** or **AWS** as your preferred cloud provider.
 
-CockroachCloud GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
+{{ site.data.products.db }} GCP clusters use [N1 standard](https://cloud.google.com/compute/docs/machine-types#n1_machine_types) machine types and [Persistent Disk storage](https://cloud.google.com/compute/docs/disks#pdspecs). AWS clusters use [M5 instance types](https://aws.amazon.com/ec2/instance-types/m5/#Product_Details) and [Elastic Block Store (EBS)](https://aws.amazon.com/ebs/features/). The IOPS associated with each node size in GCP is equal to 30 times the storage size, and the IOPS for AWS nodes is listed below.
 
 {% include cockroachcloud/cockroachcloud-pricing.md %}
 
 ## Step 3. Select the region(s)
 
-For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your CockroachCloud cluster.
+In the **Regions & nodes** section, select a region. For optimal performance, select the cloud provider region in which you are running your application. For example, if your application is deployed in GCP's `us-east1` region, select `us-east1` for your {{ site.data.products.dedicated }} cluster.
 
 To create a multi-region cluster, click **Add regions** until you have the desired number of regions.
 
@@ -51,6 +52,8 @@ Multi-region clusters must contain at least 3 regions to ensure that data spread
 If you want to create a cluster in a disabled region, please [contact Support](https://support.cockroachlabs.com).
 
 ## Step 4. Select the number of nodes
+
+In the **Regions & nodes** section, select the number of nodes. 
 
 - For single-region application development and testing, you may create a 1-node cluster.
 - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
@@ -105,14 +108,14 @@ VPC peering is only available for GCP clusters. For AWS clusters, you can [set u
 If you have multiple clusters, you will have to create a new VPC Peering or AWS PrivateLink connection for each cluster.
 {{site.data.alerts.end}}
 
-You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the CockroachCloud cluster. To enable VPC peering:
+You can use [VPC peering](network-authorization.html#vpc-peering) to connect your GCP application to the {{ site.data.products.db }} cluster. To enable VPC peering:
 
 1. Under **Additional Settings**, toggle the VPC Peering switch to **Yes**.
-1. Configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
+1. Configure the IP address range and size (in CIDR format) for the {{ site.data.products.db }} network based on the following considerations:
       -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
       - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
 
-        Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
+        Alternatively, you can use {{ site.data.products.db }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
         To use the default IP range, select **Use the default IP range**. To configure your own IP range, select **Configure the IP range** and enter the IP range and size in CIDR format.
 
@@ -130,10 +133,10 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
     The cost displayed does not include taxes.
     {{site.data.alerts.end}}
     You will be billed monthly.
-1. Add your preferred [payment method](console-access-management.html#manage-billing-for-the-organization).
-1. [If applicable](frequently-asked-questions.html#how-do-cockroachcloud-free-trials-work), the 30-day trial code is pre-applied to your cluster.
+1. Add your preferred [payment method](billing-management.html).
+1. [If applicable](frequently-asked-questions.html#how-do-cockroachdb-dedicated-free-trials-work), the 30-day trial code is pre-applied to your cluster.
       {{site.data.alerts.callout_info}}
-      Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](console-access-management.html#manage-billing-for-the-organization) page.
+      Make sure that you [delete your trial cluster](cluster-management.html#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](billing-management.html) page.
       {{site.data.alerts.end}}
 1. Click **Create cluster**.
 
@@ -166,11 +169,11 @@ Storage | 480 GiB
 
 ## What's next
 
-To start using your CockroachCloud cluster, see the following pages:
+To start using your {{ site.data.products.db }} cluster, see the following pages:
 
 - [Connect to your cluster](connect-to-your-cluster.html)
 - [Authorize users](user-authorization.html)
-- [Deploy a Python To-Do App with Flask, Kubernetes, and CockroachCloud](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
+- [Deploy a Python To-Do App with Flask, Kubernetes, and {{ site.data.products.db }}](deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html)
 
 If you created a multi-region cluster, it is important to carefully choose:
 
@@ -182,7 +185,7 @@ Not doing so can result in unexpected latency and resiliency.  For more informat
 <!--
 ### [WIP] Select hardware configuration based on performance requirements
 
-Let's say we want to run a TPC-C workload with 500 warehouses on a CockroachCloud cluster.
+Let's say we want to run a TPC-C workload with 500 warehouses on a {{ site.data.products.db }} cluster.
 
 One TPC-C `warehouse` is about 200MB of data. CockroachDB can handle approximately 45 warehouses per vCPU. So a 4 vCPU node can handle 180 warehouses which is 36GB of unreplicated raw data.
 

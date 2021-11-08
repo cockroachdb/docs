@@ -9,7 +9,7 @@ The ability to [backup a full cluster](backup.html#backup-a-cluster) has been ad
 This doc provides information about how to take and restore locality-aware backups.
 
 {{site.data.alerts.callout_info}}
-Locality-aware [`BACKUP`](backup.html) is an [enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an enterprise license.
+Locality-aware [`BACKUP`](backup.html) is an [Enterprise-only](https://www.cockroachlabs.com/product/cockroachdb/) feature. However, you can take [full backups](take-full-and-incremental-backups.html) without an Enterprise license.
 {{site.data.alerts.end}}
 
 You can create locality-aware backups such that each node writes files only to the backup destination that matches the [node locality](configure-replication-zones.html#descriptive-attributes-assigned-to-nodes) configured at [node startup](cockroach-start.html).

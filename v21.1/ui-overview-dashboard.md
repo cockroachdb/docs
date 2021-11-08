@@ -14,7 +14,7 @@ All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
 
 The **Overview** dashboard displays the following time series graphs:
 
-## SQL Queries
+## SQL Statements
 
 - In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
 

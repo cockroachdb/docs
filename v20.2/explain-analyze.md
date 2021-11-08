@@ -18,7 +18,7 @@ In CockroachDB, the following are aliases for `EXPLAIN ANALYZE`:
 
 ## Synopsis
 
-<section>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</section>
+<div>{% include {{ page.version.version }}/sql/diagrams/explain_analyze.html %}</div>
 
 ## Parameters
 
@@ -100,6 +100,8 @@ Response | The response back to the client. | Both
 
 You can obtain this ZIP file by following the link provided in the `EXPLAIN ANALYZE (DEBUG)` output, or by activating [statement diagnostics](ui-statements-page.html#diagnostics) in the DB Console.
 
+{% include {{ page.version.version }}/sql/statement-bundle-warning.md %}
+
 ## Examples
 
 ### `EXPLAIN ANALYZE`
@@ -114,7 +116,7 @@ For example, the following `EXPLAIN ANALYZE` statement executes a simple query a
 ~~~
 
 ~~~
-  automatic |                      url                      
+  automatic |                      url
 ------------+-----------------------------------------------
     true    | https://cockroachdb.github.io/distsqlplan...
 ~~~

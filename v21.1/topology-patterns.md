@@ -50,3 +50,7 @@ The following anti-patterns are ineffective or risky:
 
 - Single-region deployments using 2 zones, or multi-region deployments using 2 regions. In these cases, the cluster would be unable to survive the loss of a single zone or a single region, respectively.
 - Broadly distributed multi-region deployments (e.g., `us-west`, `asia`, and `europe`) using only the default [Follow-the-Workload](topology-follow-the-workload.html) behavior. In this case, latency will likely be unacceptably high.
+
+## See also
+
+{% include {{ page.version.version }}/topology-patterns/see-also.md %}

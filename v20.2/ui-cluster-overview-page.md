@@ -11,7 +11,7 @@ The **Cluster Overview** page of the DB Console displays key metrics about your 
 - Uptime
 - Hardware usage
 
-If you have an [enterprise license](enterprise-licensing.html), you can enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
+If you have an [Enterprise license](enterprise-licensing.html), you can enable the [Node Map](#node-map-enterprise) view for a visual representation of your cluster's geographic layout.
 
 {{site.data.alerts.callout_success}}
 Enter your email in the banner at the top to receive updates on CockroachDB [releases](../releases/).

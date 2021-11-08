@@ -30,10 +30,6 @@ For more information, see the Cluster API [overview](cluster-api.html) and [refe
 
 ### Prometheus endpoint
 
-{{site.data.alerts.callout_info}}
-The listed `/_status/vars` endpoint is deprecated in favor of the [Cluster API](#cluster-api).
-{{site.data.alerts.end}}
-
 Every node of a CockroachDB cluster exports granular timeseries metrics at `http://<host>:<http-port>/_status/vars`. The metrics are formatted for easy integration with [Prometheus](https://prometheus.io/), an open source tool for storing, aggregating, and querying timeseries data, but the format is **easy-to-parse** and can be massaged to work with other third-party monitoring systems (e.g., [Sysdig](https://sysdig.atlassian.net/wiki/plugins/servlet/mobile?contentId=64946336#content/view/64946336) and [Stackdriver](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/prometheus-to-sd)).
 
 For a tutorial on using Prometheus, see [Monitor CockroachDB with Prometheus](monitor-cockroachdb-with-prometheus.html).

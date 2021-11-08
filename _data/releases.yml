@@ -1,8 +1,19 @@
 - title: Production releases
   releases:
+    - date: Oct 18, 2021
+      version: v21.1.11
+      latest: true
+    - date: Oct 7, 2021
+      version: v21.1.10
+    - date: Sep 20, 2021
+      version: v21.1.9
+    - date: Aug 30, 2021
+      version: v21.1.8
+      withdrawn: true
+    - date: Aug 9, 2021
+      version: v21.1.7
     - date: Jul 20, 2021
       version: v21.1.6
-      latest: true
     - date: Jul 2, 2021
       version: v21.1.5
     - date: Jun 29, 2021
@@ -15,6 +26,14 @@
       version: v21.1.1
     - date: May 18, 2021
       version: v21.1.0
+    - date: Oct 11, 2021
+      version: v20.2.17
+    - date: Sep 13, 2021
+      version: v20.2.16
+    - date: Aug 23, 2021
+      version: v20.2.15
+    - date: Aug 16, 2021
+      version: v20.2.14
     - date: Jul 12, 2021
       version: v20.2.13
     - date: Jun 28, 2021
@@ -257,6 +276,20 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Nov 1, 2021
+      version: v21.2.0-rc.3
+    - date: Oct 25, 2021
+      version: v21.2.0-rc.2
+    - date: Oct 18, 2021
+      version: v21.2.0-rc.1
+    - date: Oct 11, 2021
+      version: v21.2.0-beta.4
+    - date: Oct 4, 2021
+      version: v21.2.0-beta.3
+    - date: Sep 27, 2021
+      version: v21.2.0-beta.2
+    - date: Sep 24, 2021
+      version: v21.2.0-beta.1
     - date: May 10, 2021
       version: v21.1.0-rc.2
     - date: May 5, 2021

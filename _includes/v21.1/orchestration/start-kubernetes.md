@@ -4,10 +4,6 @@ You can use the hosted [Google Kubernetes Engine (GKE)](#hosted-gke) service or 
 GKE or EKS are not required to run CockroachDB on Kubernetes. A manual GCE or AWS cluster with the [minimum recommended Kubernetes version](#kubernetes-version) and at least 3 pods, each presenting [sufficient resources](#resources) to start a CockroachDB node, can also be used.
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-The CockroachDB Kubernetes Operator is currently supported for GKE.
-{{site.data.alerts.end}}
-
 ### Hosted GKE
 
 1. Complete the **Before You Begin** steps described in the [Google Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) documentation.
@@ -73,6 +69,10 @@ The CockroachDB Kubernetes Operator is currently supported for GKE.
 
     This includes installing and configuring the AWS CLI and `eksctl`, which is the command-line tool used to create and delete Kubernetes clusters on EKS, and `kubectl`, which is the command-line tool used to manage Kubernetes from your workstation.
 
+    {{site.data.alerts.callout_info}}
+    If you are running [EKS-Anywhere](https://aws.amazon.com/eks/eks-anywhere/), CockroachDB requires that you [configure your default storage class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/) to auto-provision persistent volumes. Alternatively, you can define a custom storage configuration as required by your install pattern.
+    {{site.data.alerts.end}}
+    
 2. From your local workstation, start the Kubernetes cluster:
 
     {{site.data.alerts.callout_success}}

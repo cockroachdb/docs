@@ -19,10 +19,12 @@ Use [`REGIONAL` tables](multiregion-overview.html#regional-by-row-tables) if:
 Use [`GLOBAL` tables](multiregion-overview.html#global-tables) if:
 
 - Your application has a "read-mostly" table of reference data that is rarely updated, and that needs to be available to all regions.
-- You can accept that writes to the table will incur higher latencies from any given region, since writes use a novel non-blocking transaction protocol that uses a timestamp "in the future" (documentation forthcoming).
+- You can accept that writes to the table will incur higher latencies from any given region, since writes use a novel [non-blocking transaction protocol](architecture/transaction-layer.html#non-blocking-transactions) that uses a timestamp "in the future". Note that the observed write latency is dependent on the [`--max-offset`](cockroach-start.html#flags-max-offset) setting.
+
+For more information about how to choose an overall multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
 
 {{site.data.alerts.callout_success}}
-For more information about how to choose an overall multi-region configuration, see [Choosing a multi-region configuration](choosing-a-multi-region-configuration.html).
+{% include {{page.version.version}}/misc/multiregion-max-offset.md %}
 {{site.data.alerts.end}}
 
 {% include enterprise-feature.md %}
@@ -35,3 +37,4 @@ For more information about how to choose an overall multi-region configuration, 
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
 - [Topology Patterns](topology-patterns.html)
 - [Disaster Recovery](disaster-recovery.html)
+- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)

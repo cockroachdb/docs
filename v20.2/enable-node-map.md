@@ -104,9 +104,9 @@ $ cockroach init --insecure --host=<address of any node>
 
 <img src="{{ 'images/v20.2/ui-node-map-before-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
-### Step 2. Set the enterprise license and refresh the DB Console
+### Step 2. Set the Enterprise license and refresh the DB Console
 
-After [setting the enterprise license](enterprise-licensing.html), the Node Map should now be displaying the highest-level localities you defined:
+After [setting the Enterprise license](enterprise-licensing.html), the Node Map should now be displaying the highest-level localities you defined:
 
 <img src="{{ 'images/v20.2/ui-node-map-after-license.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 
@@ -159,7 +159,7 @@ Let's say you want to navigate to Node 2, which is in datacenter `us-east-1a` in
 
 ### Node Map not displayed
 
-The Node Map requires an [enterprise license](enterprise-licensing.html).
+The Node Map requires an [Enterprise license](enterprise-licensing.html).
 
 All nodes in the cluster must be assigned [localities](cockroach-start.html#locality). To be displayed on the world map, localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
 

@@ -1,6 +1,6 @@
 ---
 title: Define Table Partitions
-summary: Partitioning is an enterprise feature that gives you row-level control of how and where your data is stored.
+summary: Partitioning is an Enterprise feature that gives you row-level control of how and where your data is stored.
 toc: true
 ---
 
@@ -38,7 +38,7 @@ For more details about these flags, see the [`cockroach start`](cockroach-start.
 
 ### Enterprise license
 
-You must have a valid enterprise license to use table partitioning features. For details about requesting and setting a trial or full enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
+You must have a valid Enterprise license to use table partitioning features. For details about requesting and setting a trial or full Enterprise license, see [Enterprise Licensing](enterprise-licensing.html).
 
 Note that the following features do not work with an **expired license**:
 
@@ -46,7 +46,7 @@ Note that the following features do not work with an **expired license**:
 - Changing the partitioning scheme on any table or index
 - Changing the zone config for a partition
 
-However, the following features continue to work even with an expired enterprise license:
+However, the following features continue to work even with an expired Enterprise license:
 
 - Querying a partitioned table (for example, `SELECT foo PARTITION`)
 - Inserting or updating data in a partitioned table
@@ -273,7 +273,7 @@ We want to geo-partition the table to keep the students' data closer to their lo
     ~~~
 
 
-#### Step 3. Request and set a trial enterprise license
+#### Step 3. Request and set a trial Enteprise license
 
 See [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
 
@@ -452,9 +452,9 @@ Suppose we want to store the data of current students on fast and expensive stor
 
 We want to archival-partition the table to keep newer data on faster devices and older data on slower devices. We can achieve this by partitioning the table by date and using the `PARTITION BY RANGE` syntax.
 
-#### Step 2. Set the enterprise license
+#### Step 2. Set the Enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
+To set the Enterprise license, see [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
 
 #### Step 3. Start each node with the appropriate storage device specified in the `--store` flag
 
@@ -587,9 +587,9 @@ Initialize the cluster:
 $ cockroach init --insecure --host=<address of any node>
 ~~~
 
-#### Step 3. Set the enterprise license
+#### Step 3. Set the Enterprise license
 
-To set the enterprise license, see [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
+To set the Enterprise license, see [Set the Trial or Enterprise License Key](licensing-faqs.html#set-a-license).
 
 #### Step 4. Create a table with the appropriate partitions
 

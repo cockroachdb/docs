@@ -1,11 +1,11 @@
 ---
-title: Hello World Example Apps for CockroachCloud
+title: Hello World Example Apps for CockroachDB Cloud
 summary: Examples that show you how to build a simple "Hello World" application with CockroachDB
 tags: golang, python, java
 toc: true
 ---
 
-The examples in this section show you how to build simple "Hello World" applications **using CockroachCloud**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)](../{{site.versions["stable"]}}/hello-world-example-apps.html).
+The examples in this section show you how to build simple "Hello World" applications **using {{ site.data.products.serverless }}**. For a full list of sample applications that have been built using CockroachDB, see [Hello World Example Apps (for CockroachDB)](../{{site.versions["stable"]}}/hello-world-example-apps.html).
 
 Click the links in the table below to see simple but complete example applications for each supported language and library combination.
 
@@ -38,7 +38,7 @@ Reference information:
 
 Specific tasks:
 
-- [Connect to Your Cluster](connect-to-a-free-cluster.html)
+- [Connect to Your Cluster](connect-to-a-serverless-cluster.html)
 - [Insert Data](../{{site.versions["stable"]}}/insert-data.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
 - [Make Queries Fast](../{{site.versions["stable"]}}/make-queries-fast.html)

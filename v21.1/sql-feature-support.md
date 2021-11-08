@@ -123,7 +123,7 @@ table tr td:nth-child(2) {
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
- Common clauses | ✓ | Standard | [SQL Grammar documentation](sql-grammar.html)  
+ Common clauses | ✓ | Standard | [SQL Grammar documentation](sql-grammar.html)
  `LIMIT` | ✓ | Common Extension | Limit the number of rows a statement returns.
  `LIMIT` with `OFFSET` | ✓ | Common Extension | Skip a number of rows, and then limit the size of the return set.
  `RETURNING` | ✓ | Common Extension | Retrieve a table of rows statements affect.
@@ -139,7 +139,7 @@ table tr td:nth-child(2) {
  Table generator functions | Partial | PostgreSQL Extension | [Table generator functions documentation](table-expressions.html#table-generator-functions)
  `WITH ORDINALITY` | ✓ | CockroachDB Extension | [Ordinality annotation documentation](table-expressions.html#ordinality-annotation)
 
-### Scalar expressions and boolean formulas
+### Scalar expressions and Boolean formulas
 
  Component | Supported | Type | Details
 -----------|-----------|------|---------
@@ -151,8 +151,8 @@ table tr td:nth-child(2) {
  `LIKE`/`ILIKE`  | ✓ | Standard | [String pattern matching documentation](scalar-expressions.html#string-pattern-matching)
  `SIMILAR TO` | ✓ | Standard | [SQL regexp pattern matching documentation](scalar-expressions.html#string-matching-using-sql-regular-expressions)
  Matching using POSIX regular expressions  | ✓ | Common Extension | [POSIX regexp pattern matching documentation](scalar-expressions.html#string-matching-using-posix-regular-expressions)
- `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Currently works only with small data sets.
- Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Currently works only with small data sets.
+ `EXISTS` | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#existence-test-on-the-result-of-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Works only with small data sets.
+ Scalar subqueries | Partial | Standard | Non-correlated subqueries are [supported](scalar-expressions.html#scalar-subqueries), as are most [correlated subqueries](subqueries.html#correlated-subqueries). Works only with small data sets.
  Bitwise arithmetic | ✓ | Common Extension | [Operators documentation](scalar-expressions.html#unary-and-binary-operations)
  Array constructors and subscripting | Partial | PostgreSQL Extension | Array expression documentation: [Constructor syntax](scalar-expressions.html#array-constructors) and [Subscripting](scalar-expressions.html#subscripted-expressions)
  `COLLATE`| ✓ | Standard | [Collation expressions documentation](scalar-expressions.html#collation-expressions)
@@ -182,6 +182,6 @@ table tr td:nth-child(2) {
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
  Common table expressions | Partial | Common Extension | [Common Table Expressions documentation](common-table-expressions.html)
- Stored procedures | Planned | Common Extension | Execute a procedure explicitly.
+ Stored procedures | ✗ | Common Extension | Execute a procedure explicitly.
  Cursors | ✗ | Standard | Traverse a table's rows.
  Triggers | ✗ | Standard | Execute a set of commands whenever a specified event occurs.

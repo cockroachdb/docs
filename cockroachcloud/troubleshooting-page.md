@@ -1,10 +1,14 @@
 ---
-title: Troubleshoot CockroachCloud
+title: Troubleshoot CockroachDB Cloud
 summary: The SQL Users page displays a list of SQL users who can access the cluster.
 toc: true
 ---
 
-This page describes common CockroachCloud errors and their solutions.
+This page describes common {{ site.data.products.db }} errors and their solutions.
+
+{{site.data.alerts.callout_danger}}
+We have updated the CA certificate used by {{ site.data.products.serverless }} clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate](connect-to-a-serverless-cluster.html#step-2-connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service. 
+{{site.data.alerts.end}}
 
 ## Connection errors
 
@@ -17,7 +21,7 @@ Error: x509: certificate signed by unknown authority
 Failed running "sql"
 ~~~
 
-**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
+**Solution:** Check if you are using the right cluster name in the [connection method](connect-to-your-cluster.html#step-3-connect-to-your-cluster). You can find your cluster name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection string** and locating the parameter `cluster={cluster-name}` in your connection string.
 
 ### Invalid cluster name in a third-party tool
 
@@ -27,7 +31,7 @@ The following error is displayed if you try to connect to a [third-party tool](.
 FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
 ~~~
 
-**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for CockroachCloud Free (beta) clusters, or `<cluster-name>.<database>` for paid CockroachCloud clusters.
+**Solution**: Check that you are using the correct cluster and database names. You can find these parameters in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters**. For most tools, the full name of your database should be in the format `<cluster-name>-<tenant-id>.<database>` for {{ site.data.products.serverless }} clusters, or `<cluster-name>.<database>` for paid {{ site.data.products.dedicated }} clusters.
 
 For connection examples with your tool, see [these examples](../stable/third-party-database-tools.html).
 
@@ -82,7 +86,18 @@ Failed running "sql"
 **Solution:**
 Check if you are using the correct host name.
 
-You can find your host name in the CockroachCloud Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
+You can find your host name in the {{ site.data.products.db }} Console by navigating to **Cluster Overview** > **Connect** > **Step 2. Connect** > **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
+
+### Connection refused
+
+The following error may be displayed if your cluster connection is dropped:
+
+~~~ shell
+Error: dial tcp 35.240.101.1:26257: connect: connection refused
+~~~ 
+
+**Solution:**
+{{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["stable"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
 
 ## Security errors
 

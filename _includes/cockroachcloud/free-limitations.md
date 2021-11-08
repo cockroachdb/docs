@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_info}}
-CockroachCloud Free is currently in beta. For information about its limitations, see [CockroachCloud Free (beta) FAQs](free-faqs.html).
+{{ site.data.products.serverless-plan }} is currently in beta. For information about its limitations, see [{{ site.data.products.serverless }} FAQs](serverless-faqs.html).
 {{site.data.alerts.end}}

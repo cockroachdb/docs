@@ -28,6 +28,10 @@ The steps above describe the simplest case, where you accept all of the default 
 
 For more information about CockroachDB's multi-region capabilities and the customization options that are available, see below.
 
+{{site.data.alerts.callout_success}}
+{% include {{page.version.version}}/misc/multiregion-max-offset.md %}
+{{site.data.alerts.end}}
+
 {% include enterprise-feature.md %}
 
 ## Cluster Regions
@@ -166,3 +170,4 @@ For an example that uses unique indexes but applies to all indexes on `REGIONAL 
 - [Disaster Recovery](disaster-recovery.html)
 - [Develop and Deploy a Global Application](movr-flask-overview.html)
 - [Multi-region SQL performance](demo-low-latency-multi-region-deployment.html)
+- [Migrate to Multi-region SQL](migrate-to-multiregion-sql.html)

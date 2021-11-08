@@ -226,10 +226,10 @@ SQLSTATE: 0A000
 
 Type | Details
 -----|--------
-`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
-`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`DECIMAL` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
+`FLOAT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
 `TIME` | Converts to the time portion (HH:MM:SS) of the timestamp.
-`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970). This is a CockroachDB experimental feature which may be changed without notice.
+`INT` | Converts to number of seconds since the Unix epoch (Jan. 1, 1970).
 `DATE` | --
 `STRING` | <span class="version-tag">New in v20.2:</span> Converts to the date and time portion (YYYY-MM-DD HH:MM:SS) of the timestamp and omits the time zone offset.
 

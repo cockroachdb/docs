@@ -11,6 +11,12 @@ contribute: false
 <script src="{{ 'js/algoliasearchLite.min.js' | relative_url }}"></script>
 <script src="{{ 'js/instantsearch.production.min.js' | relative_url }}"></script>
 <script>
+  const htmlEncode = (text) => {
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+  };
+
   const queryString = (function() {
     // This function is anonymous, is executed immediately and
     // the return value is assigned to QueryString!
@@ -31,7 +37,7 @@ contribute: false
         query_string[pair[0]].push(decodeURIComponent(pair[1]));
       }
     }
-    return (query_string.query || "").replace(/\+/g, " ");
+    return htmlEncode((query_string.query || "").replace(/\+/g, " "));
   })();
 
   const router = instantsearch.routers.history({

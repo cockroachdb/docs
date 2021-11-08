@@ -1,6 +1,6 @@
 ---
 title: Stream a Changefeed to Snowflake
-summary: Use a CockroachCloud cluster to stream changefeed messages to a Snowflake cluster.
+summary: Use a CockroachDB Cloud cluster to stream changefeed messages to a Snowflake cluster.
 toc: true
 ---
 
@@ -16,7 +16,7 @@ Snowflake is optimized for `INSERT`s and batch rewrites over streaming updates. 
 
 Before you begin, make sure you have:
 
-- Admin access to a [CockroachCloud account](https://cockroachlabs.cloud/)
+- Admin access to a [{{ site.data.products.db }} account](https://cockroachlabs.cloud/)
 - Write access to an [AWS S3 bucket](https://s3.console.aws.amazon.com)
 
     {{site.data.alerts.callout_info}}
@@ -40,7 +40,7 @@ If you have not done so already, [create a cluster](create-your-cluster.html).
     ~~~
 
     {{site.data.alerts.callout_info}}
-    If you haven't connected to your CockroachCloud cluster before, see [Connect to your CockroachCloud Cluster](connect-to-your-cluster.html) for information on how to initially connect.
+    If you haven't connected to your {{ site.data.products.dedicated }} cluster before, see [Connect to your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html) for information on how to initially connect.
     {{site.data.alerts.end}}
 
 2. Enable [rangefeeds](../{{site.versions["stable"]}}/stream-data-out-of-cockroachdb-using-changefeeds.html#enable-rangefeeds):

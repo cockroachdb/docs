@@ -13,7 +13,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/diagrams/show_create.html %}
+{% include {{ page.version.version }}/sql/diagrams/show_create.html %}
 </div>
 
 ## Parameters

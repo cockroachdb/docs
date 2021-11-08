@@ -9,7 +9,7 @@ toc: true
 {% include {{page.version.version}}/sql/use-multiregion-instead-of-partitioning.md %}
 
 {{site.data.alerts.callout_info}}
-[Partitioning](partitioning.html) is an [enterprise-only](enterprise-licensing.html) feature. If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
+[Partitioning](partitioning.html) is an [Enterprise-only](enterprise-licensing.html) feature. If you are looking for the `PARTITION BY` used in SQL window functions, see [Window Functions](window-functions.html).
 {{site.data.alerts.end}}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
@@ -24,15 +24,15 @@ If the primary key in your existing table does not meet the requirements, you ca
 
 **alter_table_partition_by_stmt ::=**
 
-<section>
+<div>
 {% include {{ page.version.version }}/sql/generated/diagrams/alter_table_partition_by.html %}
-</section>
+</div>
 
 **alter_index_partition_by_stmt ::=**
 
-<section>
+<div>
 {% include {{ page.version.version }}/sql/generated/diagrams/alter_index_partition_by.html %}
-</section>
+</div>
 
 ## Parameters
 

@@ -37,7 +37,7 @@ $ npm install sequelize sequelize-cockroachdb
 
 ## Step 4. Get the code
 
-<a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-node-sequelize).
+<a href="https://raw.githubusercontent.com/cockroachlabs/example-app-node-sequelize/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-node-sequelize).
 
 ## Step 5. Update the connection parameters
 
@@ -55,14 +55,14 @@ Open `app.js`, and edit the connection configuration parameters:
 
 - At the top of the file, uncomment the `const fs = require('fs');` line.
 
-    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the CockroachCloud Console.
+    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the {{ site.data.products.db }} Console.
 - Replace the value for `username` with the user you created earlier.
 - Replace the value for `password` with the password you created for your user.
-- Replace the value for `host` with the name of the CockroachCloud Free host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
+- Replace the value for `host` with the name of the {{ site.data.products.serverless-plan }} host (e.g., `host: 'free-tier.gcp-us-central1.cockroachlabs.cloud'`).
 - Replace the value for `port` with the port to your cluster.
 - Replace the value for `database` with the database that you created earlier, suffixed with the name of the cluster (e.g., `database: '{cluster_name}.bank'`).
 - Remove the `rejectUnauthorized` key-value pair.
-- Uncomment the `ca` key-value pair, and edit the `fs.readFileSync('certs/ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the CockroachCloud Console.
+- Uncomment the `ca` key-value pair, and edit the `fs.readFileSync('certs/ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 </section>
 
@@ -72,7 +72,7 @@ The following code uses the [Sequelize](https://sequelize.org/) ORM to map Node.
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-sequelize/main/app.js %}
 ~~~
 
 To run the code:

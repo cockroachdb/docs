@@ -1,14 +1,14 @@
 ---
 title: Network Authorization
-summary: Learn about the network authorization features for CockroachCloud CockroachDB clusters.
+summary: Learn about the network authorization features for {{ site.data.products.db }} clusters.
 toc: true
 ---
 
-To prevent denial-of-service and brute force password attacks, CockroachCloud requires you to authorize networks that can access your cluster by [allowlisting the public IP addresses](#ip-allowlisting) for your application. Optionally, you can [set up Virtual Private Cloud (VPC) peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) for your cluster for enhanced network security and lower network latency.
+To prevent denial-of-service and brute force password attacks, {{ site.data.products.dedicated }} requires you to authorize networks that can access your cluster by [allowlisting the public IP addresses](#ip-allowlisting) for your application. Optionally, you can [set up Virtual Private Cloud (VPC) peering](#vpc-peering) or [AWS PrivateLink](#aws-privatelink) for your cluster for enhanced network security and lower network latency.
 
 ## IP allowlisting
 
-Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the CockroachCloud cluster's allowlist](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
+Authorize your application server’s network and your local machine’s network by [adding their public IP addresses (in the CIDR format) to the {{ site.data.products.dedicated }} cluster's allowlist](connect-to-your-cluster.html#step-1-authorize-your-network). If you change your location, you will need to authorize the new location’s network, else the connection from that network will be rejected.
 
 - In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
 - In a production environment, you need to authorize your application server’s network.
@@ -17,43 +17,43 @@ Authorize your application server’s network and your local machine’s network
 While developing and testing your application, you may add `0.0.0.0/0` to the allowlist, which allows all networks. However, before moving into production, make sure you delete the `0.0.0.0/0` network.
 {{site.data.alerts.end}}
 
-You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your CockroachCloud clusters using VPC Peering or AWS PrivateLink instead.
+You can add up to 20 IP addresses to your allowlist. If your application servers’ IP addresses are not static, or you want to limit your cluster's exposure to the public network, you can connect to your {{ site.data.products.dedicated }} clusters using VPC Peering or AWS PrivateLink instead.
 
 ## VPC peering
 
-If you select GCP as your cloud provider while [creating your CockroachCloud cluster](create-your-cluster.html), you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application directly to your CockroachCloud cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
+If you select GCP as your cloud provider while [creating your {{ site.data.products.dedicated }} cluster](create-your-cluster.html), you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application directly to your {{ site.data.products.dedicated }} cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
 
-Setting up a VPC peering connection between your CockroachCloud cluster and GCP application is a two-part process:
+Setting up a VPC peering connection between your {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
-1. [Configure the IP range and size while creating the CockroachCloud cluster](#configure-the-ip-range-and-size-while-creating-your-cockroachcloud-cluster)
-1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachcloud-cluster)
+1. [Configure the IP range and size while creating the {{ site.data.products.dedicated }} cluster](#configure-the-ip-range-and-size-while-creating-your-cockroachdb-dedicated-cluster)
+1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachdb-dedicated-cluster)
 
 {{site.data.alerts.callout_info}}
-Self-service VPC peering setup is not supported for CockroachCloud clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachCloud's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
 {{site.data.alerts.end}}
 
-### Configure the IP range and size while creating your CockroachCloud cluster
+### Configure the IP range and size while creating your {{ site.data.products.dedicated }} cluster
 
-While creating your CockroachCloud cluster, [enable VPC peering](create-your-cluster.html) and configure the IP address range and size (in CIDR format) for the CockroachCloud network based on the following considerations:
+While creating your {{ site.data.products.dedicated }} cluster, [enable VPC peering](create-your-cluster.html) and configure the IP address range and size (in CIDR format) for the {{ site.data.products.dedicated }} network based on the following considerations:
 
 -  To adhere to [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
 - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
 
-Alternatively, you can use CockroachCloud's default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
+Alternatively, you can use {{ site.data.products.dedicated }}'s default IP range and size (`172.28.0.0/14`) as long as it doesn't overlap with the IP ranges in your network.
 
 {{site.data.alerts.callout_info}}
 GKE users should note that [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips) are enabled by default in order to create a VPC-native cluster.
 {{site.data.alerts.end}}
 
-### Establish a VPC Peering connection after creating your CockroachCloud cluster
+### Establish a VPC Peering connection after creating your {{ site.data.products.dedicated }} cluster
 
-After creating your CockroachCloud cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from CockroachCloud's **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
+After creating your {{ site.data.products.dedicated }} cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from {{ site.data.products.db }}'s **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
 
 ## AWS PrivateLink
 
-If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your CockroachCloud cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
+If your cloud provider is AWS, you can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to securely connect your AWS application with your {{ site.data.products.dedicated }} cluster using a private endpoint. Like VPC Peering, a PrivateLink connection will prevent your traffic from being exposed to the public internet and reduce network latency. If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
 
-There are four steps to setting up an AWS PrivateLink connection between your CockroachCloud cluster and AWS application:
+There are four steps to setting up an AWS PrivateLink connection between your {{ site.data.products.dedicated }} cluster and AWS application:
 
 1.  [Set up a cluster](#set-up-a-cluster)
 1.  [Create an AWS endpoint](#create-an-aws-endpoint)
@@ -62,7 +62,7 @@ There are four steps to setting up an AWS PrivateLink connection between your Co
 
 ### Set up a cluster
 
-1.  Use the CockroachCloud Console to [create your CockroachCloud cluster](create-your-cluster.html) on AWS in the same region as your application.
+1.  Use the {{ site.data.products.db }} Console to [create your {{ site.data.products.dedicated }} cluster](create-your-cluster.html) on AWS in the same region as your application.
  
     {{site.data.alerts.callout_info}}
     If you have a multi-region cluster, you will have to create a PrivateLink connection for each region you are operating in.
@@ -113,7 +113,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
       The VPC Endpoint ID displays.  
       
-1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
+1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
   
   </section>
   
@@ -132,7 +132,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
     
 1.  Locate the VPC Endpoint ID in the CLI output.
     
-1.  Copy the Endpoint ID to your clipboard and return to CockroachCloud's **Add PrivateLink** modal.
+1.  Copy the Endpoint ID to your clipboard and return to {{ site.data.products.db }}'s **Add PrivateLink** modal.
     
   </section>
 
@@ -140,7 +140,7 @@ Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](http
 
 1.  Paste the Endpoint ID you created into the **VPC Endpoint ID** field.
 1.  Click **Verify**.
-1.  CockroachCloud will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
+1.  {{ site.data.products.db }} will accept the endpoint request. You can confirm the request acceptance by checking if the status is listed as Available on the Amazon VPC Console **Endpoints** page.
 
 ### Enable private DNS
 
@@ -167,4 +167,4 @@ After a short (less than 5 minute) delay, the status will change to Available. Y
 ## See also
 
 - [Client Connection Parameters](../{{site.versions["stable"]}}/connection-parameters.html)
-- [Connect to Your CockroachCloud Cluster](connect-to-your-cluster.html)
+- [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html)

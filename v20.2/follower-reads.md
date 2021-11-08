@@ -13,7 +13,7 @@ A follower read is a read taken from the closest [replica](architecture/overview
 For instructions showing how to use follower reads to get low latency, historical reads in multi-region deployments, see the [Follower Reads Topology Pattern](topology-follower-reads.html).
 
 {{site.data.alerts.callout_info}}
-This is an [enterprise feature](enterprise-licensing.html).
+This is an [Enterprise feature](enterprise-licensing.html).
 {{site.data.alerts.end}}
 
 ## Watch the demo

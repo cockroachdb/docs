@@ -27,12 +27,12 @@ In CockroachDB, the following are aliases for `SHOW STATEMENTS`:
 
 ## Required privileges
 
-All users can see their own currently active queries. All users belonging to the `admin` role can view see all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set.
+All users can see their own currently active queries. All users belonging to the `admin` role can view all users' currently active queries. To view other non-admin users' queries, the non-admin user must have the [`VIEWACTIVITY`](create-user.html#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) parameter set.
 
 ## Synopsis
 
 <div>
-  {% include {{ page.version.version }}/sql/generated/diagrams/show_statements.html %}
+{% include {{ page.version.version }}/sql/generated/diagrams/show_statements.html %}
 </div>
 
 - To list the active queries across all nodes of the cluster, use `SHOW STATEMENTS` or `SHOW CLUSTER STATEMENTS`.
