@@ -1,8 +1,8 @@
 {
-  "title": "Self-Hosted releases",
+  "title": "Self-Hosted Releases",
   "items": [
     {
-      "title": "Production releases",
+      "title": "Production Releases",
       "items": [
         {
           "title": "Latest v21.1",
@@ -23,7 +23,7 @@
           ]
         },
         {
-          "title": "All production releases",
+          "title": "All Production Releases",
           "urls": [
             "/releases/index.html#production-releases",
             "/releases/v21.1.11.html",
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "title": "Testing releases",
+      "title": "Testing Releases",
       "urls": [
         "/releases/index.html#testing-releases",
         "/releases/v21.2.0-beta.1.html",
@@ -75,19 +75,19 @@
       ]
     },
     {
-      "title": "Release support policy",
+      "title": "Release Support Policy",
       "urls": [
         "/releases/release-support-policy.html"
       ]
     },
     {
-      "title": "Known limitations",
+      "title": "Known Limitations",
       "urls": [
         "/${VERSION}/known-limitations.html"
       ]
     },
     {
-      "title": "Technical advisories",
+      "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
         "/advisories/a30821.html",
