@@ -49,6 +49,18 @@
             "urls": [
               "/${VERSION}/architecture/reads-and-writes-overview.html"
             ]
+          },
+          {
+            "title": "Admission control",
+            "urls": [
+              "/${VERSION}/architecture/admission-control.html"
+            ]
+          },
+          {
+            "title": "CockroachDB Cloud Architecture",
+            "urls": [
+              "/cockroachcloud/architecture.html"
+            ]
           }
         ]
       },
@@ -541,6 +553,12 @@
                 ]
               },
               {
+                "title": "<code>PLACEMENT (RESTRICTED | DEFAULT)</code>",
+                "urls": [
+                  "/${VERSION}/placement-restricted.html"
+                ]
+              },
+              {
                 "title": "<code>REASSIGN OWNED</code>",
                 "urls": [
                   "/${VERSION}/reassign-owned.html"
@@ -718,6 +736,12 @@
                 "title": "<code>SHOW CREATE</code>",
                 "urls": [
                   "/${VERSION}/show-create.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW CREATE SCHEDULE</code>",
+                "urls": [
+                  "/${VERSION}/show-create-schedule.html"
                 ]
               },
               {
@@ -1145,12 +1169,27 @@
         "title": "Cluster settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
-        ],
+        ]
+      },
+      {
+        "title": "Performance Optimization",
         "items": [
+          {
+            "title": "Indexes",
+            "urls": [
+              "/${VERSION}/indexes.html"
+            ]
+          },
           {
             "title": "Cost-Based Optimizer",
             "urls": [
               "/${VERSION}/cost-based-optimizer.html"
+            ]
+          },
+          {
+            "title": "Vectorized Execution Engine",
+            "urls": [
+              "/${VERSION}/vectorized-execution.html"
             ]
           },
           {
@@ -1252,6 +1291,12 @@
                 "title": "<code>cockroach debug encryption-active-key</code>",
                 "urls": [
                   "/${VERSION}/cockroach-debug-encryption-active-key.html"
+                ]
+              },
+              {
+                "title": "<code>cockroach debug job-trace</code>",
+                "urls": [
+                  "/${VERSION}/cockroach-debug-job-trace.html"
                 ]
               },
               {
@@ -1388,6 +1433,12 @@
                 ]
               },
               {
+                "title": "Overload Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-overload-dashboard.html"
+                ]
+              },
+              {
                 "title": "Custom Chart",
                 "urls": [
                   "/${VERSION}/ui-custom-chart-debug-page.html"
@@ -1446,19 +1497,19 @@
         ]
       },
       {
-        "title": "Logging reference",
+        "title": "Logging Reference",
         "urls": [
           "/${VERSION}/logging.html"
         ],
         "items": [
           {
-            "title": "Log formats",
+            "title": "Log Formats",
             "urls": [
               "/${VERSION}/log-formats.html"
             ]
           },
           {
-            "title": "Notable event types",
+            "title": "Notable Event Types",
             "urls": [
               "/${VERSION}/eventlog.html"
             ]

@@ -101,7 +101,7 @@ Transactions can be sent from the client as a single batch. Batching implies tha
 
 Batching is generally controlled by your driver or client's behavior. Technically, it can be achieved in two ways, both supporting automatic retries:
 
-1. When the client/driver is using the [PostgreSQL Extended Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY), a batch is made up of all queries sent in between two `Sync` messages. Many drivers support such batches through explicit batching constructs. Auto-retrying of such batches is **supported as of CockroachDB v2.0**.
+1. When the client/driver is using the [PostgreSQL Extended Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY), a batch is made up of all queries sent in between two `Sync` messages. Many drivers support such batches through explicit batching constructs.
 
 2. When the client/driver is using the [PostgreSQL Simple Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#id-1.10.5.7.4), a batch is made up of semicolon-separated strings sent as a unit to CockroachDB. For example, in Go, this code would send a single batch (which would be automatically retried):
 
@@ -189,7 +189,7 @@ For more information, including examples showing how to use savepoints to create
 
 ## Transaction priorities
 
-Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
+Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;

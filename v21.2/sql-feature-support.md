@@ -84,7 +84,7 @@ table tr td:nth-child(2) {
  Spatial indexes | ✓ | Common Extension |  [Spatial indexes documentation](spatial-indexes.html)
  Multiple indexes per query | Partial | Common Extension | [Index selection](indexes.html#selection)
  Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
- Prefix/Expression Indexes | Potential | Common Extension | Apply expressions (such as `LOWER()`) to values before indexing them
+ Prefix and Expression Indexes | ✗ | Common Extension | [Expression indexes](expression-indexes.html)
  Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values
 
 ### Schema changes

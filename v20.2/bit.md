@@ -116,8 +116,8 @@ pq: bit string length 4 too large for type VARBIT(3)
 
 Type | Details
 -----|---------
-`INT` | Converts the bit array to the corresponding numeric value, interpreting the bits as if the value was encoded using [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement). If the bit array is larger than the integer type, excess bits on the left are ignored. For example, `B'1010'::INT` equals 10.
-`STRING` | Prints out the binary digits as a string. This recovers the literal representation. For example, `B'1010'::INT` equals `'1010'`.
+`INT` | Converts the bit array to the corresponding numeric value, interpreting the bits as if the value was encoded using [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement). If the bit array is larger than the integer type, excess bits on the left are ignored. For example, `B'1010'::INT` equals `10`.
+`STRING` | Prints out the binary digits as a string. This recovers the literal representation. For example, `B'1010'::STRING` equals `'1010'`.
 
 ## See also
 

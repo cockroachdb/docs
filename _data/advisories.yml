@@ -1,9 +1,17 @@
+- advisory: 71553
+  summary: SQL statements that used secondary unique indexes that were created as a result of an <code>ALTER PRIMARY KEY</code> statement can return incorrect results.
+  versions: 20.2, 21.1
+  date: November 8, 2021
+- advisory: 71655
+  summary: Zigzag joins could potentially produce incorrect results
+  versions: 19.2, 20.1, 20.2, 21.1
+  date: November 2, 2021
 - advisory: 71002
-  summary: CockroachDB v21.1.9 drops `WHERE` predicates from prepared statements in specific circumstances
-  versions: v21.1.9
+  summary: CockroachDB 21.1.9 drops <code>WHERE</code> predicates from prepared statements in specific circumstances
+  versions: 21.1.9
   date: October 7, 2021
 - advisory: 69874
-  summary: CockroachDB v21.1.8 can not be downgraded
+  summary: CockroachDB 21.1.8 can not be downgraded
   versions: 21.1.8
   date: September 7, 2021
 - advisory: 68005
@@ -20,7 +28,7 @@
   date: May 3, 2021
 - advisory: 63162
   summary: Invalid incremental backups under certain circumstances
-  versions: v19.1.0-v19.1.11, v19.2.0-v19.2.12, v20.1.0-v20.1.14, v20.2.0-v20.2.7
+  versions: 19.1.0-19.1.11, 19.2.0-19.2.12, 20.1.0-20.1.14, 20.2.0-20.2.7
   date: April 30, 2021
 - advisory: 58932
   summary: HTTP requests can cause full-cluster denial of service (DoS)

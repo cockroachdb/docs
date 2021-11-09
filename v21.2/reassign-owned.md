@@ -12,8 +12,8 @@ To change the ownership of any single object (e.g., a table or a database), use 
 
 ## Required privileges
 
-- The user executing the `REASSIGN OWNED` statement must be a member of the [`admin` role](authorization.html#admin-role), or must be a member of the target role and have the `CREATE` [privilege](authorization.html#assign-privileges) on the current database.
-- The target role (i.e., the desired role of the objects) must have the `CREATE` privilege on the current database.
+- To reassign ownership with `REASSIGN OWNED`, the user must be a member of the current owner's role and a member of the target owner's role.
+- Members of the [`admin` role](authorization.html#admin-role) can always use `REASSIGN OWNED BY`.
 
 ## Syntax
 

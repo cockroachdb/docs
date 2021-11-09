@@ -71,7 +71,7 @@ You can use inverted indexes to improve the performance of queries using `JSONB`
 
 If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the supported operators, the inverted index is added to the set of index candidates.
 
-Because each query can use only a single index, CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). For more detail, check out our blog post [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
+In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins](cost-based-optimizer.html#zigzag-joins) for some other queries. To learn how to use  the [`EXPLAIN`](explain.html) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2/).
 
 To override CockroachDB's index selection, you can also force [queries to use a specific index](table-expressions.html#force-index-selection) (also known as "index hinting") or use an [inverted join hint](cost-based-optimizer.html#supported-join-algorithms).
 
@@ -89,13 +89,15 @@ Indexes create a trade-off: they greatly improve the speed of queries, but sligh
 
 ### Comparisons
 
+This section describes how to perform comparisons on `JSONB` and `ARRAY` columns.
+
 #### JSONB
 
 Inverted indexes on `JSONB` columns support the following comparison operators:
 
-- "is contained by": [`<@`](functions-and-operators.html#supported-operations)
-- "contains": [`@>`](functions-and-operators.html#supported-operations)
-- "equals": [`=`](functions-and-operators.html#supported-operations), but only when you've reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator.  For example:
+- **is contained by**: [`<@`](functions-and-operators.html#supported-operations)
+- **contains**: [`@>`](functions-and-operators.html#supported-operations)
+- **equals**: [`=`](functions-and-operators.html#supported-operations). You must reached into the JSON document with the [`->`](functions-and-operators.html#supported-operations) operator. For example:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -109,9 +111,9 @@ Inverted indexes on `JSONB` columns support the following comparison operators:
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
 
-If you require comparisons using [`<`](functions-and-operators.html#supported-operations)), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+If you require comparisons using [`<`](functions-and-operators.html#supported-operations)), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a standard index on that. To write a query where the value of `foo` is greater than three:
 
-1. Create your table with a computed column:
+1. Create a table with a computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -122,14 +124,14 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
         );
     ~~~
 
-2. Create an index on your computed column:
+2. Create an index on the computed column:
 
     {% include copy-clipboard.html %}
     ~~~ sql
     > CREATE INDEX test_idx ON test (foo);
     ~~~
 
-3. Execute your query with your comparison:
+3. Execute the query with the comparison:
 
     {% include copy-clipboard.html %}
     ~~~ sql
@@ -140,8 +142,8 @@ If you require comparisons using [`<`](functions-and-operators.html#supported-op
 
  Inverted indexes on [`ARRAY`](array.html) columns support the following comparison operators:
 
-- "is contained by": [`<@`](functions-and-operators.html#supported-operations)
-- "contains": [`@>`](functions-and-operators.html#supported-operations)
+- **is contained by**: [`<@`](functions-and-operators.html#supported-operations)
+- **contains**: [`@>`](functions-and-operators.html#supported-operations)
 
 ## Partial inverted indexes
 
@@ -364,13 +366,7 @@ Time: 2ms total (execution 2ms / network 0ms)
 
 ## See also
 
-- [`JSONB`](jsonb.html)
-- [`ARRAY`](array.html)
-- [JSON tutorial](demo-json-support.html)
-- [Computed Columns](computed-columns.html)
-- [`CREATE INDEX`](create-index.html)
-- [`DROP INDEX`](drop-index.html)
-- [`RENAME INDEX`](rename-index.html)
-- [`SHOW INDEX`](show-index.html)
 - [Indexes](indexes.html)
+- [`CREATE INDEX`](create-index.html)
+- [Computed Columns](computed-columns.html)
 - [SQL Statements](sql-statements.html)

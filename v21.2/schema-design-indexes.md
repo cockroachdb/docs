@@ -1,14 +1,16 @@
 ---
-title: Add Secondary Indexes
-summary: Best practices for working with secondary indexes in CockroachDB.
+title: Secondary Indexes
+summary: How and when to create secondary indexes in CockroachDB.
 toc: true
 ---
 
-This page provides best-practice guidance on creating indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
+Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
 
-{{site.data.alerts.callout_success}}
-For detailed reference documentation on the `CREATE INDEX` statement, including additional examples, see the [`CREATE INDEX` syntax page](create-index.html).
-{{site.data.alerts.end}}
+CockroachDB automatically creates an index on the table's [primary key](primary-key.html) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
+
+*Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
+
+This page provides best-practice guidance on creating secondary indexes, with a simple example based on Cockroach Labs' fictional vehicle-sharing company, [MovR](movr.html).
 
 ## Before you begin
 
@@ -20,16 +22,11 @@ Before reading this page, do the following:
 - [Create a database](schema-design-database.html).
 - [Create a user-defined schema](schema-design-schema.html).
 - [Create a table](schema-design-table.html).
+- Review the [best practices](#best-practices).
 
 ## Create a secondary index
 
-Indexes are [logical objects in a cluster](schema-design-overview.html#database-schema-objects) that help [CockroachDB queries](query-data.html) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
-
-CockroachDB automatically creates an index on the table's [primary key](primary-key.html) key columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
-
-*Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](unique.html).
-
-To add a secondary index to a table, do one of the following, following the [best practices listed below](#best-practices):
+To add a secondary index to a table do one of the following:
 
 - Add an `INDEX` clause to the end of a [`CREATE TABLE`](create-table.html#create-a-table-with-secondary-and-inverted-indexes) statement.
 
@@ -58,33 +55,68 @@ To add a secondary index to a table, do one of the following, following the [bes
     `{table_name}` | The name of the table.
     `{column_names}` | The name of the column to index, or a comma-separated list of names of the columns to index.
 
-For an example, see [below](#example).
+For an example, see [Example](#example).
 
 {{site.data.alerts.callout_info}}
-If you do not specify a name for an index, CockroachDB will generate a name.
-
-After creation, the notation for referring to indexes in CockroachDB is `{table_name}@{index_name}`.
+- If you do not specify a name for an index, CockroachDB will generate a name.
+- The notation for referring to an index is `{table_name}@{index_name}`.
 {{site.data.alerts.end}}
 
-### Best practices
+## Best practices
 
-Here are some best practices for creating indexes:
+Here are some best practices for creating and using indexes:
 
 - Index all columns that you plan to use for [sorting](order-by.html) or [filtering](select-clause.html#filter-rows) data.
 
-    Note that columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
+    Columns listed in a filtering [`WHERE` clause](select-clause.html#parameters) with the equality operators (`=` or `IN`) should come first in the index, before those referenced with inequality operators (`<`, `>`).
 
-- Avoid indexing on sequential values.
-
-    Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices), or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
+- Avoid indexing on sequential values. Writes to indexes with sequential keys can result in range hotspots that negatively affect performance. Instead, use [randomly generated unique IDs](performance-best-practices-overview.html#unique-id-best-practices) or [multi-column keys](performance-best-practices-overview.html#use-multi-column-primary-keys).
 
     If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/) blog post.
 
-- Avoid creating secondary indexes that you do not need, and [drop unused indexes](drop-index.html) whenever possible. Secondary indexes can slow down write performance and take up node memory.
+- Avoid creating secondary indexes that you do not need. Secondary indexes can slow down write performance and take up node memory.
 
-    Note that queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index. This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
+    Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can still use the index. However, queries that do not filter `(A)` will not benefit from the index. This feature also lets you avoid using single-column indexes. Instead, use the column as the first column in a multiple-column index, which is useful to more queries.
 
-    Also note that [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+    [`ALTER PRIMARY KEY`](alter-primary-key.html) creates a secondary index from the old primary key. If you need to [change a primary key](constraints.html#change-constraints), and you do not plan to filter queries on the old primary key column(s), do not use `ALTER PRIMARY KEY`. Instead, use [`DROP CONSTRAINT ... PRIMARY KEY`/`ADD CONSTRAINT ... PRIMARY KEY`](add-constraint.html#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+
+- [Drop unused indexes](drop-index.html) whenever possible.
+
+    To understand usage statistics for an index, query the <a href="performance-recipes-solutions.html?filters=indexusage"><code>crdb_internal.index_usage_statistics</code> table</a>.
+
+    To find which indexes are being used in a database, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html) table, which will show the total reads and time the primary and secondary indexes were last read.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT * FROM crdb_internal.index_usage_statistics;
+    ~~~
+
+    To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT ti.descriptor_name as table_name, ti.index_name, total_reads, last_read
+    FROM crdb_internal.index_usage_statistics AS us
+    JOIN crdb_internal.table_indexes ti
+    ON us.index_id = ti.index_id
+    AND us.table_id = ti.descriptor_id
+    ORDER BY total_reads ASC;
+    ~~~
+
+    ~~~
+              table_name         |                  index_name                   | total_reads |           last_read
+-----------------------------+-----------------------------------------------+-------------+--------------------------------
+  vehicle_location_histories | primary                                       |           1 | 2021-09-28 22:59:03.324398+00
+  rides                      | rides_auto_index_fk_city_ref_users            |           1 | 2021-09-28 22:59:01.500962+00
+  rides                      | rides_auto_index_fk_vehicle_city_ref_vehicles |           1 | 2021-09-28 22:59:02.470526+00
+  user_promo_codes           | primary                                       |         456 | 2021-09-29 00:01:17.063418+00
+  promo_codes                | primary                                       |         910 | 2021-09-29 00:01:17.062319+00
+  vehicles                   | primary                                       |        3591 | 2021-09-29 00:01:18.261658+00
+  users                      | primary                                       |        5401 | 2021-09-29 00:01:18.260198+00
+  rides                      | primary                                       |       45658 | 2021-09-29 00:01:18.258208+00
+  vehicles                   | vehicles_auto_index_fk_city_ref_users         |       87119 | 2021-09-29 00:01:19.071476+00
+(9 rows)
+    ~~~
 
 - Use a [`STORING` clause](create-index.html#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
 
@@ -92,13 +124,13 @@ Here are some best practices for creating indexes:
 
 - Review the [specialized indexes that CockroachDB supports](schema-design-overview.html#specialized-indexes), and decide if you need to create a specialized index instead of a standard index.
 
-- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#controlling-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](schema-design-overview.html#control-access-to-objects), with fewer privileges, following [authorization best practices](authorization.html#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
 
 - {% include {{page.version.version}}/sql/dev-schema-changes.md %}
 
 - {% include {{page.version.version}}/sql/dev-schema-change-limits.md %}
 
-### Example
+## Example
 
 Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.
 

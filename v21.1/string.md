@@ -134,6 +134,7 @@ Type | Details
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
+`UUID` | Requires supported [`UUID`](uuid.html) string format, e.g., `'63616665-6630-3064-6465-616462656562'`.
 
 ### `STRING` vs. `BYTES`
 
@@ -163,14 +164,14 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
-#### Translating literals to `STRING` vs. `BYTES`
+#### Translate literals to `STRING` vs. `BYTES`
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 
 + `BYTES` give a special meaning to the pair `\x` at the beginning, and translates the rest by substituting pairs of hexadecimal digits to a single byte. For example, `\xff` is equivalent to a single byte with the value of 255. For more information, see [SQL Constants: String literals with character escapes](sql-constants.html#string-literals-with-character-escapes).
 + `STRING` does not give a special meaning to `\x`, so all characters are treated as distinct Unicode code points. For example, `\xff` is treated as a `STRING` with length 4 (`\`, `x`, `f`, and `f`).
 
-### Concatenating `STRING` values with values of other types
+### Concatenate `STRING` values with values of other types
 
 <span class="version-tag">New in v21.1</span> `STRING` values can be concatenated with any non-`ARRAY`, non-`NULL` type, resulting in a `STRING` value.
 

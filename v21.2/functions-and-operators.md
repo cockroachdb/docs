@@ -32,7 +32,7 @@ functions but have special evaluation rules:
  `IF(...)` | [Conditional Evaluation](scalar-expressions.html#if-expressions)
  `IFNULL(...)` | Alias for `COALESCE` restricted to two operands
  `NULLIF(...)` | [Return `NULL` conditionally](scalar-expressions.html#nullif-expressions)
- `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructor)
+ `ROW(...)` | [Tuple Constructor](scalar-expressions.html#tuple-constructors)
 
 ## Built-in functions
 

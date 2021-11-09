@@ -134,6 +134,7 @@ Type | Details
 `INTERVAL` | Requires supported [`INTERVAL`](interval.html) string format, e.g., `'1h2m3s4ms5us6ns'`.
 `TIME` | Requires supported [`TIME`](time.html) string format, e.g., `'01:22:12'` (microsecond precision).
 `TIMESTAMP` | Requires supported [`TIMESTAMP`](timestamp.html) string format, e.g., `'2016-01-25 10:10:10.555555'`.
+`UUID` | Requires supported [`UUID`](uuid.html) string format, e.g., `'63616665-6630-3064-6465-616462656562'`.
 
 ### `STRING` vs. `BYTES`
 
@@ -163,7 +164,7 @@ While both `STRING` and `BYTES` can appear to have similar behavior in many situ
 
 In this case, [`LENGTH(string)`](functions-and-operators.html#string-and-byte-functions) measures the number of Unicode code points present in the string, whereas [`LENGTH(bytes)`](functions-and-operators.html#string-and-byte-functions) measures the number of bytes required to store that value. Each character (or Unicode code point) can be encoded using multiple bytes, hence the difference in output between the two.
 
-#### Translating literals to `STRING` vs. `BYTES`
+#### Translate literals to `STRING` vs. `BYTES`
 
 A literal entered through a SQL client will be translated into a different value based on the type:
 
