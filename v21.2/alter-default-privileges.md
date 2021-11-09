@@ -20,7 +20,7 @@ For an example, see [Grant default privileges to a specific role](#grant-default
 ## Synopsis
 
 <div>
-{% include {{ page.version.version }}/sql/generated/diagrams/alter_default_privileges.html %}
+{% remote_include https://raw.githubusercontent.com/cockroachdb/generated-diagrams/release-21.2/grammar_svg/alter_default_privileges.html %}
 </div>
 
 ### Parameters
@@ -276,7 +276,7 @@ SQLSTATE: 42501
 
 `cockroachlabs` created the `tracks` table after revoking default `SELECT` privileges from `max`. As a result, `max` never had `SELECT` privileges on `tracks`.
 
-Note that, because `max` has no default privileges, the user can now be dropped:
+Because `max` has no default privileges, the user can now be dropped:
 
 {% include copy-clipboard.html %}
 ~~~ sql

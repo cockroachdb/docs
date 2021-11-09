@@ -192,7 +192,7 @@ To view the default privileges for a role, or for a set of roles, use the [`SHOW
 
 To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement.
 
-Note that the creator of an object is also the object's [owner](authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
+The creator of an object is also the object's [owner](authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
 
 For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#examples) statement pages.
 
