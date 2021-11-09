@@ -24,17 +24,17 @@ If you run into problems with this integration, please file an issue on the [Dat
 This tutorial assumes that you have [started a secure CockroachDB cluster](secure-a-cluster.html). Note that [{{ site.data.products.serverless }}](../cockroachcloud/index.html) does not currently expose a compatible monitoring endpoint.
 {{site.data.alerts.end}}
 
-## Step 1. Enable CockroachDB check
+## Step 1. Enable CockroachDB Integration
 
-To enable the CockroachDB check for your installed Datadog Agent, navigate to the [Integrations page](https://app.datadoghq.com/account/settings#integrations) and find CockroachDB in the list of available integrations. Click **+ Install**.
+To enable the CockroachDB check for your installed Datadog Agent, navigate to the [Integrations page](https://app.datadoghq.com/account/settings#integrations) and find CockroachDB in the list of available integrations. Hover over the icon and click **+ Install**.
 
 <img src="{{ 'images/v21.1/datadog-crdb-integration.png' | relative_url }}" alt="CockroachDB integration for Datadog installation" style="border:1px solid #eee;max-width:100%" />
 
 Note that you must restart the Datadog Agent for the change to take effect. CockroachDB will then be listed as an installed integration.
 
-## Step 2. Configure CockroachDB check
+## Step 2. Configure Datadog Agent for CockroachDB
 
-Follow the steps in the [Datadog documentation](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#configuration) to access and edit your `cockroachdb.d/conf.yaml` file.
+Follow the steps in the [Datadog documentation](https://docs.datadoghq.com/integrations/cockroachdb/?tab=host#configuration) to access and edit your `cockroachdb.d/conf.yaml` file in your Datadog config `conf.d/` directory.  See the sample [`cockroachdb.d/conf.yaml`](https://github.com/DataDog/integrations-core/blob/master/cockroachdb/datadog_checks/cockroachdb/data/conf.yaml.example) for all available options.
 
 After making the following changes, restart the Datadog Agent to apply them.
 
@@ -89,7 +89,9 @@ Log collection is disabled by default in the Datadog Agent. Follow the steps in 
 
 ## Step 3. Verify Datadog connection to CockroachDB
 
-Run the Datadog [`status` subcommand](https://docs.datadoghq.com/agent/guide/agent-commands/?tab=agentv6v7#agent-information) for your platform to verify that the CockroachDB integration is properly connected.
+Ensure that you have restarted the Datadog Agent to apply your configuration changes.
+
+Run the Datadog Agent [`status` subcommand](https://docs.datadoghq.com/agent/guide/agent-commands/?tab=agentv6v7#agent-information) for your platform to verify that the CockroachDB integration is properly connected.
 
 Your output should contain a block like this:
 
@@ -125,7 +127,7 @@ This sample dashboard presents metrics on cluster availability, query performanc
 <img src="{{ 'images/v21.1/datadog-crdb-overview-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for Datadog" style="border:1px solid #eee;max-width:100%" />
 
 {{site.data.alerts.callout_info}}
-To create your own CockroachDB dashboard, you can clone the CockroachDB Overview dashboard and add/remove widgets.
+If you wish to customize your CockroachDB dashboard, it's recommended that you clone the default CockroachDB Overview dashboard before adding and removing widgets.  If you leave the default dashboard intact, Datadog will update it when new versions of the Integration's dashboard are released.
 {{site.data.alerts.end}}
 
 ## Step 4. Run a sample workload
@@ -150,7 +152,7 @@ The query metrics will appear on the dashboard:
 
 <img src="{{ 'images/v21.1/datadog-crdb-workload-dashboard.png' | relative_url }}" alt="CockroachDB Overview dashboard for Datadog with SQL metrics" style="border:1px solid #eee;max-width:100%" />
 
-## Step 5. Add alerting
+## Step 5. Add Monitoring and Alerting
 
 Follow the steps in the [Datadog documentation](https://docs.datadoghq.com/monitors/monitor_types/) to create a new Monitor.
 
