@@ -147,7 +147,7 @@ We recommend the following best practices to set up access control for your clus
 
  <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)):
 
-- Run bulk `ROLE` operations inside of a transaction.
+- Run bulk `ROLE` operations inside a transaction.
 - Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
 
 ## Example
