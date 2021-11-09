@@ -97,6 +97,12 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
 ## Unresolved limitations
 
+### Optimizer stale statistics deletion when columns are dropped
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.

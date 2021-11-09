@@ -171,6 +171,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ## Unresolved limitations
 
+### Optimizer stale statistics deletion when columns are dropped
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+
 ### `BACKUP` of multi-region tables
 
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
