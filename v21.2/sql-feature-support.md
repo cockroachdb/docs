@@ -80,11 +80,12 @@ table tr td:nth-child(2) {
  Multi-column indexes | ✓ | Common Extension | We do not limit on the number of columns indexes can include
  Covering indexes | ✓ | Common Extension | [Storing Columns documentation](create-index.html#store-columns)
  Inverted indexes | ✓ | Common Extension | [Inverted Indexes documentation](inverted-indexes.html)
- Partial indexes | ✓ | Common Extension |  [Partial indexes documentation](partial-indexes.html)
- Spatial indexes | ✓ | Common Extension |  [Spatial indexes documentation](spatial-indexes.html)
+ Partial indexes | ✓ | Common Extension | [Partial indexes documentation](partial-indexes.html)
+ Spatial indexes | ✓ | Common Extension | [Spatial indexes documentation](spatial-indexes.html)
  Multiple indexes per query | Partial | Common Extension | [Index selection](indexes.html#selection)
- Full-text indexes | Planned | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
- Prefix and Expression Indexes | ✗ | Common Extension | [Expression indexes](expression-indexes.html)
+ Full-text indexes | ✗ | Common Extension | [GitHub issue tracking full-text index support](https://github.com/cockroachdb/cockroach/issues/7821)
+ Expression Indexes | ✓ | Common Extension | [Expression indexes](expression-indexes.html)
+ Prefix Indexes | ✗ | Common Extension | Implement using [Expression indexes](expression-indexes.html)
  Hash indexes | ✗ | Common Extension | Improves performance of queries looking for single, exact values
 
 ### Schema changes
