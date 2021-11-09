@@ -169,6 +169,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
+### `SET` does not `ROLLBACK` in a transaction
+
+{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+
 ## Unresolved limitations
 
 ### `BACKUP` of multi-region tables
