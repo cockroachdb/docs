@@ -169,6 +169,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
+### Locality-optimized search only works for queries selecting a limited number of records
+
+{% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
+
 ## Unresolved limitations
 
 ### `BACKUP` of multi-region tables
