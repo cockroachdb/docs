@@ -138,6 +138,64 @@ Take the following points into consideration while granting privileges to roles 
 - The `root` user automatically belongs to the `admin` role and has the `ALL` privilege for new databases.
 - For privileges required by specific statements, see the documentation for the respective [SQL statement](sql-statements.html).
 
+### Default privileges
+
+<span class="version-tag">New in v21.2</span>: By default, CockroachDB grants the current role/user `ALL` privileges on the objects that they create.
+
+For example, suppose a cluster contains a role named `cockroachlabs`, and a user named `max` is a member of the `cockroachlabs` role:
+
+~~~
+root@localhost:26257/defaultdb> show roles;
+    username    | options |    member_of
+----------------+---------+------------------
+  admin         |         | {}
+  cockroachlabs |         | {}
+  max           |         | {cockroachlabs}
+  root          |         | {admin}
+(4 rows)
+~~~
+
+If a user connects to the cluster as `cockroachlabs` and creates a table named `albums`, then any user that is also a member of the `cockroachlabs` role will have `ALL` privileges on that table:
+
+~~~
+cockroachlabs@localhost:26257/db> CREATE TABLE albums (
+        id UUID PRIMARY KEY,
+        title STRING,
+        length DECIMAL,
+        tracklist JSONB
+);
+~~~
+
+~~~
+max@localhost:26257/db> ALTER TABLE albums ADD COLUMN year INT;
+ALTER TABLE
+
+
+Time: 1.137s total (execution 1.137s / network 0.000s)
+
+max@localhost:26257/db> SHOW CREATE TABLE albums;
+  table_name |                     create_statement
+-------------+------------------------------------------------------------
+  albums     | CREATE TABLE public.albums (
+             |     id UUID NOT NULL,
+             |     title STRING NULL,
+             |     length DECIMAL NULL,
+             |     tracklist JSONB NULL,
+             |     year INT8 NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+             |     FAMILY "primary" (id, title, length, tracklist, year)
+             | )
+(1 row)
+~~~
+
+To view the default privileges for a role, or for a set of roles, use the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html) statement.
+
+To change the default privileges on objects that a user creates, use the [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) statement.
+
+The creator of an object is also the object's [owner](authorization.html#object-ownership). Any roles that are members of the owner role have `ALL` privileges on the object, independent of the default privileges. Altering the default privileges of objects created by a role does not affect that role's privileges as the object's owner. The default privileges granted to other users/roles are always in addition to the ownership (i.e., `ALL`) privileges given to the creator of the object.
+
+For more examples of default privileges, see the examples on the [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html#examples) and [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html#examples) statement pages.
+
 ## Authorization best practices
 
 We recommend the following best practices to set up access control for your clusters:
