@@ -203,6 +203,11 @@ We recommend the following best practices to set up access control for your clus
 - Use the `root` user only for database administration tasks such as creating and managing other [users](#sql-users), creating and managing [roles](#roles), and creating and managing databases. Do not use the `root` user for applications; instead, create users or roles with specific [privileges](#assign-privileges) based on your application’s access requirements.
 - Use the ["least privilege model"](https://en.wikipedia.org/wiki/Principle_of_least_privilege) to grant privileges to users and roles.
 
+ <span class="version-tag">New in v21.2</span>: For improved performance, CockroachDB securely caches [authentication information for users](authentication.html#client-authentication). To limit the authentication latency of users logging into a new session, we recommend the following best practices for `ROLE` operations ([`CREATE ROLE`](create-role.html), [`ALTER ROLE`](alter-role.html), [`DROP ROLE`](drop-role.html)):
+
+- Run bulk `ROLE` operations inside a transaction.
+- Run regularly-scheduled `ROLE` operations together, rather than at different times throughout the day.
+
 ## Example
 
 <div class="filters clearfix">
