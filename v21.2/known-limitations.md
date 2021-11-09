@@ -410,12 +410,6 @@ SQLSTATE: 0A000
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 
-### `INSERT ON CONFLICT` vs. `UPSERT`
-
-When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
-
-This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
-
 ### Size limits on statement input from SQL clients
 
 CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
