@@ -265,7 +265,7 @@ For more information about the relationship between these levels, see [this pape
 
 ## Limit the number of rows written or read in a transaction
 
-You can configure cluster and sessions to limit the number of rows written or read in a transaction. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
+You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
 
 Use the [cluster](cluster-settings.html) and [session](set-vars.html) settings `sql.defaults.transaction_rows_written_log`,
 `sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
