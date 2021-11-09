@@ -263,6 +263,27 @@ The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMI
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
+## Limit the number of rows written or read in a transaction
+
+You can configure cluster and sessions to limit the number of rows written or read in a transaction. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
+
+Use the [cluster](cluster-settings.html) and [session](set-vars.html) settings `sql.defaults.transaction_rows_written_log`,
+`sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
+`sql.defaults.transaction_rows_read_err` to limit the number of rows written or read in a
+transaction. When the `log` limit is reached, the transaction is logged to the `SQL_PERF` channel.
+When the `err` limit is reached the transaction is rejected. The limits are enforced after each
+statement of a transaction has been fully executed.
+
+The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`,
+and `DELETE` SQL statements. The "read" limits apply to the `SELECT`
+statement in addition to the statements subject to the "write" limits. The limits **do not**
+apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`,
+`RESTORE`, or `CREATE STATISTICS` statements.
+
+{{site.data.alerts.callout_info}}
+Enabling `transaction_rows_read_err` disables the auto commit optimization for mutation statements in implicit transactions. For write limits CockroachDB can count how many rows have been modified before using the auto commit optimization. However, for read limits CockroachDB doesn't have that information on the write path, so must disable the auto commit.
+{{site.data.alerts.end}}
+
 ## See also
 
 - [`BEGIN`](begin-transaction.html)
