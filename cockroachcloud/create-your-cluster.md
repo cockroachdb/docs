@@ -79,7 +79,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 
 1. Select the **Storage**.
 
-    You can choose up to 150GiB per vCPU. When selecting your storage capacity, consider the following factors:
+    You can choose up to 150GiB per vCPU. Each GiB of storage costs $0.0 per hour and comes with 00 IOPS at a cost of $0.0 per hour. When selecting your storage capacity, consider the following factors:
     
     Factor | Description
     ----------|------------
