@@ -574,21 +574,3 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Inverted index scans can't be generated for some statement filters
-
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
-
-~~~ sql
-SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';
-~~~
-
-CockroachDB v20.1 and earlier would generate index scans for these filters, though it is not recommended as the normalization rules used to convert the filters into JSON containment expressions would sometimes produce inequivalent expressions.
-
-The workaround is to rewrite the statement filters to avoid using both JSON fetch values and containment operators. The following statement is index-accelerated and equivalent to the non-accelerated statement above:
-
-~~~ sql
-SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
