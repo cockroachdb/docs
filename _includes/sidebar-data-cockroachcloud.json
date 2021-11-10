@@ -39,9 +39,9 @@
       	  "urls": [
             "/cockroachcloud/hello-world-example-apps.html"
         	  ]
-        	}
-        ]
-      },
+        }
+      ]
+    },
     {
       "title": "Use Your Cluster",
       "items": [

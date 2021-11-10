@@ -1,5 +1,5 @@
 ---
-title: Performance tuning recipes
+title: Performance Tuning Recipes
 summary: Identifying and fixing common performance problems
 toc: true
 toc_not_nested: true

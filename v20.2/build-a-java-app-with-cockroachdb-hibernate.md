@@ -49,16 +49,16 @@ The contents of `Sample.java`:
 
 {% include_cached copy-clipboard.html %}
 ~~~ java
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-java-hibernate/master/src/main/java/com/cockroachlabs/Sample.java %}
 ~~~
 
 ### Get the code
 
-Clone the `hello-world-java-hibernate` repo to your machine:
+Clone the `example-app-java-hibernate` repo to your machine:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-git clone https://github.com/cockroachlabs/hello-world-java-hibernate/
+git clone https://github.com/cockroachlabs/example-app-java-hibernate/
 ~~~
 
 {{site.data.alerts.callout_info}}

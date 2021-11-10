@@ -27,6 +27,7 @@ Command | Usage
 [`cockroach version`](cockroach-version.html) | Output CockroachDB version details.
 [`cockroach debug ballast`](cockroach-debug-ballast.html) | Create a large, unused file in a node's storage directory that you can delete if the node runs out of disk space.
 [`cockroach debug encryption-active-key`](cockroach-debug-encryption-active-key.html) | View the encryption algorithm and store key.
+[`cockroach debug job-trace`](cockroach-debug-job-trace.html) | Generate trace payloads for an executing job from a particular node.
 [`cockroach debug zip`](cockroach-debug-zip.html) | Generate a `.zip` file that can help Cockroach Labs troubleshoot issues with your cluster.
 [`cockroach debug merge-logs`](cockroach-debug-merge-logs.html) | Merge multiple log files from different machines into a single stream.
 [`cockroach workload`](cockroach-workload.html) | Run a built-in load generator against a cluster.

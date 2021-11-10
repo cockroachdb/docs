@@ -16,7 +16,8 @@ Since the keywords `ROLE` and `USER` can now be used interchangeably in SQL stat
 
 ## Required privileges
 
- To alter other roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
+- To alter an [`admin` role](authorization.html#admin-role), the user must be a member of the `admin` role.
+- To alter other roles, the user must be a member of the `admin` role or have the [`CREATEROLE`](create-role.html#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) role option set.
 
 ## Synopsis
 
@@ -37,7 +38,7 @@ Parameter | Description
 `role_name` | Specify the name of the role that you want to alter.
 `WITH role_option` | Apply a [role option](#role-options) to the role.
 `SET var_name ... var_value` | <span class="version-tag">New in v21.2</span>: Set default [session variable](set-vars.html) values for a role.
-`RESET session_var`<br>`RESET ALL` | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
+`RESET session_var`<br>`RESET ALL` <a name="parameters-reset"></a> | <span class="version-tag">New in v21.2</span>: Reset one session variable or all session variables to the default value.
 `IN DATABASE database_name` | <span class="version-tag">New in v21.2</span>: Specify a database for which to apply session variable defaults.<br>When `IN DATABASE` is not specified, the default session variable values apply for a role in all databases.<br>Note that, in order for a session to initialize session variable values to database defaults, the database must be specified as a [connection parameter](connection-parameters.html). Database default values will not appear if the database is set after connection with `USE <dbname>`/`SET database=<dbname>`.
 `ROLE ALL ...`/`USER ALL ...` | <span class="version-tag">New in v21.2</span>: Apply session variable settings to all roles.
 
@@ -262,3 +263,4 @@ root@:26257/movr> SHOW timezone;
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)
+- [Authorization Best Practices](authorization.html#authorization-best-practices)

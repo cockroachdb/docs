@@ -159,50 +159,27 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59649)
 
+### Using `RESTORE` with multi-region table localities
+
+* {% include {{ page.version.version }}/known-limitations/rbr-restore-no-support.md %}
+
+* {% include {{ page.version.version }}/known-limitations/restore-tables-non-multi-reg.md %}
+
+* {% include {{ page.version.version }}/known-limitations/restore-multiregion-match.md %}
+
+[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+
+### `JSONB`/`JSON` comparison operators are not implemented
+
+{% include {{page.version.version}}/sql/jsonb-comparison.md %}
+
 ## Unresolved limitations
 
-### `IMPORT` into a `REGIONAL BY ROW` table
+### Optimizer stale statistics deletion when columns are dropped
 
-CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
 
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/61133)
-
-To work around this limitation, you will need to take the following steps:
-
-1. In the source database, export the [`crdb_region` column](set-locality.html#crdb_region) separately when exporting your data.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    EXPORT INTO CSV 'nodelocal://0/src_rbr' FROM SELECT crdb_region, i from src_rbr;
-    ~~~
-
-    For more information about the syntax, see [`EXPORT`](export.html).
-
-1. In the destination database, create a table that has a `crdb_region` column of the right type as shown below.
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    CREATE TABLE dest_rbr (crdb_region public.crdb_internal_region NOT NULL, i INT);
-    ~~~
-
-1. Import the data (including the `crdb_region` column explicitly) using [`IMPORT INTO`](import-into.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    IMPORT INTO dest_rbr (crdb_region, i) CSV DATA ('nodelocal://0/src_rbr/export*.csv')
-    ~~~
-
-1. Convert the destination table to `REGIONAL BY ROW` using [`ALTER TABLE ... ALTER COLUMN`](alter-column.html) and [`ALTER TABLE ... SET LOCALITY`](set-locality.html):
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    ALTER TABLE dest_rbr ALTER COLUMN crdb_region SET DEFAULT default_to_database_primary_region(gateway_region())::public.crdb_internal_region;
-    ~~~
-
-    {% include copy-clipboard.html %}
-    ~~~ sql
-    ALTER TABLE dest_rbr SET LOCALITY REGIONAL BY ROW AS crdb_region;
-    ~~~
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
 ### `BACKUP` of multi-region tables
 
@@ -443,12 +420,6 @@ SQLSTATE: 0A000
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
 
-### `INSERT ON CONFLICT` vs. `UPSERT`
-
-When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
-
-This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
-
 ### Size limits on statement input from SQL clients
 
 CockroachDB imposes a hard limit of 16MiB on the data input for a single statement passed to CockroachDB from a client (including the SQL shell). We do not recommend attempting to execute statements from clients with large input.
@@ -609,22 +580,3 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Inverted index scans can't be generated for some statement filters
-
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
-
-~~~ sql
-SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';
-~~~
-
-CockroachDB v20.1 and earlier would generate index scans for these filters, though it is not recommended as the normalization rules used to convert the filters into JSON containment expressions would sometimes produce inequivalent expressions.
-
-The workaround is to rewrite the statement filters to avoid using both JSON fetch values and containment operators. The following statement is index-accelerated and equivalent to the non-accelerated statement above:
-
-~~~ sql
-SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)
-

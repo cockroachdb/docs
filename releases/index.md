@@ -36,13 +36,12 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
         <td>
             <a href="{{ release.version }}.html">{{ release.version }}</a>
             {% if release.latest %}
-                <span class="badge-new">Latest</span
+                <span class="badge-new">Latest</span>
             {% endif %}
         </td>
         <td>{{ release.date }}</td>
         {% if release.withdrawn %}
             <td class="os-release-cell"><span class="badge badge-gray">Withdrawn</span></td>
-            <td></td>
         {% else %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">

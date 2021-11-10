@@ -37,7 +37,7 @@ $ npm install sequelize sequelize-cockroachdb
 
 ## Step 4. Get the code
 
-<a href="https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/hello-world-node-sequelize).
+<a href="https://raw.githubusercontent.com/cockroachlabs/example-app-node-sequelize/main/app.js">Download the sample code directly</a>, or clone [the code's GitHub repository](https://github.com/cockroachlabs/example-app-node-sequelize).
 
 ## Step 5. Update the connection parameters
 
@@ -72,7 +72,7 @@ The following code uses the [Sequelize](https://sequelize.org/) ORM to map Node.
 
 {% include copy-clipboard.html %}
 ~~~ js
-{% remote_include https://raw.githubusercontent.com/cockroachlabs/hello-world-node-sequelize/main/app.js %}
+{% remote_include https://raw.githubusercontent.com/cockroachlabs/example-app-node-sequelize/main/app.js %}
 ~~~
 
 To run the code:

@@ -161,6 +161,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ## Unresolved limitations
 
+### Optimizer stale statistics deletion when columns are dropped
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+
 ### `IMPORT` into a `REGIONAL BY ROW` table
 
 CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
@@ -442,12 +448,6 @@ SQLSTATE: 0A000
 ### Schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
-
-### `INSERT ON CONFLICT` vs. `UPSERT`
-
-When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
-
-This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
 
 ### Size limits on statement input from SQL clients
 

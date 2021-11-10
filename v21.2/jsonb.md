@@ -17,17 +17,13 @@ In CockroachDB, `JSON` is an alias for `JSONB`.
 
 ## Considerations
 
-- The [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) cannot be used on `JSONB` values.
-- A standard [index](indexes.html) cannot be created on a `JSONB` column; you must use an [inverted index](inverted-indexes.html).
-- CockroachDB does not currently key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
+- You cannot use [primary key](primary-key.html), [foreign key](foreign-key.html), and [unique](unique.html) [constraints](constraints.html) on `JSONB` values.
+- To [index](indexes.html) a `JSONB` column you can use an [inverted index](inverted-indexes.html) or [index an expression on the column](expression-indexes.html#use-an-expression-to-index-a-field-in-a-jsonb-column).
+- CockroachDB does not key-encode JSON values. As a result, tables cannot be [ordered by](order-by.html) `JSONB`/`JSON`-typed columns.
 
 ## Syntax
 
-The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). A constant value of type `JSONB` can be expressed using an
-[interpreted literal](sql-constants.html#interpreted-literals) or a
-string literal
-[annotated with](scalar-expressions.html#explicitly-typed-expressions)
-type `JSONB`.
+The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](sql-constants.html#interpreted-literals) or a string literal [annotated with](scalar-expressions.html#explicitly-typed-expressions) type `JSONB`.
 
 There are six types of `JSONB` values:
 
@@ -47,7 +43,7 @@ Examples:
 
 ## Size
 
-The size of a `JSONB` value is variable, but it's recommended to keep values under 1 MB to ensure performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](https://en.wikipedia.org/wiki/Write_amplification) and other considerations may cause significant performance degradation.
 
 ## Functions
 
@@ -75,11 +71,11 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
-For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
+{% include {{page.version.version}}/sql/jsonb-comparison.md %}
 
 ## Examples
 
-### Create a Table with a `JSONB` Column
+### Create a table with a `JSONB` column
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -203,6 +199,7 @@ You can use the `@>` operator to filter the values in key-value pairs to return 
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
+
 ### Group and order `JSONB` values
 
 To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses with the `->>` operator. For example, organize the `first_name` values from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
@@ -230,7 +227,7 @@ For this example, we will add a few more records to the existing table. This wil
   Lola       | Seoul
 ~~~
 
-Now let’s group and order the data.
+Now let's group and order the data.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -249,7 +246,6 @@ The `->>` operator returns `STRING` and uses string comparison rules to order th
 
 For the full list of functions and operators we support, see [Functions and Operators](functions-and-operators.html).
 
-
 ### Create a table with a `JSONB` column and a computed column
 
 {% include {{ page.version.version }}/computed-columns/jsonb.md %}
@@ -260,11 +256,13 @@ For the full list of functions and operators we support, see [Functions and Oper
 
 ## Supported casting and conversion
 
-All `JSONB` values can be [cast](data-types.html#data-type-conversions-and-casts) to the following data type:
+This section describes how to cast and convert `JSONB` values.
+
+You can [cast](data-types.html#data-type-conversions-and-casts) all `JSONB` values to the following data type:
 
 - [`STRING`](string.html)
 
- Numeric `JSONB` values can be cast to the following numeric data types:
+You can cast numeric `JSONB` values to the following numeric data types:
 
 - [`DECIMAL`](decimal.html)
 - [`FLOAT`](float.html)
@@ -308,7 +306,7 @@ For example:
 (1 row)
 ~~~
 
-The [`parse_timestamp` function](functions-and-operators.html) is used to parse strings in `TIMESTAMP` format.
+You use the [`parse_timestamp` function](functions-and-operators.html) to parse strings in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -322,7 +320,7 @@ SELECT parse_timestamp ('2021-09-28T10:53:25.160Z');
 (1 row)
 ~~~
 
-The `parse_timestamp` function can be used to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
+You can use the `parse_timestamp` function to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -354,10 +352,12 @@ Time: 9ms total (execution 9ms / network 0ms)
 Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
+
 ## See also
 
 - [JSON tutorial](demo-json-support.html)
 - [Inverted Indexes](inverted-indexes.html)
+- [Expression Indexes](expression-indexes.html)
 - [Computed Columns](computed-columns.html)
 - [Data Types](data-types.html)
 - [Functions and Operators](functions-and-operators.html)

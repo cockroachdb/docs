@@ -131,26 +131,71 @@ At each iteration, the selection query returns the primary key values of up to 2
 {{site.data.alerts.callout_info}}
 CockroachDB records the timestamp of each row created in a table in the `crdb_internal_mvcc_timestamp` metadata column. In the absence of an explicit timestamp column in your table, you can use `crdb_internal_mvcc_timestamp` to filter expired data.
 
-`crdb_internal_mvcc_timestamp` cannot be indexed. As a result, we recommend following the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column) if you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes.
+`crdb_internal_mvcc_timestamp` cannot be indexed. If you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes, you must follow the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column).
 
-**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB.**
+**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression](add-column.html#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
 {{site.data.alerts.end}}
 
 ## Batch-delete "expired" data
 
 CockroachDB does not support Time to Live (TTL) on table rows. To delete "expired" rows, we recommend automating a batch delete process using a job scheduler like `cron`.
 
-For example, suppose that every morning you want to delete all rows in the [`tpcc`](cockroach-workload.html#tpcc-workload) `history` table that are older than a month. To do this, you could use the example Python script that [batch deletes on the non-indexed `h_date` column](#batch-delete-on-a-non-indexed-column).
+For example, suppose that every morning you want to delete all rows in the [`rides` table](movr.html#the-movr-database) in the [`movr` database](movr.html) that are older than a month. To do this, you could write a Python script that batch-deletes rows based on the values of an indexed [`TIMESTAMPTZ`](timestamp.html) column, and then run the script with a daily `cron` job.
 
-To run the script with a daily `cron` job:
+1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](add-column.html#on-update-expressions):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    USE movr;
+    ALTER TABLE rides ADD COLUMN last_updated TIMESTAMPTZ DEFAULT now() ON UPDATE now();
+    ~~~
+
+1. To improve `DELETE` performance, index the `TIMESTAMPTZ` column. We recommend using a [hash-sharded index](hash-sharded-indexes.html) to reduce bottlenecks, as `TIMESTAMPTZ` values are [sequentially stored in ranges](architecture/distribution-layer.html#range-splits):
+
+    {% include copy-clipboard.html %}
+    ~~~ sql
+    SET experimental_enable_hash_sharded_indexes=on;
+    CREATE INDEX ON rides(last_updated) USING HASH WITH BUCKET_COUNT=8;
+    ~~~
+
+1. Write a script with a batch-delete loop, following the [batch delete on an indexed column pattern](#batch-delete-on-an-indexed-column):
+
+    {% include copy-clipboard.html %}
+    ~~~ python
+    #!/usr/bin/env python3
+
+    import psycopg2
+    import psycopg2.sql
+    import os
+    import datetime
+
+    conn = psycopg2.connect(os.environ.get('DB_URI'))
+    filter = datetime.datetime.utcnow() - datetime.timedelta(days=30)
+    lastrow = None
+
+    while True:
+      with conn:
+        with conn.cursor() as cur:
+            if lastrow:
+                filter = lastrow[0]
+            cur.execute("DELETE FROM rides WHERE last_updated < %s ORDER BY last_updated DESC LIMIT 5000 RETURNING last_updated", [filter])
+            print(cur.statusmessage)
+            if cur.rowcount == 0:
+                break
+            lastrow = cur.fetchone()
+
+    conn.close()
+    ~~~
 
 1. Make the file executable:
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ chmod +x cleanup.py
     ~~~
 
-2. Create a new `cron` job:
+1. Create a new `cron` job:
+
     {% include copy-clipboard.html %}
     ~~~ shell
     $ crontab -e
@@ -158,7 +203,7 @@ To run the script with a daily `cron` job:
 
     {% include copy-clipboard.html %}
     ~~~ txt
-    30 10 * * * DB_URI='cockroachdb://user@host:26257/bank' cleanup.py >> ~/cron.log 2>&1
+    30 10 * * * DB_URI='cockroachdb://user@host:26257/movr' cleanup.py >> ~/cron.log 2>&1
     ~~~
 
 Saving the `cron` file will install a new job that runs the `cleanup.py` file every morning at 10:30 A.M., writing the results to the `cron.log` file.

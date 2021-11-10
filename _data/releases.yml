@@ -26,6 +26,8 @@
       version: v21.1.1
     - date: May 18, 2021
       version: v21.1.0
+    - date: Nov 08, 2021
+      version: v20.2.18
     - date: Oct 11, 2021
       version: v20.2.17
     - date: Sep 13, 2021
@@ -276,6 +278,8 @@
       no_windows: true
 - title: Testing releases
   releases:
+    - date: Nov 1, 2021
+      version: v21.2.0-rc.3
     - date: Oct 25, 2021
       version: v21.2.0-rc.2
     - date: Oct 18, 2021

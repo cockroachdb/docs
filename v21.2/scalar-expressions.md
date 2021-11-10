@@ -5,18 +5,17 @@ toc: true
 key: sql-expressions.html
 ---
 
-Most SQL statements can contain *scalar expressions* that compute new
-values from data.  For example, in the query `SELECT ceil(price) FROM
-items`, the expression `ceil(price)` computes the rounded-up value of
+Most SQL statements can contain scalar expressions that compute new
+values from data. For example, in the query `SELECT ceil(price) FROM items`,
+the expression `ceil(price)` computes the rounded-up value of
 the values from the `price` column.
 
-Scalar expressions produce values suitable to store in a single table
+_Scalar expressions_ produce values suitable to store in a single table
 cell (one column of one row). They can be contrasted with
-[table expressions](table-expressions.html) and [selection queries](selection-queries.html), which produce results
-structured as a table.
+[_table expressions_](table-expressions.html) and [_selection queries_](selection-queries.html),
+which produce results structured as a table.
 
-The following sections provide details on each of these options.
-
+The following sections describe how to construct scalar expressions.
 
 ## Constants
 
@@ -27,30 +26,28 @@ They are described further in section [SQL Constants](sql-constants.html).
 
 An expression in a query can refer to columns in the current data source in two ways:
 
-- Using the name of the column, e.g., `price` in `SELECT price FROM
+- The name of the column, e.g., `price` in `SELECT price FROM
   items`.
 
   - If the name of a column is also a
   [SQL keyword](keywords-and-identifiers.html#keywords), the name
-  must be appropriately quoted. For example: `SELECT "Default" FROM
-  configuration`.
+  must be appropriately quoted. For example: `SELECT "Default" FROM configuration`.
 
   - If the name is ambiguous (e.g., when joining across multiple
   tables), it is possible to disambiguate by prefixing the column
   name by the table name. For example, `SELECT items.price FROM
   items`.
 
-- Using the ordinal position of the column. For example, `SELECT @1
-  FROM items` selects the first column in `items`.
+- The ordinal position of the column. For example, `SELECT @1 FROM items` selects the first column in `items`.
 
-  *This is a CockroachDB SQL extension.*
+    {{site.data.alerts.callout_info}}This is a CockroachDB SQL extension.{{site.data.alerts.end}}
 
-  {{site.data.alerts.callout_danger}}
-  Ordinal references should be used with care in production
-  code! During schema updates, column ordinal positions can change and
-  invalidate existing queries that use ordinal positions based on a
-  previous version of the schema.
-  {{site.data.alerts.end}}
+    {{site.data.alerts.callout_danger}}
+    Use ordinal references with care in production
+    code. During schema updates, column ordinal positions can change and
+    invalidate existing queries that use ordinal positions based on a
+    previous version of the schema.
+    {{site.data.alerts.end}}
 
 ## Unary and binary operations
 
@@ -61,10 +58,9 @@ For a full list of CockroachDB operators, with details about their order of prec
 
 ### Value comparisons
 
-The standard operators `<` (smaller than), `>` (greater than), `<=`
-(lower than or equal to), `>=` (greater than or equal to), `=`
-(equals), `<>` and `!=` (not equal to), `IS` (identical to), and `IS
-NOT` (not identical to) can be applied to any pair of values from a
+The standard operators `<` (less than), `>` (greater than), `<=` (less than or equal to),
+`>=` (greater than or equal to), `=` (equals), `<>` and `!=` (not equal to),
+`IS` (identical to), and `IS NOT` (not identical to) can be applied to any pair of values from a
 single data type, as well as some pairs of values from different data
 types.
 
@@ -76,7 +72,7 @@ The following special rules apply:
 - `NULL` is always ordered smaller than every other value, even itself.
 - `NULL` is never equal to anything via `=`, even `NULL`. To check
   whether a value is `NULL`, use the `IS` operator or the conditional
-  expression `IFNULL(..)`.
+  expression `IFNULL(...)`.
 
 See also [NULLs and Ternary Logic](null-handling.html#nulls-and-ternary-logic).
 
@@ -98,7 +94,7 @@ There are two exceptions however, made for compatibility with PostgreSQL:
 
 - `NaN` is considered to be equal with itself in comparisons. IEEE 754
   specifies that `NaN` is different from itself.
-- `NaN` is considered to be smaller than every other value, including
+- `NaN` is considered to be less than every other value, including
   `-INFINITY`. IEEE 754 specifies that `NaN` does not order with any
   other value, i.e., `x <= NaN` and `x >= NaN` are both false for every
   value of `x` including infinities.
@@ -265,7 +261,7 @@ Syntax:
 <expr> NOT ILIKE <expr>
 ~~~
 
-Evaluates both expressions as strings, then tests whether the string   on the left
+Evaluates both expressions as strings, then tests whether the string on the left
 matches the pattern given on the right. Returns `TRUE` if a match is found
 or `FALSE` otherwise, or the inverted value for the `NOT` variants.
 
@@ -389,7 +385,7 @@ parentheses. When the function's namespace is not prefixed, the
 [name resolution rules](sql-name-resolution.html) determine which
 function is called.
 
-See also [the separate section on supported built-in functions](functions-and-operators.html).
+See also [supported built-in functions](functions-and-operators.html).
 
 In addition, the following SQL special forms are also supported:
 
@@ -402,7 +398,7 @@ accepted by the function, and returns a value of the type determined
 by the function.
 
 However, the typing of function calls is complicated by the fact
-SQL supports function overloading. [See our blog post for more details](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/).
+SQL supports function overloading. See [Revisiting SQL Typing in CockroachDB](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/) for more details.
 
 ## Subscripted expressions
 
@@ -559,7 +555,7 @@ only the other operand.
 
 See also [NULLs and Ternary Logic](null-handling.html#nulls-and-ternary-logic).
 
-### Typing rule
+#### Typing rule
 
 The operands must have type `BOOL`. The result has type `BOOL`.
 
@@ -574,8 +570,7 @@ COUNT ( * )
 ~~~
 
 The difference between aggregate expressions and function calls is
-that the former use
-[aggregate functions](functions-and-operators.html#aggregate-functions)
+that the former use [aggregate functions](functions-and-operators.html#aggregate-functions)
 and can only appear in the list of rendered expressions in a
 [`SELECT` clause](select-clause.html).
 
@@ -585,7 +580,7 @@ selected.
 
 #### Typing rule
 
-[The operand and return types are determined like for regular function calls](#function-calls-and-sql-special-forms).
+The operand and return types are determined like for regular [function calls](#function-calls-and-sql-special-forms).
 
 ## Window function calls
 
@@ -601,7 +596,7 @@ subset ("window") of the rows selected by a query.
 
 #### Typing rule
 
-[The operand and return types are determined like for regular function calls](#function-calls-and-sql-special-forms).
+The operand and return types are determined like for regular [function calls](#function-calls-and-sql-special-forms).
 
 ## Explicit type coercions
 
@@ -618,8 +613,7 @@ specified type. An error is reported if the conversion is invalid.
 For example: `CAST(now() AS DATE)`
 
 Note that in many cases a type annotation is preferrable to a type
-coercion. See the section on
-[type annotations](#explicitly-typed-expressions) below for more
+coercion. See [type annotations](#explicitly-typed-expressions) for more
 details.
 
 #### Typing rule
@@ -629,7 +623,7 @@ The result has the type specified in the `CAST` expression.
 
 As a special case, if the operand is a literal, a constant expression
 or a placeholder, the `CAST` type is used to guide the typing of the
-operand. [See our blog post for more details](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/).
+operand. See [Revisiting SQL Typing in CockroachDB](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/) for more details.
 
 ## Collation expressions
 
@@ -684,16 +678,18 @@ specified explicitly using a type annotation. For example:
 > SELECT ARRAY[]:::int[];
 ~~~
 
-{{site.data.alerts.callout_success}}To convert the results of a subquery to an array, use <a href="#conversion-of-subquery-results-to-an-array"><code>ARRAY(...)</code></a> instead.{{site.data.alerts.end}}
+To convert the results of a subquery to an array, use [`ARRAY(...)`](#conversion-of-subquery-results-to-an-array) instead.
 
-{{site.data.alerts.callout_success}}CockroachDB also recognizes the syntax <code>ARRAY(a, b, c)</code> as an alias for <code>ARRAY[a, b, c]</code>. This is an experimental, CockroachDB-specific SQL extension and may be removed in a later version of CockroachDB.{{site.data.alerts.end}}
+{{site.data.alerts.callout_success}}
+- CockroachDB also recognizes the syntax `ARRAY(a, b, c)` as an alias for `ARRAY[a, b, c]`. This is an experimental, CockroachDB-specific SQL extension and may be removed in a later version of CockroachDB.
+{{site.data.alerts.end}}
 
 #### Typing rule
 
 The operands must all have the same type.
 The result has the array type with the operand type as element type.
 
-## Tuple constructor
+## Tuple constructors
 
 Syntax:
 
@@ -721,7 +717,7 @@ For example:
 The data type of the resulting tuple is inferred from the values.
 Each position in a tuple can have a distinct data type.
 
-CockroachDB supports accessing the Nth element in a tuple as a single table cell using the syntax `(...).@N`. For example:
+CockroachDB supports accessing the `Nth` element in a tuple as a single table cell using the syntax `(...).@N`. For example:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -808,8 +804,8 @@ that they do not cause the value to be converted. For example,
 discards the current time), whereas `now():::DATE` triggers an error
 message (that `now()` does not have type `DATE`).
 
-Check our blog for
-[more information about context-dependent typing](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/).
+See [Revisiting SQL Typing in CockroachDB](https://www.cockroachlabs.com/blog/revisiting-sql-typing-in-cockroachdb/) for
+more information about context-dependent typing.
 
 #### Typing rule
 
@@ -817,6 +813,10 @@ The operand must be implicitly coercible to the given type.
 The result has the given type.
 
 ## Subquery expressions
+
+See [Subqueries](subqueries.html) for more details and performance best practices.
+
+You can use any [selection query](selection-queries.html) as subquery.
 
 ### Scalar subqueries
 
@@ -827,8 +827,7 @@ Syntax:
 ~~~
 
 Evaluates the subquery, asserts that it returns a single row and single column,
-and then evaluates to the value of that single cell. Any [selection query](selection-queries.html)
-can be used as subquery.
+and then evaluates to the value of that single cell.
 
 For example, the following query returns `TRUE` if there are more rows in table `users` than in table
 `admins`:
@@ -837,8 +836,6 @@ For example, the following query returns `TRUE` if there are more rows in table 
 ~~~sql
 > SELECT (SELECT COUNT(*) FROM users) > (SELECT COUNT(*) FROM admins);
 ~~~
-
-{{site.data.alerts.callout_info}}See <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
 
 #### Typing rule
 
@@ -856,10 +853,7 @@ NOT EXISTS ( ... subquery ... )
 
 Evaluates the subquery and then returns `TRUE` or `FALSE` depending on
 whether the subquery returned any row (for `EXISTS`) or didn't return
-any row (for `NOT EXISTS`). Any [selection query](selection-queries.html)
-can be used as subquery.
-
-{{site.data.alerts.callout_info}}See <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
+any row (for `NOT EXISTS`).
 
 #### Typing rule
 
@@ -873,12 +867,9 @@ Syntax:
 ARRAY( ... subquery ... )
 ~~~
 
-Evaluates the subquery and converts its results to an array. Any
-[selection query](selection-queries.html) can be used as subquery.
+Evaluates the subquery and converts its results to an array.
 
-{{site.data.alerts.callout_info}}See <a href="subqueries.html">Subqueries</a> for more details and performance best practices.{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_success}}To convert a list of scalar expressions to an array, use <a href="#array-constructors"><code>ARRAY[...]</code></a> instead.{{site.data.alerts.end}}
+To convert a list of scalar expressions to an array, use [`ARRAY[...]`](#array-constructors) instead.
 
 ## See also
 

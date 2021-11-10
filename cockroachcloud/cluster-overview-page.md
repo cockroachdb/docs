@@ -37,7 +37,6 @@ This panel displays operational statistics for your cluster.
 | Databases           | The number of databases in the cluster.                                                                                                             |
 | Tables              | The total number of system and user-created tables in your databases.                                                                               |
 | Open sessions       | The number of open sessions in the cluster.                                                                                                         |
-| Transaction retries | The cumulative number of retries of this transaction within the last hour.                                                                          |
 
 ## Cluster Overview metrics
 
