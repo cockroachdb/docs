@@ -675,6 +675,10 @@ $ cockroach sql --insecure --host=localhost --port=26257 --database=auth # "East
 
 You'll need to make changes to the above configuration to reflect your [production environment](recommended-production-settings.html), but the concepts will be the same.
 
+## Known Limitations
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
 ## See also
 
