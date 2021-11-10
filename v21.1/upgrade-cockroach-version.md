@@ -10,7 +10,7 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
 
-Therefore, if you are upgrading from v20.1 to v20.2, or from a testing release (alpha/beta) of v20.2 to v21.1:
+Therefore, if you are upgrading from v20.1 to v21.1, or from a testing release (alpha/beta) of v20.2 to v21.1:
 
 1. First [upgrade to a production release of v20.2](../v20.2/upgrade-cockroach-version.html). Be sure to complete all the steps.
 
