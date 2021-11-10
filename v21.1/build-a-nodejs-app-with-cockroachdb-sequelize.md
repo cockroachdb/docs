@@ -55,7 +55,7 @@ Open `app.js`, and edit the connection configuration parameters:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-- Replace the values for `username`, `host`, `port`, and `database` with values from the "Connection parameters" tab of "Connection info."
+- Replace the values for `username`, `host`, `port`, and `database` with values from the **Connection parameters** tab of **Connection info**.
 - Replace the value for `password` with the password you created for your user.
 
 </section>
