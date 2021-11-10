@@ -173,6 +173,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/jsonb-comparison.md %}
 
+### Expressions as `ON CONFLICT` targets are not supported
+
+{% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
+
 ## Unresolved limitations
 
 ### `BACKUP` of multi-region tables

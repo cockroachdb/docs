@@ -128,6 +128,9 @@ Expression indexes have the following limitations:
 - The expression cannot reference [computed columns](computed-columns.html). [Tracking issue](https://github.com/cockroachdb/cockroach/issues/67900)
 - Functional expression output must be determined by the input arguments. For example, you can't use the function `now()` to create an index because its output depends on more than just the function arguments.
 
+----
+
+{% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
 ## See also
 
