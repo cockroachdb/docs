@@ -141,7 +141,7 @@ The following pages can be found in our [Terms & Conditions](https://www.cockroa
 
 ### Am I in control of upgrades for my {{ site.data.products.dedicated }} clusters?
 
-Yes, you can apply major release upgrades directly [through the {{ site.data.products.db }} Console](upgrade-to-v20.2.html); however, minor release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted for minor version updates, so previously established connections will need to be [reestablished after the restart](../v21.1/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
+Yes, a Console Admin can apply major release upgrades directly [through the {{ site.data.products.db }} Console](upgrade-to-v21.2.html); however, minor release upgrades are automatically applied to all clusters. {{ site.data.products.dedicated }} clusters are restarted for patch version updates, so previously established connections will need to be [reestablished after the restart](../v21.2/connection-pooling.html#validating-connections-in-a-pool). For more information, see the [Upgrade Policy](upgrade-policy.html).
 
 ### What is the support policy for older versions of the software?
 
