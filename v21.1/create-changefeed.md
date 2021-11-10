@@ -202,7 +202,7 @@ When designing a system that needs to emit a lot of changefeed messages, whether
 * Set the [`changefeed.memory.per_changefeed_limit`](cluster-settings.html) cluster setting to a higher limit to give more memory for buffering for a changefeed. This is useful in situations of heavy traffic to avoid an error due to the memory buffer overfilling.
 * Use `avro` as the emitted message [format](#format) option with Kafka sinks; JSON encoding can potentially create a slowdown.
 * Use the [`compression` option](#compression-opt) in cloud storage sinks with JSON to compress the changefeed data files.
-* Increase the `changefeed.backfill.concurrent_scan_requests` setting, which controls the number of concurrent scan requests per node issued during a backfill event. The default behavior, when this setting is at `0`, is that the number of scan requests will be 3 times the number of nodes in the cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase the cluster load overall**, including CPU and IO usage.
+* Increase the [`changefeed.backfill.concurrent_scan_requests` setting](cluster-settings.html), which controls the number of concurrent scan requests per node issued during a backfill event. The default behavior, when this setting is at `0`, is that the number of scan requests will be 3 times the number of nodes in the cluster (to a maximum of 100). While increasing this number will allow for higher throughput, it **will increase the cluster load overall**, including CPU and IO usage.
 
 ### Kafka Sink Configuration
 
