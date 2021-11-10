@@ -1049,7 +1049,7 @@ This workflow is unsupported and should be enabled at your own risk.
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/master/manifests/operator.yaml
+    $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
     ~~~
 
 1. Uncomment the following lines in the Operator manifest:
