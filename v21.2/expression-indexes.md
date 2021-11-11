@@ -120,7 +120,7 @@ You can see that a full scan is performed:
           │
           └── • scan
                 estimated row count: 3 (100% of the table; stats collected 5 minutes ago)
-                table: users@timestamp_idx
+                table: users@primary
                 spans: FULL SCAN
 ~~~
 
