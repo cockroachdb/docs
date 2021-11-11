@@ -6,7 +6,11 @@ toc: true
 
 A _computed column_ exposes data generated from other columns by a [scalar expression](scalar-expressions.html) included in the column definition.
 
+<a name="stored-computed-columns"></a>
+
 A _stored computed column_ (set with the `STORED` SQL keyword) is calculated when a row is inserted or updated, and stores the resulting value of the scalar expression in the primary index similar to a regular column.
+
+<a name="virtual-computed-columns"></a>
 
 A _virtual computed column_ (set with the `VIRTUAL` SQL keyword) is not stored, and the value of the scalar expression is computed during at query-time as needed.
 
