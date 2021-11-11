@@ -99,7 +99,7 @@ Parameter | Description
 `opt_persistence_temp_table` |  Defines the table as a session-scoped temporary table. For more information, see [Temporary Tables](temporary-tables.html).<br><br>Note that the `LOCAL`, `GLOBAL`, and `UNLOGGED` options are no-ops, allowed by the parser for PostgresSQL compatibility.<br><br>**Support for temporary tables is [experimental](experimental-features.html#temporary-objects)**.
 `IF NOT EXISTS` | Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br><br>Note that `IF NOT EXISTS` checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.
 `table_name` | The name of the table to create, which must be unique within its database and follow these [identifier rules](keywords-and-identifiers.html#identifiers). When the parent database is not set as the default, the name must be formatted as `database.name`.<br><br>The [`UPSERT`](upsert.html) and [`INSERT ON CONFLICT`](insert.html) statements use a temporary table called `excluded` to handle uniqueness conflicts during execution. It's therefore not recommended to use the name `excluded` for any of your tables.
-`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html). Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>You can optionally specify a [column qualification](add-column.html#column-qualifications) (e.g., a [column-level constraint](constraints.html)). Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
+`column_def` | A comma-separated list of column definitions. Each column requires a [name/identifier](keywords-and-identifiers.html#identifiers) and [data type](data-types.html). Column names must be unique within the table but can have the same name as indexes or constraints.<br><br>You can optionally specify a [column qualification](#column-qualifications) (e.g., a [column-level constraint](constraints.html)). Any `PRIMARY KEY`, `UNIQUE`, and `CHECK` [constraints](constraints.html) defined at the column level are moved to the table-level as part of the table's creation. Use the [`SHOW CREATE`](show-create.html) statement to view them at the table level.
 `index_def` | An optional, comma-separated list of [index definitions](indexes.html). For each index, the column(s) to index must be specified; optionally, a name can be specified. Index names must be unique within the table and follow these [identifier rules](keywords-and-identifiers.html#identifiers). See the [Create a Table with Secondary Indexes and Inverted Indexes](#create-a-table-with-secondary-and-inverted-indexes) example below.<br><br> To enable [hash-sharded indexes](hash-sharded-indexes.html), set the `experimental_enable_hash_sharded_indexes` [session variable](set-vars.html) to `on`. For examples, see [Create a table with hash-sharded indexes](#create-a-table-with-a-hash-sharded-primary-index) below.<br><br>The [`CREATE INDEX`](create-index.html) statement can be used to create an index separate from table creation.
 `family_def` | An optional, comma-separated list of [column family definitions](column-families.html). Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.<br><br>A column family is a group of columns that are stored as a single key-value pair in the underlying key-value store. CockroachDB automatically groups columns into families to ensure efficient storage and performance. However, there are cases when you may want to manually assign columns to families. For more details, see [Column Families](column-families.html).
 `table_constraint` | An optional, comma-separated list of [table-level constraints](constraints.html). Constraint names must be unique within the table but can have the same name as columns, column families, or indexes.
@@ -111,6 +111,51 @@ Parameter | Description
 `ON COMMIT PRESERVE ROWS` | This clause is a no-op, allowed by the parser for PostgresSQL compatibility. CockroachDB only supports session-scoped [temporary tables](temporary-tables.html), and does not support the clauses `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`, which are used to define transaction-scoped temporary tables in PostgreSQL.
 `opt_interleave` | {% include {{ page.version.version }}/misc/interleave-deprecation-note.md %}
 
+## Column qualifications
+
+CockroachDB supports the following column qualifications:
+
+- [Column-level constraints](constraints.html)
+- [Collations](collate.html)
+- [Column family assignments](column-families.html)
+- [`DEFAULT` expressions](default-value.html)
+- <span class="version-tag">New in v21.2</span>: [`ON UPDATE` expressions](#on-update-expressions)
+- <span class="version-tag">New in v21.2</span>: [Identity columns](#identity-columns) (sequence-populated columns)
+
+### `ON UPDATE` expressions
+
+<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions update column values in the following cases:
+
+- An [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row.
+- An `ON UPDATE CASCADE` [foreign key action](foreign-key.html#foreign-key-actions) modifies a different column value in the same row.
+
+`ON UPDATE` expressions **do not** update column values in the following cases:
+
+- An `UPDATE` or `UPSERT` statement directly modifies the value of a column with an `ON UPDATE` expression.
+- An `UPSERT` statement creates a new row.
+- A new column is backfilled with values (e.g., by a `DEFAULT` expression).
+
+Note the following limitations of `ON UPDATE` expressions:
+
+- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function](functions-and-operators.html) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
+- You cannot add a [foreign key constraint](foreign-key.html) and an `ON UPDATE` expression to the same column.
+
+For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](add-column.html#add-a-column-with-an-on-update-expression).
+
+### Identity columns
+
+<span class="version-tag">New in v21.2</span>: *Identity columns* are columns that are populated with values in a [sequence](create-sequence.html). When you create an identity column, CockroachDB creates a sequence and sets the default value for the identity column to the result of the `nextval()` [built-in function](functions-and-operators.html) on the sequence.
+
+To create an identity column, add a `GENERATED BY DEFAULT AS IDENTITY`/`GENERATED ALWAYS AS IDENTITY` clause to the column definition, followed by [sequence options](create-sequence.html#parameters). If you do not specify any sequence options in the column definition, the column assumes the default options of [`CREATE SEQUENCE`](create-sequence.html).
+
+If you use `GENERATED BY DEFAULT AS IDENTITY` to define the identity column, any [`INSERT`](insert.html)/[`UPSERT`](upsert.html)/[`UPDATE`](update.html) operations that specify a new value for the identity column will overwrite the default sequential values in the column. If you use `GENERATED ALWAYS AS IDENTITY`, the column's sequential values cannot be overwritten.
+
+Note the following limitations of identity columns:
+
+- `GENERATED ALWAYS AS IDENTITY`/`GENERATED BY DEFAULT AS IDENTITY` is supported in [`ALTER TABLE ... ADD COLUMN`](add-column.html) statements only when the table being altered is empty, as [CockroachDB does not support back-filling sequential column data](known-limitations.html#adding-a-column-with-sequence-based-default-values). For more information, see the [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/42508).
+- Unlike PostgreSQL, CockroachDB does not support using the `OVERRIDING SYSTEM VALUE` clause in `INSERT`/`UPDATE`/`UPSERT` statements to overwrite `GENERATED ALWAYS AS IDENTITY` identity column values.
+
+For an example of an identity column, see [Create a table with an identity column](#create-a-table-with-an-identity-column).
 
 ## Create a table like an existing table
 
@@ -862,6 +907,127 @@ For example:
 ~~~
 
 CockroachDB will then assign a region to each row, based on the value of the `region` column. In this example, the `region` column is computed from the value of the `city` column.
+
+### Create a table with an identity column
+
+<span class="version-tag">New in v21.2</span>: [Identity columns](#identity-columns) define a sequence from which to populate a column when a new row is inserted.
+
+For example:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> CREATE TABLE bank (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    order_index INT8 UNIQUE,
+    balance INT8,
+    payload STRING,
+    numerical INT8 GENERATED BY DEFAULT AS IDENTITY (INCREMENT 1 MINVALUE 0 START 0)
+);
+~~~
+
+CockroachDB creates a sequence to use as the `numerical` column's default value.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW SEQUENCES;
+~~~
+
+~~~
+  sequence_schema |   sequence_name
+------------------+---------------------
+  public          | bank_numerical_seq
+(1 row)
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW COLUMNS FROM bank;
+~~~
+
+~~~
+  column_name | data_type | is_nullable |                 column_default                 | generation_expression |            indices             | is_hidden
+--------------+-----------+-------------+------------------------------------------------+-----------------------+--------------------------------+------------
+  id          | UUID      |    false    | gen_random_uuid()                              |                       | {bank_order_index_key,primary} |   false
+  order_index | INT8      |    true     | NULL                                           |                       | {bank_order_index_key,primary} |   false
+  balance     | INT8      |    true     | NULL                                           |                       | {primary}                      |   false
+  payload     | STRING    |    true     | NULL                                           |                       | {primary}                      |   false
+  numerical   | INT8      |    false    | nextval('public.bank_numerical_seq'::REGCLASS) |                       | {primary}                      |   false
+(5 rows)
+~~~
+
+When a new row is added to the table, CockroachDB populates the `numerical` column with the result of the `nextval('bank_numerical_seq')` [built-in function](functions-and-operators.html).
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO bank (order_index, balance) VALUES (1, 0), (2, 0), (3, 0);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
+~~~
+
+~~~
+                   id                  | order_index | balance | numerical
+---------------------------------------+-------------+---------+------------
+  0b533801-052e-4837-8e13-0ef2fa6f8883 |           1 |       0 |         0
+  9acc87ad-ced6-4744-9397-6a081a7a9c79 |           2 |       0 |         1
+  4f929768-e3da-49cf-b8a6-5381e47953ca |           3 |       0 |         2
+(3 rows)
+~~~
+
+The `numerical` column in this example follows the `BY DEFAULT` rule. According to this rule, if the value of an identity is explicitly updated, the sequence value is overwritten:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> UPDATE bank SET numerical = 500 WHERE id = '0b533801-052e-4837-8e13-0ef2fa6f8883';
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
+~~~
+
+~~~
+                   id                  | order_index | balance | numerical
+---------------------------------------+-------------+---------+------------
+  0b533801-052e-4837-8e13-0ef2fa6f8883 |           1 |       0 |       500
+  9acc87ad-ced6-4744-9397-6a081a7a9c79 |           2 |       0 |         1
+  4f929768-e3da-49cf-b8a6-5381e47953ca |           3 |       0 |         2
+(3 rows)
+~~~
+
+Inserting explicit values does not affect the next value of the sequence:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO bank (order_index, balance, numerical) VALUES (4, 0, 3);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO bank (order_index, balance) VALUES (5, 0);
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT id, order_index, balance, numerical FROM bank ORDER BY order_index;
+~~~
+
+~~~
+                   id                  | order_index | balance | numerical
+---------------------------------------+-------------+---------+------------
+  0b533801-052e-4837-8e13-0ef2fa6f8883 |           1 |       0 |       500
+  9acc87ad-ced6-4744-9397-6a081a7a9c79 |           2 |       0 |         1
+  4f929768-e3da-49cf-b8a6-5381e47953ca |           3 |       0 |         2
+  9165ab56-c41c-4a8a-ac0c-15e82243dc4d |           4 |       0 |         3
+  40b5620f-cd56-4c03-b0ab-b4a63956dfe6 |           5 |       0 |         3
+(5 rows)
+~~~
+
+{{site.data.alerts.callout_info}}
+If the `numerical` column were to follow the `ALWAYS` rule instead, then the sequence values in the column could not be overwritten.
+{{site.data.alerts.end}}
 
 ## See also
 
