@@ -16,6 +16,7 @@ This page explains how to:
 
 - Authenticate an Operator or Helm deployment using a [custom CA](#use-a-custom-ca)
 - [Rotate security certificates](#rotate-security-certificates)
+- [Secure the webhooks](#secure-the-webhooks) (Operator)
 
 {{site.data.alerts.callout_danger}}
 If you are running a secure Helm deployment on Kubernetes 1.22 and later, you must migrate away from using the Kubernetes CA for cluster authentication. For details, see [Migration to self-signer](#migration-to-self-signer).
@@ -582,5 +583,60 @@ To migrate your Helm deployment to use the self-signer:
     my-release-cockroachdb-0   0/1     ContainerCreating   0          14s
     my-release-cockroachdb-1   0/1     ContainerCreating   0          4s
     my-release-cockroachdb-2   0/1     Terminating         0          7m16s
+    ~~~
+</section>
+
+<section class="filter-content" markdown="1" data-scope="operator">
+## Secure the webhooks
+
+The Operator ships with both [mutating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#mutatingadmissionwebhook) and [validating](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook) webhooks. Communication between the Kubernetes API server and the webhook service must be secured with TLS.
+
+By default, the Operator searches for the TLS secret `cockroach-operator-webhook-ca`, which contains a CA certificate. If the secret is not found, the Operator auto-generates `cockroach-operator-webhook-ca` with a CA certificate for future runs.
+
+The Operator then generates a one-time server certificate for the webhook server that is signed with `cockroach-operator-webhook-ca`. Finally, the CA bundle for both mutating and validating webhook configurations is patched with the CA certificate.
+
+You can also use your own certificate authority rather than `cockroach-operator-webhook-ca`. Both the certificate and key files you generate must be PEM-encoded. See the following [example](#example-using-openssl-to-secure-the-webhooks).
+
+### Example: Using OpenSSL to secure the webhooks
+
+These steps demonstrate how to use the [`openssl genrsa`](https://www.openssl.org/docs/manmaster/man1/genrsa.html) and [`openssl req`](https://www.openssl.org/docs/manmaster/man1/req.html) subcommands to secure the webhooks on a running Kubernetes cluster:
+
+1. Generate a 4096-bit RSA private key:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ openssl genrsa -out tls.key 4096
+    ~~~
+
+1. Generate an X.509 certificate, valid for 10 years. You will be prompted for the certificate field values.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    $ openssl req -x509 -new -nodes -key tls.key -sha256 -days 3650 -out tls.crt
+    ~~~
+
+1. Create the secret, making sure that [you are in the correct namespace](deploy-cockroachdb-with-kubernetes.html#install-the-operator):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    $ kubectl create secret tls cockroach-operator-webhook-ca --cert=tls.crt --key=tls.key
+    ~~~
+
+    ~~~
+    secret/cockroach-operator-webhook-ca created
+    ~~~
+
+1. Remove the certificate and key from your local environment:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~
+    $ rm tls.crt tls.key
+    ~~~
+
+1. Roll the Operator deployment to ensure a new server certificate is generated:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl apply -f operator.yaml
     ~~~
 </section>
