@@ -11,7 +11,11 @@ This page answers the frequently asked questions about {{ site.data.products.ser
     <a href="frequently-asked-questions.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-## Cluster basics
+## General
+
+### What is {{ site.data.products.dedicated }}?
+
+{{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
 ### Why are certain regions in AWS and GCP not available?
 
