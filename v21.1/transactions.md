@@ -101,7 +101,7 @@ Transactions can be sent from the client as a single batch. Batching implies tha
 
 Batching is generally controlled by your driver or client's behavior. Technically, it can be achieved in two ways, both supporting automatic retries:
 
-1. When the client/driver is using the [PostgreSQL Extended Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY), a batch is made up of all queries sent in between two `Sync` messages. Many drivers support such batches through explicit batching constructs. 
+1. When the client/driver is using the [PostgreSQL Extended Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY), a batch is made up of all queries sent in between two `Sync` messages. Many drivers support such batches through explicit batching constructs.
 
 2. When the client/driver is using the [PostgreSQL Simple Query protocol](https://www.postgresql.org/docs/10/static/protocol-flow.html#id-1.10.5.7.4), a batch is made up of semicolon-separated strings sent as a unit to CockroachDB. For example, in Go, this code would send a single batch (which would be automatically retried):
 
@@ -262,6 +262,29 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
 
 For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+
+## Limit the number of rows written or read in a transaction
+
+You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
+
+Use the [cluster](cluster-settings.html) `sql.defaults.transaction_rows_written_log`,
+`sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
+`sql.defaults.transaction_rows_read_err` and [session](set-vars.html) settings `transaction_rows_written_log`,
+`transaction_rows_written_err`, `transaction_rows_read_log`, and
+`transaction_rows_read_err` to limit the number of rows written or read in a
+transaction. When the `log` limit is reached, the transaction is logged to the `SQL_PERF` channel.
+When the `err` limit is reached the transaction is rejected. The limits are enforced after each
+statement of a transaction has been fully executed.
+
+The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`,
+and `DELETE` SQL statements. The "read" limits apply to the `SELECT`
+statement in addition to the statements subject to the "write" limits. The limits **do not**
+apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`,
+`RESTORE`, or `CREATE STATISTICS` statements.
+
+{{site.data.alerts.callout_info}}
+Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
+{{site.data.alerts.end}}
 
 ## See also
 

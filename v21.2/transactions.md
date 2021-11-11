@@ -267,9 +267,11 @@ For more information about the relationship between these levels, see [this pape
 
 You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
 
-Use the [cluster](cluster-settings.html) and [session](set-vars.html) settings `sql.defaults.transaction_rows_written_log`,
+Use the [cluster](cluster-settings.html) `sql.defaults.transaction_rows_written_log`,
 `sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
-`sql.defaults.transaction_rows_read_err` to limit the number of rows written or read in a
+`sql.defaults.transaction_rows_read_err` and [session](set-vars.html) settings `transaction_rows_written_log`,
+`transaction_rows_written_err`, `transaction_rows_read_log`, and
+`transaction_rows_read_err` to limit the number of rows written or read in a
 transaction. When the `log` limit is reached, the transaction is logged to the `SQL_PERF` channel.
 When the `err` limit is reached the transaction is rejected. The limits are enforced after each
 statement of a transaction has been fully executed.
@@ -281,7 +283,7 @@ apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE
 `RESTORE`, or `CREATE STATISTICS` statements.
 
 {{site.data.alerts.callout_info}}
-Enabling `transaction_rows_read_err` disables the auto commit optimization for mutation statements in implicit transactions. For write limits CockroachDB can count how many rows have been modified before using the auto commit optimization. However, for read limits CockroachDB doesn't have that information on the write path, so must disable the auto commit.
+Enabling `transaction_rows_read_err` disables a performance optimization for mutation statements in implicit transactions where CockroachDB can auto-commit without additional network round trips.
 {{site.data.alerts.end}}
 
 ## See also
