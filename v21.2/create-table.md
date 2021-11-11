@@ -159,7 +159,7 @@ For an example of an identity column, see [Create a table with an identity colum
 
 ## Create a table like an existing table
 
- CockroachDB supports the `CREATE TABLE LIKE` syntax for creating a new table based on the schema of an existing table.
+CockroachDB supports the `CREATE TABLE LIKE` syntax for creating a new table based on the schema of an existing table.
 
 The following options are supported:
 
@@ -172,9 +172,9 @@ The following options are supported:
 To exclude specifiers, use the `EXCLUDING` keyword. Excluding specifiers can be useful if you want to use `INCLUDING ALL`, and exclude just one or two specifiers. The last `INCLUDING`/`EXCLUDING` keyword for a given specifier takes priority.
 
 {{site.data.alerts.callout_info}}
-Column families, partitioning, interleavings, and foreign key constraints
-cannot be preserved from the old table and will have to be recreated
-manually in the new table if the user wishes.
+`CREATE TABLE LIKE` statements cannot copy [column families](column-families.html), [partitions](partitioning.html), and [foreign key constraints](foreign-key.html) from existing tables. If you want these column qualifications in a new table, you must recreate them manually.
+
+`CREATE TABLE LIKE` copies all hidden columns (e.g., the hidden [`crdb_region`](set-locality.html#crdb_region) column in multi-region tables) from the existing table to the new table.
 {{site.data.alerts.end}}
 
 Supported `LIKE` specifiers can also be mixed with ordinary `CREATE TABLE` specifiers. For example:
