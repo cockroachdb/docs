@@ -1,14 +1,14 @@
 ---
 title: SHOW CREATE
-summary: The SHOW CREATE statement shows the CREATE statement for an existing table, view, or sequence.
+summary: The SHOW CREATE statement shows the CREATE statement for an existing database, table, view, or sequence.
 toc: true
 ---
 
-The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).
+The `SHOW CREATE` [statement](sql-statements.html) shows the `CREATE` statement for an existing [database](create-database.html), [table](create-table.html), [view](create-view.html), or [sequence](create-sequence.html).
 
 ## Required privileges
 
-The user must have any [privilege](authorization.html#assign-privileges) on the target table, view, or sequence.
+The user must have any [privilege](authorization.html#assign-privileges) on the target database, table, view, or sequence.
 
 ## Synopsis
 
@@ -20,7 +20,7 @@ The user must have any [privilege](authorization.html#assign-privileges) on the 
 
 Parameter | Description
 ----------|------------
-`object_name` | The name of the table, view, or sequence for which to show the `CREATE` statement.
+`object_name` | The name of the database, table, view, or sequence for which to show the `CREATE` statement.
 `ALL TABLES` |  Show the `CREATE` statements for all tables, views, and sequences in the current database.<br>This option is intended to provide the statements required to recreate the objects in the current database. As a result, `SHOW CREATE ALL TABLES` also returns the [`ALTER` statements](alter-table.html) that add, modify, and validate an object's [constraints](constraints.html). The `ALTER` statements follow the `CREATE` statements to guarantee that all objects are added before their references.
 
 ## Response
@@ -28,7 +28,8 @@ Parameter | Description
 Field | Description
 ------|------------
 `table_name` | The name of the table, view, or sequence.
-`create_statement` | The `CREATE` statement for the table, view, or sequence.
+`database_name` | The name of the database.
+`create_statement` | The `CREATE` statement for the database, table, view, or sequence.
 
 ## Example
 
@@ -341,6 +342,53 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
 (19 rows)
 ~~~
 
+### Show the `CREATE DATABASE` statement for a database
+
+<span class="version-tag">New in v21.2</span>: To return the `CREATE DATABASE` statement for a database, use `SHOW CREATE DATABASE`:
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE DATABASE movr;
+~~~
+
+~~~
+  database_name |   create_statement
+----------------+-----------------------
+  movr          | CREATE DATABASE movr
+(1 row)
+~~~
+
+Suppose that you have a multi-region cluster, and you want to return the `SHOW CREATE DATABASE` statement for a [multi-region database](multiregion-overview.html).
+
+In a new terminal, start a virtual multi-region demo cluster:
+
+{% include copy-clipboard.html %}
+~~~ shell
+$ cockroach demo --global --nodes 9
+~~~
+
+In the SQL shell, [add regions to the database](add-region.html):
+
+{% include copy-clipboard.html %}
+~~~ sql
+> ALTER DATABASE movr PRIMARY REGION "us-east1";
+ALTER DATABASE movr ADD REGION "europe-west1";
+ALTER DATABASE movr ADD REGION "us-west1";
+~~~
+
+The `SHOW CREATE DATABASE` output includes the database regions.
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SHOW CREATE DATABASE movr;
+~~~
+
+~~~
+  database_name |                                                   create_statement
+----------------+-----------------------------------------------------------------------------------------------------------------------
+  movr          | CREATE DATABASE movr PRIMARY REGION "us-east1" REGIONS = "europe-west1", "us-east1", "us-west1" SURVIVE ZONE FAILURE
+(1 row)
+~~~
 
 ## See also
 
