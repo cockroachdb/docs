@@ -9,7 +9,7 @@ toc: true
     <a href="cluster-management.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
 </div>
 
-This page describes the cluster management and cluster deletion workflows.
+This page describes the cluster management and cluster deletion workflows for {{ site.data.products.dedicated }}.
 
 ## Planning your cluster
 
@@ -30,10 +30,12 @@ For each cluster, the following details display:
 - The cluster's cloud provider, either GCP or AWS
 - The **Version** of CockroachDB the cluster is running
 - The **Action** button, which is used to:
-    - [**Add/remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster) (Paid clusters only)
+    - [**Add or remove nodes**](?filters=dedicated#add-or-remove-nodes-from-a-cluster)
+    - [**Increase storage**](?filters=dedicated#increase-storage-for-a-cluster)
+    - [**Change compute**](?filters=dedicated#change-compute-for-a-cluster)
     - [**Upgrade major version**](upgrade-to-v21.1.html)
     {% comment %}
-    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster) (Paid clusters only)
+    - [**Add/remove regions**](?filters=dedicated#add-or-remove-regions-from-a-cluster)
     {% endcomment %}
     - [**Delete cluster**](#delete-cluster)
 
@@ -52,13 +54,15 @@ The **Overview** page displays details about the selected {{ site.data.products.
     
 From the **Overview** page, you can connect to your cluster. For more information, see [Connect to Your {{ site.data.products.dedicated }} Cluster](connect-to-your-cluster.html).
 
-## Add or remove nodes from a cluster
-
-You can add or remove nodes from your cluster through the Console. See [Planning your cluster](#planning-your-cluster) for cluster requirements and recommendations before proceeding.
+## Scale your cluster
 
 {{site.data.alerts.callout_info}}
 CockroachDB Cloud contract customers cannot scale clusters through the Console. If you need to add or remove nodes, contact [Support](https://support.cockroachlabs.com).
 {{site.data.alerts.end}}
+
+### Add or remove nodes from a cluster
+
+You can add or remove nodes from your cluster through the Console. See [Planning your cluster](#planning-your-cluster) for cluster requirements and recommendations before proceeding.
 
 {{site.data.alerts.callout_info}}
 At this time, you cannot use the Console to scale a multi-node cluster down to a single-node cluster. If you need to do this, contact [Support](https://support.cockroachlabs.com).
@@ -71,7 +75,7 @@ To add or remove nodes from your cluster:
 1. Select **Add/remove nodes**.
 {% comment %} This button will change {% endcomment %}
 
-    The **Edit <cluster name>** page displays.
+    The **Edit cluster** page displays.
 
 1. From the **Nodes** dropdown, select the number of nodes you want in your cluster.
 1. In the **Summary** sidebar, verify the hourly estimated cost for the cluster.
@@ -79,8 +83,44 @@ To add or remove nodes from your cluster:
 1. In the **Confirmation** dialog, verify your new cluster configuration.
 1. Click **OK**.
 
+### Increase storage for a cluster
+
+1. Navigate to the cluster's **Overview** page.
+1. Click the **Actions** button in the top right corner.
+1. Select **Edit cluster**.
+
+    The **Edit cluster** page displays.
+  
+1. Navigate to the **Storage** dropdown in the **Hardware per node** section.
+1. Select the new amount of storage per node.
+    
+    {{site.data.alerts.callout_danger}}
+    Storage space cannot be removed from a node once added.
+    {{site.data.alerts.end}}
+
+1. Confirm that your updated configuration and price is correct in the **Settings** sidebar.
+1. Click **Update cluster**.
+
+### Change compute for a cluster
+
+1. Navigate to the cluster's **Overview** page.
+1. Click the **Actions** button in the top right corner.
+1. Select **Edit cluster**.
+
+    The **Edit cluster** page displays.
+  
+1. Navigate to the **Compute** dropdown in the **Hardware per node** section.
+1. Select the new amount of vCPUs per node.
+
+    {{site.data.alerts.callout_info}}
+    When scaling up your cluster, it is generally more effective to increase node size up to 16 vCPUs before adding more nodes. For most production applications, we recommend **at least 4 to 8 vCPUs** per node.
+    {{site.data.alerts.end}}
+
+1. Confirm that your updated configuration and price is correct in the **Settings** sidebar.
+1. Click **Update cluster**.
+
 {% comment %}
-## Add or remove regions from a cluster
+### Add or remove regions from a cluster
 
 You can add or remove up to three regions at a time through the Console. See the [Planning your cluster](#planning-your-cluster) section of this page for cluster requirements and recommendations before proceeding.
 

@@ -82,7 +82,7 @@ When scaling up your cluster, it is generally more effective to increase node si
 
 For more detailed disk performance numbers, see the relevant [GCP](https://cloud.google.com/compute/docs/disks/performance) and [AWS](https://aws.amazon.com/ebs/features/#Amazon_EBS_volume_types) documentation.
 
-To change the hardware configuration after the cluster is created, [contact Support](https://support.cockroachlabs.com).
+To change the hardware configuration after the cluster is created, see [Cluster management](cluster-management.html).
 
 See [Example](#example) for further guidance.
 
