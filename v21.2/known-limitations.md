@@ -181,6 +181,18 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/sql/expression-indexes-cannot-reference-computed-columns.md %}
 
+### Cannot refresh materialized views inside explicit transactions
+
+{% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
+
+### CockroachDB cannot plan locality optimized searches that use partitioned unique indexes on virtual computed columns
+
+{% include {{page.version.version}}/sql/locality-optimized-search-virtual-computed-columns.md %}
+
+### Expressions as `ON CONFLICT` targets are not supported
+
+{% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
+
 ## Unresolved limitations
 
 ### Optimizer stale statistics deletion when columns are dropped
