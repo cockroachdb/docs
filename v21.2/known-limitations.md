@@ -169,7 +169,25 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
 
+### `JSONB`/`JSON` comparison operators are not implemented
+
+{% include {{page.version.version}}/sql/jsonb-comparison.md %}
+
+### Locality-optimized search only works for queries selecting a limited number of records
+
+{% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
+
+### Expression indexes cannot reference computed columns
+
+{% include {{page.version.version}}/sql/expression-indexes-cannot-reference-computed-columns.md %}
+
 ## Unresolved limitations
+
+### Optimizer stale statistics deletion when columns are dropped
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
 ### `BACKUP` of multi-region tables
 
@@ -282,12 +300,6 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Slow (or hung) backups and queries due to write intent buildup
-
-{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
 
 ### Change data capture
 
@@ -409,12 +421,6 @@ SQLSTATE: 0A000
 ### Schema changes between executions of prepared statements
 
 {% include {{ page.version.version }}/known-limitations/schema-changes-between-prepared-statements.md %}
-
-### `INSERT ON CONFLICT` vs. `UPSERT`
-
-When inserting/updating all columns of a table, and the table has no secondary indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON CONFLICT` always performs a read to determine the necessary writes, the `UPSERT` statement writes without reading, making it faster.
-
-This issue is particularly relevant when using a simple SQL table of two columns to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store). In this case, be sure to use the `UPSERT` statement.
 
 ### Size limits on statement input from SQL clients
 
@@ -576,21 +582,3 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Inverted index scans can't be generated for some statement filters
-
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
-
-~~~ sql
-SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';
-~~~
-
-CockroachDB v20.1 and earlier would generate index scans for these filters, though it is not recommended as the normalization rules used to convert the filters into JSON containment expressions would sometimes produce inequivalent expressions.
-
-The workaround is to rewrite the statement filters to avoid using both JSON fetch values and containment operators. The following statement is index-accelerated and equivalent to the non-accelerated statement above:
-
-~~~ sql
-SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)

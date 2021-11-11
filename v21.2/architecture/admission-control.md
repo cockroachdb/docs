@@ -14,6 +14,10 @@ Admission control is disabled by default. To enable admission control:
 
 We recommend enabling admission control on all layers if you decide to use admission control.
 
+{{site.data.alerts.important}}
+If you are upgrading to v21.2, first complete the upgrade with admission control disabled, then enable admission control after verifying the upgrade was successful.
+{{site.data.alerts.end}}
+
 ## Use cases for admission control
 
 A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop hotspots that last until the cluster rebalances itself. When hotspots occur, they should not cause failures or degraded performance for important work.

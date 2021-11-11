@@ -73,6 +73,8 @@ If the execution of a [join](joins.html) query exceeds the limit set for [memory
 
 For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
 
+{% include {{page.version.version}}/sql/jsonb-comparison.md %}
+
 ## Examples
 
 ### Create a table with a `JSONB` column

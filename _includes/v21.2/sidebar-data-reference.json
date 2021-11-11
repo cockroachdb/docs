@@ -163,6 +163,12 @@
                 ]
               },
               {
+                "title": "<code>ALTER DEFAULT PRIVILEGES</code>",
+                "urls": [
+                  "/${VERSION}/alter-default-privileges.html"
+                ]
+              },
+              {
                 "title": "<code>ALTER INDEX</code>",
                 "urls": [
                   "/${VERSION}/alter-index.html"
@@ -748,6 +754,12 @@
                 "title": "<code>SHOW DATABASES</code>",
                 "urls": [
                   "/${VERSION}/show-databases.html"
+                ]
+              },
+              {
+                "title": "<code>SHOW DEFAULT PRIVILEGES</code>",
+                "urls": [
+                  "/${VERSION}/show-default-privileges.html"
                 ]
               },
               {
