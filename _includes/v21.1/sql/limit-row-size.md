@@ -1,13 +1,11 @@
 ## Limit the size of rows
 
-You can specify the behavior when you write a row larger than a specified size to the database (or
-individual column families, if multiple column families are in use). The [cluster settings](cluster-settings.html)
-`sql.mutations.max_row_size.log` and `sql.guardrails.max_row_size.err` can help you avoid failures arising
-from misbehaving applications that bloat the size of rows.
+To help you avoid failures arising from misbehaving applications that bloat the size of rows, you can specify the behavior when a row or individual [column family](column-families.html) larger than a specified size is written to the database. Use the [cluster settings](cluster-settings.html) `sql.guardrails.max_row_size.log` to discover large rows and `sql.guardrails.max_row_size.err` to reject large rows.
 
-The `sql.mutations.max_row_size.log` setting controls large row logging. Whenever a `INSERT`, `UPSERT`, `UPDATE`, `CREATE TABLE AS`, `CREATE INDEX`,
-`ALTER TABLE`, `ALTER INDEX`, `IMPORT`, or `RESTORE` statement writes a row larger than this size, a `LargeRow` event
-is logged to the [`SQL_PERF`](logging.html#sql_perf) channel. `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+When you write a row that exceeds `sql.guardrails.max_row_size.log`:
+
+- `INSERT`, `UPSERT`, `UPDATE`, `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, or `RESTORE` statements will log a `LargeRow` to the [`SQL_PERF`](logging.html#sql_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
 
 When you write a row that exceeds `sql.guardrails.max_row_size.err`:
 
