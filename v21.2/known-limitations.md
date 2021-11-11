@@ -293,12 +293,6 @@ As a workaround, take a cluster backup instead, as the `system.comments` table i
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
 
-### Slow (or hung) backups and queries due to write intent buildup
-
-{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
-
 ### Change data capture
 
 Change data capture (CDC) provides efficient, distributed, row-level change feeds into Apache Kafka for downstream processing such as reporting, caching, or full-text indexing. It has the following known limitations:
