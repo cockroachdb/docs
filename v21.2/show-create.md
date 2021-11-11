@@ -358,7 +358,7 @@ Note that this statement also returns the [`ALTER` statements](alter-table.html)
 (1 row)
 ~~~
 
-Now suppose that you have a multi-region cluster, and you want to return the `SHOW CREATE DATABASE` statement for a [multi-region database](multiregion-overview.html).
+Suppose that you have a multi-region cluster, and you want to return the `SHOW CREATE DATABASE` statement for a [multi-region database](multiregion-overview.html).
 
 In a new terminal, start a virtual multi-region demo cluster:
 
