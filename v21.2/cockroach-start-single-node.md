@@ -102,6 +102,7 @@ CockroachDB node starting at {{page.release_info.start_time}}
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
+sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
 RPC client flags:    cockroach <client cmd> --host=localhost:26257 --insecure
 logs:                /Users/<username>/node1/logs
 temp dir:            /Users/<username>/node1/cockroach-temp242232154
