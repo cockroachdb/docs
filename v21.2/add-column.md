@@ -26,37 +26,7 @@ The user must have the `CREATE` [privilege](authorization.html#assign-privileges
  `table_name` | The name of the table to which you want to add the column.
  `column_name` | The name of the column you want to add. The column name must follow these [identifier rules](keywords-and-identifiers.html#identifiers) and must be unique within the table but can have the same name as indexes or constraints.
  `typename` | The [data type](data-types.html) of the new column.
- `col_qualification` | An optional list of [column qualifications](#column-qualifications).
-
-## Column qualifications
-
-CockroachDB supports the following column qualifications:
-
-- [Column-level constraints](constraints.html)
-- [Collations](collate.html)
-- [Column family assignments](column-families.html)
-- [`DEFAULT` expressions](default-value.html)
-- <span class="version-tag">New in v21.2</span>: [`ON UPDATE` expressions](#on-update-expressions)
-
-### `ON UPDATE` expressions
-
-<span class="version-tag">New in v21.2</span>: `ON UPDATE` expressions update column values in the following cases:
-
-- An [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statement modifies a different column value in the same row.
-- An `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
-
-`ON UPDATE` expressions **do not** update column values in the following cases:
-
-- An `UPDATE` or `UPSERT` statement directly modifies the value of a column with an `ON UPDATE` expression.
-- An `UPSERT` statement creates a new row.
-- A new column is backfilled with values (e.g., by a `DEFAULT` expression).
-
-Note the following limitations of `ON UPDATE` expressions:
-
-- `ON UPDATE` expressions allow context-dependent expressions, but not expressions that reference other columns. For example, the `current_timestamp()` [built-in function](functions-and-operators.html) is allowed, but `CONCAT(<column_one>, <column_two>)` is not.
-- You cannot add a [foreign key constraint](foreign-key.html) and an `ON UPDATE` expression to the same column.
-
-For an example of `ON UPDATE`, see [Add a column with an `ON UPDATE` expression](#add-a-column-with-an-on-update-expression).
+ `col_qualification` | An optional list of [column qualifications](create-table.html#column-qualifications).
 
 ## Viewing schema changes
 

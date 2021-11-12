@@ -173,7 +173,37 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
 
+### `JSONB`/`JSON` comparison operators are not implemented
+
+{% include {{page.version.version}}/sql/jsonb-comparison.md %}
+
+### Locality-optimized search only works for queries selecting a limited number of records
+
+{% include {{ page.version.version }}/sql/locality-optimized-search-limited-records.md %}
+
+### Expression indexes cannot reference computed columns
+
+{% include {{page.version.version}}/sql/expression-indexes-cannot-reference-computed-columns.md %}
+
+### Cannot refresh materialized views inside explicit transactions
+
+{% include {{page.version.version}}/sql/cannot-refresh-materialized-views-inside-transactions.md %}
+
+### CockroachDB cannot plan locality optimized searches that use partitioned unique indexes on virtual computed columns
+
+{% include {{page.version.version}}/sql/locality-optimized-search-virtual-computed-columns.md %}
+
+### Expressions as `ON CONFLICT` targets are not supported
+
+{% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
+
 ## Unresolved limitations
+
+### Optimizer stale statistics deletion when columns are dropped
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
 ### `BACKUP` of multi-region tables
 
@@ -286,12 +316,6 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Slow (or hung) backups and queries due to write intent buildup
-
-{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
 
 ### Change data capture
 
@@ -574,21 +598,3 @@ If the execution of a [join](joins.html) query exceeds the limit set for memory-
 ### Disk-spilling not supported for some unordered distinct operations
 
 {% include {{ page.version.version }}/known-limitations/unordered-distinct-operations.md %}
-
-### Inverted index scans can't be generated for some statement filters
-
-CockroachDB cannot generate [inverted index](inverted-indexes.html) scans for statements with filters that have both JSON fetch values and containment operators. For example the following statement won't be index-accelerated:
-
-~~~ sql
-SELECT * FROM mytable WHERE j->'a' @> '{"b": "c"}';
-~~~
-
-CockroachDB v20.1 and earlier would generate index scans for these filters, though it is not recommended as the normalization rules used to convert the filters into JSON containment expressions would sometimes produce inequivalent expressions.
-
-The workaround is to rewrite the statement filters to avoid using both JSON fetch values and containment operators. The following statement is index-accelerated and equivalent to the non-accelerated statement above:
-
-~~~ sql
-SELECT * FROM mytable WHERE j @> '{"a": {"b": "c"}}'
-~~~
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/55318)

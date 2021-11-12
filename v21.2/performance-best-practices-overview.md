@@ -298,6 +298,10 @@ See [Join Performance Best Practices](joins.html#performance-best-practices).
 
 See [Subquery Performance Best Practices](subqueries.html#performance-best-practices).
 
+## Authorization best practices
+
+See [Authorization Best Practices](authorization.html#authorization-best-practices).
+
 ## Table scans best practices
 
 ### Avoid `SELECT *` for large tables

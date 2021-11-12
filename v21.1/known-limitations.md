@@ -165,6 +165,12 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 ## Unresolved limitations
 
+### Optimizer stale statistics deletion when columns are dropped
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+
 ### `IMPORT` into a `REGIONAL BY ROW` table
 
 CockroachDB does not currently support [`IMPORT`s](import.html) into [`REGIONAL BY ROW`](set-locality.html#regional-by-row) tables that are part of [multi-region databases](multiregion-overview.html).
@@ -319,12 +325,6 @@ The [`COMMENT ON`](comment-on.html) statement associates comments to databases, 
 As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups.
 
 [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/44396)
-
-### Slow (or hung) backups and queries due to write intent buildup
-
-{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
-
-[Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/59704)
 
 ### Change data capture
 
