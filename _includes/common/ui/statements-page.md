@@ -113,7 +113,7 @@ Network | Amount of [data transferred over the network]({{ link_prefix }}archite
 Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
 % of All Runtime  | How much time this statement fingerprint took to execute compared to all other statements that were executed within the time period. It is expressed as a percentage. The runtime is the mean execution latency multiplied by the execution count.
 Regions/Nodes | The regions and nodes on which statements with this fingerprint executed.
-Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page.
+Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click **Download bundle** to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page. <br><br>**Diagnostics** is not currently enabled for {{ site.data.products.serverless }} clusters.
 
 ## Statement Details page
 
@@ -207,7 +207,9 @@ A row  with the activation time and collection status is added to the **Statemen
 Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. To view and download diagnostic bundles for all statement fingerprints do one of the following:
 
 - On the Diagnostics page for a statement fingerprint, click the **All statement diagnostics** link.
+{% if page.cloud != true %}
 - Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
+{% endif %}
 
 {% if page.cloud != true %}
 Click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
