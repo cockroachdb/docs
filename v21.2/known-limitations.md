@@ -205,6 +205,10 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 * {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
 
+### Automatic statistics refresher may not refresh after upgrade
+
+{% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
+
 ### `BACKUP` of multi-region tables
 
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
