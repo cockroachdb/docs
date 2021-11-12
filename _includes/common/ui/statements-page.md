@@ -120,9 +120,7 @@ Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerp
 Click a SQL statement fingerprint to open **Statement Details**. For each statement fingerprint, the details include:
 
 - [Overview](#overview)
-{% if page.cloud != true %}
 - [Diagnostics](#diagnostics)
-{% endif %}
 - [Explain plan](#explain-plan)
 - [Execution stats](#execution-stats)
 
