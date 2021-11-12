@@ -76,7 +76,13 @@ CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
 
 You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create an [inverted index](inverted-indexes.html) on a subset of the JSON column.
 
-The following example creates a table of users with a JSON object in the `user_profile` column:
+Normally an index is used only if the cost of using the index is less than the cost of a full table scan. To disable that optimization, turn off statistics collection:
+
+~~~sql
+> SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+~~~
+
+Create a table of three users with a JSON object in the `user_profile` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
@@ -119,7 +125,7 @@ You can see that a full scan is performed:
           │ table: users@primary
           │
           └── • scan
-                estimated row count: 3 (100% of the table; stats collected 5 minutes ago)
+                missing stats
                 table: users@primary
                 spans: FULL SCAN
 ~~~
@@ -135,7 +141,7 @@ When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, 
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-> EXPLAIN SELECT jsonb_pretty(user_profile) FROM users@timestamp_idx WHERE parse_timestamp(user_profile->>'birthdate') = '2011-11-07';
+> EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE parse_timestamp(user_profile->>'birthdate') = '2011-11-07';
 ~~~
 
 ~~~
@@ -152,7 +158,7 @@ When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, 
       │ table: users@primary
       │
       └── • scan
-            estimated row count: 3 (99% of the table; stats collected 5 minutes ago)
+            missing stats
             table: users@timestamp_idx
             spans: [/'2011-11-07 00:00:00' - /'2011-11-07 00:00:00']
 ~~~
