@@ -258,6 +258,7 @@ SELECT * FROM abc@{NO_ZIGZAG_JOIN};
 
 * {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
 * {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+* {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 
 ## See also
 
