@@ -166,10 +166,13 @@ The **Overview** section displays the SQL statement fingerprint and essential st
   - **Retries** is the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
   - **Max Retries** is the highest number of retries of a single statement with this fingerprint within the last hour. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
 
-{% if page.cloud != true %}
 ### Diagnostics
 
 The **Diagnostics** section allows you to activate and download diagnostics for the SQL statement fingerprint.
+
+{{site.data.alerts.callout_info}}
+The **Diagnostics** tab is not enabled for {{ site.data.products.serverless }} clusters.
+{{site.data.alerts.end}}
 
 When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces]({{ link_prefix }}show-trace.html) in various formats (including a JSON file that can be [imported to Jaeger]({{ link_prefix }}query-behavior-troubleshooting.html#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`]({{ link_prefix }}explain-analyze.html#debug-option). You can use the information collected in the bundle to diagnose problematic SQL statements, such as [slow queries]({{ link_prefix }}query-behavior-troubleshooting.html#query-is-always-slow). We recommend that you share the diagnostics bundle with our [support team]({{ link_prefix }}support-resources.html), which can help you interpret the results.
 
@@ -195,7 +198,9 @@ A row  with the activation time and collection status is added to the **Statemen
   - `ERROR` indicates that the attempt at diagnostics collection failed.
   - `READY` indicates that the diagnostics have been collected. Click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download the diagnostics bundle.
 
+{% if page.cloud != true %}
 <img src="{{ 'images/v21.2/ui_statements_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
+{% endif %}
 
 #### View and download diagnostic bundles for all statement fingerprints
 
@@ -204,10 +209,11 @@ Although fingerprints are periodically cleared from the Statements page, all dia
 - On the Diagnostics page for a statement fingerprint, click the **All statement diagnostics** link.
 - Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
 
+{% if page.cloud != true %}
 Click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
-
+{% else %}
+Click **Bundle(.zip)** to download any diagnostics bundle.
 {% endif %}
-
 
 ### Explain Plan
 
