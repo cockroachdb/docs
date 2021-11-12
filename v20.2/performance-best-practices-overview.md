@@ -27,6 +27,20 @@ For more information, see:
 - [Delete Data](delete-data.html)
 - [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml/)
 
+### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
+
+When inserting/updating all columns of a table, and the table has no secondary
+indexes, we recommend using an [`UPSERT`](upsert.html) statement instead of the
+equivalent [`INSERT ON CONFLICT`](insert.html) statement. Whereas `INSERT ON
+CONFLICT` always performs a read to determine the necessary writes, the `UPSERT`
+statement writes without reading, making it faster. For tables with secondary
+indexes, there is no performance difference between `UPSERT` and `INSERT ON
+CONFLICT`.
+
+This issue is particularly relevant when using a simple SQL table of two columns
+to [simulate direct KV access](sql-faqs.html#can-i-use-cockroachdb-as-a-key-value-store).
+In this case, be sure to use the `UPSERT` statement.
+
 ## Bulk-insert best practices
 
 ### Use multi-row `INSERT` statements for bulk-inserts into existing tables

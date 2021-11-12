@@ -164,6 +164,7 @@ Use the following command to specify regions and survival goals at database crea
 ## See also
 
 - [`SHOW DATABASES`](show-databases.html)
+- [`SHOW CREATE DATABASE`](show-create.html)
 - [`RENAME DATABASE`](rename-database.html)
 - [`SET DATABASE`](set-vars.html)
 - [`DROP DATABASE`](drop-database.html)

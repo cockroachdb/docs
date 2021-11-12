@@ -140,6 +140,147 @@ ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
 
 {% include {{page.version.version}}/sql/locality-optimized-search.md %}
 
+### Turn on auto-rehoming for `REGIONAL BY ROW` tables
+
+{% include {{ page.version.version }}/misc/experimental-warning.md %}
+
+This feature is disabled by default.
+
+When auto-rehoming is enabled, the [home regions](#crdb_region) of rows in [`REGIONAL BY ROW`](#set-the-table-locality-to-regional-by-row) tables are automatically set to the region of the [gateway node](ui-sessions-page.html#session-details-gateway-node) from which any [`UPDATE`](update.html) or [`UPSERT`](upsert.html) statements that operate on those rows originate. This functionality is provided by adding [an `ON UPDATE` expression](create-table.html#on-update-expressions) to the [home region column](#crdb_region).
+
+Once enabled, the auto-rehoming behavior described here **will only apply to newly created `REGIONAL BY ROW` tables**. Existing `REGIONAL BY ROW` tables will not be auto-rehomed.
+
+To enable it using the [session setting](set-vars.html), issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET experimental_enable_auto_rehoming = true;
+~~~
+
+~~~
+SET
+~~~
+
+To enable it using the [cluster setting](cluster-settings.html), issue the following statement:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
+~~~
+
+~~~
+SET CLUSTER SETTING
+~~~
+
+#### Example
+
+1. Follow steps 1 and 2 from the [Low Latency Reads and Writes in a Multi-Region Cluster](demo-low-latency-multi-region-deployment.html) tutorial. This will involve starting a [`cockroach demo`](cockroach-demo.html) cluster in a terminal window (call it _terminal 1_).
+
+1. From the [SQL client](cockroach-sql.html) running in terminal 1, set the cluster setting that enables auto-rehoming. You must issue this cluster setting (or the session setting described above) before creating the `REGIONAL BY ROW` tables this feature operates on.
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SET CLUSTER SETTING sql.defaults.experimental_auto_rehoming.enabled = on;
+    ~~~
+
+1. In a second terminal window (call it _terminal 2_), [finish the tutorial starting from step 3](demo-low-latency-multi-region-deployment.html#step-3-load-and-run-movr) onward to finish loading the cluster with data and applying the multi-region SQL configuration.
+
+1. Switch back to terminal 1, and check the gateway region of the node you are currently connected to:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT gateway_region();
+    ~~~
+
+    ~~~
+      gateway_region
+    ------------------
+      us-east1
+    (1 row)
+    ~~~
+
+1. Open another terminal (call it _terminal 3_), and use [`cockroach sql`](cockroach-sql.html) to connect to a node in a different region in the demo cluster:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    cockroach sql --insecure --host localhost --port 26262
+    ~~~
+
+    ~~~
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    # Server version: CockroachDB CCL v21.2.0-rc.2 (x86_64-apple-darwin19, built 2021/10/25 20:36:07, go1.16.6) (same version as client)
+    # Cluster ID: 87b22d9b-b9ce-4f3a-8635-acad89c5981f
+    # Organization: Cockroach Demo
+    #
+    # Enter \? for a brief introduction.
+    #
+    root@localhost:26262/defaultdb>
+    ~~~
+
+1. From the SQL shell prompt that appears in terminal 3, switch to the `movr` database, and verify that the current gateway node is in a different region (`us-west1`):
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    USE movr;
+    ~~~
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ sql
+    SELECT gateway_region();
+    ~~~
+
+    ~~~
+      gateway_region
+    ------------------
+      us-west1
+    (1 row)
+    ~~~
+
+1. Still in terminal 3, update a row in the `vehicles` table that is homed in the `us-east1` region. After the update, it should be homed in the current gateway node's home region, `us-west1`.
+
+   1. First, pick a row at random from the `us-east1` region:
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       select * from vehicles where region = 'us-east1' limit 1;
+       ~~~
+
+       ~~~
+                          id                  |  city  | type |               owner_id               |       creation_time        |  status   |       current_location       |                    ext                     |  region
+       ---------------------------------------+--------+------+--------------------------------------+----------------------------+-----------+------------------------------+--------------------------------------------+-----------
+         3e127e68-a3f9-487d-aa56-bf705beca05a | boston | bike | 2f057d6b-ba8d-4f56-8fd9-894b7c082713 | 2021-10-28 16:19:22.309834 | available | 039 Stacey Plain             | {"brand": "FujiCervelo", "color": "green"} | us-east1
+                                              |        |      |                                      |                            |           | Lake Brittanymouth, LA 09374 |                                            |
+       (1 row)
+       ~~~
+
+   1. Next, update that row's `city` and `current_location` to addresses in Seattle, WA (USA). Note that this UUID is different than what you will see in your cluster, so you'll have to update the query accordingly.
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       UPDATE vehicles set (city, current_location) = ('seattle', '2604 1st Ave, Seattle, WA 98121-1305') WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
+       ~~~
+
+       ~~~
+       UPDATE 1
+       ~~~
+
+   1. Finally, verify that the row has been auto-rehomed in this gateway's region by running the following statement and checking that the `region` column is now `us-west1` as shown below.
+
+       {% include_cached copy-clipboard.html %}
+       ~~~ sql
+       SELECT * FROM vehicles WHERE id = '3e127e68-a3f9-487d-aa56-bf705beca05a';
+       ~~~
+
+       ~~~
+                          id                  |  city   | type |               owner_id               |       creation_time        |  status   |           current_location           |                    ext                     |  region
+       ---------------------------------------+---------+------+--------------------------------------+----------------------------+-----------+--------------------------------------+--------------------------------------------+-----------
+         3e127e68-a3f9-487d-aa56-bf705beca05a | seattle | bike | 2f057d6b-ba8d-4f56-8fd9-894b7c082713 | 2021-10-28 16:19:22.309834 | available | 2604 1st Ave, Seattle, WA 98121-1305 | {"brand": "FujiCervelo", "color": "green"} | us-west1
+       (1 row)
+       ~~~
+
 <a name="global"></a>
 
 ### Set the table locality to `GLOBAL`

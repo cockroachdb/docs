@@ -54,7 +54,7 @@ Command | Usage
 There are two ways to increase the concurrency of a workload:
 
 - **Increase the concurrency of a single workload instance** by running `cockroach workload run <workload>` with the `--concurrency` flag set to a value higher than the default. Note that not all workloads support this flag.
-- **Run multiple instances of a workload in parallel** by running `cockroach workload run <workload>` multiple times from different terminals/machines.  
+- **Run multiple instances of a workload in parallel** by running `cockroach workload run <workload>` multiple times from different terminals/machines.
 
 ## Workloads
 
@@ -69,7 +69,7 @@ Workload | Description
 [`ycsb`](#ycsb-workload) | Simulates a high-scale key value workload, either read-heavy, write-heavy, or scan-based, with additional customizations.<br><br>For this workload, you run `workload init` to load the schema and then `workload run` to generate data.
 
 {{site.data.alerts.callout_info}}
- `cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used. You can filter queries on `application_name` on the [Statements page of the DB Console](ui-statements-page.html#search-and-filter-by-application), or in a [`SHOW STATEMENTS`](show-statements.html#filter-for-specific-queries) statement.
+ `cockroach workload` sets the [`application_name`](set-vars.html#supported-variables) for its workload queries to the name of the workload that is used. You can filter queries on `application_name` on the [Statements page of the DB Console](ui-statements-page.html#search-and-filter), or in a [`SHOW STATEMENTS`](show-statements.html#filter-for-specific-queries) statement.
 {{site.data.alerts.end}}
 
 ## Flags
@@ -347,7 +347,7 @@ $ cockroach start \
     +------------+
       mytable
     (1 row)
-    ~~~    
+    ~~~
 
     {% include copy-clipboard.html %}
     ~~~ shell
@@ -619,7 +619,7 @@ $ cockroach start \
     ~~~
     _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
       600.0s        0        4728286         7880.2      1.0      0.9      2.2      5.2    268.4
-    ~~~  
+    ~~~
 
 ### Customize the frequency and format of per-operation statistics
 

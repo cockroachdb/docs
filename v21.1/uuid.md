@@ -10,18 +10,21 @@ The `UUID` (Universally Unique Identifier) [data type](data-types.html) stores a
 To auto-generate unique row IDs, we recommend using [`UUID`](uuid.html) with the `gen_random_uuid()` function as the default value. See the [example](#create-a-table-with-auto-generated-unique-row-ids) below for more details.
 {{site.data.alerts.end}}
 
-
 ## Syntax
-A `UUID` value can be expressed using the following formats:
+
+You can express `UUID` values using the following formats:
 
 Format | Description
 -------|-------------
-Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format | Hyphen-separated groups of 8, 4, 4, 4, 12 hexadecimal digits.<br><br> Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
-With braces | The standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces.<br><br>Example: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`
-As `BYTES` | `UUID` value specified as bytes.<br><br>Example: `b'kafef00ddeadbeed'`
-`UUID` used as a URN | `UUID` can be used as a Uniform Resource Name (URN). In that case, the format is [specified](https://www.ietf.org/rfc/rfc2141.txt) as "urn:uuid:" followed by standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`
+Standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format | Hyphen-separated groups of 8, 4, 4, 4, and 12 hexadecimal digits.<br><br>Example: `acde070d-8c4c-4f0d-9d8a-162843c10333`
+`BYTES` | `UUID` value specified as a [`BYTES`](bytes.html) value.<br><br>Example: `b'kafef00ddeadbeed'`
+Uniform Resource Name | A [Uniform Resource Name (URN)](https://www.ietf.org/rfc/rfc2141.txt) specified as "urn:uuid:" followed by the [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format.<br><br>Example: `urn:uuid:63616665-6630-3064-6465-616462656564`
+Alternate RFC4122 formats | The [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format, surrounded by braces, expressed with upper-case digits, or with hyphens omitted.<br><br>Examples: `{acde070d-8c4c-4f0d-9d8a-162843c10333}`, `ACDE070D-8C4C-4f0D-9d8A-162843c10333`, `acde070d8c4c4f0d9d8a162843c10333`
+
+CockroachDB displays all `UUID` values in the standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format.
 
 ## Size
+
 A `UUID` value is 128 bits in width, but the total storage size is likely to be larger due to CockroachDB metadata.
 
 ## Examples
@@ -46,37 +49,13 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 ~~~
 
 ~~~
-+--------------------------------------+
-|                token                 |
-+--------------------------------------+
-| 63616665-6630-3064-6465-616462656562 |
-+--------------------------------------+
+                 token
+----------------------------------------
+  63616665-6630-3064-6465-616462656562
 (1 row)
 ~~~
 
-#### Create a table with `UUID` in standard [RFC4122](http://www.ietf.org/rfc/rfc4122.txt)-specified format with braces
-
-{% include copy-clipboard.html %}
-~~~ sql
-> INSERT INTO v VALUES ('{63616665-6630-3064-6465-616462656563}');
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
-> SELECT * FROM v;
-~~~
-
-~~~
-+--------------------------------------+
-|                token                 |
-+--------------------------------------+
-| 63616665-6630-3064-6465-616462656562 |
-| 63616665-6630-3064-6465-616462656563 |
-+--------------------------------------+
-(2 rows)
-~~~
-
-#### Create a table with `UUID` in byte format
+#### Create a table with `UUID` in `BYTE` format
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -89,14 +68,11 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 ~~~
 
 ~~~
-+--------------------------------------+
-|                token                 |
-+--------------------------------------+
-| 63616665-6630-3064-6465-616462656562 |
-| 63616665-6630-3064-6465-616462656563 |
-| 6b616665-6630-3064-6465-616462656564 |
-+--------------------------------------+
-(3 rows)
+                 token
+----------------------------------------
+  63616665-6630-3064-6465-616462656562
+  6b616665-6630-3064-6465-616462656564
+(2 rows)
 ~~~
 
 #### Create a table with `UUID` used as URN
@@ -112,15 +88,36 @@ A `UUID` value is 128 bits in width, but the total storage size is likely to be 
 ~~~
 
 ~~~
-+--------------------------------------+
-|                token                 |
-+--------------------------------------+
-| 63616665-6630-3064-6465-616462656562 |
-| 63616665-6630-3064-6465-616462656563 |
-| 6b616665-6630-3064-6465-616462656564 |
-| 63616665-6630-3064-6465-616462656564 |
-+--------------------------------------+
-(4 rows)
+                 token
+----------------------------------------
+  63616665-6630-3064-6465-616462656562
+  6b616665-6630-3064-6465-616462656564
+  63616665-6630-3064-6465-616462656564
+(3 rows)
+~~~
+
+#### Express UUIDs in alternate formats
+
+{% include copy-clipboard.html %}
+~~~ sql
+> INSERT INTO v VALUES ('{acde070d-8c4c-4f0d-9d8a-162843c10333}'), ('ACDE070D-8C4C-4f0D-9d8A-162843c10333'), ('acde070d8c4c4f0d9d8a162843c10333');
+~~~
+
+{% include copy-clipboard.html %}
+~~~ sql
+> SELECT * FROM v;
+~~~
+
+~~~
+                 token
+----------------------------------------
+  63616665-6630-3064-6465-616462656562
+  6b616665-6630-3064-6465-616462656564
+  63616665-6630-3064-6465-616462656564
+  acde070d-8c4c-4f0d-9d8a-162843c10333
+  acde070d-8c4c-4f0d-9d8a-162843c10333
+  acde070d-8c4c-4f0d-9d8a-162843c10333
+(6 rows)
 ~~~
 
 ### Create a table with auto-generated unique row IDs

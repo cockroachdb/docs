@@ -314,6 +314,7 @@ root                       |                                       | {admin}
 ## See also
 
 - [Authorization](authorization.html)
+- [Authorization Best Practices](authorization.html#authorization-best-practices)
 - [`DROP ROLE`](drop-role.html)
 - [`GRANT`](grant.html)
 - [`REVOKE`](revoke.html)

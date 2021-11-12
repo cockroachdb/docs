@@ -487,6 +487,7 @@ For more information about how to choose the cluster topology that is right for 
 Reference information:
 
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
+- [Performance recipes](performance-recipes.html)
 - [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Joins](joins.html)
 - [CockroachDB Performance](performance.html)

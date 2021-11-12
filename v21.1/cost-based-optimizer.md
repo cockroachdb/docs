@@ -195,6 +195,11 @@ To make the optimizer prefer lookup joins to merge joins when performing foreign
 
 {% include {{ page.version.version }}/sql/inverted-joins.md %}
 
+## Known Limitations
+
+* {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
+* {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+
 ## See also
 
 - [`JOIN` expressions](joins.html)

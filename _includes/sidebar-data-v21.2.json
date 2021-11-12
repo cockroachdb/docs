@@ -60,7 +60,7 @@
                 ]
               },
               {
-                "title": "Simulate a Multi-Region Cluster on localhost",
+                "title": "Simulate a Multi-region Cluster on localhost",
                 "urls": [
                   "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
                 ]
@@ -89,7 +89,7 @@
                 ]
               },
               {
-                "title": "Multi-Region Performance",
+                "title": "Multi-region Performance",
                 "urls": [
                   "/${VERSION}/demo-low-latency-multi-region-deployment.html"
                 ]
@@ -423,7 +423,7 @@
                 ]
               },
               {
-                "title": "Performance tuning recipes",
+                "title": "Performance Tuning Recipes",
                 "urls": [
                   "/${VERSION}/performance-recipes.html",
                   "/${VERSION}/performance-recipes-solutions.html"
@@ -712,7 +712,7 @@
                 ]
               },
               {
-                "title": "Choosing a multi-region configuration",
+                "title": "Choosing a Multi-region Configuration",
                 "urls": [
                   "/${VERSION}/choosing-a-multi-region-configuration.html"
                 ]
@@ -724,7 +724,7 @@
                 ]
               },
               {
-                "title": "When to use REGIONAL vs. GLOBAL tables",
+                "title": "When to use REGIONAL vs. GLOBAL Tables",
                 "urls": [
                   "/${VERSION}/when-to-use-regional-vs-global-tables.html"
                 ]
@@ -996,7 +996,7 @@
                 ]
               },
               {
-                "title": "Improving statement performance",
+                "title": "Improving Statement Performance",
                 "urls": [
                   "/${VERSION}/make-queries-fast.html"
                 ]
