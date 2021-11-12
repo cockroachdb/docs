@@ -55,8 +55,13 @@ Open `app.js`, and edit the connection configuration parameters:
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
+- At the top of the file, uncomment the `const fs = require('fs');` line.
+
+    This line imports the `fs` Node module, which enables you to read in the CA cert that you downloaded from the {{ site.data.products.db }} Console.
 - Replace the values for `username`, `host`, `port`, and `database` with values from the **Connection parameters** tab of **Connection info**.
 - Replace the value for `password` with the password you created for your user.
+- Remove the `rejectUnauthorized` key-value pair.
+- Uncomment the `ca` key-value pair, and edit the `fs.readFileSync('certs/ca.crt').toString()` call to use the path to the `cc-ca.crt` file that you downloaded from the {{ site.data.products.db }} Console.
 
 </section>
 
