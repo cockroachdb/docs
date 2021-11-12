@@ -120,13 +120,11 @@ Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerp
 Click a SQL statement fingerprint to open **Statement Details**. For each statement fingerprint, the details include:
 
 - [Overview](#overview)
+{% if page.cloud != true %}
 - [Diagnostics](#diagnostics)
+{% endif %}
 - [Explain plan](#explain-plan)
 - [Execution stats](#execution-stats)
-
-{% if page.cloud == true %}
-<img src="{{ 'images/cockroachcloud/statements_details_page.png' | relative_url }}" alt="CockroachDB Cloud Statements Page" style="border:1px solid #eee;max-width:100%" />
-{% endif %}
 
 The Statement Details page supports the search param `aggregated_ts`. If set, the page displays the statement statistics aggregated at that interval. If unset, the page displays the statement statistics aggregated over the date range specified on the Statements page.
 
@@ -168,6 +166,7 @@ The **Overview** section displays the SQL statement fingerprint and essential st
   - **Retries** is the cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
   - **Max Retries** is the highest number of retries of a single statement with this fingerprint within the last hour. For example, if three statements with the same fingerprint had to be retried 0, 1, and 5 times, then the Max Retries value for the fingerprint is 5.
 
+{% if page.cloud != true %}
 ### Diagnostics
 
 The **Diagnostics** section allows you to activate and download diagnostics for the SQL statement fingerprint.
@@ -196,20 +195,19 @@ A row  with the activation time and collection status is added to the **Statemen
   - `ERROR` indicates that the attempt at diagnostics collection failed.
   - `READY` indicates that the diagnostics have been collected. Click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download the diagnostics bundle.
 
-{% if page.cloud != true %}
 <img src="{{ 'images/v21.2/ui_statements_diagnostics.png' | relative_url }}" alt="Statements diagnostics" style="border:1px solid #eee;max-width:80%" />
-{% endif %}
 
 #### View and download diagnostic bundles for all statement fingerprints
 
 Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. To view and download diagnostic bundles for all statement fingerprints do one of the following:
 
 - On the Diagnostics page for a statement fingerprint, click the **All statement diagnostics** link.
-{% if page.cloud != true %}
 - Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](ui-debug-pages.html#reports).
 
 Click <img src="{{ 'images/v21.2/ui-download-button.png' | relative_url }}" alt="Download bundle" /> **Bundle (.zip)** to download any diagnostics bundle.
+
 {% endif %}
+
 
 ### Explain Plan
 
