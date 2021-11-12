@@ -16,7 +16,7 @@ When you write a row that exceeds `sql.guardrails.max_row_size_err`:
 - `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
 
 You **cannot** update existing rows that violate the limit unless the update shrinks the size of the
-row below the limit. You **can** select, delete, alter, backed up, and restore such rows. We
+row below the limit. You **can** select, delete, alter, back up, and restore such rows. We
 recommend using the accompanying setting `sql.guardrails.max_row_size_log` in conjunction with
 `SELECT pg_column_size()` queries to detect and fix any existing large rows before lowering
 `sql.guardrails.max_row_size_err`.
