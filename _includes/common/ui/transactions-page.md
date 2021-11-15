@@ -32,15 +32,13 @@ To filter the transactions by [`application_name`]({{ link_prefix }}connection-p
 
 You can search for transactions using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
+You can filter transactions in which a SQL statement fingerprint exceeds a specified latency value. Use the pulldown in the **Filters** menu.
+
 ## Transaction statistics
 
 {% include common/ui/statistics.md %}
 
 For an example of querying the statistics table, see [Example]({{ page_prefix}}statements-page.html#example).
-
-## Filter by transaction latency
-
-You can filter transactions in which a SQL statement fingerprint exceeds a specified latency value. Use the pulldown in the **Filters** menu.
 
 ## Understand the Transactions page
 
