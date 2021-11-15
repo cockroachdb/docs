@@ -89,10 +89,6 @@ Use the Statements page to identify SQL statements that you want to [troubleshoo
 If you haven't yet executed any queries in the cluster as a user, this page will be blank.
 {{site.data.alerts.end}}
 
-{% if page.cloud == true %}
-<img src="{{ 'images/cockroachcloud/statements_page.png' | relative_url }}" alt="{{ site.data.products.db }} Console Statements Page" style="border:1px solid #eee;max-width:100%" />
-{% endif %}
-
 <a id="statement-fingerprint-properties"></a>
 
 ### Statements table
@@ -143,7 +139,6 @@ The **Overview** section displays the SQL statement fingerprint and essential st
   - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the last hour or specified time interval.
 
 **Statement details** displays information about the execution of the statement.
-
 
 - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
 - **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics.

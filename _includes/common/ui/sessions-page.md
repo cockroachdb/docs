@@ -23,7 +23,7 @@ An active session can have an open transaction that is not currently running SQL
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v21.2/ui-sessions-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v21.2/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 The following are displayed for each active session:
@@ -46,7 +46,7 @@ Sort by **Transaction Duration** to display all active sessions at the top.
 Click the **Session Duration** of any session to display details and possible actions for that session.
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v21.2/ui-sessions-details-page.png' | relative_url }}" alt="DB Console Database Tables View" style="border:1px solid #eee;max-width:100%" />
+<img src="{{ 'images/v21.2/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 - **Session** shows the ID of the connected session.
