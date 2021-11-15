@@ -93,12 +93,13 @@ Use the [DB Console](monitoring-page.html) or your own tooling to monitor your a
 
 Most v21.2 features can be used right away, but some will be enabled only after the upgrade has been finalized. Attempting to use these features before finalization will result in errors:
 
-- Expression indexes
-- Default privileges on database objects
-- Bounded staleness reads
-- Database placement using the `ALTER DATABASE ... PLACEMENT RESTRICTED` syntax
-- `GENERATED {ALWAYS | BY DEFAULT} AS IDENTITY` syntax in column definitions
-- `ON UPDATE` column expressions
+- **Expression indexes:** [Indexes on expressions](../v21.2/expression-indexes.html) can now be created. These indexes speed up queries that filter on the result of that expression, and are especially useful for indexing only a specific field of a `JSON` object.
+- **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](../v21.2/alter-default-privileges.html) and [`SHOW DEFAULT PRIVILEGES`](../v21.2/show-default-privileges.html).
+- **Bounded staleness reads:** [Bounded staleness reads](../v21.2/follower-reads.html#bounded-staleness-reads) are now available in CockroachDB. These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](../v21.2/functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures.
+- **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](../v21.2/placement-restricted.html) statement to constrain the replica placement for a [multi-region database](../v21.2/multiregion-overview.html)'s [regional tables](../v21.2/regional-tables.html) to the [home regions](../v21.2/set-locality.html#crdb_region) associated with those tables.
+- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](../v21.2/add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](../v21.2/update.html) or [`UPSERT`](../v21.2/upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
+
+For an expanded list of features included in the v21.2 release, see the [v21.2 release notes](../releases/v21.2.0.html).
 
 ### Roll back the upgrade
 
