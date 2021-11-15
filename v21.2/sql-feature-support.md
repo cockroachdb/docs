@@ -168,6 +168,7 @@ table tr td:nth-child(2) {
  Roles | ✓ | Standard | [Roles documentation](authorization.html#roles)
  Object ownership | ✓ | Common Extension | [Ownership documentation](authorization.html#object-ownership)
  Privileges | ✓ | Standard | [Privileges documentation](authorization.html#assign-privileges)
+ Default privileges | ✓ | PostgreSQL Extension | [Default privileges documentation](authorization.html#default-privileges)
 
 ### Miscellaneous
 
@@ -175,9 +176,11 @@ table tr td:nth-child(2) {
 -----------|-----------|------|---------
  Column families | ✓ | CockroachDB Extension | [Column Families documentation](column-families.html)
  Computed columns (stored and virtual) | ✓ | Common Extension | [Computed Columns documentation](computed-columns.html)
+ `ON UPDATE` expressions | ✓ | PostgreSQL, MySQL Extension | [`ON UPDATE` expressions documentation](create-table.html#on-update-expressions)
  Multi-region capabilities | ✓ | CockroachDB Extension | [Multi-region documentation](multiregion-overview.html)
  System catalog schemas | ✓ | Standard, PostgreSQL/CockroachDB Extension | [`crdb_internal`](crdb-internal.html) (CockroachDB Extension)<br>[`information_schema`](information-schema.html) (Standard)<br>[`pg_catalog`](pg-catalog.html) (PostgreSQL Extension)<br>[`pg_extension`](pg-extension.html) (PostgreSQL Extension)
  Sequences |  ✓ | Common Extension | [`CREATE SEQUENCE` documentation](create-sequence.html)
+ Identity columns | ✓ | Common Extension | [Identity columns documentation](create-table.html#identity-columns)
  Views | ✓ | Standard | [Views documentation](views.html)
  Materialized views | ✓ | Common Extension |  [Materialized views documentation](views.html#materialized-views)
  Window functions | ✓ | Standard | [Window Functions documentation](window-functions.html)
