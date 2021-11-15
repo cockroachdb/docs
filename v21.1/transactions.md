@@ -6,15 +6,13 @@ toc: true
 
 CockroachDB supports bundling multiple SQL statements into a single all-or-nothing transaction. Each transaction guarantees [ACID semantics](https://en.wikipedia.org/wiki/ACID) spanning arbitrary tables and rows, even when data is distributed. If a transaction succeeds, all mutations are applied together with virtual simultaneity. If any part of a transaction fails, the entire transaction is aborted, and the database is left unchanged. CockroachDB guarantees that while a transaction is pending, it is isolated from other concurrent transactions with serializable [isolation](#isolation-levels).
 
-{{site.data.alerts.callout_info}}
-For a detailed discussion of CockroachDB transaction semantics, see [How CockroachDB Does Distributed Atomic Transactions](https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/) and [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/). Note that the explanation of the transaction model described in this blog post is slightly out of date. See the [Transaction Retries](#transaction-retries) section for more details.
-{{site.data.alerts.end}}
+For a detailed discussion of CockroachDB transaction semantics, see [How CockroachDB Does Distributed Atomic Transactions](https://www.cockroachlabs.com/blog/how-cockroachdb-distributes-atomic-transactions/) and [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/). The explanation of the transaction model described in this blog post is slightly out of date. See the [Transaction Retries](#transaction-retries) section for more details.
 
 ## SQL statements
 
-Each of the following SQL statements control transactions in some way.
+The following SQL statements control transactions.
 
-| Statement                                            | Function                                                                                                                                                                 |
+| Statement                                            | Description                                                                                                                                                              |
 |------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`BEGIN`](begin-transaction.html)                    | Initiate a transaction, as well as control its [priority](#transaction-priorities).                                                                                      |
 | [`SET TRANSACTION`](set-transaction.html)            | Control a transaction's [priority](#transaction-priorities).                                                                                                             |
@@ -22,11 +20,11 @@ Each of the following SQL statements control transactions in some way.
 | [`ROLLBACK`](rollback-transaction.html)              | Abort a transaction and roll the database back to its state before the transaction began.                                                                                |
 | [`SHOW`](show-vars.html)                             | Display the current transaction settings.                                                                                                                                |
 | [`SAVEPOINT`](savepoint.html)                        | Used for [nested transactions](#nested-transactions); also used to implement [advanced client-side transaction retries](advanced-client-side-transaction-retries.html).  |
-| [`RELEASE SAVEPOINT`](release-savepoint.html)        | Commit a [nested transaction](#nested-transactions); also used for [retryable transactions](advanced-client-side-transaction-retries.html).                             |
-| [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors](advanced-client-side-transaction-retries.html).              |
+| [`RELEASE SAVEPOINT`](release-savepoint.html)        | Commit a [nested transaction](#nested-transactions); also used for [retryable transactions](advanced-client-side-transaction-retries.html).                              |
+| [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html) | Roll back a [nested transaction](#nested-transactions); also used to handle [retryable transaction errors](advanced-client-side-transaction-retries.html).               |
 
 {{site.data.alerts.callout_info}}
-Application developers who are using a framework or library that does not have [advanced retry logic](advanced-client-side-transaction-retries.html) built in should implement an application-level retry loop with exponential backoff as shown in [Client-side intervention](#client-side-intervention).
+If you are using a framework or library that does not have [advanced retry logic](advanced-client-side-transaction-retries.html) built in, you should implement an application-level retry loop with exponential backoff. See [Client-side intervention](#client-side-intervention).
 {{site.data.alerts.end}}
 
 ## Syntax
@@ -66,22 +64,21 @@ Type | Description
 
 Transactions may require retries if they experience deadlock or [read/write contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other concurrent transactions which cannot be resolved without allowing potential [serializable anomalies](https://en.wikipedia.org/wiki/Serializability).
 
-{% include {{page.version.version}}/misc/mitigate-contention-note.md %}
+To mitigate read-write contention and reduce the need for transaction retries, use the following techniques:
 
-There are two cases in which transaction retries occur:
+- Perform reads using [`AS OF SYSTEM TIME`](performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
+- Use [`SELECT FOR UPDATE`](select-for-update.html) to order transactions by controlling concurrent access to one or more rows of a table.  This reduces retries in scenarios where a transaction performs a read and then updates the same row it just read.
 
-1. [Automatic retries](#automatic-retries), which CockroachDB processes for you.
-2. [Client-side intervention](#client-side-intervention), which your application must handle.
+There are two cases in which transaction retries can occur:
+
+- [Automatic retries](#automatic-retries), which CockroachDB processes for you.
+- [Client-side intervention](#client-side-intervention), which your application must handle.
 
 ### Automatic retries
 
 CockroachDB automatically retries individual statements (implicit transactions) and transactions sent from the client as a single batch, as long as the size of the results being produced for the client, including protocol overhead, is less than 16KiB by default. Once that buffer overflows, CockroachDB starts streaming results back to the client, at which point automatic retries cannot be performed any more. As long as the results of a single statement or batch of statements are known to stay clear of this limit, the client does not need to worry about transaction retries.
 
-{{site.data.alerts.callout_success}}
-You can change the results buffer size for all new sessions using the `sql.defaults.results_buffer.size` [cluster setting](cluster-settings.html), or for a specific session using the `results_buffer_size` [session variable](set-vars.html). Note, however, that decreasing the buffer size can increase the number of transaction retry errors a client receives, whereas increasing the buffer size can increase the delay until the client receives the first result row.
-{{site.data.alerts.end}}
-
-In future versions of CockroachDB, we plan on providing stronger guarantees for read-only queries that return at most one row, regardless of the size of that row.
+You can change the results buffer size for all new sessions using the `sql.defaults.results_buffer.size` [cluster setting](cluster-settings.html), or for a specific session using the `results_buffer_size` [session variable](set-vars.html). Decreasing the buffer size can increase the number of transaction retry errors a client receives, whereas increasing the buffer size can increase the delay until the client receives the first result row.
 
 #### Individual statements
 
@@ -117,7 +114,6 @@ Batching is generally controlled by your driver or client's behavior. Technicall
     )
     ~~~
 
-{{site.data.alerts.callout_info}}
 Within a batch of statements, CockroachDB infers that the statements are not
 conditional on the results of previous statements, so it can retry all of them.
 Of course, if the transaction relies on conditional logic (e.g., statement 2 is
@@ -128,7 +124,6 @@ already been delivered to the client by the time statement 2 is forcing the
 transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
 [client-side intervention](#client-side-intervention).
-{{site.data.alerts.end}}
 
 ### Client-side intervention
 
@@ -158,8 +153,6 @@ To handle these types of errors, you have the following options:
 - If you're building an application with a language and framework for which we do not provide example retry logic, you might need to write your own retry logic. For an example, see the [Client-side intervention example](#client-side-intervention-example).
 - **Advanced users, such as library authors**: See [Advanced Client-Side Transaction Retries](advanced-client-side-transaction-retries.html).
 
-{% include {{page.version.version}}/misc/mitigate-contention-note.md %}
-
 #### Client-side intervention example
 
 {% include {{page.version.version}}/misc/client-side-intervention-example.md %}
@@ -176,7 +169,7 @@ CockroachDB supports the nesting of transactions using [savepoints](savepoint.ht
 
 This can be useful in applications that abstract database access using an application development framework or [ORM](install-client-drivers.html).  Different components of the application can operate on different sub-transactions without having to know about each others' internal operations, while trusting that the database will maintain isolation between sub-transactions and preserve data integrity.
 
-Just as [`COMMIT`](commit-transaction.html) and [`ROLLBACK`](rollback-transaction.html) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`](release-savepoint.html) and [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction) are used to commit and discard nested transactions.  This relationship is shown in the table below:
+Just as [`COMMIT`](commit-transaction.html) and [`ROLLBACK`](rollback-transaction.html) are used to commit and discard entire transactions, respectively, [`RELEASE SAVEPOINT`](release-savepoint.html) and [`ROLLBACK TO SAVEPOINT`](rollback-transaction.html#rollback-a-nested-transaction) are used to commit and discard nested transactions.  This relationship is shown in the following table:
 
 | Statement                                                                          | Effect                                                |
 |------------------------------------------------------------------------------------+-------------------------------------------------------|
@@ -189,7 +182,11 @@ For more information, including examples showing how to use savepoints to create
 
 ## Transaction priorities
 
-Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`, but for transactions that should be given higher (or lower) preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
+Every transaction in CockroachDB is assigned an initial **priority**. By default, the transaction priority is `NORMAL`.
+
+### Set transaction priority
+
+For transactions that should be given higher or lower preference in [high-contention scenarios](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), you can set the priority in the [`BEGIN`](begin-transaction.html) statement:
 
 ~~~ sql
 > BEGIN PRIORITY <LOW | NORMAL | HIGH>;
@@ -201,13 +198,21 @@ You can also set the priority immediately after a transaction is started:
 > SET TRANSACTION PRIORITY <LOW | NORMAL | HIGH>;
 ~~~
 
- To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
+To set the default transaction priority for all transactions in a session, use the `default_transaction_priority` [session variable](set-vars.html). For example:
 
 ~~~ sql
 > SET default_transaction_priority 'high';
 ~~~
 
-To see the current priority of a transaction, use [`SHOW TRANSACTION PRIORITY`](show-vars.html) or `SHOW transaction_priority`:
+{{site.data.alerts.callout_info}}
+When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.
+{{site.data.alerts.end}}
+
+### View transaction priority
+
+`transaction_priority` is a read-only [session variable](show-vars.html).
+
+To view the current priority of a transaction, use `SHOW transaction_priority` or [`SHOW TRANSACTION PRIORITY`](show-vars.html):
 
 ~~~ sql
 > SHOW transaction_priority;
@@ -229,19 +234,16 @@ To see the current priority of a transaction, use [`SHOW TRANSACTION PRIORITY`](
   high
 ~~~
 
-Note that `transaction_priority` is a read-only [session variable](show-vars.html) that cannot be set directly.
-
-{{site.data.alerts.callout_info}}
-When two transactions contend for the same resources indirectly, they may create a dependency cycle leading to a deadlock situation, where both transactions are waiting on the other to finish. In these cases, CockroachDB allows the transaction with higher priority to abort the other, which must then retry. On retry, the transaction inherits the higher priority. This means that each retry makes a transaction more likely to succeed in the event it again experiences deadlock.
-{{site.data.alerts.end}}
-
 ## Isolation levels
 
-CockroachDB executes all transactions at the strongest ANSI transaction isolation level: `SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker isolation levels have historically been used to maximize transaction throughput. However, [recent research](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
+CockroachDB executes all transactions at the strongest ANSI transaction isolation level:
+`SERIALIZABLE`. All other ANSI transaction isolation levels (e.g., `SNAPSHOT`, `READ UNCOMMITTED`,
+`READ COMMITTED`, and `REPEATABLE READ`) are automatically upgraded to `SERIALIZABLE`. Weaker
+isolation levels have historically been used to maximize transaction throughput. However,
+[ACIDRain: Concurrency-Related Attacks on Database-Backed Web Applications](http://www.bailis.org/papers/acidrain-sigmod2017.pdf) has demonstrated that the use
+of weak isolation levels results in substantial vulnerability to concurrency-based attacks.
 
-{{site.data.alerts.callout_info}}
 For a detailed discussion of isolation in CockroachDB transactions, see [Serializable, Lockless, Distributed: Isolation in CockroachDB](https://www.cockroachlabs.com/blog/serializable-lockless-distributed-isolation-cockroachdb/).
-{{site.data.alerts.end}}
 
 #### Serializable isolation
 
@@ -261,19 +263,43 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 
 The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `READ UNCOMMITTED`, `READ COMMITTED`, and `REPEATABLE READ` levels and equivalent to the ANSI SQL `SERIALIZABLE` level.
 
-For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+For more information about the relationship between these levels, see [A Critique of ANSI SQL Isolation Levels](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
 ## Limit the number of rows written or read in a transaction
 
 You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
 
-Use the [cluster](cluster-settings.html) `sql.defaults.transaction_rows_written_log`,
+Use the [cluster](cluster-settings.html) and [session](set-vars.html) settings `sql.defaults.transaction_rows_written_log`,
 `sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
-`sql.defaults.transaction_rows_read_err` and [session](set-vars.html) settings `transaction_rows_written_log`,
+`sql.defaults.transaction_rows_read_err` to limit the number of rows written or read in a
+transaction. When the `log` limit is exceeded, the transaction is logged to the `SQL_PERF` channel.
+When the `err` limit is exceeded, the transaction is rejected. The limits are enforced after each
+statement of a transaction has been fully executed.
+
+The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`,
+and `DELETE` SQL statements. The "read" limits apply to the `SELECT`
+statement in addition to the statements subject to the "write" limits. The limits **do not**
+apply to `CREATE TABLE AS`, `SELECT`, `IMPORT`, `TRUNCATE`, `DROP`, `ALTER TABLE`, `BACKUP`,
+`RESTORE`, or `CREATE STATISTICS` statements.
+
+{{site.data.alerts.callout_info}}
+Enabling `transaction_rows_read_err` disables the auto commit optimization for mutation statements
+in implicit transactions. For write limits CockroachDB can count how many rows have been modified
+before using the auto commit optimization. However, for read limits CockroachDB doesn't have that
+information on the write path, so must disable the auto commit.
+{{site.data.alerts.end}}
+
+## Limit the number of rows written or read in a transaction
+
+You can limit the number of rows written or read in a transaction at the cluster or session level. This allows you configure CockroachDB to log or reject statements that could destabilize a cluster or violate application best practices.
+
+Use the [cluster settings](cluster-settings.html) `sql.defaults.transaction_rows_written_log`,
+`sql.defaults.transaction_rows_written_err`, `sql.defaults.transaction_rows_read_log`, and
+`sql.defaults.transaction_rows_read_err` and [session settings](set-vars.html) `transaction_rows_written_log`,
 `transaction_rows_written_err`, `transaction_rows_read_log`, and
 `transaction_rows_read_err` to limit the number of rows written or read in a
 transaction. When the `log` limit is reached, the transaction is logged to the `SQL_PERF` channel.
-When the `err` limit is reached the transaction is rejected. The limits are enforced after each
+When the `err` limit is reached, the transaction is rejected. The limits are enforced after each
 statement of a transaction has been fully executed.
 
 The "write" limits apply to `INSERT`, `INSERT INTO SELECT FROM`, `INSERT ON CONFLICT`, `UPSERT`, `UPDATE`,
