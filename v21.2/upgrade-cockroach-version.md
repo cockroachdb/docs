@@ -40,10 +40,10 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [changes in v21.2](../releases/v21.2.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+Review the [changes in v21.2](../releases/v21.2.0.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
 - Interleaving data was deprecated in v20.2, disabled by default in v21.1, and permanently removed in v21.2. If your cluster contains interleaved data, you will not be able to finalize an upgrade to v21.2. For migration steps, see the [v21.1 interleaving deprecation notice](../v21.1/interleave-in-parent.html#deprecation).
-- The `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html) was deprecated in v21.1 and has been removed from v21.2. The `default` authentication mode for Google Cloud Storage is no longer supported. It is necessary to use either `specified` or `implicit` as `AUTH` parameters when connecting to Google Cloud Storage. See the [Authentication section — Bulk Operations](use-cloud-storage-for-bulk-operations.html#google-cloud-storage) for details on configuring these parameters. 
+- The `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html) was deprecated in v21.1 and has been removed from v21.2. The `default` authentication mode for Google Cloud Storage is no longer supported. It is necessary to use either `specified` or `implicit` as `AUTH` parameters when connecting to Google Cloud Storage. See the [Authentication section — Bulk Operations](use-cloud-storage-for-bulk-operations.html#google-cloud-storage) for details on configuring these parameters.
 
 ## Step 3. Decide how the upgrade will be finalized
 
