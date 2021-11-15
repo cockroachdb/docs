@@ -78,11 +78,11 @@ release_info:
     start_time: 2021-11-08 11:01:26.34274101 +0000 UTC
     version: v20.2.18
   v21.1:
-    build_time: 2021/10/18 11:00:26 (go1.15.5)
+    build_time: 2021/11/15 11:00:26 (go1.15.5)
     docker_image: cockroachdb/cockroach
-    name: v21.1.11
-    start_time: 2021-10-18 11:01:26.34274101 +0000 UTC
-    version: v21.1.11
+    name: v21.1.12
+    start_time: 2021-11-15 11:01:26.34274101 +0000 UTC
+    version: v21.1.12
   v21.2:
     build_time: 2021/11/01 11:00:26 (go1.16.6)
     docker_image: cockroachdb/cockroach-unstable
