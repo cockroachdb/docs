@@ -16,7 +16,7 @@ A session is *active* if it has an open transaction (including implicit transact
 
 - If a session is active, the most recent SQL statement is displayed in the **Statement** column.
 - If a session is idle, **Transaction Duration**, **Statement Duration**, and **Statement** will display `N/A`.
-- To view [details of a session](#session-details), click the **Session Duration**.
+- To view [details of a session](#session-details), click **Session Duration**.
 
 {{site.data.alerts.callout_info}}
 An active session can have an open transaction that is not currently running SQL. In this case, the **Statement** and **Statement Duration** columns will display `N/A` and **Transaction Duration** will display a value. Transactions that are held open can cause [contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
@@ -56,7 +56,7 @@ Click the **Session Duration** of any session to display details and possible ac
 	- **Memory Usage** shows the amount of memory currently allocated to this session, followed by the maximum amount of memory this session has ever allocated.
 	- The **Terminate Session** button ends the session. The client that holds this session will receive a "connection terminated" event.
 	- The **Terminate Statement** button ends the SQL statement. The session running this statement will receive an error.
-- **Transaction** will display the following information for an open transaction.
+- **Transaction** displays the following information for an open transaction.
 	- **Transaction Start Time** shows the timestamp at which the transaction started.
 	- **Number of Statements Executed** shows the total number of SQL statements executed by the transaction.
 	- **Number of Retries** shows the total number of [retries]({{ link_prefix }}transactions.html#transaction-retries) for the transaction.
@@ -65,10 +65,10 @@ Click the **Session Duration** of any session to display details and possible ac
 	- **Read Only?** shows whether the transaction is read-only.
 	- **AS OF SYSTEM TIME?** shows whether the transaction uses [`AS OF SYSTEM TIME`]({{ link_prefix }}performance-best-practices-overview.html#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries) to return historical data.
 	- **Memory Usage** shows the amount of memory currently allocated to this transaction, followed by the maximum amount of memory this transaction has ever allocated.
-- **Statement** will display the following information for an active statement.
-	- The SQL statement is shown.
-	- **Execution Start Time** shows the timestamp at which the statement was run.
-	- **Distributed Execution?** shows whether the statement uses [Distributed SQL (DistSQL)]({{ link_prefix }}architecture/sql-layer.html#distsql) optimization.
+- **Statement** displays the following information for an active statement.
+	- The SQL statement.
+	- **Execution Start Time** the timestamp at which the statement was run.
+	- **Distributed Execution?** whether the statement uses [Distributed SQL (DistSQL)]({{ link_prefix }}architecture/sql-layer.html#distsql) optimization.
 
 ## See also
 
