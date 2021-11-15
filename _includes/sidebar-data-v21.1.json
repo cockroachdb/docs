@@ -365,7 +365,7 @@
             ]
           },
           {
-            "title": "Manage Transactions",
+            "title": "Transactions",
             "urls": [
               "/${VERSION}/transactions.html"
             ]
