@@ -12,7 +12,7 @@ The **Transactions** page helps you:
 - View transaction [details](#transaction-details-page).
 
 {{site.data.alerts.callout_success}}
-In contrast with the [**Statements** page]({{ page_prefix }}statements-page.html), which displays [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction]({{ link_prefix }}transactions.html).
+In contrast to the [**Statements** page]({{ page_prefix }}statements-page.html), which displays [SQL statement fingerprints]({{ page_prefix }}statements-page.html#sql-statement-fingerprints), the **Transactions** page displays SQL statement fingerprints grouped by [transaction]({{ link_prefix }}transactions.html).
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}
@@ -42,7 +42,7 @@ For an example of querying the statistics table, see [Example]({{ page_prefix}}s
 
 ## Understand the Transactions page
 
-Use this page to identify transactions that you may want to [troubleshoot]({{ link_prefix }}query-behavior-troubleshooting.html), such as transactions that are experiencing high latencies, multiple [retries]({{ link_prefix }}transactions.html#transaction-retries), or execution failures.
+Use the Transactions page to identify transactions that you want to [troubleshoot]({{ link_prefix }}query-behavior-troubleshooting.html), such as transactions that are experiencing high latencies, multiple [retries]({{ link_prefix }}transactions.html#transaction-retries), or execution failures.
 
 {{site.data.alerts.callout_success}}
 If you haven't yet executed any transactions in the cluster as a user, this page will be blank.
