@@ -56,7 +56,7 @@ Date format: YYYY-MM-DD
 		<td>2022-05-10</td>
 	</tr>
 	<tr class=eol>
-		<td><a href="v20.1.0.html">v20.1</a></td>
+		<td><a href="v20.1.0.html">v20.1*</a></td>
 		<td>2020-05-12</td>
 		<td>2021-05-12</td>
 		<td>2021-11-12</td>
