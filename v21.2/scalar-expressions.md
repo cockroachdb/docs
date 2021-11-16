@@ -29,23 +29,19 @@ An expression in a query can refer to columns in the current data source in two 
 - The name of the column, e.g., `price` in `SELECT price FROM
   items`.
 
-  - If the name of a column is also a
-  [SQL keyword](keywords-and-identifiers.html#keywords), the name
+  - If the name of a column is also a [SQL keyword](keywords-and-identifiers.html#keywords), the name
   must be appropriately quoted. For example: `SELECT "Default" FROM configuration`.
 
-  - If the name is ambiguous (e.g., when joining across multiple
-  tables), it is possible to disambiguate by prefixing the column
-  name by the table name. For example, `SELECT items.price FROM
-  items`.
+  - If the name is ambiguous (e.g., when joining across multiple tables), it is possible to disambiguate by prefixing the column
+  name by the table name. For example, `SELECT items.price FROM items`.
 
 - The ordinal position of the column. For example, `SELECT @1 FROM items` selects the first column in `items`.
 
     {{site.data.alerts.callout_info}}This is a CockroachDB SQL extension.{{site.data.alerts.end}}
 
     {{site.data.alerts.callout_danger}}
-    Use ordinal references with care in production
-    code. During schema updates, column ordinal positions can change and
-    invalidate existing queries that use ordinal positions based on a
+    Use ordinal references with care in production code. During schema updates, column ordinal
+    positions can change and invalidate existing queries that use ordinal positions based on a
     previous version of the schema.
     {{site.data.alerts.end}}
 
@@ -54,7 +50,8 @@ An expression in a query can refer to columns in the current data source in two 
 An expression prefixed by a unary operator, or two expressions
 separated by a binary operator, form a new expression.
 
-For a full list of CockroachDB operators, with details about their order of precedence and which data types are valid operands for each operator, see [Functions and Operators](functions-and-operators.html#operators).
+For a full list of CockroachDB operators, with details about their order of precedence and which
+data types are valid operands for each operator, see [Functions and Operators](functions-and-operators.html#operators).
 
 ### Value comparisons
 
@@ -82,8 +79,7 @@ All comparisons accept any combination of argument types and result in type `BOO
 
 #### Comparison with `NaN`
 
-CockroachDB recognizes the special value `NaN`
-([Not-a-Number](https://en.wikipedia.org/wiki/NaN)) for scalars of
+CockroachDB recognizes the special value `NaN` ([Not-a-Number](https://en.wikipedia.org/wiki/NaN)) for scalars of
 type [`FLOAT`](float.html) or [`DECIMAL`](decimal.html).
 
 As per the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
@@ -306,10 +302,8 @@ a match is found or `FALSE` otherwise, or the inverted value for the
 The variants with an asterisk `*` use case-insensitive matching;
 otherwise the matching is case-sensitive.
 
-The pattern is expressed using
-[POSIX regular expression syntax](https://en.wikipedia.org/wiki/Regular_expression). Unlike
-`LIKE` patterns, a regular expression is allowed to match anywhere
-inside a string, not only at the beginning.
+The pattern is expressed using [POSIX regular expression syntax](https://en.wikipedia.org/wiki/Regular_expression). Unlike
+`LIKE` patterns, a regular expression is allowed to match anywhere inside a string, not only at the beginning.
 
 For example:
 

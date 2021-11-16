@@ -95,6 +95,10 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 
     [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/56492)
 
+### `SET` does not `ROLLBACK` in a transaction
+
+{% include {{page.version.version}}/known-limitations/set-transaction-no-rollback.md %}
+
 ## Unresolved limitations
 
 ### Optimizer stale statistics deletion when columns are dropped
@@ -102,6 +106,10 @@ CockroachDB supports efficiently storing and querying [spatial data](spatial-dat
 * {% include {{page.version.version}}/known-limitations/old-multi-col-stats.md %}
 
 * {% include {{page.version.version}}/known-limitations/single-col-stats-deletion.md %}
+
+### Automatic statistics refresher may not refresh after upgrade
+
+{% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 

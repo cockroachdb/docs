@@ -251,7 +251,9 @@ kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "Version": "
 ~~~
 
 The configurable fields include:
+
 <a name ="kafka-flush"></a>
+
 * `"Flush"."MaxMessages"` and `"Flush"."Frequency"`: These are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
   * `"MaxMessages"`: sets the maximum number of messages the producer will send in a single broker request. Increasing this value allows all messages to be sent in a batch. Default: `1`. Type: `INT`.
   * `"Frequency"`: sets the maximum time that messages will be batched. Default: `"0s"`. Type: `INTERVAL`.
@@ -259,6 +261,7 @@ The configurable fields include:
 * `"Version"`: sets the appropriate Kafka cluster version, which can be used to connect to [Kafka versions < v1.0](https://docs.confluent.io/platform/current/installation/versions-interoperability.html) (`kafka_sink_config='{"Version": "0.8.2.0"}'`). Default: `"1.0.0.0"` Type: `STRING`.
 
 <a name="kafka-required-acks"></a>
+
 * `"RequiredAcks"`: specifies what a successful write to Kafka is. CockroachDB [guarantees at least once delivery of messages](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) — this value defines the _delivery_. Type: `STRING`. The possible values are:
   * `"ONE"`: a write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails. **This is the default value.**
   * `"NONE"`: no Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.

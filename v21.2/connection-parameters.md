@@ -49,16 +49,15 @@ postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
 postgres://<username>:<password>@?host=<directory-path>&port=<port>&<parameters>
 ~~~
 
- Component      | Description                                                                                                                                                                                               | Required
-----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------
- `<username>`   | The [SQL user](create-user.html) that will own the client session.                                                                                                                            | ✗
- `<password>`   | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that CockroachDB currently does not allow passwords with special characters to be passed in a URL. For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35998).<br><br>[Find more detail about how CockroachDB handles passwords](authentication.html#client-authentication). | ✗
- `<host>`       | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
- `<port>`       | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
- `<database>`   | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
- `<directory-path>` |  The directory path to the client listening for a socket connection.                                                                                             | Required when specifying a Unix domain socket URI.
- `<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | [`options=--cluster=<cluster name>`](#supported-options-parameters) is required for {{ site.data.products.serverless }} clusters.
-
+Component | Description | Required
+----------|-------------|---------
+`<username>` | The [SQL user](create-user.html) that will own the client session. | ✗
+`<password>` | The user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`).<br><br>[Find more detail about how CockroachDB handles passwords.](authentication.html#client-authentication) | ✗
+`<host>` | The host name or address of a CockroachDB node or load balancer. | Required by most client drivers.
+`<port>` | The port number of the SQL interface of the CockroachDB node or load balancer. The default port number for CockroachDB is 26257. Use this value when in doubt. | Required by most client drivers.
+`<database>` | A database name to use as [current database](sql-name-resolution.html#current-database). Defaults to `defaultdb`. | ✗
+`<directory-path>` |  The directory path to the client listening for a socket connection. | Required when specifying a Unix domain socket URI.
+`<parameters>` | [Additional connection parameters](#additional-connection-parameters), including SSL/TLS certificate settings. | [`options=--cluster=<cluster name>`](#supported-options-parameters) is required for {{ site.data.products.serverless }} clusters.
 
 {{site.data.alerts.callout_info}}
 For cockroach commands that accept a URL, you can specify the URL with the command-line flag `--url`.
@@ -88,6 +87,7 @@ Parameter | Description | Default value
 `sslrootcert` | Path to the [CA certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslcert` | Path to the [client certificate](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
 `sslkey` | Path to the [client private key](cockroach-cert.html), when `sslmode` is not `disable`. | Empty string.
+`password` | The SQL user's password. It is not recommended to pass the password in the URL directly.<br><br>Note that passwords with special characters must be passed as [query string parameters](#additional-connection-parameters) (e.g., `postgres://maxroach@localhost:26257/movr?password=<password>`) and not as a component in the connection URL (e.g., `postgres://maxroach:<password>@localhost:26257/movr`). | Empty string
 `options` | [Additional options](#supported-options-parameters) to be passed to the server. | Empty string
 
 #### Supported `options` parameters

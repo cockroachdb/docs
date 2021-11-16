@@ -38,6 +38,12 @@ Date format: YYYY-MM-DD
 		</tr>
 	</thead>
   <tr>
+    <td><a href="v21.2.0.html">v21.2</a></td>
+    <td>2021-11-16</td>
+    <td>2022-11-16</td>
+    <td>2023-05-16</td>
+  </tr>
+  <tr>
     <td><a href="v21.1.0.html">v21.1</a></td>
     <td>2021-05-18</td>
     <td>2022-05-18</td>
@@ -49,8 +55,8 @@ Date format: YYYY-MM-DD
 		<td>2021-11-10</td>
 		<td>2022-05-10</td>
 	</tr>
-	<tr>
-		<td><a href="v20.1.0.html">v20.1</a></td>
+	<tr class=eol>
+		<td><a href="v20.1.0.html">v20.1*</a></td>
 		<td>2020-05-12</td>
 		<td>2021-05-12</td>
 		<td>2021-11-12</td>
