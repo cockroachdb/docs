@@ -21,7 +21,7 @@ toc: true
 
 Term | Definition
 -----|-----------
-**Serverless cluster** | A cluster that’s automatically billed and scaled in response to the resources it consumes (as opposed to a Dedicated cluster, which is billed for resources provisioned).
+**Serverless cluster** | A cluster that’s automatically billed and scaled in response to the resources it consumes (as opposed to a {{ site.data.products.dedicated }} cluster, which is billed for resources provisioned).
 **Request Unit (RU)** | Request Units represent the compute and I/O resources used by a query. All database operations in {{ site.data.products.serverless-plan }} cost a certain amount of RUs depending on the resources used. For example, a "small read" might cost 2 RUs, and a "large read" such as a full table scan with indexes could cost a large number of RUs. You can see how many Request Units your cluster has used on the [Cluster Overview](serverless-cluster-management.html#view-cluster-overview) page.
 **Spend limit** | The maximum amount of money you want to spend on a cluster in a particular billing period. The actual amount you are billed is based on the resources the cluster used during that billing period. A cluster's budget is allocated across storage and burst performance.
 **Baseline performance** | The minimum compute and I/O performance that you can expect from your cluster at all times. This is 100 RUs per second for all Serverless clusters (free and paid). The actual usage of a cluster may be lower than the baseline performance depending on application traffic, because not every application will need 100 RUs per second at all times. When the cluster's usage is lower than the baseline, the cluster accumulates the unused RUs until the load on the cluster increases above the baseline.
@@ -35,7 +35,7 @@ Term | Definition
 
 {{ site.data.products.serverless }} is a managed multi-tenant deployment of CockroachDB. A Serverless cluster is an isolated, virtualized tenant running on a much larger physical CockroachDB deployment.
 
-{{ site.data.products.serverless }} has separate compute and storage layers. The storage pods (KV pods) can be shared across users, and the compute pods (SQL pods) are unique to each user. These shared resources make {{ site.data.products.serverless }} architecture "multi-tenant," in contrast to the single-tenant architecture of [{{ site.data.products.dedicated }}](?filters=dedicated#security-and-connection).
+{{ site.data.products.serverless }} has separate compute and storage layers. The storage pods (KV pods) can be shared across users, and the compute pods (SQL pods) are unique to each user. These shared resources make {{ site.data.products.serverless }} architecture "multi-tenant," in contrast to the single tenant architecture of [{{ site.data.products.dedicated }}](?filters=dedicated#security-and-connection).
 
 Traffic comes in from the public internet and is routed by the cloud provider’s load balancer to a Kubernetes (K8s) cluster that hosts CockroachDB. K8s pods allow {{ site.data.products.serverless }} to limit SQL resource consumption for each user. They also minimize interference between pods that are scheduled on the same machine, giving each user a high-quality experience even when other users are running heavy workloads.
 
@@ -79,7 +79,7 @@ The diagrams below shows how {{ site.data.products.serverless }} autoscales with
 
 ## {{ site.data.products.dedicated }}
 
-If you need a single-tenant cluster with no shared resources, we recommend {{ site.data.products.dedicated }}. {{ site.data.products.dedicated }} supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform.
+If you need a single tenant cluster with no shared resources, we recommend {{ site.data.products.dedicated }}. {{ site.data.products.dedicated }} supports single and multi-region clusters in Amazon Web Services and Google Cloud Platform.
 
 ### Hardware
 
@@ -87,7 +87,7 @@ We use the Kubernetes offerings in AWS and GCP (EKS and GKE respectively) to run
 
 ### Security and Connection
 
-{{ site.data.products.dedicated }} clusters are single-tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two Dedicated clusters share any resources with each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Users connect to a Dedicated cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
+{{ site.data.products.dedicated }} clusters are single tenant. This means each new cluster gets its own project in GCP or its own account in AWS. No two {{ site.data.products.dedicated }} clusters share any resources with each other. Since these clusters are within their own accounts and projects, they are also in a default virtual private cloud (VPC). Users connect to a {{ site.data.products.dedicated }} cluster by using a load balancer in front of each region which leads to one connection string per region. Unless you set up [VPC peering](network-authorization.html#vpc-peering) or [AWS PrivateLink](network-authorization.html#aws-privatelink), your cluster will use TLS 1.3 protocol for encrypting inter-node and client-node communication.
 
 {{ site.data.products.db }} clusters also use digital certificates for inter-node authentication, [SSL modes](authentication.html#ssl-mode-settings) for node identity verification, and password authentication for client identity verification. See [Authentication](authentication.html) for more details.
 
