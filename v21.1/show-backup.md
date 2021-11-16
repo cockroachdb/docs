@@ -34,6 +34,7 @@ Option       | Value | Description
 -------------+-------+-----------------------------------------------------
 `privileges` | N/A   |  List which users and roles had which privileges on each table in the backup. Displays original ownership of the backup.
 `encryption_passphrase`<a name="with-encryption-passphrase"></a> | [`STRING`](string.html) |  The passphrase used to [encrypt the files](take-and-restore-encrypted-backups.html) (`BACKUP` manifest and data files) that the `BACKUP` statement generates.
+`as_json`   |  N/A  | [Display the backup's manifest](#show-a-backups-manifest) as JSON in the response.
 
 ## Response
 
@@ -299,6 +300,87 @@ Or, use the `kms` option and the same KMS URI that was used to create the backup
   movr          | public             | user_promo_codes           | table       | NULL       | 2020-09-29 18:24:55.784364+00:00 |          0 |    0 |      true
   defaultdb     | NULL               | org_one                    | schema      | NULL       | 2020-09-29 18:24:55.784364+00:00 |       NULL | NULL |      true
 (20 rows)
+~~~
+
+### Show a backup's manifest
+
+Use the `WITH as_json` option to output a backup's manifest as a JSON value:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json;
+~~~
+
+The response will include a `manifest` column with the manifest's contents as the JSON value. To query particular data from the manifest or edit the format of the response, you can make use of the [JSONB functions](functions-and-operators.html#jsonb-functions).
+
+For example, to return the JSON response as a [`string`](string.html) indented and with newlines use the [`jsonb_pretty()`](functions-and-operators.html#jsonb-functions) function:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT jsonb_pretty(f.manifest) FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json] AS f;
+~~~
+
+~~~
+. . .
+"S3Config": {
+    "accessKey": "AWS_ACCESS_KEY_ID",
+    "auth": "",
+    "bucket": "backup-test",
+    "endpoint": "",
+    "prefix": "backup-subdir/2021/11/15-150703.21",
+    "region": "",
+    "secret": "AWS_SECRET_ACCESS_KEY",
+. . .
+"dataSize": "458371",
+"indexEntries": "1015",
+"rows": "2565"
+},
+"files": [
+{
+    "endTime": {
+        "logical": 0,
+        "synthetic": false,
+        "wallTime": "0"
+    },
+    "entryCounts": {
+        "dataSize": "103",
+        "indexEntries": "0",
+        "rows": "1"
+    },
+    "localityKv": "",
+    "path": "data/710798326337404929.sst",
+    "span": {
+        "endKey": "vYkSYW1zdGVyZGFtAAESszMzMzMzQAD/gAD/AP8A/wD/AP8A/yMAAQ==",
+        "key": "vYk="
+    },
+    "startTime": {
+        "logical": 0,
+        "synthetic": false,
+        "wallTime": "0"
+    }
+},
+. . .    
+~~~
+
+To query for particular data from the manifest like the paths to each of the data files:
+
+{% include copy-clipboard.html %}
+~~~ sql
+SELECT f->>'path' FROM (SELECT jsonb_array_elements(manifest->'files') AS f FROM [SHOW BACKUP '/2021/11/15-150703.21' IN 's3://test/backup-test?AWS_ACCESS_KEY_ID=[placeholder]&AWS_SECRET_ACCESS_KEY=[placeholder]' WITH as_json]);
+~~~
+
+~~~
+          ?column?
+-------------------------------
+  data/710798326337404929.sst
+  data/710798326337404929.sst
+  data/710798328891998209.sst
+  data/710798326337404929.sst
+  data/710798326337404929.sst
+  data/710798328434982913.sst
+  data/710798328891998209.sst
+  data/710798326337404929.sst
+  data/710798326337404929.sst
 ~~~
 
 ## See also
