@@ -5,7 +5,7 @@ toc: true
 toc_not_nested: true
 ---
 
-CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Lab's extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
+CockroachDB delivers predictable throughput and latency at all scales on commodity hardware. This page provides an overview of the performance profiles you can expect, based on Cockroach Labs' extensive testing using industry-standard benchmarks like TPC-C and Sysbench.
 
 For instructions to reproduce the TPC-C results listed here, see [Performance Benchmarking with TPC-C](performance-benchmarking-with-tpc-c-100k-warehouses.html). If you fail to achieve similar results, there is likely a problem in either the hardware, workload, or test design. Instructions to reproduce Sysbench and KV results are coming soon.
 
