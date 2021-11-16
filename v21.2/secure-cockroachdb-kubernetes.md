@@ -27,6 +27,8 @@ If you are running a secure Helm deployment on Kubernetes 1.22 and later, you mu
     <button class="filter-button" data-scope="helm">Helm</button>
 </div>
 
+{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+
 ## Use a custom CA
 
 <section class="filter-content" markdown="1" data-scope="operator">
@@ -605,21 +607,21 @@ These steps demonstrate how to use the [`openssl genrsa`](https://www.openssl.or
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ openssl genrsa -out tls.key 4096
+    openssl genrsa -out tls.key 4096
     ~~~
 
 1. Generate an X.509 certificate, valid for 10 years. You will be prompted for the certificate field values.
 
     {% include_cached copy-clipboard.html %}
-    ~~~
-    $ openssl req -x509 -new -nodes -key tls.key -sha256 -days 3650 -out tls.crt
+    ~~~ shell
+    openssl req -x509 -new -nodes -key tls.key -sha256 -days 3650 -out tls.crt
     ~~~
 
 1. Create the secret, making sure that [you are in the correct namespace](deploy-cockroachdb-with-kubernetes.html#install-the-operator):
 
     {% include_cached copy-clipboard.html %}
-    ~~~
-    $ kubectl create secret tls cockroach-operator-webhook-ca --cert=tls.crt --key=tls.key
+    ~~~ shell
+    kubectl create secret tls cockroach-operator-webhook-ca --cert=tls.crt --key=tls.key
     ~~~
 
     ~~~
@@ -629,14 +631,18 @@ These steps demonstrate how to use the [`openssl genrsa`](https://www.openssl.or
 1. Remove the certificate and key from your local environment:
 
     {% include_cached copy-clipboard.html %}
-    ~~~
-    $ rm tls.crt tls.key
+    ~~~ shell
+    rm tls.crt tls.key
     ~~~
 
 1. Roll the Operator deployment to ensure a new server certificate is generated:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ kubectl apply -f operator.yaml
+    kubectl rollout restart deploy/cockroach-operator-manager
+    ~~~
+
+    ~~~
+    deployment.apps/cockroach-operator-manager restarted
     ~~~
 </section>

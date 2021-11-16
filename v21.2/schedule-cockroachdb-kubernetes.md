@@ -16,6 +16,8 @@ This page describes how to configure the following, using the [Operator](https:/
 
 These settings control how CockroachDB pods can be identified or scheduled onto worker nodes.
 
+{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+
 ## Enable feature gates
 
 The [affinity](#affinities-and-anti-affinities) and [toleration](#taints-and-tolerations) rules are not yet fully supported. To enable them, [download the Operator manifest](https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml) and add the following line to the `spec.containers.args` field:
