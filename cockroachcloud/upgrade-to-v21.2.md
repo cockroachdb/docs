@@ -53,7 +53,7 @@ The [**SQL Users**](user-authorization.html#create-a-sql-user) and [**Monitoring
 
 ### Review breaking changes
 
-Review the [backward-incompatible changes in v21.2](../releases/v21.2.0.html#backward-incompatible-changes). If any affect your application, make necessary changes.
+Review the [backward-incompatible changes in v21.2](../releases/v21.2.0.html#backward-incompatible-changes). If any affect your applications, make the necessary changes before proceeding.
 
 ## Step 5. Start the upgrade
 
@@ -125,7 +125,7 @@ The upgrade is automatically finalized after 72 hours.
 
 To manually finalize the upgrade, click **Finalize** in the banner at the top of the {{ site.data.products.db }} Console, and then click **Finalize upgrade**.
 
-After finalization, all [temporary limitations](#respect-temporary-limitations) will be lifted, and all v21.2 features are available for use. However, it will no longer be possible to roll back to v21.1. If you see unexpected behavior after the upgrade has been finalized, [contacts support](https://support.cockroachlabs.com/hc/en-us/requests/new).
+After finalization, all [temporary limitations](#respect-temporary-limitations) will be lifted, and all v21.2 features are available for use. However, it will no longer be possible to roll back to v21.1. If you see unexpected behavior after the upgrade has been finalized, [contact support](https://support.cockroachlabs.com/hc/en-us/requests/new).
 
 ## See also
 
