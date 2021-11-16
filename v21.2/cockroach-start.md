@@ -130,7 +130,7 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
 
- As of v21.1 and later, CockroachDB always uses the [Pebble storage engine](https://github.com/cockroachdb/pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
+ As of v21.1 and later, CockroachDB always uses the [Pebble storage engine](architecture/storage-layer.html#pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
 
 #### Store
 
