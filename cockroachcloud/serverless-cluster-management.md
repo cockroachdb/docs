@@ -1,5 +1,5 @@
 ---
-title: Cluster Management
+title: Manage a CockroachDB Serverless Cluster
 summary: Manage your cluster's schema, data, and more.
 toc: true
 ---
