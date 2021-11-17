@@ -1,0 +1,25 @@
+.changelog-topics {
+  display: inline-block;
+  position: relative;
+  color: $cl_blue_note;
+  @include avenir_r(13px);
+  line-height: 20px;
+  margin-left: 5px;
+
+  &:before {
+    margin-right: 5px;
+    background: url(../images/icon-megaphone.png) no-repeat center center;
+    background-size: 16px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    content: ''; 
+  }
+}
+
+p, .clickable-header {
+  .changelog-topics {
+    @include avenir_r(15px);
+    line-height: 30px;
+  }
+}
