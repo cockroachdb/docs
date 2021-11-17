@@ -20,6 +20,8 @@ Use the following syntax to show the privileges granted to users on database obj
 SHOW GRANTS [ON [DATABASE | SCHEMA | TABLE | TYPE] <targets...>] [FOR <users...>]
 ~~~
 
+When `DATABASE` is omitted, the schema, tables, and types in the [current database](sql-name-resolution.html#current-database) are listed.
+
 ### Show role grants
 
 Use the following syntax to show the role grants for users in a cluster.
