@@ -23,9 +23,9 @@ You can also run `cockroach start-single-node` in [secure mode](cockroach-start-
 
 ## Log test output to a file
 
-By default, `cockroach start-single-node` logs cluster activity to a file with the [default logging configuration](configure-logs.html#default-logging-configuration).
+By default, `cockroach start-single-node` logs cluster activity to a file with the [default logging configuration](configure-logs.html#default-logging-configuration). When the `--store=type=mem` flag is specified, the command prints cluster activity directly to the console instead.
 
-The [`--log` flag](cockroach-start-single-node.html#logging) customizes logging behavior for local clusters:
+To customize logging behavior for local clusters, use the [`--log` flag](cockroach-start-single-node.html#logging):
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
