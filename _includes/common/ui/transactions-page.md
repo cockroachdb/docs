@@ -64,9 +64,9 @@ Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architec
 Transaction Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 Contention | Average time this transaction was [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour.
 Max Memory | Maximum memory used by this transaction at any time during its execution within the last hour. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
-Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour. <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
+Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the last hour. <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
 Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of this transaction within the last hour.
-Regions/Nodes | The region and nodes in which the transaction was executed.
+Regions/Nodes | The region and nodes in which the transaction was executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
 Statements | Number of SQL statements in the transaction.
 
 {{site.data.alerts.callout_info}}
@@ -81,7 +81,7 @@ Click a transaction fingerprint to open **Transaction Details**.
 - The **Mean transaction time** is the mean average time it took to execute the transaction within the last hour.
 - **Transaction resource** usage shows overall statistics about the transaction.
     - **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour.
-    - **Bytes read over network** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour. <br><br>If this value is 0, the statement was executed on a single node.
+    - **Bytes read over network** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the last hour. <br><br>If this value is 0, the statement was executed on a single node.
     - **Max memory usage** is the maximum memory used by this transaction at any time during its execution within the last hour or specified time interval.
     - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing this transaction within the last hour or specified time interval.
 
