@@ -141,8 +141,8 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 **Statement details** displays information about the execution of the statement.
 
 - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
-- **Regions** displays the regions on which the statements executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
+- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for {{ site.data.products.serverless }} clusters.
+- **Regions** displays the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
 - **Database** displays the database on which the statements executed.
 - **App** displays the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Failed?** indicates whether the statement failed to execute.
