@@ -18,10 +18,6 @@ referral_id: docs_hello_world_python_psycopg2
 
 This tutorial shows you how build a simple Python application with CockroachDB and the psycopg2 driver. For the CockroachDB back-end, you'll use a temporary local cluster.
 
-<div class="clearfix">
-  <a class="btn btn-outline-primary" href="../tutorials/build-a-python-app-with-cockroachdb-interactive.html" target="_blank">Run this in your browser &rarr;</a>
-</div>
-
 ## Step 1. Install the psycopg2 driver
 
 To install the Python psycopg2 driver, run the following command:

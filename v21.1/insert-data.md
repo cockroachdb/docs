@@ -103,6 +103,8 @@ conn.commit()
 
 If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`](import.html) statement instead of sending SQL [`INSERT`s](insert.html) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview](migration-overview.html).
 
+{% include {{page.version.version}}/sql/limit-row-size.md %}
+
 ## See also
 
 Reference information related to this task:

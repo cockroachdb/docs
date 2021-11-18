@@ -273,6 +273,8 @@ Using `DISTINCT ON` incurs a performance cost to search and eliminate duplicates
 For best performance, avoid using it when the input is known to not contain duplicates.
 {{site.data.alerts.end}}
 
+{% include {{page.version.version}}/sql/limit-row-size.md %}
+
 ## See also
 
 - [Ordering of rows in DML statements](order-by.html#ordering-rows-in-dml-statements)

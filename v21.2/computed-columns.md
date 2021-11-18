@@ -12,7 +12,7 @@ A _stored computed column_ (set with the `STORED` SQL keyword) is calculated whe
 
 <a name="virtual-computed-columns"></a>
 
-A _virtual computed column_ (set with the `VIRTUAL` SQL keyword) is not stored, and the value of the scalar expression is computed during at query-time as needed.
+A _virtual computed column_ (set with the `VIRTUAL` SQL keyword) is not stored, and the value of the scalar expression is computed at query-time as needed.
 
 ## Why use computed columns?
 
