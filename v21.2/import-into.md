@@ -166,7 +166,7 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
 
-{% include {{ page.version.version }}/import-into-offline.md %}
+We recommend reading the [Considerations](#considerations) section for important details when working with `IMPORT INTO`.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>
