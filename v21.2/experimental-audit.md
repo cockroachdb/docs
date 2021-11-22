@@ -23,7 +23,7 @@ For descriptions of all SQL audit event types and their fields, see [Notable Eve
 
 CockroachDB stores audit log information in a way that ensures durability, but negatively impacts performance. As a result, we recommend using SQL audit logs for security purposes only. For more information, see [Performance considerations](#performance-considerations).
 
-{% include {{ page.version.version }}/misc/experimental-warning.md %}
+{% include common/experimental-warning.md %}
 
 {% include {{ page.version.version }}/sql/combine-alter-table-commands.md %}
 

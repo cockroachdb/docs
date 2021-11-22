@@ -6,7 +6,7 @@ toc: true
 
 The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.
 
-{% include_cached common/experimental-warning.md %}
+{% include_cached cockroachcloud/experimental-warning.md %}
 
 ## API reference
 
