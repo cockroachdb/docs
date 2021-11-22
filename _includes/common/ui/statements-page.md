@@ -105,10 +105,10 @@ Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architec
 Statement Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of statements with this statement fingerprint within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Contention | Average time statements with this fingerprint were [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour. <br><br>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Max Memory | Maximum memory used by a statement with this fingerprint at any time during its execution within the last hour. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
-Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for statements with this fingerprint within the last hour. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
+Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the last hour. <br><br>If this value is 0, the statement was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of statements with this fingerprint within the last hour.
 % of All Runtime  | How much time this statement fingerprint took to execute compared to all other statements that were executed within the time period. It is expressed as a percentage. The runtime is the mean execution latency multiplied by the execution count.
-Regions/Nodes | The regions and nodes on which statements with this fingerprint executed.
+Regions/Nodes | The regions and nodes on which statements with this fingerprint executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
 Diagnostics | Activate and download [diagnostics](#diagnostics) for this fingerprint. To activate, click the **Activate** button. The column displays the status of diagnostics collection (`WAITING`, `READY`, OR `ERROR`). When the status is `READY`, click **Download bundle** to download the most recent diagnostics bundle. <br><br>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the [Diagnostics](#diagnostics) section of the Statement Details page. <br><br>**Diagnostics** is not enabled for {{ site.data.products.serverless }} clusters.
 
 ## Statement Details page
@@ -135,14 +135,14 @@ The **Overview** section displays the SQL statement fingerprint and essential st
 
   - **Mean rows/bytes read** displays the mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) for statements with this fingerprint within the last hour .
   - **Max memory usage** displays the maximum memory used by a statement with this fingerprint at any time during its execution within the last hour or specified time interval.
-  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for statements with this fingerprint within the last hour. If this value is 0, the statement was executed on a single node.
+  - **Network usage** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for statements with this fingerprint within the last hour. If this value is 0, the statement was executed on a single node.
   - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing statements with this fingerprint within the last hour or specified time interval.
 
 **Statement details** displays information about the execution of the statement.
 
 - **Interval start time** represents the start time of the statistics aggregation interval for a statement. For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
-- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics.
-- **Regions** displays the regions on which the statements executed.
+- **Nodes** displays the nodes on which the statements executed. Click the node ID to view node statistics. <br><br>**Nodes** are not visible for {{ site.data.products.serverless }} clusters.
+- **Regions** displays the regions on which the statements executed. <br><br>**Regions** are not visible for {{ site.data.products.serverless }} clusters.
 - **Database** displays the database on which the statements executed.
 - **App** displays the name specified by the [`application_name`]({{ link_prefix }}show-vars.html#supported-variables) session setting.
 - **Failed?** indicates whether the statement failed to execute.
@@ -244,7 +244,7 @@ The Execution Stats section has three subsections:
     Rows Read | The number of rows read by the statement. The gray bar indicates the mean number of rows read. The blue bar indicates one standard deviation from the mean.
     Disk Bytes Read | The size of the data read by the statement. The gray bar indicates the mean number of bytes read. The blue bar indicates one standard deviation from the mean.
 
-- **Stats by Node** provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Make Queries Fast]({{ link_prefix }}make-queries-fast.html#cluster-topology)).
+- **Stats by Node** provides a breakdown of the number of statements of the selected fingerprint per gateway node. You can use this table to determine whether, for example, you are executing queries on a node that is far from the data you are requesting (see [Make Queries Fast]({{ link_prefix }}make-queries-fast.html#cluster-topology)). <br><br>**Stats by Node** are not visible for {{ site.data.products.serverless }} clusters.
 
 ## See also
 
