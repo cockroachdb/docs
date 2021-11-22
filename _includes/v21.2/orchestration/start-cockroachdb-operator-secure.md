@@ -33,7 +33,7 @@
         $ kubectl apply -f operator.yaml
         ~~~
 
-    If you want to the default namespace settings:
+    If you want to use the default namespace settings:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -50,6 +50,13 @@
     serviceaccount/cockroach-operator-sa created
     rolebinding.rbac.authorization.k8s.io/cockroach-operator-default created
     deployment.apps/cockroach-operator created
+    ~~~
+
+1. Set your current namespace to the one used by the Operator. For example, to use the Operator's default namespace:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl config set-context --current --namespace=cockroach-operator-system
     ~~~
 
 1. Validate that the Operator is running:
