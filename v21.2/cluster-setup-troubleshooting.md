@@ -378,10 +378,10 @@ CockroachDB's built-in disk stall detection works as follows:
 
 A CockroachDB node will grow to consume all of the memory allocated for its `cache`. The default size for the cache is ¼ of physical memory which can be substantial depending on your machine configuration. This growth will occur even if your cluster is otherwise idle due to the internal metrics that a CockroachDB cluster tracks. See the `--cache` flag in [`cockroach start`](cockroach-start.html#general).
 
-CockroachDB memory usage has 3 components:
+CockroachDB memory usage has the following components:
 
--   **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. These caches are generally small in comparison to the RocksDB cache size. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
--   **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the storage engine (this is true for both [Pebble (the default engine) and RocksDB](cockroach-start.html#storage-engine)). This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
+-   **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
+-   **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
 -   **Overhead**: The process resident set size minus Go/CGo allocated memory.
 
 If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.

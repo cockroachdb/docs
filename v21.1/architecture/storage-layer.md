@@ -50,17 +50,6 @@ Pebble integrates well with CockroachDB for a number of reasons:
 
 Efficient storage for the keys is guaranteed by the underlying Pebble engine by means of prefix compression.
 
-### RocksDB
-
-If you [choose it at node startup time (it's not the default)](../cockroach-start.html#storage-engine), CockroachDB uses RocksDB––an embedded key-value store––to read and write data to disk. You can find more information about RocksDB on the [RocksDB Basics GitHub page](https://github.com/facebook/rocksdb/wiki/RocksDB-Basics).
-
-RocksDB integrates well with CockroachDB for a number of reasons:
-
-- It is a key-value store, which makes mapping to our key-value layer simple
-- It provides atomic write batches and snapshots, which give us a subset of transactions
-
-Efficient storage for the keys is guaranteed by the underlying RocksDB engine by means of prefix compression.
-
 ### MVCC
 
 CockroachDB relies heavily on [multi-version concurrency control (MVCC)](https://en.wikipedia.org/wiki/Multiversion_concurrency_control) to process concurrent requests and guarantee consistency. Much of this work is done by using [hybrid logical clock (HLC) timestamps](transaction-layer.html#time-and-hybrid-logical-clocks) to differentiate between versions of data, track commit timestamps, and identify a value's garbage collection expiration. All of this MVCC data is then stored in Pebble.
