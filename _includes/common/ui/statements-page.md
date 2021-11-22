@@ -20,7 +20,7 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 
 {{site.data.alerts.callout_info}}
 - Internal queries are displayed under the `$ internal` app.
-- Queries from the [SQL shell](cockroach-commands.html) are displayed under the `$ cockroach` app.
+- Queries from the SQL shell are displayed under the `$ cockroach` app.
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
 

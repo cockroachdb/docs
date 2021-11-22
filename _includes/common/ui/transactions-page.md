@@ -33,7 +33,7 @@ To filter the transactions by [`application_name`]({{ link_prefix }}connection-p
 
 {{site.data.alerts.callout_info}}
 - Internal transactions are displayed under the `$ internal` app.
-- Transactions from the [SQL shell](cockroach-commands.html) are displayed under the `$ cockroach` app.
+- Transactions from the SQL shell are displayed under the `$ cockroach` app.
 - If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
 
