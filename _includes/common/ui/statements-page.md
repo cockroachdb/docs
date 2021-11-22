@@ -8,20 +8,23 @@
 
 ## Search and filter
 
-By default, the Statements page shows SQL statements from all applications and databases running on the cluster, including internal CockroachDB queries.
+By default, the Statements page shows SQL statements from all applications and databases running on the cluster.
 
-You can search for statements using the date field or the search field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
+You can search for statements using the date field or the search field.
+
+To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
 To filter the statements, click the **Filters** field.
 
-To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose an application.
+To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal statements **are not** displayed.
 
 {{site.data.alerts.callout_info}}
-- If you haven't set `application_name` in the client connection string, it appears as `unset`.
-- CockroachDB's internal queries are displayed under the `(internal)` app. Queries from the SQL shell are displayed under the `$ cockroach sql` app.
+- Internal queries are displayed under the `$ internal` app.
+- Queries from the SQL shell are displayed under the `$ cockroach` app.
+- If you haven't set `application_name` in a client connection string, it appears as `unset`.
 {{site.data.alerts.end}}
 
-You can also filter by database (**Database**), SQL statement type (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
+You can also filter by one or more databases (**Database**), SQL statement types (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
 Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display.
 
