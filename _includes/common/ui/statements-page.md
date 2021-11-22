@@ -23,7 +23,7 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 
 You can also filter by database (**Database**), SQL statement type (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
-Click <img src="{{ 'images/v21.2/ui-columns-button.png' | relative_url }}" alt="Download bundle" /> to select the columns to display.
+Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display.
 
 ## Statement statistics
 
