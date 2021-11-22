@@ -1,3 +1,3 @@
 {{site.data.alerts.callout_danger}}
-This feature is considered experimental, and it may not be available to all users. The functionality is subject to change, and there may be bugs.
+**This is an experimental feature**. The interface and output are subject to change.
 {{site.data.alerts.end}}
