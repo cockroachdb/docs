@@ -23,6 +23,8 @@ To filter by [application]({{ link_prefix }}connection-parameters.html#additiona
 
 You can also filter by database (**Database**), SQL statement type (**Statement Type**), and for [statement fingerprints](#sql-statement-fingerprints) that take longer than a specified time to run. To display only statements with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
 
+Click <img src="{{ 'images/v21.2/ui-columns-button.png' | relative_url }}" alt="Download bundle" /> to select the columns to display.
+
 ## Statement statistics
 
 {% include common/ui/statistics.md %}
@@ -100,6 +102,7 @@ Column | Description
 Statements | SQL statement [fingerprint](#sql-statement-fingerprints).<br><br>To view additional details, click the SQL statement fingerprint to open its [Transaction Details page]({{ page_prefix }}transactions-page.html#transaction-details-page).
 Interval Start Time (UTC) | The start time of the statistics aggregation interval for a statement. <br><br>For example, if a statement is executed at 1:23PM it will fall in the 1:00PM - 2:00PM time interval.
 Execution Count | Cumulative number of executions of statements with this fingerprint within the last hour. <br><br>The bar indicates the ratio of runtime success (gray) to [retries]({{ link_prefix }}transactions.html#transaction-retries) (red) for the SQL statement fingerprint.
+Database | The database in which the statement was executed.
 Rows Read | Average number of rows [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) while executing statements with this fingerprint within the last hour).<br><br>The gray bar indicates the mean number of rows returned. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) across all operators for statements with this fingerprint within the last hour. <br><br>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.
 Statement Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of statements with this statement fingerprint within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.

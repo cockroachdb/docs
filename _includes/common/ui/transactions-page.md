@@ -34,6 +34,8 @@ You can search for transactions using the search field or using the date field. 
 
 You can filter transactions in which a SQL statement fingerprint exceeds a specified latency value. Use the pulldown in the **Filters** menu.
 
+Click <img src="{{ 'images/v21.2/ui-columns-button.png' | relative_url }}" alt="Download bundle" /> to select the columns to display.
+
 ## Transaction statistics
 
 {% include common/ui/statistics.md %}
