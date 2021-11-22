@@ -21,18 +21,23 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console and then click the **Transactions** tab.
 {% endif %}
 
-## Search and filter by application
+## Search and filter
 
-By default, this page shows transactions from all applications running on the cluster, and hides internal CockroachDB transactions.
+By default, this page shows transactions from all applications and databases running on the cluster.
 
-To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), use the **App** pulldown in the **Filters** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`.
+You can search for transactions using the search field or using the date field.
 
-- CockroachDB's internal transactions are only displayed under the `$ internal` app.
-- Transactions from the SQL shell are displayed under the `$ cockroach sql` app.
+To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
-You can search for transactions using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
+To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal transactions **are not** displayed.
 
-You can filter transactions in which a SQL statement fingerprint exceeds a specified latency value. Use the pulldown in the **Filters** menu.
+{{site.data.alerts.callout_info}}
+- Internal transactions are displayed under the `$ internal` app.
+- Transactions from the [SQL shell](cockroach-commands.html) are displayed under the `$ cockroach` app.
+- If you haven't set `application_name` in a client connection string, it appears as `unset`.
+{{site.data.alerts.end}}
+
+To filter transactions in which a SQL statement fingerprint exceeds a specified latency value, fill in the fields in **Query fingerprint runs longer than**.
 
 ## Transaction statistics
 
