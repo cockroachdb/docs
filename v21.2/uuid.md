@@ -135,4 +135,5 @@ Type | Details
 
 ## See also
 
-[Data Types](data-types.html)
+- [Data Types](data-types.html)
+- [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid/)
