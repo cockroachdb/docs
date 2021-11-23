@@ -10,19 +10,19 @@ Get future release notes emailed to you:
 
 {% include marketo.html %}
 
-Filter content: [search box]
+<br>
+<h5 class="general">General</h5> <h5 class="console">Console</h5><h5 class="bug">Bugs</h5><h5 class="security">Security</h5><h5 class="misc">Miscellaneous</h5>
 
 ## November 8, 2021
 
-<span class="changelog-topics">General changes</span>
-<span class="version-tag">New in v21.2:</span>
+<h5 class="general">General changes</h5>
 
 - [{{ site.data.products.serverless }}](https://www.cockroachlabs.com/blog/announcing-cockroachdb-serverless/), a fully-managed, auto-scaling deployment of CockroachDB, is now available. To get started with {{ site.data.products.serverless }} for free, see the [Quickstart](../cockroachcloud/quickstart.html).
 - CockroachCloud Free (beta) and CockroachCloud are now {{ site.data.products.serverless }} and {{ site.data.products.dedicated }}, respectively. Your ability to use your cluster will not be affected.
 - {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.0-beta.4.html).
 - New {{ site.data.products.dedicated }} clusters will now run CockroachDB [v21.1.11](v21.1.11.html).
 
-Console changes
+<h5 class="console">Console changes</h5>
 
 - The [**Statements**](../cockroachcloud/statements-page.html), [**Transactions**](../cockroachcloud/transactions-page.html), and [**Sessions**](../cockroachcloud/sessions-page.html) pages are now available for {{ site.data.products.serverless }} clusters on the **SQL Activity** page. 
 - Statements and transaction statistics are now retained longer for all clusters.
@@ -36,7 +36,7 @@ Console changes
 - A more descriptive error message is now displayed when attempting to create or edit a [SQL user](../cockroachcloud/user-authorization.html#manage-sql-users) with an invalid username.
 - Previously, clicking **cancel** while editing a cluster would take users back to the **Clusters** page. Now, users are taken back to the cluster's **Overview** page.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Fixed a bug where, if a user had reached the maximum number of {{ site.data.products.serverless }} clusters and refreshed the **Create your cluster** page, the {{ site.data.products.serverless-plan }} plan was auto-selected even though it is disabled.
 - Fixed a bug where clicking **Cancel** while logging in with GitHub would report and internal error.
@@ -45,31 +45,31 @@ Bug fixes
 
 ## October 4, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.9](v21.1.9.html).
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Fixed an error in the connection string for Windows users [connecting to CockroachCloud Free (beta)](../cockroachcloud/connect-to-a-free-cluster.html) clusters.
 
-Miscellaneous
+<h5 class="misc">Miscellaneous changes</h5>
 
 - Cluster names are now included in cluster creation email alerts.
 
 ## September 7, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.7](v21.1.7.html).
 
-Console changes
+<h5 class="console">Console changes</h5>
 
 - All pages shown to logged out users are now optimized for mobile devices.
   
 - Improved the error message when an [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) endpoint request fails.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Fixed tooltip behavior on **Sessions**, **Statements**, and **Transactions** pages.
 
@@ -77,18 +77,18 @@ Bug fixes
 
 ## August 9, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.6](v21.1.6.html).
 - CockroachCloud Free (beta) users can now perform [bulk operations](../cockroachcloud/run-bulk-operations.html) (`IMPORT`, `BACKUP`, `RESTORE` and CDC) with `userfile` storage. 
 
-Console changes
+<h5 class="console">Console changes</h5>
 
 - Improved user experience on the Cluster Overview page for a deleted cluster.
 - Improved error message for cluster upgrade failures.
 - SQL-related restore errors are now shown in the Console, allowing users to take action.
 
-Security changes
+<h5 class="security">Security changes</h5>
 
 - Password reset tokens will now expire after 24 hours.
 - Email change tokens are now single use and will expire.
@@ -97,12 +97,12 @@ Security changes
 
 ## July 6, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.5](v21.1.5.html).
 - Starting this month, paid CockroachCloud clusters will be billed monthly instead of every two weeks.
 
-Console changes
+<h5 class="console">Console changes</h5>
 
 - [Multi-region](../cockroachcloud/create-your-cluster.html#step-3-select-the-region-s) clusters can now be created through the Console. To learn more about creating a multi-region cluster, see [Planning your cluster](../cockroachcloud/cluster-management.html?filters=dedicated#planning-your-cluster).
 - The **Connect** modal now has updated commands to make [connecting to your cluster](../cockroachcloud/connect-to-a-serverless-cluster.html) a smoother experience on Mac, Linux, and Windows.
@@ -111,7 +111,7 @@ Console changes
 - Added a tooltip to the **Upgrade** option in the **Action** Menu, which gives users more version-specific context.
 - Users can now **Clear SQL Stats** from the [**Statements** page](../cockroachcloud/statements-page.html) for clusters running [v21.1.3](v21.1.3.html) or later.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Fixed a bug where clicking on the [**Alerts** page](../cockroachcloud/alerts-page.html) broke the Organization header for users with multiple Organizations.
 - Fixed a bug where nodes were cycling in clusters running [v21.1.4](v21.1.4.html).
@@ -121,11 +121,11 @@ Bug fixes
 
 ## June 7, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 - New CockroachCloud clusters will now run CockroachDB [v21.1.1](v21.1.1.html).
   
-Console changes
+<h5 class="console">Console changes</h5>
 
 - All CockroachCloud Dedicated users now have access to the [**Statements**](../cockroachcloud/statements-page.html) and [**Sessions**](../cockroachcloud/sessions-page.html) pages in the Console.
 - All CockroachCloud Dedicated users now have access to the [**Alerts**](../cockroachcloud/alerts-page.html) page in the Console, which allows you to toggle alerts, send test alerts, and manage alert recipients for your Organization.
@@ -133,7 +133,7 @@ Console changes
 - Added a **Cloud** column to the **Clusters** page so users can see which cloud provider any cluster is using without having to click through to the **Cluster Overview** page.
 - The maximum number of nodes in a cluster created through the Console was raised to 50 nodes per region and 150 nodes per cluster.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Fixed a bug where clicking the **Logout** button would trigger an error and display a blank page.
 - The page will no longer refresh after switching the authentication method through the **Account** page.
@@ -141,64 +141,64 @@ Bug fixes
 
 ## May 3, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 - New CockroachCloud clusters will now run CockroachDB [v20.2.8](v20.2.8.html).
 - [CockroachCloud Free](../cockroachcloud/quickstart.html) clusters are now available in four additional regions:
     - GCP: `europe-west1`, `asia-southeast1`
     - AWS: `eu-west-1`, `ap-southeast-1`
   
-Console changes
+<h5 class="console">Console changes</h5>
 
 - New users can now [sign up](../cockroachcloud/create-an-account.html) for CockroachCloud with Github Authorization. Logging in with GitHub allows users to enforce [GitHub's two-factor authentication (2FA)](https://docs.github.com/en/github/authenticating-to-github/securing-your-account-with-two-factor-authentication-2fa) on their CockroachCloud account. Current users can [switch their login method](../cockroachcloud/create-an-account.html#change-your-login-method) between email and GitHub.
 - When logging in fails due to user input, the error message now includes [login method](../cockroachcloud/create-an-account.html#change-your-login-method) as a potential reason for failure.
 - Previously, selecting a new cloud provider while [creating a cluster](../cockroachcloud/create-a-serverless-cluster.html) would reset the **Region** and **Hardware per node** options to default. Now, equivalent region and hardware options are preselected, and the number of nodes per region is preserved when a new cloud provider is selected.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - **Contact Us** links now direct users to the [customer support portal](https://support.cockroachlabs.com/) instead of the user's mail app.
 
 ## April 5, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 New CockroachCloud clusters will now run CockroachDB [v20.2.7](v20.2.7.html).
 
-Console changes
+<h5 class="console">Console changes</h5>
 
 - The [login form](https://cockroachlabs.cloud/login) no longer focuses on the email field on page load. This change makes the form more flexible once other authentication methods are available.
 - Extraneous information is no longer displayed in the error for failed [GCP peering](../cockroachcloud/network-authorization.html#vpc-peering) attempts.
 - Added a resource panel to the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud), which can be accessed by clicking the **?** icon in the top right corner of the Console. Included in the resource panel are links to relevant documentation, Cockroach University, the CockroachDB Slack community, and much more.
 - Created a new [Status Page](https://status.cockroachlabs.cloud) that displays the current service status and incident communication of the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud), AWS services, and GCP services.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - The region shown in the [{{ site.data.products.db }} Console](https://cockroachlabs.cloud) for free-tier clusters is now correct. Previously, the Console showed the wrong region when creating an AWS free-tier cluster.
 - Fixed a bug where an error occurred when displaying the **Connect** modal for an old GCP cluster that does not have the custom `crdb` network. These clusters do not support VPC peering, but the lack of the `crdb` network was causing the listing of VPC peerings to fail even though no such peerings exist.
 
 ## March 8, 2021
 
-General changes
+<h5 class="general">General changes</h5>
 
 New CockroachCloud clusters will now run CockroachDB [v20.2.5](v20.2.5.html).
 
-Console changes
+<h5 class="console">Console changes</h5>
 
 - Self-service [AWS PrivateLink](../cockroachcloud/network-authorization.html#aws-privatelink) is now generally available for CockroachCloud clusters running on AWS.
 - On the [**Clusters** page](../cockroachcloud/cluster-management.html#view-clusters-page), clusters that are running unsupported versions now have a warning in the **Version** column.
 
-Security updates
+<h5 class="security">Security changes</h5>
 
 - CockroachCloud now does not include the supplied password in error messages that arise from resetting, editing, or creating a password when the password is too short.
 - CockroachCloud now prevents clickjacking attacks by specifying `X-Frame-Options: DENY` when serving `index.html`.
 
-Bug fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Previously, users who were not a member of any organization would get an error when trying to reset their password. A user would most likely encounter this scenario if they deleted their organization, tried to log in again, and didn't remember their password. Now, an organization will be created for the user if one does not exist. The [organization name can be edited](../cockroachcloud/create-an-account.html#change-your-organization-name) on the **Settings** tab on the organization's landing page.
 
 ## February 9, 2021
 
-General Changes
+<h5 class="general">General changes</h5>
 
 New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.4.html).
 
@@ -212,11 +212,11 @@ New CockroachCloud clusters will now run CockroachDB [v20.2.4](v20.2.4.html).
 
 ## January 22, 2021
 
-General Changes
+<h5 class="general">General changes</h5>
 
 New CockroachCloud clusters will now run CockroachDB [v20.2.3](v20.2.3.html).
 
-Bug Fixes
+<h5 class="bug">Bug fixes</h5>
 
 - Fixed a bug where deleting your only organization would prevent your email from being used for a new organization in the future.
 - Fixed a bug where [VPC peering](../cockroachcloud/network-authorization.html#vpc-peering) appeared to be available on clusters that it wasn't supported on.
