@@ -51,7 +51,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
     </ul>
     </td>
     <td><ul><li>Poor quality statement plans retrieve more rows than are required, leading to longer execution times.</li></ul></td>
-    <td><ul><li><a href="#full-scans">Use indexes to reduce full table scans.</a></li></ul></td>
+    <td><ul><li><a href="#statements-with-full-table-scans">Use indexes to reduce full table scans.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul>
