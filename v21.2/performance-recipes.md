@@ -106,7 +106,7 @@ Full table scans often result in poor statement performance.
     ~~~ sql
     SELECT count(*) as total_full_scans
     FROM crdb_internal.node_statement_statistics
-    WHERE FullTableScan = 'True';
+    WHERE full_scan = true;
     ~~~
 * Viewing the statement plan on the [Statement details page](ui-statements-page.html#statement-details-page) of the DB Console indicates that the plan contains full table scans.
 * The statement plans returned by the [`EXPLAIN`](sql-tuning-with-explain.html) and [`EXPLAIN ANALYZE` commands](explain-analyze.html) indicate that there are full table scans.
