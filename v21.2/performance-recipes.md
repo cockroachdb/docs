@@ -7,10 +7,6 @@ toc_not_nested: true
 
 This page provides recipes for fixing performance issues in your applications.
 
-{{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
-{{site.data.alerts.end}}
-
 ## Problems
 
 This section describes how to use CockroachDB commands and dashboards to identify performance problems in your applications.
@@ -28,7 +24,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
       <td><ul><li>Use the correct <a href="topology-patterns.html">topology pattern</a> for your cluster.</li></ul></td>
     </tr>
     <td><ul>
-      <li>Your application is experiencing degraded performance with the following serialization errors:
+      <li>Your application is experiencing degraded performance with the following transaction retry errors:
         <ul>
           <li><code>SQLSTATE: 40001</code></li>
           <li><code>RETRY_WRITE_TOO_OLD</code></li>
@@ -79,7 +75,7 @@ Transaction contention occurs when transactions issued from multiple clients at 
 
 #### Indicators that your application is experiencing contention
 
-* Your application is experiencing degraded performance with serialization errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`.
+* Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
 * The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
 <img src="{{ 'images/v21.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
 * The [Transaction Restarts graph](ui-sql-dashboard.html) graph is showing spikes in retries over time.
@@ -118,6 +114,8 @@ Not every full table scan is an indicator of poor performance. The [cost-based o
 
 [Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
 
+Also see [Table scans best practices](performance-best-practices-overview.html#table-scans-best-practices).
+
 ### Suboptimal primary keys
 
 #### Indicators that your tables are using suboptimal primary keys
@@ -139,7 +137,7 @@ If the [Overview dashboard](ui-overview-dashboard.html) in the DB Console shows 
 
 #### Fix slow writes
 
-Secondary indexes can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, query the `crdb_internal.index_usage_statistics` table :
+Secondary indexes can improve application read performance. However, there is overhead in maintaining secondary indexes that can affect your write performance. You should profile your tables periodically to determine whether an index is worth the overhead. To identify infrequently accessed indexes that could be candidates to drop, query the `crdb_internal.index_usage_statistics` table:
 
 ~~~sql
 SELECT
@@ -155,3 +153,7 @@ ORDER BY total_reads ASC;
 ~~~
 
 Use the values in the `total_reads` and `last_read` columns to identify indexes that have low usage or are stale and could be dropped.
+
+## See also
+
+If you aren't sure whether SQL query performance needs to be improved, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
