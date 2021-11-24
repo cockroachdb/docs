@@ -1,3 +1,7 @@
+- advisory: 73024
+  summary: The optimizer could plan queries that use semi-joins against multi-region <code>REGIONAL BY ROW</code> tables incorrectly
+  versions: 21.2.0
+  date: November 30, 2021
 - advisory: 72839
   summary: Backups fail during upgrade process
   versions: 21.2.0
