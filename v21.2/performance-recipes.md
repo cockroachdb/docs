@@ -60,12 +60,12 @@ This section describes how to use CockroachDB commands and dashboards to identif
     </ul>
     </td>
     <td><ul><li>You have resource contention.</li></ul></td>
-    <td><ul><li><a href="#suboptimal-primary-keys">Your tables may be using a suboptimal primary key.</a></li></ul></td>
+    <td><ul><li><a href="#suboptimal-primary-keys">Improve primary key usage.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul><li>The <a href="ui-overview-dashboard.html#">Overview dashboard</a> in the DB Console shows high service latency and QPS for <code>INSERT</code> and <code>UPDATE</code> statements.</li></ul></td>
     <td><ul><li>Your tables have long write times.</li></ul></td>
-    <td><ul><li><a href="#slow-writes">Your tables may have unnecessary indexes.</a></li></ul></td>
+    <td><ul><li><a href="#slow-writes">Remove unnecessary indexes.</a></li></ul></td>
   </tr>
 </table>
 
