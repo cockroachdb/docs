@@ -1,6 +1,6 @@
 ---
 title: Performance Tuning Recipes
-summary: Identify and fix common performance problems
+summary: Identify, diagnose, and fix common performance problems
 toc: true
 toc_not_nested: true
 ---
