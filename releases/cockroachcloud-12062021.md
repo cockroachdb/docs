@@ -13,6 +13,7 @@ Get future release notes emailed to you:
 ### General changes
 
 - New v21.2 clusters now have Admission Control enabled by default. See https://www.cockroachlabs.com/docs/v21.2/architecture/admission-control.html for more information. (#7183)
+- New pricing goes into effect December 1 ahead of hardware decouple
 
 ### Console changes
 
