@@ -21,18 +21,25 @@ To view this page, [access the DB Console](ui-overview.html#db-console-access) a
 To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console and then click the **Transactions** tab.
 {% endif %}
 
-## Search and filter by application
+## Search and filter
 
-By default, this page shows transactions from all applications running on the cluster, and hides internal CockroachDB transactions.
+By default, this page shows transactions from all applications and databases running on the cluster.
 
-To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), use the **App** pulldown in the **Filters** menu. If you haven't set `application_name` in the client connection string, it appears as `unset`.
+You can search for transactions using the search field or using the date field.
 
-- CockroachDB's internal transactions are only displayed under the `$ internal` app.
-- Transactions from the SQL shell are displayed under the `$ cockroach sql` app.
+To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
 
-You can search for transactions using the search field or using the date field. To search by date, pick a date range that is within the time period since the statistics were last cleared. Click **reset time** to reset the date.
+To filter the transactions by [`application_name`]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **App** and choose one or more applications. When no application is selected internal transactions **are not** displayed.
 
-You can filter transactions in which a SQL statement fingerprint exceeds a specified latency value. Use the pulldown in the **Filters** menu.
+{{site.data.alerts.callout_info}}
+- Internal transactions are displayed under the `$ internal` app.
+- Transactions from the SQL shell are displayed under the `$ cockroach` app.
+- If you haven't set `application_name` in a client connection string, it appears as `unset`.
+{{site.data.alerts.end}}
+
+To filter transactions in which a SQL statement fingerprint exceeds a specified latency value, fill in the fields in **Query fingerprint runs longer than**.
+
+Click <img src="{{ 'images/common/ui-columns-button.png' | relative_url }}" alt="Column selector" /> to select the columns to display.
 
 ## Transaction statistics
 
@@ -64,9 +71,9 @@ Bytes Read | Aggregation of all bytes [read from disk]({{ link_prefix }}architec
 Transaction Time | Average [planning and execution time]({{ link_prefix }}architecture/sql-layer.html#sql-parser-planner-executor) of this transaction within the last hour. <br><br>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean.
 Contention | Average time this transaction was [in contention]({{ link_prefix }}performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) with other transactions within the last hour.
 Max Memory | Maximum memory used by this transaction at any time during its execution within the last hour. <br><br>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean.
-Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour. <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
+Network | Amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the last hour. <br><br>If this value is 0, the transaction was executed on a single node. <br><br>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean.
 Retries | Cumulative number of [retries]({{ link_prefix }}transactions.html#transaction-retries) of this transaction within the last hour.
-Regions/Nodes | The region and nodes in which the transaction was executed.
+Regions/Nodes | The region and nodes in which the transaction was executed. <br><br>**Regions/Nodes** are not visible for {{ site.data.products.serverless }} clusters.
 Statements | Number of SQL statements in the transaction.
 
 {{site.data.alerts.callout_info}}
@@ -81,7 +88,7 @@ Click a transaction fingerprint to open **Transaction Details**.
 - The **Mean transaction time** is the mean average time it took to execute the transaction within the last hour.
 - **Transaction resource** usage shows overall statistics about the transaction.
     - **Mean rows/bytes read** shows the mean average number of rows and bytes [read from the storage layer]({{ link_prefix }}architecture/life-of-a-distributed-transaction.html#reads-from-the-storage-layer) during the execution of the transaction within the last hour.
-    - **Bytes read over network** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) (e.g., between regions and nodes) for this transaction within the last hour. <br><br>If this value is 0, the statement was executed on a single node.
+    - **Bytes read over network** displays the amount of [data transferred over the network]({{ link_prefix }}architecture/reads-and-writes-overview.html) for this transaction within the last hour. <br><br>If this value is 0, the statement was executed on a single node.
     - **Max memory usage** is the maximum memory used by this transaction at any time during its execution within the last hour or specified time interval.
     - **Max scratch disk usage** displays the maximum amount of data [spilled to temporary storage on disk]({{ link_prefix }}vectorized-execution.html#disk-spilling-operations) while executing this transaction within the last hour or specified time interval.
 

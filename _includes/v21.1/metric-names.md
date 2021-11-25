@@ -169,7 +169,7 @@ Name | Help
 `rocksdb.compactions` | Number of table compactions
 `rocksdb.flushes` | Number of table flushes
 `rocksdb.memtable.total-size` | Current size of memtable in bytes
-`rocksdb.num-sstables` | Number of rocksdb SSTables
+`rocksdb.num-sstables` | Number of storage engine SSTables
 `rocksdb.read-amplification` | Number of disk reads per query
 `rocksdb.table-readers-mem-estimate` | Memory used by index and filter blocks
 `round-trip-latency` | Distribution of round-trip latencies with other nodes in nanoseconds

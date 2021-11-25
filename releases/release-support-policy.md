@@ -1,10 +1,10 @@
 ---
 title: Release Support Policy
-summary: Learn about Cockroach Lab's policy for supporting major releases of CockroachDB.
+summary: Learn about Cockroach Labs' policy for supporting major releases of CockroachDB.
 toc: true
 ---
 
-This page explains Cockroach Lab's policy for supporting [major releases](../releases/) of CockroachDB.
+This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
 
 ## Support cycle
 
@@ -24,7 +24,7 @@ Cockroach Labs will notify you by mail or email 6 months in advance of a major r
 
 ## Current supported releases
 
-As of v19.1, Cockroach Lab uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
+As of v19.1, Cockroach Labs uses a three-component calendar versioning scheme. Prior releases use a different versioning scheme. For more details, see [Release Naming](index.html#release-naming).
 
 Date format: YYYY-MM-DD
 

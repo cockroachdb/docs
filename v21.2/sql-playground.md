@@ -13,7 +13,7 @@ This playground gives you an interactive SQL shell to a single-node CockroachDB 
 <div
   data-katacoda-hidetitle="true"
   data-katacoda-hidesidebar="true"
-  data-katacoda-id="cockroachlabs/playground-21-1"
+  data-katacoda-id="cockroachlabs/playground-21-2"
   data-katacoda-color="#242A35"
   data-katacoda-secondary="#6933FF"
   style="height: 500px; width: 100%;">
