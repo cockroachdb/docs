@@ -103,60 +103,8 @@ for init all cluster exec
 ~~~ shell
  docker exec -it roach1 cockroach init --insecure
 ~~~
-## Step 2. Create Loadbalance for UI
 
-When are using three nodes, need to create a load balancer.
-Create first for the access dashboard graphic interface.
-Add in docker-compose.yml
-
-1. Create a nginx.conf in root project folder
-    {% include copy-clipboard.html %}
-    ~~~ shell
-
-    events {
-    worker_connections 1024;
-    }
-
-    # its work for acess database dashboard
-    http {
-        upstream dashboard {
-            server roach1:8080; #node1
-            server roach2:8080; #node2
-            server roach3:8080; #node3
-        }
-        
-        server {
-            listen 4000;
-            location / {
-                proxy_pass http://dashboard;
-            }
-        }
-    }
-
-    ~~~
-2. Create docker-compose file
-    {% include copy-clipboard.html %}
-    ~~~ yml
-     nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - roach1
-      - roach2
-      - roach3
-    ports:
-      - "8080:4000"
-    networks:
-      cockroachdb_net:
-        aliases:
-          - loadbalance
-    ~~~
- Now open [http://localhost:8080](http://localhost:8080)
-
- ![dashboard](https://d33wubrfki0l68.cloudfront.net/424bcaace273f8386db82e70a22514782a03285c/d41d1/docs/images/v21.2/ui_cluster_overview_5_nodes.png)
-
-## Step 3. Create Loadbalance for Cluster with Haproxy
+## Step 2. Create Loadbalance for Cluster with Haproxy
 haproxy is an open source load balancer and very easy to use
 
 1. Create a haproxy.cfg in root project folder
@@ -183,9 +131,22 @@ haproxy is an open source load balancer and very easy to use
             server cockroach1 roach1:26257 check port 8080
             server cockroach2 roach2:26257 check port 8080
             server cockroach3 roach3:26257 check port 8080
+
+        listen cockroach-ui
+            bind :8080
+            mode tcp
+            balance roundrobin
+            option httpchk GET /health
+            server roach1 roach1:8080 check port 8080
+            server roach2 roach2:8080 check port 8080
+            server roach3 roach3:8080 check port 8080
     ~~~
  Now use localhost:26257 for connect in database
-    
+
+ Now open [http://localhost:8080](http://localhost:8080)
+
+ ![dashboard](https://d33wubrfki0l68.cloudfront.net/424bcaace273f8386db82e70a22514782a03285c/d41d1/docs/images/v21.2/ui_cluster_overview_5_nodes.png)
+   
 ## What's next?
 
 - Learn more about [CockroachDB SQL](learn-cockroachdb-sql.html) and the [built-in SQL client](cockroach-sql.html)
