@@ -24,71 +24,37 @@ Before starting the tutorial, do the following:
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-## Step 2. Set up your cluster connection
+<a name="connection-string"></a>
 
-1. Once your cluster is created, the **Connection info** dialog displays. Follow the instructions to do the following:
+After the cluster is created, the **Connection info** window appears. Click the **Connection string** tab and copy the connection string to a secure location.
 
-    1. Download the CockroackDB client.
+{{site.data.alerts.callout_info}}
+The connection string is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (we recommend a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](user-authorization.html).
+{{site.data.alerts.end}}
 
-    1. Download the CA certificate.
+## Step 2. Get the sample code
 
-    1. Connect to the database with the [built-in SQL shell](cockroach-sql.html).
+Open a terminal window and copy the sample code's GitHub repo:
 
-1. In the SQL shell, create the `bank` database that your Lambda function will use:
+{% include_cached copy-clipboard.html %}
+~~~ shell
+$ git clone https://github.com/cockroachlabs/examples-aws-lambda/
+~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > CREATE DATABASE bank;
-    ~~~
+{{site.data.alerts.callout_info}}    
+This repo includes the [CA certificate that verifies the identity of the CockroachDB node](https://www.cockroachlabs.com/docs/cockroachcloud/authentication.html). For instructions on downloading the CA certificate directly from the console, see [Connect to Your Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
 
-1. Exit the SQL shell:
+## Step 3. Build the Docker image
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ sql
-    > \q
-    ~~~
-
-## Step 3. Get the sample code
-
-1. Clone the sample code's GitHub repo:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ git clone https://github.com/cockroachlabs/examples-aws-lambda/
-    ~~~
-
-1. In the `examples-aws-lambda/python` directory, create a new folder called `certs`.
+1. Navigate to the `examples-aws-lambda/python` directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ cd examples-aws-lambda/python
     ~~~
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ mkdir certs
-    ~~~
-
-1. Copy the certificate that you downloaded for your cluster to the `certs` directory:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ cp ~/.postgresql/root.crt ./certs/root.crt
-    ~~~
-
-    The project directory structure should look like this:
-
-    ~~~
-    ├── Dockerfile
-    ├── certs
-    │   └── root.crt
-    ├── init_db.py
-    └── requirements.txt
-    ~~~
-
-## Step 4. Build the Docker image
-
-1. Build the Docker image locally:
+1. Build the Docker image:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -102,15 +68,11 @@ Before starting the tutorial, do the following:
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     docker run \
-    -e DATABASE_URL="postgresql://<username>:<password>@<serverless-host>:26257/bank?sslmode=verify-full&sslrootcert=certs/root.crt&options=--cluster%3D<cluster-name>" \
+    -e DATABASE_URL="<connection-string>" \
     -p 9000:8080 init-crdb
     ~~~
 
-    Note that this command sets the `DATABASE_URL` environment variable to the cluster connection string, where:
-    - `<username>` is the SQL user. By default, this is your {{ site.data.products.db }} account username.
-    - `<password>` is the password for the SQL user. The password will be shown only once in the **Connection info** dialog after creating the cluster.
-    - `<serverless-host>` is the hostname of the Serverless cluster.
-    - `<cluster-name>` is the short name of your cluster plus the tenant ID. For example, `funny-skunk-3`. The `<cluster-name>` is used to identify your tenant cluster on a multitenant host.
+    Where `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
 
     ~~~
     time="2021-11-15T21:54:31.526" level=info msg="exec '/var/runtime/bootstrap' (cwd=/var/task, handler=)"
@@ -136,7 +98,7 @@ Before starting the tutorial, do the following:
     REPORT RequestId: abda8f75-5d04-4864-ab9c-91b1b9384f80	Init Duration: 0.56 ms	Duration: 3896.76 ms	Billed Duration: 3897 ms	Memory Size: 3008 MB	Max Memory Used: 3008 M
     ~~~
 
-## Step 5. Configure AWS
+## Step 4. Configure AWS
 
 1. Configure the AWS CLI to authenticate with your AWS account:
 
@@ -147,35 +109,16 @@ Before starting the tutorial, do the following:
 
     Follow the prompts to authenticate.
 
-    After you configure the CLI, you can use `aws configure` to list out the configuration variables. For example:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws configure list
-    ~~~
-
-    ~~~
-          Name                    Value             Type    Location
-          ----                    -----             ----    --------
-       profile                <not set>             None    None
-    access_key     ******************** shared-credentials-file
-    secret_key     ******************** shared-credentials-file
-        region                us-east-1      config-file    ~/.aws/config
-    ~~~
-
-    You can also use `aws sts get-caller-identity` to retrieve the AWS account ID for your account:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws sts get-caller-identity
-    ~~~
-
 1. Authenticate AWS with Docker, using your AWS region and AWS account ID:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
     $ aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account-id>.dkr.<region>.amazonaws.com
     ~~~
+
+    {{site.data.alerts.callout_success}}    
+    If you don't know your account ID, use `aws sts get-caller-identity` to retrieve the AWS account ID for your account.
+    {{site.data.alerts.end}}
 
     ~~~
     Login Succeeded
@@ -195,7 +138,7 @@ Before starting the tutorial, do the following:
 
     The Lambda function needs this role to run.
 
-## Step 6. Deploy the Docker image to AWS Lambda
+## Step 5. Deploy the Docker image to AWS Lambda
 
 1. Create a repository in [AWS Elastic Container Registry](https://aws.amazon.com/ecr/) (ECR):
 
@@ -228,8 +171,10 @@ Before starting the tutorial, do the following:
         --package-type Image  \
         --code ImageUri=<userid>.dkr.<region>.amazonaws.com/init-crdb:latest   \
         --role arn:aws:iam::<account-id>:role/lambda-ex \
-        --environment Variables={DATABASE_URL="postgresql://<username>:<password>@<serverless-host>:26257/bank?sslmode=verify-full&sslrootcert=certs/root.crt&options=--cluster%3D<cluster-name>"}
+        --environment Variables={DATABASE_URL="<connection-string>"}
     ~~~
+
+    Where `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
 
 1. Invoke the function:
 
