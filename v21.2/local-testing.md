@@ -19,11 +19,9 @@ cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-ad
 
 Using in-memory storage improves the speed of the cluster for local testing purposes.
 
-You can also run `cockroach start-single-node` in [secure mode](cockroach-start-single-node.html#security).
-
 ## Log test output to a file
 
-By default, `cockroach start-single-node` logs cluster activity to a file with the [default logging configuration](configure-logs.html#default-logging-configuration). When the `--store=type=mem` flag is specified, the command prints cluster activity directly to the console instead.
+By default, `cockroach start-single-node` logs cluster activity to a file with the [default logging configuration](configure-logs.html#default-logging-configuration). When you specify the `--store=type=mem` flag, the command prints cluster activity directly to the console instead.
 
 To customize logging behavior for local clusters, use the [`--log` flag](cockroach-start-single-node.html#logging):
 
@@ -32,9 +30,10 @@ To customize logging behavior for local clusters, use the [`--log` flag](cockroa
 cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost --log="{file-defaults: {dir: /path/to/logs}, sinks: {stderr: {filter: NONE}}}"
 ~~~
 
-This particular command includes two options:
- - `file-defaults`, which specifies the path of the file in which to log events (`/path/to/logs`).
- - `sinks`, which provides a secondary destination to which to log events (`stderr`).
+The `log` flag has two suboptions:
+
+- `file-defaults`, which specifies the path of the file in which to log events (`/path/to/logs`).
+- `sinks`, which provides a secondary destination to which to log events (`stderr`).
 
 For more information about logging, see [Configure logs](configure-logs.html).
 
