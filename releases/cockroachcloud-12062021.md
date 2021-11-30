@@ -12,45 +12,17 @@ Get future release notes emailed to you:
 
 ### General changes
 
-- New v21.2 clusters now have Admission Control enabled by default. See https://www.cockroachlabs.com/docs/v21.2/architecture/admission-control.html for more information. (#7183)
-- New pricing goes into effect December 1 ahead of hardware decouple
+- New {{ site.data.products.db }} clusters will now run [v21.2.1](v21.2.1.html).
+- New {{ site.data.products.db }} clusters will now have [Admission Control](../{{site.versions["stable"]}}/architecture/admission-control.html) enabled by default.
+- New [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) went into effect for {{ site.data.products.dedicated }} clusters on December 1, 2021 as clusters were switched to new machine types and disks. Existing clusters will be transitioned to the [new hardware configurations](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) by the end of the month.
 
 ### Console changes
 
-- Change logic to hide organization alerts tab
-  
-  * add unit test for including custom clusters
-  
-  * update visibility comment for alerts page (#7087)
-- Prevent errors on VPC Peering and AWS
-  PrivateLink pages when a large number of jobs exist in a cluster. (#7084)
-- Some users will see a different label for the
-  email field during sign up. (#6982)
-- Add monitor card and refactor monitoring page
-  
-  * update tests
-  
-  * change props interface on dbconsole component
-  
-  * add box shadow
-  
-  * Address feedback from Andrii
-  
-  * add back old monitoring page to show if otel feature flag is not enabled
-  
-  * update styling and unit tests
-  
-  * update tests and more sryling updates
-  
-  * remove commented out styling (#7044)
-- New Error page when something goes wrong and a page doesn't load. (#7144)
-- Don't show upgrade banners on serverless clusters because serverless clusters versions are controlled by the host cluster. (#7160)
-- Fix organization alerts selector (#7157)
-- The "Add/remove" nodes button is now disabled for custom clusters. (#7133)
-- Version endOfLife or cluster updating tooltips are no longer shown for serverless clusters (#7166)
+- The **Add/remove nodes** button is now disabled for custom clusters. If you are a contract customer and would like to scale your custom cluster, [contact Support](https://support.cockroachlabs.com/).
 
 ### Bug fixes
 
-- Update the browser tab title when the SQL Activity tab changes. (#7077)
-- The "Data is unavailable for this graph" state should no longer show on the overview page when serverless tenants have been scaled down for extended periods. Furthermore, we now expect fully contiguous timeseries lines on the overview page, even if gaps exist in the actual values. (#7017)
-- The Profile endpoints on DB console accessed through the SU dashboard will route redirects correctly. Prior to this fix, they would return 404 Not Found status errors. (#7213)
+- Fixed a bug where an error was occurring on the [VPC Peering and AWS PrivateLink](../cockroachcloud/network-authorization.html) pages for clusters with a large number of jobs.
+- Fixed a bug where the **Test email alerts** section on the [**Alerts** page](../cockroachcloud/alerts-page.html) was not visible for organizations with only custom clusters.
+- Fixed a bug where users were prompted to upgrade {{ site.data.products.serverless }} clusters, which are [upgraded automatically](../cockroachcloud/upgrade-policy.html).
+- Previously, [SQL metrics graphs](../cockroachcloud/cluster-overview-page.html) for inactive {{ site.data.products.serverless }} clusters showed discontinuous timeseries lines or an error message. Continuous graphs will now remain available for scaled down clusters.
