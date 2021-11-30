@@ -7,7 +7,7 @@
         {
           "title": "Latest v21.2",
           "urls": [
-            "/releases/v21.2.0.html"
+            "/releases/v21.2.1.html"
           ]
         },
         {
@@ -92,7 +92,8 @@
         "/advisories/a71002.html",
         "/advisories/a71655.html",
         "/advisories/a71553.html",
-        "/advisories/a72839.html"        
+        "/advisories/a72839.html",
+        "/advisories/a73024.html"
       ]
     }
   ]
