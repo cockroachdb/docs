@@ -22,20 +22,29 @@ This section helps you set up the tools you'll need to write the docs and use Co
 
 You can find instructions to install [Ruby](https://www.ruby-lang.org/en/documentation/installation/#package-management-systems) and [git](https://www.atlassian.com/git/tutorials/install-git) for other distributions.
 
-3. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
-
-4. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork:
-
-5. Install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site:
+3. Update your `$PATH` variable:
 
     ```
+    echo "export PATH=\"/usr/local/opt/ruby/bin:\$PATH\"" >> .bash_profile
+    echo "export PATH=\"/usr/local/lib/ruby/gems/3.0.0/bin:\$PATH\"" >> .bash_profile
+    ```
+    Replace `3.0.0` with whatever version of Ruby is available in `/usr/local/lib/ruby/gems/`.
+
+4. Fork the [CockroachDB docs repository](https://github.com/cockroachdb/docs).
+
+5. [Create a local clone](https://help.github.com/articles/cloning-a-repository/) of your fork:
+
+6. Install [Jekyll](https://jekyllrb.com/docs/), the tool we use to transform Markdown and layout files into a complete, static HTML site:
+
+    ```
+    gem update
     gem install jekyll bundler
     ```
-If you get a permissions error, then try re-running the command with `sudo`.    
+If you get a permissions error, then try re-running the command with `sudo`.
 
-6. Learn the essentials of our [Docs Structure](#docs-structure).
+7. Learn the essentials of our [Docs Structure](#docs-structure).
 
-7. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
+8. Review our simple [Style Guide](https://github.com/cockroachdb/docs/wiki/Style-Guide).
 
 ## Get Started
 
