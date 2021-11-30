@@ -304,11 +304,36 @@
 
   <tr>
    <td>
+    <code>is_superuser</code>
+   </td>
+   <td><span class="version-tag">New in v21.2</span>: If <code>on</code> or <code>true</code>, the current user is a member of the <a href="authorization.html#admin-role">admin</a> role.</td>
+   <td>User-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>locality</code>
    </td>
    <td>The location of the node.<br>For more information, see <a href="cockroach-start.html#locality">Locality</a>.</td>
    <td>Node-dependent</td>
    <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>lock_timeout</code>
+   </td>
+   <td><span class="version-tag">New in v21.2</span>: The amount of time a query can spend acquiring or waiting for a single <a href="architecture/transaction-layer.html#concurrency-control">row-level lock</a>.<br>
+    In CockroachDB, unlike in PostgreSQL, non-locking reads wait for conflicting locks to be released. As a result, the <code>lock_timeout</code> configuration applies to writes, and to locking and non-locking reads in read-write and read-only transactions.<br>
+    If <code>lock_timeout = 0</code>, queries do not timeout due to lock acquisitions.
+   </td>
+   <td>
+    The value set by the <code>sql.defaults.lock_timeout</code> <a href="cluster-settings.html">cluster setting</a> (<code>0</code>, by default)
+   </td>
+   <td>Yes</td>
    <td>Yes</td>
   </tr>
 
@@ -663,6 +688,18 @@
 
   <tr>
    <td>
+    <code>backslash_quote</code>
+   </td>
+   <td>(Reserved; exposed only for ORM compatibility.)</td>
+   <td>
+    <code>safe_encoding</code>
+   </td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>client_encoding</code>
    </td>
    <td>(Reserved; exposed only for ORM compatibility.)</td>
@@ -716,18 +753,6 @@
    <td>(Reserved; exposed only for ORM compatibility.)</td>
    <td>
     <code>on</code>
-   </td>
-   <td>No</td>
-   <td>Yes</td>
-  </tr>
-
-  <tr>
-   <td>
-    <code>lock_timeout</code>
-   </td>
-   <td>(Reserved; exposed only for ORM compatibility.)</td>
-   <td>
-    <code>0</code>
    </td>
    <td>No</td>
    <td>Yes</td>

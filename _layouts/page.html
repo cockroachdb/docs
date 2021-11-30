@@ -36,11 +36,11 @@ layout: default
       <div id="toc"></div>
    {% endif %}
 
-   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1'  or page.url contains 'v19.2'%}
+   {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1'  or page.url contains 'v19.2' or page.url contains 'v20.1'%}
       {% include_cached unsupported-version.md %}
    {% endif %}
 
-   {% if page.url contains 'v20.1' %}
+   {% if page.url contains 'v20.2' %}
       {% include_cached unsupported-version-soon.md %}
    {% endif %}
 

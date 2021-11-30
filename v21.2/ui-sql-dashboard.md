@@ -144,7 +144,7 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 - In the cluster view, the graph shows the number of transactions restarted across the cluster broken down by the errors that caused the restart.
 
-See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaciton to restart.
+See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaction to restart.
 
 ## Transaction Latency: 99th percentile
 

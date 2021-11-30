@@ -169,7 +169,7 @@ Name | Help
 `rocksdb.compactions` | Number of table compactions
 `rocksdb.flushes` | Number of table flushes
 `rocksdb.memtable.total-size` | Current size of memtable in bytes
-`rocksdb.num-sstables` | Number of rocksdb SSTables
+`rocksdb.num-sstables` | Number of storage engine SSTables
 `rocksdb.read-amplification` | Number of disk reads per query
 `rocksdb.table-readers-mem-estimate` | Memory used by index and filter blocks
 `round-trip-latency` | Distribution of round-trip latencies with other nodes in nanoseconds
@@ -188,6 +188,8 @@ Name | Help
 `sql.distsql.select.count` | Number of DistSQL SELECT statements
 `sql.distsql.service.latency` | Latency in nanoseconds of SQL statement executions running on the distributed execution engine, including the time to parse and plan the statement.
 `sql.exec.latency` | Latency in nanoseconds of all SQL statement executions. This metric does not include the time to parse and plan the statement.
+`sql.guardrails.max_row_size_err.count` | Number of times a large row violates the corresponding `sql.guardrails.max_row_size_err` limit.
+`sql.guardrails.max_row_size_log.count` | Number of times a large row violates the corresponding `sql.guardrails.max_row_size_log` limit.
 `sql.insert.count` | Number of SQL INSERT statements
 `sql.mem.current` | Current sql statement memory usage
 `sql.mem.distsql.current` | Current sql statement memory usage for distsql

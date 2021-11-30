@@ -133,7 +133,7 @@ CockroachDB records the timestamp of each row created in a table in the `crdb_in
 
 `crdb_internal_mvcc_timestamp` cannot be indexed. If you plan to use `crdb_internal_mvcc_timestamp` as a filter for large deletes, you must follow the [non-indexed column pattern](#batch-delete-on-a-non-indexed-column).
 
-**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression](add-column.html#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
+**Exercise caution when using `crdb_internal_mvcc_timestamp` in production, as the column is subject to change without prior notice in new releases of CockroachDB. Instead, we recommend creating a column with an [`ON UPDATE` expression](create-table.html#on-update-expressions) to avoid any conflicts due to internal changes to `crdb_internal_mvcc_timestamp`.**
 {{site.data.alerts.end}}
 
 ## Batch-delete "expired" data
@@ -142,7 +142,7 @@ CockroachDB does not support Time to Live (TTL) on table rows. To delete "expire
 
 For example, suppose that every morning you want to delete all rows in the [`rides` table](movr.html#the-movr-database) in the [`movr` database](movr.html) that are older than a month. To do this, you could write a Python script that batch-deletes rows based on the values of an indexed [`TIMESTAMPTZ`](timestamp.html) column, and then run the script with a daily `cron` job.
 
-1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](add-column.html#on-update-expressions):
+1. To record the last day and time a row was updated, create a `TIMESTAMPTZ` column with an [`ON UPDATE` expression](create-table.html#on-update-expressions):
 
     {% include copy-clipboard.html %}
     ~~~ sql

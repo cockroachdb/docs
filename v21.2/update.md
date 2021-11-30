@@ -592,6 +592,8 @@ Although `users_name_city_idx` is likely the most efficient index for the table 
 (9 rows)
 ~~~
 
+{% include {{page.version.version}}/sql/limit-row-size.md %}
+
 ## See also
 
 - [`DELETE`](delete.html)

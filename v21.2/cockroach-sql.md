@@ -79,7 +79,7 @@ Flag | Description
 `--file <filename>`<br><br>`-f <filename>`<br><br>`< <filename>` |  Read SQL statements from `<filename>`.
 <a name="sql-flag-format"></a> `--format` | How to display table rows printed to the standard output. Possible values: `tsv`, `csv`, `table`, `raw`, `records`, `sql`, `html`.<br><br>**Default:** `table` for sessions that [output on a terminal](#session-and-output-types); `tsv` otherwise<br /><br />This flag corresponds to the `display_format` [client-side option](#client-side-options).
 `--safe-updates` | Disallow potentially unsafe SQL statements, including `DELETE` without a `WHERE` clause, `UPDATE` without a `WHERE` clause, and `ALTER TABLE ... DROP COLUMN`.<br><br>**Default:** `true` for [interactive sessions](#session-and-output-types); `false` otherwise<br /><br />Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the `sql_safe_updates` [session variable](set-vars.html).
-`--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.  
+`--set` | Set a [client-side option](#client-side-options) before starting the SQL shell or executing SQL statements from the command line via `--execute`. This flag may be specified multiple times, once per option.<br><br>After starting the SQL shell, the `\set` and `unset` commands can be use to enable and disable client-side options as well.
 `--watch` | Repeat the SQL statements specified with `--execute` or `-e` until a SQL error occurs or the process is terminated. `--watch` applies to all `--execute` or `-e` flags in use.<br />You must also specify an interval at which to repeat the statement, followed by a time unit. For example, to specify an interval of 5 seconds, use `5s`.<br /><br /> Note that this flag is intended for simple monitoring scenarios during development and testing. See the [example](#repeat-a-sql-statement) below.
 
 
@@ -236,13 +236,12 @@ This example assume that we have already started the SQL shell (see examples abo
 ~~~
 
 ~~~
-+--------------------+----------+
-|         id         |   name   |
-+--------------------+----------+
-| 148899952591994881 | bobcat   |
-| 148899952592060417 | 🐢        |
-| 148899952592093185 | barn owl |
-+--------------------+----------+
+          id         |   name
+---------------------+-----------
+  710907071259213825 | bobcat
+  710907071259279361 | 🐢
+  710907071259312129 | barn owl
+(3 rows)
 ~~~
 
 ### Execute SQL statements from the command line
@@ -289,17 +288,16 @@ $ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach sql --insecure --user=m
 ~~~
 
 ~~~
-+----------+
-|  Table   |
-+----------+
-| roaches  |
-+----------+
-+-----------------------+---------------+
-|         name          |    country    |
-+-----------------------+---------------+
-| American Cockroach    | United States |
-| Brownbanded Cockroach | United States |
-+-----------------------+---------------+
+  schema_name | table_name | type  | owner | estimated_row_count | locality
+--------------+------------+-------+-------+---------------------+-----------
+  public      | animals    | table | demo  |                   0 | NULL
+  public      | roaches    | table | demo  |                   0 | NULL
+(2 rows)
+
+          name          |    country
+------------------------+----------------
+  American Cockroach    | United States
+  Brownbanded Cockroach | United States
 ~~~
 
 ### Control how table rows are printed
@@ -318,11 +316,9 @@ $ cockroach sql --insecure \
 ~~~
 
 ~~~
-+-------+--------+
-| chick | turtle |
-+-------+--------+
-| 🐥    | 🐢     |
-+-------+--------+
+  chick | turtle
+--------+---------
+  🐥    | 🐢
 ~~~
 
 However, you can explicitly set `--format` to another format, for example, `tsv` or `html`:
@@ -338,7 +334,6 @@ $ cockroach sql --insecure \
 ~~~
 
 ~~~
-1 row
 chick	turtle
 🐥	🐢
 ~~~
@@ -355,11 +350,11 @@ $ cockroach sql --insecure \
 
 ~~~
 <table>
-<thead><tr><th>chick</th><th>turtle</th></tr></head>
+<thead><tr><th>row</th><th>chick</th><th>turtle</th></tr></thead>
 <tbody>
-<tr><td>🐥</td><td>🐢</td></tr>
+<tr><td>1</td><td>🐥</td><td>🐢</td></tr>
 </tbody>
-</table>
+<tfoot><tr><td colspan=3>1 row</td></tr></tfoot></table>
 ~~~
 
 When piping output to another command or a file, `--format` defaults to `tsv`:
@@ -402,12 +397,32 @@ $ cat out.txt
 ~~~
 
 ~~~
-+-------+--------+
-| chick | turtle |
-+-------+--------+
-| 🐥    | 🐢     |
-+-------+--------+
+  chick | turtle
+--------+---------
+  🐥    | 🐢
 (1 row)
+~~~
+
+### Show borders around the statement output within the SQL shell
+
+To display outside and inside borders in the statement output, set the `border` [SQL shell option](#client-side-options) to `3`.
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+\set border=3
+SELECT * FROM animals;
+~~~
+
+~~~
++--------------------+----------+
+|         id         |   name   |
++--------------------+----------+
+| 710907071259213825 | bobcat   |
++--------------------+----------+
+| 710907071259279361 | 🐢       |
++--------------------+----------+
+| 710907071259312129 | barn owl |
++--------------------+----------+
 ~~~
 
 ### Make the output of `SHOW` statements selectable
@@ -527,12 +542,10 @@ In this example, we use `\!` to look at the rows in a CSV file before creating a
 ~~~
 
 ~~~
-+----+----+----+
-| x  | y  | z  |
-+----+----+----+
-| 12 | 13 | 14 |
-| 10 | 20 | 30 |
-+----+----+----+
+  x  | y  | z
+-----+----+-----
+  12 | 13 | 14
+  10 | 20 | 30
 ~~~
 
 In this example, we create a table and then use `\|` to programmatically insert values.
@@ -553,20 +566,18 @@ In this example, we create a table and then use `\|` to programmatically insert 
 ~~~
 
 ~~~
-+---+
-| x |
-+---+
-| 0 |
-| 1 |
-| 2 |
-| 3 |
-| 4 |
-| 5 |
-| 6 |
-| 7 |
-| 8 |
-| 9 |
-+---+
+  x
+-----
+  0
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
 ~~~
 
 ### Edit SQL statements in an external editor
@@ -604,20 +615,19 @@ $ cockroach sql --insecure --execute="SELECT * FROM db1.t1"
 ~~~
 
 ~~~
-+----+------+
-| id | name |
-+----+------+
-|  1 | a    |
-|  2 | b    |
-|  3 | c    |
-|  4 | d    |
-|  5 | e    |
-|  6 | f    |
-|  7 | g    |
-|  8 | h    |
-|  9 | i    |
-| 10 | j    |
-+----+------+
+  id | name
+-----+-------
+   1 | a
+   2 | b
+   3 | c
+   4 | d
+   5 | e
+   6 | f
+   7 | g
+   8 | h
+   9 | i
+  10 | j
+-----+-------
 (10 rows)
 ~~~
 
@@ -714,11 +724,11 @@ $ cockroach sql --insecure \
 
 ~~~
   sum
-+-----+
+-------
   926
 (1 row)
   sum
-+------+
+--------
   4227
 (1 row)
 ^C

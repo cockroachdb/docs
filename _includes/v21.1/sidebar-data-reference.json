@@ -1148,7 +1148,7 @@
         ]
       },
       {
-        "title": "Cluster settings",
+        "title": "Cluster Settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
         ]
@@ -1183,7 +1183,7 @@
         ]
       },
       {
-        "title": "CLI reference",
+        "title": "CLI Reference",
         "urls": [
           "/${VERSION}/cockroach-commands.html"
         ],
@@ -1195,7 +1195,7 @@
             ]
           },
           {
-            "title": "<code>cockroach</code> commands",
+            "title": "<code>cockroach</code> Commands",
             "items": [
               {
                 "title": "<code>cockroach start</code>",
@@ -1467,7 +1467,7 @@
         ]
       },
       {
-        "title": "Logging reference",
+        "title": "Logging Reference",
         "urls": [
           "/${VERSION}/logging.html"
         ],

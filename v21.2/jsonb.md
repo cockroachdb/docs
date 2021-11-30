@@ -71,6 +71,10 @@ For the full list of supported `JSONB` operators, see [Functions and Operators](
 
 If the execution of a [join](joins.html) query exceeds the limit set for [memory-buffering operations](vectorized-execution.html#disk-spilling-operations) (i.e., the value set for the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html)), CockroachDB will spill the intermediate results of computation to disk. If the join operation spills to disk, and at least one of the columns is of type `JSON`, CockroachDB returns the error `unable to encode table key: *tree.DJSON`. If the memory limit is not reached, then the query will be processed without error.
 
+For details, see [tracking issue](https://github.com/cockroachdb/cockroach/issues/35706).
+
+{% include {{page.version.version}}/sql/jsonb-comparison.md %}
+
 ## Examples
 
 ### Create a table with a `JSONB` column
