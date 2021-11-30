@@ -3,6 +3,8 @@
     - date: Dec 1, 2021
       version: v21.2.2
       latest: true
+    - date: Nov 29, 2021
+      version: v21.2.1
     - date: Nov 16, 2021
       version: v21.2.0
     - date: Nov 15, 2021
