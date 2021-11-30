@@ -14,7 +14,7 @@ Get future release notes emailed to you:
 
 - New {{ site.data.products.db }} clusters will now run [v21.2.1](v21.2.1.html).
 - New {{ site.data.products.db }} clusters will now have [Admission Control](../{{site.versions["stable"]}}/architecture/admission-control.html) enabled by default.
-- New [pricing](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) went into effect for {{ site.data.products.dedicated }} clusters on December 1, 2021 as clusters were switched to new machine types and disks. Existing clusters will be transitioned to the [new hardware configurations](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider) by the end of the month.
+- {{ site.data.products.dedicated }} clusters will now run on new [machine types and disks](../cockroachcloud/create-your-cluster.html#step-2-select-the-cloud-provider). Clusters created before December 1, 2021 will be transitioned to the new hardware configurations by the end of the month, and pricing may change slightly.
 
 ### Console changes
 
