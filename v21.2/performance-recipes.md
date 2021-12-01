@@ -35,7 +35,7 @@ This section describes how to use CockroachDB commands and dashboards to identif
     </ul>
     </td>
     <td><ul><li>Your application is experiencing transaction contention.</li></ul></td>
-    <td><ul><li><a href="#contention">Reduce transaction contention.</a></li></ul></td>
+    <td><ul><li><a href="#transaction-contention">Reduce transaction contention.</a></li></ul></td>
   </tr>
   <tr>
     <td><ul>
