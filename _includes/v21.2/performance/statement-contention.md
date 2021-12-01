@@ -13,4 +13,4 @@ Find the transactions and statements within the transactions that are experienci
     > SELECT * FROM movr.crdb_internal.cluster_contended_tables;
     ~~~
 
-After you identify the transactions or statements that are causing contention, follow the steps in the next section [to avoid contention](performance-best-practices-overview.html#avoid-contention).
+After you identify the transactions or statements that are causing contention, follow the steps in the next section [to avoid contention](performance-best-practices-overview.html#avoid-transaction-contention).
