@@ -17,6 +17,10 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.dedicated }} provides fully-managed, single-tenant CockroachDB clusters with no shared resources. {{ site.data.products.dedicated }} supports single and multi-region clusters in AWS and GCP.
 
+{{site.data.alerts.callout_success}}
+For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/intro-to-serverless/) course on Cockroach University.
+{{site.data.alerts.end}}
+
 ### Why are certain regions in AWS and GCP not available?
 
 We run {{ site.data.products.db }} in EKS and GKE - the managed Kubernetes offerings for AWS and GCP respectively - and support all regions that the offerings are available in. If a particular region is not available on the {{ site.data.products.db }} Console, that is due to the cloud provider not supporting the managed Kubernetes offering in that region. See

@@ -9,6 +9,10 @@ CockroachDB was designed to create the source-available database we would want t
 
 However, you definitely do not need to understand the underlying architecture to use CockroachDB. These pages give serious users and database enthusiasts a high-level framework to explain what's happening under the hood.
 
+{{site.data.alerts.callout_success}}
+If these docs interest you, consider taking our free [**Intro to Distributed SQL**](https://university.cockroachlabs.com/courses/introduction-to-distributed-sql-and-cockroachdb/) course on Cockroach University.
+{{site.data.alerts.end}}
+
 ## Using this guide
 
 This guide is broken out into pages detailing each layer of CockroachDB. We recommended reading through the layers sequentially, starting with this overview and then proceeding to the [SQL layer](sql-layer.html).
