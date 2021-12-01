@@ -114,7 +114,7 @@ Reference information related to this task:
 - [Import performance](import.html#performance)
 - [`INSERT`](insert.html)
 - [`UPSERT`](upsert.html)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [Multi-row DML best practices](performance-best-practices-overview.html#dml-best-practices)
 - [Insert Multiple Rows](insert.html#insert-multiple-rows-into-an-existing-table)
 

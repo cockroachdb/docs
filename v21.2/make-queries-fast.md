@@ -474,7 +474,7 @@ You can avoid contention with the following strategies:
 - Make transactions smaller by operating on less data per transaction. This will offer fewer opportunities for transactions' data access to overlap.
 - [Split the table across multiple ranges](split-at.html) to distribute its data across multiple nodes for better load balancing of some write-heavy workloads.
 
-For more information about how to avoid performance problems caused by contention, see [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+For more information about how to avoid performance problems caused by contention, see [Transaction Contention](performance-best-practices-overview.html#transaction-contention).
 
 ## Cluster topology
 
@@ -491,7 +491,7 @@ Reference information:
 - [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Joins](joins.html)
 - [CockroachDB Performance](performance.html)
-- [Understanding and Avoiding Transaction Contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention)
+- [Transaction Contention](performance-best-practices-overview.html#transaction-contention)
 - [Topology Patterns](topology-patterns.html)
 
 Specific tasks:

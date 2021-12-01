@@ -24,10 +24,10 @@ Table | Description
 `active_range_feeds` | Contains information about [range feeds](architecture/distribution-layer.html) on nodes in your cluster.
 `backward_dependencies` | Contains information about backward dependencies.
 `builtin_functions` | Contains information about supported [functions](functions-and-operators.html).
-`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) indexes in your cluster.
-`cluster_contended_keys` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) keys in your cluster.
-`cluster_contended_tables` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) tables in your cluster.
-`cluster_contention_events` | Contains information about [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) in your cluster.
+`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) indexes in your cluster.
+`cluster_contended_keys` | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) keys in your cluster.
+`cluster_contended_tables` | Contains information about [contended](performance-best-practices-overview.html#transaction-contention) tables in your cluster.
+`cluster_contention_events` | Contains information about [contention](performance-best-practices-overview.html#transaction-contention) in your cluster.
 `cluster_database_privileges` | Contains information about the [database privileges](authorization.html#privileges) on your cluster.
 `cluster_distsql_flows` | Contains information about the flows of the [DistSQL execution](architecture/sql-layer.html#distsql) scheduled in your cluster.
 `cluster_inflight_traces` | Contains information about in-flight [tracing](show-trace.html) in your cluster.

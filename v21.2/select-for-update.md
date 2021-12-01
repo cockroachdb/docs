@@ -148,10 +148,10 @@ COMMIT
 
 - [`SELECT`](select-clause.html)
 - [Selection Queries](selection-queries.html)
-- [Understanding and avoiding transaction contention][transaction_contention]
+- [Transaction Contention][transaction_contention]
 
 <!-- Reference links -->
 
-[transaction_contention]: performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention
+[transaction_contention]: performance-best-practices-overview.html#transaction-contention
 [retries]: transactions.html#client-side-intervention
 [select]: select-clause.html

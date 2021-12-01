@@ -47,7 +47,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
     <img src="{{ 'images/v21.2/jaeger-trace-log-messages.png' | relative_url }}" alt="Jaeger Trace Log Messages" style="border:1px solid #eee;max-width:100%" />
 
-1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention), for example, by gathering [diagnostics](ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
+1. You can troubleshoot [transaction contention](performance-best-practices-overview.html#transaction-contention), for example, by gathering [diagnostics](ui-statements-page.html#diagnostics) on statements with high latency and looking through the log messages in `trace-jaeger.json` for jumps in latency.
 
   In the example below, the trace shows that there is significant latency between a push attempt on a transaction that is holding a [lock](architecture/transaction-layer.html#writing) (56.85ms) and that transaction being committed (131.37ms).
 
@@ -113,7 +113,7 @@ A hot node is one that has much higher resource usage than other nodes. To deter
 
 -   Check load balancer settings.
 
--   Check for [transaction contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention).
+-   Check for [transaction contention](performance-best-practices-overview.html#transaction-contention).
 
 -   If you have a monotonically increasing index column or Primary Key, then your index or Primary Key should be redesigned. See [Unique ID best practices](performance-best-practices-overview.html#unique-id-best-practices) for more information.
 

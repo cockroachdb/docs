@@ -323,48 +323,58 @@ If you have long-running queries (such as analytics queries that perform full ta
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-## Understanding and avoiding transaction contention
+## Contention
+
+There are two types of contention:
+
+- Transactions that operate on the same range but _different index key values_ will be limited by the overall hardware capacity of a single node (the range lease holder). This is referred to as _resource contention_.
+
+- Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics. This is referred to as _transaction contention_ or _lock contention_.
+
+    Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
+
+### Resource contention
+
+Resource contention occurs when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a hotspot on the single range.
+
+To avoid resource contention, use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
+
+<a id="understanding-and-avoiding-transaction-contention"></a>
+
+### Transaction contention
 
 Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on the same data, specifically over table rows with the same index key values (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)) or using index key values that are close to each other, and thus place the indexed data on the same [data ranges](architecture/overview.html).
+- They operate on the same data, specifically over table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)) or using index key values that are close to each other, and thus place the indexed data on the same [data ranges](architecture/overview.html).
 - At least one of the transactions modify the data.
 
 A set of transactions that all contend on the same keys will be limited in performance to the maximum processing speed of a single node (limited horizontal scalability). Non-contended transactions are not affected in this way.
 
-There are two levels of contention:
-
-- Transactions that operate on the same range but different index key values will be limited by the overall hardware capacity of a single node (the range lease holder).
-
-- Transactions that operate on the same index key values (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics.
-
-Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
-
-### Find contention
+#### Find transaction contention
 
 {% include {{ page.version.version }}/performance/statement-contention.md %}
 
-### Avoid contention
+#### Avoid transaction contention
 
-To avoid contention, you can apply multiple strategies:
+To avoid transaction contention:
 
-- Use index key values with a more random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
-
-- Make transactions smaller, so that each transaction has less work to do. In particular, avoid multiple client-server exchanges per transaction. For example, use [common table expressions](common-table-expressions.html) to group multiple [`SELECT`](select-clause.html) and [`INSERT`](insert.html)/[`UPDATE`](update.html)/[`DELETE`](delete.html)/[`UPSERT`](upsert.html) clauses together in a single SQL statement.
+- Make transactions smaller, so that each transaction has less work to do. In particular, avoid multiple client-server exchanges per transaction. For example, use [common table expressions](common-table-expressions.html) to group multiple [`SELECT`](select-clause.html) and [`INSERT`](insert.html), [`UPDATE`](update.html), [`DELETE`](delete.html), and [`UPSERT`](upsert.html) clauses together in a single SQL statement.
 
   - For an example showing how to break up large transactions in an application, see [Break up large transactions into smaller units of work](build-a-python-app-with-cockroachdb-sqlalchemy.html#break-up-large-transactions-into-smaller-units-of-work).
   - If you are experiencing contention (retries) when doing bulk deletes, see [Bulk-delete data](bulk-delete-data.html).
 
-- In combination with the above, if you are able to [send all of the statements in your transaction in a single batch](transactions.html#batched-statements), CockroachDB can automatically retry the transaction for you.
+- [Send all of the statements in your transaction in a single batch](transactions.html#batched-statements) so that CockroachDB can automatically retry the transaction for you.
 
-- Use the [`SELECT FOR UPDATE`](select-for-update.html) statement in scenarios where a transaction performs a read and then updates the row(s) it just read. It orders transactions by controlling concurrent access to one or more rows of a table. It works by locking the rows returned by a [selection query](selection-queries.html), such that other transactions trying to access those rows are forced to wait for the transaction that locked the rows to finish. These other transactions are effectively put into a queue that is ordered based on when they try to read the value of the locked row(s).
+- Use the [`SELECT FOR UPDATE`](select-for-update.html) statement in scenarios where a transaction performs a read and then updates the row(s) it just read. The statement orders transactions by controlling concurrent access to one or more rows of a table. It works by locking the rows returned by a [selection query](selection-queries.html), such that other transactions trying to access those rows are forced to wait for the transaction that locked the rows to finish. These other transactions are effectively put into a queue that is ordered based on when they try to read the value of the locked row(s).
 
 - When replacing values in a row, use [`UPSERT`](upsert.html) and specify values for all columns in the inserted rows. This will usually have the best performance under contention, compared to combinations of [`SELECT`](select-clause.html), [`INSERT`](insert.html), and [`UPDATE`](update.html).
 
 - Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Fully normalized data allows separate transactions to modify related underlying data without causing contention. Increasing normalization has drawbacks as well as benefits, however. Denormalizing data can increase performance for certain queries by creating multiple copies of often-referenced data in separate ranges, so read-heavy workloads may have higher performance. However, denormalization adds complexity the data model, increases the chance of data inconsistency, increases data redundancy, and can have poor performance when running write-heavy workloads.
 
 - If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
+
+### Maximize performance in the presence of contention
 
 It is always best to avoid contention as much as possible via the design of the schema and application. However, sometimes contention is unavoidable. To maximize performance in the presence of contention, you'll need to maximize the performance of a single range. To achieve this, you can apply multiple strategies:
 
