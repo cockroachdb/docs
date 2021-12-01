@@ -8,6 +8,8 @@ referral_id: docs_lambda_python
 
 This tutorial shows you how to create an [AWS Lambda](https://aws.amazon.com/lambda) function that communicates with a {{ site.data.products.serverless }} cluster.
 
+The example function used for this tutorial is written in Python. The function uses the [Psycopg](https://www.psycopg.org/) PostgreSQL adapter to connect to CockroachDB.
+
 ## Prerequisites
 
 Before starting the tutorial, do the following:
@@ -18,15 +20,13 @@ Before starting the tutorial, do the following:
 
 1. Install the [AWS CLI](https://aws.amazon.com/cli/).
 
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-
 ## Step 1. Create a {{ site.data.products.serverless }} cluster
 
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
 <a name="connection-string"></a>
 
-After the cluster is created, the **Connection info** window appears. Click the **Connection string** tab and copy the connection string to a secure location.
+After the cluster is created, the **Connection info** window appears. Click the **Connection string** tab and copy the connection string to a secure location. You will use this connection string to connect to CockroachDB later in the tutorial.
 
 {{site.data.alerts.callout_info}}
 The connection string is pre-populated with your username, cluster name, and other details, including your password. Your password, in particular, will be provided only once. Save it in a secure place (we recommend a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the [**SQL Users** page](../cockroachcloud/user-authorization.html).
@@ -41,61 +41,55 @@ Open a terminal window and copy the sample code's GitHub repo:
 $ git clone https://github.com/cockroachlabs/examples-aws-lambda/
 ~~~
 
+The function's code is available under the `examples-aws-lambda/python` directory:
+
+~~~ shell
+.
+├── README.md
+├── deployment-package.zip  ## Lambda deployment package
+├── init_db.py              ## Lambda function source code
+├── package                 ## Psycopg dependencies
+├── requirements.txt        ## List of Python requirements
+└── root.crt                ## CA cert
+~~~
+
+## Step 3. (Optional) Create the deployment package
+
 {{site.data.alerts.callout_info}}    
-This repo includes the [CA certificate that verifies the identity of the CockroachDB node](https://www.cockroachlabs.com/docs/cockroachcloud/authentication.html). For instructions on downloading the CA certificate directly from the console, see [Connect to Your Cluster](https://www.cockroachlabs.com/docs/cockroachcloud/connect-to-a-serverless-cluster.html).
+This step is optional, as you do not need to create a new deployment package to deploy the sample function. The `examples-aws-lambda` repo includes a deployment package that is ready to deploy.
 {{site.data.alerts.end}}
 
-## Step 3. Build the Docker image
-
-1. Navigate to the `examples-aws-lambda/python` directory:
+1. Download and install the `psycopg2-binary` Python library to a new directory:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ cd examples-aws-lambda/python
+    $ python3 -m pip install --only-binary :all: --platform manylinux1_x86_64  --target ./my-package -r requirements.txt
     ~~~
 
-1. Build the Docker image:
+    {{site.data.alerts.callout_info}}    
+    To run on Amazon Linux distributions, `pscyopg2` dependencies must be compiled for Linux.
+    {{site.data.alerts.end}}
+
+1. Compress the project files to a ZIP file for deployment:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker build -t init-crdb .
+    $ cd my-package
     ~~~
-
-    This command builds a Docker image based on the [AWS Lambda base image for Python](https://gallery.ecr.aws/lambda/python).
-
-1. (Optional) Run the Docker image locally:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    docker run \
-    -e DATABASE_URL="<connection-string>" \
-    -p 9000:8080 init-crdb
+    $ zip -r ../my-deployment-package.zip .
     ~~~
-
-    Where `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
-
-    ~~~
-    time="2021-11-15T21:54:31.526" level=info msg="exec '/var/runtime/bootstrap' (cwd=/var/task, handler=)"
-    ~~~
-
-1. (Optional) In a new terminal, test the local Docker container using the [AWS Runtime Interface Emulator](https://docs.aws.amazon.com/lambda/latest/dg/images-test.html):
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+    cd ..
     ~~~
 
-    ~~~
-    START RequestId: abda8f75-5d04-4864-ab9c-91b1b9384f80 Version: $LATEST
-    [INFO]	2021-11-17T17:38:39.210Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Hey! You successfully connected to your CockroachDB cluster.
-    [INFO]	2021-11-17T17:38:39.386Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Created new account with id 422c6b4b-c48c-4d14-992b-631e7beb9367 and balance 321385.
-    [INFO]	2021-11-17T17:38:39.430Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Created new account with id 6b390ce6-0915-467f-bd16-102665bd5002 and balance 937663.
-    [INFO]	2021-11-17T17:38:39.486Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Created new account with id d1e94960-912d-4a8e-8b3a-bbc3a71e924f and balance 628323.
-    [INFO]	2021-11-17T17:38:39.535Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Created new account with id 715a84fc-027a-4cb0-b39d-8d0e030aeb03 and balance 47771.
-    [INFO]	2021-11-17T17:38:39.584Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Created new account with id da9667ac-6790-4764-8b46-76a5a96516c7 and balance 327718.
-    [INFO]	2021-11-17T17:38:39.641Z	abda8f75-5d04-4864-ab9c-91b1b9384f80	Database initialized.
-    END RequestId: abda8f75-5d04-4864-ab9c-91b1b9384f80
-    REPORT RequestId: abda8f75-5d04-4864-ab9c-91b1b9384f80	Init Duration: 0.56 ms	Duration: 3896.76 ms	Billed Duration: 3897 ms	Memory Size: 3008 MB	Max Memory Used: 3008 M
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    zip -g my-deployment-package.zip init_db.py root.crt
     ~~~
 
 ## Step 4. Configure AWS
@@ -108,21 +102,6 @@ This repo includes the [CA certificate that verifies the identity of the Cockroa
     ~~~
 
     Follow the prompts to authenticate.
-
-1. Authenticate AWS with Docker, using your AWS region and AWS account ID:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account-id>.dkr.<region>.amazonaws.com
-    ~~~
-
-    {{site.data.alerts.callout_success}}    
-    If you don't know your account ID, use `aws sts get-caller-identity` to retrieve the AWS account ID for your account.
-    {{site.data.alerts.end}}
-
-    ~~~
-    Login Succeeded
-    ~~~
 
 1. Create an execution role for the Lambda function and attach the `AWSLambdaBasicExecutionRole` policy to the role:
 
@@ -138,43 +117,23 @@ This repo includes the [CA certificate that verifies the identity of the Cockroa
 
     The Lambda function needs this role to run.
 
-## Step 5. Deploy the Docker image to AWS Lambda
+## Step 5. Deploy the function to AWS Lambda
 
-1. Create a repository in [AWS Elastic Container Registry](https://aws.amazon.com/ecr/) (ECR):
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws ecr create-repository --repository-name init-crdb --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE
-    ~~~
-
-1. Tag and push the image to ECR:
+1. In the deployment package directory, use the AWS CLI to create a Lambda function:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ docker tag init-crdb:latest <userid>.dkr.<region>.amazonaws.com/init-crdb:latest
-    ~~~
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ docker push <userid>.dkr.<region>.amazonaws.com/init-crdb:latest
-    ~~~
-
-    {{site.data.alerts.callout_info}}
-    To create a Lambda function from a Docker image in ECR, your AWS user must have the `GetRepositoryPolicy` and `SetRepositoryPolicy` policies.
-    {{site.data.alerts.end}}
-
-1. In the deployment package directory, use the AWS CLI to create an AWS Lambda function:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    $ aws lambda create-function --region us-east-1 --function-name init-crdb \
-        --package-type Image  \
-        --code ImageUri=<userid>.dkr.<region>.amazonaws.com/init-crdb:latest   \
+    $ aws lambda create-function \
+        --function-name init-crdb \
+        --region us-east-1  \
+        --zip-file fileb://my-deployment-package.zip \
+        --handler init_db.lambda_handler \
+        --runtime python3.9 \
         --role arn:aws:iam::<account-id>:role/lambda-ex \
-        --environment Variables={DATABASE_URL="<connection-string>"}
+        --environment Variables={DATABASE_URL='<connection-string>'}
     ~~~
 
-    Where `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
+    Where `<account-id>` is your AWS account ID, and `<connection-string>` is the [connection string to the CockroachDB cluster](#connection-string).
 
 1. Invoke the function:
 
