@@ -23,7 +23,7 @@ Table name | Description| Use in production
 `active_range_feeds` | Contains information about [range feeds](architecture/distribution-layer.html) on nodes in your cluster. | ✗
 `backward_dependencies` | Contains information about backward dependencies.| ✗
 `builtin_functions` | Contains information about supported [functions](functions-and-operators.html).| ✗
-`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) indexes in your cluster.| ✓
+`cluster_contended_indexes` | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) indexes in your cluster.| ✗
 [`cluster_contended_keys`](#cluster_contended_keys)  | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) keys in your cluster.| ✓
 [`cluster_contended_tables`](#cluster_contended_tables)  | Contains information about [contended](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) tables in your cluster.| ✓
 [`cluster_contention_events`](#cluster_contention_events)  | Contains information about [contention](performance-best-practices-overview.html#understanding-and-avoiding-transaction-contention) in your cluster.| ✓
