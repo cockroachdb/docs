@@ -347,7 +347,7 @@ SELECT jsonb_pretty(manifest->'entryCounts') AS f FROM [SHOW BACKUP '/2021/11/15
   }
 ~~~
 
-To query for particular data, use the `jsonb_array_elements()` function to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
+To query for particular data, use the [`jsonb_array_elements()` function](functions-and-operators.html#jsonb-functions) to expand the desired elements from the JSON response. The following query returns the paths to each of the data files within the backup:
 
 {% include copy-clipboard.html %}
 ~~~ sql
