@@ -267,14 +267,14 @@ SELECT * FROM crdb_internal.cluster_sessions;
 SELECT * FROM crdb_internal.cluster_transactions;
 ~~~
 
-### View historical transaction statistics per fingerprint across my database
+### View historical transaction statistics per fingerprint
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT * FROM crdb_internal.transaction_statistics;
 ~~~
 
-### View all active queries across my database
+### View all active queries
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
