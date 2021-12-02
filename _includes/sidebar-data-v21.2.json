@@ -1383,5 +1383,6 @@
     "urls": [
       "/${VERSION}/sql-playground.html"
     ]
-  }
+  },
+  {% include_cached sidebar-data-cockroach-university.json %}
 ]
