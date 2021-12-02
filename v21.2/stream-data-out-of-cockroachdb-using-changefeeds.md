@@ -158,6 +158,10 @@ The changefeed emits duplicate records 1, 2, and 3 before outputting the records
 [3]	{"id": 3, "likes_treats": true, "name": "Ernie"}
 ~~~
 
+{{site.data.alerts.callout_info}}
+Changefeeds will emit [NULL values](null-handling.html) for [`VIRTUAL` computed columns](computed-columns.html) and not the column's computed value.
+{{site.data.alerts.end}}
+
 ## Changefeeds on regional by row tables
 
 <span class="version-tag">New in v21.2:</span> Changefeeds are supported on [regional by row tables](multiregion-overview.html#regional-by-row-tables). When working with changefeeds on regional by row tables, it is necessary to consider the following:
