@@ -323,25 +323,28 @@ If you have long-running queries (such as analytics queries that perform full ta
 
 However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
 
-## Contention
+## Hot spots
 
-There are two types of contention:
+Transactions that operate on the same range but _different index key values_ will be limited by the overall hardware capacity of a single node (the range lease holder). These are referred to as _hot spots_.
 
-- Transactions that operate on the same range but _different index key values_ will be limited by the overall hardware capacity of a single node (the range lease holder). This is referred to as _resource contention_.
+Hot spots occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a hotspot on the single range.
 
-- Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics. This is referred to as _transaction contention_ or _lock contention_.
+To avoid hot spots, use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
 
-    Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
+### Fix hot spots
 
-### Resource contention
+To reduce hot spots:
 
-Resource contention occurs when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a hotspot on the single range.
-
-To avoid resource contention, use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
+- Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Fully normalized data allows separate transactions to modify related underlying data without causing contention. Increasing normalization has drawbacks as well as benefits, however. Denormalizing data can increase performance for certain queries by creating multiple copies of often-referenced data in separate ranges, so read-heavy workloads may have higher performance. However, denormalization adds complexity the data model, increases the chance of data inconsistency, increases data redundancy, and can have poor performance when running write-heavy workloads.
+- If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
 
 <a id="understanding-and-avoiding-transaction-contention"></a>
 
-### Transaction contention
+## Transaction contention
+
+Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics. This is referred to as _transaction contention_ or _lock contention_.
+
+Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
 
 Transaction contention occurs when the following three conditions are met:
 
@@ -351,11 +354,11 @@ Transaction contention occurs when the following three conditions are met:
 
 A set of transactions that all contend on the same keys will be limited in performance to the maximum processing speed of a single node (limited horizontal scalability). Non-contended transactions are not affected in this way.
 
-#### Find transaction contention
+### Find transaction contention
 
 {% include {{ page.version.version }}/performance/statement-contention.md %}
 
-#### Avoid transaction contention
+### Avoid transaction contention
 
 To avoid transaction contention:
 
@@ -370,14 +373,10 @@ To avoid transaction contention:
 
 - When replacing values in a row, use [`UPSERT`](upsert.html) and specify values for all columns in the inserted rows. This will usually have the best performance under contention, compared to combinations of [`SELECT`](select-clause.html), [`INSERT`](insert.html), and [`UPDATE`](update.html).
 
-- Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Fully normalized data allows separate transactions to modify related underlying data without causing contention. Increasing normalization has drawbacks as well as benefits, however. Denormalizing data can increase performance for certain queries by creating multiple copies of often-referenced data in separate ranges, so read-heavy workloads may have higher performance. However, denormalization adds complexity the data model, increases the chance of data inconsistency, increases data redundancy, and can have poor performance when running write-heavy workloads.
+### Improve transaction performance by sizing and configuring the cluster
 
-- If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
-
-### Maximize performance in the presence of contention
-
-It is always best to avoid contention as much as possible via the design of the schema and application. However, sometimes contention is unavoidable. To maximize performance in the presence of contention, you'll need to maximize the performance of a single range. To achieve this, you can apply multiple strategies:
+To maximize transaction performance, you'll need to maximize the performance of a single range. To achieve this, you can apply multiple strategies:
 
 - Minimize the network distance between the replicas of a range, possibly using zone configs and partitioning.
 - Use the fastest storage devices available.
-- If the contending transactions operate on different keys within the same range, add more CPU power (more cores) per node. However, if the transactions all operate on the same key, this may not provide an improvement .
+- If the contending transactions operate on different keys within the same range, add more CPU power (more cores) per node. However, if the transactions all operate on the same key, this may not provide an improvement.
