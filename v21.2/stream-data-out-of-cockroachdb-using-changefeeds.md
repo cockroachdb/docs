@@ -21,6 +21,14 @@ The main feature of CDC is the changefeed, which targets an allowlist of tables,
 | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record. | Watches one or multiple tables in a comma-separated list. Emits every change to a "watched" row as a record in a <br> configurable format (`JSON` or Avro) to a configurable sink  ([Kafka](https://kafka.apache.org/)). |
 | [`CREATE`](#create-a-changefeed-core) changefeed and cancel by closing the connection. | Manage changefeed with [`CREATE`](#create), [`PAUSE`](#pause), [`RESUME`](#resume), and [`CANCEL`](#cancel), as well as [monitor](#monitor-a-changefeed) and [debug](#debug-a-changefeed). |
 
+## Considerations
+
+- It is necessary to [enable rangefeeds](#enable-rangefeeds) for changefeeds to work.
+- Changefeeds do not share internal buffers, so each running changefeed will increase total memory usage. To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables.
+- Many DDL queries (including [`TRUNCATE`](truncate.html) and [`DROP TABLE`](drop-table.html)) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](create-changefeed.html#start-a-new-changefeed-where-another-ended).
+- Partial or intermittent sink unavailability may impact changefeed stability; however, [ordering guarantees](stream-data-out-of-cockroachdb-using-changefeeds.html#ordering-guarantees) will still hold for as long as a changefeed [remains active](stream-data-out-of-cockroachdb-using-changefeeds.html#monitor-a-changefeed).
+- When an [`IMPORT INTO`](import-into.html) statement is run, changefeed jobs targeting that table will fail.
+
 ## Enable rangefeeds
 
 Changefeeds connect to a long-lived request (i.e., a rangefeed), which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
