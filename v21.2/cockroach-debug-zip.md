@@ -61,7 +61,6 @@ The following information is also contained in the `.zip` file, and cannot be fi
 - [Cluster Settings](cluster-settings.html)
 - [Metrics](ui-custom-chart-debug-page.html#available-metrics)
 - Problem ranges
-- Thread stack traces (Linux only)
 - CPU profiles
 - A script (`hot-ranges.sh`) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)
 
