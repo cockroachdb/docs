@@ -38,7 +38,7 @@ Open a terminal window and copy the sample code's GitHub repo:
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
-$ git clone https://github.com/cockroachlabs/examples-aws-lambda/
+$ git clone https://github.com/cockroachlabs/examples-aws-lambda
 ~~~
 
 The function's code is available under the `examples-aws-lambda/python` directory:
@@ -117,6 +117,10 @@ This step is optional, as you do not need to create a new deployment package to 
 
     The Lambda function needs this role to run.
 
+    {{site.data.alerts.callout_info}}    
+    To create a service role and attach a policy, the user must have the `CreateRole`, `AttachRolePolicy`, `PutRolePolicy` policies. For details, see [Creating a role to delegate permissions to an AWS service](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html).
+    {{site.data.alerts.end}}
+
 ## Step 5. Deploy the function to AWS Lambda
 
 1. In the deployment package directory, use the AWS CLI to create a Lambda function:
@@ -126,7 +130,7 @@ This step is optional, as you do not need to create a new deployment package to 
     $ aws lambda create-function \
         --function-name init-crdb \
         --region us-east-1  \
-        --zip-file fileb://my-deployment-package.zip \
+        --zip-file fileb://deployment-package.zip \
         --handler init_db.lambda_handler \
         --runtime python3.9 \
         --role arn:aws:iam::<account-id>:role/lambda-ex \
@@ -139,7 +143,7 @@ This step is optional, as you do not need to create a new deployment package to 
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    $ aws lambda invoke --function-name init-crdb out --log-type Tail \
+    $ aws lambda invoke --function-name init-crdb out --region us-east-1 --log-type Tail \
         --query 'LogResult' --output text |  base64 -d
     ~~~
 
