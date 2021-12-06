@@ -77,8 +77,8 @@ The query will now return much faster:
 ~~~
 
 ~~~
-                   id                  |   city   |      name      |      address      | credit_card
----------------------------------------+----------+----------------+-------------------+--------------
+                   id                  |   city    |      name      |           address            | credit_card
+---------------------------------------+-----------+----------------+------------------------------+--------------
   c6b45c93-7ecd-4800-8000-0000000ecdfd | amsterdam | Cheyenne Smith | 29149 Jane Lake              | 6072991876
   326d3a95-fe03-4600-8000-00000003c1d0 | boston    | Cheyenne Smith | 84252 Bradley Coves Suite 38 | 2369363335
   00024e8e-d94c-4710-8000-00000000002c | new york  | Cheyenne Smith | 8550 Kelsey Flats            | 4374468739
