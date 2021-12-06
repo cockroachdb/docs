@@ -20,7 +20,7 @@ Parameter                 | Description
 --------------------------|------------
 `ALL`<br>`ALL PRIVILEGES` | Grant all [privileges](#supported-privileges).
 `targets`                 | A comma-separated list of database or table names, preceded by the object type (e.g., `DATABASE mydatabase`).<br>{{site.data.alerts.callout_info}}To grant privileges on all tables in a database or schema, you can use `GRANT ... ON TABLE *`. For an example, see [Grant privileges on all tables in a database or schema](#grant-privileges-on-all-tables-in-a-database-or-schema).{{site.data.alerts.end}}
-`role_spec_list`          | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
+`name_list`               | A comma-separated list of [users](authorization.html#create-and-manage-users) and/or [roles](authorization.html#create-and-manage-roles).
 `target_types`            | A comma-separated list of [user-defined types](create-type.html).
 `schema_name_list`        | A comma-separated list of [schemas](create-schema.html).
 `ALL TABLES IN SCHEMA`    | <span class="version-tag">New in v21.2</span>: Grant privileges on all tables in a schema or list of schemas.
