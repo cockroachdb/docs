@@ -425,8 +425,7 @@
               {
                 "title": "Performance Tuning Recipes",
                 "urls": [
-                  "/${VERSION}/performance-recipes.html",
-                  "/${VERSION}/performance-recipes-solutions.html"
+                  "/${VERSION}/performance-recipes.html"
                 ]
               }
             ]
@@ -1384,5 +1383,6 @@
     "urls": [
       "/${VERSION}/sql-playground.html"
     ]
-  }
+  },
+  {% include_cached sidebar-data-cockroach-university.json %}
 ]

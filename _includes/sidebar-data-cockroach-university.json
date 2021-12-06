@@ -1,0 +1,69 @@
+{
+  "title": "Online Courses",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Intro Courses",
+      "items": [
+        {
+          "title": "Intro to Distributed SQL and CockroachDB",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/introduction-to-distributed-sql-and-cockroachdb/"
+          ]
+        },
+        {
+          "title": "Intro to Serverless Databases and CockroachDB Serverless",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/intro-to-serverless/"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "SQL Courses",
+      "items": [
+        {
+          "title": "Schema Design in CockroachDB",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/foundations-of-schema-design/"
+          ]
+        },
+        {
+          "title": "Query Performance in CockroachDB",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/perfbasics/"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "App Dev Courses",
+      "items": [
+        {
+          "title": "CockroachDB for Node.js Developers",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/fundamentals-javascript/"
+          ]
+        },
+        {
+          "title": "CockroachDB for Python Developers",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/cockroachdb-for-python-developers/"
+          ]
+        },
+        {
+          "title": "CockroachDB for Java Developers",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/javadevs1/"
+          ]
+        },
+        {
+          "title": "Event-Driven Architecture for Java Developers (Preview)",
+          "urls": [
+            "https://university.cockroachlabs.com/courses/event-driven-architecture-for-java-devs/"
+          ]
+        }
+      ]
+    }
+  ]
+}
