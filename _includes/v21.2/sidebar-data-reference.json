@@ -1534,6 +1534,29 @@
           "/${VERSION}/diagnostics-reporting.html"
         ]
       },
+      {
+        "title": "Third-Party Support",
+        "items": [
+          {
+            "title": "Tools Supported by Cockroach Labs",
+            "urls": [
+              "/${VERSION}/third-party-database-tools.html"
+            ]
+          },
+          {
+            "title": "Tools Supported by the Community",
+            "urls": [
+              "/${VERSION}/community-tooling.html"
+            ]
+          },
+          {
+            "title": "Client Connection Reference",
+            "urls": [
+              "/${VERSION}/connection-reference.html"
+            ]
+          }
+        ]
+      },
       {% include_cached cockroachcloud/sidebar-release-notes.json %},
       {% include_cached sidebar-releases.json %}
     ]
