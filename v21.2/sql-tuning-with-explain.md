@@ -206,7 +206,7 @@ This results in even faster performance:
 ~~~
 
 ~~~
-name      | credit_card
+       name      | credit_card
 -----------------+--------------
   Cheyenne Smith | 6072991876
   Cheyenne Smith | 2369363335
