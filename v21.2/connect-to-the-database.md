@@ -4,119 +4,40 @@ summary: How to connect to a CockroachDB cluster from your application
 toc: true
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current">Local</button>
-  <a href="connect-to-the-database-cockroachcloud.html"><button class="filter-button">{{ site.data.products.db }}</button></a>
+<div class="filters clearfix">
+  <button class="filter-button page-level" data-scope="cockroachcloud">Use {{ site.data.products.serverless-plan }}</button>
+  <button class="filter-button page-level" data-scope="local">Use a Local Cluster</button>
 </div>
 
-This page has instructions for connecting to a CockroachDB cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
+CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
 
-The connection strings listed on this page set the required authentication options to connect to [local](authentication.html) clusters. Local clusters use self-signed SSL certificates.
-
-For a reference that lists all of the supported cluster connection parameters, see [Connection Parameters][connection_params].
-
-## Before you begin
+## Before you connect
 
 Do the following:
 
-- Set up a local CockroachDB cluster:
-  - [Install CockroachDB](install-cockroachdb.html).
-  - [Start a local cluster](secure-a-cluster.html).
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+- <a href="https://cockroachlabs.cloud/signup?referralId={{page.referral_id}}" rel="noopener" target="_blank">Sign up for a {{ site.data.products.db }} account</a>.
+
+- Start a [{{ site.data.products.db }} cluster](../cockroachcloud/quickstart.html).
+</div>
+
+<div class="filter-content" markdown="1" data-scope="local">
+- Start a [local CockroachDB cluster](secure-a-cluster.html)
+</div>
+
 - [Install a client driver or ORM framework](install-client-drivers.html).
 
 ## Connect
 
-<div class="filters clearfix">
-  <button class="filter-button" data-scope="sql">SQL</button>
-  <button class="filter-button" data-scope="go">Go</button>
-  <button class="filter-button" data-scope="java">Java</button>
-  <button class="filter-button" data-scope="python">Python</button>
+<div class="filter-content" markdown="1" data-scope="cockroachcloud">
+Use the connection information provided by the {{ site.data.products.db }} Console to configure your client to connect to CockroachDB.
 </div>
 
-<section class="filter-content" markdown="1" data-scope="sql">
+<div class="filter-content" markdown="1" data-scope="local">
+Use the connection information provided by the [`cockroach` client](cockroach-commands.html) to configure your client to connect to CockroachDB.
+</div>
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --certs-dir=certs --host=localhost:26257
-~~~
-
-For more information about how to use the built-in SQL client, see the [`cockroach sql`](cockroach-sql.html) reference docs.
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="go">
-
-{% include copy-clipboard.html %}
-~~~ go
-import (
-    "database/sql"
-    "fmt"
-    "log"
-    _ "github.com/lib/pq"
-)
-
-db, err := sql.Open("postgres",
-        "postgresql://maxroach@localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key&sslcert=certs/client.maxroach.crt")
-if err != nil {
-    log.Fatal("error connecting to the database: ", err)
-}
-defer db.Close()
-~~~
-
-{% include {{page.version.version}}/app/for-a-complete-example-go.md %}
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="java">
-
-{% include copy-clipboard.html %}
-~~~ java
-import java.sql.*;
-import javax.sql.DataSource;
-
-PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setServerName("localhost");
-ds.setPortNumber(26257);
-ds.setDatabaseName("bank");
-ds.setUser("maxroach");
-ds.setPassword(null);
-ds.setSsl(true);
-ds.setSslMode("require");
-ds.setSslCert("certs/client.maxroach.crt");
-ds.setSslKey("certs/client.maxroach.key.pk8");
-ds.setReWriteBatchedInserts(true); // add `rewriteBatchedInserts=true` to pg connection string
-ds.setApplicationName("BasicExample");
-~~~
-
-{{site.data.alerts.callout_success}}
-{% include {{page.version.version}}/app/pkcs8-gen.md %}
-{{site.data.alerts.end}}
-
-{% include {{page.version.version}}/app/for-a-complete-example-java.md %}
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="python">
-
-{% include copy-clipboard.html %}
-~~~ python
-import psycopg2
-
-conn = psycopg2.connect(
-    database='bank',
-    user='maxroach',
-    sslmode='require',
-    sslrootcert='certs/ca.crt',
-    sslkey='certs/client.maxroach.key',
-    sslcert='certs/client.maxroach.crt',
-    port=26257,
-    host='localhost'
-)
-~~~
-
-{% include {{page.version.version}}/app/for-a-complete-example-python.md %}
-
-</section>
+See the [client connection reference](connection-reference.html) page for details on how to connect with a supported client.
 
 ## What's next?
 
