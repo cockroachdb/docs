@@ -26,4 +26,4 @@ Get future release notes emailed to you:
 - Fixed a bug where an error was occurring on the [VPC Peering and AWS PrivateLink](../cockroachcloud/network-authorization.html) pages for clusters with a large number of jobs.
 - Fixed a bug where the **Test email alerts** section on the [**Alerts** page](../cockroachcloud/alerts-page.html) was not visible for organizations with only custom clusters.
 - Fixed a bug where users were prompted to upgrade {{ site.data.products.serverless }} clusters, which are [upgraded automatically](../cockroachcloud/upgrade-policy.html).
-- Previously, [SQL metrics graphs](../cockroachcloud/cluster-overview-page.html) for inactive {{ site.data.products.serverless }} clusters showed discontinuous timeseries lines or an error message. Continuous graphs will now remain available for scaled-down clusters.
+- Previously, [SQL metrics graphs](../cockroachcloud/cluster-overview-page.html) for inactive {{ site.data.products.serverless }} clusters showed discontinuous time series lines or an error message. Continuous graphs will now remain available for scaled-down clusters.
