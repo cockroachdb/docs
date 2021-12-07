@@ -28,7 +28,7 @@ This chart shows the linear consumption of RUs by a CockroachDB Serverless clust
 
 ## Burst performance
 
-When not throttled to100 RU/s, the same cluster we benchmarked above used 86,984,376 RUs over 10 minutes, performing 54,460 operations per second and using an average of 2.66 RUs per operation. This gives us a burst performance rate of 144,974 RU/s.
+When the previously benchmarked cluster was not throttled to 100 RU/s, it used 86,984,376 RUs over 10 minutes, performing 54,460 operations per second and using an average of 2.66 RUs per operation. This results in a burst performance rate of 144,974 RU/s.
 
 ## Learn more
 
