@@ -120,7 +120,7 @@ Generating a key file can be done using the `cockroach` CLI:
 $ cockroach gen encryption-key -s 128 /path/to/my/aes-128.key
 ~~~
 
-Or the equivalent [openssl](https://www.openssl.org/docs/man1.0.2/apps/openssl.html) CLI command:
+Or the equivalent [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl.html) CLI command:
 
 {% include copy-clipboard.html %}
 ~~~ shell
