@@ -12,7 +12,7 @@ The following examples use [MovR](movr.html), a fictional vehicle-sharing applic
 
 The most common reason for slow queries is sub-optimal `SELECT` statements that include full table scans and incorrect use of indexes.
 
-You'll get generally poor performance when retrieving a single row based on a column that is not in the primary key or any secondary index:
+You'll get generally poor performance when retrieving a small number of rows from a large table based on a column that is not in the primary key or any secondary index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -29,7 +29,7 @@ SELECT * FROM users WHERE name = 'Cheyenne Smith';
   60edde95-4c2d-4000-8000-0000000738c7 | seattle   | Cheyenne Smith | 70310 Knight Roads Suite 36  | 9909070365
   00024e8e-d94c-4710-8000-00000000002c | new york  | Cheyenne Smith | 8550 Kelsey Flats            | 4374468739
   0c777227-64c8-4780-8000-00000000edc8 | new york  | Cheyenne Smith | 47925 Cox Ways               | 7070681549
-(6 rows)
+(1 row)
 
 
 Time: 981ms total (execution 981ms / network 0ms)
@@ -240,7 +240,7 @@ SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = 
 ~~~
   count
 ---------
-   17
+   20
 (1 row)
 
 Time: 4ms total (execution 3ms / network 0ms)
@@ -263,7 +263,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
   │ estimated row count: 1
   │
   └── • distinct
-      │ estimated row count: 14
+      │ estimated row count: 16
       │ distinct on: id
       │
       └── • hash join
@@ -271,7 +271,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
           │ equality: (id) = (rider_id)
           │
           ├── • scan
-          │     estimated row count: 50 (100% of the table; stats collected 2 minutes ago)
+          │     estimated row count: 1,250,000 (100% of the table; stats collected 7 minutes ago)
           │     table: users@primary
           │     spans: FULL SCAN
           │
@@ -280,7 +280,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
               │ filter: (start_time >= '2018-12-16 00:00:00') AND (start_time <= '2018-12-17 00:00:00')
               │
               └── • scan
-                    estimated row count: 500 (100% of the table; stats collected 2 minutes ago)
+                    estimated row count: 500 (100% of the table; stats collected 7 minutes ago)
                     table: rides@primary
                     spans: FULL SCAN
 (27 rows)
@@ -311,7 +311,7 @@ SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = 
 ~~~
   count
 ---------
-   17
+   20
 (1 row)
 
 Time: 2ms total (execution 2ms / network 0ms)
@@ -334,22 +334,23 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
   │ estimated row count: 1
   │
   └── • distinct
-      │ estimated row count: 14
+      │ estimated row count: 0
       │ distinct on: id
       │
       └── • hash join
-          │ estimated row count: 16
+          │ estimated row count: 0
           │ equality: (id) = (rider_id)
           │
           ├── • scan
-          │     estimated row count: 50 (100% of the table; stats collected 4 minutes ago)
+          │     estimated row count: 1,250,000 (100% of the table; stats collected 7 minutes ago)
           │     table: users@primary
           │     spans: FULL SCAN
           │
           └── • scan
-                estimated row count: 16 (3.2% of the table; stats collected 4 minutes ago)
+                estimated row count: 0 (<0.01% of the table; stats collected 7 minutes ago)
                 table: rides@rides_start_time_idx
-                spans: [/'2018-12-16 00:00:00' - /'2018-12-17 00:00:00']
+                spans: [/'2020-09-16 00:00:00' - /'2020-09-17 00:00:00']
+
 (23 rows)
 
 Time: 1ms total (execution 1ms / network 0ms)
