@@ -11,15 +11,29 @@
     customresourcedefinition.apiextensions.k8s.io/crdbclusters.crdb.cockroachlabs.com created
     ~~~
 
-1. Apply the Operator manifest:
+1. By default, the Operator is configured to install in the `cockroach-operator-system` namespace and to manage CockroachDB instances for all namespaces on the cluster.
 
-    {{site.data.alerts.callout_info}}
-    By default, the Operator is configured to install in the `default` namespace. To use the Operator in a custom namespace, download the [Operator manifest](https://github.com/cockroachdb/cockroach-operator/blob/{{site.operator_version}}/manifests/operator.yaml) and edit all instances of `namespace: default` to specify your custom namespace. Then apply this version of the manifest to the cluster with `kubectl apply -f {local-file-path}` instead of using the command below.
-    {{site.data.alerts.end}}
+    If you'd like to change either of these defaults:
 
-    {{site.data.alerts.callout_info}}
-    The Operator can only install CockroachDB into its own namespace.
-    {{site.data.alerts.end}}
+    1. Download the Operator manifest:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        $ curl -0 https://raw.githubusercontent.com/cockroachdb/cockroach-operator/{{site.operator_version}}/install/operator.yaml
+        ~~~
+
+    1. To use a custom namespace, edit all instances of `namespace: cockroach-operator-system` with your desired namespace.
+
+    1. To limit the namespaces that will be monitored, set the `WATCH_NAMESPACE` environment variable in the `Deployment` pod spec. This can be set to a single namespace, or a comma-delimited set of namespaces. When set, only those `CrdbCluster` resources in the supplied namespace(s) will be reconciled.
+
+    1. Instead of using the command below, apply your local version of the Operator manifest to the cluster:
+
+        {% include_cached copy-clipboard.html %}
+        ~~~ shell
+        $ kubectl apply -f operator.yaml
+        ~~~
+
+    If you want to use the default namespace settings:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
@@ -36,6 +50,13 @@
     serviceaccount/cockroach-operator-sa created
     rolebinding.rbac.authorization.k8s.io/cockroach-operator-default created
     deployment.apps/cockroach-operator created
+    ~~~
+
+1. Set your current namespace to the one used by the Operator. For example, to use the Operator's default namespace:
+
+    {% include_cached copy-clipboard.html %}
+    ~~~ shell
+    $ kubectl config set-context --current --namespace=cockroach-operator-system
     ~~~
 
 1. Validate that the Operator is running:

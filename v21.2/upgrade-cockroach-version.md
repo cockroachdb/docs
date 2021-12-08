@@ -8,15 +8,15 @@ Because of CockroachDB's [multi-active availability](multi-active-availability.h
 
 ## Step 1. Verify that you can upgrade
 
-To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the **latest** production release of the previous version, but it must be a production release rather than a testing release (alpha/beta).
+To upgrade to a new version, you must first be on a [production release](../releases/#production-releases) of the previous version. The release does not need to be the latest production release of the previous version, but it **must be a production release** and not a [testing release (alpha/beta)](../releases/#testing-releases).
 
-Therefore, if you are upgrading from v20.2 to v21.1, or from a testing release (alpha/beta) of v21.1 to v21.2:
+Therefore, to upgrade to v21.2:
 
-1. First [upgrade to a production release of v21.1](../v21.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
+- If your current CockroachDB version is a v20.2 release or earlier, or a v21.1 testing release (alpha/beta):
+    1. First [upgrade to a production release of v21.1](../v21.1/upgrade-cockroach-version.html). Be sure to complete all the steps.
+    1. Return to this page and perform a second rolling upgrade to v21.2, starting from [step 2](#step-2-prepare-to-upgrade).
 
-2. Then return to this page and perform a second rolling upgrade to v21.2.
-
-If you are upgrading from any production release of v21.1, or from any earlier v21.2 release, you do not have to go through intermediate releases; continue to step 2.
+- If your current CockroachDB version is any v21.1 production release, or any earlier v21.2 release, you do not have to go through intermediate releases; continue to [step 2](#step-2-prepare-to-upgrade).
 
 ## Step 2. Prepare to upgrade
 
@@ -40,12 +40,12 @@ Verify the overall health of your cluster using the [DB Console](ui-overview.htm
 
 ### Review breaking changes
 
-Review the [changes in v21.2](../releases/v21.2.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
+Review the [changes in v21.2](../releases/v21.2.0.html). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v21.2.
 
-Changes that are important to note:
-
-- Interleaving data was deprecated in v20.2, disabled by default in v21.1, and permanently removed in v21.2. If your cluster contains interleaved data, you will not be able to finalize an upgrade to v21.2. For migration steps, see the [v21.1 interleaving deprecation notice](../v21.1/interleave-in-parent.html#deprecation).
-- The `cloudstorage.gs.default.key` [cluster setting](cluster-settings.html) was deprecated in v21.1 and has been removed from v21.2. The `default` authentication mode for Google Cloud Storage is no longer supported. It is necessary to use either `specified` or `implicit` as `AUTH` parameters when connecting to Google Cloud Storage. See the [Authentication section — Bulk Operations](use-cloud-storage-for-bulk-operations.html#google-cloud-storage) for details on configuring these parameters. 
+- Interleaved tables and interleaved indexes have been removed. Before upgrading to v21.2, [convert interleaved tables](../v21.1/interleave-in-parent.html#convert-interleaved-tables) and [replace interleaved indexes](../v21.1/interleave-in-parent.html#replace-interleaved-indexes). Clusters with interleaved tables and indexes cannot finalize the v21.2 upgrade.
+- Previously, CockroachDB only supported the YMD format for parsing timestamps from strings. It now also supports the MDY format to better align with PostgreSQL. A timestamp such as `1-1-18`, which was previously interpreted as `2001-01-18`, will now be interpreted as `2018-01-01`. To continue interpreting the timestamp in the YMD format, the first number can be represented with 4 digits, `2001-1-18`.
+- The deprecated [cluster setting](cluster-settings.html) `cloudstorage.gs.default.key` has been removed, and the behavior of the `AUTH` parameter in Google Cloud Storage [`BACKUP`](../v21.2/backup.html) and `IMPORT` URIs has been changed. The default behavior is now that of `AUTH=specified`, which uses the credentials passed in the `CREDENTIALS` parameter, and the previous default behavior of using the node's implicit access (via its machine account or role) now requires explicitly passing `AUTH=implicit`.
+- We have switched types from `TEXT` to `"char"` for compatibility with PostgreSQL in the following columns: `pg_constraint` (`confdeltype`, `confmatchtype`, `confudptype`, `contype`) `pg_operator` (`oprkind`), `pg_prog` (`proargmodes`), `pg_rewrite` (`ev_enabled`, `ev_type`), and `pg_trigger` (`tgenabled`).
 
 ## Step 3. Decide how the upgrade will be finalized
 
@@ -72,13 +72,13 @@ By default, after all nodes are running the new version, the upgrade process wil
 
 When upgrading from v21.1 to v21.2, certain features and performance improvements will be enabled only after finalizing the upgrade, including but not limited to:
 
-- **Improved multi-region features:** After finalization, it will be possible to use new and improved [multi-region features](multiregion-overview.html), such as the ability to set database regions, survival goals, and table localities. Internal capabilities supporting these features, such as [non-voting replicas](architecture/replication-layer.html#non-voting-replicas) and [non-blocking transactions](architecture/transaction-layer.html#non-blocking-transactions), will be available after finalization as well.
+- **Expression indexes:** [Indexes on expressions](expression-indexes.html) can now be created. These indexes speed up queries that filter on the result of that expression, and are especially useful for indexing only a specific field of a `JSON` object.
+- **Privilege inheritance:** CockroachDB's model for inheritance of privileges that cascade from schema objects now matches PostgreSQL. Added support for [`ALTER DEFAULT PRIVILEGES`](alter-default-privileges.html) and [`SHOW DEFAULT PRIVILEGES`](show-default-privileges.html).
+- **Bounded staleness reads:** [Bounded staleness reads](follower-reads.html#bounded-staleness-reads) are now available in CockroachDB. These use a dynamic, system-determined timestamp to minimize staleness while being more tolerant to replication lag than exact staleness reads. This dynamic timestamp is returned by the `with_min_timestamp()` or `with_max_staleness()` [functions](functions-and-operators.html). In addition, bounded staleness reads provide the ability to serve reads from local replicas even in the presence of network partitions or other failures.
+- **Restricted and default placement:** You can now use the [`ALTER DATABASE ... PLACEMENT RESTRICTED`](placement-restricted.html) statement to constrain the replica placement for a [multi-region database](multiregion-overview.html)'s [regional tables](regional-tables.html) to the [home regions](set-locality.html#crdb_region) associated with those tables.
+- **`ON UPDATE` expressions:** An [`ON UPDATE` expression](add-column.html#add-a-column-with-an-on-update-expression) can now be added to a column to update column values when an [`UPDATE`](update.html) or [`UPSERT`](../v21.2/upsert.html) statement modifies a different column value in the same row, or when an `ON UPDATE CASCADE` expression on a different column modifies an existing value in the same row.
 
-- **Empty arrays in inverted indexes:** After finalization, newly created [inverted indexes](inverted-indexes.html) will contain rows containing empty arrays in [`ARRAY`](array.html) columns, which allows the indexes to be used for more queries. Note, however, that rows containing `NULL` values in an indexed column will still not be included in inverted indexes.
-
-- **Virtual computed columns:** After finalization, it will be possible to use the `VIRTUAL` keyword to define [virtual computed columns](computed-columns.html).
-
-- **Changefeed support for primary key changes:** After finalization, [changefeeds](stream-data-out-of-cockroachdb-using-changefeeds.html) will detect primary key changes.
+For an expanded list of features included in the v21.2 release, see the [v21.2 release notes](../releases/v21.2.0.html).
 
 ## Step 4. Perform the rolling upgrade
 

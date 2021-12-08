@@ -109,7 +109,7 @@ Inverted indexes on `JSONB` columns support the following comparison operators:
     > SELECT * FROM a WHERE j @> '{"foo": "1"}';
     ~~~
 
-If you require comparisons using [`<`](functions-and-operators.html#supported-operations)), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
+If you require comparisons using [`<`](functions-and-operators.html#supported-operations), [`<=`](functions-and-operators.html#supported-operations), etc., you can create an index on a computed column using your JSON payload, and then create a regular index on that. So if you wanted to write a query where the value of "foo" is greater than three, you would:
 
 1. Create your table with a computed column:
 

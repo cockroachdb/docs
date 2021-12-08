@@ -51,6 +51,12 @@
             ]
           },
           {
+            "title": "Admission control",
+            "urls": [
+              "/${VERSION}/architecture/admission-control.html"
+            ]
+          },
+          {
             "title": "CockroachDB Cloud Architecture",
             "urls": [
               "/cockroachcloud/architecture.html"
@@ -154,6 +160,12 @@
                 "title": "<code>ALTER DATABASE</code>",
                 "urls": [
                   "/${VERSION}/alter-database.html"
+                ]
+              },
+              {
+                "title": "<code>ALTER DEFAULT PRIVILEGES</code>",
+                "urls": [
+                  "/${VERSION}/alter-default-privileges.html"
                 ]
               },
               {
@@ -745,6 +757,12 @@
                 ]
               },
               {
+                "title": "<code>SHOW DEFAULT PRIVILEGES</code>",
+                "urls": [
+                  "/${VERSION}/show-default-privileges.html"
+                ]
+              },
+              {
                 "title": "<code>SHOW ENUMS</code>",
                 "urls": [
                   "/${VERSION}/show-enums.html"
@@ -1160,7 +1178,7 @@
         ]
       },
       {
-        "title": "Cluster settings",
+        "title": "Cluster Settings",
         "urls": [
           "/${VERSION}/cluster-settings.html"
         ]
@@ -1195,7 +1213,7 @@
         ]
       },
       {
-        "title": "CLI reference",
+        "title": "CLI Reference",
         "urls": [
           "/${VERSION}/cockroach-commands.html"
         ],
@@ -1207,7 +1225,7 @@
             ]
           },
           {
-            "title": "<code>cockroach</code> commands",
+            "title": "<code>cockroach</code> Commands",
             "items": [
               {
                 "title": "<code>cockroach start</code>",
@@ -1427,6 +1445,12 @@
                 ]
               },
               {
+                "title": "Overload Dashboard",
+                "urls": [
+                  "/${VERSION}/ui-overload-dashboard.html"
+                ]
+              },
+              {
                 "title": "Custom Chart",
                 "urls": [
                   "/${VERSION}/ui-custom-chart-debug-page.html"
@@ -1485,19 +1509,19 @@
         ]
       },
       {
-        "title": "Logging reference",
+        "title": "Logging Reference",
         "urls": [
           "/${VERSION}/logging.html"
         ],
         "items": [
           {
-            "title": "Log formats",
+            "title": "Log Formats",
             "urls": [
               "/${VERSION}/log-formats.html"
             ]
           },
           {
-            "title": "Notable event types",
+            "title": "Notable Event Types",
             "urls": [
               "/${VERSION}/eventlog.html"
             ]

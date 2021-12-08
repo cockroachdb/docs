@@ -130,7 +130,7 @@ The `--locality` flag accepts arbitrary key-value pairs that describe the locati
 
 The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
 
- As of v21.1 and later, CockroachDB always uses the [Pebble storage engine](https://github.com/cockroachdb/pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
+ As of v21.1 and later, CockroachDB always uses the [Pebble storage engine](architecture/storage-layer.html#pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
 
 #### Store
 
@@ -167,6 +167,7 @@ CockroachDB node starting at {{page.release_info.start_time}}
 build:               CCL {{page.release_info.version}} @ {{page.release_info.build_time}} (go1.12.6)
 webui:               http://localhost:8080
 sql:                 postgresql://root@localhost:26257?sslmode=disable
+sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
 RPC client flags:    cockroach <client cmd> --host=localhost:26257 --insecure
 logs:                /Users/<username>/node1/logs
 temp dir:            /Users/<username>/node1/cockroach-temp242232154
@@ -491,7 +492,7 @@ For example, suppose you want to use port `26257` for SQL connections and `26258
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --sql-addr=:26267 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
+$ cockroach start --sql-addr=:26257 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
 ~~~
 
 Note the use of port `26258` (the value for `listen-addr`, not `sql-addr`) in the `--join` flag. Also, if your environment requires the use of the `--advertise-addr` flag, you should probably also use the `--advertise-sql-addr` flag when using a separate SQL address.

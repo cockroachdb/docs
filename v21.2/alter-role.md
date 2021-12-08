@@ -263,3 +263,4 @@ root@:26257/movr> SHOW timezone;
 - [`SHOW GRANTS`](show-grants.html)
 - [Create Security Certificates](cockroach-cert.html)
 - [Other SQL Statements](sql-statements.html)
+- [Authorization Best Practices](authorization.html#authorization-best-practices)

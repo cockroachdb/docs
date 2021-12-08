@@ -13,25 +13,9 @@ If you haven't already, you'll need to [locally install](install-cockroachdb.htm
 
 ## Enable Enterprise features
 
-As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode.
+{% include {{ page.version.version }}/misc/set-enterprise-license.md %}
 
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure
-~~~
-
-{{site.data.alerts.callout_info}}
-If you've secured your deployment, you'll need to [include the flags for your certificates](cockroach-cert.html) instead of the `--insecure` flag.
-{{site.data.alerts.end}}
-
-Now, use the `SET CLUSTER SETTING` command to set the name of your organization and the license key:
-
-{% include copy-clipboard.html %}
-~~~ sql
->  SET CLUSTER SETTING cluster.organization = 'Acme Company'; SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
-~~~
-
-Then verify your organization in response to the following query:
+You can then use the [`SHOW CLUSTER SETTING`](set-cluster-setting.html) command to verify your license:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -46,10 +30,13 @@ Your cluster now has access to all of CockroachDB's Enterprise features for the 
 
 ## Getting help
 
-If you or your team need any help during your trial, our engineers are available on [CockroachDB Community Slack](https://cockroachdb.slack.com), [our forum](https://forum.cockroachlabs.com/), or [GitHub](https://github.com/cockroachdb/cockroach).</p>
+If you or your team need any help during your trial, our engineers are available on [CockroachDB Community Slack](https://cockroachdb.slack.com), [our forum](https://forum.cockroachlabs.com/), or [GitHub](https://github.com/cockroachdb/cockroach).
+
+Also consider checking out [Cockroach University](https://university.cockroachlabs.com/) for free online courses that help you get the most out of CockroachDB.
 
 ## See also
 
-- [Enterprise Licensing](enterprise-licensing.html)
+- [Licensing FAQs](enterprise-licensing.html)
 - [`SET CLUSTER SETTING`](set-cluster-setting.html)
 - [`SHOW CLUSTER SETTING`](show-cluster-setting.html)
+- [Cockroach University](https://university.cockroachlabs.com/)

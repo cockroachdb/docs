@@ -498,7 +498,7 @@ For example, suppose you want to use port `26257` for SQL connections and `26258
 
 {% include copy-clipboard.html %}
 ~~~ shell
-$ cockroach start --sql-addr=:26267 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
+$ cockroach start --sql-addr=:26257 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
 ~~~
 
 Note the use of port `26258` (the value for `listen-addr`, not `sql-addr`) in the `--join` flag. Also, if your environment requires the use of the `--advertise-addr` flag, you should probably also use the `--advertise-sql-addr` flag when using a separate SQL address.

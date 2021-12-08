@@ -105,3 +105,5 @@ If it is important for generated IDs to be stored in the same key-value range, y
 ~~~
 
 Upon insert or upsert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert. Such time-ordered values are likely to be globally unique except in cases where a very large number of IDs (100,000+) are generated per node per second. Also, there can be gaps and the order is not completely guaranteed.
+
+For further background on UUIDs, see [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid/).

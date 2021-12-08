@@ -123,13 +123,6 @@ KV execution latency is calculated as the time in milliseconds between when the 
 
 ## Transactions
 
-- In the node view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second on this node.
-
-- In the cluster view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second across all nodes in the cluster.
-
-
-## Transactions
-
 - In the node view, the graph shows the 10-second average of the number of opened (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) [transactions](transactions.html) per second issued by SQL clients on the node.
 
 - In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current [transactions](transactions.html) load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
@@ -144,7 +137,7 @@ See the [Transactions page](ui-transactions-page.html) for more details on the t
 
 - In the cluster view, the graph shows the number of transactions restarted across the cluster broken down by the errors that caused the restart.
 
-See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaciton to restart.
+See the [Transaction Retry Error Reference](transaction-retry-error-reference.html) for details on the errors that caused the transaction to restart.
 
 ## Transaction Latency: 99th percentile
 

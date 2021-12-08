@@ -1,31 +1,34 @@
 {
-  "title": "Self-Hosted releases",
+  "title": "Self-Hosted Releases",
   "items": [
     {
-      "title": "Production releases",
+      "title": "Production Releases",
       "items": [
+        {
+          "title": "Latest v21.2",
+          "urls": [
+            "/releases/v21.2.2.html"
+          ]
+        },
         {
           "title": "Latest v21.1",
           "urls": [
-            "/releases/v21.1.11.html"
+            "/releases/v21.1.12.html"
           ]
         },
         {
           "title": "Latest v20.2",
           "urls": [
-            "/releases/v20.2.17.html"
+            "/releases/v20.2.18.html"
           ]
         },
         {
-          "title": "Latest v20.1",
-          "urls": [
-            "/releases/v20.1.17.html"
-          ]
-        },
-        {
-          "title": "All production releases",
+          "title": "All Production Releases",
           "urls": [
             "/releases/index.html#production-releases",
+            "/releases/v21.2.2.html",
+            "/releases/v21.2.1.html",
+            "/releases/v21.1.12.html",
             "/releases/v21.1.11.html",
             "/releases/v21.1.10.html",
             "/releases/v21.1.9.html",
@@ -38,30 +41,13 @@
             "/releases/v21.1.2.html",
             "/releases/v21.1.1.html",
             "/releases/v21.1.0.html",
-            "/releases/v20.2.17.html",
-            "/releases/v20.2.16.html",
-            "/releases/v20.2.15.html",
-            "/releases/v20.2.14.html",
-            "/releases/v20.2.13.html",
-            "/releases/v20.2.12.html",
-            "/releases/v20.2.11.html",
-            "/releases/v20.2.10.html",
-            "/releases/v20.2.9.html",
-            "/releases/v20.2.8.html",
-            "/releases/v20.2.7.html",
-            "/releases/v20.2.6.html",
-            "/releases/v20.2.5.html",
-            "/releases/v20.2.4.html",
-            "/releases/v20.2.3.html",
-            "/releases/v20.2.2.html",
-            "/releases/v20.2.1.html",
-            "/releases/v20.2.0.html"
+            "/releases/v20.2.18.html"
           ]
         }
       ]
     },
     {
-      "title": "Testing releases",
+      "title": "Testing Releases",
       "urls": [
         "/releases/index.html#testing-releases",
         "/releases/v21.2.0-beta.1.html",
@@ -74,19 +60,19 @@
       ]
     },
     {
-      "title": "Release support policy",
+      "title": "Release Support Policy",
       "urls": [
         "/releases/release-support-policy.html"
       ]
     },
     {
-      "title": "Known limitations",
+      "title": "Known Limitations",
       "urls": [
         "/${VERSION}/known-limitations.html"
       ]
     },
     {
-      "title": "Technical advisories",
+      "title": "Technical Advisories",
       "urls": [
         "/advisories/index.html",
         "/advisories/a30821.html",
@@ -103,7 +89,13 @@
         "/advisories/a62842.html",
         "/advisories/a63162.html",
         "/advisories/a64325.html",
-        "/advisories/a68005.html"
+        "/advisories/a68005.html",
+        "/advisories/a69874.html",
+        "/advisories/a71002.html",
+        "/advisories/a71655.html",
+        "/advisories/a71553.html",
+        "/advisories/a72839.html",
+        "/advisories/a73024.html"
       ]
     }
   ]

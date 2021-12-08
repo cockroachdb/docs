@@ -476,10 +476,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 
 {% include {{ page.version.version }}/known-limitations/backup-interleaved.md %}
 
-### Slow (or hung) backups and queries due to write intent buildup
-
-{% include {{ page.version.version }}/known-limitations/write-intent-buildup.md %}
-
 ### `BACKUP` of multi-region tables
 
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}

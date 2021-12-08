@@ -10,6 +10,8 @@ An _expression index_ is an index created by applying an [expression](scalar-exp
 
 Both [standard indexes](create-index.html) and [inverted indexes](inverted-indexes.html) support expressions. You can use expressions in [unique indexes](create-index.html#unique-indexes) and [partial indexes](partial-indexes.html).
 
+You can reference multiple columns in an expression index.
+
 ## Create an expression index
 
 To create an expression index, use the syntax:
@@ -72,62 +74,105 @@ CREATE INVERTED INDEX ON t (lower(s), i, j) WHERE b;
 
 ### Use an expression to index a field in a `JSONB` column
 
-You can use an [expression](expression-indexes.html) in an index definition to index a field in a JSON column. You can also use an expression to create an [inverted index](inverted-indexes.html) on a subset of the JSON column.
+You can use an expression in an index definition to index a field in a JSON column. You can also use an expression to create an [inverted index](inverted-indexes.html) on a subset of the JSON column.
 
-The following example creates a table of users with a JSON object in `user_profile` column and then an index on the `birthdate` field in that column:
+Normally an index is used only if the cost of using the index is less than the cost of a full table scan. To disable that optimization, turn off statistics collection:
+
+~~~sql
+> SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+~~~
+
+Create a table of three users with a JSON object in the `user_profile` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-CREATE TABLE users (
+> CREATE TABLE users (
   profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   last_updated TIMESTAMP DEFAULT now(),
   user_profile JSONB
 );
 
-INSERT INTO users (user_profile) VALUES
+> INSERT INTO users (user_profile) VALUES
   ('{"id": "d78236", "firstName": "Arthur", "lastName": "Read", "birthdate": "2010-01-25", "school": "PVPHS", "credits": 120, "sports": ["none"], "clubs": ["Robotics"]}'),
   ('{"id": "f98112", "firstName": "Buster", "lastName": "Bunny", "birthdate": "2011-11-07",  "school": "THS", "credits": 67, "sports": ["Gymnastics"], "clubs": ["Theater"]}'),
   ('{"id": "t63512", "firstName": "Jane", "lastName": "Narayan", "birthdate": "2012-12-12", "school" : "Brooklyn Tech", "credits": 98, "sports": ["Track and Field"], "clubs": ["Chess"]}');
-
-CREATE INDEX timestamp_idx ON users (parse_timestamp(user_profile->>'birthdate'));
 ~~~
 
-To query for a specific birthdate, run the following:
+When you perform a query that filters on the `user_profile->'birthdate'` column:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-> SELECT jsonb_pretty(user_profile) FROM users@timestamp_idx WHERE user_profile->'birthdate' = '"2011-11-07"';
+> EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE user_profile->>'birthdate' = '2011-11-07';
+~~~
+
+You can see that a full scan is performed:
+
+~~~
+                                           info
+-------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • render
+  │ estimated row count: 0
+  │
+  └── • filter
+      │ estimated row count: 0
+      │ filter: (user_profile->'birthdate') = '2011-11-07'
+      │
+      └── • index join
+          │ estimated row count: 3
+          │ table: users@primary
+          │
+          └── • scan
+                missing stats
+                table: users@primary
+                spans: FULL SCAN
+~~~
+
+To limit the number of rows scanned, create an expression index on the `birthdate` field:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+> CREATE INDEX timestamp_idx ON users (parse_timestamp(user_profile->>'birthdate'));
+~~~
+
+When you filter on the expression `parse_timestamp(user_profile->'birthdate')`, only the row matching the filter is scanned:
+
+{% include_cached copy-clipboard.html %}
+~~~sql
+> EXPLAIN SELECT jsonb_pretty(user_profile) FROM users WHERE parse_timestamp(user_profile->>'birthdate') = '2011-11-07';
 ~~~
 
 ~~~
-           jsonb_pretty
-----------------------------------
-  {
-      "birthdate": "2011-11-07",
-      "clubs": [
-          "Theater"
-      ],
-      "credits": 67,
-      "firstName": "Buster",
-      "id": "f98112",
-      "lastName": "Bunny",
-      "school": "THS",
-      "sports": [
-          "Gymnastics"
-      ]
-  }
-(1 row)
+                                        info
+-------------------------------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • render
+  │ estimated row count: 1
+  │
+  └── • index join
+      │ estimated row count: 1
+      │ table: users@primary
+      │
+      └── • scan
+            missing stats
+            table: users@timestamp_idx
+            spans: [/'2011-11-07 00:00:00' - /'2011-11-07 00:00:00']
 ~~~
 
+As shown in this example, for an expression index to be used to service a query, the query must constrain the **same exact expression** in its filter.
 
 ## Known limitations
 
 Expression indexes have the following limitations:
 
 - The expression cannot reference columns outside the index's table.
-- The expression cannot reference [computed columns](computed-columns.html). [Tracking issue](https://github.com/cockroachdb/cockroach/issues/67900)
 - Functional expression output must be determined by the input arguments. For example, you can't use the function `now()` to create an index because its output depends on more than just the function arguments.
-
+- {% include {{page.version.version}}/sql/expression-indexes-cannot-reference-computed-columns.md %}
+- {% include {{page.version.version}}/sql/expressions-as-on-conflict-targets.md %}
 
 ## See also
 

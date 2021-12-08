@@ -61,6 +61,7 @@ In this example, first check a role's privileges. Then, revoke the role's privil
 ## See also
 
 - [Authorization](authorization.html)
+- [Authorization Best Practices](authorization.html#authorization-best-practices)
 - [`CREATE ROLE`](create-role.html)
 - [`SHOW ROLES`](show-roles.html)
 - [`GRANT`](grant.html)

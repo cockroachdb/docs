@@ -17,7 +17,7 @@ Each CockroachDB node contains at least one `store`, specified when the node sta
 
 This data is stored as key-value pairs on disk using the storage engine, which is treated primarily as a black-box API.
 
- By default, [CockroachDB uses the Pebble storage engine](../cockroach-start.html#storage-engine), with RocksDB available as an option.  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format, but differs in that it:
+[CockroachDB uses the Pebble storage engine](../cockroach-start.html#storage-engine).  Pebble is intended to be bidirectionally compatible with the RocksDB on-disk format, but differs in that it:
 
 - Is written in Go and implements a subset of RocksDB's large feature set.
 - Contains optimizations that benefit CockroachDB.
@@ -39,7 +39,7 @@ In relationship to other layers in CockroachDB, the storage layer:
 
 ### Pebble
 
- CockroachDB uses [Pebble by default](../cockroach-start.html#storage-engine)––an embedded key-value store with a RocksDB-compatible API developed by Cockroach Labs––to read and write data to disk. You can find more information about it on the [Pebble GitHub page](https://github.com/cockroachdb/pebble) or in the blog post [Introducing Pebble: A RocksDB Inspired Key-Value Store Written in Go](https://www.cockroachlabs.com/blog/pebble-rocksdb-kv-store/).
+ CockroachDB uses [Pebble](../cockroach-start.html#storage-engine)––an embedded key-value store with a RocksDB-compatible API developed by Cockroach Labs––to read and write data to disk. You can find more information about it on the [Pebble GitHub page](https://github.com/cockroachdb/pebble) or in the blog post [Introducing Pebble: A RocksDB Inspired Key-Value Store Written in Go](https://www.cockroachlabs.com/blog/pebble-rocksdb-kv-store/).
 
 Pebble integrates well with CockroachDB for a number of reasons:
 
@@ -49,17 +49,6 @@ Pebble integrates well with CockroachDB for a number of reasons:
 - It contains optimizations that are not in RocksDB, that are inspired by how CockroachDB uses the storage engine.  For an example of such an optimization, see the blog post [Faster Bulk-Data Loading in CockroachDB](https://www.cockroachlabs.com/blog/bulk-data-import/).
 
 Efficient storage for the keys is guaranteed by the underlying Pebble engine by means of prefix compression.
-
-### RocksDB
-
-If you [choose it at node startup time (it's not the default)](../cockroach-start.html#storage-engine), CockroachDB uses RocksDB––an embedded key-value store––to read and write data to disk. You can find more information about RocksDB on the [RocksDB Basics GitHub page](https://github.com/facebook/rocksdb/wiki/RocksDB-Basics).
-
-RocksDB integrates well with CockroachDB for a number of reasons:
-
-- It is a key-value store, which makes mapping to our key-value layer simple
-- It provides atomic write batches and snapshots, which give us a subset of transactions
-
-Efficient storage for the keys is guaranteed by the underlying RocksDB engine by means of prefix compression.
 
 ### MVCC
 

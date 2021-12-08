@@ -35,6 +35,7 @@ For each BSL release all associated alpha, beta, major, and minor (point) releas
 
 CockroachDB version | License | Converts to Apache 2.0   
 --------------------|---------|----------------------------
+21.2 | Business Source License | Nov 16, 2024
 21.1 | Business Source License | May 18, 2024
 20.2 | Business Source License | Nov 10, 2023
 20.1 | Business Source License | May 12, 2023  
@@ -93,22 +94,7 @@ Cockroach Labs is willing to offer self-hosted CockroachDB Enterprise features f
 
 ## Set a license
 
-As the CockroachDB `root` user, open the [built-in SQL shell](cockroach-sql.html) in insecure or secure mode, as per your CockroachDB setup. In the following example, we assume that CockroachDB is running in insecure mode. Then use the [`SET CLUSTER SETTING`](set-cluster-setting.html) command to set the name of your organization and the license key:
-
-{% include copy-clipboard.html %}
-~~~ shell
-$ cockroach sql --insecure
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
->  SET CLUSTER SETTING cluster.organization = 'Acme Company';
-~~~
-
-{% include copy-clipboard.html %}
-~~~ sql
->  SET CLUSTER SETTING enterprise.license = 'xxxxxxxxxxxx';
-~~~
+{% include {{ page.version.version }}/misc/set-enterprise-license.md %}
 
 ## Verify a license
 

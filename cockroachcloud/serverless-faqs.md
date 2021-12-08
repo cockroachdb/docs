@@ -18,6 +18,10 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
+{{site.data.alerts.callout_success}}
+For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/intro-to-serverless/) course on Cockroach University.
+{{site.data.alerts.end}}
+
 ### How do I start using {{ site.data.products.serverless }}?
 
 To get started with {{ site.data.products.serverless }}, <a href="https://cockroachlabs.cloud/signup?referralId=docs_serverless_faq" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
@@ -64,9 +68,13 @@ Some pages on the Console runs background queries against your cluster, which me
 
 ### Why does my RU usage briefly spike when I'm running a steady workload?
 
-CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance. 
+CockroachDB [automatically collects statistics](../{{site.versions["stable"]}}/cost-based-optimizer.html#control-statistics-refresh-rate) in a background process when certain conditions are met (for example, when more than 20% of rows in a table are modified). The statistics are used by the cost-based optimizer to tune statements for higher performance.
 
 When automatic statistics collection starts your cluster may consume RUs above the 100 RUs per second baseline when your workload is otherwise consuming RUs below the baseline. You can [turn off automatic statistics collection](../{{site.versions["stable"]}}/cost-based-optimizer.html#turn-off-statistics) to avoid these RU bursts, but the cost-based optimizer may choose inefficient statement plans as it doesn't have access to the latest statistics.
+
+### What is the cold start latency of a Serverless cluster?
+
+When a Serverless cluster is idle, it will scale down to zero and consume no RUs. When the cluster becomes active again it will begin serving requests within a fraction of a second, typically around 600 milliseconds.
 
 ## Beta release
 

@@ -4,7 +4,7 @@ summary: Release notes for older versions of CockroachDB.
 toc: true
 ---
 
-After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Lab's [Release Support Policy](release-support-policy.html).
+After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
 
 
 {% for section in site.data.releases %}
@@ -36,13 +36,12 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
         <td>
             <a href="{{ release.version }}.html">{{ release.version }}</a>
             {% if release.latest %}
-                <span class="badge-new">Latest</span
+                <span class="badge-new">Latest</span>
             {% endif %}
         </td>
         <td>{{ release.date }}</td>
         {% if release.withdrawn %}
             <td class="os-release-cell"><span class="badge badge-gray">Withdrawn</span></td>
-            <td></td>
         {% else %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">

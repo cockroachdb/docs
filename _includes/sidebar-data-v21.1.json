@@ -365,7 +365,7 @@
             ]
           },
           {
-            "title": "Manage Transactions",
+            "title": "Transactions",
             "urls": [
               "/${VERSION}/transactions.html"
             ]
@@ -676,6 +676,12 @@
                         "title": "Google Cloud Run",
                         "urls": [
                           "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      },
+                      {
+                        "title": "AWS Lambda",
+                        "urls": [
+                          "/${VERSION}/deploy-lambda-function.html"
                         ]
                       }
                     ]

@@ -1,16 +1,18 @@
 {
-  "title": "Cloud release notes",
+  "title": "Cloud Release Notes",
   "items": [
     {
-      "title": "Latest release notes",
+      "title": "Latest Release Notes",
       "urls": [
-        "/releases/cockroachcloud-10042021.html"
+        "/releases/cockroachcloud-12062021.html"
       ]
     },
     {
-      "title": "All release notes",
+      "title": "All Release Notes",
       "urls": [
         "/releases/index-cockroachcloud.html",
+        "/releases/cockroachcloud-11082021.html",
+        "/releases/cockroachcloud-10042021.html",
         "/releases/cockroachcloud-09072021.html",
         "/releases/cockroachcloud-08092021.html",
         "/releases/cockroachcloud-07062021.html",
