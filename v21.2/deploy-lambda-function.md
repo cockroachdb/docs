@@ -18,6 +18,8 @@ Before starting the tutorial, do the following:
 
 1. Create an [AWS](https://aws.amazon.com/) account.
 
+1. Create an [AWS user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html) with administrator permissions.
+
 1. Install the [AWS CLI](https://aws.amazon.com/cli/).
 
 ## Step 1. Create a {{ site.data.products.serverless }} cluster
@@ -101,7 +103,7 @@ This step is optional, as you do not need to create a new deployment package to 
     $ aws configure
     ~~~
 
-    Follow the prompts to authenticate.
+    Follow the prompts to authenticate as a user with administrator priviliges. We do not recommend using the root user.
 
 1. Create an execution role for the Lambda function and attach the `AWSLambdaBasicExecutionRole` policy to the role:
 
@@ -116,10 +118,6 @@ This step is optional, as you do not need to create a new deployment package to 
     ~~~
 
     The Lambda function needs this role to run.
-
-    {{site.data.alerts.callout_info}}    
-    To create a service role and attach a policy, the user must have the `CreateRole`, `AttachRolePolicy`, `PutRolePolicy` policies. For details, see [Creating a role to delegate permissions to an AWS service](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html).
-    {{site.data.alerts.end}}
 
 ## Step 5. Deploy the function to AWS Lambda
 
