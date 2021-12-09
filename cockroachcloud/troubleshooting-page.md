@@ -125,3 +125,14 @@ Error: x509: certificate signed by unknown authority
 {{site.data.alerts.callout_info}}
 Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl.html) document.
 {{site.data.alerts.end}}
+
+## Other
+
+The following error is displayed if you try to access cloud storage from an organization without billing information on file:
+
+~~~ shell
+ERROR: external network access is disabled
+~~~
+
+**Solution:**
+You must [set up billing information](billing-management.html) for your organization to use cloud storage. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
