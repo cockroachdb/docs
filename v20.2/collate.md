@@ -20,7 +20,7 @@ Collated strings are important because different languages have [different rules
 
 ## Supported collations
 
-CockroachDB supports collations identified by [Unicode locale identifiers](http://cldr.unicode.org/core-spec#Identifiers). For example, `en-US` identifies US English, `es` identifies Spanish, and `fr-CA` identifies Canadian French. Collation names are case-insensitive, and hyphens and underscores are interchangeable.
+CockroachDB supports collations identified by [Unicode locale identifiers](https://cldr.unicode.org/development/core-specification#h.vgyyng33o798). For example, `en-US` identifies US English, `es` identifies Spanish, and `fr-CA` identifies Canadian French. Collation names are case-insensitive, and hyphens and underscores are interchangeable.
 
 {{site.data.alerts.callout_info}}
 If a hyphen is used in a SQL query, the collation name must be enclosed in double quotes, as single quotes are used for SQL string literals.

@@ -380,9 +380,9 @@ A CockroachDB node will grow to consume all of the memory allocated for its `cac
 
 CockroachDB memory usage has the following components:
 
--   **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
--   **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the [Pebble storage engine](cockroach-start.html#storage-engine)). This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
--   **Overhead**: The process resident set size minus Go/CGo allocated memory.
+- **Go allocated memory**: Memory allocated by the Go runtime to support query processing and various caches maintained in Go by CockroachDB. These caches are generally small in comparison to the RocksDB cache size. If Go allocated memory is larger than a few hundred megabytes, something concerning is going on.
+- **CGo allocated memory**: Memory allocated by the C/C++ libraries linked into CockroachDB and primarily concerns the block caches for the storage engine (this is true for both [Pebble (the default engine) and RocksDB](cockroach-start.html#storage-engine)). This is the “cache” mentioned in the note above. The size of CGo allocated memory is usually very close to the configured cache size.
+- **Overhead**: The process resident set size minus Go/CGo allocated memory.
 
 If Go allocated memory is larger than a few hundred megabytes, you might have encountered a memory leak. Go comes with a built-in heap profiler which is already enabled on your CockroachDB process. See this [excellent blog post](https://blog.golang.org/profiling-go-programs) on profiling Go programs.
 
@@ -409,6 +409,7 @@ If Go allocated memory is larger than a few hundred megabytes, you might have en
 
 Often when a node exits without a trace or logging any form of error message, we’ve found that it is the operating system stopping it suddenly due to low memory. So if you're seeing node crashes where the logs just end abruptly, it's probably because the node is running out of memory. On most Unix systems, you can verify if the `cockroach` process was stopped because the node ran out of memory by running:
 
+{% include_cached copy-clipboard.html %}
 ~~~ shell
 $ sudo dmesg | grep -iC 3 "cockroach"
 ~~~
@@ -419,7 +420,11 @@ If the command returns the following message, then you know the node crashed due
 $ host kernel: Out of Memory: Killed process <process_id> (cockroach).
 ~~~
 
-To rectify the issue, you can either run the cockroachdb process on another node with sufficient memory, or [reduce the cockroachdb memory usage](cockroach-start.html#flags).
+<span class="version-tag">New in v21.2</span>: When a node is detected to be under memory pressure, a record of anonymized active queries is written to disk. This "active query dump" is enabled by default with the `diagnostics.active_query_dumps.enabled` cluster setting.
+
+You can use the active query dump to correlate specific queries to OOM crashes. Active query dumps have the filename `activequeryprof.{date-and-time}.csv` and are found in the `heap_profiler` directory in the configured [logging directory](configure-logs.html#logging-directory). They are also included when running [`cockroach debug zip`](cockroach-debug-zip.html).
+
+**Solution:** Either run the CockroachDB process on another node with sufficient memory, or [reduce the CockroachDB memory usage](cockroach-start.html#flags).
 
 ## Decommissioning issues
 

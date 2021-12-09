@@ -390,7 +390,7 @@ For a simple but complete "Hello World" example app, see [Build a Closure App wi
 
 **Support level:** Beta
 
-Install the php-pgsql driver as described in the [official documentation](http://php.net/manual/en/book.pgsql.php).
+Install the php-pgsql driver as described in the [official documentation](https://www.php.net/manual/en/book.pgsql.php).
 
 For a simple but complete "Hello World" example app, see [Build a PHP App with CockroachDB and the PHP pgsql Driver](build-a-php-app-with-cockroachdb.html).
 

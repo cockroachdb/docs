@@ -18,6 +18,10 @@ This page answers the frequently asked questions about {{ site.data.products.ser
 
 {{ site.data.products.serverless }} delivers free and pay-as-you-go CockroachDB clusters for you and your Organization. It is a managed instance of CockroachDB that lets you start using your database immediately and auto-scales based on your application traffic.
 
+{{site.data.alerts.callout_success}}
+For a deeper dive into serverless database concepts and how to get started with CockroachDB Serverless, take the free [Intro to Serverless Databases](https://university.cockroachlabs.com/courses/intro-to-serverless/) course on Cockroach University.
+{{site.data.alerts.end}}
+
 ### How do I start using {{ site.data.products.serverless }}?
 
 To get started with {{ site.data.products.serverless }}, <a href="https://cockroachlabs.cloud/signup?referralId=docs_serverless_faq" rel="noopener" target="_blank">sign up for a {{ site.data.products.db }} account</a>, click **Create Cluster**, then click **Create your free cluster**. Your cluster will be ready in 20-30 seconds. For more information, see [**Quickstart**](quickstart.html).
@@ -119,7 +123,7 @@ Yes, you can view and your clusters in the [{{ site.data.products.db }} Console]
 
 ### Can I run bulk operations such as `IMPORT` and `EXPORT` from my cluster?
 
-Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). If you [add billing information to your organization](billing-management.html) you can run bulk operations using cloud storage providers. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.
+Yes, you can [run bulk operations on Serverless clusters](run-bulk-operations.html). If you [add billing information to your organization](billing-management.html), even if you don't set a spend limit, you can run bulk operations using cloud storage providers. If you don't have billing set up for your organization, you can set up a [`userfile`](../{{site.versions["stable"]}}/use-userfile-for-bulk-operations.html) location for bulk operations.
 
 {{site.data.alerts.callout_danger}}
 We don't recommend `userfile` for `EXPORT` operations. You can either add billing information to your organization to enable access to cloud storage, or [export data to a local CSV file](migrate-from-serverless-to-dedicated.html#step-1-export-data-to-a-local-csv-file).
@@ -132,3 +136,7 @@ Yes, {{ site.data.products.serverless-plan }} clusters have access to [Core Chan
 ### Can I backup my {{ site.data.products.serverless }} cluster? Does Cockroach Labs take backups of my cluster?
 
 {{ site.data.products.db }} does not take incremental backups of Serverless clusters, and you cannot restore backups from the Console. However, you can backup and restore your {{ site.data.products.serverless }} cluster manually. If you don't have [billing information on file](billing-management.html) for your organization, you can [take backups locally](run-bulk-operations.html#backup-and-restore-data) to `userfile`. Once you enter billing information, even if you don't set a spend limit, you can also [backup to cloud storage](run-bulk-operations.html#backup-and-restore-data).
+
+{{site.data.alerts.callout_info}}
+Running a [bulk operation](run-bulk-operations.html) to cloud storage from a {{ site.data.products.serverless }} cluster without first entering billing information will cause the following error: `external network access is disabled`.
+{{site.data.alerts.end}}

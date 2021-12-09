@@ -82,7 +82,7 @@ Here are some best practices for creating and using indexes:
 
 - [Drop unused indexes](drop-index.html) whenever possible.
 
-    To understand usage statistics for an index, query the <a href="performance-recipes-solutions.html?filters=indexusage"><code>crdb_internal.index_usage_statistics</code> table</a>.
+    To understand usage statistics for an index, query the <a href="performance-recipes.html#slow-writes"><code>crdb_internal.index_usage_statistics</code> table</a>.
 
     To find which indexes are being used in a database, query the [`crdb_internal.index_usage_statistics`](crdb-internal.html) table, which will show the total reads and time the primary and secondary indexes were last read.
 
