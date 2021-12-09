@@ -80,7 +80,7 @@ Flag | Description
 `--insecure` | Run in insecure mode. If this flag is not set, the `--certs-dir` flag must point to valid certificates.<br><br>**Env Variable:** `COCKROACH_INSECURE`<br>**Default:** `false`
 `--port`<br>`-p` | The server port to connect to. <br><br>**Env Variable:** `COCKROACH_PORT`<br>**Default:** `26257`
 `--nodes` | <span class="version-tag">New in v20.2:</span> Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
-`--exclude-nodes` | <span class="version-tag">New in v20.2:</span> Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br><br>`--nodes=1,10,13-15`
+`--exclude-nodes` | <span class="version-tag">New in v20.2:</span> Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br><br>`--exclude-nodes=1,10,13-15`
 `--redact-logs` | Redact [sensitive data](debug-and-error-logs.html#redacted-logs) from the log files. Note that this flag removes sensitive information only from the log files. The other items (listed above) collected by the `debug zip` command may still contain sensitive information.
 
 ### Client connection
