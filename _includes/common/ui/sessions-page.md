@@ -15,7 +15,7 @@ A session is *active* if it has an open transaction (including implicit transact
 {{site.data.alerts.end}}
 
 - If a session is active, the most recent SQL statement is displayed in the **Statement** column.
-- If a session is idle, **Transaction Duration**, **Statement Duration**, and **Statement** columns will display `N/A`.
+- If a session is idle, the **Transaction Duration**, **Statement Duration**, and **Statement** columns will display `N/A`.
 - To view [details of a session](#session-details), click **Session Duration**.
 
 {{site.data.alerts.callout_info}}
