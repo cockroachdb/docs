@@ -16,7 +16,7 @@ In contrast to the [**Statements** page]({{ page_prefix }}statements-page.html),
 {{site.data.alerts.end}}
 
 {% if page.cloud != true %}
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Transactions** in the left-hand navigation.
+To view this page, click **SQL Activity** in the left-hand navigation of the DB Console and then click the **Transactions** tab.
 {% else %}
 To view this page, click **SQL Activity** in the left-hand navigation of the {{ site.data.products.db }} Console and then click the **Transactions** tab.
 {% endif %}

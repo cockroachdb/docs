@@ -12,6 +12,6 @@ The **Statements** page helps you:
 - View SQL statement [details](#statement-details-page).
 - Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
 
-To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Statements** in the left-hand navigation.
+To view this page, click **SQL Activity** in the left-hand navigation of the DB Console and then click the **Statements** tab.
 
 {% include common/ui/statements-page.md %}
