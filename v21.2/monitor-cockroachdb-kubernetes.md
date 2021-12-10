@@ -18,6 +18,8 @@ Despite CockroachDB's various [built-in safeguards against failure](architecture
 </div>
 
 <section class="filter-content" markdown="1" data-scope="operator">
+{% include {{ page.version.version }}/orchestration/operator-check-namespace.md %}
+
 {{site.data.alerts.callout_success}}
 If you [deployed CockroachDB on Red Hat OpenShift](deploy-cockroachdb-with-kubernetes-openshift.html), substitute `kubectl` with `oc` in the following commands.
 {{site.data.alerts.end}}

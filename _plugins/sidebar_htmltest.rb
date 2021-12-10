@@ -27,8 +27,14 @@ module SidebarHTMLTest
     def render_items(w, items, version)
       items.each do |item|
         item[:urls].each do |url|
+          # Replace version variable
           url.gsub!('${VERSION}', version)
-          w.write("<a href='#{File.join(@site.baseurl, url)}'>#{item[:title]}</a>\n")
+          # Write the test file, adding the baseurl if the url is relative
+          if url.start_with?('http')
+            w.write("<a href='#{url}'>#{item[:title]}</a>\n")
+          else
+            w.write("<a href='#{File.join(@site.baseurl, url)}'>#{item[:title]}</a>\n")
+          end
         end if item[:urls]
         render_items(w, item[:items], version) if item[:items]
       end

@@ -1,3 +1,11 @@
+- advisory: 73024
+  summary: The optimizer could plan queries that use semi-joins against multi-region <code>REGIONAL BY ROW</code> tables incorrectly
+  versions: 21.2.0
+  date: November 29, 2021
+- advisory: 72839
+  summary: Backups fail during upgrade process
+  versions: 21.2.0
+  date: November 18, 2021
 - advisory: 71553
   summary: SQL statements that used secondary unique indexes that were created as a result of an <code>ALTER PRIMARY KEY</code> statement can return incorrect results.
   versions: 20.2, 21.1

@@ -425,8 +425,7 @@
               {
                 "title": "Performance Tuning Recipes",
                 "urls": [
-                  "/${VERSION}/performance-recipes.html",
-                  "/${VERSION}/performance-recipes-solutions.html"
+                  "/${VERSION}/performance-recipes.html"
                 ]
               }
             ]
@@ -683,6 +682,12 @@
                         "title": "Google Cloud Run",
                         "urls": [
                           "/${VERSION}/deploy-app-gcr.html"
+                        ]
+                      },
+                      {
+                        "title": "AWS Lambda",
+                        "urls": [
+                          "/${VERSION}/deploy-lambda-function.html"
                         ]
                       }
                     ]
@@ -1384,5 +1389,6 @@
     "urls": [
       "/${VERSION}/sql-playground.html"
     ]
-  }
+  },
+  {% include_cached sidebar-data-cockroach-university.json %}
 ]

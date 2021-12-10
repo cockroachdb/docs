@@ -9,6 +9,7 @@ The `IMPORT INTO` [statement](sql-statements.html) imports CSV, Avro, or delimit
 ## Considerations
 
 - `IMPORT INTO` works for existing tables. To import data into new tables, read the following [Import into a new table from a CSV file](#import-into-a-new-table-from-a-csv-file) example.
+- `IMPORT INTO` takes the table **offline** before importing the data. The table will be online again once the job has completed successfully.
 - `IMPORT INTO` cannot be used during a [rolling upgrade](upgrade-cockroach-version.html).
 - `IMPORT INTO` is a blocking statement. To run an `IMPORT INTO` job asynchronously, use the [`DETACHED`](#options-detached) option.
 - `IMPORT INTO` invalidates all [foreign keys](foreign-key.html) on the target table. To validate the foreign key(s), use the [`VALIDATE CONSTRAINT`](validate-constraint.html) statement.
@@ -157,9 +158,7 @@ After CockroachDB successfully initiates an import into an existing table, it re
 
 After the import has been initiated, you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
 
-{{site.data.alerts.callout_info}}
 If initiated correctly, the statement returns when the import is finished or if it encounters an error. In some cases, the import can continue after an error has been returned (the error message will tell you that the import has resumed in background).
-{{site.data.alerts.end}}
 
 {{site.data.alerts.callout_danger}}
 Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the beginning.
@@ -168,6 +167,8 @@ Pausing and then resuming an `IMPORT INTO` job will cause it to restart from the
 ## Examples
 
 The following provide connection examples to cloud storage providers. For more information on connecting to different storage options, read [Use Cloud Storage for Bulk Operations](use-cloud-storage-for-bulk-operations.html).
+
+We recommend reading the [Considerations](#considerations) section for important details when working with `IMPORT INTO`.
 
 <div class="filters clearfix">
   <button class="filter-button" data-scope="s3">Amazon S3</button>

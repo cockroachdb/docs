@@ -120,7 +120,7 @@ To insert multiple rows into a table, use a comma-separated list of parentheses,
     ('9eb851eb-851e-4800-8000-00000000001f', 'new york', 'Harry Potter', 'JKL-456', '214 W 43rd St');
 ~~~
 
-[Defaults values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
+[Default values](default-value.html) are used when you leave specific columns out of your statement, or when you explicitly request default values. For example, both of the following statements create a row where the `name`, `dl`, and `address` entries each contain their default value, in this case `NULL`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
