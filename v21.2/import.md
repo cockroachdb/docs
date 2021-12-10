@@ -2,6 +2,7 @@
 title: IMPORT
 summary: The IMPORT statement imports various types of data into CockroachDB.
 toc: true
+category: io
 ---
 
 The `IMPORT` [statement](sql-statements.html) imports the following types of data into CockroachDB:

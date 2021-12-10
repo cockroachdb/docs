@@ -36,6 +36,15 @@ layout: default
       <div id="toc"></div>
    {% endif %}
 
+   {% if page.category %}
+      <a href="#{{ page.category }}" id=#doc-category" data-proofer-ignore></a>
+      <script>
+        $(document).ready(function(){
+          $('#doc-category').trigger('click');
+        });
+      </script>
+   {% endif %}
+
    {% if page.url contains "v1.0" or page.url contains 'v1.1' or page.url contains 'v2.0' or page.url contains 'v2.1' or page.url contains 'v19.1'  or page.url contains 'v19.2' or page.url contains 'v20.1'%}
       {% include_cached unsupported-version.md %}
    {% endif %}
