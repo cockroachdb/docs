@@ -300,7 +300,6 @@
         "/cockroachcloud/serverless-faqs.html",
         "/cockroachcloud/frequently-asked-questions.html"
       ]
-    },
-    {% include_cached cockroachcloud/sidebar-release-notes.json %}
+    }
   ]
 }
