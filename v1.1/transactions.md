@@ -240,7 +240,7 @@ CockroachDB uses slightly different isolation levels than [ANSI SQL isolation le
 - The CockroachDB `SERIALIZABLE` level is stronger than the ANSI SQL `REPEATABLE READ` level and equivalent to the ANSI SQL `SERIALIZABLE` level.
 - The CockroachDB `SNAPSHOT` level is stronger than the ANSI SQL `READ UNCOMMITTED` and `READ COMMITTED` levels.
 
-For more information about the relationship between these levels, see [this paper](http://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
+For more information about the relationship between these levels, see [this paper](https://arxiv.org/ftp/cs/papers/0701/0701157.pdf).
 
 ## See Also
 
