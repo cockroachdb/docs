@@ -1,25 +1,28 @@
-.changelog-topics {
-  display: inline-block;
-  position: relative;
-  color: $cl_blue_note;
-  @include avenir_r(13px);
-  line-height: 20px;
-  margin-left: 5px;
-
-  &:before {
-    margin-right: 5px;
-    background: url(../images/icon-megaphone.png) no-repeat center center;
-    background-size: 16px;
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    content: ''; 
-  }
+.general, .console, .bug, .security, .misc {
+  border-radius: 20px;
+  outline: 2px solid;
+  padding-left: 3px;
+  padding-right: -5px;
+  margin: 10px;
+  display: inline;
 }
 
-p, .clickable-header {
-  .changelog-topics {
-    @include avenir_r(15px);
-    line-height: 30px;
-  }
+.general {
+  outline-color: $cl_green_bright;
+}
+
+.console {
+  outline-color: $blue-400;
+}
+
+.bug {
+  outline-color: $cl_warning;
+}
+
+.security {
+  outline-color: $electric-purple;
+}
+
+.misc {
+  outline-color: $red-3;
 }
