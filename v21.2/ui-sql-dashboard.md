@@ -92,8 +92,6 @@ Connection latency is calculated as the time in nanoseconds between when the clu
 
 Connection latency is calculated as the time in nanoseconds between when the cluster receives a connection request and establishes the connection to the client, including authentication.
 
-
-
 ## Service Latency: SQL, 99th percentile
 
 {% include {{ page.version.version }}/ui/ui-sql-latency-99th-percentile.md %}
