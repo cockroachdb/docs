@@ -29,6 +29,12 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
   <button class="filter-button page-level" data-scope="django">Django</button>
 </div>
 
+{{site.data.alerts.callout_danger}}
+To connect to a {{ site.data.products.serverless }} cluster from a Python application, you must have a valid CA certificate located at `~/.postgresql/root.crt`.
+
+For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+
 <section class="filter-content" markdown="1" data-scope="psycopg">
 
 ## Connect with Psycopg
@@ -413,6 +419,12 @@ Parameter | Description
   <button class="filter-button page-level" data-scope="activerecord">ActiveRecord</button>
 </div>
 
+{{site.data.alerts.callout_danger}}
+To connect to a {{ site.data.products.serverless }} cluster from a Ruby application, you must have a valid CA certificate located at `~/.postgresql/root.crt`.
+
+For instructions on downloading a CA certificate from the {{ site.data.products.db }} Console, see [Connect to a {{ site.data.products.serverless }} Cluster](../cockroachcloud/connect-to-a-serverless-cluster.html).
+{{site.data.alerts.end}}
+
 <section class="filter-content" markdown="1" data-scope="ruby-pg">
 
 ## Connect with pg
@@ -613,7 +625,7 @@ Sequelize versions 6.11+ accept the following format for CockroachDB connection 
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<cluster_name>
+postgresql://<username>:<password>@<host>:<port>/<cluster_name>.<database>?sslmode=verify-full
 ~~~
 
 {{site.data.alerts.callout_info}}
