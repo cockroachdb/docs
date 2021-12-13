@@ -54,6 +54,10 @@ If you used a {{ site.data.products.dedicated }} trial code while [creating a cl
 Your credit card will be charged after the trial ends. You can check the expiration date of the code on the **Billing** page.
 {{site.data.alerts.end}}
 
+## View credits balance
+
+If your organization has an annual contract with {{ site.data.products.db }}, the **Overview** tab of the **Billing** page will display your contract amount and the renewal date. Under the **Spend** section, you can also see how many credits your organization has used out of your total contract amount.
+
 ## View invoices
 
 You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period.
