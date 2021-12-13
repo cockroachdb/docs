@@ -1,0 +1,7 @@
+{
+  "title": "Stream Data Out of CockroachDB",
+  "is_top_level": true,
+  "urls": [
+    "/${VERSION}/stream-data-out-of-cockroachdb-using-changefeeds.html"
+  ]
+}

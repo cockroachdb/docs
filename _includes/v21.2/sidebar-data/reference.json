@@ -1534,6 +1534,47 @@
           "/${VERSION}/diagnostics-reporting.html"
         ]
       },
+      {
+        "title": "FAQs",
+        "items": [
+          {
+            "title": "Product FAQs",
+            "urls": [
+              "/${VERSION}/frequently-asked-questions.html"
+            ]
+          },
+          {
+            "title": "SQL FAQs",
+            "urls": [
+              "/${VERSION}/sql-faqs.html"
+            ]
+          },
+          {
+            "title": "Operational FAQs",
+            "urls": [
+              "/${VERSION}/operational-faqs.html"
+            ]
+          },
+          {
+            "title": "Availability FAQs",
+            "urls": [
+              "/${VERSION}/multi-active-availability.html"
+            ]
+          },
+          {
+            "title": "Licensing FAQs",
+            "urls": [
+              "/${VERSION}/licensing-faqs.html"
+            ]
+          },
+          {
+            "title": "CockroachDB in Comparison",
+            "urls": [
+              "/${VERSION}/cockroachdb-in-comparison.html"
+            ]
+          }
+        ]
+      },
       {% include_cached cockroachcloud/sidebar-release-notes.json %},
       {% include_cached sidebar-releases.json %}
     ]

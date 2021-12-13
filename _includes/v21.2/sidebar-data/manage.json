@@ -1,0 +1,324 @@
+{
+  "title": "Manage",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Back Up and Restore Data",
+      "items": [
+        {
+          "title": "Full and Incremental Backups",
+          "urls": [
+            "/${VERSION}/take-full-and-incremental-backups.html"
+          ]
+        },
+        {
+          "title": "Backups with Revision History and Point-in-time Restore",
+          "urls": [
+            "/${VERSION}/take-backups-with-revision-history-and-restore-from-a-point-in-time.html"
+          ]
+        },
+        {
+          "title": "Encrypted Backup and Restore",
+          "urls": [
+            "/${VERSION}/take-and-restore-encrypted-backups.html"
+          ]
+        },
+        {
+          "title": "Locality-aware Backup and Restore",
+          "urls": [
+            "/${VERSION}/take-and-restore-locality-aware-backups.html"
+          ]
+        },
+        {
+          "title": "Scheduled Backups",
+          "urls": [
+            "/${VERSION}/manage-a-backup-schedule.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "File Storage for Bulk Operations",
+      "items": [
+        {
+          "title": "Cloud Storage",
+          "urls": [
+            "/${VERSION}/use-cloud-storage-for-bulk-operations.html"
+          ]
+        },
+        {
+          "title": "Userfile Storage",
+          "urls": [
+            "/${VERSION}/use-userfile-for-bulk-operations.html"
+          ]
+        },
+        {
+          "title": "Local File Server",
+          "urls": [
+            "/${VERSION}/use-a-local-file-server-for-bulk-operations.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Performance",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/performance.html"
+          ]
+        },
+        {
+          "title": "Benchmarking Instructions",
+          "urls": [
+            "/${VERSION}/performance-benchmarking-with-tpcc-local.html",
+            "/${VERSION}/performance-benchmarking-with-tpcc-small.html",
+            "/${VERSION}/performance-benchmarking-with-tpcc-medium.html",
+            "/${VERSION}/performance-benchmarking-with-tpcc-large.html"
+          ]
+        },
+        {
+          "title": "Tuning Best Practices",
+          "urls": [
+            "/${VERSION}/performance-best-practices-overview.html"
+          ]
+        },
+        {
+          "title": "Improving Statement Performance",
+          "urls": [
+            "/${VERSION}/make-queries-fast.html"
+          ]
+        },
+        {
+          "title": "Tuning with EXPLAIN",
+          "urls": [
+            "/${VERSION}/sql-tuning-with-explain.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Security",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/security-overview.html"
+          ]
+        },
+        {
+          "title": "Authentication",
+          "urls": [
+            "/${VERSION}/authentication.html"
+          ]
+        },
+        {
+          "title": "Encryption",
+          "urls": [
+            "/${VERSION}/encryption.html"
+          ]
+        },
+        {
+          "title": "Authorization",
+          "urls": [
+            "/${VERSION}/authorization.html"
+          ]
+        },
+        {
+          "title": "SQL Audit Logging",
+          "urls": [
+            "/${VERSION}/sql-audit-logging.html"
+          ]
+        },
+        {
+          "title": "GSSAPI Authentication",
+          "urls": [
+            "/${VERSION}/gssapi_authentication.html"
+          ]
+        },
+        {
+          "title": "Single Sign-on",
+          "urls": [
+            "/${VERSION}/sso.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Monitoring and Alerting",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/monitoring-and-alerting.html"
+          ]
+        },
+        {
+          "title": "Enable the Node Map",
+          "urls": [
+            "/${VERSION}/enable-node-map.html"
+          ]
+        },
+        {
+          "title": "Use Prometheus and Alertmanager",
+          "urls": [
+            "/${VERSION}/monitor-cockroachdb-with-prometheus.html"
+          ]
+        },
+        {
+          "title": "Cluster API",
+          "urls": [
+            "/${VERSION}/cluster-api.html"
+          ]
+        },
+        {
+          "title": "Third-Party Monitoring Integrations",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/third-party-monitoring-tools.html"
+              ]
+            },
+            {
+              "title": "Datadog",
+              "urls": [
+                "/${VERSION}/datadog.html"
+              ]
+            },
+            {
+              "title": "Kibana",
+              "urls": [
+                "/${VERSION}/kibana.html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Logging",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/logging-overview.html"
+          ]
+        },
+        {
+          "title": "Configure Logs",
+          "urls": [
+            "/${VERSION}/configure-logs.html"
+          ]
+        },
+        {
+          "title": "Logging Use Cases",
+          "urls": [
+            "/${VERSION}/logging-use-cases.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Cluster Maintenance",
+      "items": [
+        {
+          "title": "Upgrade to CockroachDB v21.2",
+          "urls": [
+            "/${VERSION}/upgrade-cockroach-version.html"
+          ]
+        },
+        {
+          "title": "Online Schema Changes",
+          "urls": [
+            "/${VERSION}/online-schema-changes.html"
+          ]
+        },
+        {
+          "title": "Manage Long-Running Queries",
+          "urls": [
+            "/${VERSION}/manage-long-running-queries.html"
+          ]
+        },
+        {
+          "title": "Decommission Nodes",
+          "urls": [
+            "/${VERSION}/remove-nodes.html"
+          ]
+        },
+        {
+          "title": "Rotate Security Certificates",
+          "urls": [
+            "/${VERSION}/rotate-certificates.html"
+          ]
+        },
+        {
+          "title": "Disaster Recovery",
+          "urls": [
+            "/${VERSION}/disaster-recovery.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Replication Controls",
+      "urls": [
+        "/${VERSION}/configure-replication-zones.html"
+      ]
+    },
+    {
+      "title": "Troubleshoot",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/troubleshooting-overview.html"
+          ]
+        },
+        {
+          "title": "Common Errors",
+          "urls": [
+            "/${VERSION}/common-errors.html"
+          ]
+        },
+        {
+          "title": "Troubleshoot Cluster Setup",
+          "urls": [
+            "/${VERSION}/cluster-setup-troubleshooting.html"
+          ]
+        },
+        {
+          "title": "Troubleshoot Query Behavior",
+          "urls": [
+            "/${VERSION}/query-behavior-troubleshooting.html"
+          ]
+        },
+        {
+          "title": "Understand Debug Logs",
+          "urls": [
+            "/${VERSION}/logging-overview.html"
+          ]
+        },
+        {
+          "title": "Replication Reports",
+          "urls": [
+            "/${VERSION}/query-replication-reports.html"
+          ]
+        },
+        {
+          "title": "Support Resources",
+          "urls": [
+            "/${VERSION}/support-resources.html"
+          ]
+        },
+        {
+          "title": "File an Issue",
+          "urls": [
+            "/${VERSION}/file-an-issue.html"
+          ]
+        }
+      ]
+    }
+  ]
+}

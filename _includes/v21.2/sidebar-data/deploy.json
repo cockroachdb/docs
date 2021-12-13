@@ -1,0 +1,313 @@
+{
+  "title": "Deploy",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Choose a Deployment Strategy",
+      "items": [
+        {
+          "title": "CockroachDB Serverless",
+          "urls": [
+            ""
+          ]
+        },
+        {
+          "title": "CockroachDB Dedicated",
+          "urls": [
+            ""
+          ]
+        },
+        {
+          "title": "CockroachDB Self-Hosted",
+          "urls": [
+            "/${VERSION}/index.html"
+          ],
+          "items": [
+            {
+              "title": "Production Checklist",
+              "urls": [
+                "/${VERSION}/recommended-production-settings.html"
+              ]
+            },
+            {
+              "title": "Get Started",
+              "items": [
+                {
+                  "title": "Install CockroachDB",
+                  "urls": [
+                    "/${VERSION}/install-cockroachdb.html",
+                    "/${VERSION}/install-cockroachdb-mac.html",
+                    "/${VERSION}/install-cockroachdb-linux.html",
+                    "/${VERSION}/install-cockroachdb-windows.html"
+                  ]
+                },
+                {
+                  "title": "Start a Local Cluster",
+                  "items": [
+                    {
+                      "title": "From Binary",
+                      "urls": [
+                        "/${VERSION}/secure-a-cluster.html",
+                        "/${VERSION}/start-a-local-cluster.html"
+                      ]
+                    },
+                    {
+                      "title": "In Kubernetes",
+                      "urls": [
+                        "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
+                        "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
+                      ]
+                    },
+                    {
+                      "title": "In Docker",
+                      "urls": [
+                        "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
+                        "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
+                        "/${VERSION}/start-a-local-cluster-in-docker-windows.html"
+                      ]
+                    },
+                    {
+                      "title": "Simulate a Multi-region Cluster on localhost",
+                      "urls": [
+                        "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Kubernetes Deployment",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/${VERSION}/kubernetes-overview.html"
+                  ]
+                },
+                {
+                  "title": "Single-Cluster Deployment",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-with-kubernetes.html",
+                    "/${VERSION}/deploy-cockroachdb-with-kubernetes-insecure.html"
+                  ]
+                },
+                {
+                  "title": "Operate CockroachDB on Kubernetes",
+                  "items": [
+                    {
+                      "title": "Pod Scheduling",
+                      "urls": [
+                        "/${VERSION}/schedule-cockroachdb-kubernetes.html"
+                      ]
+                    },
+                    {
+                      "title": "Resource Management",
+                      "urls": [
+                        "/${VERSION}/configure-cockroachdb-kubernetes.html"
+                      ]
+                    },
+                    {
+                      "title": "Certificate Management",
+                      "urls": [
+                        "/${VERSION}/secure-cockroachdb-kubernetes.html"
+                      ]
+                    },
+                    {
+                      "title": "Cluster Scaling",
+                      "urls": [
+                        "/${VERSION}/scale-cockroachdb-kubernetes.html"
+                      ]
+                    },
+                    {
+                      "title": "Cluster Monitoring",
+                      "urls": [
+                        "/${VERSION}/monitor-cockroachdb-kubernetes.html"
+                      ]
+                    },
+                    {
+                      "title": "Cluster Upgrades",
+                      "urls": [
+                        "/${VERSION}/upgrade-cockroachdb-kubernetes.html"
+                      ]
+                    },
+                    {
+                      "title": "Optimizing Performance",
+                      "urls": [
+                        "/${VERSION}/kubernetes-performance.html"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "title": "OpenShift Deployment",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-with-kubernetes-openshift.html"
+                  ]
+                },
+                {
+                  "title": "Multi-Cluster Deployment",
+                  "urls": [
+                    "/${VERSION}/orchestrate-cockroachdb-with-kubernetes-multi-cluster.html"
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Manual Deployment",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/${VERSION}/manual-deployment.html"
+                  ]
+                },
+                {
+                  "title": "On-Premises",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-on-premises.html",
+                    "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"
+                  ]
+                },
+                {
+                  "title": "AWS",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-on-aws.html",
+                    "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
+                  ]
+                },
+                {
+                  "title": "Azure",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
+                    "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
+                  ]
+                },
+                {
+                  "title": "Digital Ocean",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
+                    "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
+                  ]
+                },
+                {
+                  "title": "Google Cloud Platform GCE",
+                  "urls": [
+                    "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
+                    "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
+                  ]
+                }
+              ]
+            },
+
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Multi-region Capabilities",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/multiregion-overview.html"
+          ]
+        },
+        {
+          "title": "Choosing a Multi-region Configuration",
+          "urls": [
+            "/${VERSION}/choosing-a-multi-region-configuration.html"
+          ]
+        },
+        {
+          "title": "When to use ZONE vs. REGION Survival Goals",
+          "urls": [
+            "/${VERSION}/when-to-use-zone-vs-region-survival-goals.html"
+          ]
+        },
+        {
+          "title": "When to use REGIONAL vs. GLOBAL Tables",
+          "urls": [
+            "/${VERSION}/when-to-use-regional-vs-global-tables.html"
+          ]
+        },
+        {
+          "title": "Data Domiciling",
+          "urls": [
+            "/${VERSION}/data-domiciling.html"
+          ]
+        },
+        {
+          "title": "Migrate to Multi-region SQL",
+          "urls": [
+            "/${VERSION}/migrate-to-multiregion-sql.html"
+          ]
+        },
+        {
+          "title": "Topology Patterns",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/topology-patterns.html"
+              ]
+            },
+            {
+              "title": "Development",
+              "urls": [
+                "/${VERSION}/topology-development.html"
+              ]
+            },
+            {
+              "title": "Basic Production",
+              "urls": [
+                "/${VERSION}/topology-basic-production.html"
+              ]
+            },
+            {
+              "title": "Regional Tables",
+              "urls": [
+                "/${VERSION}/regional-tables.html"
+              ]
+            },
+            {
+              "title": "Global Tables",
+              "urls": [
+                "/${VERSION}/global-tables.html"
+              ]
+            },
+            {
+              "title": "Follower Reads",
+              "urls": [
+                "/${VERSION}/topology-follower-reads.html"
+              ]
+            },
+            {
+              "title": "Follow-the-Workload",
+              "urls": [
+                "/${VERSION}/topology-follow-the-workload.html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Enterprise Features",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/enterprise-licensing.html"
+          ]
+        },
+        {
+          "title": "Table Partitioning",
+          "urls": [
+            "/${VERSION}/partitioning.html"
+          ]
+        }
+      ]
+    }
+  ]
+}

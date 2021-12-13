@@ -1,0 +1,542 @@
+{
+  "title": "Develop",
+  "is_top_level": true,
+  "items": [
+    {
+      "title": "Overview",
+      "urls": [
+        "/${VERSION}/developer-guide-overview.html"
+      ]
+    },
+    {
+      "title": "Connect to CockroachDB",
+      "items": [
+        {
+          "title": "Install a driver or ORM",
+          "urls": [
+            "/${VERSION}/install-client-drivers.html"
+          ]
+        },
+        {
+          "title": "Connect to a Cluster",
+          "urls": [
+            "/${VERSION}/connect-to-the-database.html",
+            "/${VERSION}/connect-to-the-database-cockroachcloud.html"
+          ]
+        },
+        {
+          "title": "Use Connection Pools",
+          "urls": [
+            "/${VERSION}/connection-pooling.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Design a Database Schema",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/schema-design-overview.html"
+          ]
+        },
+        {
+          "title": "Create a Database",
+          "urls": [
+            "/${VERSION}/schema-design-database.html"
+          ]
+        },
+        {
+          "title": "Create a User-defined Schema",
+          "urls": [
+            "/${VERSION}/schema-design-schema.html"
+          ]
+        },
+        {
+          "title": "Create a Table",
+          "urls": [
+            "/${VERSION}/schema-design-table.html"
+          ]
+        },
+        {
+          "title": "Add Secondary Indexes",
+          "urls": [
+            "/${VERSION}/schema-design-indexes.html"
+          ]
+        },
+        {
+          "title": "Update a Database Schema",
+          "items": [
+            {
+              "title": "Change and Remove Objects",
+              "urls": [
+                "/${VERSION}/schema-design-update.html"
+              ]
+            },
+            {
+              "title": "Online Schema Changes",
+              "urls": [
+                "/${VERSION}/online-schema-changes.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Advanced Schema Design",
+          "items": [
+            {
+              "title": "Use Computed Columns",
+              "urls": [
+                "/${VERSION}/computed-columns.html"
+              ]
+            },
+            {
+              "title": "Group Columns into Families",
+              "urls": [
+                "/${VERSION}/column-families.html"
+              ]
+            },
+            {
+              "title": "Index a Subset of Rows",
+              "urls": [
+                "/${VERSION}/partial-indexes.html"
+              ]
+            },
+            {
+              "title": "Index Sequential Keys",
+              "urls": [
+                "/${VERSION}/hash-sharded-indexes.html"
+              ]
+            },
+            {
+              "title": "Index JSON and Array Data",
+              "urls": [
+                "/${VERSION}/inverted-indexes.html"
+              ]
+            },
+            {
+              "title": "Index Expressions",
+              "urls": [
+                "/${VERSION}/expression-indexes.html"
+              ]
+            },
+            {
+              "title": "Index Spatial Data",
+              "urls": [
+                "/${VERSION}/spatial-indexes.html"
+              ]
+            },
+            {
+              "title": "Scale to Multi-region",
+              "urls": [
+                "/${VERSION}/multiregion-scale-application.html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Write Data",
+      "items": [
+        {
+          "title": "Insert Data",
+          "urls": [
+            "/${VERSION}/insert-data.html"
+          ]
+        },
+        {
+          "title": "Update Data",
+          "urls": [
+            "/${VERSION}/update-data.html"
+          ]
+        },
+        {
+          "title": "Bulk-update Data",
+          "urls": [
+            "/${VERSION}/bulk-update-data.html"
+          ]
+        },
+        {
+          "title": "Delete Data",
+          "urls": [
+            "/${VERSION}/delete-data.html"
+          ]
+        },
+        {
+          "title": "Bulk-delete Data",
+          "urls": [
+            "/${VERSION}/bulk-delete-data.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Read Data",
+      "items": [
+        {
+          "title": "Select Rows of Data",
+          "urls": [
+            "/${VERSION}/query-data.html"
+          ]
+        },
+        {
+          "title": "Reuse Query Results",
+          "items": [
+            {
+              "title": "Reusable Views",
+              "urls": [
+                "/${VERSION}/views.html"
+              ]
+            },
+            {
+              "title": "Subqueries",
+              "urls": [
+                "/${VERSION}/subqueries.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Create Temporary Tables",
+          "urls": [
+            "/${VERSION}/temporary-tables.html"
+          ]
+        },
+        {
+          "title": "Paginate Results",
+          "urls": [
+            "/${VERSION}/pagination.html"
+          ]
+        },
+        {
+          "title": "Read Historical Data",
+          "items": [
+            {
+              "title": "AS OF SYSTEM TIME",
+              "urls": [
+                "/${VERSION}/as-of-system-time.html"
+              ]
+            },
+            {
+              "title": "Follower Reads",
+              "urls": [
+                "/${VERSION}/follower-reads.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Query Spatial Data",
+          "urls": [
+            "/${VERSION}/query-spatial-data.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Transactions",
+      "urls": [
+        "/${VERSION}/transactions.html"
+      ]
+    },
+    {
+      "title": "Debug Your Application",
+      "items":
+      [
+        {
+          "title": "Log Events",
+          "urls": [
+            "/${VERSION}/logging-overview.html"
+          ]
+        },
+        {
+          "title": "Monitor CockroachDB Apps in the DB Console",
+          "urls": [
+            "/${VERSION}/ui-overview.html"
+          ]
+        },
+        {
+          "title": "Troubleshoot Common Problems",
+          "urls": [
+            "/${VERSION}/error-handling-and-troubleshooting.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Optimize Performance",
+      "items":
+      [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/make-queries-fast.html"
+          ]
+        },
+        {
+          "title": "Performance Best Practices",
+          "urls": [
+            "/${VERSION}/performance-best-practices-overview.html"
+          ]
+        },
+        {
+          "title": "Use the EXPLAIN statement",
+          "urls": [
+            "/${VERSION}/sql-tuning-with-explain.html"
+          ]
+        },
+        {
+          "title": "Performance Tuning Recipes",
+          "urls": [
+            "/${VERSION}/performance-recipes.html"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Example Apps",
+      "items": [
+        {
+          "title": "Overview",
+          "urls": [
+            "/${VERSION}/example-apps.html"
+          ]
+        },
+        {
+          "title": "Simple CRUD",
+          "items": [
+            {
+              "title": "Go",
+              "urls": [
+                "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
+              ]
+            },
+            {
+              "title": "Java",
+              "urls": [
+                "/${VERSION}/build-a-java-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
+                "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html",
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-mybatis.html"
+              ]
+            },
+            {
+              "title": "JavaScript/TypeScript",
+              "urls": [
+                "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+                "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "Python",
+              "urls": [
+                "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+                "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
+              ]
+            },
+            {
+              "title": "Ruby",
+              "urls": [
+                "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+              ]
+            },
+            {
+              "title": "C++",
+              "urls": [
+                "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "C# (.NET)",
+              "urls": [
+                "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "Clojure",
+              "urls": [
+                "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "PHP",
+              "urls": [
+                "/${VERSION}/build-a-php-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "Rust",
+              "urls": [
+                "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Roach Data",
+          "items": [
+            {
+              "title": "Spring Boot with JDBC",
+              "urls": [
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jdbc.html"
+              ]
+            },
+            {
+              "title": "Spring Boot with JPA",
+              "urls": [
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-jpa.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "MovR",
+          "items": [
+            {
+              "title": "Overview",
+              "urls": [
+                "/${VERSION}/movr.html"
+              ]
+            },
+            {
+              "title": "Global Application",
+              "items": [
+                {
+                  "title": "Overview",
+                  "urls": [
+                    "/${VERSION}/movr-flask-overview.html"
+                  ]
+                },
+                {
+                  "title": "Global Application Use-case",
+                  "urls": [
+                    "/${VERSION}/movr-flask-use-case.html"
+                  ]
+                },
+                {
+                  "title": "Multi-region Database Schema",
+                  "urls": [
+                    "/${VERSION}/movr-flask-database.html"
+                  ]
+                },
+                {
+                  "title": "Set up a Development Environment",
+                  "urls": [
+                    "/${VERSION}/movr-flask-setup.html"
+                  ]
+                },
+                {
+                  "title": "Develop a Global Application",
+                  "urls": [
+                    "/${VERSION}/movr-flask-application.html"
+                  ]
+                },
+                {
+                  "title": "Deploy a Global Application",
+                  "urls": [
+                    "/${VERSION}/movr-flask-deployment.html"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Third-Party Database Tools",
+      "items": [
+        {
+          "title": "Supported by Cockroach Labs",
+          "urls": [
+            "/${VERSION}/third-party-database-tools.html"
+          ]
+        },
+        {
+          "title": "Supported by the Community",
+          "urls": [
+            "/${VERSION}/community-tooling.html"
+          ]
+        },
+        {
+          "title": "Tutorials",
+          "items": [
+            {
+              "title": "Schema Migration Tools",
+              "items": [
+                {
+                  "title": "Alembic",
+                  "urls": [
+                    "/${VERSION}/alembic.html"
+                  ]
+                },
+                {
+                  "title": "Flyway",
+                  "urls": [
+                    "/${VERSION}/flyway.html"
+                  ]
+                },
+                {
+                  "title": "Liquibase",
+                  "urls": [
+                    "/${VERSION}/liquibase.html"
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "GUIs & IDEs",
+              "items": [
+                {
+                  "title": "DBeaver GUI",
+                  "urls": [
+                    "/${VERSION}/dbeaver.html"
+                  ]
+                },
+                {
+                  "title": "IntelliJ IDEA",
+                  "urls": [
+                    "/${VERSION}/intellij-idea.html"
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Application Deployment Tools",
+              "items": [
+                {
+                  "title": "Google Cloud Run",
+                  "urls": [
+                    "/${VERSION}/deploy-app-gcr.html"
+                  ]
+                },
+                {
+                  "title": "AWS Lambda",
+                  "urls": [
+                    "/${VERSION}/deploy-lambda-function.html"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "SQL Playground",
+      "is_top_level": true,
+      "urls": [
+        "/${VERSION}/sql-playground.html"
+      ]
+    }
+  ]
+}
