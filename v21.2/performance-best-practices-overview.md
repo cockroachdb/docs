@@ -327,16 +327,21 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 Transactions that operate on the same range but _different index key values_ will be limited by the overall hardware capacity of a single node (the range lease holder). These are referred to as _hot spots_.
 
-Hot spots occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a hotspot on the single range.
+Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a hotspot on the single range.
 
-To avoid hot spots, use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
+Read hot spots can occur if you perform lots of scans of an empty table or of a single key.
 
 ### Fix hot spots
 
 To reduce hot spots:
 
+- Use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
+
 - Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Fully normalized data allows separate transactions to modify related underlying data without causing contention. Increasing normalization has drawbacks as well as benefits, however. Denormalizing data can increase performance for certain queries by creating multiple copies of often-referenced data in separate ranges, so read-heavy workloads may have higher performance. However, denormalization adds complexity the data model, increases the chance of data inconsistency, increases data redundancy, and can have poor performance when running write-heavy workloads.
+
 - If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
+
+- To avoid read hot spots, use global tables and increase the number of replicas.
 
 <a id="understanding-and-avoiding-transaction-contention"></a>
 
