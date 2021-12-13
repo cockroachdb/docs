@@ -48,7 +48,7 @@ Psycopg accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={full-path-to-ca-cert}&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full
 ~~~
 
 You can also specify connection parameters to connect to CockroachDB with Psycopg:
@@ -56,14 +56,12 @@ You can also specify connection parameters to connect to CockroachDB with Psycop
 {% include copy-clipboard.html %}
 ~~~ python
 conn = psycopg.connect(
-    database='{database}',
     user='{username}',
-    password='{password}'
-    sslmode='verify-full',
-    sslrootcert='{full-path-to-ca-cert}',
-    port={port},
+    password='{password}',
     host='{host}',
-    options="--cluster%3D{cluster_name}"
+    port={port},
+    database='{cluster_name}.{database}',
+    sslmode='verify-full'
 )
 ~~~
 
@@ -91,7 +89,7 @@ SQLAlchemy accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={full-path-to-ca-cert}&options=--cluster%3D{cluster_name}
+cockroachdb://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -126,7 +124,6 @@ DATABASES = {
         'PORT': '{port}',
         'OPTIONS': {
             'sslmode': 'verify-full',
-            'sslrootcert': '{full-path-to-ca-cert}',
         },
     },
 }
@@ -145,7 +142,7 @@ import os
 ...
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(default=os.path.expandvars('postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full&sslrootcert={full-path-to-ca-cert}'), engine='django_cockroachdb')
+DATABASES['default'] = dj_database_url.config(default='postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full', engine='django_cockroachdb')
 
 ...
 ~~~
@@ -168,7 +165,6 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{cluster_name}`  | The name of the CockroachDB cluster.
 `{database}`  | The name of the (existing) database.
-`{full-path-ca-cert}` | The full path to the [CA certificate](authentication.html) that authenticates the CockroachDB node.
 
 </section>
 
@@ -192,12 +188,12 @@ import java.io.*;
 import org.postgresql.ds.PGSimpleDataSource;
 
 PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setServerNames(new String[]{"{host}"});
-ds.setPortNumbers(new int[]{port});
-ds.setDatabaseName("{cluster_name}.{database}");
+ds.setServerNames(new String[]{"<host>"});
+ds.setPortNumbers(new int[]{<port>});
+ds.setDatabaseName("<cluster_name>.<database>");
 ds.setSsl(true);
-ds.setUser("{username}");
-ds.setPassword("{password}");
+ds.setUser("<username>");
+ds.setPassword("<password>");
 ds.setSslMode("verify-full");
 ds.setSslfactory("org.postgresql.ssl.DefaultJavaSSLFactory");
 ~~~
@@ -210,9 +206,9 @@ import java.io.*;
 import org.postgresql.ds.PGSimpleDataSource;
 
 PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setUrl("jdbc:postgresql://{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory")
-ds.setUser("{username}");
-ds.setPassword("{password}");
+ds.setUrl("jdbc:postgresql://<host>:<port>/<cluster_name>.<database>?sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory");
+ds.setUser("<username>");
+ds.setPassword("<password>");
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -238,7 +234,7 @@ To connect to CockroachDB with [Hibernate](https://hibernate.org/orm) ORM, updat
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.CockroachDB201Dialect</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/{cluster_name}.{database}?sslmode=verify-full&amp;slfactory=org.postgresql.ssl.DefaultJavaSSLFactory</property>
         <property name="hibernate.connection.username">{username}</property>
         <property name="hibernate.connection.password">{password}</property>
 
@@ -307,7 +303,7 @@ pgx accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full
 ~~~
 
 For more information about connecting with pgx, see the [official pgx documentation](https://pkg.go.dev/github.com/jackc/pgx).
@@ -346,7 +342,7 @@ pq accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full
 ~~~
 
 You can also use a keyword/value connection string:
@@ -383,7 +379,7 @@ GORM accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full
 ~~~
 
 You can also use a keyword/value connection string:
@@ -431,14 +427,31 @@ For example:
 
 require 'pg'
 
+conn = PG.connect('{connection-string}')
+~~~
+
+pg accepts the following format for CockroachDB connection strings:
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}:{password}@{host}:{port}/{cluster_name}.{database}?sslmode=verify-full
+~~~
+
+You can also specify the connection configuration as individual properties:
+
+{% include copy-clipboard.html %}
+~~~ ruby
+#!/usr/bin/env ruby
+
+require 'pg'
+
 conn = PG.connect(
   user: '{username}',
   password: '{password}',
-  dbname: '{cluster_name}.{database}',
   host: '{host}',
   port: {port},
-  sslmode: 'verify-full',
-  sslrootcert: '{full-path-to-ca-cert}'
+  dbname: '{cluster_name}.{database}',
+  sslmode: 'verify-full'
 )
 ~~~
 
@@ -457,11 +470,10 @@ development:
   adapter:     'cockroachdb',
   username:    '{username}',
   password:    '{password}',
-  database:    '{database}',
   host:        '{host}',
   port:        {port},
+  database:    '{cluster_name}.{database}',
   sslmode:     'verify-full'
-  sslrootcert: '{full-path-to-ca-cert}'
 
 ...
 ~~~
@@ -473,16 +485,13 @@ For example:
 {% include copy-clipboard.html %}
 ~~~ ruby
 ActiveRecord::Base.establish_connection(
-
-  # Specify the CockroachDB ActiveRecord adapter
   adapter:     'cockroachdb',
   username:    '{username}',
   password:    '{password}',
-  database:    '{database}',
   host:        '{host}',
   port:        {port},
+  database:    '{cluster_name}.{database}',
   sslmode:     'verify-full'
-  sslrootcert: '{full-path-to-ca-cert}'
 )
 ~~~
 
@@ -504,7 +513,6 @@ Parameter | Description
 `{port}`  | The port at which the CockroachDB node is listening.
 `{cluster_name}`  | The name of the CockroachDB cluster.
 `{database}`  | The name of the (existing) database.
-`{full-path-ca-cert}` | The full path to the [CA certificate](authentication.html) that authenticates the CockroachDB node.
 
 </section>
 
@@ -521,7 +529,7 @@ Parameter | Description
 
 ## Connect with node-postgres
 
-To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Pool`](https://node-postgres.com/api/pool) or [`Client`](https://node-postgres.com/api/client) object with a connection string.
+To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Client`](https://node-postgres.com/api/client) or [`Pool`](https://node-postgres.com/api/pool) object with a connection string.
 
 For example:
 
@@ -550,7 +558,7 @@ node-postgres accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<cluster_name>
+postgresql://<username>:<password>@<host>:<port>/<cluster_name>.<database>?sslmode=verify-full
 ~~~
 
 You can also specify the connection configuration as individual properties:
@@ -561,10 +569,11 @@ const { Client } = require('pg')
 
 const client = new Client({
   user: '<username>',
+  password: '<password>',
   host: '<host>',
   database: '<cluster_name>.<database>',
-  password: '<password>',
   port: <port>,
+  ssl: true
 })
 client.connect()
 ~~~
@@ -575,10 +584,11 @@ const { Pool } = require('pg')
 
 const pool = new Pool({
   user: '<username>',
+  password: '<password>',
   host: '<host>',
   database: '<cluster_name>.<database>',
-  password: '<password>',
   port: <port>,
+  ssl: true
 })
 ~~~
 
@@ -599,27 +609,11 @@ const Sequelize = require("sequelize-cockroachdb");
 const sequelize = new Sequelize('<connection-string>')
 ~~~
 
-Sequelize accepts the following format for CockroachDB connection strings:
+Sequelize versions 6.11+ accept the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
 postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<cluster_name>
-~~~
-
-You can also specify the connection configuration as individual properties:
-
-{% include copy-clipboard.html %}
-~~~ js
-const Sequelize = require("sequelize-cockroachdb");
-
-var sequelize = new Sequelize({
-  dialect: "postgres",
-  username: "<username>",
-  password: "<password>",
-  host: "<host>",
-  port: <port>,
-  database: "<cluster_name>.<database>"
-});
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -641,8 +635,9 @@ For example:
 import {createConnection, Connection} from "typeorm";
 
 createConnection({
-    type: 'postgres',
-    url: '<connection-string>'
+    type: 'cockroachdb',
+    url: '<connection-string>',
+    ssl: true
 })
 ~~~
 
@@ -650,22 +645,23 @@ TypeORM accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<cluster_name>
+postgresql://<username>:<password>@<host>:<port>/<cluster_name>.<database>
 ~~~
 
-TypeORM also accepts connection parameters as properties of an object:
+You can also specify the connection configuration as individual properties:
 
 {% include copy-clipboard.html %}
 ~~~ ts
 import {createConnection, Connection} from "typeorm";
 
 const connection = await createConnection({
-    type: "postgresql",
+    type: "cockroachdb",
     username: "<username>",
     password: "<password>",
     host: "<host>",
     port: <port>,
-    database: "<cluster_name>.<database>"
+    database: "<cluster_name>.<database>",
+    ssl: true
 });
 ~~~
 
@@ -676,12 +672,13 @@ For example, suppose that you have a file named `ormconfig.json` in the project'
 {% include copy-clipboard.html %}
 ~~~ json
 {
-    "type": "postgresql",
+    "type": "cockroachdb",
     "username": "<username>",
     "password": "<password>",
     "host": "<host>",
     "port": <port>,
-    "database": "<cluster_name>.<database>"
+    "database": "<cluster_name>.<database>",
+    "ssl": true
 }
 ~~~
 
