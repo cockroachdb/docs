@@ -529,6 +529,54 @@
 
   <tr>
    <td>
+    <code>transaction_rows_read_err</code>
+   </td>
+   <td>The limit for the number of rows read by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_rows_read_log</code>
+   </td>
+   <td>The threshold for the number of rows read by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_rows_written_err</code>
+   </td>
+   <td>The limit for the number of rows written by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
+    <code>transaction_rows_written_log</code>
+   </td>
+   <td>The threshold for the number of rows written by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td>
+    <code>0</code>
+   </td>
+   <td>Yes</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>transaction_status</code>
    </td>
    <td>The state of the current transaction.

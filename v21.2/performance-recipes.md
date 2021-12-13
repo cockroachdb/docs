@@ -76,9 +76,9 @@ Transaction contention occurs when transactions issued from multiple clients at 
 #### Indicators that your application is experiencing contention
 
 * Your application is experiencing degraded performance with transaction errors like `SQLSTATE: 40001`, `RETRY_WRITE_TOO_OLD`, and `RETRY_SERIALIZABLE`. See [Transaction Retry Error Reference](transaction-retry-error-reference.html).
-* The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) graph is showing spikes over time.
+* The [SQL Statement Contention graph](ui-sql-dashboard.html#sql-statement-contention) is showing spikes over time.
 <img src="{{ 'images/v21.2/ui-statement-contention.png' | relative_url }}" alt="SQL Statement Contention graph in the DB Console" style="border:1px solid #eee;max-width:100%" />
-* The [Transaction Restarts graph](ui-sql-dashboard.html) graph is showing spikes in retries over time.
+* The [Transaction Restarts graph](ui-sql-dashboard.html) is showing spikes in retries over time.
 
 #### Fix contention problems
 
