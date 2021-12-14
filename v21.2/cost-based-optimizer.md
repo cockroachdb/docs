@@ -139,13 +139,13 @@ Only the following statements use the plan cache:
 
 For a query involving multiple joins, the cost-based optimizer will explore additional [join orderings](joins.html) in an attempt to find the lowest-cost execution plan, which can lead to significantly better performance in some cases.
 
-Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 4 or fewer joins by default.
+Because this process leads to an exponential increase in the number of possible execution plans for such queries, it's only used to reorder subtrees containing 8 or fewer joins by default.
 
 To change this setting, which is controlled by the `reorder_joins_limit` [session variable](set-vars.html), run the following statement. To disable this feature, set the variable to `0`.
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SET reorder_joins_limit = 6;
+> SET reorder_joins_limit = 0;
 ~~~
 
 {{site.data.alerts.callout_danger}}
