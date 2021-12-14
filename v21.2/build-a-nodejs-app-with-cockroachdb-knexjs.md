@@ -23,17 +23,9 @@ This tutorial shows you how build a simple Node.js application with CockroachDB 
 
 <section class="filter-content" markdown="1" data-scope="cockroachcloud">
 
-### Create a free cluster
-
 {% include cockroachcloud/quickstart/create-a-free-cluster.md %}
 
-### Set up your cluster connection
-
-1. Navigate to the cluster's **SQL Users** page, and create a new user, with a new password.
-
-1. Navigate to the **Cluster Overview page**, select **Connect**.
-
-1. Take note of the connection information. You'll use it to connect to the database later in this tutorial.
+{% include cockroachcloud/quickstart/set-up-your-cluster-connection-no-cert.md %}
 
 </section>
 
