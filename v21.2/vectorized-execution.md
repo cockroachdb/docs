@@ -10,7 +10,7 @@ Many SQL databases execute [query plans](https://en.wikipedia.org/wiki/Query_pla
 
 ## Configuring vectorized execution
 
-  By default, vectorized execution is enabled in CockroachDB.
+By default, vectorized execution is enabled in CockroachDB.
 
 You can configure vectorized execution with the `vectorize` [session variable](set-vars.html). The following options are supported:
 
@@ -37,9 +37,7 @@ For performance tuning, you can change the minimum number of rows required to us
 
 When you issue a query, the gateway node (i.e., the node from which you issue the query) [parses the query and creates a physical plan](architecture/sql-layer.html#sql-parser-planner-executor) for execution on each node that receives the plan. If vectorized execution is enabled, the physical plan is sent to each node to be executed by the vectorized execution engine.
 
-{{site.data.alerts.callout_success}}
 To see a detailed view of the vectorized execution plan for a query, run the [`EXPLAIN(VEC)`](explain.html#vec-option) statement on the query.
-{{site.data.alerts.end}}
 
 For information about vectorized execution in the context of the CockroachDB architecture, see [Query Execution](architecture/sql-layer.html#query-execution).
 
@@ -53,7 +51,7 @@ The following operations require [memory buffering](https://en.wikipedia.org/wik
 - [Unordered aggregations](order-by.html)
 - [Hash joins](joins.html#hash-joins)
 - [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", can execute entirely in-memory.
-- [Window functions](window-functions.html). Note that [support for window functions is limited in the vectorized execution engine](#window-functions).
+- [Window functions](window-functions.html).
 
 If there is not enough memory allocated for an operation, CockroachDB will spill the intermediate execution results to disk. By default, the memory limit allocated per operator is 64MiB. You can change this limit with the `sql.distsql.temp_storage.workmem` [cluster setting](cluster-settings.html).
 
@@ -66,10 +64,6 @@ You can also configure a node's total budget for in-memory query processing at n
 The vectorized engine does not support queries containing:
 
 - A join filtered with an [`ON` expression](joins.html#supported-join-conditions). See [tracking issue](https://github.com/cockroachdb/cockroach/issues/38018).
-
-### Window functions
-
-Support for certain [window functions](window-functions.html) is limited in the vectorized execution engine. If a query includes an unsupported window function, the window function will be handled by the row-oriented execution engine. If the same query includes other, supported operations, those operations will be handled by the vectorized execution engine. See [tracking issue](https://github.com/cockroachdb/cockroach/issues/37040).
 
 ### Spatial features
 
