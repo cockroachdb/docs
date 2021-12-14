@@ -305,7 +305,37 @@
           ]
         },
         {
-          "title": "Simple CRUD",
+          "title": "Build a Hello World Application",
+          "items": [
+            {
+              "title": "Go",
+              "urls": [
+                "/${VERSION}/hello-world-go-pgx.html",
+                "/${VERSION}/hello-world-go-gorm.html"
+              ]
+            },
+            {
+              "title": "Java",
+              "urls": [
+                "/${VERSION}/hello-world-java-jdbc.html"
+              ]
+            },
+            {
+              "title": "JavaScript (Node.js)",
+              "urls": [
+                "/${VERSION}/hello-world-node-postgres.html"
+              ]
+            },
+            {
+              "title": "Python",
+              "urls": [
+                "/${VERSION}/hello-world-python-sqlalchemy.html"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Build a Simple CRUD Application",
           "items": [
             {
               "title": "Go",
@@ -449,7 +479,13 @@
               ]
             }
           ]
-        }
+        },
+        {
+      	  "title": "Deploy a Python To-Do App with Flask, Kubernetes, and CockroachDB Cloud",
+      	  "urls": [
+      	    "/cockroachcloud/deploy-a-python-to-do-app-with-flask-kubernetes-and-cockroachcloud.html"
+      	  ]
+      	}
       ]
     },
     {

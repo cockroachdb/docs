@@ -11,95 +11,15 @@
     {
       "title": "Learn CockroachDB SQL",
       "urls": [
+        "/cockroachcloud/learn-cockroachdb-sql.html",
         "/${VERSION}/learn-cockroachdb-sql.html"
       ]
     },
     {
-      "title": "Build a sample application",
-      "items": [{
-          "title": "Go",
-          "urls": [
-            "/${VERSION}/hello-world-go-pgx.html",
-            "/${VERSION}/hello-world-go-gorm.html"
-          ]
-        },
-        {
-          "title": "Java",
-          "urls": [
-            "/${VERSION}/hello-world-java-jdbc.html"
-          ]
-        },
-        {
-          "title": "JavaScript (Node.js)",
-          "urls": [
-            "/${VERSION}/hello-world-node-postgres.html"
-          ]
-        },
-        {
-          "title": "Python",
-          "urls": [
-            "/${VERSION}/hello-world-python-sqlalchemy.html"
-          ]
-        }
-      ]
-    },
-    {
-      "title": "Explore Database Features",
-      "items": [{
-          "title": "Replication & Rebalancing",
-          "urls": [
-            "/${VERSION}/demo-replication-and-rebalancing.html"
-          ]
-        },
-        {
-          "title": "Fault Tolerance & Recovery",
-          "urls": [
-            "/${VERSION}/demo-fault-tolerance-and-recovery.html"
-          ]
-        },
-        {
-          "title": "Multi-region Performance",
-          "urls": [
-            "/${VERSION}/demo-low-latency-multi-region-deployment.html"
-          ]
-        },
-        {
-          "title": "Serializable Transactions",
-          "urls": [
-            "/${VERSION}/demo-serializable.html"
-          ]
-        },
-        {
-          "title": "Spatial Data",
-          "urls": [
-            "/${VERSION}/spatial-tutorial.html"
-          ]
-        },
-        {
-          "title": "Cross-Cloud Migration",
-          "urls": [
-            "/${VERSION}/demo-automatic-cloud-migration.html"
-          ]
-        },
-        {
-          "title": "Orchestration with Kubernetes",
-          "urls": [
-            "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
-          ]
-        },
-        {
-          "title": "JSON Support",
-          "urls": [
-            "/${VERSION}/demo-json-support.html"
-          ]
-        },
-        {
-          "title": "SQL Tuning with <code>EXPLAIN</code>",
-          "urls": [
-            "/${VERSION}/sql-tuning-with-explain.html"
-          ]
-        }
-      ]
+      "title": "Build a 'Hello World' app",
+      "urls": [
+        "/cockroachcloud/hello-world-example-apps.html"
+        ]
     }
   ]
 }

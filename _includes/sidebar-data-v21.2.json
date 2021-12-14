@@ -6,10 +6,9 @@
       "/"
     ]
   },
-  {% include_cached sidebar-data-cockroachcloud.json %},
   {% include_cached v21.2/sidebar-data/get-started.json %},
-  {% include_cached v21.2/sidebar-data/develop.json %},
   {% include_cached v21.2/sidebar-data/deploy.json %},
+  {% include_cached v21.2/sidebar-data/develop.json %},
   {% include_cached v21.2/sidebar-data/manage.json %},
   {% include_cached v21.2/sidebar-data/migrate.json %},
   {% include_cached v21.2/sidebar-data/stream.json %},

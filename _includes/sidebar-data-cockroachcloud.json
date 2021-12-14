@@ -1,5 +1,5 @@
 {
-  "title": "CockroachDB Cloud",
+  "title": "CockroachDB Cloud", // THIS FILE IS ONLY USED FOR v21.1 and earlier
   "is_top_level": true,
   "urls": [
     "/cockroachcloud/index.html"

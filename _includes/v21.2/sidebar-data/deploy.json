@@ -6,15 +6,61 @@
       "title": "Choose a Deployment Strategy",
       "items": [
         {
-          "title": "CockroachDB Serverless",
-          "urls": [
-            ""
-          ]
-        },
-        {
-          "title": "CockroachDB Dedicated",
-          "urls": [
-            ""
+          "title": "CockroachDB Cloud",
+          "items": [
+            {
+          	  "title": "Create an Account",
+          	  "urls": [
+          	    "/cockroachcloud/create-an-account.html"
+          	  ]
+          	},
+            {
+              "title": "CockroachDB Serverless",
+              "items": [
+                {
+              	  "title": "Create a CockroachDB Serverless Cluster",
+              	  "urls": [
+              	    "/cockroachcloud/create-a-serverless-cluster.html"
+              	  ]
+              	},
+                {
+              	  "title": "Connect to Your Cluster",
+              	  "urls": [
+              	    "/cockroachcloud/connect-to-a-serverless-cluster.html"
+              	  ]
+              	}
+              ]
+            },
+            {
+              "title": "CockroachDB Dedicated",
+              "items": [
+                {
+              	  "title": "Create a CockroachDB Dedicated Cluster",
+              	  "urls": [
+              	    "/cockroachcloud/create-a-serverless-cluster.html"
+              	  ]
+              	},
+                {
+              	  "title": "Connect to Your Cluster",
+              	  "urls": [
+                    "/cockroachcloud/connect-to-your-cluster.html"
+              	  ]
+              	},
+                {
+              	  "title": "Move into Production",
+              	  "urls": [
+              	    "/cockroachcloud/production-checklist.html"
+              	  ]
+              	}
+              ]
+            },
+            {
+              "title": "CockroachDB Cloud FAQs",
+              "urls": [
+                "/cockroachcloud/serverless-faqs.html",
+                "/cockroachcloud/frequently-asked-questions.html"
+              ]
+            }
           ]
         },
         {
@@ -23,12 +69,6 @@
             "/${VERSION}/index.html"
           ],
           "items": [
-            {
-              "title": "Production Checklist",
-              "urls": [
-                "/${VERSION}/recommended-production-settings.html"
-              ]
-            },
             {
               "title": "Get Started",
               "items": [
@@ -74,6 +114,12 @@
                     }
                   ]
                 }
+              ]
+            },
+            {
+              "title": "Production Checklist",
+              "urls": [
+                "/${VERSION}/recommended-production-settings.html"
               ]
             },
             {
@@ -198,8 +244,7 @@
                   ]
                 }
               ]
-            },
-
+            }
           ]
         }
       ]
@@ -288,6 +333,64 @@
                 "/${VERSION}/topology-follow-the-workload.html"
               ]
             }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Explore CockroachDB Features",
+      "items": [{
+          "title": "Replication & Rebalancing",
+          "urls": [
+            "/${VERSION}/demo-replication-and-rebalancing.html"
+          ]
+        },
+        {
+          "title": "Fault Tolerance & Recovery",
+          "urls": [
+            "/${VERSION}/demo-fault-tolerance-and-recovery.html"
+          ]
+        },
+        {
+          "title": "Multi-region Performance",
+          "urls": [
+            "/${VERSION}/demo-low-latency-multi-region-deployment.html"
+          ]
+        },
+        {
+          "title": "Serializable Transactions",
+          "urls": [
+            "/${VERSION}/demo-serializable.html"
+          ]
+        },
+        {
+          "title": "Spatial Data",
+          "urls": [
+            "/${VERSION}/spatial-tutorial.html"
+          ]
+        },
+        {
+          "title": "Cross-Cloud Migration",
+          "urls": [
+            "/${VERSION}/demo-automatic-cloud-migration.html"
+          ]
+        },
+        {
+          "title": "Orchestration with Kubernetes",
+          "urls": [
+            "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html"
+          ]
+        },
+        {
+          "title": "JSON Support",
+          "urls": [
+            "/${VERSION}/demo-json-support.html"
+          ]
+        },
+        {
+          "title": "SQL Tuning with <code>EXPLAIN</code>",
+          "urls": [
+            "/${VERSION}/sql-tuning-with-explain.html"
           ]
         }
       ]
