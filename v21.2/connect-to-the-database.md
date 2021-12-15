@@ -34,7 +34,7 @@ Use the connection information provided by the {{ site.data.products.db }} Conso
 </div>
 
 <div class="filter-content" markdown="1" data-scope="local">
-Use the connection information provided by the [`cockroach` client](cockroach-commands.html) to configure your client to connect to CockroachDB.
+Use the connection information provided by the [`cockroach start`](cockroach-start.html)/[`cockroach start single-node`](cockroach-start-single-node.html) output to configure your client to connect to CockroachDB.
 </div>
 
 See the [client connection reference](connection-reference.html) page for details on how to connect with a supported client.
