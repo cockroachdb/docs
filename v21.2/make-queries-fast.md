@@ -11,8 +11,7 @@ This page provides an overview for optimizing statement performance in Cockroach
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 {{site.data.alerts.callout_info}}
-- If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
-- To identify poorly performing statements, use the [DB Console and slow query log](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## SQL statement performance
