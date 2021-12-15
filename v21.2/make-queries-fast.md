@@ -11,24 +11,19 @@ This page provides an overview for optimizing statement performance in Cockroach
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
+- If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
+- To identify poorly performing statements, use the [DB Console and slow query log](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## SQL statement performance
 
-To get good SQL statement performance, follow the rules below (in approximate order of importance):
-
-{{site.data.alerts.callout_info}}
-These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
-{{site.data.alerts.end}}
+To get good SQL statement performance, follow these rules (in approximate order of importance):
 
 - [Rule 1. Scan as few rows as possible](#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given statement, it's going to be difficult to scale.
 - [Rule 2. Use the right index](#rule-2-use-the-right-index): Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
 - [Rule 3. Use the right join type](#rule-3-use-the-right-join-type): Depending on the relative sizes of the tables you are querying, the type of [join][joins] may be important. This should rarely be necessary because the [cost-based optimizer](cost-based-optimizer.html) should pick the best-performing join type if you add the right indexes as described in Rule 2.
 
-{{site.data.alerts.callout_info}}
-To identify poorly performing statements, use the [DB Console and slow query log](query-behavior-troubleshooting.html#identify-slow-statements).
-{{site.data.alerts.end}}
+These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
 
 To show each of these rules in action, we will optimize a statement against the [MovR data set](movr.html) as follows:
 
