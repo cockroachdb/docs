@@ -26,7 +26,7 @@ These rules apply to an environment where thousands of [OLTP](https://en.wikiped
 
 ## Rule demonstrations
 
-To show each of these rules in action, we will optimize a statement against the [MovR data set](movr.html).
+To show each of these rules in action, we will optimize a statement against the MovR data set.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
