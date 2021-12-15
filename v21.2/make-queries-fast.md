@@ -11,7 +11,7 @@ This page provides an overview for optimizing statement performance in Cockroach
 - [Cluster topology](#cluster-topology): As a distributed system, CockroachDB requires you to trade off latency vs. resiliency. This requires choosing the right cluster topology for your needs.
 
 {{site.data.alerts.callout_info}}
-If you aren't sure whether SQL statement performance needs to be improved on your cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
+If you aren't sure whether SQL statement performance needs to be improved on a cluster, see [Identify slow statements](query-behavior-troubleshooting.html#identify-slow-statements).
 {{site.data.alerts.end}}
 
 ## SQL statement performance
@@ -26,11 +26,11 @@ These rules apply to an environment where thousands of [OLTP](https://en.wikiped
 
 ## Rule demonstrations
 
-To show each of these rules in action, we will optimize a statement against the MovR data set.
+To show each of these rules in action, you will optimize a statement against the MovR data set.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
-It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, we want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount.
+It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, you want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount.
 
 To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"
 
@@ -40,7 +40,7 @@ This is a test
 
 ### Rule 1. Scan as few rows as possible
 
-First, let's study the schema so we understand the relationships between the tables.
+First, let's study the schema so you understand the relationships between the tables.
 
 Start a SQL shell:
 
@@ -129,13 +129,13 @@ SHOW CREATE TABLE rides;
 Time: 9ms total (execution 8ms / network 1ms)
 ~~~
 
-There is a `rider_id` field that we can use to match each ride to a user. There is also a `start_time` field that we can use to filter the rides by date.
+There is a `rider_id` field that you can use to match each ride to a user. There is also a `start_time` field that you can use to filter the rides by date.
 
-This means that to get the information we want, we'll need to do a [join][joins] on the `users` and `rides` tables.
+This means that to get the information you want, you'll need to do a [join][joins] on the `users` and `rides` tables.
 
-Next, let's get the row counts for the tables that we'll be using in this query. We need to understand which tables are large, and which are small by comparison. We will need this later if we need to verify we are [using the right join type](#rule-3-use-the-right-join-type).
+Next, let's get the row counts for the tables that you'll be using in this query. We need to understand which tables are large, and which are small by comparison. We will need this later if you need to verify you are [using the right join type](#rule-3-use-the-right-join-type).
 
-As specified above by our [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, we want to avoid scanning the entire `rides` table in our query. In this case, we can avoid scanning `rides` using an index, as shown in the next section.
+As specified above by our [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, you want to avoid scanning the entire `rides` table in our query. In this case, you can avoid scanning `rides` using an index, as shown in the next section.
 
 ### Rule 2. Use the right index
 
@@ -175,9 +175,9 @@ LIMIT
 Time: 111ms total (execution 111ms / network 0ms)
 ~~~
 
-Unfortunately, this query is a bit slow. 111 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and we're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
+Unfortunately, this query is a bit slow. 111 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and you're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
 
-We can see why if we look at the output of [`EXPLAIN`](explain.html):
+We can see why if you look at the output of [`EXPLAIN`](explain.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -236,11 +236,11 @@ LIMIT
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The main problem is that we are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells us that we do not have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that you are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells us that you do not have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
 
-Therefore, we need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
+Therefore, you need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
 
-It's also possible that there is not an index on the `rider_id` column that we are doing a join against, which will also hurt performance.
+It's also possible that there is not an index on the `rider_id` column that you are doing a join against, which will also hurt performance.
 
 Before creating any more indexes, let's see what indexes already exist on the `rides` table by running [`SHOW INDEXES`](show-index.html):
 
@@ -266,16 +266,16 @@ SHOW INDEXES FROM rides;
 Time: 5ms total (execution 5ms / network 0ms)
 ~~~
 
-As we suspected, there are no indexes on `start_time` or `rider_id`, so we'll need to create indexes on those columns.
+As suspected, there are no indexes on `start_time` or `rider_id`, so you'll need to create indexes on those columns.
 
-Because another performance best practice is to [create an index on the `WHERE` condition storing the join key](sql-tuning-with-explain.html#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), we will create an index on `start_time` that stores the join key `rider_id`:
+Because another performance best practice is to [create an index on the `WHERE` condition storing the join key](sql-tuning-with-explain.html#solution-create-a-secondary-index-on-the-where-condition-storing-the-join-key), create an index on `start_time` that stores the join key `rider_id`:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON rides (start_time) storing (rider_id);
 ~~~
 
-Now that we have an index on the column in our `WHERE` clause that stores the join key, let's run the query again:
+Now that you have an index on the column in our `WHERE` clause that stores the join key, let's run the query again:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -311,7 +311,7 @@ LIMIT
 Time: 20ms total (execution 20ms / network 0ms)
 ~~~
 
-This query is now running much faster than it was before we added the indexes (111ms vs. 20ms). This means we have an extra 91 milliseconds we can budget towards other areas of our application.
+This query is now running much faster than it was before you added the indexes (111ms vs. 20ms). This means you have an extra 91 milliseconds you can budget towards other areas of our application.
 
 To see what changed, look at the [`EXPLAIN`](explain.html) output:
 
@@ -331,7 +331,7 @@ LIMIT
     10;
 ~~~
 
-As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (12,863 rows instead of 125,000).
+As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index you just created on the `start_time` column (12,863 rows instead of 125,000).
 
 ~~~
                                                 info
@@ -376,16 +376,16 @@ Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will selec
 
 We can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
 
-For example, we might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
+For example, you might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
 
-In order to get CockroachDB to plan a lookup join in this case, we will need to add an explicit index on the join key for the right-hand-side table, in this case, `rides`.
+In order to get CockroachDB to plan a lookup join in this case, you will need to add an explicit index on the join key for the right-hand-side table, in this case, `rides`.
 
 {% include copy-clipboard.html %}
 ~~~ sql
 CREATE INDEX ON rides (rider_id);
 ~~~
 
-Next, we can specify the lookup join with a join hint:
+Next, you can specify the lookup join with a join hint:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -424,7 +424,7 @@ Time: 985ms total (execution 985ms / network 0ms)
 
 The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier.
 
-The query is faster when we force CockroachDB to use a merge join:
+The query is faster when you force CockroachDB to use a merge join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -461,7 +461,7 @@ LIMIT
 Time: 23ms total (execution 22ms / network 0ms)
 ~~~
 
-The results are consistently about 20-26ms with a merge join versus 16-23ms when we let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if we had done nothing.
+The results are consistently about 20-26ms with a merge join versus 16-23ms when you let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if you had done nothing.
 
 ## Schema design
 
