@@ -144,7 +144,7 @@ You might also be interested in the following pages:
 - [Orchestrated Deployments][orchestrated]
 - [Start a Local Cluster][local_secure]
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
 - [Hello World example apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->

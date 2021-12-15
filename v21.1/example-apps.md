@@ -110,6 +110,6 @@ Specific tasks:
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
