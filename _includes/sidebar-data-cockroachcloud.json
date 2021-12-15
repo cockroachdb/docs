@@ -300,6 +300,12 @@
         "/cockroachcloud/serverless-faqs.html",
         "/cockroachcloud/frequently-asked-questions.html"
       ]
+    },
+    {
+      "title": "Cloud Release Notes",
+      "urls": [
+        "/releases/cloud-changelog.html"
+      ]
     }
   ]
 }
