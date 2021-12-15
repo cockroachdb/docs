@@ -12,7 +12,7 @@ The DB Console provides details about your cluster and database configuration, a
 Area | Description
 --------|----
 [Cluster Overview](ui-cluster-overview-page.html) | Essential metrics about the cluster and nodes, including liveness status, replication status, uptime, and hardware usage.
-[Node Map](enable-node-map.html) | Geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
+[Node Map](ui-cluster-overview-page.html#node-map-enterprise) | Geographical configuration of your cluster and metrics at the locality and node levels, visualized on a map.
 [Overview Dashboard](ui-overview-dashboard.html) | Metrics about SQL performance, replication, and storage.
 [Hardware Dashboard](ui-hardware-dashboard.html) | Metrics about CPU usage, disk throughput, network traffic, storage capacity, and memory.
 [Runtime Dashboard](ui-runtime-dashboard.html) | Metrics about node count, CPU time, and memory usage.
@@ -30,42 +30,41 @@ Area | Description
 
 ## DB Console access
 
+### DB Console URL
+
 The DB Console is accessible from every node at `http://<host>:<http-port>`, or `http://<host>:8080` by default.
 
-- If you included the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address/hostname and port specified by that flag.
-- If you didn't include the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address/hostname specified by the [`--listen-addr`](cockroach-start.html#networking) flag and port `8080`.
-- If you are running a [secure cluster](#db-console-security), use `https` instead of `http`. You will also need to [create a user with a password](create-user.html#create-a-user-with-a-password) to log in.
+- If you included the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address or hostname and port specified by that flag.
+- If you didn't include the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address or hostname specified by the [`--listen-addr`](cockroach-start.html#networking) flag and port `8080`.
+- If you are running a [secure cluster](#db-console-security), use `https` instead of `http`.
 
-{{site.data.alerts.callout_success}}
 For guidance on accessing the DB Console in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
-{{site.data.alerts.end}}
 
-### DB Console security
+Access to DB Console is a function of cluster security and the role of the accessing user.
+
+### Cluster security
 
 On insecure clusters, all areas of the DB Console are accessible to all users.
 
-On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password](create-user.html#create-a-user-with-a-password) and optionally [grant the user membership to the `admin` role](grant.html).
+On secure clusters, for each user who should have access to the DB Console, you must [create a user with a password](create-user.html#create-a-user-with-a-password) and optionally [`GRANT`](grant.html#grant-role-membership) the user membership to the `admin` role.
 
-{{site.data.alerts.callout_info}}
-The default `root` user is a member of the `admin` role. Use the following command to [grant users membership to the `admin` role](grant.html):
+### Role-based security
 
-<code style="white-space:pre-wrap">GRANT admin TO \<sql_user\>;</code>
-{{site.data.alerts.end}}
+All users have access to data over which they have privileges (e.g., [jobs](ui-jobs-page.html) and [list of sessions](ui-sessions-page.html)), and data that does not require privileges (e.g., [cluster health, node status](ui-cluster-overview-page.html), [metrics](ui-metrics-page.html)).
 
-For security reasons, non-admin users access only the data over which they have privileges (e.g., their tables, jobs, and list of sessions), and data that does not require privileges (e.g., cluster health, node status, metrics).
+[`admin` users](authorization.html#admin-role) also have access to the following areas. These area display information from privileged HTTP endpoints that operate with `admin` privilege.
 
-The following areas of the DB Console can be accessed only by [`admin` users](authorization.html#admin-role). These areas display information from privileged HTTP endpoints that operate with `admin` privilege.
-
-Secure area | Privileged information
+DB Console areas | Privileged information
 -----|-----
 [Node Map](enable-node-map.html) | Database and table names
 [Databases](ui-databases-page.html) | Stored table data
 [Statements](ui-statements-page.html) | SQL statements
+[Transactions](ui-transactions-page.html) | Transactions
 [Advanced Debug](ui-debug-pages.html) (some reports) | Stored table data, operational details, internal IP addresses, names, credentials, application data (depending on report)
 
-{{site.data.alerts.callout_info}}
+## Diagnostics reporting
+
 By default, the DB Console shares anonymous usage details with Cockroach Labs. For information about the details shared and how to opt-out of reporting, see [Diagnostics Reporting](diagnostics-reporting.html).
-{{site.data.alerts.end}}
 
 ## See also
 
