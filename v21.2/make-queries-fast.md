@@ -24,7 +24,9 @@ To get good SQL statement performance, follow these rules (in approximate order 
 
 These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
 
-To show each of these rules in action, we will optimize a statement against the [MovR data set](movr.html) as follows:
+## Rule demonstrations
+
+To show each of these rules in action, we will optimize a statement against the [MovR data set](movr.html).
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
