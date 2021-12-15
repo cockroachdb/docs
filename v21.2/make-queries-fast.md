@@ -139,7 +139,7 @@ As specified above by our [`cockroach demo`](cockroach-demo.html) command, the `
 
 ### Rule 2. Use the right index
 
-Below is a query that fetches the right answer to our question: "Who are the top 10 users by number of rides on a given date?"
+Here is a query that fetches the right answer to our question: "Who are the top 10 users by number of rides on a given date?"
 
 {% include copy-clipboard.html %}
 ~~~ sql
