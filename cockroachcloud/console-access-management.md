@@ -4,7 +4,7 @@ summary: Manage your account roles and permissions.
 toc: true
 ---
 
-The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} organization. To view the Access page, [log in](https://cockroachlabs.cloud/) and click **Access**.
+The **Access** page displays the name, email address, role, and invite acceptance status of the Team Members with access to your {{ site.data.products.db }} organization. To view the **Access** page, [log in](https://cockroachlabs.cloud/) and click **Access**.
 
 ## Organization
 
@@ -53,6 +53,7 @@ Service accounts are used by applications accessing the [Cloud API](cloud-api.ht
 
 To create a service account:
 
+1.  On the **Access** page, select the **Service Accounts** tab.
 1. Click **Create Service Account**.
 1. In the **Create service account** dialog:
     1. Enter the **Account name**.
@@ -94,6 +95,8 @@ We recommend creating service accounts with the [principle of least privilege](h
 
 To create an API key:
 
+1. On the **Access** page, select the **Service Accounts** tab.
+1. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
 1. Click **Create API Key**.
 1. Enter the **API key name** and click **Create**. The name should identify how the API key will be used. For example, you could name your API key for the application that will use the key.
 1. Copy the **Secret key** and store it in a secure location. There is a **Copy** button to the right of the displayed secret key that will copy the secret key to your OS clipboard.
@@ -110,6 +113,8 @@ To create an API key:
 
 To delete an API key associated with a service account:
 
+1. On the **Access** page, select the **Service Accounts** tab.
+1. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
 1. Click the **Action** button for the API key ID in the **API Access** table.
 1. Select **Delete**.
 1. In the **Delete API key** dialog enter the name of the service account to confirm the delete operation, then click **Delete**.
@@ -118,6 +123,8 @@ To delete an API key associated with a service account:
 
 To change the API key name for an existing API key:
 
+1. On the **Access** page, select the **Service Accounts** tab.
+1. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
 1. Find the API key ID in the **API Access** table.
 1. Click the **Action** button.
 1. Select **Edit**.
