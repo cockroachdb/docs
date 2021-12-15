@@ -135,7 +135,7 @@ This means that to get the information we want, we'll need to do a [join][joins]
 
 Next, let's get the row counts for the tables that we'll be using in this query. We need to understand which tables are large, and which are small by comparison. We will need this later if we need to verify we are [using the right join type](#rule-3-use-the-right-join-type).
 
-As specified above by our [`cockroach workload`](cockroach-workload.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, we want to avoid scanning the entire `rides` table in our query. In this case, we can avoid scanning `rides` using an index, as shown in the next section.
+As specified above by our [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, we want to avoid scanning the entire `rides` table in our query. In this case, we can avoid scanning `rides` using an index, as shown in the next section.
 
 ### Rule 2. Use the right index
 
