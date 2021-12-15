@@ -48,7 +48,7 @@ You can restore:
 
 ### Options
 
-You can control `RESTORE` behavior using any of the following in the `restore_options_list`. To set multiple `RESTORE` options, use a comma-separated list: 
+You can control `RESTORE` behavior using any of the following in the `restore_options_list`. To set multiple `RESTORE` options, use a comma-separated list:
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
@@ -458,7 +458,7 @@ Use the `DETACHED` [option](#options) to execute the restore [job](show-jobs.htm
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> RESTORE FROM FROM '2021/03/23-213101.37' IN 'azure://{container name}/{path/to/backup}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH DETACHED;
+> RESTORE FROM '2021/03/23-213101.37' IN 'azure://{container name}/{path/to/backup}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}' WITH DETACHED;
 ~~~
 
 The job ID is returned immediately without waiting for the job to finish:
