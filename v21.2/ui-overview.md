@@ -36,7 +36,7 @@ The DB Console is accessible from every node at `http://<host>:<http-port>`, or 
 
 - If you included the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address or hostname and port specified by that flag.
 - If you didn't include the [`--http-addr`](cockroach-start.html#networking) flag when starting nodes, use the IP address or hostname specified by the [`--listen-addr`](cockroach-start.html#networking) flag and port `8080`.
-- If you are running a [secure cluster](#db-console-security), use `https` instead of `http`.
+- If you are running a [secure cluster](#cluster-security), use `https` instead of `http`.
 
 For guidance on accessing the DB Console in the context of cluster deployment, see [Start a Local Cluster](start-a-local-cluster.html) and [Manual Deployment](manual-deployment.html).
 
@@ -50,7 +50,7 @@ On secure clusters, for each user who should have access to the DB Console, you 
 
 ### Role-based security
 
-All users have access to data over which they have privileges (e.g., [jobs](ui-jobs-page.html) and [list of sessions](ui-sessions-page.html)), and data that does not require privileges (e.g., [cluster health, node status](ui-cluster-overview-page.html), [metrics](ui-metrics-page.html)).
+All users have access to data over which they have privileges (e.g., [jobs](ui-jobs-page.html) and [list of sessions](ui-sessions-page.html)), and data that does not require privileges (e.g., [cluster health, node status](ui-cluster-overview-page.html), [metrics](ui-overview-dashboard.html)).
 
 [`admin` users](authorization.html#admin-role) also have access to the following areas. These area display information from privileged HTTP endpoints that operate with `admin` privilege.
 
