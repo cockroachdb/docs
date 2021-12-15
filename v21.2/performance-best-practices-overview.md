@@ -343,6 +343,8 @@ Transaction contention can also increase the rate of transaction restarts, and t
 
 For further background on database contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
+For further background on database contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
+
 ### Find contention
 
 {% include {{ page.version.version }}/performance/statement-contention.md %}
