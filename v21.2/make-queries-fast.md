@@ -148,17 +148,17 @@ Below is a query that fetches the right answer to our question: "Who are the top
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+  name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+  users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
+  rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+  name
 ORDER BY
-	sum DESC
+  sum DESC
 LIMIT
-	10;
+  10;
 ~~~
 
 ~~~
@@ -169,11 +169,11 @@ LIMIT
   Joseph Smith     |  10
   Paul Nelson      |   9
   Christina Smith  |   9
-  Jennifer Johnson |   8
   Jeffrey Walker   |   8
+  Jennifer Johnson |   8
   Joseph Jones     |   7
-  James Williams   |   7
   Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
 Time: 111ms total (execution 111ms / network 0ms)
@@ -186,17 +186,17 @@ We can see why if we look at the output of [`EXPLAIN`](explain.html):
 {% include copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT
-	name, count(rides.id) AS sum
+    name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+    users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+    rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+    name
 ORDER BY
-	sum DESC
+    sum DESC
 LIMIT
-	10;
+    10;
 ~~~
 
 ~~~
@@ -210,31 +210,32 @@ LIMIT
   │ count: 10
   │
   └── • sort
-      │ estimated row count: 3,392
+      │ estimated row count: 7,772
       │ order: -count_rows
       │
       └── • group
-          │ estimated row count: 3,392
+          │ estimated row count: 7,772
           │ group by: name
           │
           └── • hash join
-              │ estimated row count: 4,013
-              │ equality: (id) = (rider_id)
+              │ estimated row count: 12,863
+              │ equality: (rider_id) = (id)
               │
-              ├── • scan
-              │     estimated row count: 12,500 (100% of the table; stats collected 4 minutes ago)
-              │     table: users@primary
-              │     spans: FULL SCAN
+              ├── • filter
+              │   │ estimated row count: 12,863
+              │   │ filter: (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2020-01-01 00:00:00')
+              │   │
+              │   └── • scan
+              │         estimated row count: 125,000 (100% of the table; stats collected 54 seconds ago)
+              │         table: rides@primary
+              │         spans: FULL SCAN
               │
-              └── • filter
-                  │ estimated row count: 4,013
-                  │ filter: (start_time >= '2018-12-31 00:00:00') AND (start_time <= '2019-01-01 00:00:00')
-                  │
-                  └── • scan
-                        estimated row count: 125,000 (100% of the table; stats collected 3 minutes ago)
-                        table: rides@primary
-                        spans: FULL SCAN
+              └── • scan
+                    estimated row count: 12,500 (100% of the table; stats collected 2 minutes ago)
+                    table: users@primary
+                    spans: FULL SCAN
 (32 rows)
+
 
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
@@ -283,58 +284,58 @@ Now that we have an index on the column in our `WHERE` clause that stores the jo
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+    name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+    users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+    rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+    name
 ORDER BY
-	sum DESC
+    sum DESC
 LIMIT
-	10;
+    10;
 ~~~
 
 ~~~
         name       | sum
 -------------------+------
-  William Brown    |   6
-  Laura Marsh      |   5
-  Joseph Smith     |   5
-  David Martinez   |   4
-  Michael Garcia   |   4
-  David Mitchell   |   4
-  Arthur Nielsen   |   4
-  Michael Bradford |   4
-  William Mitchell |   4
-  Jennifer Johnson |   4
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jeffrey Walker   |   8
+  Jennifer Johnson |   8
+  Joseph Jones     |   7
+  Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
-Time: 22ms total (execution 22ms / network 0ms)
+Time: 20ms total (execution 20ms / network 0ms)
 ~~~
 
-This query is now running much faster than it was before we added the indexes (111ms vs. 22ms). This means we have an extra 89 milliseconds we can budget towards other areas of our application.
+This query is now running much faster than it was before we added the indexes (111ms vs. 20ms). This means we have an extra 91 milliseconds we can budget towards other areas of our application.
 
-To see what changed, let's look at the [`EXPLAIN`](explain.html) output:
+To see what changed, look at the [`EXPLAIN`](explain.html) output:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 EXPLAIN SELECT
-	name, count(rides.id) AS sum
+    name, count(rides.id) AS sum
 FROM
-	users JOIN rides ON users.id = rides.rider_id
+    users JOIN rides ON users.id = rides.rider_id
 WHERE
-	rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00'
+    rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00'
 GROUP BY
-	name
+    name
 ORDER BY
-	sum DESC
+    sum DESC
 LIMIT
-	10;
+    10;
 ~~~
 
-As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (4,013 rows instead of 125,000).
+As you can see, this query is no longer scanning the entire (larger) `rides` table. Instead, it is now doing a much smaller range scan against only the values in `rides` that match the index we just created on the `start_time` column (12,863 rows instead of 125,000).
 
 ~~~
                                                 info
@@ -347,31 +348,31 @@ As you can see, this query is no longer scanning the entire (larger) `rides` tab
   │ count: 10
   │
   └── • sort
-      │ estimated row count: 3,392
+      │ estimated row count: 7,772
       │ order: -count_rows
       │
       └── • group
-          │ estimated row count: 3,392
+          │ estimated row count: 7,772
           │ group by: name
           │
           └── • hash join
-              │ estimated row count: 4,013
-              │ equality: (id) = (rider_id)
+              │ estimated row count: 12,863
+              │ equality: (rider_id) = (id)
               │
               ├── • scan
-              │     estimated row count: 12,500 (100% of the table; stats collected 8 minutes ago)
-              │     table: users@primary
-              │     spans: FULL SCAN
+              │     estimated row count: 12,863 (10% of the table; stats collected 5 minutes ago)
+              │     table: rides@rides_start_time_idx
+              │     spans: [/'2018-12-31 00:00:00' - /'2020-01-01 00:00:00']
               │
               └── • scan
-                    estimated row count: 4,013 (3.2% of the table; stats collected 7 minutes ago)
-                    table: rides@rides_start_time_idx
-                    spans: [/'2018-12-31 00:00:00' - /'2019-01-01 00:00:00']
+                    estimated row count: 12,500 (100% of the table; stats collected 6 minutes ago)
+                    table: users@primary
+                    spans: FULL SCAN
 (28 rows)
 
-Time: 2ms total (execution 1ms / network 0ms)
-~~~
 
+Time: 2ms total (execution 2ms / network 1ms)
+~~~
 
 ### Rule 3. Use the right join type
 
@@ -393,76 +394,78 @@ Next, we can specify the lookup join with a join hint:
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+  name, count(rides.id) AS sum
 FROM
-	users INNER LOOKUP JOIN rides ON users.id = rides.rider_id
+  users INNER LOOKUP JOIN rides ON users.id = rides.rider_id
 WHERE
-	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
+  (rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00')
 GROUP BY
-	name
+  name
 ORDER BY
-	sum DESC
+  sum DESC
 LIMIT
-	10;
+  10;
 ~~~
 
 ~~~
         name       | sum
--------------------+------
-  William Brown    |   6
-  Laura Marsh      |   5
-  Joseph Smith     |   5
-  Michael Garcia   |   4
-  David Mitchell   |   4
-  David Martinez   |   4
-  Arthur Nielsen   |   4
-  Jennifer Johnson |   4
-  William Mitchell |   4
-  Michael Bradford |   4
++------------------+-----+
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jeffrey Walker   |   8
+  Jennifer Johnson |   8
+  Joseph Jones     |   7
+  Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
-Time: 1.548s total (execution 1.548s / network 0.000s)
+
+Time: 985ms total (execution 985ms / network 0ms)
 ~~~
 
 The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier.
 
-The query is a little faster when we force CockroachDB to use a merge join:
+The query is faster when we force CockroachDB to use a merge join:
 
 {% include copy-clipboard.html %}
 ~~~ sql
 SELECT
-	name, count(rides.id) AS sum
+  name, count(rides.id) AS sum
 FROM
-	users INNER MERGE JOIN rides ON users.id = rides.rider_id
+  users INNER MERGE JOIN rides ON users.id = rides.rider_id
 WHERE
-	(rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2019-01-01 00:00:00')
+  (rides.start_time BETWEEN '2018-12-31 00:00:00' AND '2020-01-01 00:00:00')
 GROUP BY
-	name
+  name
 ORDER BY
-	sum DESC
+  sum DESC
 LIMIT
-	10;
+  10;
 ~~~
 
 ~~~
-        name        | sum
-+-------------------+-----+
-  William Brown     |   6
-  Laura Marsh       |   5
-  Joseph Smith      |   5
-  Jennifer Ford     |   4
-  David Mitchell    |   4
-  William Mitchell  |   4
-  Christopher Allen |   4
-  Michael Bradford  |   4
-  Michael Garcia    |   4
-  Jennifer Johnson  |   4
+        name       | sum
++------------------+-----+
+  William Brown    |  14
+  William Mitchell |  10
+  Joseph Smith     |  10
+  Paul Nelson      |   9
+  Christina Smith  |   9
+  Jennifer Johnson |   8
+  Jeffrey Walker   |   8
+  Joseph Jones     |   7
+  Thomas Smith     |   7
+  James Williams   |   7
 (10 rows)
 
-Time: 22ms total (execution 22ms / network 0ms)
+
+Time: 23ms total (execution 22ms / network 0ms)
 ~~~
 
-The results are consistently about 20-26ms with a merge join vs. 16-23ms when we let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if we had done nothing.
+The results are consistently about 20-26ms with a merge join versus 16-23ms when we let CockroachDB choose the join type as shown in the previous section. In other words, forcing the merge join is slightly slower than if we had done nothing.
 
 ## Schema design
 
@@ -487,7 +490,7 @@ For more information about how to choose the cluster topology that is right for 
 Reference information:
 
 - [SQL Performance Best Practices](performance-best-practices-overview.html)
-- [Performance recipes](performance-recipes.html)
+- [Performance Recipes](performance-recipes.html)
 - [SQL Tuning with `EXPLAIN`](sql-tuning-with-explain.html)
 - [Joins](joins.html)
 - [CockroachDB Performance](performance.html)
@@ -504,7 +507,7 @@ Specific tasks:
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)
-- [Hello World Example apps](hello-world-example-apps.html)
+- [Hello World Example Apps](hello-world-example-apps.html)
 
 <!-- Reference Links -->
 
