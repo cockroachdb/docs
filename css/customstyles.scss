@@ -170,6 +170,10 @@ pre {
   }
 }
 
+div ~ svg {
+  overflow-x: auto;
+}
+
 code {
   @include code-type;
   background-color: $neutral-100;
