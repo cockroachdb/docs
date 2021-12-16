@@ -58,13 +58,13 @@ For examples of `ALTER COLUMN TYPE`, [Examples](#convert-to-a-different-data-typ
 
 ### Limitations on altering data types
 
-You can alter the data type of a column if:
+You cannot alter the data type of a column if:
 
-- The column is not part of an [index](indexes.html).
-- The column does not have [`CHECK` constraints](check.html).
-- The column does not own a [sequence](create-sequence.html).
-- The `ALTER COLUMN TYPE` statement is not part of a [combined `ALTER TABLE` statement](alter-table.html#subcommands).
-- The `ALTER COLUMN TYPE` statement is not inside an [explicit transaction](begin-transaction.html).
+- The column is part of an [index](indexes.html).
+- The column has [`CHECK` constraints](check.html).
+- The column owns a [sequence](create-sequence.html).
+- The `ALTER COLUMN TYPE` statement is part of a [combined `ALTER TABLE` statement](alter-table.html#subcommands).
+- The `ALTER COLUMN TYPE` statement is inside an [explicit transaction](begin-transaction.html).
 
 {{site.data.alerts.callout_info}}
 Most `ALTER COLUMN TYPE` changes are finalized asynchronously. Schema changes on the table with the altered column may be restricted, and writes to the altered column may be rejected until the schema change is finalized.

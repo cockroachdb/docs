@@ -314,6 +314,16 @@
 
   <tr>
    <td>
+    <code>large_full_scan_rows</code>
+   </td>
+   <td><span class="version-tag">New in v21.2</span>: Determines which tables are considered "large" such that <code>disallow_full_table_scans</code> rejects full table or index scans of "large" tables. The default value is <code>1000</code>. To reject all full table or index scans, set to <code>0</code>.</td>
+   <td>User-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>locality</code>
    </td>
    <td>The location of the node.<br>For more information, see <a href="cockroach-start.html#locality">Locality</a>.</td>
@@ -600,7 +610,7 @@
    <td>
     <code>transaction_rows_read_err</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows read by a SQL transaction which - once exceeded - will fail the transaction (or will trigger a logging event to SQL_INTERNAL_PERF for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows read by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -612,7 +622,7 @@
    <td>
     <code>transaction_rows_read_log</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows read by a SQL transaction which - once exceeded - will trigger a logging event to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code>  for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows read by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -624,7 +634,7 @@
    <td>
     <code>transaction_rows_written_err</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows written by a SQL transaction which - once exceeded - will fail the transaction (or will trigger a logging event to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The limit for the number of rows written by a SQL transaction. If this value is exceeded the transaction will fail (or the event will be logged to <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>
@@ -636,7 +646,7 @@
    <td>
     <code>transaction_rows_written_log</code>
    </td>
-   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows written by a SQL transaction which - once exceeded - will trigger a logging event to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
+   <td><span class="version-tag">New in v21.2</span>: The threshold for the number of rows written by a SQL transaction. If this value is exceeded, the event will be logged to <code>SQL_PERF</code> (or <code>SQL_INTERNAL_PERF</code> for internal transactions).</td>
    <td>
     <code>0</code>
    </td>

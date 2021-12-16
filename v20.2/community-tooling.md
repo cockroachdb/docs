@@ -14,6 +14,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 ## Drivers and data access frameworks
 
+- [JDBI](https://jdbi.org/)
 - [sqlx (for Go)](http://jmoiron.github.io/sqlx/)
 - [clojure.java.jdbc](build-a-clojure-app-with-cockroachdb.html)
 - [libpqxx](build-a-c++-app-with-cockroachdb.html)

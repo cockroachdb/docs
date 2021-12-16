@@ -41,6 +41,6 @@ Specific tasks:
 - [Connect to Your Cluster](connect-to-a-serverless-cluster.html)
 - [Insert Data](../{{site.versions["stable"]}}/insert-data.html)
 - [Learn CockroachDB SQL](learn-cockroachdb-sql.html)
-- [Make Queries Fast](../{{site.versions["stable"]}}/make-queries-fast.html)
+- [Optimize Statement Performance](../{{site.versions["stable"]}}/make-queries-fast.html)
 - [Run Multi-Statement Transactions](../{{site.versions["stable"]}}/run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](../{{site.versions["stable"]}}/error-handling-and-troubleshooting.html)
