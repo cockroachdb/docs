@@ -54,7 +54,7 @@ All users have access to data over which they have privileges (e.g., [jobs](ui-j
 
 [`admin` users](authorization.html#admin-role) also have access to the following areas. These area display information from privileged HTTP endpoints that operate with `admin` privilege.
 
-DB Console areas | Privileged information
+DB Console area | Privileged information
 -----|-----
 [Node Map](enable-node-map.html) | Database and table names
 [Databases](ui-databases-page.html) | Stored table data
