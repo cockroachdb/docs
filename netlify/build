@@ -19,8 +19,8 @@ cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
-go get -u github.com/markmandel/htmltest@debug/panic
-pushd $GOPATH/src/github.com/markmandel/htmltest && ./build.sh && popd
+go get -u github.com/markmandel/htmltest
+pushd $GOPATH/src/github.com/markmandel/htmltest && git checkout debug/panic && ./build.sh && popd
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
