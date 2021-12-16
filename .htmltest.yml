@@ -3,7 +3,13 @@ ExternalTimeout: 30
 IgnoreDirs:
   - ^docs/stable
   - ^docs/dev
+  - ^docs/v1.0
+  - ^docs/v1.1
   - ^docs/v1.2
+  - ^docs/v2.0
+  - ^docs/v2.1
+  - ^docs/v19.1
+  - ^docs/v19.2
 IgnoreURLs:
   - "http://localhost*"
   - "https://github.com.*"
