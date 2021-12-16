@@ -3,6 +3,8 @@ ExternalTimeout: 30
 IgnoreDirs:
   - ^docs/stable
   - ^docs/dev
+  - ^docs/v1.0
+  - ^docs/v1.1
   - ^docs/v1.2
 IgnoreURLs:
   - "http://localhost*"
