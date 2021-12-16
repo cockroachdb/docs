@@ -211,6 +211,15 @@ AS OF SYSTEM TIME '-10s';
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 {{site.data.alerts.end}}
 
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
+
 ### Backup all tables in a schema
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
@@ -333,6 +342,15 @@ AS OF SYSTEM TIME '-10s';
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 {{site.data.alerts.end}}
+
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
 
 ### Backup all tables in a schema
 
@@ -458,6 +476,15 @@ AS OF SYSTEM TIME '-10s';
 {{site.data.alerts.callout_danger}}
 {% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 {{site.data.alerts.end}}
+
+### Specify a subdirectory for backups
+
+To store the backup in a specific subdirectory in the storage location:
+
+~~~ sql
+BACKUP DATABASE bank INTO 'subdirectory' IN 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
+AS OF SYSTEM TIME '-10s';
+~~~
 
 ### Backup all tables in a schema
 
