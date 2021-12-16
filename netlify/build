@@ -39,7 +39,7 @@ fi;
 wget -O- https://github.com/errata-ai/vale/releases/download/v1.2.7/vale_1.2.7_Linux_64-bit.tar.gz | tar -xz vale
 
 # Run Vale, but do not fail the build if it reports errors
-./vale --no-wrap v20.2 || true
+./vale --no-wrap v21.2 || true
 
 # Run htmltest, but skip checking external links to speed things up
 $GOPATH/src/github.com/markmandel/htmltest/bin/htmltest --skip-external -l0
