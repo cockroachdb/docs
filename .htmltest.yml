@@ -19,6 +19,7 @@ IgnoreURLs:
   - "https://crates.io/*"
   - "https://docs.pipenv.org/*"
   - "https://arxiv.org/*"
+  - "https://www.microsoft.com/*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
 DocumentConcurrencyLimit: 16
