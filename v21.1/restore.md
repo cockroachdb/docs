@@ -48,7 +48,7 @@ You can restore:
 
 ### Options
 
-You can control `RESTORE` behavior using any of the following in the `restore_options_list`. To set multiple `RESTORE` options, use a comma-separated list: 
+You can control `RESTORE` behavior using any of the following in the `restore_options_list`. To set multiple `RESTORE` options, use a comma-separated list:
 
  Option                                                             | <div style="width:75px">Value</div>         | Description
  -------------------------------------------------------------------+---------------+-------------------------------------------------------
@@ -94,7 +94,7 @@ When you restore a full cluster with an Enterprise license, it will restore the 
 **The database cannot already exist in the target cluster.** Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
 
 ~~~ sql
-RESTORE DATABASE backup_database_name FROM 'subdirectory' in 'your_backup_location';
+RESTORE DATABASE backup_database_name FROM 'subdirectory' IN 'your_backup_location';
 ~~~
 
 {{site.data.alerts.callout_success}}
@@ -151,8 +151,8 @@ You can either restore from a full backup or from a full backup with incremental
 
 Restore Type | Parameters
 -------------|----------
-Full backup | Include the [subdirectory](#view-the-backup-subdirectories) of the backup and the path to the full backup destination (e.g.`RESTORE ... FROM 'subdirectory' IN 'backup destination';`).
-Full backup + <br>incremental backups | Include the path that contains the backup collection and the [subdirectory](#view-the-backup-subdirectories) containing the desired backup (e.g. `RESTORE ... FROM 'subdirectory' IN 'backup collection destination';`).
+Full backup | Include the path to the full backup destination and the [subdirectory](#view-the-backup-subdirectories) of the backup. See the [Examples](#examples) section for syntax of [cluster](#restore-a-cluster), [database](#restore-a-database), and [table](#restore-a-table) restores.
+Full backup + <br>incremental backups | Include the path that contains the backup collection and the [subdirectory](#view-the-backup-subdirectories) containing the incremental backup. See [Restore from incremental backups](#restore-from-incremental-backups) for an example.
 
 ## Performance
 
@@ -194,7 +194,7 @@ The examples in this section use the **default** `AUTH=specified` parameter. For
 
 ### View the backup subdirectories
 
-<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme by default, unless an [explicit subdirectory](../{{site.versions["stable"]}}/backup.html#specify-a-subdirectory-for-backups) is passed with the `BACKUP` statement. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql

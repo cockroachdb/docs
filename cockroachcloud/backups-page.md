@@ -185,7 +185,7 @@ To back up a self-hosted CockroachDB cluster into a {{ site.data.products.db }} 
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    RESTORE DATABASE example_database '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
     ~~~
 
 ## Troubleshooting
