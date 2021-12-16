@@ -4,9 +4,7 @@ summary: The Databases page provides details about databases configured, the tab
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-On a secure cluster, this area of the DB Console can only be accessed by an `admin` user. See [DB Console access](ui-overview.html#db-console-access).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/ui/admin-access.md %}
 
 The **Databases** page of the DB Console provides details of the following:
 
