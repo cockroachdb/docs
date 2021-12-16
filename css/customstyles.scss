@@ -172,6 +172,7 @@ pre {
 
 div {
   & svg {
+    max-width: 100vw;
     overflow-x: auto;
   }
 }
