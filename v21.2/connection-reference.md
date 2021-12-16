@@ -34,25 +34,27 @@ For a list of all supported cluster connection parameters, see the [`cockroach` 
 
 ## Connect with node-postgres
 
-To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Pool`](https://node-postgres.com/api/pool) object with a connection string.
+To connect to CockroachDB with [node-postgres](https://node-postgres.com), create a new [`Client`](https://node-postgres.com/api/client) object with a connection string.
 
 For example:
 
 {% include copy-clipboard.html %}
 ~~~ js
-const { Pool } = require('pg')
+const { Client } = require('pg')
 
 const connectionString = '<connection-string>'
-const pool = new Pool({
+const client = new Client({
   connectionString,
 })
+
+client.connect()
 ~~~
 
 node-postgres accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<cluster_name>
+postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>
 ~~~
 
 For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
@@ -72,11 +74,17 @@ const Sequelize = require("sequelize-cockroachdb");
 const sequelize = new Sequelize('<connection-string>')
 ~~~
 
-Sequelize versions 6.11+ accept the following format for CockroachDB connection strings:
+Sequelize versions 6.10 and later accept the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<cluster_name>
+postgresql://<username>:<password>@<host>:<port>/<database>?sslmode=verify-full&options=--cluster%3D<routing-id>
+~~~
+
+For Sequelize versions 6.9 and earlier, use the following format:
+
+~~~
+postgresql://<username>:<password>@<host>:<port>/<routing-id>.<database>?ssl=true
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -89,27 +97,43 @@ For more information about connecting with Sequelize, see the [official Sequeliz
 
 <section class="filter-content" markdown="1" data-scope="typeorm">
 
-To connect to CockroachDB with [TypeORM](https://typeorm.io), pass a connection string to the `createConnection` or `createConnections` functions.
+To connect to CockroachDB with [TypeORM](https://typeorm.io), update your project's `ormconfig` file with the required connection properties.
 
-For example:
+For example, suppose that you have a file named `ormconfig.json` in the project's root directory:
 
 {% include copy-clipboard.html %}
-~~~ ts
-import {createConnection, Connection} from "typeorm";
-
-createConnection({
-    type: 'cockroachdb',
-    url: '<connection-string>',
-    ssl: true
-})
+~~~ json
+{
+    "type": "cockroachdb",
+    "url": "<connection-string>",
+    "ssl": true,
+    "extra": {
+      "options": "--cluster=<routing-id>"
+    },
+}
 ~~~
 
 TypeORM accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://<username>:<password>@<host>:<port>/<cluster_name>.<database>
+postgresql://<username>:<password>@<host>:<port>/<database>
 ~~~
+
+You can then call `createConnection` without any parameters:
+
+{% include copy-clipboard.html %}
+~~~ ts
+import {createConnection} from "typeorm";
+
+// createConnection method will automatically read connection options
+// from your ormconfig file or environment variables
+const connection = await createConnection();
+~~~
+
+`createConnection` will use the properties set in `ormconfig.json` to connect to your cluster.
+
+TypeORM supports `ormconfig` in the following formats: `.json`, `.js`, `.ts`, `.env`, `.yml` and `.xml`.
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
 
@@ -124,7 +148,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<cluster_name>`  | The name of the CockroachDB cluster.
+`<routing-id>`  | The routing ID of the CockroachDB cluster.
 
 </section>
 
@@ -159,7 +183,7 @@ Psycopg2 accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/docs).
@@ -186,7 +210,7 @@ SQLAlchemy accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -214,13 +238,14 @@ Django accepts the following format for CockroachDB connection information:
 DATABASES = {
     'default': {
         'ENGINE': 'django_cockroachdb',
-        'NAME': '{cluster}.{database}',
+        'NAME': '{database}',
         'USER': '{username}',
         'PASSWORD': '{password}',
         'HOST': '{host}',
         'PORT': '{port}',
         'OPTIONS': {
             'sslmode': 'verify-full',
+            'options': '--cluster={routing-id}'
         },
     },
 }
@@ -245,7 +270,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{cluster_name}`  | The name of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster.
 
 </section>
 
@@ -288,7 +313,7 @@ pgx accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 For more information about connecting with pgx, see the [official pgx documentation](https://pkg.go.dev/github.com/jackc/pgx).
@@ -327,7 +352,7 @@ pq accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 For more information about connecting with pq, see the [official pq documentation](https://pkg.go.dev/github.com/lib/pq).
@@ -357,7 +382,7 @@ GORM accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 For more information about connecting with GORM, see the [official GORM documentation](https://gorm.io/docs).
@@ -373,7 +398,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{cluster_name}`  | The name of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster.
 
 </section>
 
@@ -406,7 +431,7 @@ JDBC accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&options=--cluster%3D{cluster_name}
+jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&options=--cluster%3D{routing-id}
 ~~~
 
 For more information about connecting with JDBC, see the [official JDBC documentation](https://jdbc.postgresql.org/documentation/head/index.html).
@@ -439,7 +464,7 @@ Hibernate accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?user={username}&amp;password={password}&amp;sslmode=verify-full&amp;sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&amp;options=--cluster%3D{cluster_name}
+jdbc:postgresql://{host}:{port}/{database}?user={username}&amp;password={password}&amp;sslmode=verify-full&amp;sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&amp;options=--cluster%3D{routing-id}
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -459,7 +484,7 @@ Parameter | Description
 `{database}`  | The name of the (existing) database.
 `{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
-`{cluster_name}`  | The name of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster.
 
 </section>
 
@@ -495,7 +520,7 @@ pg accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 For more information about connecting with pg, see the [official pg documentation](https://www.rubydoc.info/gems/pg).
@@ -511,7 +536,7 @@ To connect to CockroachDB with [ActiveRecord](https://github.com/rails/rails/tre
 ~~~ yaml
 default: &default
   adapter: cockroachdb
-  url: postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{cluster_name}
+  url: postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 
 ...
 ~~~
@@ -533,7 +558,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{cluster_name}`  | The name of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster.
 
 </section>
 
