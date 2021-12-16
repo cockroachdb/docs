@@ -46,6 +46,7 @@ body {
   height: 100%;
   // @include paragraph-type;
   color: $neutral-800;
+  overflow-x: hidden;
 }
 
 strong {

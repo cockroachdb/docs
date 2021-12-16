@@ -9827,7 +9827,8 @@ html {
 
 body {
   height: 100%;
-  color: #242A35; }
+  color: #242A35;
+  overflow-x: hidden; }
 
 strong {
   font-family: 'SourceSansPro-Bold', sans-serif;
