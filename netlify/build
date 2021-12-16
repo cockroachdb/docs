@@ -19,8 +19,8 @@ cp _site/docs/_redirects _site/_redirects
 cp _site/docs/404.html _site/404.html
 
 # Set up htmltest
-go install github.com/cockroachdb/htmltest@5c863f8
-#pushd $GOPATH/src/github.com/cockroachdb/htmltest && git checkout fix-ignored-uris && ./build.sh && go install && popd
+go get github.com/cockroachdb/htmltest
+pushd $GOPATH/src/github.com/cockroachdb/htmltest && git checkout fix-ignored-uris && go install && popd
 
 # Run htmltest to check external links on scheduled nightly runs
 # (see .github/workflows/nightly.yml)
