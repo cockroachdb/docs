@@ -4,9 +4,9 @@ ignorecase: false
 level: warning
 swap:
   cockroachdb: CockroachDB
-  CockroachCloud: {{ site.data.products.db }}
-  CockroachCloud Serverless: {{ site.data.products.serverless }}
-  CockroachCloud Dedicated: {{ site.data.products.dedicated }}
+  CockroachCloud: '{{ site.data.products.db }}'
+  CockroachCloud Serverless: '{{ site.data.products.serverless }}'
+  CockroachCloud Dedicated: '{{ site.data.products.dedicated }}'
   Enterprise: Enterprise
   raft: Raft
   Raft Group: Raft group
