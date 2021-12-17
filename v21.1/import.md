@@ -178,6 +178,8 @@ Imported tables are treated as new tables, so you must [`GRANT`](grant.html) pri
 - To improve performance, import at least as many files as you have nodes (i.e., there is at least one file for each node to import) to increase parallelism.
 - To further improve performance, order the data in the imported files by [primary key](primary-key.html) and ensure the primary keys do not overlap between files.
 
+For more detail on optimizing import performance, see [Import Performance Best Practices](import-performance-best-practices.html).
+
 ## Viewing and controlling import jobs
 
 After CockroachDB initiates an import, you can view its progress with [`SHOW JOBS`](show-jobs.html) and on the [**Jobs** page](ui-jobs-page.html) of the DB Console, and you can control it with [`PAUSE JOB`](pause-job.html), [`RESUME JOB`](resume-job.html), and [`CANCEL JOB`](cancel-job.html).
@@ -1287,6 +1289,7 @@ CSV DATA ('nodelocal://2/customers.csv')
 - [Migrate from CSV][csv]
 - [Migrate from Avro][avro]
 - [`IMPORT INTO`](import-into.html)
+- [Import Performance Best Practices](import-performance-best-practices.html)
 
 <!-- Reference Links -->
 
