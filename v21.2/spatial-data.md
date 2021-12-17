@@ -14,7 +14,7 @@ Supported [spatial](spatial-features.html) data types include:
 
 - Geographic objects, which are also made up of [points](point.html), [lines](linestring.html), [polygons](polygon.html), etc., in 2-dimensional space. They are projected onto the surface of a sphere and are represented in SQL by the `GEOGRAPHY` data type. (Technically, they are projected onto a spheroid: "a sphere with a bulge"). The spheroid projection means that:
 
-    - The X and Y coordinates of 2-dimensional points are actually Longitude and Latitude values.
+    - The X and Y coordinates of 2-dimensional points are longitude and latitude values.
     - The paths between geographic objects are not straight lines; they are curves, and so the distances between objects are calculated using [great circle math](https://en.wikipedia.org/wiki/Great-circle_distance).
 
 ## Compatibility
