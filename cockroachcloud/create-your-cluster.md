@@ -120,6 +120,8 @@ You can use [VPC peering](network-authorization.html#vpc-peering) to connect you
         {{site.data.alerts.end}}
 
 1. Click **Next**.
+        
+        Your cluster will now have VPC Peering enabled. Once your cluster is created, see [Establish VPC Peering or AWS PrivateLink](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) to finish setting up VPC Peering for your cluster.
 
 ## Step 8. Enter billing details
 

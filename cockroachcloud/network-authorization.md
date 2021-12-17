@@ -26,7 +26,7 @@ If you select GCP as your cloud provider while [creating your {{ site.data.produ
 Setting up a VPC peering connection between your {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
 1. [Configure the IP range and size while creating the {{ site.data.products.dedicated }} cluster](#configure-the-ip-range-and-size-while-creating-your-cockroachdb-dedicated-cluster)
-1. [Configure a peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachdb-dedicated-cluster)
+1. [Establish a VPC Peering connection after creating the cluster](#establish-a-vpc-peering-connection-after-creating-your-cockroachdb-dedicated-cluster)
 
 {{site.data.alerts.callout_info}}
 Self-service VPC peering setup is not supported for {{ site.data.products.dedicated }} clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](create-your-cluster.html) with VPC peering enabled, then [export your data](backups-page.html) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into {{ site.data.products.dedicated }}'s default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
@@ -34,7 +34,7 @@ Self-service VPC peering setup is not supported for {{ site.data.products.dedica
 
 ### Configure the IP range and size while creating your {{ site.data.products.dedicated }} cluster
 
-While creating your {{ site.data.products.dedicated }} cluster, [enable VPC peering](create-your-cluster.html) and configure the IP address range and size (in CIDR format) for the {{ site.data.products.dedicated }} network based on the following considerations:
+While creating your {{ site.data.products.dedicated }} cluster, [enable VPC peering](create-your-cluster.html#step-7-enable-vpc-peering-optional) and configure the IP address range and size (in CIDR format) for the {{ site.data.products.dedicated }} network based on the following considerations:
 
 -  To adhere to [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
 - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
@@ -47,7 +47,20 @@ GKE users should note that [alias IP addresses](https://cloud.google.com/kuberne
 
 ### Establish a VPC Peering connection after creating your {{ site.data.products.dedicated }} cluster
 
-After creating your {{ site.data.products.dedicated }} cluster, [request a peering connection](connect-to-your-cluster.html#establish-vpc-peering-or-aws-privatelink) from {{ site.data.products.db }}'s **Networking** page. Then accept the request by running the `gcloud` command displayed on your screen. You can check the status of the connection on the **Peering** tab on the **Networking** page. The status is shown as `PENDING` until you accept the connection request from the GCP side. After the connection is successfully established, the status changes to `ACTIVE`. You can then [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
+After creating your {{ site.data.products.dedicated }} cluster, you can establish a VPC Peering connection from your cluster's **Networking** page:
+
+1. Navigate to your cluster's **Networking > VPC Peering** tab.
+1. Click **Set up a VPC peering connection**.
+1. On the **Request a VPC peering connection** modal, enter your [GCP Project ID](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+1. Enter your [GCP VPC network name](https://cloud.google.com/vpc/docs/using-vpc#viewing-networks).
+1. In the **Connection name** field, enter a descriptive name for the VPC connection.
+1. Click **Request Connection**.
+1. Run the command displayed on the **Accept VPC peering connection request** window using [Google Cloud Shell](https://cloud.google.com/shell) or using the [gcloud command-line tool](https://cloud.google.com/sdk/gcloud).
+1. On the **Networking** page, verify the connection status is **Active**.
+
+    The status is shown as `PENDING` until you accept the connection request from the GCP side.
+
+You can now [select a connection method](connect-to-your-cluster.html#step-2-select-a-connection-method) and [connect to your cluster](connect-to-your-cluster.html#step-3-connect-to-your-cluster).
 
 ## AWS PrivateLink
 
