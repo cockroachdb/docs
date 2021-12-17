@@ -123,6 +123,18 @@ CSV DATA (
 
 This method has the added benefit of alerting on potential issues with the import sooner; that is, you will not have to wait for the file to load both the schema and data just to find an error in the schema.
 
+### Import into a schema with secondary indexes
+
+Importing data into a schema that has [secondary indexes](schema-design-indexes.html) will increase the import's total time to completion. The import job will perform the import and populate the indexes concurrently, which causes the longer import time.
+
+The default workflow is suitable for most import jobs; that is, the import and index population taking place concurrently as part of the import job.
+
+For **large** imports, consider removing the secondary indexes from the schema, performing the import, and then re-creating the indexes separately as this will result in the import being faster. This alternative approach does involve more steps overall, however, it offers a clearer view of the work progressing.
+
+- [Remove the secondary indexes](drop-index.html)
+- [Perform the import](import-into.html)
+- [Create a secondary index](schema-design-indexes.html#create-a-secondary-index)
+
 ## See also
 
 - [`IMPORT`](import.html)
