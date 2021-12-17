@@ -128,7 +128,7 @@ LIMIT
 	25;
 ~~~
 
-Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Make queries fast][fast].
+Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Optimize Query Performance][fast].
 
 ## Pagination
 
@@ -146,7 +146,7 @@ For a tutorial explaining keyset pagination queries and showing how to write the
 
 ## Query optimization
 
-For instructions showing how to optimize your SQL queries, see [Make queries fast][fast].
+For instructions showing how to optimize your SQL queries, see [Optimize Query Performance][fast].
 
 ## See also
 

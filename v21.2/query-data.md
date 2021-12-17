@@ -177,7 +177,7 @@ LIMIT
 	25;
 ~~~
 
-Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Make queries fast][fast].
+Join performance can be a big factor in your application's performance.  For more information about how to make sure your SQL performs well, see [Optimize Statement Performance][fast].
 
 ## See also
 
