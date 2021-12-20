@@ -130,13 +130,13 @@
           ]
         },
         {
-          "title": "Improving Statement Performance",
+          "title": "Improve Statement Performance",
           "urls": [
             "/${VERSION}/make-queries-fast.html"
           ]
         },
         {
-          "title": "Tuning with <code>EXPLAIN</code>",
+          "title": "Tune with <code>EXPLAIN</code>",
           "urls": [
             "/${VERSION}/sql-tuning-with-explain.html"
           ]
@@ -317,7 +317,7 @@
               "title": "Third-Party Monitoring Integrations",
               "items": [
                 {
-                  "title": "Overview of Third-Party Monitoring Integrations",
+                  "title": "Third-Party Monitoring Integration Overview",
                   "urls": [
                     "/${VERSION}/third-party-monitoring-tools.html"
                   ]
