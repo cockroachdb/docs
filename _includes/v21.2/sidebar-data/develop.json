@@ -237,8 +237,19 @@
     },
     {
       "title": "Transactions",
-      "urls": [
-        "/${VERSION}/transactions.html"
+      "items": [
+        {
+          "title": "Overview of Transactions",
+          "urls": [
+            "/${VERSION}/transactions.html"
+          ]
+        },
+        {
+          "title": "Advanced Client-side Transaction Retries",
+          "urls": [
+            "/${VERSION}/advanced-client-side-transaction-retries.html"
+          ]
+        }
       ]
     },
     {
