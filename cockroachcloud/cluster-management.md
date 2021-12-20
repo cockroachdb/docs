@@ -137,7 +137,7 @@ Deleting a cluster will delete all cluster data.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-{{ site.data.products.serverless }} clusters are subject to deletion after 6 months of no activity.
+You will only be billed for a {{ site.data.products.dedicated }} cluster while it is running. You can delete a cluster at any time to stop charges from accumulating.
 {{site.data.alerts.end}}
 
 Proceed with the following steps only if you are sure you want to delete a cluster:
