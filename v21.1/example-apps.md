@@ -41,6 +41,7 @@ Note that tools with [**community-level** support](community-tooling.html) have 
 |---------------------------------------------------------+----------------+--------------------------------------------------------|
 | [node-postgres](https://www.npmjs.com/package/pg)       | Full           | [Hello World](hello-world-node-postgres.html)<br>[Simple CRUD](build-a-nodejs-app-with-cockroachdb.html)
 | [Sequelize](https://www.npmjs.com/package/sequelize)    | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-sequelize.html)
+| [Knex.js](https://knexjs.org/)                          | Full           | [Simple CRUD](build-a-nodejs-app-with-cockroachdb-knexjs.html)
 | [TypeORM](https://www.npmjs.com/package/typeorm)        | Full           | [Simple CRUD](build-a-typescript-app-with-cockroachdb.html)
 
 ## Python
@@ -109,6 +110,6 @@ Specific tasks:
 - [Query Data](query-data.html)
 - [Update Data](update-data.html)
 - [Delete Data](delete-data.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
 - [Run Multi-Statement Transactions](run-multi-statement-transactions.html)
 - [Error Handling and Troubleshooting](error-handling-and-troubleshooting.html)

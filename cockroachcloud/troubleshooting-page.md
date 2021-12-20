@@ -99,6 +99,17 @@ Error: dial tcp 35.240.101.1:26257: connect: connection refused
 **Solution:**
 {{ site.data.products.db }} connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](../{{site.versions["stable"]}}/connection-pooling.html) and connection retry logic to ensure that connections remain current. See the [Production Checklist](production-checklist.html) for more information.
 
+### External network access disabled
+
+The following error is displayed if you try to access cloud storage from an organization without billing information on file:
+
+~~~ shell
+ERROR: external network access is disabled
+~~~
+
+**Solution:**
+You must [set up billing information](billing-management.html) for your organization to use cloud storage. If you don't have a credit card on file, you will be limited to `userfile` storage for [bulk operations](run-bulk-operations.html).
+
 ## Security errors
 
 ### Incorrect certs path
