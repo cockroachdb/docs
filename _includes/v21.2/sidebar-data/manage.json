@@ -290,7 +290,7 @@
           "title": "Monitor a CockroachDB Self-Hosted Cluster",
           "items": [
             {
-              "title": "Overview of Monitoring Clusters",
+              "title": "Monitoring Clusters Overview",
               "urls": [
                 "/${VERSION}/monitoring-and-alerting.html"
               ]

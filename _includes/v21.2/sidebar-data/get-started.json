@@ -16,10 +16,134 @@
       ]
     },
     {
-      "title": "Build a Hello World Application",
-      "urls": [
-        "/cockroachcloud/hello-world-example-apps.html"
-        ]
+      "title": "Build a Sample Application",
+      "items": [
+        {
+          "title": "Build a Hello World Application",
+          "urls": [
+            "/cockroachcloud/hello-world-example-apps.html"
+            ]
+        },
+        {
+          "title": "Build a Simple CRUD Application",
+          "items": [
+            {
+              "title": "Go",
+              "urls": [
+                "/${VERSION}/build-a-go-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-pq.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-gorm.html",
+                "/${VERSION}/build-a-go-app-with-cockroachdb-upperdb.html"
+              ]
+            },
+            {
+              "title": "Java",
+              "urls": [
+                "/${VERSION}/build-a-java-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-java-app-with-cockroachdb-hibernate.html",
+                "/${VERSION}/build-a-java-app-with-cockroachdb-jooq.html",
+                "/${VERSION}/build-a-spring-app-with-cockroachdb-mybatis.html"
+              ]
+            },
+            {
+              "title": "JavaScript/TypeScript",
+              "urls": [
+                "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+                "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
+                "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "Python",
+              "urls": [
+                "/${VERSION}/build-a-python-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-python-app-with-cockroachdb-sqlalchemy.html",
+                "/${VERSION}/build-a-python-app-with-cockroachdb-django.html",
+                "/${VERSION}/build-a-python-app-with-cockroachdb-pony.html"
+              ]
+            },
+            {
+              "title": "Ruby",
+              "urls": [
+                "/${VERSION}/build-a-ruby-app-with-cockroachdb.html",
+                "/${VERSION}/build-a-ruby-app-with-cockroachdb-activerecord.html"
+              ]
+            },
+            {
+              "title": "C++",
+              "urls": [
+                "/${VERSION}/build-a-c++-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "C# (.NET)",
+              "urls": [
+                "/${VERSION}/build-a-csharp-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "Clojure",
+              "urls": [
+                "/${VERSION}/build-a-clojure-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "PHP",
+              "urls": [
+                "/${VERSION}/build-a-php-app-with-cockroachdb.html"
+              ]
+            },
+            {
+              "title": "Rust",
+              "urls": [
+                "/${VERSION}/build-a-rust-app-with-cockroachdb.html"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "FAQs",
+      "items": [
+        {
+          "title": "Product FAQs",
+          "urls": [
+            "/${VERSION}/frequently-asked-questions.html"
+          ]
+        },
+        {
+          "title": "SQL FAQs",
+          "urls": [
+            "/${VERSION}/sql-faqs.html"
+          ]
+        },
+        {
+          "title": "Operational FAQs",
+          "urls": [
+            "/${VERSION}/operational-faqs.html"
+          ]
+        },
+        {
+          "title": "Availability FAQs",
+          "urls": [
+            "/${VERSION}/multi-active-availability.html"
+          ]
+        },
+        {
+          "title": "Licensing FAQs",
+          "urls": [
+            "/${VERSION}/licensing-faqs.html"
+          ]
+        },
+        {
+          "title": "CockroachDB in Comparison",
+          "urls": [
+            "/${VERSION}/cockroachdb-in-comparison.html"
+          ]
+        }
+      ]
     }
   ]
 }
