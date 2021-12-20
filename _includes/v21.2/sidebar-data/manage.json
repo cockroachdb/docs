@@ -12,7 +12,7 @@
           ]
         },
         {
-          "title": "Manage Your CockroachDB Dedicated Cluster",
+          "title": "Manage a CockroachDB Dedicated Cluster",
           "urls": [
             "/cockroachcloud/cluster-management.html"
           ]
@@ -23,7 +23,7 @@
       "title": "Back Up and Restore Data",
       "items": [
         {
-          "title": "Backup and Restore CockroachDB Cloud Clusters",
+          "title": "Back Up and Restore CockroachDB Cloud Clusters",
           "items": [
             {
               "title": "Run Bulk Operations",
@@ -40,7 +40,7 @@
           ]
         },
         {
-          "title": "Backup and Restore CockroachDB Self-Hosted Clusters",
+          "title": "Back Up and Restore CockroachDB Self-Hosted Clusters",
           "items": [
             {
               "title": "Full and Incremental Backups",
@@ -136,7 +136,7 @@
           ]
         },
         {
-          "title": "Tuning with EXPLAIN",
+          "title": "Tuning with <code>EXPLAIN</code>",
           "urls": [
             "/${VERSION}/sql-tuning-with-explain.html"
           ]
@@ -147,7 +147,7 @@
       "title": "Security",
       "items": [
         {
-          "title": "Securing CockroachDB Cloud Clusters",
+          "title": "Secure CockroachDB Cloud Clusters",
           "items": [
             {
               "title": "Security Overview",
@@ -188,7 +188,7 @@
           ]
         },
         {
-          "title": "Securing CockroachDB Self-Hosted Clusters",
+          "title": "Secure CockroachDB Self-Hosted Clusters",
           "items": [
             {
               "title": "Overview",
@@ -246,7 +246,7 @@
       "title": "Monitoring and Alerting",
       "items": [
         {
-          "title": "Monitor Your CockroachDB Cloud Cluster",
+          "title": "Monitor a CockroachDB Cloud Cluster",
           "items": [
             {
               "title": "Cluster Overview Page",
@@ -287,10 +287,10 @@
           ]
         },
         {
-          "title": "Monitor Your CockroachDB Self-Hosted Cluster",
+          "title": "Monitor a CockroachDB Self-Hosted Cluster",
           "items": [
             {
-              "title": "Overview",
+              "title": "Overview of Monitoring Clusters",
               "urls": [
                 "/${VERSION}/monitoring-and-alerting.html"
               ]
@@ -317,19 +317,19 @@
               "title": "Third-Party Monitoring Integrations",
               "items": [
                 {
-                  "title": "Overview",
+                  "title": "Overview of Third-Party Monitoring Integrations",
                   "urls": [
                     "/${VERSION}/third-party-monitoring-tools.html"
                   ]
                 },
                 {
-                  "title": "Datadog",
+                  "title": "Monitoring with Datadog",
                   "urls": [
                     "/${VERSION}/datadog.html"
                   ]
                 },
                 {
-                  "title": "Kibana",
+                  "title": "Monitoring with Kibana",
                   "urls": [
                     "/${VERSION}/kibana.html"
                   ]
@@ -367,13 +367,13 @@
       "title": "Cluster Maintenance",
       "items": [
         {
-          "title": "Upgrading Your Cluster",
+          "title": "Upgrade a Cluster",
           "items": [
             {
-              "title": "Uprade Your CockroachDB Cloud Cluster",
+              "title": "Uprade a CockroachDB Cloud Cluster",
               "items": [
                 {
-              	  "title": "Upgrade Your Cluster",
+              	  "title": "Upgrade a Cluster",
               	  "items": [
               	    {
               	      "title": "Upgrade Policy",
@@ -410,7 +410,7 @@
               ]
             },
             {
-              "title": "Upgrade Your CockroachDB Self-Hosted Cluster",
+              "title": "Upgrade a CockroachDB Self-Hosted Cluster",
               "items": [
                 {
                   "title": "Upgrade to CockroachDB v21.2",
@@ -455,10 +455,10 @@
       ]
     },
     {
-      "title": "Troubleshoot",
+      "title": "Troubleshoot a Cluster",
       "items": [
         {
-          "title": "Overview",
+          "title": "Troubleshooting Overview",
           "urls": [
             "/${VERSION}/troubleshooting-overview.html"
           ]

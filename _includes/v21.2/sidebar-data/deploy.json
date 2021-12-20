@@ -85,21 +85,21 @@
                   "title": "Start a Local Cluster",
                   "items": [
                     {
-                      "title": "From Binary",
+                      "title": "Start From Binary",
                       "urls": [
                         "/${VERSION}/secure-a-cluster.html",
                         "/${VERSION}/start-a-local-cluster.html"
                       ]
                     },
                     {
-                      "title": "In Kubernetes",
+                      "title": "Start In Kubernetes",
                       "urls": [
                         "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes.html",
                         "/${VERSION}/orchestrate-a-local-cluster-with-kubernetes-insecure.html"
                       ]
                     },
                     {
-                      "title": "In Docker",
+                      "title": "Start In Docker",
                       "urls": [
                         "/${VERSION}/start-a-local-cluster-in-docker-mac.html",
                         "/${VERSION}/start-a-local-cluster-in-docker-linux.html",
@@ -107,7 +107,7 @@
                       ]
                     },
                     {
-                      "title": "Simulate a Multi-region Cluster on localhost",
+                      "title": "Simulate a Multi-Region Cluster on localhost",
                       "urls": [
                         "/${VERSION}/simulate-a-multi-region-cluster-on-localhost.html"
                       ]
@@ -216,28 +216,28 @@
                   ]
                 },
                 {
-                  "title": "AWS",
+                  "title": "Deploy on AWS",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-on-aws.html",
                     "/${VERSION}/deploy-cockroachdb-on-aws-insecure.html"
                   ]
                 },
                 {
-                  "title": "Azure",
+                  "title": "Deploy on Azure",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-on-microsoft-azure.html",
                     "/${VERSION}/deploy-cockroachdb-on-microsoft-azure-insecure.html"
                   ]
                 },
                 {
-                  "title": "Digital Ocean",
+                  "title": "Deploy on Digital Ocean",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-on-digital-ocean.html",
                     "/${VERSION}/deploy-cockroachdb-on-digital-ocean-insecure.html"
                   ]
                 },
                 {
-                  "title": "Google Cloud Platform GCE",
+                  "title": "Deploy on Google Cloud Platform GCE",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform.html",
                     "/${VERSION}/deploy-cockroachdb-on-google-cloud-platform-insecure.html"
@@ -250,7 +250,7 @@
       ]
     },
     {
-      "title": "Multi-region Capabilities",
+      "title": "Multi-Region Capabilities",
       "items": [
         {
           "title": "Overview",
@@ -259,7 +259,7 @@
           ]
         },
         {
-          "title": "Choosing a Multi-region Configuration",
+          "title": "Choosing a Multi-Region Configuration",
           "urls": [
             "/${VERSION}/choosing-a-multi-region-configuration.html"
           ]
@@ -283,7 +283,7 @@
           ]
         },
         {
-          "title": "Migrate to Multi-region SQL",
+          "title": "Migrate to Multi-Region SQL",
           "urls": [
             "/${VERSION}/migrate-to-multiregion-sql.html"
           ]
@@ -352,7 +352,7 @@
           ]
         },
         {
-          "title": "Multi-region Performance",
+          "title": "Multi-Region Performance",
           "urls": [
             "/${VERSION}/demo-low-latency-multi-region-deployment.html"
           ]

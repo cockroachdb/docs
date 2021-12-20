@@ -296,7 +296,7 @@
       ]
     },
     {
-      "title": "Example Apps",
+      "title": "Example Applications",
       "items": [
         {
           "title": "Overview",
@@ -412,7 +412,7 @@
           ]
         },
         {
-          "title": "Roach Data",
+          "title": "Build the Roach Data Application using Spring Boot",
           "items": [
             {
               "title": "Spring Boot with JDBC",
@@ -429,7 +429,7 @@
           ]
         },
         {
-          "title": "MovR",
+          "title": "The MovR Example Application",
           "items": [
             {
               "title": "Overview",
