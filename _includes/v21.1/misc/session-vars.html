@@ -260,6 +260,16 @@
 
   <tr>
    <td>
+    <code>large_full_scan_rows</code>
+   </td>
+   <td>Determines which tables are considered "large" such that <code>disallow_full_table_scans</code> rejects full table or index scans of "large" tables. The default value is <code>1000</code>. To reject all full table or index scans, set to <code>0</code>.</td>
+   <td>User-dependent</td>
+   <td>No</td>
+   <td>Yes</td>
+  </tr>
+
+  <tr>
+   <td>
     <code>locality</code>
    </td>
    <td>The location of the node.<br>For more information, see <a href="cockroach-start.html#locality">Locality</a>.</td>
