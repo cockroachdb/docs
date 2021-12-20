@@ -7,7 +7,7 @@
         {
           "title": "Latest v21.2",
           "urls": [
-            "/releases/v21.2.2.html"
+            "/releases/v21.2.3.html"
           ]
         },
         {
@@ -26,6 +26,7 @@
           "title": "All Production Releases",
           "urls": [
             "/releases/index.html#production-releases",
+            "/releases/v21.2.3.html",
             "/releases/v21.2.2.html",
             "/releases/v21.2.1.html",
             "/releases/v21.1.12.html",
@@ -95,7 +96,9 @@
         "/advisories/a71655.html",
         "/advisories/a71553.html",
         "/advisories/a72839.html",
-        "/advisories/a73024.html"
+        "/advisories/a73024.html",
+        "/advisories/a73629.html",
+        "/advisories/aCVE-2021-44228.html"
       ]
     }
   ]
