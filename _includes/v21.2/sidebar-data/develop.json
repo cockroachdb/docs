@@ -310,7 +310,7 @@
       "title": "Example Applications",
       "items": [
         {
-          "title": "Overview",
+          "title": "Overview of Example Applications",
           "urls": [
             "/${VERSION}/example-apps.html"
           ]

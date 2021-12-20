@@ -4,10 +4,13 @@
     "items": [
       {
         "title": "Architecture",
-        "urls": [
-          "/${VERSION}/architecture/overview.html"
-        ],
         "items": [
+          {
+            "title": "Architecture Overview",
+            "urls": [
+              "/${VERSION}/architecture/overview.html"
+            ]
+          },
           {
             "title": "SQL Layer",
             "urls": [
@@ -71,7 +74,7 @@
             "title": "SQL Overview",
             "urls": [
               "/${VERSION}/sql-feature-support.html"
-            ],
+            ]
           },
           {
             "title": "PostgreSQL Compatibility",
@@ -1390,10 +1393,13 @@
       },
       {
         "title": "CLI Reference",
-        "urls": [
-          "/${VERSION}/cockroach-commands.html"
-        ],
         "items": [
+          {
+            "title": "Cockroach Commands",
+            "urls": [
+              "/${VERSION}/cockroach-commands.html"
+            ]
+          },
           {
             "title": "Client Connection Parameters",
             "urls": [
@@ -1565,10 +1571,13 @@
       },
       {
         "title": "DB Console",
-        "urls": [
-          "/${VERSION}/ui-overview.html"
-        ],
         "items": [
+          {
+            "title": "DB Console Overview",
+            "urls": [
+              "/${VERSION}/ui-overview.html"
+            ]
+          },
           {
             "title": "Cluster Overview Page",
             "urls": [
@@ -1692,10 +1701,13 @@
       },
       {
         "title": "Logging Reference",
-        "urls": [
-          "/${VERSION}/logging.html"
-        ],
         "items": [
+          {
+            "title": "Logging Levels and Channels",
+            "urls": [
+              "/${VERSION}/logging.html"
+            ]
+          },
           {
             "title": "Log Formats",
             "urls": [
