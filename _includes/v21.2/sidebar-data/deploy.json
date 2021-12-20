@@ -209,7 +209,7 @@
                   ]
                 },
                 {
-                  "title": "On-Premises",
+                  "title": "On-Premises Deployment",
                   "urls": [
                     "/${VERSION}/deploy-cockroachdb-on-premises.html",
                     "/${VERSION}/deploy-cockroachdb-on-premises-insecure.html"

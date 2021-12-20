@@ -282,7 +282,7 @@
           ]
         },
         {
-          "title": "Use the EXPLAIN statement",
+          "title": "Use the EXPLAIN Statement",
           "urls": [
             "/${VERSION}/sql-tuning-with-explain.html"
           ]
@@ -447,7 +447,7 @@
                   ]
                 },
                 {
-                  "title": "Global Application Use-case",
+                  "title": "Global Application Use Case",
                   "urls": [
                     "/${VERSION}/movr-flask-use-case.html"
                   ]
