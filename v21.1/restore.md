@@ -194,23 +194,40 @@ The examples in this section use the **default** `AUTH=specified` parameter. For
 
 ### View the backup subdirectories
 
-<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme by default, unless an [explicit subdirectory](../{{site.versions["stable"]}}/backup.html#specify-a-subdirectory-for-backups) is passed with the `BACKUP` statement. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
+<span class="version-tag">New in v21.1:</span> `BACKUP ... INTO` adds a backup to a collection within the backup destination. The path to the backup is created using a date-based naming scheme. To view the backup paths in a given destination, use [`SHOW BACKUPS`](show-backup.html):
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 's3://{bucket_name}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
+> SHOW BACKUPS IN 's3://{bucket_name}/{path/to/backup}?AWS_ACCESS_KEY_ID={key_id}&AWS_SECRET_ACCESS_KEY={access_key}';
 ~~~
 
 ~~~
-        path
-------------------------
-2021/03/23-213101.37
-2021/03/24-172553.85
-2021/03/24-210532.53
+       path
+-------------------------
+/2021/12/14-190909.83
+/2021/12/20-155249.37
+/2021/12/21-142943.73
 (3 rows)
 ~~~
 
-When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23-213101.37`) to the `RESTORE` statement.
+When you restore a backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement.
+
+Incremental backups will be appended to the full backup with `BACKUP ... INTO LATEST IN {destination}`. Your storage location will contain the incremental as a date-based subdirectory within the full backup.
+
+In the following example `/2021/12/21-142943.73` contains the full backup. The incremental backups (`144748.08/` and `144639.97/`) are appended as subdirectories to the full backup:
+
+~~~
+2021
+|—— 12
+   |—— 21-142943.73/
+       |—— 20211221/
+           |—— 144748.08/
+           |—— 144639.97/
+~~~
+
+To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory)
+
+See [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) to control where your backups go.
 
 ### Restore a cluster
 
@@ -258,7 +275,7 @@ To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subd
 
 ### Restore from incremental backups
 
-Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires full and incremental backups to be in the same subdirectory:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -362,19 +379,36 @@ After the restore completes, add the `users` to the existing `system.users` tabl
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-> SHOW BACKUPS IN 'azure://{container name}/{path}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
+> SHOW BACKUPS IN 'azure://{container name}/{path/to/backup}?AZURE_ACCOUNT_NAME={account name}&AZURE_ACCOUNT_KEY={url-encoded key}';
 ~~~
 
 ~~~
-        path
-------------------------
-2021/03/23-213101.37
-2021/03/24-172553.85
-2021/03/24-210532.53
+       path
+-------------------------
+/2021/12/14-190909.83
+/2021/12/20-155249.37
+/2021/12/21-142943.73
 (3 rows)
 ~~~
 
-When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23-213101.37`) to the `RESTORE` statement.
+When you restore a backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement.
+
+Incremental backups will be appended to the full backup with `BACKUP ... INTO LATEST IN {destination}`. Your storage location will contain the incremental as a date-based subdirectory within the full backup.
+
+In the following example `/2021/12/21-142943.73` contains the full backup. The incremental backups (`144748.08/` and `144639.97/`) are appended as subdirectories to the full backup:
+
+~~~
+2021
+|—— 12
+   |—— 21-142943.73/
+       |—— 20211221/
+           |—— 144748.08/
+           |—— 144639.97/
+~~~
+
+To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory)
+
+See [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) to control where your backups go.
 
 ### Restore a cluster
 
@@ -422,7 +456,7 @@ To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subd
 
 ### Restore from incremental backups
 
-Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires full and incremental backups to be in the same subdirectory:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
@@ -534,15 +568,32 @@ The examples in this section use the `AUTH=specified` parameter, which will be t
 ~~~
 
 ~~~
-        path
-------------------------
-2021/03/23-213101.37
-2021/03/24-172553.85
-2021/03/24-210532.53
+       path
+-------------------------
+/2021/12/14-190909.83
+/2021/12/20-155249.37
+/2021/12/21-142943.73
 (3 rows)
 ~~~
 
-When you restore a backup, add the backup's subdirectory path (e.g., `2021/03/23-213101.37`) to the `RESTORE` statement.
+When you restore a backup, add the backup's subdirectory path (e.g. `/2021/12/21-142943.73`) to the `RESTORE` statement.
+
+Incremental backups will be appended to the full backup with `BACKUP ... INTO LATEST IN {destination}`. Your storage location will contain the incremental as a date-based subdirectory within the full backup.
+
+In the following example `/2021/12/21-142943.73` contains the full backup. The incremental backups (`144748.08/` and `144639.97/`) are appended as subdirectories to the full backup:
+
+~~~
+2021
+|—— 12
+   |—— 21-142943.73/
+       |—— 20211221/
+           |—— 144748.08/
+           |—— 144639.97/
+~~~
+
+To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory)
+
+See [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) to control where your backups go.
 
 ### Restore a cluster
 
@@ -590,7 +641,7 @@ To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subd
 
 ### Restore from incremental backups
 
-Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires previous full and incremental backups. To restore from a destination containing the full backup, as well as the incremental backups (stored as subdirectories):
+Restoring from [incremental backups](take-full-and-incremental-backups.html#incremental-backups) requires full and incremental backups to be in the same subdirectory:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
