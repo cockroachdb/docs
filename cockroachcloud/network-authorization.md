@@ -23,7 +23,7 @@ You can add up to 20 IP addresses to your allowlist. If your application servers
 
 If you select GCP as your cloud provider while [creating your {{ site.data.products.dedicated }} cluster](create-your-cluster.html), you can use [Google Cloud's VPC Network Peering](https://cloud.google.com/vpc/docs/vpc-peering) feature to connect your GCP application directly to your {{ site.data.products.dedicated }} cluster using internal IP addresses, thus limiting exposure to the public network and reducing network latency.
 
-GKE users should note that [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips) are enabled by default in order to create a VPC-native cluster. If you are connecting to a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) and [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes), {{ site.data.products.db }} will import your custom routes by default.
+GKE users should note that we recommend deploying your application to a VPC-native cluster that uses [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips). If you are connecting to a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) instead, you will have to [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes). {{ site.data.products.db }} will import your custom routes by default.
 
 Setting up a VPC peering connection between your {{ site.data.products.dedicated }} cluster and GCP application is a two-part process:
 
