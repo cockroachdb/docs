@@ -42,6 +42,10 @@ All resource usage in {{ site.data.products.serverless }} is measured in Request
 
 No, you can create a Serverless cluster that is free forever. If you choose to set a spend limit for your cluster, you will only be charged for the resources you use up to your spend limit.
 
+### How can I estimate how many RUs my workload will consume?
+
+{% include cockroachcloud/serverless-usage.md %}
+
 ### What can I use {{ site.data.products.serverless }} for?
 
 Free {{ site.data.products.serverless }} clusters can be used for proofs-of-concept, toy programs, or to use while completing [Cockroach University](https://www.cockroachlabs.com/cockroach-university/).
