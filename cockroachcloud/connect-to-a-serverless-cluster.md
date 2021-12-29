@@ -3,12 +3,12 @@ title: Connect to a CockroachDB Serverless (beta) Cluster
 summary: Learn how to connect and start interacting with your free cluster.
 toc: true
 redirect_from: connect-to-a-free-cluster.html
+filter_category: conn_crdb_cloud
+filter_html: CockroachDB Serverless (beta)
+filter_sort: 1
 ---
 
-<div class="filters clearfix">
-    <a href="connect-to-a-serverless-cluster.html"><button class="filter-button page-level current">{{ site.data.products.serverless }}</button></a>
-    <a href="connect-to-your-cluster.html"><button class="filter-button page-level">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page shows you how to connect to your {{ site.data.products.serverless }} cluster. If you'd like to follow along with a video walkthrough, see [How to connect to {{ site.data.products.db }} and Import Data](https://www.youtube.com/watch?v=XJZD1rorEQE).
 
@@ -66,9 +66,9 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
     {% include cockroachcloud/download-the-cert-free.md %}
 
 1. Copy the [`cockroach sql`](../{{site.versions["stable"]}}/cockroach-sql.html) command and connection string provided in the **Connect** modal, which will be used in the next step (and to connect to your cluster in the future):
-    
+
     {% include cockroachcloud/sql-connection-string-free.md %}
-    
+
 1. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](../{{site.versions["stable"]}}/cockroach-sql.html).
 
 1. Enter the SQL user's password and hit enter.
@@ -89,7 +89,7 @@ To connect to your cluster with the [built-in SQL client](../{{site.versions["st
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-string">
-  
+
 To connect to your cluster with your application, use the connection string provided in the Console:
 
 1. Select **Mac**, **Linux**, or **Windows** to adjust the commands used in the next steps accordingly.
@@ -130,7 +130,7 @@ To connect to your cluster with your application, use the connection string prov
 1. Add your copied connection string to your application code.
 
     {% include cockroachcloud/postgresql-special-characters.md %}
-    
+
     {{site.data.alerts.callout_info}}
     If you forget your SQL user's password, a Console Admin can change the password on the **SQL Users** page.
     {{site.data.alerts.end}}
@@ -146,7 +146,7 @@ For connection examples and code snippets in your language, see the following:
   </section>
 
   <section class="filter-content" markdown="1" data-scope="connection-parameters">
-  
+
 To connect to your cluster with a [CockroachDB-compatible tool](../{{site.versions["stable"]}}/third-party-database-tools.html), use the connection parameters provided in the Console.
 
 {{site.data.alerts.callout_info}}

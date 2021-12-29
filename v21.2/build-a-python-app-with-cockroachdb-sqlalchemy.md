@@ -4,15 +4,12 @@ summary: Learn how to use CockroachDB from a simple Python application with SQLA
 toc: true
 twitter: false
 referral_id: docs_hello_world_python_sqlalchemy
+filter_category: crud_python
+filter_html: <strong>SQLAlchemy</strong>
+filter_sort: 2
 ---
 
-<div class="filters clearfix">
-    <a href="build-a-python-app-with-cockroachdb.html"><button class="filter-button page-level"><strong>psycopg2</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-sqlalchemy.html"><button class="filter-button page-level current"><strong>SQLAlchemy</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-django.html"><button class="filter-button page-level"><strong>Django</strong></button></a>
-    <a href="build-a-python-app-with-cockroachdb-pony.html"><button class="filter-button page-level"><strong>PonyORM</strong></button></a>
-    <a href="http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#cockroach-database"><button class="filter-button page-level"><strong>peewee</strong></button></a>
-</div>
+{% include filter-tabs.md %}
 
 {% include cockroach_u_pydev.md %}
 

@@ -2,12 +2,12 @@
 title: Connect to the Database
 summary: How to connect to a CockroachDB cluster from your application
 toc: true
+filter_category: connect_db
+filter_html: Local
+filter_sort: 1
 ---
 
-<div class="filters filters-big clearfix">
-  <button class="filter-button current">Local</button>
-  <a href="connect-to-the-database-cockroachcloud.html"><button class="filter-button">{{ site.data.products.db }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page has instructions for connecting to a CockroachDB cluster from your application using various programming languages. Each example shows a [connection string][connection_params] for a secure cluster to a `bank` database. Depending on your cluster's configuration, you may need to edit this connection string.
 

@@ -2,12 +2,12 @@
 title: Create a CockroachDB Dedicated Cluster
 summary: Learn how to create your CockroachDB Dedicated cluster.
 toc: true
+filter_category: create_cluster_cloud
+filter_html: CockroachDB Dedicated
+filter_sort: 2
 ---
 
-<div class="filters clearfix">
-    <a href="create-a-serverless-cluster.html"><button class="filter-button page-level">{{ site.data.products.serverless }}</button></a>
-    <a href="create-your-cluster.html"><button class="filter-button page-level current">{{ site.data.products.dedicated }}</button></a>
-</div>
+{% include filter-tabs.md %}
 
 This page walks you through the process of creating a {{ site.data.products.dedicated }} cluster. Note that only [{{ site.data.products.db }} Console Administrators](console-access-management.html#console-admin) can create clusters. If you are a Developer and need to create a cluster, contact your {{ site.data.products.db }} Administrator.
 
@@ -57,7 +57,7 @@ If you want to create a cluster in a disabled region, please [contact Support](h
 
 ## Step 4. Select the number of nodes
 
-In the **Regions & nodes** section, select the number of nodes. 
+In the **Regions & nodes** section, select the number of nodes.
 
 - For single-region application development and testing, you may create a 1-node cluster.
 - For single-region production deployments, we recommend a minimum of 3 nodes. The number of nodes also depends on your storage capacity and performance requirements. See [Example](#example) for further guidance.
