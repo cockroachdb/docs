@@ -42,13 +42,15 @@ For example:
 ~~~ js
 const { Client } = require('pg')
 
-const connectionString = '<connection-string>'
+const connectionString = process.env.DATABASE_URL
 const client = new Client({
   connectionString,
 })
 
 client.connect()
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 node-postgres accepts the following format for CockroachDB connection strings:
 
@@ -63,6 +65,8 @@ For more information about connecting with node-postgres, see the [official node
 
 <section class="filter-content" markdown="1" data-scope="sequelize">
 
+## Connect with Sequelize
+
 To connect to CockroachDB with [Sequelize](https://sequelize.org), create a `Sequelize` object with the [CockroachDB Sequelize adapter](https://github.com/cockroachdb/sequelize-cockroachdb).
 
 For example:
@@ -71,8 +75,11 @@ For example:
 ~~~ js
 const Sequelize = require("sequelize-cockroachdb");
 
-const sequelize = new Sequelize('<connection-string>')
+const connectionString = process.env.DATABASE_URL
+const sequelize = new Sequelize(connectionString)
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 Sequelize versions 6.10 and later accept the following format for CockroachDB connection strings:
 
@@ -97,27 +104,17 @@ For more information about connecting with Sequelize, see the [official Sequeliz
 
 <section class="filter-content" markdown="1" data-scope="typeorm">
 
-To connect to CockroachDB with [TypeORM](https://typeorm.io), update your project's `ormconfig` file with the required connection properties.
+## Connect with TypeORM
 
-For example, suppose that you have a file named `ormconfig.json` in the project's root directory:
+To connect to CockroachDB with [TypeORM](https://typeorm.io), you must specify the `type`,`url`, `ssl`, and `options=--cluster` connection options. You can do this in your project's `ormconfig` file, or with environment variables.
 
-{% include copy-clipboard.html %}
-~~~ json
-{
-    "type": "cockroachdb",
-    "url": "<connection-string>",
-    "ssl": true,
-    "extra": {
-      "options": "--cluster=<routing-id>"
-    },
-}
-~~~
-
-TypeORM accepts the following format for CockroachDB connection strings:
+For example, suppose that you have the following environment variables set:
 
 {% include copy-clipboard.html %}
-~~~
-postgresql://<username>:<password>@<host>:<port>/<database>
+~~~ env
+TYPEORM_CONNECTION = cockroachdb
+TYPEORM_URL = postgresql://<username>:<password>@<host>:<port>/<database>
+TYPEORM_DRIVER_EXTRA='{"ssl": "true", "options": "--cluster=<routing-id>"}'
 ~~~
 
 You can then call `createConnection` without any parameters:
@@ -131,9 +128,11 @@ import {createConnection} from "typeorm";
 const connection = await createConnection();
 ~~~
 
-`createConnection` will use the properties set in `ormconfig.json` to connect to your cluster.
+`createConnection` will use the properties in your environment variables.
 
-TypeORM supports `ormconfig` in the following formats: `.json`, `.js`, `.ts`, `.env`, `.yml` and `.xml`.
+{{site.data.alerts.callout_info}}
+The `TYPEORM_CONNECTION` and `TYPEORM_URL` environment variables correspond to the `type` and `url` connection options.
+{{site.data.alerts.end}}
 
 For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/connection).
 
@@ -148,7 +147,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<routing-id>`  | The routing ID of the CockroachDB cluster.
+`<routing-id>`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
 
 </section>
 
@@ -175,9 +174,12 @@ For example:
 {% include copy-clipboard.html %}
 ~~~ python
 import psycopg2
+import os
 
-conn = psycopg2.connect('{connection-string}')
+conn = psycopg2.connect(os.environ['DATABASE_URL'])
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 Psycopg2 accepts the following format for CockroachDB connection strings:
 
@@ -201,10 +203,13 @@ For example:
 {% include copy-clipboard.html %}
 ~~~ python
 from sqlalchemy import create_engine
+import os
 
-engine = create_engine('{connection-string}')
+engine = create_engine(os.environ['DATABASE_URL'])
 engine.connect()
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 SQLAlchemy accepts the following format for CockroachDB connection strings:
 
@@ -270,7 +275,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
 
 </section>
 
@@ -296,18 +301,21 @@ package main
 
 import (
   "context"
+  "os"
 
   "github.com/jackc/pgx/v4"
 )
 
 func main() {
-  conn, err := pgx.Connect(context.Background(), "{connection-string}")
+  conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
   if err != nil {
     log.Fatal(err)
   }
   defer conn.Close(context.Background())
 }
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pgx accepts the following format for CockroachDB connection strings:
 
@@ -334,19 +342,21 @@ package main
 
 import (
 	"database/sql"
+  "os"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	connStr := "{connection-string}"
-	db, err := sql.Open("postgres", connStr)
+	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 }
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pq accepts the following format for CockroachDB connection strings:
 
@@ -370,13 +380,16 @@ For example:
 {% include copy-clipboard.html %}
 ~~~ go
 import (
+  "os"
+
   "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 
-dsn := "{connection-string}"
-db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 GORM accepts the following format for CockroachDB connection strings:
 
@@ -398,7 +411,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
 
 </section>
 
@@ -420,12 +433,11 @@ For example:
 
 {% include copy-clipboard.html %}
 ~~~ java
-import java.io.*;
-import org.postgresql.ds.PGSimpleDataSource;
-
 PGSimpleDataSource ds = new PGSimpleDataSource();
-ds.setUrl("{connection-string}");
+ds.setUrl(System.getenv("DATABASE_URL"));
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 JDBC accepts the following format for CockroachDB connection strings:
 
@@ -442,33 +454,35 @@ For more information about connecting with JDBC, see the [official JDBC document
 
 ## Connect with Hibernate
 
-To connect to CockroachDB with [Hibernate](https://hibernate.org/orm) ORM, update the project's `hibernate.cfg.xml` file.
+To connect to CockroachDB with [Hibernate](https://hibernate.org/orm) ORM, set the object's `hibernate.connection.url` property to a valid CockroachDB connection string.
+
+For example, if you are bootstrapping your application with a [`ServiceRegistry`](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#bootstrap-native-registry) object, first read from the Hibernate configuration file, and then set the `hibernate.connection.url` with the `applySetting` class method:
 
 {% include copy-clipboard.html %}
-~~~ xml
-...
-<hibernate-configuration>
-    <session-factory>
+~~~ java
+StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
+    .configure( "hibernate.cfg.xml" ).applySetting("hibernate.connection.url", System.getenv("DATABASE_URL"))
+    .build();
 
-        <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.CockroachDB201Dialect</property>
-        <property name="hibernate.connection.url">{connection-string}</property>
+Metadata metadata = new MetadataSources( standardRegistry )
+    .getMetadataBuilder()
+    .build();
 
-        ...
-    </session-factory>
-</hibernate-configuration>
+SessionFactory sessionFactory = metadata.getSessionFactoryBuilder()
+    .build();
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 Hibernate accepts the following format for CockroachDB connection strings:
 
 {% include copy-clipboard.html %}
 ~~~
-jdbc:postgresql://{host}:{port}/{database}?user={username}&amp;password={password}&amp;sslmode=verify-full&amp;sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&amp;options=--cluster%3D{routing-id}
+jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}&sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&options=--cluster%3D{routing-id}
 ~~~
 
 {{site.data.alerts.callout_info}}
-To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](https://www.cockroachlabs.com/docs/v21.2/install-client-drivers?filters=java#hibernate) in your Hibernate configuration file.
+To connect to CockroachDB with Hibernate, you must specify the [CockroachDB Hibernate dialect](https://www.cockroachlabs.com/docs/v21.2/install-client-drivers?filters=java#hibernate) in your `hibernate.cfg.xml` configuration file.
 {{site.data.alerts.end}}
 
 For more information about connecting with Hibernate, see the [official Hibernate documentation](https://hibernate.org/orm/documentation).
@@ -484,7 +498,7 @@ Parameter | Description
 `{database}`  | The name of the (existing) database.
 `{username}`  | The [SQL user](authorization.html#sql-users) connecting to the cluster.
 `{password}`  | The password for the SQL user connecting to the cluster.
-`{routing-id}`  | The routing ID of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
 
 </section>
 
@@ -513,8 +527,10 @@ For example:
 
 require 'pg'
 
-conn = PG.connect('{connection-string}')
+conn = PG.connect(ENV['DATABASE_URL'])
 ~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
 
 pg accepts the following format for CockroachDB connection strings:
 
@@ -536,9 +552,18 @@ To connect to CockroachDB with [ActiveRecord](https://github.com/rails/rails/tre
 ~~~ yaml
 default: &default
   adapter: cockroachdb
-  url: postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
+  url: <%= ENV['DATABASE_URL'] %>
 
 ...
+~~~
+
+Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+ActiveRecord accepts the following format for CockroachDB connection strings:
+
+{% include copy-clipboard.html %}
+~~~
+postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&options=--cluster%3D{routing-id}
 ~~~
 
 {{site.data.alerts.callout_info}}
@@ -558,7 +583,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster.
+`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
 
 </section>
 
