@@ -19,7 +19,7 @@ Supported [spatial](spatial-features.html) data types include:
 
 ## Compatibility
 
-Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension. CockroachDB is compatible with PostGIS Version 3.0.
+Just as CockroachDB strives for [Postgres compatibility](postgresql-compatibility.html), our spatial data support is designed to be as compatible as possible with the functionality provided by the [PostGIS](https://postgis.net) extension. CockroachDB is compatible with PostGIS Version 3.0 and up.
 
 CockroachDB does not implement the full list of PostGIS built-in functions and operators. Also, [spatial indexing works differently](spatial-indexes.html) (see the [Performance](#performance) section below). For a list of the spatial functions CockroachDB supports, see [Geospatial functions](functions-and-operators.html#spatial-functions).
 
@@ -49,7 +49,7 @@ Most PostGIS-compatible client libraries are incompatible with CockroachDB's spa
 
 ## Troubleshooting
 
-For general CockroachDB troubleshooting information, see [this troubleshooting overview](troubleshooting-overview.html).
+For general CockroachDB troubleshooting information, see [Troubleshooting Overview](troubleshooting-overview.html).
 
 If you need help troubleshooting an issue with our spatial support, please get in touch using our [Support resources](support-resources.html).
 
