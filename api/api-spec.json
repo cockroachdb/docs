@@ -57,7 +57,7 @@
     },
     "/databases/{database}/": {
       "get": {
-        "description": "Retrieves the database's descriptor ID.",
+        "description": "Retrieve the database's descriptor ID.",
         "produces": [
           "application/json"
         ],
@@ -66,7 +66,7 @@
         "parameters": [
           {
             "type": "string",
-            "description": "Name of database being looked up.",
+            "description": "Name of the database being looked up.",
             "name": "database",
             "in": "path",
             "required": true
@@ -87,7 +87,7 @@
     },
     "/databases/{database}/grants/": {
       "get": {
-        "description": "Retrieves grants on a database. Grants are the privileges granted to users\non this database.",
+        "description": "Retrieve grants on a database. Grants are the privileges granted to users\non this database.",
         "produces": [
           "application/json"
         ],
@@ -171,7 +171,7 @@
     },
     "/databases/{database}/tables/{table}/": {
       "get": {
-        "description": "Retrieves details about a table.",
+        "description": "Retrieve details about a table.",
         "produces": [
           "application/json"
         ],
@@ -252,7 +252,7 @@
     },
     "/health/": {
       "get": {
-        "description": "Helper endpoint to check for node health. If `ready` is true, it also checks\nif this node is fully operational and ready to accept SQL connections.\nOtherwise, this endpoint always returns a successful response (if the API\nserver is up, of course).",
+        "description": "Check for node health. If `ready` is true, also check\nif this node is fully operational and ready to accept SQL connections.\nOtherwise, this endpoint always returns a successful response (if the API\nserver is up).",
         "produces": [
           "application/json"
         ],
@@ -278,14 +278,14 @@
     },
     "/login/": {
       "post": {
-        "description": "Creates an API session for use with API endpoints that require\nauthentication.",
+        "description": "Create an API session for use with API endpoints that require\nauthentication.",
         "consumes": [
           "application/x-www-form-urlencoded"
         ],
         "produces": [
           "application/json"
         ],
-        "summary": "Log in",
+        "summary": ""Log in"",
         "operationId": "login",
         "parameters": [
           {
@@ -333,7 +333,7 @@
             "api_session": []
           }
         ],
-        "description": "Logs out, invalidating the API session token.",
+        "description": "Log out, invalidating the API session token.",
         "produces": [
           "application/json"
         ],
@@ -492,7 +492,7 @@
             "api_session": []
           }
         ],
-        "description": "Retrieves more information about a specific range.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "Retrieve more information about a specific range.\n\nClient must be logged-in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
