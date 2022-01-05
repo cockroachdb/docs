@@ -800,7 +800,6 @@
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
     },
     "GCPolicy": {
-      "description": "TODO(spencer): flesh this out to include maximum number of values\nas well as whether there's an intersection between max values\nand TTL or a union.",
       "type": "object",
       "title": "GCPolicy defines garbage collection policies which apply to MVCC\nvalues within a zone.",
       "properties": {
@@ -1015,7 +1014,7 @@
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/server/serverpb"
     },
     "ReplicaDescriptor": {
-      "description": "Describes a replica location by node ID\n(corresponds to a host:port via lookup on gossip network) and store\nID (identifies the device).\nTODO(jeffreyxiao): All nullable fields in ReplicaDescriptor can be made\nnon-nullable if #38302 is guaranteed to be on all nodes (I.E. 20.1).",
+      "description": "Describes a replica location by node ID\n(corresponds to a host:port via lookup on gossip network) and store\nID (identifies the device).",
       "type": "object",
       "properties": {
         "node_id": {
@@ -1205,7 +1204,7 @@
           "x-go-name": "Indexes"
         },
         "range_count": {
-          "description": "The size of the table in ranges. This provides a rough\nestimate of the storage requirements for the table.\nTODO(mrtracy): The TableStats method also returns a range_count field which\nis more accurate than this one; TableDetails calculates this number using\na potentially faster method that is subject to cache staleness. We should\nconsider removing or renaming this field to reflect that difference. See\nGithub issue #5435 for more information.",
+          "description": "The size of the table in ranges. This provides a rough\nestimate of the storage requirements for the table.",
           "type": "integer",
           "format": "int64",
           "x-go-name": "RangeCount"
@@ -1513,12 +1512,12 @@
       "x-go-package": "github.com/cockroachdb/cockroach/pkg/roachpb"
     },
     "ZoneConfig": {
-      "description": "Note: when adding/removing fields here, be sure to update\nsupportedZoneConfigOptions in the sql package, to synchronize\nwith the code for ALTER ... CONFIGURE ZONE.",
+      "description": "For internal use only.",
       "type": "object",
       "title": "ZoneConfig holds configuration that applies to one or more ranges.",
       "properties": {
         "constraints": {
-          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160706_expressive_zone_config.md#constraint-system\n\nNOTE: The sum of the num_replicas fields of the Constraints must add up to\nat most ZoneConfig.num_replicas, or there must be no more than a single\nConstraints field with num_replicas set to 0.",
+          "description": "Constrains which stores the replicas can be stored on. The\norder in which the constraints are stored is arbitrary and may change.\nhttps://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20160706_expressive_zone_config.md#constraint-system",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConstraintsConjunction"
