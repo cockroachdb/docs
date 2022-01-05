@@ -9,7 +9,7 @@ The **Custom Chart** debug page in the DB Console can be used to create one or m
 The definition of the customized dashboard is encoded in the URL. To share the dashboard with someone, send them the URL. Like any other URL, it can be bookmarked, sit in a pinned tab in your browser, etc.
 
 
-## Accessing the **Custom Chart** page
+## Accessing the Custom Chart page
 
 To access the **Custom Chart** debug page, [access the DB Console](ui-overview.html), and either:
 
@@ -17,7 +17,7 @@ To access the **Custom Chart** debug page, [access the DB Console](ui-overview.h
 
 - Click the gear icon on the left to access the **Advanced Debugging Page**. In the **Reports** section, click **Custom TimeSeries Chart**.
 
-## Using the **Custom Chart** page
+## Using the Custom Chart page
 
 <img src="{{ 'images/v21.1/ui-custom-chart-debug-00.png' | relative_url }}" alt="DB Console" style="border:1px solid #eee;max-width:100%" />
 

@@ -4,9 +4,7 @@ summary: The Advanced Debug page provides links to advanced monitoring and troub
 toc: true
 ---
 
-{{site.data.alerts.callout_info}}
-Most of the functionality on this page can be accessed only by an `admin` user. See [DB Console security](ui-overview.html#db-console-security).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/ui/admin-access.md %}
 
 The **Advanced Debug** page of the DB Console provides links to advanced monitoring and troubleshooting reports and cluster configuration details. To view this page, [access the DB Console](ui-overview.html#db-console-access) and click **Advanced Debug** in the left-hand navigation.
 
@@ -18,8 +16,8 @@ These pages are experimental and undocumented. If you find an issue, let us know
 
 On the right-side of the page, the following information is displayed:
 
-- CockroachDB license type: Helps determine if you have access to Enterprise features.
-- Current node ID: Helps identify the current node when viewing the DB Console through a load balancer.
+- [**License type**](licensing-faqs.html): Determines if you have access to Enterprise features.
+- **Web server**: Identifies the current node when viewing the DB Console through a load balancer.
 
 ## Reports
 

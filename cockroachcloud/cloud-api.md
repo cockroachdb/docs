@@ -7,7 +7,7 @@ toc: true
 The Cloud API is a [REST interface](https://en.wikipedia.org/wiki/Representational_state_transfer) that allows users programmatic access to manage the lifecycle of clusters within their organization.
 
 {{site.data.alerts.callout_danger}}
-This page describes an early access, experimental version of the Cloud API. The interface and output is subject to change, and there may be bugs.
+This page describes an early access, experimental version of the Cloud API. The interface and output are subject to change, and there may be bugs.
 {{site.data.alerts.end}}
 
 ## API reference
