@@ -12,7 +12,7 @@ Get future release notes emailed to you:
 
 ### General changes
 
-- New {{ site.data.products.dedicated }} clusters will now run [v21.2.4](v21.2.4.html).
+- New {{ site.data.products.dedicated }} clusters will now run [v21.2.3](v21.2.3.html).
 - {{ site.data.products.serverless }} clusters will now run CockroachDB [v21.2.0-beta.4](v21.2.0-beta.4.html).
 - The CockroachDB Docs navigation is now organized by user tasks instead of by product.
 
