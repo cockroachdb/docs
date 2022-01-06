@@ -4,7 +4,7 @@ summary: Manage billing for your organization
 toc: true
 ---
 
-The **Billing** page contains an overview of your charges, the payment details on file for your {{ site.data.products.db }} organization, and your invoices. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
+The **Billing** page contains an overview of your charges and the payment details on file for your {{ site.data.products.db }} organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
 
 [Console Admins](console-access-management.html#console-admin) can set up and manage billing for the organization.
 
@@ -19,7 +19,7 @@ Setting up billing information for your organization allows you to use [cloud st
 1. In the **Edit payment method** dialog, enter the credit or debit card details.
 1. Click **Save card**.
 1. Click **Add a billing email** in the **Billing contact info** section.
-1. Enter the email address at which you want to get invoices for the organization.
+1. In the **Edit billing email*** the email address at which you want to get invoices for the organization.
 1. Click **Submit**.
 1. Click **Add a billing address** in the **Billing contact info** section.
 1. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
@@ -29,7 +29,7 @@ Setting up billing information for your organization allows you to use [cloud st
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click the pencil icon for the **Email** field under **Billing contact info**.
-1. Enter the new email address at which you want get invoices for the Organization.
+1. Enter the new email address at which you want get invoices for the organization.
 1. Click **Submit**.
 
 ## Change the payment method
@@ -51,9 +51,10 @@ We keep a card on file after the associated Organization is deleted so we can pr
 If you used a {{ site.data.products.dedicated }} trial code while [creating a cluster](create-your-cluster.html#step-8-enter-billing-details), you can check the trial expiration details on the **Overview** tab of the **Billing** page.
 
 {{site.data.alerts.callout_info}}
-Your credit card will be charged after the trial ends. You can check the expiration date of the code on the **Billing** page.
+Your credit card will be charged after the trial ends.
 {{site.data.alerts.end}}
 
+{% comment %}
 ## View credits balance
 
 If your organization has an annual contract with {{ site.data.products.db }}, the **Overview** tab of the **Billing** page will display your contract amount and the renewal date. Under the **Spend** section, you can also see how many credits your organization has used out of your total contract amount.
@@ -61,3 +62,4 @@ If your organization has an annual contract with {{ site.data.products.db }}, th
 ## View invoices
 
 You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Download any invoice to see the details of your charges for a billing period.
+{% endcomment %}
