@@ -141,7 +141,10 @@ If the request was successful, the API will return information about the newly c
 
 Where:
 
-  - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
+  - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster. Note:
+    {{site.data.alerts.callout_info}}
+    The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+    {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{account ID}` is the ID of the account that created the cluster. If the cluster was created using the API, this will be the service account ID associated with the secret key used when creating the cluster.
@@ -161,6 +164,9 @@ curl --request GET \
 Where:
 
   - `{clusterId}` is the cluster ID returned after creating the cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{secret key}` is the secret key for the service account.
 
 If the request was successful, the API will return detailed information about the cluster.
@@ -205,6 +211,9 @@ If the request was successful, the API will return detailed information about th
 Where:
 
   - `{clusterId}` is the unique ID of this cluster. Use this ID when making API requests for this particular cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster you specified when creating the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{cloud provider}` is the name of the cloud infrastructure provider on which you want your cluster to run. Possible values are: `GCP` and `AWS`. The default value is `GCP`.
@@ -245,6 +254,9 @@ curl --request PUT \
 Where:
 
   - `{clusterId}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{secret key}` is the secret key for the service account.
   - `{spend limit}` is the [maximum amount of money, in US cents, you want to spend per month](serverless-cluster-management.html#planning-your-cluster) on this cluster.
 
@@ -265,7 +277,11 @@ curl --request DELETE \
 
 Where:
 
-  - `{clusterId}` is the cluster ID.
+  - `{organizationId}` is the organization ID found in the **Settings** page of the Console.
+  - `{clusterId}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{secret key}` is the secret key for the service account.
 
 If the `DELETE` request was successful the client will not receive a response payload.
@@ -318,6 +334,9 @@ If the request was successful, the client will receive a list of all clusters wi
 Where:
 
   - `{clusterId}` is the unique ID of this cluster.
+  {{site.data.alerts.callout_info}}
+  The cluster ID used in the Cloud API is different than the cluster name and tenant ID used when [connecting to clusters](connect-to-a-serverless-cluster.html).
+  {{site.data.alerts.end}}
   - `{cluster name}` is the name of the cluster.
   - `{CockroachDB version}` is the version of CockroachDB running on this cluster.
   - `{cloud provider}` is the name of the cloud infrastructure provider. Possible values are: `GCP` and `AWS`.
