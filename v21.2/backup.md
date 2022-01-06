@@ -207,10 +207,6 @@ INTO 's3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-{{site.data.alerts.end}}
-
 ### Backup all tables in a schema
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
@@ -329,10 +325,6 @@ To take a [full backup](take-full-and-incremental-backups.html#full-backups) of 
 INTO 'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
-
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-{{site.data.alerts.end}}
 
 ### Backup all tables in a schema
 
@@ -455,10 +447,6 @@ INTO 'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}' \
 AS OF SYSTEM TIME '-10s';
 ~~~
 
-{{site.data.alerts.callout_danger}}
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-{{site.data.alerts.end}}
-
 ### Backup all tables in a schema
 
 <span class="version-tag">New in v21.2:</span> To back up all tables in a [specified schema](create-schema.html), use a wildcard with the schema name:
@@ -526,10 +514,6 @@ job_id             |  status   | fraction_completed | rows | index_entries | byt
 {% include {{ page.version.version }}/backups/advanced-examples-list.md %}
 
 ## Known limitations
-
-### `BACKUP` of multi-region tables
-
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
 
 ## See also
 

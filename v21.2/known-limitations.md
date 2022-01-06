@@ -209,10 +209,6 @@ UNION ALL SELECT * FROM t1 LEFT JOIN t2 ON st_contains(t1.geom, t2.geom) AND t2.
 
 {% include {{page.version.version}}/known-limitations/stats-refresh-upgrade.md %}
 
-### `BACKUP` of multi-region tables
-
-{% include {{page.version.version}}/backups/no-multiregion-table-backups.md %}
-
 ### Differences in syntax and behavior between CockroachDB and PostgreSQL
 
 CockroachDB supports the [PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol.html) and the majority of its syntax. However, CockroachDB does not support some of the PostgreSQL features or behaves differently from PostgreSQL because not all features can be easily implemented in a distributed system.
