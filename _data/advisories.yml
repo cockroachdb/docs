@@ -1,3 +1,11 @@
+- advisory: CVE-2021-44228
+  summary: No Cockroach Labs products or services are affected by the recent CVE-2021-44228 Apache Log4j vulnerability.
+  versions: None
+  date: December 14, 2021
+- advisory: 73629
+  summary: Planning queries over partitioned tables with a <code>DEFAULT</code> partition in a <code>PARTITION BY LIST</code> clause could cause a spurious internal error
+  versions: 21.1 and 21.2 prior to 21.1.13 and 21.2.3
+  date: December 14, 2021
 - advisory: 73024
   summary: The optimizer could plan queries that use semi-joins against multi-region <code>REGIONAL BY ROW</code> tables incorrectly
   versions: 21.2.0

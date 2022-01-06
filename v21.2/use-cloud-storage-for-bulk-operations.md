@@ -31,7 +31,7 @@ Azure                                                       | `azure`     | Stor
 Google Cloud                                                | `gs`        | Bucket name                                      | `AUTH` — `implicit`, or `specified`; `CREDENTIALS` <br><br>For more information, see [Authentication - Google Cloud Storage](#google-cloud-storage).     
 HTTP                                                        | `http`      | Remote host                                      | N/A <br><br>For more information, see [Authentication - HTTP](#http).      
 NFS/Local&nbsp;[<sup>1</sup>](#considerations)              | `nodelocal` | `nodeID` or `self` [<sup>2</sup>](#considerations) (see [Example file URLs](#example-file-urls)) | N/A
-S3-compatible services                                     | `s3`        | Bucket name                                      | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#s3-compatible-services).   
+S3-compatible services                                     | `s3`        | Bucket name                                      | **Warning**: Unlike [Amazon S3](#amazon-s3), [Google Cloud Storage](#google-cloud-storage), and [Azure storage](#azure-storage) options, the usage of S3-compatible services is not actively tested by Cockroach Labs. <br><br>`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`&nbsp;[<sup>3</sup>](#considerations) (optional), `AWS_ENDPOINT`<br><br>For more information, see [Authentication - S3-compatible services](#s3-compatible-services).
 
 {{site.data.alerts.callout_success}}
 The location parameters often contain special characters that need to be URI-encoded. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url/#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
@@ -149,6 +149,10 @@ If your environment requires an HTTP or HTTPS proxy server for outgoing connecti
 If you cannot run a full proxy, you can disable external HTTP(S) access (as well as custom HTTP(S) endpoints) when importing by using the [`--external-io-disable-http` flag](cockroach-start.html#flags-external-io-disable-http).
 
 ### S3-compatible services
+
+{{site.data.alerts.callout_danger}}
+Unlike [Amazon S3](#amazon-s3), [Google Cloud Storage](#google-cloud-storage), and [Azure storage](#azure-storage) options, the usage of S3-compatible services is not actively tested by Cockroach Labs.
+{{site.data.alerts.end}}
 
 A custom root CA can be appended to the system's default CAs by setting the `cloudstorage.http.custom_ca` [cluster setting](cluster-settings.html), which will be used when verifying certificates from an S3-compatible service.
 

@@ -12,6 +12,7 @@ IgnoreURLs:
   - "https://www.php.net/*"
   - "https://crates.io/*"
   - "https://docs.pipenv.org/*"
+  - "https://arxiv.org/*"
 IgnoreInternalEmptyHash: true
 TestFilesConcurrently: true
 DocumentConcurrencyLimit: 16

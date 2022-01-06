@@ -12,7 +12,7 @@ The **Billing** page contains an overview of your charges and the payment detail
 Setting up billing information for your organization allows you to use [cloud storage for bulk operations](run-bulk-operations.html). Organizations without billing information are limited to [using `userfile` storage for bulk operations](run-bulk-operations.html).
 {{site.data.alerts.end}}
 
-## Set up billing for an Organization
+## Set up billing for an organization
 
 1. On the **Billing** page, select the **Payment details** tab.
 1. Click **Add a credit card** in the **Payment method** field.
@@ -44,7 +44,7 @@ Setting up billing information for your organization allows you to use [cloud st
 
 ## Delete your credit card information
 
-We keep a card on file after the associated Organization is deleted so we can process pending charges. You can [contact Support](https://support.cockroachlabs.com) to remove your card once your charges are settled.
+We keep a card on file after the associated organization is deleted so we can process pending charges. You can [contact Support](https://support.cockroachlabs.com) to remove your card once your charges are settled.
 
 ## Check trial code details
 

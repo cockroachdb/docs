@@ -377,6 +377,12 @@
             ]
           },
           {
+            "title": "Test Your Application",
+            "urls": [
+              "/${VERSION}/local-testing.html"
+            ]
+          },
+          {
             "title": "Debug Your Application",
             "items":
             [
@@ -495,6 +501,7 @@
                     "urls": [
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb.html",
                       "/${VERSION}/build-a-nodejs-app-with-cockroachdb-sequelize.html",
+                      "/${VERSION}/build-a-nodejs-app-with-cockroachdb-knexjs.html",
                       "/${VERSION}/build-a-typescript-app-with-cockroachdb.html"
                     ]
                   },
