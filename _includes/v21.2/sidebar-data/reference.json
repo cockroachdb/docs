@@ -1392,7 +1392,7 @@
         ]
       },
       {
-        "title": "CLI Reference",
+        "title": "CLI",
         "items": [
           {
             "title": "Cockroach Commands",
@@ -1700,7 +1700,7 @@
         ]
       },
       {
-        "title": "Logging Reference",
+        "title": "Logging",
         "items": [
           {
             "title": "Logging Levels and Channels",
