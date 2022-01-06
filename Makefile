@@ -81,3 +81,6 @@ clean:
 	rm -rf vendor
 	rm -rf _site
 	rm -rf .jekyll-cache/Jekyll/Cache/RemoteInclude
+
+clean-site:
+	rm -rf _site
