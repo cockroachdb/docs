@@ -9,7 +9,8 @@ This guide shows you how to develop an application on CockroachDB. After reading
 ## Guide contents
 
 - [Overview](#cockroachdb-basics)
-- [Connect to a Cluster](install-client-drivers.html)
+- [Install a Client Library](install-client-drivers.html)
+- [Connect to a Cluster](connect-to-the-database.html)
 - [Design a Schema](schema-design-overview.html)
 - [Write Data](insert-data.html)
 - [Read Data](query-data.html)
