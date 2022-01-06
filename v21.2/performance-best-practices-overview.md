@@ -6,14 +6,6 @@ toc: true
 
 This page provides best practices for optimizing query performance in CockroachDB.
 
-{{site.data.alerts.callout_success}}
-For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
-{{site.data.alerts.end}}
-
-{{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
-{{site.data.alerts.end}}
-
 ## DML best practices
 
 ### Use multi-row statements instead of multiple single-row statements
@@ -94,7 +86,7 @@ The best practices for generating unique IDs in a distributed database like Cock
 1. Using the [`SERIAL`](serial.html) pseudo-type for a column to generate random unique IDs. This can result in a performance bottleneck because IDs generated temporally near each other have similar values and are located physically near each other in a table's storage.
 2. Generating monotonically increasing [`INT`](int.html) IDs by using transactions with roundtrip [`SELECT`](select-clause.html)s, e.g., `INSERT INTO tbl (id, …) VALUES ((SELECT max(id)+1 FROM tbl), …)`. This has a **very high performance cost** since it makes all [`INSERT`](insert.html) transactions wait for their turn to insert the next ID. You should only do this if your application really does require strict ID ordering. In some cases, using [Change Data Capture (CDC)](stream-data-out-of-cockroachdb-using-changefeeds.html) can help avoid the requirement for strict ID ordering. If you can avoid the requirement for strict ID ordering, you can use one of the higher performance ID strategies outlined below.
 
-The approaches described above are likely to create hotspots for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
+The approaches described above are likely to create hot spots for both reads and writes in CockroachDB. To avoid this issue, we recommend the following approaches (listed in order from best to worst performance).
 
 | Approach                                                                             | Pros                                             | Cons                                                                                    |
 |--------------------------------------------------------------------------------------+--------------------------------------------------+-----------------------------------------------------------------------------------------|
@@ -106,7 +98,7 @@ The approaches described above are likely to create hotspots for both reads and 
 
 A well-designed multi-column primary key can yield even better performance than a [UUID primary key](#use-uuid-to-generate-unique-ids), but it requires more up-front schema design work. To get the best performance, ensure that any monotonically increasing field is located **after** the first column of the primary key. When done right, such a composite primary key should result in:
 
-- Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hotspots. By "enough randomness" we mean that the prefix of the primary key should be relatively uniformly distributed over its domain. Its domain should have at least as many elements as you have nodes.
+- Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hot spots. By "enough randomness" we mean that the prefix of the primary key should be relatively uniformly distributed over its domain. Its domain should have at least as many elements as you have nodes.
 - A monotonically increasing column that is part of the primary key (and thus indexed) which is also useful in your queries.
 
 For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
@@ -276,7 +268,7 @@ See [Subquery Performance Best Practices](subqueries.html#performance-best-pract
 
 See [Authorization Best Practices](authorization.html#authorization-best-practices).
 
-## Table scans best practices
+## Table scan best practices
 
 ### Avoid `SELECT *` for large tables
 
@@ -325,21 +317,38 @@ However, because `AS OF SYSTEM TIME` returns historical data, your reads might b
 
 ## Hot spots
 
-Transactions that operate on the same range but _different index key values_ will be limited by the overall hardware capacity of a single node (the range lease holder). These are referred to as _hot spots_.
+Transactions that operate on the same range but _different index key values_ are limited by the overall hardware capacity of [the range lease holder](architecture/overview.html#terms) node. These are referred to as _hot spots_.
 
-Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from load-based splitting, creating a hotspot on the single range.
+Hot spots can occur when a range is indexed on a column of data that is sequential in nature such that all incoming writes to the range will be the last (or first) item in the index and appended to the end of the range. As a result, the system cannot find a point in the range that evenly divides the traffic, and the range cannot benefit from [load-based splitting](load-based-splitting.html), creating a hot spot on the single range.
 
 Read hot spots can occur if you perform lots of scans of an empty table or of a single key.
 
-### Fix hot spots
+### Find hot spots
+
+To track down the nodes experiencing hot spots, use the [hot spot ranges API endpoint](cluster-api#resources).
+
+### Reduce hot spots
 
 To reduce hot spots:
 
-- Use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html) on row IDs for suggestions.
+- Use index key values with a random distribution of values, so that transactions over different rows are more likely to operate on separate data ranges. See the [SQL FAQs](sql-faqs.html#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) on row IDs for suggestions.
 
-- Increase [normalization](https://en.wikipedia.org/wiki/Database_normalization) of the data to place parts of the same records that are modified by different transactions in different tables. Fully normalized data allows separate transactions to modify related underlying data without causing contention. Increasing normalization has drawbacks as well as benefits, however. Denormalizing data can increase performance for certain queries by creating multiple copies of often-referenced data in separate ranges, so read-heavy workloads may have higher performance. However, denormalization adds complexity the data model, increases the chance of data inconsistency, increases data redundancy, and can have poor performance when running write-heavy workloads.
+- Place parts of the records that are modified by different transactions in different tables. That is, increase [normalization](https://en.wikipedia.org/wiki/Database_normalization). However, there are benefits and drawbacks to increasing normalization.
+
+    - Benefits:
+        - Allows separate transactions to modify related underlying data without causing contention.
+        - Can improve performance for read-heavy workloads.
+
+    - Drawbacks:
+
+        - More complex data model.
+        - Increases the chance of data inconsistency.
+        - Increases data redundancy.
+        - Can degrade performance for write-heavy workloads.
 
 - If the application strictly requires operating on very few different index key values, consider using [`ALTER ... SPLIT AT`](split-at.html) so that each index key value can be served by a separate group of nodes in the cluster.
+
+- If you are working with a table that *must* be indexed on sequential keys, use [hash-sharded indexes](hash-sharded-indexes.html). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see the blog post [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads/).
 
 - To avoid read hot spots, use global tables and increase the number of replicas.
 
@@ -347,29 +356,25 @@ To reduce hot spots:
 
 ## Transaction contention
 
-Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) will be more strictly serialized to obey transaction isolation semantics. This is referred to as _transaction contention_ or _lock contention_.
-
-Transaction contention can also increase the rate of transaction restarts, and thus make the proper implementation of [client-side transaction retries](transactions.html#client-side-intervention) more critical.
-
-For further background on database contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
-
-### Find contention
+Transactions that operate on the _same index key values_ (specifically, that operate on the same [column family](column-families.html) for a given index key) are strictly serialized to obey transaction isolation semantics. To maintain this isolation, "locks" ensure that multiple transactions don't change the same row of data (for example) at the same time. However, locking can lead to processing delays if multiple transactions are trying to access the same "locked" data at the same time. This is referred to as _transaction_ (or _lock_) _contention_.
 
 Transaction contention occurs when the following three conditions are met:
 
 - There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
-- They operate on the same data, specifically over table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html)) or using index key values that are close to each other, and thus place the indexed data on the same [data ranges](architecture/overview.html).
+- They operate on table rows with the _same index key values_ (either on [primary keys](primary-key.html) or secondary [indexes](indexes.html).
 - At least one of the transactions modify the data.
 
-A set of transactions that all contend on the same keys will be limited in performance to the maximum processing speed of a single node (limited horizontal scalability). Non-contended transactions are not affected in this way.
+Transactions that experience contention typically show delays in completion or restarts. The possibility of transaction restarts requires clients to implement [transaction retries](transactions.html#client-side-intervention).
+
+For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention/).
 
 ### Find transaction contention
 
 {% include {{ page.version.version }}/performance/statement-contention.md %}
 
-### Avoid transaction contention
+### Reduce transaction contention
 
-To avoid transaction contention:
+To reduce transaction contention:
 
 - Make transactions smaller, so that each transaction has less work to do. In particular, avoid multiple client-server exchanges per transaction. For example, use [common table expressions](common-table-expressions.html) to group multiple [`SELECT`](select-clause.html) and [`INSERT`](insert.html), [`UPDATE`](update.html), [`DELETE`](delete.html), and [`UPSERT`](upsert.html) clauses together in a single SQL statement.
 
@@ -389,3 +394,9 @@ To maximize transaction performance, you'll need to maximize the performance of 
 - Minimize the network distance between the replicas of a range, possibly using zone configs and partitioning.
 - Use the fastest storage devices available.
 - If the contending transactions operate on different keys within the same range, add more CPU power (more cores) per node. However, if the transactions all operate on the same key, this may not provide an improvement.
+
+## See also
+
+If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
+
+For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).

@@ -57,7 +57,7 @@ You can look more closely at the behavior of a statement by visualizing a statem
 
 The common reasons for a sub-optimal `SELECT` performance are inefficient scans, full scans, and incorrect use of indexes. To improve the performance of `SELECT` statements, refer to the following documents:
 
--  [Table scan best practices](performance-best-practices-overview.html#table-scans-best-practices)
+-  [Table scan best practices](performance-best-practices-overview.html#table-scan-best-practices)
 
 -  [Indexes best practices](schema-design-indexes.html#best-practices)
 

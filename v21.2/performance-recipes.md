@@ -114,7 +114,7 @@ Not every full table scan is an indicator of poor performance. The [cost-based o
 
 [Examine the statements](sql-tuning-with-explain.html) that result in full table scans and consider adding [secondary indexes](schema-design-indexes.html#create-a-secondary-index).
 
-Also see [Table scans best practices](performance-best-practices-overview.html#table-scans-best-practices).
+Also see [Table scans best practices](performance-best-practices-overview.html#table-scan-best-practices).
 
 ### Suboptimal primary keys
 
