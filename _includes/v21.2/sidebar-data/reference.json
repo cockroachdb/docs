@@ -1742,12 +1742,6 @@
             "urls": [
               "/${VERSION}/community-tooling.html"
             ]
-          },
-          {
-            "title": "Client Connection Reference",
-            "urls": [
-              "/${VERSION}/connection-reference.html"
-            ]
           }
         ]
       },
