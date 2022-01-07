@@ -125,6 +125,10 @@ transaction to retry, the client needs to be involved in retrying the whole
 transaction and so you should write your transactions to use
 [client-side intervention](#client-side-intervention).
 
+#### Bounded staleness reads
+
+In the event [bounded staleness reads](follower-reads.md#bounded-staleness-reads) are used along with either the `with_min_timestamp` or `with_max_staleness` functions and the `nearest_only` parameter set to `true`, the query will throw an error if it can't be served by a nearby replica. The exception to this is if a schema change is detected within the bounds of the time interval set in the function. In this scenario, CockroachDB will attempt the read again from before the schema change.
+
 ### Client-side intervention
 
 Your application should include client-side retry handling when the statements are sent individually, such as:
