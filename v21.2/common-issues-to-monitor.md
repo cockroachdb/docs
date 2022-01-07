@@ -109,7 +109,7 @@ Issues at the [storage layer](architecture/storage-layer.html), including a miss
 
 If [issues at the storage layer](#lsm-health) remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
 
-- The [**Node status**](ui-cluster-overview-page.html#node-health) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
+- The [**Node status**](ui-cluster-overview-page.html#node-status) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
 
 - The `/health` endpoint of the [Cluster API](cluster-api.html) returns a `500` error when a node is unhealthy.
 
@@ -139,13 +139,13 @@ Monitor memory usage and node behavior for OOM errors:
 |-------------------------------------------------|---------------------------------------------|
 | [Node process restarts](#node-process-restarts) | Nodes restarting after crashes.             |
 | [SQL memory usage](#sql-memory-usage)           | The memory allocated to the SQL layer.      |
-| [Database memory usage](#memory-usage)          | The memory in use by CockroachDB processes. |
+| [Database memory usage](#database-memory-usage) | The memory in use by CockroachDB processes. |
 
 #### Node process restarts
 
 CockroachDB attempts to restart nodes after they crash. Nodes that frequently restart following an abrupt process exit may point to an underlying memory issue.
 
-- The [**Node status**](ui-cluster-overview-page.html#node-health) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
+- The [**Node status**](ui-cluster-overview-page.html#node-status) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
 
 - When deploying on [Kubernetes](kubernetes-overview.html), the `kubectl get pods` output contains a `RESTARTS` column that tracks the number of restarts for each CockroachDB pod.
 

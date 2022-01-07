@@ -446,7 +446,7 @@ CockroachDB attempts to restart nodes after they crash. Nodes that frequently re
 
 **Solution:** If you [observe nodes restarting after sudden crashes](common-issues-to-monitor.html#node-process-restarts):
 
-- [Confirm that the node restarts are caused by OOM crashes.](common-issues-to-monitor.html#confirm-oom-errors)
+- [Confirm that the node restarts are caused by OOM crashes.](common-issues-to-monitor.html#verify-oom-errors)
 
   - {% include {{ page.version.version }}/prod-deployment/resolution-oom-crash.md %}
 

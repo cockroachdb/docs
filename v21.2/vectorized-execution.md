@@ -48,7 +48,7 @@ For detailed examples of vectorized query execution for hash and merge joins, se
 The following disk-spilling operations require [memory buffering](https://en.wikipedia.org/wiki/Data_buffer) during execution. If there is not enough memory allocated for a disk-spilling operation, CockroachDB will spill the intermediate execution results to disk.
 
 - Global [sorts](order-by.html)
-- [Unordered aggregations](order-byp.html)
+- [Unordered aggregations](order-by.html)
 - [Hash joins](joins.html#hash-joins)
 - [Merge joins](joins.html#merge-joins) on non-unique columns. Merge joins on columns that are guaranteed to have one row per value, also known as "key columns", can execute entirely in-memory.
 - [Window functions](window-functions.html).
