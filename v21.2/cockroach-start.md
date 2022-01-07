@@ -140,6 +140,10 @@ The `--store` flag supports the following fields. Note that commas are used to s
 In-memory storage is not suitable for production deployments at this time.
 {{site.data.alerts.end}}
 
+{{site.data.alerts.callout_success}}
+{% include {{ page.version.version }}/prod-deployment/prod-guidance-store-volume.md %}
+{{site.data.alerts.end}}
+
 Field | Description
 ------|------------
 `type` | For in-memory storage, set this field to `mem`; otherwise, leave this field out. The `path` field must not be set when `type=mem`.

@@ -1,0 +1,1 @@
+**Expected values for a healthy cluster**: This value should not exceed the [`--max-sql-memory`](recommended-production-settings.html#cache-and-sql-memory-size) size.

@@ -22,12 +22,12 @@ The **Overload** dashboard displays the following time series graphs:
 
 ## LSM L0 Health
 
-This graph shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees.
-
-Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine). High values indicate heavy write load that is causing accumulation of files in level 0. These files are not being compacted fast enough to lower levels.
+This graph shows the health of the [persistent stores](architecture/storage-layer.html), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](cockroach-start.html#storage-engine).
 
 - In the node view, the graph shows the health of the persistent store on the selected node.
 - In the cluster view, the graph shows the health of the persistent stores across all nodes in the cluster.
+
+{% include {{ page.version.version }}/prod-deployment/healthy-lsm.md %}
 
 ## KV Admission Slots
 

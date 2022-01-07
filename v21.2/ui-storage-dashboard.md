@@ -24,6 +24,8 @@ Metric | Description
 **Available** | The free disk space available to CockroachDB data.
 **Used** | The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.
 
+{% include {{ page.version.version }}/prod-deployment/healthy-storage-capacity.md %}
+
 ### Capacity metrics
 
 The **Capacity** graph displays disk usage by CockroachDB data in relation to the maximum [store](architecture/storage-layer.html) size, which is determined as follows:

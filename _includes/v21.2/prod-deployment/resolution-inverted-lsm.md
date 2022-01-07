@@ -1,0 +1,1 @@
+If LSM compaction falls behind, throttle your workload concurrency to allow compaction to catch up and restore a healthy LSM shape. To restore performance on a specific node, [decommission the node](remove-nodes.html#remove-a-single-node-live) and start a new node.

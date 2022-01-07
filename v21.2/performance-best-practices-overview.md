@@ -10,9 +10,7 @@ This page provides best practices for optimizing query performance in CockroachD
 For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](topology-patterns.html).
 {{site.data.alerts.end}}
 
-{{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/prod-deployment/check-sql-query-performance.md %}
 
 ## DML best practices
 

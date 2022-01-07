@@ -8,6 +8,8 @@ Despite CockroachDB's various [built-in safeguards against failure](frequently-a
 
 This page explains available monitoring tools and critical events and metrics to alert on.
 
+{% include {{ page.version.version }}/prod-deployment/cluster-unavailable-monitoring.md %}
+
 ## Monitoring tools
 
 ### DB Console
@@ -139,7 +141,7 @@ The [`cockroach node status`](cockroach-node.html) command gives you metrics abo
 
 ## Events to alert on
 
-Active monitoring helps you spot problems early, but it is also essential to create alerting rules that promptly send notifications when there are events that require investigation or intervention. This section identifies the most important events to create alerting rules for, with the [Prometheus Endpoint](#prometheus-endpoint) metrics to use for detecting the events.
+Active monitoring helps you spot problems early, but it is also essential to create alerting rules that promptly send notifications when there are events that require investigation or intervention. This section identifies the most important events to create alerting rules for, with the [Prometheus endpoint](#prometheus-endpoint) metrics to use for detecting the events.
 
 {{site.data.alerts.callout_success}}If you use Prometheus for monitoring, you can also use our pre-defined <a href="https://github.com/cockroachdb/cockroach/blob/master/monitoring/rules/alerts.rules.yml">alerting rules</a> with Alertmanager. See <a href="monitor-cockroachdb-with-prometheus.html">Monitor CockroachDB with Prometheus</a> for guidance.{{site.data.alerts.end}}
 
@@ -156,7 +158,7 @@ Active monitoring helps you spot problems early, but it is also essential to cre
 - **How to detect:** Calculate this using the number of times the `sys_uptime` metric in the node's `_status/vars` output was reset back to zero. The `sys_uptime` metric gives you the length of time, in seconds, that the `cockroach` process has been running.
 
 ### Node is running low on disk space
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 - **Rule:** Send an alert when a node has less than 15% of free space remaining.
 
 - **How to detect:** Divide the `capacity` metric by the `capacity_available` metric in the node's `_status/vars` output.

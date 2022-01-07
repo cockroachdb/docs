@@ -1,0 +1,1 @@
+**Expected values for a healthy cluster**: Used capacity should be no more than 80% of the total capacity.
