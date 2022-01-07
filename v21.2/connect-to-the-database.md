@@ -225,7 +225,7 @@ Parameter | Description
 `<host>`  | The host on which the CockroachDB node is running.
 `<port>`  | The port at which the CockroachDB node is listening.
 `<database>`  | The name of the (existing) database.
-`<routing-id>`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
+`<routing-id>`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -431,7 +431,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -618,7 +618,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -744,7 +744,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture).
 
 </div>
 
@@ -872,7 +872,7 @@ Parameter | Description
 `{host}`  | The host on which the CockroachDB node is running.
 `{port}`  | The port at which the CockroachDB node is listening.
 `{database}`  | The name of the (existing) database.
-`{routing-id}`  | The routing ID of the CockroachDB cluster (e.g., `funny-skunk-123`).
+`{routing-id}`  | Your cluster's routing ID (e.g., `funky-skunk-123`). The routing ID identifies your tenant cluster on a [multi-tenant host](https://www.cockroachlabs.com/docs/cockroachcloud/architecture.html#architecture).
 
 </div>
 
