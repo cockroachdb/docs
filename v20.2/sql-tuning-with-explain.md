@@ -377,4 +377,4 @@ To speed up the query, you can provide the primary key to allow the cost-based o
 
 - [SQL Best Practices](performance-best-practices-overview.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Query Performance](make-queries-fast.html)

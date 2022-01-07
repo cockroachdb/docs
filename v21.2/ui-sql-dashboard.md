@@ -4,7 +4,9 @@ summary: The SQL dashboard lets you monitor the performance of your SQL queries.
 toc: true
 ---
 
-The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries. To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** > **SQL**.
+The **SQL** dashboard in the DB Console lets you monitor the performance of your SQL queries.
+
+To view this dashboard, [access the DB Console](ui-overview.html#db-console-access), click **Metrics** in the left-hand navigation, and then select **Dashboard** > **SQL**.
 
 {% include {{ page.version.version }}/ui/ui-metrics-navigation.md %}
 
@@ -120,13 +122,6 @@ KV execution latency is calculated as the time in milliseconds between when the 
 - In the node view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for the node. Over the last minute the node executed 90% of requests within this time.
 
 - In the cluster view, the graph shows the 90th [percentile](https://en.wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of KV execution latency for each node in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 90% of requests within this time.
-
-## Transactions
-
-- In the node view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second on this node.
-
-- In the cluster view, the graph shows the total number of [transactions](transactions.html) initiated (`Begin`), committed (`Commits`), rolled back (`Rollbacks`), and aborted (`Aborts`) per second across all nodes in the cluster.
-
 
 ## Transactions
 

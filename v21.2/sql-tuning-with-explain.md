@@ -6,13 +6,13 @@ toc: true
 
 This tutorial walks you through the common reasons for [slow SQL statements](query-behavior-troubleshooting.html#identify-slow-statements) and describes how to use [`EXPLAIN`](explain.html) to troubleshoot the issues.
 
-The following examples use [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
+The following examples use [MovR](movr.html), a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. Run [`cockroach demo movr --num-users 1250000`](cockroach-demo.html) to open an interactive SQL shell to a temporary, in-memory cluster with the `movr` database preloaded and set as the [current database](sql-name-resolution.html#current-database).
 
 ## Issue: Full table scans
 
 The most common reason for slow queries is sub-optimal `SELECT` statements that include full table scans and incorrect use of indexes.
 
-You'll get generally poor performance when retrieving a single row based on a column that is not in the primary key or any secondary index:
+You'll get generally poor performance when retrieving a small number of rows from a large table based on a column that is not in the primary key or any secondary index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -20,12 +20,19 @@ You'll get generally poor performance when retrieving a single row based on a co
 ~~~
 
 ~~~
-                   id                |   city   |      name      |      address      | credit_card
--------------------------------------+----------+----------------+-------------------+--------------
-00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
+SELECT * FROM users WHERE name = 'Cheyenne Smith';
+                   id                  |   city    |      name      |           address            | credit_card
+---------------------------------------+-----------+----------------+------------------------------+--------------
+  326d3a95-fe03-4600-8000-00000003c1d0 | boston    | Cheyenne Smith | 84252 Bradley Coves Suite 38 | 2369363335
+  c6b45c93-7ecd-4800-8000-0000000ecdfd | amsterdam | Cheyenne Smith | 29149 Jane Lake              | 6072991876
+  5edbdde1-c806-4400-8000-00000007114a | seattle   | Cheyenne Smith | 90016 Anthony Groves         | 3618456173
+  60edde95-4c2d-4000-8000-0000000738c7 | seattle   | Cheyenne Smith | 70310 Knight Roads Suite 36  | 9909070365
+  00024e8e-d94c-4710-8000-00000000002c | new york  | Cheyenne Smith | 8550 Kelsey Flats            | 4374468739
+  0c777227-64c8-4780-8000-00000000edc8 | new york  | Cheyenne Smith | 47925 Cox Ways               | 7070681549
 (1 row)
 
-Time: 14ms total (execution 14ms / network 0ms)
+
+Time: 981ms total (execution 981ms / network 0ms)
 ~~~
 
 To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
@@ -42,16 +49,13 @@ To understand why this query performs poorly, use [`EXPLAIN`](explain.html):
   vectorized: true
 
   • filter
-  │ estimated row count: 1
+  │ estimated row count: 3
   │ filter: name = 'Cheyenne Smith'
   │
   └── • scan
-        estimated row count: 12,500 (100% of the table; stats collected 56 minutes ago)
+        estimated row count: 1,259,634 (100% of the table; stats collected 3 minutes ago)
         table: users@primary
         spans: FULL SCAN
-(11 rows)
-
-Time: 2ms total (execution 1ms / network 2ms)
 ~~~
 
 `table: users@primary` indicates the index used (`primary`) to scan the table (`users`). `spans: FULL SCAN` shows you that, without a secondary index on the `name` column, CockroachDB scans every row of the `users` table, ordered by the primary key (`city`/`id`), until it finds the row with the correct `name` value.
@@ -73,12 +77,18 @@ The query will now return much faster:
 ~~~
 
 ~~~
-                   id                  |   city   |      name      |      address      | credit_card
----------------------------------------+----------+----------------+-------------------+--------------
-  00e6afcc-e1c5-4258-8000-00000000002c | new york | Cheyenne Smith | 8550 Kelsey Flats | 4374468739
-(1 row)
+                   id                  |   city    |      name      |           address            | credit_card
+---------------------------------------+-----------+----------------+------------------------------+--------------
+  c6b45c93-7ecd-4800-8000-0000000ecdfd | amsterdam | Cheyenne Smith | 29149 Jane Lake              | 6072991876
+  326d3a95-fe03-4600-8000-00000003c1d0 | boston    | Cheyenne Smith | 84252 Bradley Coves Suite 38 | 2369363335
+  00024e8e-d94c-4710-8000-00000000002c | new york  | Cheyenne Smith | 8550 Kelsey Flats            | 4374468739
+  0c777227-64c8-4780-8000-00000000edc8 | new york  | Cheyenne Smith | 47925 Cox Ways               | 7070681549
+  5edbdde1-c806-4400-8000-00000007114a | seattle   | Cheyenne Smith | 90016 Anthony Groves         | 3618456173
+  60edde95-4c2d-4000-8000-0000000738c7 | seattle   | Cheyenne Smith | 70310 Knight Roads Suite 36  | 9909070365
+(6 rows)
 
-Time: 7ms total (execution 7ms / network 0ms)
+
+Time: 4ms total (execution 3ms / network 0ms)
 ~~~
 
 To understand why the performance improved, use [`EXPLAIN`](explain.html) to see the new query plan:
@@ -95,16 +105,13 @@ To understand why the performance improved, use [`EXPLAIN`](explain.html) to see
   vectorized: true
 
   • index join
-  │ estimated row count: 1
+  │ estimated row count: 3
   │ table: users@primary
   │
   └── • scan
-        estimated row count: 1 (<0.01% of the table; stats collected 58 minutes ago)
+        estimated row count: 3 (<0.01% of the table; stats collected 3 seconds ago)
         table: users@users_name_idx
         spans: [/'Cheyenne Smith' - /'Cheyenne Smith']
-(11 rows)
-
-Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 This shows you that CockroachDB starts with the secondary index (`users@users_name_idx`). Because it is sorted by `name`, the query can jump directly to the relevant value (`/'Cheyenne Smith' - /'Cheyenne Smith'`). However, the query needs to return values not in the secondary index, so CockroachDB grabs the primary key (`city`/`id`) stored with the `name` value (the primary key is always stored with entries in a secondary index), jumps to that value in the primary index, and then returns the full row.
@@ -125,10 +132,15 @@ For example, let's say you frequently retrieve a user's name and credit card num
 ~~~
        name      | credit_card
 -----------------+--------------
+  Cheyenne Smith | 6072991876
+  Cheyenne Smith | 2369363335
   Cheyenne Smith | 4374468739
+  Cheyenne Smith | 7070681549
+  Cheyenne Smith | 3618456173
+  Cheyenne Smith | 9909070365
 (1 row)
 
-Time: 6ms total (execution 6ms / network 0ms)
+Time: 4ms total (execution 4ms / network 0ms)
 ~~~
 
 With the current secondary index on `name`, CockroachDB still needs to scan the primary index to get the credit card number:
@@ -146,19 +158,16 @@ With the current secondary index on `name`, CockroachDB still needs to scan the 
   vectorized: true
 
   • index join
-  │ estimated row count: 1
+  │ estimated row count: 3
   │ table: users@primary
   │
   └── • scan
-        estimated row count: 1 (<0.01% of the table; stats collected 2 minutes ago)
+        estimated row count: 3 (<0.01% of the table; stats collected 2 minutes ago)
         table: users@users_name_idx
         spans: [/'Cheyenne Smith' - /'Cheyenne Smith']
-(11 rows)
-
-Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
-Let's drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
+Drop and recreate the index on `name`, this time storing the `credit_card` value in the index:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -184,12 +193,9 @@ Now that `credit_card` values are stored in the index on `name`, CockroachDB onl
   vectorized: true
 
   • scan
-    estimated row count: 1 (<0.01% of the table; stats collected 2 minutes ago)
+    estimated row count: 3 (<0.01% of the table; stats collected 27 seconds ago)
     table: users@users_name_idx
     spans: [/'Cheyenne Smith' - /'Cheyenne Smith']
-(7 rows)
-
-Time: 1ms total (execution 1ms / network 0ms)
 ~~~
 
 This results in even faster performance:
@@ -200,12 +206,17 @@ This results in even faster performance:
 ~~~
 
 ~~~
-name      | credit_card
+       name      | credit_card
 -----------------+--------------
-Cheyenne Smith | 4374468739
-(1 row)
+  Cheyenne Smith | 6072991876
+  Cheyenne Smith | 2369363335
+  Cheyenne Smith | 4374468739
+  Cheyenne Smith | 7070681549
+  Cheyenne Smith | 3618456173
+  Cheyenne Smith | 9909070365
+(6 rows)
 
-Time: 1ms total (execution 1ms / network 0ms)
+Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
 To reset the database for following examples, let's drop the index on `name`:
@@ -229,7 +240,7 @@ SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = 
 ~~~
   count
 ---------
-   17
+   20
 (1 row)
 
 Time: 4ms total (execution 3ms / network 0ms)
@@ -252,7 +263,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
   │ estimated row count: 1
   │
   └── • distinct
-      │ estimated row count: 14
+      │ estimated row count: 16
       │ distinct on: id
       │
       └── • hash join
@@ -260,7 +271,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
           │ equality: (id) = (rider_id)
           │
           ├── • scan
-          │     estimated row count: 50 (100% of the table; stats collected 2 minutes ago)
+          │     estimated row count: 1,250,000 (100% of the table; stats collected 7 minutes ago)
           │     table: users@primary
           │     spans: FULL SCAN
           │
@@ -269,7 +280,7 @@ To understand what's happening, use [`EXPLAIN`](explain.html) to see the query p
               │ filter: (start_time >= '2018-12-16 00:00:00') AND (start_time <= '2018-12-17 00:00:00')
               │
               └── • scan
-                    estimated row count: 500 (100% of the table; stats collected 2 minutes ago)
+                    estimated row count: 500 (100% of the table; stats collected 7 minutes ago)
                     table: rides@primary
                     spans: FULL SCAN
 (27 rows)
@@ -300,7 +311,7 @@ SELECT count(DISTINCT users.id) FROM users INNER JOIN rides ON rides.rider_id = 
 ~~~
   count
 ---------
-   17
+   20
 (1 row)
 
 Time: 2ms total (execution 2ms / network 0ms)
@@ -323,22 +334,23 @@ To understand why performance improved, again use [`EXPLAIN`](explain.html) to s
   │ estimated row count: 1
   │
   └── • distinct
-      │ estimated row count: 14
+      │ estimated row count: 0
       │ distinct on: id
       │
       └── • hash join
-          │ estimated row count: 16
+          │ estimated row count: 0
           │ equality: (id) = (rider_id)
           │
           ├── • scan
-          │     estimated row count: 50 (100% of the table; stats collected 4 minutes ago)
+          │     estimated row count: 1,250,000 (100% of the table; stats collected 7 minutes ago)
           │     table: users@primary
           │     spans: FULL SCAN
           │
           └── • scan
-                estimated row count: 16 (3.2% of the table; stats collected 4 minutes ago)
+                estimated row count: 0 (<0.01% of the table; stats collected 7 minutes ago)
                 table: rides@rides_start_time_idx
-                spans: [/'2018-12-16 00:00:00' - /'2018-12-17 00:00:00']
+                spans: [/'2020-09-16 00:00:00' - /'2020-09-17 00:00:00']
+
 (23 rows)
 
 Time: 1ms total (execution 1ms / network 0ms)
@@ -422,4 +434,4 @@ Time: 1ms total (execution 1ms / network 0ms)
 
 - [SQL Best Practices](performance-best-practices-overview.html)
 - [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html)
-- [Make Queries Fast](make-queries-fast.html)
+- [Optimize Statement Performance](make-queries-fast.html)
