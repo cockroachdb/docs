@@ -1,0 +1,1 @@
+To prevent issues with workload concurrency, [provision sufficient CPU and use connection pooling for the workload](recommended-production-settings.html#cpu-and-memory).

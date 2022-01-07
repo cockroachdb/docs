@@ -69,7 +69,11 @@ This graph shows the memory consumption by the CockroachDB process only and is u
 - In the cluster view, the graph shows the number of disk reads and writes in queue for all processes, including CockroachDB, across all nodes in the cluster.
 
 {{site.data.alerts.callout_info}}
-For Mac OS, this graph is not populated and shows zero disk IOPS in progress. This is a [known limitation](https://github.com/cockroachdb/cockroach/issues/27927) that may be lifted in the future.
+{% include {{ page.version.version }}/prod-deployment/healthy-disk-iops-in-progress.md %}
+{{site.data.alerts.end}}
+
+{{site.data.alerts.callout_info}}
+On macOS, this graph is currently not populated and shows zero disk IOPS in progress.
 {{site.data.alerts.end}}
 
 ## Available Disk Capacity

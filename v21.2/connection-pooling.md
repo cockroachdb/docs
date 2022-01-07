@@ -6,6 +6,8 @@ toc: true
 
 This page has information on planning, configuring, and using connection pools when using drivers or frameworks with CockroachDB.
 
+{% include {{ page.version.version }}/prod-deployment/terminology-vcpu.md %}
+
 ## About connection pools
 
 A typical database operation consists of several steps.

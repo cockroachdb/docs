@@ -18,9 +18,7 @@ If you have already optimized your SQL queries as described in [Optimize Stateme
 
 Take a look at [Troubleshoot SQL Behavior](query-behavior-troubleshooting.html).
 
-{{site.data.alerts.callout_info}}
-If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](query-behavior-troubleshooting.html#identify-slow-statements).
-{{site.data.alerts.end}}
+{% include {{ page.version.version }}/prod-deployment/check-sql-query-performance.md %}
 
 ## Transaction retry errors
 
