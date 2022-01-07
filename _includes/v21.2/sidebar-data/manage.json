@@ -302,6 +302,12 @@
               ]
             },
             {
+              "title": "Common Issues to Monitor",
+              "urls": [
+                "/${VERSION}/common-issues-to-monitor.html"
+              ]
+            },
+            {
               "title": "Enable the Node Map",
               "urls": [
                 "/${VERSION}/enable-node-map.html"
