@@ -52,7 +52,7 @@ A growing number of popular third-party database tools offer full support for Co
 
 ## What's next?
 
-- [Start a Local Cluster](secure-a-cluster.html)
+- [Create a CockroachDB Serverless Cluster](../cockroachcloud/create-a-serverless-cluster.html)
 - [Install a Driver or ORM Framework](install-client-drivers.html)
 - [Connect to CockroachDB](connect-to-the-database.html)
 
