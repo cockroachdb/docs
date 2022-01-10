@@ -1700,6 +1700,12 @@
         ]
       },
       {
+        "title": "Cloud API",
+        "urls": [
+          "/api/cloud/v1.html"
+        ]
+      },
+      {
         "title": "Logging",
         "items": [
           {
