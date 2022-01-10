@@ -6,9 +6,13 @@ toc: true
 
 After downloading your desired release, learn how to [Install CockroachDB](../{{site.versions["stable"]}}/install-cockroachdb.html). Also be sure to review Cockroach Labs' [Release Support Policy](release-support-policy.html).
 
+{% assign sections = site.data.releases | map: "release_type" | uniq %}
 
-{% for section in site.data.releases %}
-## {{section.title}}
+{% assign versions = site.data.versions | sort: "release_date" | reverse %}
+
+{% for s in sections %}
+
+## {{ s }} Releases
 <div id="os-tabs" class="filters filters-big clearfix">
     <button id="linux" class="filter-button" data-scope="linux">Linux</button>
     <button id="mac" class="filter-button" data-scope="mac">Mac</button>
@@ -20,6 +24,13 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
 <section class="filter-content" data-scope="windows">
 {% include windows_warning.md %}
 </section>
+{% for v in versions %}
+
+{% assign releases = site.data.releases | where_exp: "releases", "releases.major_version == v.major_version" | where_exp: "releases", "releases.release_type == s" | sort: "release_date" | reverse %}
+
+{% if releases[0] %}
+
+### {{ v.major_version }}
 
 <table class="release-table">
 <thead>
@@ -31,40 +42,40 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
 </thead>
 
 <tbody>
-{% for release in section.releases %}
-    <tr {% if release.latest %}class="latest"{% endif %}>
+{% for r in releases %}
+    <tr {% if v.major_version == versions[0].major_version and r.version == releases[0].version %}class="latest"{% endif %}>
         <td>
-            <a href="{{ release.version }}.html">{{ release.version }}</a>
-            {% if release.latest %}
+            <a href="{{ r.version }}.html">{{ r.version }}</a>
+            {% if v.major_version == versions[0].major_version and r.version == releases[0].version %}
                 <span class="badge-new">Latest</span>
             {% endif %}
         </td>
-        <td>{{ release.date }}</td>
-        {% if release.withdrawn %}
+        <td>{{ r.release_date }}</td>
+        {% if r.withdrawn == "true" %}
             <td class="os-release-cell"><span class="badge badge-gray">Withdrawn</span></td>
         {% else %}
             <td class="os-release-cell">
                 <section class="filter-content" data-scope="linux">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.linux-amd64.tgz">Precompiled 64-bit Binary</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.linux-amd64.tgz">Precompiled 64-bit Binary</a>
                 </section>
                 <section class="filter-content" data-scope="mac">
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.darwin-10.9-amd64.tgz">Precompiled 64-bit Binary</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.darwin-10.9-amd64.tgz">Precompiled 64-bit Binary</a>
                 </section>
                 <section class="filter-content" data-scope="windows">
-                {% if release.no_windows %}
+                {% if r.no_windows == "true" %}
                     N/A
                 {% else %}
-                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.windows-6.2-amd64.zip">Precompiled 64-bit Binary</a>
+                    <a class="os-release-link" href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.windows-6.2-amd64.zip">Precompiled 64-bit Binary</a>
                 {% endif %}
                 </section>
                 <section class="filter-content" data-scope="docker">
-                    <code>cockroachdb/cockroach{% if release.version contains "-" %}-unstable{% endif %}:{{ release.version }}</code>
+                    <code>cockroachdb/cockroach{% if r.version contains "-" %}-unstable{% endif %}:{{ r.version }}</code>
                 </section>
                 <section class="filter-content" data-scope="source">
-                {% if release.no_source %}
+                {% if r.no_source == "true" %}
                     N/A
                 {% else %}
-                    <a href="https://binaries.cockroachdb.com/cockroach-{{ release.version }}.src.tgz">Source</a>
+                    <a href="https://binaries.cockroachdb.com/cockroach-{{ r.version }}.src.tgz">Source</a>
                 {% endif %}
                 </section>
             </td>
@@ -73,6 +84,8 @@ After downloading your desired release, learn how to [Install CockroachDB](../{{
 {% endfor %}
 </tbody>
 </table>
+{% endif %}
+{% endfor %}
 {% endfor %}
 
 ## Release naming

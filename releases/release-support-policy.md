@@ -4,6 +4,10 @@ summary: Learn about Cockroach Labs' policy for supporting major releases of Coc
 toc: true
 ---
 
+{% assign versions = site.data.versions | sort: "release_date" | reverse %}
+
+{% assign today = "today" | date: "%Y-%m-%d" %}
+
 This page explains Cockroach Labs' policy for supporting [major releases](../releases/) of CockroachDB.
 
 ## Support cycle
@@ -37,54 +41,15 @@ Date format: YYYY-MM-DD
 			<th>Assistance Support ends (EOL Date)</th>
 		</tr>
 	</thead>
-  <tr>
-    <td><a href="v21.2.0.html">v21.2</a></td>
-    <td>2021-11-16</td>
-    <td>2022-11-16</td>
-    <td>2023-05-16</td>
-  </tr>
-  <tr>
-    <td><a href="v21.1.0.html">v21.1</a></td>
-    <td>2021-05-18</td>
-    <td>2022-05-18</td>
-    <td>2022-11-18</td>
-  </tr>
-	<tr>
-		<td><a href="v20.2.0.html">v20.2</a></td>
-		<td>2020-11-10</td>
-		<td>2021-11-10</td>
-		<td>2022-05-10</td>
-	</tr>
-	<tr class=eol>
-		<td><a href="v20.1.0.html">v20.1*</a></td>
-		<td>2020-05-12</td>
-		<td>2021-05-12</td>
-		<td>2021-11-12</td>
-	</tr>
-	<tr class=eol>
-		<td><a href="v19.2.0.html">v19.2*</a></td>
-		<td>2019-11-12</td>
-		<td>2020-11-12</td>
-		<td>2021-05-12</td>
-	</tr>
-	<tr class=eol>
-		<td><a href="v19.1.0.html">v19.1*</a></td>
-		<td>2019-04-30</td>
-		<td>2020-04-30</td>
-		<td>2020-11-01</td>
-	</tr>
-	<tr class=eol>
-		<td><a href="v2.1.0.html">v2.1*</a></td>
-		<td>2018-11-19</td>
-		<td>2019-11-19</td>
-		<td>2020-07-01</td>
-	</tr>
-	<tr class=eol>
-		<td><a href="v2.0.0.html">v2.0*</a></td>
-		<td>2018-04-04</td>
-		<td>2019-04-04</td>
-		<td>2019-11-04</td>
-	</tr>
+  {% for v in versions %}
+    {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %}
+    <tr{% if v.asst_supp_exp_date < today %} class=eol{% endif %}>
+      <td><a href="{{ r_latest }}.html">{{ v.major_version}}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
+      <td>{{ v.release_date }}</td>
+      <td>{{ v.maint_supp_exp_date }}</td>
+      <td>{{ v.asst_supp_exp_date }}</td>
+    </tr>
+  {% endfor %}
 </table>
 
 &#42; Version has reached EOL

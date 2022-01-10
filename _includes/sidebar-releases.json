@@ -1,27 +1,20 @@
+{% assign today = "today" | date: "%Y-%m-%d" %}
+{% assign v = site.data.versions | where_exp: "v", "v.asst_supp_exp_date > today" | sort: "release_date" | reverse | map: "major_version" %}
 {
   "title": "CockroachDB Releases",
   "items": [
     {
       "title": "Production Releases",
       "items": [
-        {
-          "title": "Latest v21.2",
-          "urls": [
-            "/releases/v21.2.3.html"
-          ]
-        },
-        {
-          "title": "Latest v21.1",
-          "urls": [
-            "/releases/v21.1.12.html"
-          ]
-        },
-        {
-          "title": "Latest v20.2",
-          "urls": [
-            "/releases/v20.2.18.html"
-          ]
-        },
+        {% for x in v %}
+          {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == x" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %}
+          {
+            "title": "Latest {{ x }}",
+            "urls": [
+              "/releases/{{ r_latest }}.html"
+            ]
+          },
+        {% endfor %}
         {
           "title": "All Production Releases",
           "urls": [
