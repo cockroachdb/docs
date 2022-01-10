@@ -173,7 +173,7 @@ When a `RESTORE` fails or is canceled, partially restored data is properly clean
 
 <span class="version-tag">New in v21.2:</span> Restoring to a [multi-region database](multiregion-overview.html) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases.
 
-* A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between [backup](known-limitations.html#backup-of-multi-region-tables) and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
+* A [cluster's regions](multiregion-overview.html#cluster-regions) will be checked before a restore. Mismatched regions between [backup](backup.html) and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](cockroach-start.html#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
 
 * A database that is restored with the `sql.defaults.primary_region` [cluster setting](cluster-settings.html) will have the [`PRIMARY REGION`](set-primary-region.html) from this cluster setting assigned to the target database.
 
