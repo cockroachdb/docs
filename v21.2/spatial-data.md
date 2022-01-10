@@ -99,8 +99,8 @@ Follow the steps below to load the SQL for the NYC data used in the [Introductio
 CockroachDB can work with the tutorial up to Chapter 22, with the following exceptions:
 
 - Do not try to load Shapefiles via the GUI as shown in the tutorial. Instead, follow the steps below to load the SQL data directly into CockroachDB. (We have already converted the tutorial Shapefiles to SQL for you.)
-- We do not support GML or KML data.
-- We do not support SVG.
+- CockroachDB does not support GML or KML data.
+- CockroachDB does not support SVG.
 {{site.data.alerts.end}}
 
 ### Before you begin
