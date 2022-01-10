@@ -217,7 +217,7 @@
         "parameters": [
           {
             "type": "string",
-            "description": "Type of events to filter for (e.g. \"create_table\"). Only one event type can be specified at a time.",
+            "description": "Type of events to filter for (e.g., \"create_table\"). Only one event type can be specified at a time.",
             "name": "type",
             "in": "query"
           },
@@ -285,7 +285,7 @@
         "produces": [
           "application/json"
         ],
-        "summary": ""Log in"",
+        "summary": "Log in",
         "operationId": "login",
         "parameters": [
           {
@@ -492,7 +492,7 @@
             "api_session": []
           }
         ],
-        "description": "Retrieve more information about a specific range.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "Retrieve more information about a specific range.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -523,7 +523,7 @@
             "api_session": []
           }
         ],
-        "description": "List all sessions on this cluster. If a username is provided, only\nsessions from that user are returned.\n\nClient must be logged-in as a user with admin privileges.",
+        "description": "List all sessions on this cluster. If a username is provided, only\nsessions from that user are returned.\n\nClient must be logged in as a user with admin privileges.",
         "produces": [
           "application/json"
         ],
@@ -1184,7 +1184,7 @@
           "x-go-name": "CreateTableStatement"
         },
         "descriptor_id": {
-          "description": "An identifier used to uniquely identify this table.\nIt can be used to find events pertaining to this table by filtering on\nthe 'target_id' field of events.",
+          "description": "An identifier used to uniquely identify this table.\nIt can be used to find events pertaining to this table by filtering on\nthe `target_id` field of events.",
           "type": "integer",
           "format": "int64",
           "x-go-name": "DescriptorID"
@@ -1543,7 +1543,7 @@
           "x-go-name": "InheritedLeasePreferences"
         },
         "lease_preferences": {
-          "description": "Information about where the user would prefer for\nrange leases to be placed. Leases are allowed to be placed elsewhere if\nneeded, but will follow the provided preference when possible.\n\nMore than one lease preference is allowed, but they should be ordered from\nmost preferred to lease preferred. The first preference that an existing\nreplica of a range matches will take priority.",
+          "description": "Information about where the user would prefer for\nrange leases to be placed. Leases are allowed to be placed elsewhere if\nneeded, but will follow the provided preference when possible.\n\nMore than one lease preference is allowed, but they should be ordered from\nmost preferred to least preferred. The first preference that an existing\nreplica of a range matches will take priority.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/LeasePreference"
@@ -1551,7 +1551,7 @@
           "x-go-name": "LeasePreferences"
         },
         "null_voter_constraints_is_empty": {
-          "description": "Whether the VoterConstraints field\nwas explicitly set to be empty or if it was inherited from its parent.\n\nNB: This extra field is needed because the non-nullable nature of\n`voter_constraints` means that there is no other way to disambiguate\nbetween an unset `voter_constraints` attribute and an empty one.\n\nThis flag is not symmetric with `InheritedConstraints` defined above,\nand should only be checked when the list of VoterConstraints is empty (as\notherwise they are assumed to _not_ be inherited) because we want 21.1 (and\nfuture versions) nodes to correctly interpret zone configs persisted by\npre-21.1 nodes. That is, in absence of explicit modifications, we want 21.1\nnodes to interpret that zone configs written by previous versions inherit\n`VoterConstraints` from their parent.",
+          "description": "Whether the `VoterConstraints` field\nwas explicitly set to be empty or if it was inherited from its parent.\n\nNB: This extra field is needed because the non-nullable nature of\n`voter_constraints` means that there is no other way to disambiguate\nbetween an unset `voter_constraints` attribute and an empty one.\n\nThis flag is not symmetric with `InheritedConstraints` defined above,\nand should only be checked when the list of `VoterConstraints` is empty (as\notherwise they are assumed to _not_ be inherited) because we want 21.1 (and\nfuture versions) nodes to correctly interpret zone configs persisted by\npre-21.1 nodes. That is, in absence of explicit modifications, we want 21.1\nnodes to interpret that zone configs written by previous versions inherit\n`VoterConstraints` from their parent.",
           "type": "boolean",
           "x-go-name": "NullVoterConstraintsIsEmpty"
         },
@@ -1616,7 +1616,7 @@
       "title": "Response for databaseDetails.",
       "properties": {
         "descriptor_id": {
-          "description": "An identifier used to uniquely identify this database.\nIt can be used to find events pertaining to this database by filtering on\nthe 'target_id' field of events.",
+          "description": "An identifier used to uniquely identify this database.\nIt can be used to find events pertaining to this database by filtering on\nthe `target_id` field of events.",
           "type": "integer",
           "format": "int64",
           "x-go-name": "DescriptorID"
