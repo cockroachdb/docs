@@ -16,7 +16,7 @@ If you aren't sure whether SQL statement performance needs to be improved on a c
 
 ## SQL statement performance
 
-To get good SQL statement performance, follow these rules (in approximate order of importance):
+To get good SQL statement performance, follow these rules:
 
 - [Rule 1. Scan as few rows as possible](#rule-1-scan-as-few-rows-as-possible). If your application is scanning more rows than necessary for a given statement, it's going to be difficult to scale.
 - [Rule 2. Use the right index](#rule-2-use-the-right-index): Your statement should use an index on the columns in the `WHERE` clause. You want to avoid the performance hit of a full table scan.
@@ -24,23 +24,17 @@ To get good SQL statement performance, follow these rules (in approximate order 
 
 These rules apply to an environment where thousands of [OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing) statements are being run per second, and each statement needs to run in milliseconds. These rules are not intended to apply to analytical, or [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing), statements.
 
-## Rule demonstrations
+## Set up demonstration dataset
 
 To show each of these rules in action, you will optimize a statement against the MovR data set.
 
 {% include {{ page.version.version }}/demo_movr.md %}
 
-It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, you want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount.
-
-To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"
-
-{% comment %}
-This is a test
-{% endcomment %}
+It's common to offer users promo codes to increase usage and customer loyalty. In this scenario, you want to find the 10 users who have taken the highest number of rides on a given date, and offer them promo codes that provide a 10% discount. To phrase it in the form of a question: "Who are the top 10 users by number of rides on a given date?"
 
 ### Rule 1. Scan as few rows as possible
 
-First, let's study the schema so you understand the relationships between the tables.
+First, study the schema so you understand the relationships between the tables.
 
 Start a SQL shell:
 
@@ -71,7 +65,7 @@ SHOW TABLES;
 Time: 17ms total (execution 17ms / network 0ms)
 ~~~
 
-Let's look at the schema for the `users` table:
+Look at the schema for the `users` table:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -133,13 +127,13 @@ There is a `rider_id` field that you can use to match each ride to a user. There
 
 This means that to get the information you want, you'll need to do a [join][joins] on the `users` and `rides` tables.
 
-Next, let's get the row counts for the tables that you'll be using in this query. We need to understand which tables are large, and which are small by comparison. We will need this later if you need to verify you are [using the right join type](#rule-3-use-the-right-join-type).
+Next, get the row counts for the tables that you'll be using in this query. You need to understand which tables are large, and which are small by comparison. You will need this later if you need to verify you are [using the right join type](#rule-3-use-the-right-join-type).
 
-As specified above by our [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, you want to avoid scanning the entire `rides` table in our query. In this case, you can avoid scanning `rides` using an index, as shown in the next section.
+As specified by your [`cockroach demo`](cockroach-demo.html) command, the `users` table has 12,500 records, and the `rides` table has 125,000 records. Because it's so large, you want to avoid scanning the entire `rides` table in your query. In this case, you can avoid scanning `rides` using an index, as shown in the next section.
 
 ### Rule 2. Use the right index
 
-Here is a query that fetches the right answer to our question: "Who are the top 10 users by number of rides on a given date?"
+Here is a query that fetches the right answer to your question: "Who are the top 10 users by number of rides on a given date?"
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -175,9 +169,9 @@ LIMIT
 Time: 111ms total (execution 111ms / network 0ms)
 ~~~
 
-Unfortunately, this query is a bit slow. 111 milliseconds puts us [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and you're still down in the database layer. This data still needs to be shipped back out to your application and displayed to the user.
+Unfortunately, this query is a bit slow. 111 milliseconds puts you [over the limit where a user feels the system is reacting instantaneously](https://www.nngroup.com/articles/response-times-3-important-limits/), and you're still down in the database layer. This data still needs to be sent back to your application and displayed.
 
-We can see why if you look at the output of [`EXPLAIN`](explain.html):
+You can see why if you look at the output of [`EXPLAIN`](explain.html):
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -236,9 +230,9 @@ LIMIT
 Time: 2ms total (execution 2ms / network 0ms)
 ~~~
 
-The main problem is that you are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells us that you do not have indexes on the columns in our `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
+The main problem is that you are doing full table scans on both the `users` and `rides` tables (see `spans: FULL SCAN`). This tells you that you do not have indexes on the columns in your `WHERE` clause, which is [an indexing best practice](indexes.html#best-practices).
 
-Therefore, you need to create an index on the column in our `WHERE` clause, in this case: `rides.start_time`.
+Therefore, you need to create an index on the column in your `WHERE` clause, in this case: `rides.start_time`.
 
 It's also possible that there is not an index on the `rider_id` column that you are doing a join against, which will also hurt performance.
 
@@ -275,7 +269,7 @@ Because another performance best practice is to [create an index on the `WHERE` 
 CREATE INDEX ON rides (start_time) storing (rider_id);
 ~~~
 
-Now that you have an index on the column in our `WHERE` clause that stores the join key, let's run the query again:
+Now that you have an index on the column in your `WHERE` clause that stores the join key, let's run the query again:
 
 {% include copy-clipboard.html %}
 ~~~ sql
@@ -311,7 +305,7 @@ LIMIT
 Time: 20ms total (execution 20ms / network 0ms)
 ~~~
 
-This query is now running much faster than it was before you added the indexes (111ms vs. 20ms). This means you have an extra 91 milliseconds you can budget towards other areas of our application.
+This query is now running much faster than it was before you added the indexes (111ms vs. 20ms). This means you have an extra 91 milliseconds you can budget towards other areas of your application.
 
 To see what changed, look at the [`EXPLAIN`](explain.html) output:
 
@@ -374,7 +368,7 @@ Time: 2ms total (execution 2ms / network 1ms)
 
 Out of the box, the [cost-based optimizer](cost-based-optimizer.html) will select the right join type for your statement in the majority of cases. Therefore, you should only provide [join hints](cost-based-optimizer.html#join-hints) in your query if you can **prove** to yourself through experimentation that the optimizer should be using a different [join type](joins.html#join-algorithms) than it is selecting.
 
-We can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
+You can confirm that in this case the optimizer has already found the right join type for this statement by using a hint to force another join type.
 
 For example, you might think that a [lookup join](joins.html#lookup-joins) could perform better in this instance, since one of the tables in the join is 10x smaller than the other.
 
@@ -422,7 +416,7 @@ LIMIT
 Time: 985ms total (execution 985ms / network 0ms)
 ~~~
 
-The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for us earlier.
+The results, however, are not good. The query is much slower using a lookup join than what CockroachDB planned for you earlier.
 
 The query is faster when you force CockroachDB to use a merge join:
 
