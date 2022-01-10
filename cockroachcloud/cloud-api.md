@@ -122,7 +122,7 @@ Where `{secret key}` is the [secret key string you stored when you created the A
 
 ## Create a new cluster
 
-To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` permissions to create new clusters.
+To create a cluster, send a `POST` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `CREATE` permission to create new clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -228,7 +228,7 @@ Where:
 
 ## Retrieve information about a specific cluster
 
-To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to retrieve information about an organization's clusters.
+To retrieve detailed information about a specific cluster, make a `GET` request to the `/v1/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to retrieve information about an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -295,7 +295,7 @@ Where:
 
 ## Set the maximum spend limit of a Serverless cluster
 
-To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{clusterId}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` permissions to retrieve information about an organization's clusters.
+To set the maximum spend limit for a Serverless cluster, send a `PUT` request to the `/v1/clusters/{clusterId}/spend-limit` endpoint. The service account associated with the secret key must have `ADMIN` or `EDIT` permission to retrieve information about an organization's clusters.
 
 <div class="filters clearfix">
     <button class="filter-button page-level" data-scope="curl"><strong>curl</strong></button>
@@ -331,7 +331,7 @@ If the request was successful, the client will not receive a response payload.
 
 ## Delete a cluster
 
-To delete a cluster, send a `DELETE` request to the `/v1/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` permissions to delete an organization's clusters.
+To delete a cluster, send a `DELETE` request to the `/v1/clusters/{clusterId}` endpoint. The service account associated with the secret key must have `ADMIN` or `DELETE` permission to delete an organization's clusters.
 
 Deleting a cluster will permanently delete the cluster and all the data within the cluster.
 
@@ -351,7 +351,7 @@ If the `DELETE` request was successful the client will not receive a response pa
 
 ## List all clusters in an organization
 
-To list all clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to list an organization's clusters.
+To list all clusters within an organization, send a `GET` request to the `/v1/clusters` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to list an organization's clusters.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
@@ -406,7 +406,7 @@ Where:
 
 ## List the available regions for a cloud infrastructure provider
 
-To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permissions to list the available regions.
+To list the available regions for creating new clusters, send a `GET` request to the `/v1/clusters/available-regions?provider={cloud provider}` endpoint. The service account associated with the secret key must have `ADMIN` or `READ` permission to list the available regions.
 
 {% include_cached copy-clipboard.html %}
 ~~~ shell
