@@ -325,7 +325,7 @@ Read hot spots can occur if you perform lots of scans of an empty table or of a 
 
 ### Find hot spots
 
-To track down the nodes experiencing hot spots, use the [hot spot ranges API endpoint](cluster-api#resources).
+To track down the nodes experiencing hot spots, use the [hot spot ranges API endpoint](cluster-api.html#resources).
 
 ### Reduce hot spots
 
@@ -371,6 +371,8 @@ For further background on transaction contention, see [What is Database Contenti
 ### Find transaction contention
 
 {% include {{ page.version.version }}/performance/statement-contention.md %}
+
+<a id="avoid-transaction-contention"></a>
 
 ### Reduce transaction contention
 
