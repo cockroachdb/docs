@@ -1183,7 +1183,7 @@
         ]
       },
       {
-        "title": "CLI Reference",
+        "title": "CLI",
         "urls": [
           "/${VERSION}/cockroach-commands.html"
         ],
@@ -1467,7 +1467,7 @@
         ]
       },
       {
-        "title": "Logging Reference",
+        "title": "Logging",
         "urls": [
           "/${VERSION}/logging.html"
         ],

@@ -95,7 +95,7 @@ VPC peering is only available for GCP clusters, and AWS PrivateLink is only avai
 1. Click **Next** to continue to the third step.
 1. Return to the AWS console to [enable private DNS](network-authorization.html#enable-private-dns).
 1. Click **Complete**.
-1. On the **Networking** page, verify the connection status is Available.
+1. On the **Networking** page, verify the connection status is **Available**.
 
 </section>
 
