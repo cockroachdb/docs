@@ -33,8 +33,10 @@
       "title": "Testing Releases",
       "urls": [
         {% for x in v %}
-          {% assign r = site.data.releases | where_exp: "r_latest", "r_latest.major_version == x" | where: "withdrawn", "false" | where: "release_type", "Testing" | map: "version" %}
+          {% assign r_all = site.data.releases | where_exp: "r_all", "r_all.major_version == x" | where: "withdrawn", "false" | where: "release_type", "Testing" | map: "version" %}
+          {% for r in r_all %}
           "/releases/{{ r }}.html",
+          {% endfor %}
         {% endfor %}
         "/releases/index.html#testing-releases"
       ]
