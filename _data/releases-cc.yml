@@ -1,8 +1,10 @@
 - title: CockroachDB Cloud releases
   releases:
+    - name: January 2022
+      link: cockroachcloud-01102022
+      latest: true    
     - name: December 2021
       link: cockroachcloud-12062021
-      latest: true
     - name: November 2021
       link: cockroachcloud-11082021
     - name: October 2021
