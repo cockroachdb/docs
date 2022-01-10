@@ -54,7 +54,7 @@ layout: default
       {% include_cached unsupported-version.md %}
    {% endif %}
 
-   {% if a > today and m < today %}
+   {% if a >= today and m < today %}
       {% include_cached unsupported-version-soon.md %}
    {% endif %}
 

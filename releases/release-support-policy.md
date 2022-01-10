@@ -42,7 +42,7 @@ Date format: YYYY-MM-DD
 		</tr>
 	</thead>
   {% for v in versions %}
-    {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %}
+    {% assign r_latest = site.data.releases | where_exp: "r_latest", "r_latest.major_version == v.major_version" | where: "withdrawn", "false" | sort: "release_date" | last | map: "version" %}
     <tr{% if v.asst_supp_exp_date < today %} class=eol{% endif %}>
       <td><a href="{{ r_latest }}.html">{{ v.major_version}}{% if v.asst_supp_exp_date < today %}*{% endif %}</a></td>
       <td>{{ v.release_date }}</td>
