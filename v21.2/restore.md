@@ -246,7 +246,7 @@ In the following example `/2021/12/21-142943.73` contains the full backup. The i
            |—— 144639.97/
 ~~~
 
-To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory)
+To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 See [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) to control where your backups go.
 
@@ -425,7 +425,7 @@ In the following example `/2021/12/21-142943.73` contains the full backup. The i
            |—— 144639.97/
 ~~~
 
-To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory)
+To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 See [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) to control where your backups go.
 
@@ -604,7 +604,7 @@ In the following example `/2021/12/21-142943.73` contains the full backup. The i
             |—— 144639.97/
 ~~~
 
-To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory)
+To output more detail about the backups contained within a directory, see [View a list of the full and incremental backups in a specific full backup subdirectory](show-backup.html#view-a-list-of-the-full-and-incremental-backups-in-a-specific-full-backup-subdirectory).
 
 See [Incremental backups with explicitly specified destinations](take-full-and-incremental-backups.html#incremental-backups-with-explicitly-specified-destinations) to control where your backups go.
 
