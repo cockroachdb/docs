@@ -710,11 +710,15 @@ Other databases use partitioning for three additional use cases: secondary index
 - **Sharding:** CockroachDB automatically shards data as a part of its distributed database architecture.
 - **Bulk Loading & Deleting:** CockroachDB does not have a feature that supports this use case as of now.
 
-Whereas a partition in PostgreSQL is effectively its own table, CockroachDB partitions point to the same table but allow the distribution of data across nodes based on geographical and access frequency requirements. CockroachDB allows enabling and disabling partitioning on tables, whereas PostgreSQL currently does not.
+PostgreSQL allows its users to leverage partitions for data lifecycle management. Whereas a partition in PostgreSQL is effectively its own table, CockroachDB partitions point to the same table but allow the distribution of data across nodes based on geographical and access frequency requirements. CockroachDB allows enabling and disabling partitioning on tables, whereas PostgreSQL currently does not.
+
+However, it is inexpensive resource-wise to drop partitions in PostgreSQL as opposed to deleting the data within those partitions using `DELETE`.
 
 ## Known limitations
 
 - {% include {{ page.version.version }}/known-limitations/partitioning-with-placeholders.md %}
+
+- CockroachDB does not currently support dropping a single partition from a table. In order to remove partitions, you can [repartition](#repartition-a-table) the table.
 
 ## See also
 
