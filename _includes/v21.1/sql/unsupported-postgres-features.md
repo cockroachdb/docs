@@ -7,3 +7,4 @@
 - XML Functions
 - Column-level privileges
 - XA syntax
+- [Dropping a single partition from a table](partitioning.html#known-limitations)
