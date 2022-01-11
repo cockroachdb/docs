@@ -61,7 +61,7 @@ CockroachDB Cloud contract customers cannot scale clusters through the Console. 
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
-At this time, you cannot use the Console to scale a multi-node cluster down to a single-node cluster. If you need to do this, contact [Support](https://support.cockroachlabs.com).
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to do this, [backup](run-bulk-operations.html?filters=cloud#backup-and-restore-data) your cluster and [restore](run-bulk-operations.html?filters=cloud#restore-a-cluster) it into a single-node cluster.
 {{site.data.alerts.end}}
 
 To add or remove nodes from your cluster:
